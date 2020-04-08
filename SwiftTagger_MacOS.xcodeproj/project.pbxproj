@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		51D2BB14243DB70900D06FEB /* libMNAVChapters.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 51D2BB11243DB6FF00D06FEB /* libMNAVChapters.a */; };
 		51E432B6243DA257006574A1 /* SwiftTagger_MacOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51E432AC243DA257006574A1 /* SwiftTagger_MacOS.framework */; };
 		51E432BB243DA257006574A1 /* SwiftTagger_MacOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E432BA243DA257006574A1 /* SwiftTagger_MacOSTests.swift */; };
 		51E432BD243DA257006574A1 /* SwiftTagger_MacOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 51E432AF243DA257006574A1 /* SwiftTagger_MacOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -20,6 +21,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		51D2BB10243DB6FF00D06FEB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 51D2BB0B243DB6FF00D06FEB /* MNAVChapters.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4CE292F917BD20A300C91790;
+			remoteInfo = MNAVChapters;
+		};
+		51D2BB12243DB6FF00D06FEB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 51D2BB0B243DB6FF00D06FEB /* MNAVChapters.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4CE2930917BD20A300C91790;
+			remoteInfo = MNAVChaptersTests;
+		};
 		51E432B7243DA257006574A1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 51E432A3243DA257006574A1 /* Project object */;
@@ -30,6 +45,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		51D2BB0B243DB6FF00D06FEB /* MNAVChapters.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MNAVChapters.xcodeproj; path = MNAVChapters/MNAVChapters.xcodeproj; sourceTree = "<group>"; };
 		51E432AC243DA257006574A1 /* SwiftTagger_MacOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftTagger_MacOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		51E432AF243DA257006574A1 /* SwiftTagger_MacOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftTagger_MacOS.h; sourceTree = "<group>"; };
 		51E432B0243DA257006574A1 /* SwiftTagger_MacOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = SwiftTagger_MacOS.plist; sourceTree = "<group>"; };
@@ -50,6 +66,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				51D2BB14243DB70900D06FEB /* libMNAVChapters.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -64,12 +81,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		51D2BB0A243DB6FF00D06FEB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				51D2BB0B243DB6FF00D06FEB /* MNAVChapters.xcodeproj */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		51D2BB0C243DB6FF00D06FEB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				51D2BB11243DB6FF00D06FEB /* libMNAVChapters.a */,
+				51D2BB13243DB6FF00D06FEB /* MNAVChaptersTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		51E432A2243DA257006574A1 = {
 			isa = PBXGroup;
 			children = (
 				51E432AE243DA257006574A1 /* SwiftTagger_MacOS */,
 				51E432B9243DA257006574A1 /* SwiftTagger_MacOSTests */,
 				51E432AD243DA257006574A1 /* Products */,
+				51D2BB0A243DB6FF00D06FEB /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -227,6 +262,12 @@
 			mainGroup = 51E432A2243DA257006574A1;
 			productRefGroup = 51E432AD243DA257006574A1 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 51D2BB0C243DB6FF00D06FEB /* Products */;
+					ProjectRef = 51D2BB0B243DB6FF00D06FEB /* MNAVChapters.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				51E432AB243DA257006574A1 /* SwiftTagger_MacOS */,
@@ -234,6 +275,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		51D2BB11243DB6FF00D06FEB /* libMNAVChapters.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libMNAVChapters.a;
+			remoteRef = 51D2BB10243DB6FF00D06FEB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		51D2BB13243DB6FF00D06FEB /* MNAVChaptersTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = MNAVChaptersTests.xctest;
+			remoteRef = 51D2BB12243DB6FF00D06FEB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		51E432AA243DA257006574A1 /* Resources */ = {
