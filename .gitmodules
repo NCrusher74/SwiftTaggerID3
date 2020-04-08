@@ -1,0 +1,3 @@
+[submodule "MNAVChapters"]
+	path = MNAVChapters
+	url = https://github.com/NCrusher74/MNAVChapters.git
