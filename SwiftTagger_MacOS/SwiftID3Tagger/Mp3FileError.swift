@@ -11,6 +11,13 @@ import Foundation
 extension Mp3File {
     
     public enum Error: Swift.Error {
-        case invalidFileFormat
+        /// Error generated when an invalid file format is passed to the ID3TagEditor.
+        case InvalidFileFormat;
+        /// Error generated when the tag size exceed 256 MB.
+        case TagTooBig;
+        /// Error generated when there's not valid data in the tag.
+        case InvalidTagData;
+        /// Error generated when the file is corrupted.
+        case CorruptedFile;
     }
 }

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import AVFoundation
 
 struct Mp3File {
     
@@ -16,30 +17,5 @@ struct Mp3File {
         self.location = location
     }
     
-    var isValid: Bool {
-        if self.location.fileExtension.lowercased() == "mp3" {
-            return true
-        } else {
-            return false
-        }
-    }
-    
-    public func read() throws -> Data {
-        if self.isValid {
-            return try Data(contentsOf: self.location)
-        } else {
-            throw Error.invalidFileFormat
-        }
-    }
-    
-    public func write(/*tagData: TagData, */mp3File: Mp3File, outputLocation: URL) throws {
-        do {
-            let inputData = try mp3File.read()
-            try FileManager.default.createDirectory(
-                at: outputLocation.parentDirectory,
-                withIntermediateDirectories: true)
-            try inputData.write(to: outputLocation)
-        }
-    }
     
 }

@@ -15,6 +15,8 @@
 		51E432CB243DA3F6006574A1 /* Mp3FileError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E432CA243DA3F6006574A1 /* Mp3FileError.swift */; };
 		51E432CE243DA5E4006574A1 /* mp3-no-meta.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 51E432CD243DA5E4006574A1 /* mp3-no-meta.mp3 */; };
 		51E432D2243DA64B006574A1 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E432D1243DA64B006574A1 /* Bundle.swift */; };
+		51E432D6243DAED8006574A1 /* TagData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E432D5243DAED8006574A1 /* TagData.swift */; };
+		51E432DA243DB096006574A1 /* ID3Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E432D9243DB096006574A1 /* ID3Version.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,6 +41,8 @@
 		51E432CA243DA3F6006574A1 /* Mp3FileError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mp3FileError.swift; sourceTree = "<group>"; };
 		51E432CD243DA5E4006574A1 /* mp3-no-meta.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "mp3-no-meta.mp3"; sourceTree = "<group>"; };
 		51E432D1243DA64B006574A1 /* Bundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bundle.swift; sourceTree = "<group>"; };
+		51E432D5243DAED8006574A1 /* TagData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagData.swift; sourceTree = "<group>"; };
+		51E432D9243DB096006574A1 /* ID3Version.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ID3Version.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,8 +124,10 @@
 		51E432D0243DA61B006574A1 /* SwiftID3Tagger */ = {
 			isa = PBXGroup;
 			children = (
+				51E432D4243DAEB6006574A1 /* InputParsing */,
 				51E432C6243DA2E0006574A1 /* Mp3File.swift */,
 				51E432CA243DA3F6006574A1 /* Mp3FileError.swift */,
+				51E432D9243DB096006574A1 /* ID3Version.swift */,
 			);
 			path = SwiftID3Tagger;
 			sourceTree = "<group>";
@@ -131,6 +137,14 @@
 			children = (
 			);
 			path = Ouput;
+			sourceTree = "<group>";
+		};
+		51E432D4243DAEB6006574A1 /* InputParsing */ = {
+			isa = PBXGroup;
+			children = (
+				51E432D5243DAED8006574A1 /* TagData.swift */,
+			);
+			path = InputParsing;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -245,7 +259,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				51E432C7243DA2E0006574A1 /* Mp3File.swift in Sources */,
+				51E432DA243DB096006574A1 /* ID3Version.swift in Sources */,
 				51E432CB243DA3F6006574A1 /* Mp3FileError.swift in Sources */,
+				51E432D6243DAED8006574A1 /* TagData.swift in Sources */,
 				51E432C9243DA35E006574A1 /* URLExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
