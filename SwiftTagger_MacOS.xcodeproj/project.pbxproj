@@ -10,6 +10,11 @@
 		51E432B6243DA257006574A1 /* SwiftTagger_MacOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51E432AC243DA257006574A1 /* SwiftTagger_MacOS.framework */; };
 		51E432BB243DA257006574A1 /* SwiftTagger_MacOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E432BA243DA257006574A1 /* SwiftTagger_MacOSTests.swift */; };
 		51E432BD243DA257006574A1 /* SwiftTagger_MacOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 51E432AF243DA257006574A1 /* SwiftTagger_MacOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		51E432C7243DA2E0006574A1 /* Mp3File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E432C6243DA2E0006574A1 /* Mp3File.swift */; };
+		51E432C9243DA35E006574A1 /* URLExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E432C8243DA35E006574A1 /* URLExtension.swift */; };
+		51E432CB243DA3F6006574A1 /* Mp3FileError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E432CA243DA3F6006574A1 /* Mp3FileError.swift */; };
+		51E432CE243DA5E4006574A1 /* mp3-no-meta.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 51E432CD243DA5E4006574A1 /* mp3-no-meta.mp3 */; };
+		51E432D2243DA64B006574A1 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E432D1243DA64B006574A1 /* Bundle.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -25,10 +30,15 @@
 /* Begin PBXFileReference section */
 		51E432AC243DA257006574A1 /* SwiftTagger_MacOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftTagger_MacOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		51E432AF243DA257006574A1 /* SwiftTagger_MacOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftTagger_MacOS.h; sourceTree = "<group>"; };
-		51E432B0243DA257006574A1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		51E432B0243DA257006574A1 /* SwiftTagger_MacOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = SwiftTagger_MacOS.plist; sourceTree = "<group>"; };
 		51E432B5243DA257006574A1 /* SwiftTagger_MacOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftTagger_MacOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		51E432BA243DA257006574A1 /* SwiftTagger_MacOSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftTagger_MacOSTests.swift; sourceTree = "<group>"; };
-		51E432BC243DA257006574A1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		51E432BC243DA257006574A1 /* SwiftTagger_MacOSTests.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = SwiftTagger_MacOSTests.plist; sourceTree = "<group>"; };
+		51E432C6243DA2E0006574A1 /* Mp3File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mp3File.swift; sourceTree = "<group>"; };
+		51E432C8243DA35E006574A1 /* URLExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLExtension.swift; sourceTree = "<group>"; };
+		51E432CA243DA3F6006574A1 /* Mp3FileError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mp3FileError.swift; sourceTree = "<group>"; };
+		51E432CD243DA5E4006574A1 /* mp3-no-meta.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "mp3-no-meta.mp3"; sourceTree = "<group>"; };
+		51E432D1243DA64B006574A1 /* Bundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bundle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,8 +81,10 @@
 		51E432AE243DA257006574A1 /* SwiftTagger_MacOS */ = {
 			isa = PBXGroup;
 			children = (
+				51E432D0243DA61B006574A1 /* SwiftID3Tagger */,
+				51E432CF243DA608006574A1 /* Convenience Extensions */,
+				51E432B0243DA257006574A1 /* SwiftTagger_MacOS.plist */,
 				51E432AF243DA257006574A1 /* SwiftTagger_MacOS.h */,
-				51E432B0243DA257006574A1 /* Info.plist */,
 			);
 			path = SwiftTagger_MacOS;
 			sourceTree = "<group>";
@@ -80,10 +92,45 @@
 		51E432B9243DA257006574A1 /* SwiftTagger_MacOSTests */ = {
 			isa = PBXGroup;
 			children = (
+				51E432CC243DA5B4006574A1 /* TestMedia */,
 				51E432BA243DA257006574A1 /* SwiftTagger_MacOSTests.swift */,
-				51E432BC243DA257006574A1 /* Info.plist */,
+				51E432BC243DA257006574A1 /* SwiftTagger_MacOSTests.plist */,
 			);
 			path = SwiftTagger_MacOSTests;
+			sourceTree = "<group>";
+		};
+		51E432CC243DA5B4006574A1 /* TestMedia */ = {
+			isa = PBXGroup;
+			children = (
+				51E432D3243DA9D0006574A1 /* Ouput */,
+				51E432D1243DA64B006574A1 /* Bundle.swift */,
+				51E432CD243DA5E4006574A1 /* mp3-no-meta.mp3 */,
+			);
+			path = TestMedia;
+			sourceTree = "<group>";
+		};
+		51E432CF243DA608006574A1 /* Convenience Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				51E432C8243DA35E006574A1 /* URLExtension.swift */,
+			);
+			path = "Convenience Extensions";
+			sourceTree = "<group>";
+		};
+		51E432D0243DA61B006574A1 /* SwiftID3Tagger */ = {
+			isa = PBXGroup;
+			children = (
+				51E432C6243DA2E0006574A1 /* Mp3File.swift */,
+				51E432CA243DA3F6006574A1 /* Mp3FileError.swift */,
+			);
+			path = SwiftID3Tagger;
+			sourceTree = "<group>";
+		};
+		51E432D3243DA9D0006574A1 /* Ouput */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Ouput;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -148,6 +195,7 @@
 				TargetAttributes = {
 					51E432AB243DA257006574A1 = {
 						CreatedOnToolsVersion = 11.4;
+						LastSwiftMigration = 1140;
 					};
 					51E432B4243DA257006574A1 = {
 						CreatedOnToolsVersion = 11.4;
@@ -185,6 +233,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				51E432CE243DA5E4006574A1 /* mp3-no-meta.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -195,6 +244,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				51E432C7243DA2E0006574A1 /* Mp3File.swift in Sources */,
+				51E432CB243DA3F6006574A1 /* Mp3FileError.swift in Sources */,
+				51E432C9243DA35E006574A1 /* URLExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -203,6 +255,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				51E432BB243DA257006574A1 /* SwiftTagger_MacOSTests.swift in Sources */,
+				51E432D2243DA64B006574A1 /* Bundle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -339,13 +392,14 @@
 		51E432C1243DA257006574A1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = SwiftTagger_MacOS/Info.plist;
+				INFOPLIST_FILE = SwiftTagger_MacOS/SwiftTagger_MacOS.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -355,6 +409,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.NCrusher.SwiftTagger-MacOS";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -362,13 +417,14 @@
 		51E432C2243DA257006574A1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = SwiftTagger_MacOS/Info.plist;
+				INFOPLIST_FILE = SwiftTagger_MacOS/SwiftTagger_MacOS.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -385,9 +441,10 @@
 		51E432C4243DA257006574A1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = SwiftTagger_MacOSTests/Info.plist;
+				INFOPLIST_FILE = SwiftTagger_MacOSTests/SwiftTagger_MacOSTests.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -402,9 +459,10 @@
 		51E432C5243DA257006574A1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = SwiftTagger_MacOSTests/Info.plist;
+				INFOPLIST_FILE = SwiftTagger_MacOSTests/SwiftTagger_MacOSTests.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
