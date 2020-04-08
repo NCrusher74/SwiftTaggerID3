@@ -30,6 +30,19 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		51782839243E729300C68DFA /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		517E8869243DBCA300F9F8D6 /* mp3-chaptered.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "mp3-chaptered.mp3"; path = "../../../../../Downloads/audiobook_tools/sampleaax/mp3-chaptered.mp3"; sourceTree = "<group>"; };
 		51E432AC243DA257006574A1 /* SwiftTagger_MacOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftTagger_MacOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -180,6 +193,7 @@
 				51E432A8243DA257006574A1 /* Sources */,
 				51E432A9243DA257006574A1 /* Frameworks */,
 				51E432AA243DA257006574A1 /* Resources */,
+				51782839243E729300C68DFA /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
