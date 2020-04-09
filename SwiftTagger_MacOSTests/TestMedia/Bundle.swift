@@ -28,11 +28,12 @@ extension Bundle {
         return Mp3File(location: locationOfTestAudioFile)
         
     }()
-    //    static let mp3NoMeta: URL = {
-    //        guard let location = Bundle.testBundle.url(forResource: "no-meta", withExtension: "mp3") else {
-    //            fatalError("The mp3 file cannot be found")
-    //        }
-    //        return location
-    //    }()
+    
+        static let mp3Chaptered: URL = {
+            guard let location = Bundle.testBundle.url(forResource: "mp3-chaptered", withExtension: "mp3") else {
+                fatalError("The mp3 file cannot be found")
+            }
+            return location
+        }()
     
 }

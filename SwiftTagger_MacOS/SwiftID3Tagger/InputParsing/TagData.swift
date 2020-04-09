@@ -11,6 +11,12 @@ import AVFoundation
 
 struct TagData {
     
+    var mp3File: Mp3File
+    
+    init(from mp3File: Mp3File) {
+        self.mp3File = mp3File
+    }
+ 
     
     
 }
