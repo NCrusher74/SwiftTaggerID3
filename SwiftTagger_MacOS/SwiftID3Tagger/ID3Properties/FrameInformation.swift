@@ -81,7 +81,7 @@ struct FrameInformation {
             case .audioFileWebpage: return FrameType.url
             case .audioSourceWebpage: return FrameType.url
             case .bpm: return FrameType.integer
-            case .chapter: return FrameType.complex
+            case .chapter: return FrameType.chapter
             case .comments: return FrameType.stringArray
             case .compilation: return FrameType.bool
             case .composer: return FrameType.string
@@ -97,7 +97,7 @@ struct FrameInformation {
             case .encodingSettings: return FrameType.string
             case .fileType: return FrameType.string
             case .fileOwner: return FrameType.string
-            case .genre: return FrameType.complex
+            case .genre: return FrameType.genre
             case .grouping: return FrameType.string
             case .initialKey: return FrameType.string
             case .involvedPeopleList: return FrameType.tupleArray
@@ -133,7 +133,7 @@ struct FrameInformation {
             case .releaseTime: return FrameType.date
             case .setSubtitle: return FrameType.string
             case .subtitle: return FrameType.string
-            case .tableOfContents: return FrameType.complex
+            case .tableOfContents: return FrameType.toc
             case .taggingTime: return FrameType.date
             case .time: return FrameType.date
             case .title: return FrameType.string
@@ -684,6 +684,8 @@ struct FrameInformation {
         }
     }
     
-
+    public func frameIdentifierBytes(version: ID3Version) -> [UInt8] {
+        return [UInt8](id3identifier(version: version)!.utf8)
+    }
     
 }

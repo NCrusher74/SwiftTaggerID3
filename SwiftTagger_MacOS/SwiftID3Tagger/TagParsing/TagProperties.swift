@@ -2,6 +2,10 @@
 //  TagProperties.swift
 //  SwiftTagger_MacOS
 //
+//  Some of this code is adapted from ID3TagEditor
+//  Created by Fabrizio Duroni on 27/02/2018.
+//  2018 Fabrizio Duroni. https://github.com/chicio/ID3TagEditor
+//
 //  Created by Nolaine Crusher on 4/9/20.
 //  Copyright © 2020 Nolaine Crusher. All rights reserved.
 //
@@ -18,13 +22,13 @@ struct TagProperties {
 
     internal var headerBytesCount: Int = 10
 
-    // the first five bytes of a valid ID3 Tag are "ID3"+ the version number in UInt8
-    internal var version22Bytes: [UInt8] = [0x49, 0x44, 0x33, 0x02, 0x00]
-    internal var version23Bytes: [UInt8] = [0x49, 0x44, 0x33, 0x03, 0x00]
-    internal var version24Bytes: [UInt8] = [0x49, 0x44, 0x33, 0x04, 0x00]
-
     internal func version() throws -> ID3Version {
         let mp3Data = try Data(contentsOf: self.mp3file.location)
+        // the first five bytes of a valid ID3 Tag are "ID3"+ the version number in UInt8
+        let version22Bytes: [UInt8] = [0x49, 0x44, 0x33, 0x02, 0x00]
+        let version23Bytes: [UInt8] = [0x49, 0x44, 0x33, 0x03, 0x00]
+        let version24Bytes: [UInt8] = [0x49, 0x44, 0x33, 0x04, 0x00]
+        
         let versionBytesFromMp3 = [UInt8](mp3Data.subdata(in: 0..<5))
         if versionBytesFromMp3 == version22Bytes {
             return ID3Version.version22

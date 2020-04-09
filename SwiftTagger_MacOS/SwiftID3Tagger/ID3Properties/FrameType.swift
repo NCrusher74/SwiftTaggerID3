@@ -12,13 +12,15 @@ import Foundation
 
 enum FrameType {
     case bool
-    case complex
+    case chapter
     case date
+    case genre
     case image
     case integer
     case integerArray
     case string
     case stringArray
+    case toc
     case tupleArray
     case url
     

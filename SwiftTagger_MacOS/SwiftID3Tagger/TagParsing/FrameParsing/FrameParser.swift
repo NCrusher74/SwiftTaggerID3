@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct TagParser {
+struct FrameParser {
     
     var mp3File: Mp3File
     
@@ -16,7 +16,7 @@ struct TagParser {
         self.mp3File = mp3File
     }
     
-
+    
     
     
     

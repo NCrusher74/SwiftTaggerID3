@@ -67,10 +67,11 @@ struct TagValidator {
         if try self.isValidMp3() {
             let mp3Data = try Data(contentsOf: self.mp3File.location)
             let versionBytesFromMp3 = [UInt8](mp3Data.subdata(in: 0..<5))
-            let versionBytes = [
-                properties.version22Bytes,
-                properties.version23Bytes,
-                properties.version24Bytes
+            let versionBytes: [[UInt8]] = [
+            // the first five bytes of a valid ID3 Tag are "ID3"+ the version number in UInt8
+            [0x49, 0x44, 0x33, 0x02, 0x00],
+            [0x49, 0x44, 0x33, 0x03, 0x00],
+            [0x49, 0x44, 0x33, 0x04, 0x00]
             ]
             if versionBytes.contains(versionBytesFromMp3) {
                 return true
