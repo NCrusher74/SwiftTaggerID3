@@ -19,5 +19,7 @@ extension Mp3File {
         case InvalidTagData;
         /// Error generated when the file is corrupted.
         case CorruptedFile;
+        /// Error generated if the file size is too small for a valid tag.
+        case FileTooSmall;
     }
 }

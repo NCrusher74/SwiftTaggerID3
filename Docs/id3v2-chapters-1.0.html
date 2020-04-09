@@ -1,0 +1,131 @@
+
+Informal standard
+Document: id3v2-chapters-1.0.html
+C. Newell
+2 December 2005
+
+1. ID3v2 Chapter Frame Addendum
+
+1.1. Status of this document
+
+This document is an addendum to the ID3v2.3 and ID3v2.4 standards. Distribution of this document is unlimited.
+
+1.2. Abstract
+
+This document describes a method for signalling chapters and a table of contents within an audio file using two new ID3v2 frames. The frames allow listeners to navigate to specific locations in an audio file and can provide descriptive information, URLs and images related to each chapter.
+
+Contents
+
+ID3v2 Chapter Frame Addendum
+Status of this document
+Abstract
+Conventions in this document
+Declared ID3v2 frames
+Chapter frame
+Table of contents frame
+Notes
+Copyright
+References
+Author's Address
+
+2. Conventions in this document
+
+Text within "" is a text string exactly as it appears in a tag. Numbers preceded with $ are hexadecimal and numbers preceded with % are binary. $xx is used to indicate a byte with unknown content. %x is used to indicate a bit with unknown content. The most significant bit (MSB) of a byte is called 'bit 7' and the least significant bit (LSB) is called 'bit 0'.
+
+A tag is the whole tag described the ID3v2 main structure document [v2.4]. A frame is a block of information in the tag. The tag consists of a header, frames and optional padding. A field is a piece of information; one value, a string etc. A numeric string is a string that consists of the characters "0123456789" only.
+
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 [KEYWORDS].
+
+3. Declared ID3v2 frames
+
+The following frames are declared in this document.
+
+3.1 CHAP Chapter
+3.2 CTOC Table of contents
+
+3.1. Chapter frame
+
+The purpose of this frame is to describe a single chapter within an audio file. There may be more than one frame of this type in a tag but each must have an Element ID that is unique with respect to any other "CHAP" frame or "CTOC" frame in the tag.
+
+<ID3v2.3 or ID3v2.4 frame header, ID: "CHAP">           (10 bytes)
+    Element ID      <text string> $00
+        Start time      $xx xx xx xx
+        End time        $xx xx xx xx
+        Start offset    $xx xx xx xx
+        End offset      $xx xx xx xx
+        <Optional embedded sub-frames>
+            
+            The Element ID uniquely identifies the frame. It is not intended to be human readable and should not be presented to the end user.
+            
+            The Start and End times are a count in milliseconds from the beginning of the file to the start and end of the chapter respectively.
+            
+            The Start offset is a zero-based count of bytes from the beginning of the file to the first byte of the first audio frame in the chapter. If these bytes are all set to 0xFF then the value should be ignored and the start time value should be utilized.
+            
+            The End offset is a zero-based count of bytes from the beginning of the file to the first byte of the audio frame following the end of the chapter. If these bytes are all set to 0xFF then the value should be ignored and the end time value should be utilized.
+            
+            There then follows a sequence of optional frames that are embedded within the "CHAP" frame and which describe the content of the chapter (e.g. a "TIT2" frame representing the chapter name) or provide related material such as URLs and images. These sub-frames are contained within the bounds of the "CHAP" frame as signalled by the size field in the "CHAP" frame header. If a parser does not recognise "CHAP" frames it can skip them using the size field in the frame header. When it does this it will skip any embedded sub-frames carried within the frame.
+            
+            Figure 1 shows an example of a "CHAP" frame containing two embedded sub-frames. The first is a "TIT2" sub-frame providing the chapter name; "Chapter 1 - Loomings". The second is a "TIT3" sub-frame providing a description of the chapter; "Anticipation of the hunt".
+            
+            CHAPFrame-1.0.png Figure 1: Example CHAP frame
+            
+            3.2. Table of contents frame
+            
+            The purpose of "CTOC" frames is to allow a table of contents to be defined. In the simplest case, a single "CTOC" frame can be used to provide a flat (single-level) table of contents. However, multiple "CTOC" frames can also be used to define a hierarchical (multi-level) table of contents.
+            
+            There may be more than one frame of this type in a tag but each must have an Element ID that is unique with respect to any other "CTOC" or "CHAP" frame in the tag.
+            
+            Each "CTOC" frame represents one level or element of a table of contents by providing a list of Child Element IDs. These match the Element IDs of other "CHAP" and "CTOC" frames in the tag. {{{<ID3v2.3 or ID3v2.4 frame header, ID: "CTOC"> (10 bytes) Element ID <text string> $00 Flags %000000ab Entry count $xx (8-bit unsigned int) <Child Element ID list> <Optional embedded sub-frames> }}}
+                
+                The Element ID uniquely identifies the frame. It is not intended to be human readable and should not be presented to the end-user.
+                
+                Flag a - Top-level bit
+                This is set to 1 to identify the top-level "CTOC" frame. This frame is the root of the Table of Contents tree and is not a child of any other "CTOC" frame. Only one "CTOC" frame in an ID3v2 tag can have this bit set to 1. In all other "CTOC" frames this bit shall be set to 0.
+                Flag b - Ordered bit
+                This should be set to 1 if the entries in the Child Element ID list are ordered or set to 0 if they not are ordered. This provides a hint as to whether the elements should be played as a continuous ordered sequence or played individually. The Entry count is the number of entries in the Child Element ID list that follows and must be greater than zero. Each entry in the list consists of:
+                
+                {{{Child Element ID <text string> $00}}}
+                    
+                    The last entry in the child Element ID list is followed by a sequence of optional frames that are embedded within the "CTOC" frame and which describe this element of the table of contents (e.g. a "TIT2" frame representing the name of the element) or provide related material such as URLs and images. These sub-frames are contained within the bounds of the "CTOC" frame as signalled by the size field in the "CTOC" frame header.
+                    
+                    If a parser does not recognise "CTOC" frames it can skip them using the size field in the frame header. When it does this it will skip any embedded sub-frames carried within the frame.
+                    
+                    Figure 2 shows an example of a "CTOC" frame which references a sequence of chapters. It contains a single "TIT2" sub-frame which provides a name for this element of the table of contents; "Part 1".
+                    
+                    CTOCFrame-1.0.png Figure 2: Example CTOC frame
+                    
+                    4. Notes
+                    
+                    It is possible for "CHAP" frames to describe chapters that overlap or have gaps between them.
+                    It is permitted to include "CHAP" frames that are not referenced by any "CTOC" frames. For example, these might be used to provide images that can be presented in synchronisation with the audio, rather than to support a table of contents.
+                    It is recommended that "CHAP" and "CTOC" frames should include a TIT2 sub-frame to provide a human readable identifier which can be presented to the end-user to aid navigation and selection.
+                    
+                    5. Copyright
+                    
+                    Copyright BBC Research & Development and Dan O'Neill, 2005. All Rights Reserved.
+                    
+                    This document and translations of it may be copied and furnished to others, and derivative works that comment on or otherwise explain it or assist in its implementation may be prepared, copied, published and distributed, in whole or in part, without restriction of any kind, provided that a reference to this document is included on all such copies and derivative works. However, this document itself may not be modified in any way and reissued as the original document.
+                    
+                    The limited permissions granted above are perpetual and will not be revoked.
+                    
+                    This document and the information contained herein is provided on an "AS IS" basis and THE AUTHORS DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+                    
+                    6. References
+                    
+                    [v2.3] Martin Nilsson, ID3 tag version 2.3.0.
+                    
+                    [v2.4] Martin Nilsson, ID3 tag version 2.4.0 - Main Structure.
+                    
+                    [KEYWORDS] S. Bradner, 'Key words for use in RFCs to Indicate Requirement Levels', RFC 2119, March 1997.
+                    
+                    7. Author's Address
+                    
+                    Chris Newell
+                    BBC Research & Development
+                    Kingswood Warren
+                    Tadworth
+                    Surrey
+                    KT20 6NP
+                    UK
+                    
+                    Email: chris.newell at rd.bbc.co.uk
