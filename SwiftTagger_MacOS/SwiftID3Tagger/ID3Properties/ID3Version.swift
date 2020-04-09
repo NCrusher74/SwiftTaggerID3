@@ -6,7 +6,7 @@
 //  Copyright © 2020 Nolaine Crusher. All rights reserved.
 //
 
-public enum Version: Int {
+public enum ID3Version: Int {
     /// ID3 v2.2
     case version22 = 2
     /// ID3 v2.3

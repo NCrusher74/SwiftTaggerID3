@@ -8,86 +8,139 @@
 
 import Foundation
 
-enum FrameName: String {
+struct FrameInformation {
     
-    case album = "Album"
-    case albumSort = "Sort Album"
-    case albumArtist = "Album Artist"
-    case albumArtistSort = "Sort Album Artist"
-    case arranger = "Arranger, or Remixer"
-    case artist = "Artist"
-    case artistSort = "Sort Artist"
-    case artistWebpage = "Artist Webpage"
-    case attachedPicture = "Attached Picture"
-    case audioFileWebpage = "Audio File Webpage"
-    case audioSourceWebpage = "Audio Source Webpage"
-    case bpm = "BPM"
-    case chapter = "CHAP"
-    case comments = "Comments"
-    case compilation = "Compilation"
-    case composer = "Composer"
-    case composerSort = "Sort Composer"
-    case conductor = "Conductor"
-    case contentGroup = "Work or Content Group"
-    case copyright = "Copyright"
-    case copyrightWebpage = "Copyright Info Webpage"
-    case date = "Date"
-    case discNumber = "Disc Number (of Total)"
-    case encodingTime = "Encoding Time"
-    case encodedBy = "encoded By"
-    case encodingSettings = "Encoder Settings"
-    case fileType = "File Type"
-    case fileOwner = "File Owner"
-    case genre = "Genre"
-    case grouping = "Grouping"
-    case initialKey = "Initial Key"
-    case involvedPeopleList = "Involved People List"
-    case isrc = "ISRC"
-    case languages = "Language"
-    case length = "Length"
-    case lyricist = "Lyricist"
-    case mediaType = "Media Type"
-    case mood = "Mood"
-    case movementCount = "Movement Count"
-    case movementName = "Movement Name"
-    case movementNumber = "Movement Number"
-    case musicianCreditsList = "Musician Credits List"
-    case originalAlbum = "Original Album"
-    case originalArtist = "Original Artist"
-    case originalFilename = "Original Filename"
-    case originalLyricist = "Original Lyricist"
-    case originalReleaseTime = "Original Release Time"
-    case paymentWebpage = "Payment Webpage"
-    case playlistDelay = "Playlist Delay"
-    case podcastCategory = "Podcast Category"
-    case podcastDescription = "Podcast Description"
-    case podcastID = "Podcast ID"
-    case podcastKeywords = "Podcast Keywords"
-    case podcastFeedLink = "Podcast Link"
-    case producedNotice = "Produced Notice"
-    case publisher = "Publisher"
-    case publisherWebpage = "Publisher Webpage"
-    case radioStation = "Internet Radio Station Name"
-    case radioStationOwner = "Internet Radio Station Owner"
-    case radioStationWebpage = "Internet Radio Station Webpage"
-    case recordingDate = "Recording Date"
-    case releaseTime = "Release Time"
-    case setSubtitle = "Set Subtitle"
-    case subtitle = "Subtitle"
-    case tableOfContents = "Table of Contents"
-    case taggingTime = "Tagging Time"
-    case time = "Time"
-    case title = "Title"
-    case titleSort = "Sort Title"
-    case trackNumber = "Track Number (of Total)"
-    case unsynchronizedLyrics = "Unsynced Lyrics"
-    case userDefinedText = "User Defined Text Information"
-    case userDefinedWebpage = "User Defined Webpage"
-    case year = "Year"
+    var frameName: FrameName
     
+    init(frameName: FrameName) {
+        self.frameName = frameName
+    }
     
-    func id3Frame(version: Version) -> String? {
-        switch self {
+    private var hasDescription: Bool {
+        switch self.frameName {
+            case .comments,
+                 .genre,
+                 .unsynchronizedLyrics,
+                 .userDefinedText,
+                 .userDefinedWebpage:
+                return true
+            default: return false
+        }
+    }
+    
+    private var hasLanguage: Bool {
+        switch self.frameName {
+            case .comments,
+                 .languages,
+                 .unsynchronizedLyrics,
+                 .userDefinedText,
+                 .userDefinedWebpage:
+                return true
+            default: return false
+        }
+    }
+    
+    private var hasCreditRole: Bool {
+        switch self.frameName {
+            case .involvedPeopleList,
+                 .musicianCreditsList:
+                return true
+            default: return false
+        }
+    }
+    
+    public var frameKey: String {
+        if self.hasDescription /* && count for that ID3 Frame return > 1 */ {
+            return "description" // placeholder
+        } else if self.hasLanguage /* && count for that ID3 Frame return > 1 */ {
+            return "Language += 1" // placeholder
+        } else {
+            return self.frameName.rawValue
+        }
+    }
+
+    public func frameType() -> FrameType {
+        switch self.frameName {
+            
+            case .album: return FrameType.string
+            case .albumSort: return FrameType.string
+            case .albumArtist: return FrameType.string
+            case .albumArtistSort: return FrameType.string
+            case .arranger: return FrameType.string
+            case .artist: return FrameType.string
+            case .artistSort: return FrameType.string
+            case .artistWebpage: return FrameType.url
+            case .attachedPicture: return FrameType.image
+            case .audioFileWebpage: return FrameType.url
+            case .audioSourceWebpage: return FrameType.url
+            case .bpm: return FrameType.integer
+            case .chapter: return FrameType.complex
+            case .comments: return FrameType.stringArray
+            case .compilation: return FrameType.bool
+            case .composer: return FrameType.string
+            case .composerSort: return FrameType.string
+            case .conductor: return FrameType.string
+            case .contentGroup: return FrameType.string
+            case .copyright: return FrameType.string
+            case .copyrightWebpage: return FrameType.url
+            case .date: return FrameType.date
+            case .discNumber: return FrameType.integerArray
+            case .encodingTime: return FrameType.integerArray
+            case .encodedBy: return FrameType.string
+            case .encodingSettings: return FrameType.string
+            case .fileType: return FrameType.string
+            case .fileOwner: return FrameType.string
+            case .genre: return FrameType.complex
+            case .grouping: return FrameType.string
+            case .initialKey: return FrameType.string
+            case .involvedPeopleList: return FrameType.tupleArray
+            case .isrc: return FrameType.integer
+            case .languages: return FrameType.stringArray
+            case .length: return FrameType.integer
+            case .lyricist: return FrameType.string
+            case .mediaType: return FrameType.string
+            case .mood: return FrameType.string
+            case .movementCount: return FrameType.integer
+            case .movementName: return FrameType.string
+            case .movementNumber: return FrameType.integer
+            case .musicianCreditsList: return FrameType.tupleArray
+            case .originalAlbum: return FrameType.string
+            case .originalArtist: return FrameType.string
+            case .originalFilename: return FrameType.string
+            case .originalLyricist: return FrameType.string
+            case .originalReleaseTime: return FrameType.date
+            case .paymentWebpage: return FrameType.url
+            case .playlistDelay: return FrameType.integer
+            case .podcastCategory: return FrameType.string
+            case .podcastDescription: return FrameType.string
+            case .podcastID: return FrameType.string
+            case .podcastKeywords: return FrameType.string
+            case .podcastFeedLink: return FrameType.string
+            case .producedNotice: return FrameType.string
+            case .publisher: return FrameType.string
+            case .publisherWebpage: return FrameType.url
+            case .radioStation: return FrameType.string
+            case .radioStationOwner: return FrameType.string
+            case .radioStationWebpage: return FrameType.url
+            case .recordingDate: return FrameType.date
+            case .releaseTime: return FrameType.date
+            case .setSubtitle: return FrameType.string
+            case .subtitle: return FrameType.string
+            case .tableOfContents: return FrameType.complex
+            case .taggingTime: return FrameType.date
+            case .time: return FrameType.date
+            case .title: return FrameType.string
+            case .titleSort: return FrameType.string
+            case .trackNumber: return FrameType.integerArray
+            case .unsynchronizedLyrics: return FrameType.stringArray
+            case .userDefinedText: return FrameType.stringArray
+            case .userDefinedWebpage: return FrameType.url
+            case .year: return FrameType.integer
+        }
+    }
+
+    public func id3Frame(version: ID3Version) -> String? {
+        switch self.frameName {
             
             case .album:
                 switch version {
@@ -323,7 +376,7 @@ enum FrameName: String {
                     case .version23: return "MVCN"
                     case .version24: return "MVCN"
             }
-
+            
             case .movementName:
                 switch version {
                     case .version22: return nil
@@ -534,9 +587,9 @@ enum FrameName: String {
                     case .version23: return "TYER"
                     case .version24: return nil
             }
-            
         }
     }
     
+
     
 }
