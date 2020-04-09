@@ -1,5 +1,5 @@
 //
-//  TagData.swift
+//  TagParser.swift
 //  SwiftTagger_MacOS
 //
 //  Created by Nolaine Crusher on 4/9/20.
@@ -8,13 +8,15 @@
 
 import Foundation
 
-struct TagData {
+struct TagParser {
     
     var mp3File: Mp3File
     
     init(for mp3File: Mp3File) {
         self.mp3File = mp3File
     }
+    
+
     
     
     

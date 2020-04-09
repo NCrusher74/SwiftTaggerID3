@@ -59,7 +59,7 @@ struct FrameInformation {
         }
     }
 
-    public func frameType() -> FrameType {
+    public var frameType: FrameType {
         switch self.frameName {
             
             case .album: return FrameType.string
@@ -136,6 +136,86 @@ struct FrameInformation {
             case .userDefinedText: return FrameType.stringArray
             case .userDefinedWebpage: return FrameType.url
             case .year: return FrameType.integer
+        }
+    }
+    
+    public var parser: ParserType {
+        switch self.frameName {
+            
+            case .album: return ParserType.stringParser
+            case .albumSort: return ParserType.stringParser
+            case .albumArtist: return ParserType.stringParser
+            case .albumArtistSort: return ParserType.stringParser
+            case .arranger: return ParserType.stringParser
+            case .artist: return ParserType.stringParser
+            case .artistSort: return ParserType.stringParser
+            case .artistWebpage: return ParserType.urlParser
+            case .attachedPicture: return ParserType.imageParser
+            case .audioFileWebpage: return ParserType.urlParser
+            case .audioSourceWebpage: return ParserType.urlParser
+            case .bpm: return ParserType.stringParser
+            case .chapter: return ParserType.chapterParser
+            case .comments: return ParserType.commentParser
+            case .compilation: return ParserType.stringParser
+            case .composer: return ParserType.stringParser
+            case .composerSort: return ParserType.stringParser
+            case .conductor: return ParserType.stringParser
+            case .contentGroup: return ParserType.stringParser
+            case .copyright: return ParserType.stringParser
+            case .copyrightWebpage: return ParserType.urlParser
+            case .date: return ParserType.dateParser
+            case .discNumber: return ParserType.stringParser
+            case .encodingTime: return ParserType.dateParser
+            case .encodedBy: return ParserType.stringParser
+            case .encodingSettings: return ParserType.stringParser
+            case .fileType: return ParserType.stringParser
+            case .fileOwner: return ParserType.stringParser
+            case .genre: return ParserType.genreParser
+            case .grouping: return ParserType.stringParser
+            case .initialKey: return ParserType.stringParser
+            case .involvedPeopleList: return ParserType.creditsParser
+            case .isrc: return ParserType.stringParser
+            case .languages: return ParserType.stringParser
+            case .length: return ParserType.stringParser
+            case .lyricist: return ParserType.stringParser
+            case .mediaType: return ParserType.stringParser
+            case .mood: return ParserType.stringParser
+            case .movementCount: return ParserType.stringParser
+            case .movementName: return ParserType.stringParser
+            case .movementNumber: return ParserType.stringParser
+            case .musicianCreditsList: return ParserType.creditsParser
+            case .originalAlbum: return ParserType.stringParser
+            case .originalArtist: return ParserType.stringParser
+            case .originalFilename: return ParserType.stringParser
+            case .originalLyricist: return ParserType.stringParser
+            case .originalReleaseTime: return ParserType.dateParser
+            case .paymentWebpage: return ParserType.urlParser
+            case .playlistDelay: return ParserType.stringParser
+            case .podcastCategory: return ParserType.stringParser
+            case .podcastDescription: return ParserType.stringParser
+            case .podcastID: return ParserType.stringParser
+            case .podcastKeywords: return ParserType.stringParser
+            case .podcastFeedLink: return ParserType.stringParser
+            case .producedNotice: return ParserType.stringParser
+            case .publisher: return ParserType.stringParser
+            case .publisherWebpage: return ParserType.urlParser
+            case .radioStation: return ParserType.stringParser
+            case .radioStationOwner: return ParserType.stringParser
+            case .radioStationWebpage: return ParserType.urlParser
+            case .recordingDate: return ParserType.dateParser
+            case .releaseTime: return ParserType.dateParser
+            case .setSubtitle: return ParserType.stringParser
+            case .subtitle: return ParserType.stringParser
+            case .tableOfContents: return ParserType.tocParser
+            case .taggingTime: return ParserType.dateParser
+            case .time: return ParserType.dateParser
+            case .title: return ParserType.stringParser
+            case .titleSort: return ParserType.stringParser
+            case .trackNumber: return ParserType.stringParser
+            case .unsynchronizedLyrics: return ParserType.commentParser
+            case .userDefinedText: return ParserType.userTextParser
+            case .userDefinedWebpage: return ParserType.userTextParser
+            case .year: return ParserType.dateParser
         }
     }
 
