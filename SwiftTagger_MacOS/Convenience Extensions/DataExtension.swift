@@ -56,6 +56,7 @@ extension Data {
         }
     }
     
+    
     var uuid: NSUUID? {
         get {
             var bytes = [UInt8](repeating: 0, count: self.count)

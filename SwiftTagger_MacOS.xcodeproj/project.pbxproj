@@ -26,7 +26,7 @@
 		51490E79243F461E009D4BA4 /* mp3-v24-with-meta.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 51490E74243F461E009D4BA4 /* mp3-v24-with-meta.mp3 */; };
 		51490E7A243F461E009D4BA4 /* mp3-v23-with-meta.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 51490E75243F461E009D4BA4 /* mp3-v23-with-meta.mp3 */; };
 		51490E7B243F461E009D4BA4 /* mp3-v23-corrupted.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 51490E76243F461E009D4BA4 /* mp3-v23-corrupted.mp3 */; };
-		51490E7C243F461E009D4BA4 /* example-nometa.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 51490E77243F461E009D4BA4 /* example-nometa.mp3 */; };
+		51490E7C243F461E009D4BA4 /* mp3-nometa.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 51490E77243F461E009D4BA4 /* mp3-nometa.mp3 */; };
 		51490E7D243F461E009D4BA4 /* mp3-v22-with-meta.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 51490E78243F461E009D4BA4 /* mp3-v22-with-meta.mp3 */; };
 		517E886A243DBCA300F9F8D6 /* mp3-chaptered.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 517E8869243DBCA300F9F8D6 /* mp3-chaptered.mp3 */; };
 		51E432B6243DA257006574A1 /* SwiftTagger_MacOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51E432AC243DA257006574A1 /* SwiftTagger_MacOS.framework */; };
@@ -38,6 +38,7 @@
 		51E432D2243DA64B006574A1 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E432D1243DA64B006574A1 /* Bundle.swift */; };
 		51E432D6243DAED8006574A1 /* TagValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E432D5243DAED8006574A1 /* TagValidator.swift */; };
 		51E432DA243DB096006574A1 /* ID3Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E432D9243DB096006574A1 /* ID3Version.swift */; };
+		51FA3503243FB03C000997EC /* TagProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FA3502243FB03C000997EC /* TagProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,7 +84,7 @@
 		51490E74243F461E009D4BA4 /* mp3-v24-with-meta.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "mp3-v24-with-meta.mp3"; sourceTree = "<group>"; };
 		51490E75243F461E009D4BA4 /* mp3-v23-with-meta.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "mp3-v23-with-meta.mp3"; sourceTree = "<group>"; };
 		51490E76243F461E009D4BA4 /* mp3-v23-corrupted.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "mp3-v23-corrupted.mp3"; sourceTree = "<group>"; };
-		51490E77243F461E009D4BA4 /* example-nometa.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "example-nometa.mp3"; sourceTree = "<group>"; };
+		51490E77243F461E009D4BA4 /* mp3-nometa.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "mp3-nometa.mp3"; sourceTree = "<group>"; };
 		51490E78243F461E009D4BA4 /* mp3-v22-with-meta.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "mp3-v22-with-meta.mp3"; sourceTree = "<group>"; };
 		517E8869243DBCA300F9F8D6 /* mp3-chaptered.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "mp3-chaptered.mp3"; sourceTree = "<group>"; };
 		51E432AC243DA257006574A1 /* SwiftTagger_MacOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftTagger_MacOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -98,6 +99,7 @@
 		51E432D1243DA64B006574A1 /* Bundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bundle.swift; sourceTree = "<group>"; };
 		51E432D5243DAED8006574A1 /* TagValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagValidator.swift; sourceTree = "<group>"; };
 		51E432D9243DB096006574A1 /* ID3Version.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ID3Version.swift; sourceTree = "<group>"; };
+		51FA3502243FB03C000997EC /* TagProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagProperties.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -204,7 +206,7 @@
 			children = (
 				51E432D3243DA9D0006574A1 /* Ouput */,
 				51E432D1243DA64B006574A1 /* Bundle.swift */,
-				51490E77243F461E009D4BA4 /* example-nometa.mp3 */,
+				51490E77243F461E009D4BA4 /* mp3-nometa.mp3 */,
 				51490E78243F461E009D4BA4 /* mp3-v22-with-meta.mp3 */,
 				51490E76243F461E009D4BA4 /* mp3-v23-corrupted.mp3 */,
 				51490E75243F461E009D4BA4 /* mp3-v23-with-meta.mp3 */,
@@ -251,6 +253,7 @@
 				51E432D5243DAED8006574A1 /* TagValidator.swift */,
 				51490E63243F1916009D4BA4 /* TagParser.swift */,
 				51490E6C243F363E009D4BA4 /* ParserType.swift */,
+				51FA3502243FB03C000997EC /* TagProperties.swift */,
 			);
 			path = TagParsing;
 			sourceTree = "<group>";
@@ -362,7 +365,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				51490E6F243F3AA9009D4BA4 /* not-an-mp3.m4a in Resources */,
-				51490E7C243F461E009D4BA4 /* example-nometa.mp3 in Resources */,
+				51490E7C243F461E009D4BA4 /* mp3-nometa.mp3 in Resources */,
 				51490E79243F461E009D4BA4 /* mp3-v24-with-meta.mp3 in Resources */,
 				51490E7B243F461E009D4BA4 /* mp3-v23-corrupted.mp3 in Resources */,
 				517E886A243DBCA300F9F8D6 /* mp3-chaptered.mp3 in Resources */,
@@ -387,6 +390,7 @@
 				51490E4D243EBB99009D4BA4 /* FrameType.swift in Sources */,
 				51E432D6243DAED8006574A1 /* TagValidator.swift in Sources */,
 				51490E6A243F2DE5009D4BA4 /* SynchSafeInteger.swift in Sources */,
+				51FA3503243FB03C000997EC /* TagProperties.swift in Sources */,
 				51490E51243EDB4F009D4BA4 /* FrameName.swift in Sources */,
 				51490E53243EF216009D4BA4 /* DataExtension.swift in Sources */,
 				51490E64243F1916009D4BA4 /* TagParser.swift in Sources */,

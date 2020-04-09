@@ -13,30 +13,40 @@ import AVFoundation
 
 class SwiftTagger_MacOSTests: XCTestCase {
 
+    func testProperties() throws {
+        let propertiesNoMeta = Bundle.propertiesNoMeta
+        let propertiesV22 = Bundle.propertiesV22FileWritten
+        let propertiesV23 = Bundle.propertiesV23FileWritten
+        let propertiesV24 = Bundle.propertiesV24FileWritten
+        
+        XCTAssertEqual(try propertiesNoMeta.version(), ID3Version.version23)
+        XCTAssertEqual(try propertiesV22.version(), ID3Version.version22)
+        XCTAssertEqual(try propertiesV23.version(), ID3Version.version23)
+        XCTAssertEqual(try propertiesV24.version(), ID3Version.version24)
+
+    }
+
     func testValidation() throws {
-        let mp3v22File = Mp3File(location: Bundle.writtenV22)
-        let mp3v23File = Mp3File(location: Bundle.writtenV23)
-        let mp3v24File = Mp3File(location: Bundle.writtenV24)
         let notMp3File = Mp3File(location: Bundle.notMp3)
         let mp3Corrupted = Mp3File(location: Bundle.corruptedV23)
-        
-        let failedFileValidator = TagValidator(from: notMp3File)
-        XCTAssertThrowsError(try failedFileValidator.isValidMp3())
+        let validatorCorrupted = TagValidator(for: mp3Corrupted)
+        let propertiesCorrupted = TagProperties(for: mp3Corrupted)
 
-        let failedTagValidator = TagValidator(from: mp3Corrupted)
-        XCTAssertThrowsError(try failedTagValidator.hasValidTag(version: .version23))
-        
-        let succeededFileValidator = TagValidator(from: mp3v24File)
-        XCTAssertTrue(try succeededFileValidator.isValidMp3())
-        
-        let tagValidtorV22 = TagValidator(from: mp3v22File)
-        XCTAssertTrue(try tagValidtorV22.hasValidTag(version: .version22))
+        let propertiesV22 = Bundle.propertiesV22FileWritten
+        let propertiesV23 = Bundle.propertiesV23FileWritten
+        let propertiesV24 = Bundle.propertiesV24FileWritten
 
-        let tagValidtorV23 = TagValidator(from: mp3v23File)
-        XCTAssertTrue(try tagValidtorV23.hasValidTag(version: .version23))
-
-        let tagValidtorV24 = TagValidator(from: mp3v24File)
-        XCTAssertTrue(try tagValidtorV24.hasValidTag(version: .version24))
+        let v22Validator = Bundle.validatorV22FileWritten
+        let v23Validator = Bundle.validatorV23FileWritten
+        let v24Validator = Bundle.validatorV24FileWritten
+        
+        XCTAssertThrowsError(try TagValidator(for: notMp3File).isValidMp3())
+        XCTAssertTrue(try TagValidator(for: mp3Corrupted).isValidMp3())
+        XCTAssertThrowsError(try validatorCorrupted.hasValidTag(properties: propertiesCorrupted))
+        
+        XCTAssertTrue(try v22Validator.hasValidTag(properties: propertiesV22))
+        XCTAssertTrue(try v23Validator.hasValidTag(properties: propertiesV23))
+        XCTAssertTrue(try v24Validator.hasValidTag(properties: propertiesV24))
     }
 
 }

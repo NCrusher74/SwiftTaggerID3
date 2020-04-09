@@ -50,7 +50,4 @@ struct SynchSafeInteger {
         }
         return encodedInteger
     }
-
-    
-    
 }

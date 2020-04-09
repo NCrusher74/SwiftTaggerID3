@@ -17,7 +17,7 @@ public enum ID3Version: Int {
     case version23 = 3
     /// ID3 v2.4
     case version24 = 4
-
+    
     internal var versionByteSize: Int {
         switch self {
             case .version22:
@@ -26,7 +26,7 @@ public enum ID3Version: Int {
                 return 4
         }
     }
-
+    
     internal var versionFlagSize: Int {
         switch self {
             case .version22:
@@ -35,5 +35,5 @@ public enum ID3Version: Int {
                 return 2
         }
     }
-
+    
 }
