@@ -23,3 +23,26 @@ extension Mp3File {
         case FileTooSmall;
     }
 }
+
+extension Mp3File.Error: LocalizedError {
+    var errorDescription: String? {
+        switch self {
+            
+            case .InvalidFileFormat:
+                return NSLocalizedString(
+                    "The file needs to be an MP3 file", comment: "")
+            case .TagTooBig:
+                return NSLocalizedString(
+                    "Tag size exceeds limit", comment: "")
+            case .InvalidTagData:
+                return NSLocalizedString(
+                    "The tag header is unrecognized", comment: "")
+            case .CorruptedFile:
+                return NSLocalizedString(
+                    "Tag data size cannot exceed file size", comment: "")
+            case .FileTooSmall:
+                return NSLocalizedString(
+                    "The file is too small to hold a valid ID3 tag", comment: "")
+        }
+    }
+}

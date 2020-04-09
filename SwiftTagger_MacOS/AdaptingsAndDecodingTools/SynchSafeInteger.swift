@@ -1,8 +1,12 @@
 //
 //  SynchsafeInteger.swift
 //
-//  Originally created by Fabrizio Duroni on 21/12/2018.
-//  2018 Fabrizio Duroni.
+//  This code is adapted from ID3TagEditor
+//  Created by Fabrizio Duroni on 27/02/2018.
+//  2018 Fabrizio Duroni. https://github.com/chicio/ID3TagEditor
+//
+//  Created by Nolaine Crusher on 4/8/20.
+//  Copyright © 2020 Nolaine Crusher. All rights reserved.
 //
 
 import Foundation

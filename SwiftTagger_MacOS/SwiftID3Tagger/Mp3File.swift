@@ -16,18 +16,7 @@ struct Mp3File {
     init(location: URL) {
         self.location = location
     }
-            
-//    public func read() throws -> TagData {
-//        let tagData = TagData(from: self)
-//        return tagData
-//    }
-    
+                
     public func write(from sourceAudio: Mp3File, to outputLocation: URL) throws {
-//        let outputFileAsData = readMP3File() + TagData
-//        try FileManager.default.createDirectory(
-//            at: outputLocation.parentDirectory,
-//            withIntermediateDirectories: true)
-//        try
-//
     }
 }

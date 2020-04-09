@@ -16,6 +16,7 @@ struct FrameInformation {
         self.frameName = frameName
     }
     
+    // Checks if the frame as a Description field
     private var hasDescription: Bool {
         switch self.frameName {
             case .comments,
@@ -28,6 +29,7 @@ struct FrameInformation {
         }
     }
     
+    // Checks if the frame has a Language field
     private var hasLanguage: Bool {
         switch self.frameName {
             case .comments,
@@ -40,6 +42,7 @@ struct FrameInformation {
         }
     }
     
+    // Checks if the frame is a CreditsList type
     private var hasCreditRole: Bool {
         switch self.frameName {
             case .involvedPeopleList,
@@ -49,9 +52,10 @@ struct FrameInformation {
         }
     }
     
+    //
     public var frameKey: String {
         if self.hasDescription /* && count for that ID3 Frame return > 1 */ {
-            return "description" // placeholder
+            return "\(self.frameName.rawValue): description" // placeholder
         } else if self.hasLanguage /* && count for that ID3 Frame return > 1 */ {
             return "Language += 1" // placeholder
         } else {
@@ -59,6 +63,9 @@ struct FrameInformation {
         }
     }
 
+    // MARK: Frame Type
+    /* Determines the way the data in the frame will be presented to the user.
+     In some cases, this means a frame containing a string with specific data, such as integers or integer arrays, will be converted from a string to an integer/array */
     public var frameType: FrameType {
         switch self.frameName {
             
@@ -139,6 +146,8 @@ struct FrameInformation {
         }
     }
     
+    // MARK: Parser Type
+    /* Determines the method used to parse the frame data */
     public var parser: ParserType {
         switch self.frameName {
             
@@ -219,7 +228,12 @@ struct FrameInformation {
         }
     }
 
-    public func id3Frame(version: ID3Version) -> String? {
+    // MARK: ID3Identifier
+    // The ID3 code for the frame
+    // 3 bytes for ID3v2.2
+    // 4 bytes for ID3v2.3 and ID3v2.4
+    /* If ID3 identfier is `nil` the frame will be handled as a TXX/TXXX frame, unless it's a frame associated with date handling, in which case it will be handled depending on version. Musician Credits for ID3v2.2 and ID3v2.3 will be handled as InvolvedPeople */
+    public func id3identifier(version: ID3Version) -> String? {
         switch self.frameName {
             
             case .album:

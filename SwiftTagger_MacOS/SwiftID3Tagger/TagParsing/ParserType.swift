@@ -8,6 +8,8 @@
 
 import Foundation
 
+/** ParserType describes the method used in reading and parsing the data in the frame */
+
 enum ParserType {
     
     case chapterParser

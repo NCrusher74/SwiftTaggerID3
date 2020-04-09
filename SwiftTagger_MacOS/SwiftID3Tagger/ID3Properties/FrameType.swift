@@ -8,6 +8,8 @@
 
 import Foundation
 
+/** Frame Type describes how the information in the frame will be returned from the API, not how it is read and stored */
+
 enum FrameType {
     case bool
     case complex
