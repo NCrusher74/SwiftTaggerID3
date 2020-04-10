@@ -29,6 +29,8 @@
 		51490E7D243F461E009D4BA4 /* mp3-v22-with-meta.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 51490E78243F461E009D4BA4 /* mp3-v22-with-meta.mp3 */; };
 		5177543024404597005E43C5 /* UTF16StringToBytesAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5177542F24404597005E43C5 /* UTF16StringToBytesAdapter.swift */; };
 		517754322440494E005E43C5 /* ISO88591StringToBytesAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517754312440494E005E43C5 /* ISO88591StringToBytesAdapter.swift */; };
+		51775436244058DB005E43C5 /* TagData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51775435244058DB005E43C5 /* TagData.swift */; };
+		517754382440599C005E43C5 /* FrameData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517754372440599C005E43C5 /* FrameData.swift */; };
 		517E886A243DBCA300F9F8D6 /* mp3-chaptered.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 517E8869243DBCA300F9F8D6 /* mp3-chaptered.mp3 */; };
 		51E432B6243DA257006574A1 /* SwiftTagger_MacOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51E432AC243DA257006574A1 /* SwiftTagger_MacOS.framework */; };
 		51E432BB243DA257006574A1 /* SwiftTagger_MacOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E432BA243DA257006574A1 /* SwiftTagger_MacOSTests.swift */; };
@@ -94,6 +96,8 @@
 		51490E78243F461E009D4BA4 /* mp3-v22-with-meta.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "mp3-v22-with-meta.mp3"; sourceTree = "<group>"; };
 		5177542F24404597005E43C5 /* UTF16StringToBytesAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UTF16StringToBytesAdapter.swift; sourceTree = "<group>"; };
 		517754312440494E005E43C5 /* ISO88591StringToBytesAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISO88591StringToBytesAdapter.swift; sourceTree = "<group>"; };
+		51775435244058DB005E43C5 /* TagData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagData.swift; sourceTree = "<group>"; };
+		517754372440599C005E43C5 /* FrameData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameData.swift; sourceTree = "<group>"; };
 		517E8869243DBCA300F9F8D6 /* mp3-chaptered.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "mp3-chaptered.mp3"; sourceTree = "<group>"; };
 		51E432AC243DA257006574A1 /* SwiftTagger_MacOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftTagger_MacOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		51E432AF243DA257006574A1 /* SwiftTagger_MacOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftTagger_MacOS.h; sourceTree = "<group>"; };
@@ -270,10 +274,10 @@
 		51E432D4243DAEB6006574A1 /* TagParsing */ = {
 			isa = PBXGroup;
 			children = (
-				51E432D5243DAED8006574A1 /* TagValidator.swift */,
 				51FA3504243FDB38000997EC /* FrameParsing */,
-				51490E6C243F363E009D4BA4 /* ParserType.swift */,
+				51E432D5243DAED8006574A1 /* TagValidator.swift */,
 				51FA3502243FB03C000997EC /* TagProperties.swift */,
+				51775435244058DB005E43C5 /* TagData.swift */,
 			);
 			path = TagParsing;
 			sourceTree = "<group>";
@@ -281,8 +285,10 @@
 		51FA3504243FDB38000997EC /* FrameParsing */ = {
 			isa = PBXGroup;
 			children = (
-				51490E63243F1916009D4BA4 /* FrameParser.swift */,
+				51490E6C243F363E009D4BA4 /* ParserType.swift */,
 				51FA350F244038D0000997EC /* FrameProperties.swift */,
+				51490E63243F1916009D4BA4 /* FrameParser.swift */,
+				517754372440599C005E43C5 /* FrameData.swift */,
 			);
 			path = FrameParsing;
 			sourceTree = "<group>";
@@ -433,6 +439,8 @@
 				51E432C9243DA35E006574A1 /* URL.swift in Sources */,
 				51490E66243F1F92009D4BA4 /* Data.Subsquence.swift in Sources */,
 				51490E55243EF28A009D4BA4 /* IntsExtensions.swift in Sources */,
+				51775436244058DB005E43C5 /* TagData.swift in Sources */,
+				517754382440599C005E43C5 /* FrameData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

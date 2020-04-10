@@ -14,9 +14,9 @@ import AVFoundation
 class SwiftTagger_MacOSTests: XCTestCase {
 
     
-//    func testExtensions() {
-//        print("ID3".hexEncodedString)
-//    }
+    func testToolsAndExtensions() {
+        
+    }
     
     func testProperties() throws {
         let propertiesNoMeta = Bundle.propertiesNoMeta

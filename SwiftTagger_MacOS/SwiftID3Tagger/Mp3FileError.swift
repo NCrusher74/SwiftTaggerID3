@@ -11,6 +11,8 @@ import Foundation
 extension Mp3File {
     
     public enum Error: Swift.Error {
+        /// Error generated when the mp3 file cannot be converted to Data
+        case CannotReadFile;
         /// Error generated when an invalid file format is passed to the ID3TagEditor.
         case InvalidFileFormat;
         /// Error generated when the tag size exceed 256 MB.
@@ -33,7 +35,9 @@ extension Mp3File {
 extension Mp3File.Error: LocalizedError {
     var errorDescription: String? {
         switch self {
-            
+            case .CannotReadFile:
+                return NSLocalizedString(
+                    "Cannot get data from MP3 File", comment: "")
             case .InvalidFileFormat:
                 return NSLocalizedString(
                     "The file needs to be an MP3 file", comment: "")

@@ -19,10 +19,10 @@ struct TagProperties {
     init(for mp3File: Mp3File) {
         self.mp3file = mp3File
     }
-
+    
     /// the size of the tag header, in bytes
     internal var tagHeaderSize: Int = 10
-
+    
     /// the ID3 version of the tag
     internal func version() throws -> ID3Version {
         let mp3Data = try Data(contentsOf: self.mp3file.location)
@@ -42,16 +42,25 @@ struct TagProperties {
             throw Mp3File.Error.InvalidTagData
         }
     }
-
+    
     internal func size() throws -> UInt32 {
         let tagBytesOffset = 6
         let mp3Data = try Data(contentsOf: self.mp3file.location) as NSData
         let tagDataBytes = mp3Data.bytes + tagBytesOffset
         let tagSize = tagDataBytes.assumingMemoryBound(
             to: UInt32.self).pointee.bigEndian
-//        let synchSafeInt = SynchSafeInteger(integer: tagSize)
         let decodedTagSize = tagSize.synchSafeDecode
         return decodedTagSize
     }
-
+    
+    internal func tagData() throws -> FrameData {
+        let validator = TagValidator(for: self.mp3file)
+        if try validator.hasValidTag() {
+            _ = try size()
+            _ = try version()
+        }
+        let frameParser = FrameParser(forFile: self.mp3file)
+        let data = try frameParser.parseFrames()
+        return data
+    }
 }

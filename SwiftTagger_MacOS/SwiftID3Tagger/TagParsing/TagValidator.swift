@@ -95,7 +95,7 @@ struct TagValidator {
     }
     
     // confirm valid tag tag data
-    internal func hasValidTag(properties: TagProperties) throws -> Bool {
+    internal func hasValidTag() throws -> Bool {
         if try self.hasValidVersionBytes() && self.hasValidTagSize() {
             return true
         } else {

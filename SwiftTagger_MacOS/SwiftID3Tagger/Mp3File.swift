@@ -9,14 +9,27 @@
 import Foundation
 import AVFoundation
 
-struct Mp3File {
+public struct Mp3File {
     
     let location: URL
     
     init(location: URL) {
         self.location = location
     }
-                
-    public func write(from sourceAudio: Mp3File, to outputLocation: URL) throws {
+    
+
+    internal var data: Data? {
+        do {
+            return try Data(contentsOf: self.location)
+        } catch {
+            Mp3File.Error.CannotReadFile
+        }; return nil
     }
+
+//    public func read(from sourceAudio: Mp3File) {
+//
+//    }
+    
+//    public func write(from sourceAudio: Mp3File, to outputLocation: URL) throws {
+//    }
 }
