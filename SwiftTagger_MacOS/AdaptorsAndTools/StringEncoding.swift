@@ -18,15 +18,15 @@ enum StringEncoding: UInt8 {
     case utf16BigEndian = 0x02
     case utf8 = 0x03
     
-    func exists(in version: ID3Version) -> Bool {
+    func exists(in version: Version) -> Bool {
         switch self {
             case .utf16WithBOM, .isoLatin1:
                 return true
             case .utf8, .utf16BigEndian:
                 switch version {
-                    case .version22, .version23:
+                    case .v2_2, .v2_3:
                         return false
-                    case .version24:
+                    case .v2_4:
                         return true
             }
         }
@@ -45,7 +45,7 @@ enum StringEncoding: UInt8 {
         }
     }
     
-    //    func detect(frame: Data, version: ID3Version) -> String.Encoding {
+    //    func detect(frame: Data, version: Version) -> String.Encoding {
     //        let encodingBytePosition = id3FrameConfiguration.encodingPositionFor(version: version)
     //        let encoding = id3StringEncodingConverter.convert(
     //            id3Encoding: ID3StringEncoding(rawValue: frame[encodingBytePosition]),
@@ -54,13 +54,13 @@ enum StringEncoding: UInt8 {
     //        return encoding
     //    }
     
-//    func detect(mp3File: Mp3File, frame: Data, version: ID3Version) -> String.Encoding {
+//    func detect(mp3File: Mp3File, frame: Data, version: Version) -> String.Encoding {
 //        let frameProperties = FrameProperties(
 //            mp3File: mp3File, version: version)
 //        
 //    }
     
-    func convert(version: ID3Version) -> String.Encoding {
+    func convert(version: Version) -> String.Encoding {
         let validId3Encoding = self
         if validId3Encoding.exists(in: version) {
             return validId3Encoding.standardLibraryEncoding

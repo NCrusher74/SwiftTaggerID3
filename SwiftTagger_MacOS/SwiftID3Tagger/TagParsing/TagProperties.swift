@@ -24,23 +24,23 @@ struct TagProperties {
     internal var tagHeaderSize: Int = 10
     
     /// the ID3 version of the tag
-    internal var version: ID3Version {
+    internal var version: Version {
         let mp3Data = self.mp3file.data
         // the first five bytes of a valid ID3 Tag are "ID3"+ the version number in UInt8
-        let version22Bytes: [UInt8] = [0x49, 0x44, 0x33, 0x02, 0x00]
-        let version23Bytes: [UInt8] = [0x49, 0x44, 0x33, 0x03, 0x00]
-        let version24Bytes: [UInt8] = [0x49, 0x44, 0x33, 0x04, 0x00]
+        let v2_2Bytes: [UInt8] = [0x49, 0x44, 0x33, 0x02, 0x00]
+        let v2_3Bytes: [UInt8] = [0x49, 0x44, 0x33, 0x03, 0x00]
+        let v2_4Bytes: [UInt8] = [0x49, 0x44, 0x33, 0x04, 0x00]
         
         let versionBytesFromMp3 = [UInt8](mp3Data.subdata(in: 0..<5))
-        if versionBytesFromMp3 == version22Bytes {
-            return ID3Version.version22
-        } else if versionBytesFromMp3 == version23Bytes {
-            return ID3Version.version23
-        } else if versionBytesFromMp3 == version24Bytes {
-            return ID3Version.version24
+        if versionBytesFromMp3 == v2_2Bytes {
+            return Version.v2_2
+        } else if versionBytesFromMp3 == v2_3Bytes {
+            return Version.v2_3
+        } else if versionBytesFromMp3 == v2_4Bytes {
+            return Version.v2_4
         } else {
             print(Mp3File.Error.InvalidTagData)
-        }; return ID3Version.version24
+        }; return Version.v2_4
     }
     
     internal var size: UInt32 {
@@ -49,18 +49,18 @@ struct TagProperties {
         let tagDataBytes = mp3Data.bytes + tagBytesOffset
         let tagSize = tagDataBytes.assumingMemoryBound(
             to: UInt32.self).pointee.bigEndian
-        let decodedTagSize = tagSize.synchSafeDecode
+        let decodedTagSize = tagSize.decodingSynchsafe()
         return decodedTagSize
     }
     
-    internal func tagData() throws -> FrameData {
-        let validator = TagValidator(for: self.mp3file)
-        if try validator.hasValidTag() {
-            _ = size
-            _ = version
-        }
-        let frameParser = FrameParser(forFile: self.mp3file)
-        let data = try frameParser.parseFrames()
-        return data
-    }
+//    internal func tagData() throws -> FrameData {
+//        let validator = TagValidator(for: self.mp3file)
+//        if try validator.hasValidTag() {
+//            _ = size
+//            _ = version
+//        }
+//        let frameParser = FrameParser(forFile: self.mp3file)
+//        let data = try frameParser.parseFrames()
+//        return data
+//    }
 }

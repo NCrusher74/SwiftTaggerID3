@@ -233,459 +233,459 @@ struct FrameInformation {
     // 3 bytes for ID3v2.2
     // 4 bytes for ID3v2.3 and ID3v2.4
     /* If ID3 identfier is `nil` the frame will be handled as a TXX/TXXX frame, unless it's a frame associated with date handling, in which case it will be handled depending on version. Musician Credits for ID3v2.2 and ID3v2.3 will be handled as InvolvedPeople */
-    public func id3identifier(version: ID3Version) -> String? {
+    public func id3identifier(version: Version) -> String? {
         switch self.frameName {
             
             case .album:
                 switch version {
-                    case .version22: return "TAL"
-                    case .version23: return "TALB"
-                    case .version24: return "TALB"
+                    case .v2_2: return "TAL"
+                    case .v2_3: return "TALB"
+                    case .v2_4: return "TALB"
             }
             case .albumSort:
                 switch version {
-                    case .version22: return "TSA"
-                    case .version23: return "TSOA"
-                    case .version24: return "TSOA"
+                    case .v2_2: return "TSA"
+                    case .v2_3: return "TSOA"
+                    case .v2_4: return "TSOA"
             }
             case .albumArtist:
                 switch version {
-                    case .version22: return "TP2"
-                    case .version23: return "TPE2"
-                    case .version24: return "TPE2"
+                    case .v2_2: return "TP2"
+                    case .v2_3: return "TPE2"
+                    case .v2_4: return "TPE2"
             }
             case .albumArtistSort:
                 switch version {
-                    case .version22: return "TS2"
-                    case .version23: return "TSO2"
-                    case .version24: return "TSO2"
+                    case .v2_2: return "TS2"
+                    case .v2_3: return "TSO2"
+                    case .v2_4: return "TSO2"
             }
             case .arranger:
                 switch version {
-                    case .version22: return "TP4"
-                    case .version23: return "TPE4"
-                    case .version24: return "TPE4"
+                    case .v2_2: return "TP4"
+                    case .v2_3: return "TPE4"
+                    case .v2_4: return "TPE4"
             }
             case .artist:
                 switch version {
-                    case .version22: return "TP1"
-                    case .version23: return "TPE1"
-                    case .version24: return "TPE1"
+                    case .v2_2: return "TP1"
+                    case .v2_3: return "TPE1"
+                    case .v2_4: return "TPE1"
             }
             case .artistSort:
                 switch version {
-                    case .version22: return "TSP"
-                    case .version23: return "TSOP"
-                    case .version24: return "TSOP"
+                    case .v2_2: return "TSP"
+                    case .v2_3: return "TSOP"
+                    case .v2_4: return "TSOP"
             }
             case .artistWebpage:
                 switch version {
-                    case .version22: return "WAR"
-                    case .version23: return "WOAR"
-                    case .version24: return "WOAR"
+                    case .v2_2: return "WAR"
+                    case .v2_3: return "WOAR"
+                    case .v2_4: return "WOAR"
             }
             case .attachedPicture:
                 switch version {
-                    case .version22: return "PIC"
-                    case .version23: return "APIC"
-                    case .version24: return "APIC"
+                    case .v2_2: return "PIC"
+                    case .v2_3: return "APIC"
+                    case .v2_4: return "APIC"
             }
             case .audioFileWebpage:
                 switch version {
-                    case .version22: return "WAF"
-                    case .version23: return "WOAF"
-                    case .version24: return "WOAF"
+                    case .v2_2: return "WAF"
+                    case .v2_3: return "WOAF"
+                    case .v2_4: return "WOAF"
             }
             case .audioSourceWebpage:
                 switch version {
-                    case .version22: return "WAS"
-                    case .version23: return "WOAS"
-                    case .version24: return "WOAS"
+                    case .v2_2: return "WAS"
+                    case .v2_3: return "WOAS"
+                    case .v2_4: return "WOAS"
             }
             case .bpm:
                 switch version {
-                    case .version22: return "TBP"
-                    case .version23: return "TBPM"
-                    case .version24: return "TBPM"
+                    case .v2_2: return "TBP"
+                    case .v2_3: return "TBPM"
+                    case .v2_4: return "TBPM"
             }
             case .chapter:
                 switch version {
-                    case .version22: return nil
-                    case .version23: return "CHAP"
-                    case .version24: return "CHAP"
+                    case .v2_2: return nil
+                    case .v2_3: return "CHAP"
+                    case .v2_4: return "CHAP"
             }
             case .comments:
                 switch version {
-                    case .version22: return "COM"
-                    case .version23: return "COMM"
-                    case .version24: return "COMM"
+                    case .v2_2: return "COM"
+                    case .v2_3: return "COMM"
+                    case .v2_4: return "COMM"
             }
             case .compilation:
                 switch version {
-                    case .version22: return "TCP"
-                    case .version23: return "TCMP"
-                    case .version24: return "TCMP"
+                    case .v2_2: return "TCP"
+                    case .v2_3: return "TCMP"
+                    case .v2_4: return "TCMP"
             }
             case .composer:
                 switch version {
-                    case .version22: return "TCM"
-                    case .version23: return "TCOM"
-                    case .version24: return "TCOM"
+                    case .v2_2: return "TCM"
+                    case .v2_3: return "TCOM"
+                    case .v2_4: return "TCOM"
             }
             case .composerSort:
                 switch version {
-                    case .version22: return "TSC"
-                    case .version23: return "TSOC"
-                    case .version24: return "TSOC"
+                    case .v2_2: return "TSC"
+                    case .v2_3: return "TSOC"
+                    case .v2_4: return "TSOC"
             }
             case .conductor:
                 switch version {
-                    case .version22: return "TP3"
-                    case .version23: return "TPE3"
-                    case .version24: return "TPE3"
+                    case .v2_2: return "TP3"
+                    case .v2_3: return "TPE3"
+                    case .v2_4: return "TPE3"
             }
             case .contentGroup:
                 switch version {
-                    case .version22: return "TT1"
-                    case .version23: return "TIT1"
-                    case .version24: return "TIT1"
+                    case .v2_2: return "TT1"
+                    case .v2_3: return "TIT1"
+                    case .v2_4: return "TIT1"
             }
             case .copyright:
                 switch version {
-                    case .version22: return "TCR"
-                    case .version23: return "TCOP"
-                    case .version24: return "TCOP"
+                    case .v2_2: return "TCR"
+                    case .v2_3: return "TCOP"
+                    case .v2_4: return "TCOP"
             }
             case .copyrightWebpage:
                 switch version {
-                    case .version22: return "WCP"
-                    case .version23: return "WCOP"
-                    case .version24: return "WCOP"
+                    case .v2_2: return "WCP"
+                    case .v2_3: return "WCOP"
+                    case .v2_4: return "WCOP"
             }
             case .date:
                 switch version {
-                    case .version22: return "TDA"
-                    case .version23: return "TDAT"
-                    case .version24: return nil
+                    case .v2_2: return "TDA"
+                    case .v2_3: return "TDAT"
+                    case .v2_4: return nil
             }
             case .discNumber:
                 switch version {
-                    case .version22: return "TPA"
-                    case .version23: return "TPOS"
-                    case .version24: return "TPOS"
+                    case .v2_2: return "TPA"
+                    case .v2_3: return "TPOS"
+                    case .v2_4: return "TPOS"
             }
             case .encodingTime:
                 switch version {
-                    case .version22: return nil
-                    case .version23: return nil
-                    case .version24: return "TDEN"
+                    case .v2_2: return nil
+                    case .v2_3: return nil
+                    case .v2_4: return "TDEN"
             }
             case .encodedBy:
                 switch version {
-                    case .version22: return "TEN"
-                    case .version23: return "TENC"
-                    case .version24: return "TENC"
+                    case .v2_2: return "TEN"
+                    case .v2_3: return "TENC"
+                    case .v2_4: return "TENC"
             }
             case .encodingSettings:
                 switch version {
-                    case .version22: return "TSS"
-                    case .version23: return "TSSE"
-                    case .version24: return "TSSE"
+                    case .v2_2: return "TSS"
+                    case .v2_3: return "TSSE"
+                    case .v2_4: return "TSSE"
             }
             case .fileType:
                 switch version {
-                    case .version22: return "TFT"
-                    case .version23: return "TFLT"
-                    case .version24: return "TFLT"
+                    case .v2_2: return "TFT"
+                    case .v2_3: return "TFLT"
+                    case .v2_4: return "TFLT"
             }
             case .fileOwner:
                 switch version {
-                    case .version22: return nil
-                    case .version23: return "TOWN"
-                    case .version24: return "TOWN"
+                    case .v2_2: return nil
+                    case .v2_3: return "TOWN"
+                    case .v2_4: return "TOWN"
             }
             case .genre:
                 switch version {
-                    case .version22: return "TCO"
-                    case .version23: return "TCON"
-                    case .version24: return "TCON"
+                    case .v2_2: return "TCO"
+                    case .v2_3: return "TCON"
+                    case .v2_4: return "TCON"
             }
             case .grouping:
                 switch version {
-                    case .version22: return nil
-                    case .version23: return "GRP1"
-                    case .version24: return "GRP1"
+                    case .v2_2: return nil
+                    case .v2_3: return "GRP1"
+                    case .v2_4: return "GRP1"
             }
             case .initialKey:
                 switch version {
-                    case .version22: return "TKE"
-                    case .version23: return "TKEY"
-                    case .version24: return "TKEY"
+                    case .v2_2: return "TKE"
+                    case .v2_3: return "TKEY"
+                    case .v2_4: return "TKEY"
             }
             case .involvedPeopleList:
                 switch version {
-                    case .version22: return "IPL"
-                    case .version23: return "IPLS"
-                    case .version24: return "TIPL"
+                    case .v2_2: return "IPL"
+                    case .v2_3: return "IPLS"
+                    case .v2_4: return "TIPL"
             }
             case .isrc:
                 switch version {
-                    case .version22: return "TRC"
-                    case .version23: return "TSRC"
-                    case .version24: return "TSRC"
+                    case .v2_2: return "TRC"
+                    case .v2_3: return "TSRC"
+                    case .v2_4: return "TSRC"
             }
             case .languages:
                 switch version {
-                    case .version22: return "TLA"
-                    case .version23: return "TLAN"
-                    case .version24: return "TLAN"
+                    case .v2_2: return "TLA"
+                    case .v2_3: return "TLAN"
+                    case .v2_4: return "TLAN"
             }
             case .length:
                 switch version {
-                    case .version22: return "TLE"
-                    case .version23: return "TLEN"
-                    case .version24: return "TLEN"
+                    case .v2_2: return "TLE"
+                    case .v2_3: return "TLEN"
+                    case .v2_4: return "TLEN"
             }
             case .lyricist:
                 switch version {
-                    case .version22: return "TXT"
-                    case .version23: return "TEXT"
-                    case .version24: return "TEXT"
+                    case .v2_2: return "TXT"
+                    case .v2_3: return "TEXT"
+                    case .v2_4: return "TEXT"
             }
             case .mediaType:
                 switch version {
-                    case .version22: return "TMT"
-                    case .version23: return "TMED"
-                    case .version24: return "TMED"
+                    case .v2_2: return "TMT"
+                    case .v2_3: return "TMED"
+                    case .v2_4: return "TMED"
             }
             case .mood:
                 switch version {
-                    case .version22: return nil
-                    case .version23: return nil
-                    case .version24: return "TMOO"
+                    case .v2_2: return nil
+                    case .v2_3: return nil
+                    case .v2_4: return "TMOO"
             }
             case .movementCount:
                 switch version {
-                    case .version22: return nil
-                    case .version23: return "MVCN"
-                    case .version24: return "MVCN"
+                    case .v2_2: return nil
+                    case .v2_3: return "MVCN"
+                    case .v2_4: return "MVCN"
             }
             
             case .movementName:
                 switch version {
-                    case .version22: return nil
-                    case .version23: return "MVNM"
-                    case .version24: return "MVNM"
+                    case .v2_2: return nil
+                    case .v2_3: return "MVNM"
+                    case .v2_4: return "MVNM"
             }
             case .movementNumber:
                 switch version {
-                    case .version22: return nil
-                    case .version23: return "MVIN"
-                    case .version24: return "MVIN"
+                    case .v2_2: return nil
+                    case .v2_3: return "MVIN"
+                    case .v2_4: return "MVIN"
             }
             case .musicianCreditsList:
                 switch version {
-                    case .version22: return nil
-                    case .version23: return nil
-                    case .version24: return "TMCL"
+                    case .v2_2: return nil
+                    case .v2_3: return nil
+                    case .v2_4: return "TMCL"
             }
             case .originalAlbum:
                 switch version {
-                    case .version22: return "TOT"
-                    case .version23: return "TOAL"
-                    case .version24: return "TOAL"
+                    case .v2_2: return "TOT"
+                    case .v2_3: return "TOAL"
+                    case .v2_4: return "TOAL"
             }
             case .originalArtist:
                 switch version {
-                    case .version22: return "TOP"
-                    case .version23: return "TOPE"
-                    case .version24: return "TOPE"
+                    case .v2_2: return "TOP"
+                    case .v2_3: return "TOPE"
+                    case .v2_4: return "TOPE"
             }
             case .originalFilename:
                 switch version {
-                    case .version22: return "TOF"
-                    case .version23: return "TOFN"
-                    case .version24: return "TOFN"
+                    case .v2_2: return "TOF"
+                    case .v2_3: return "TOFN"
+                    case .v2_4: return "TOFN"
             }
             case .originalLyricist:
                 switch version {
-                    case .version22: return "TOL"
-                    case .version23: return "TOLY"
-                    case .version24: return "TOLY"
+                    case .v2_2: return "TOL"
+                    case .v2_3: return "TOLY"
+                    case .v2_4: return "TOLY"
             }
             case .originalReleaseTime:
                 switch version {
-                    case .version22: return "TOY"
-                    case .version23: return "TORY"
-                    case .version24: return "TDOR"
+                    case .v2_2: return "TOY"
+                    case .v2_3: return "TORY"
+                    case .v2_4: return "TDOR"
             }
             case .paymentWebpage:
                 switch version {
-                    case .version22: return nil
-                    case .version23: return "WPAY"
-                    case .version24: return "WPAY"
+                    case .v2_2: return nil
+                    case .v2_3: return "WPAY"
+                    case .v2_4: return "WPAY"
             }
             case .playlistDelay:
                 switch version {
-                    case .version22: return "TDY"
-                    case .version23: return "TDLY"
-                    case .version24: return "TDLY"
+                    case .v2_2: return "TDY"
+                    case .v2_3: return "TDLY"
+                    case .v2_4: return "TDLY"
             }
             case .podcastCategory:
                 switch version {
-                    case .version22: return nil
-                    case .version23: return "TCAT"
-                    case .version24: return "TCAT"
+                    case .v2_2: return nil
+                    case .v2_3: return "TCAT"
+                    case .v2_4: return "TCAT"
             }
             case .podcastDescription:
                 switch version {
-                    case .version22: return nil
-                    case .version23: return "TDES"
-                    case .version24: return "TDES"
+                    case .v2_2: return nil
+                    case .v2_3: return "TDES"
+                    case .v2_4: return "TDES"
             }
             case .podcastID:
                 switch version {
-                    case .version22: return nil
-                    case .version23: return "TGID"
-                    case .version24: return "TGID"
+                    case .v2_2: return nil
+                    case .v2_3: return "TGID"
+                    case .v2_4: return "TGID"
             }
             case .podcastKeywords:
                 switch version {
-                    case .version22: return nil
-                    case .version23: return "TKWD"
-                    case .version24: return "TKWD"
+                    case .v2_2: return nil
+                    case .v2_3: return "TKWD"
+                    case .v2_4: return "TKWD"
             }
             case .podcastFeedLink:
                 switch version {
-                    case .version22: return nil
-                    case .version23: return "WFED"
-                    case .version24: return "WFED"
+                    case .v2_2: return nil
+                    case .v2_3: return "WFED"
+                    case .v2_4: return "WFED"
             }
             case .producedNotice:
                 switch version {
-                    case .version22: return nil
-                    case .version23: return nil
-                    case .version24: return "TPRO"
+                    case .v2_2: return nil
+                    case .v2_3: return nil
+                    case .v2_4: return "TPRO"
             }
             case .publisher:
                 switch version {
-                    case .version22: return "TPB"
-                    case .version23: return "TPUB"
-                    case .version24: return "TPUB"
+                    case .v2_2: return "TPB"
+                    case .v2_3: return "TPUB"
+                    case .v2_4: return "TPUB"
             }
             case .publisherWebpage:
                 switch version {
-                    case .version22: return "WPB"
-                    case .version23: return "WPUB"
-                    case .version24: return "WPUB"
+                    case .v2_2: return "WPB"
+                    case .v2_3: return "WPUB"
+                    case .v2_4: return "WPUB"
             }
             case .radioStation:
                 switch version {
-                    case .version22: return "TRS"
-                    case .version23: return "TRSN"
-                    case .version24: return "TRSN"
+                    case .v2_2: return "TRS"
+                    case .v2_3: return "TRSN"
+                    case .v2_4: return "TRSN"
             }
             case .radioStationOwner:
                 switch version {
-                    case .version22: return "TRO"
-                    case .version23: return "TRSO"
-                    case .version24: return "TRSO"
+                    case .v2_2: return "TRO"
+                    case .v2_3: return "TRSO"
+                    case .v2_4: return "TRSO"
             }
             case .radioStationWebpage:
                 switch version {
-                    case .version22: return "WRS"
-                    case .version23: return "WORS"
-                    case .version24: return "WORS"
+                    case .v2_2: return "WRS"
+                    case .v2_3: return "WORS"
+                    case .v2_4: return "WORS"
             }
             case .recordingDate:
                 switch version {
-                    case .version22: return "TRD"
-                    case .version23: return "TRDA"
-                    case .version24: return "TDRC"
+                    case .v2_2: return "TRD"
+                    case .v2_3: return "TRDA"
+                    case .v2_4: return "TDRC"
             }
             case .releaseTime:
                 switch version {
-                    case .version22: return nil
-                    case .version23: return nil
-                    case .version24: return "TDLR"
+                    case .v2_2: return nil
+                    case .v2_3: return nil
+                    case .v2_4: return "TDLR"
             }
             case .setSubtitle:
                 switch version {
-                    case .version22: return nil
-                    case .version23: return "TSST"
-                    case .version24: return "TSST"
+                    case .v2_2: return nil
+                    case .v2_3: return "TSST"
+                    case .v2_4: return "TSST"
             }
             case .subtitle:
                 switch version {
-                    case .version22: return "TT3"
-                    case .version23: return "TIT3"
-                    case .version24: return "TIT3"
+                    case .v2_2: return "TT3"
+                    case .v2_3: return "TIT3"
+                    case .v2_4: return "TIT3"
             }
             case .tableOfContents:
                 switch version {
-                    case .version22: return nil
-                    case .version23: return "CTOC"
-                    case .version24: return "CTOC"
+                    case .v2_2: return nil
+                    case .v2_3: return "CTOC"
+                    case .v2_4: return "CTOC"
             }
             case .taggingTime:
                 switch version {
-                    case .version22: return nil
-                    case .version23: return nil
-                    case .version24: return "TDTG"
+                    case .v2_2: return nil
+                    case .v2_3: return nil
+                    case .v2_4: return "TDTG"
             }
             case .time:
                 switch version {
-                    case .version22: return "TIM"
-                    case .version23: return "TIME"
-                    case .version24: return nil
+                    case .v2_2: return "TIM"
+                    case .v2_3: return "TIME"
+                    case .v2_4: return nil
             }
             case .title:
                 switch version {
-                    case .version22: return "TT2"
-                    case .version23: return "TIT2"
-                    case .version24: return "TIT2"
+                    case .v2_2: return "TT2"
+                    case .v2_3: return "TIT2"
+                    case .v2_4: return "TIT2"
             }
             case .titleSort:
                 switch version {
-                    case .version22: return "TST"
-                    case .version23: return "TSOT"
-                    case .version24: return "TSOT"
+                    case .v2_2: return "TST"
+                    case .v2_3: return "TSOT"
+                    case .v2_4: return "TSOT"
             }
             case .trackNumber:
                 switch version {
-                    case .version22: return "TRK"
-                    case .version23: return "TRCK"
-                    case .version24: return "TRCK"
+                    case .v2_2: return "TRK"
+                    case .v2_3: return "TRCK"
+                    case .v2_4: return "TRCK"
             }
             case .unsynchronizedLyrics:
                 switch version {
-                    case .version22: return "ULT"
-                    case .version23: return "USLT"
-                    case .version24: return "USLT"
+                    case .v2_2: return "ULT"
+                    case .v2_3: return "USLT"
+                    case .v2_4: return "USLT"
             }
             case .userDefinedText:
                 switch version {
-                    case .version22: return "TXX"
-                    case .version23: return "TXXX"
-                    case .version24: return "TXXX"
+                    case .v2_2: return "TXX"
+                    case .v2_3: return "TXXX"
+                    case .v2_4: return "TXXX"
             }
             case .userDefinedWebpage:
                 switch version {
-                    case .version22: return "WXX"
-                    case .version23: return "WXXX"
-                    case .version24: return "WXXX"
+                    case .v2_2: return "WXX"
+                    case .v2_3: return "WXXX"
+                    case .v2_4: return "WXXX"
             }
             case .year:
                 switch version {
-                    case .version22: return "TYE"
-                    case .version23: return "TYER"
-                    case .version24: return nil
+                    case .v2_2: return "TYE"
+                    case .v2_3: return "TYER"
+                    case .v2_4: return nil
             }
         }
     }
     
-    internal func id3IdentifierBytes(version: ID3Version) -> [UInt8] {
-        if version == .version22 {
+    internal func id3IdentifierBytes(version: Version) -> [UInt8] {
+        if version == .v2_2 {
             return [UInt8](id3identifier(version: version)?.utf8 ?? "TXX".utf8)
         } else {
             return [UInt8](id3identifier(version: version)?.utf8 ?? "TXXX".utf8)

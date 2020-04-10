@@ -14,7 +14,7 @@ import Foundation
 
 struct UTF16StringToByteAdapter {
     
-    func encoding(for version: ID3Version) -> [UInt8] {
+    func encoding(for version: Version) -> [UInt8] {
         return [StringEncoding.utf16WithBOM.rawValue]
     }
     

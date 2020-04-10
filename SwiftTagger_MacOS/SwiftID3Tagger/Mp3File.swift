@@ -17,7 +17,7 @@ public struct Mp3File {
     public init(location: URL) throws {
         self.location = location
         do {
-            self.data = try Data(contentsOf: self.location)
+            self.data = try Data(contentsOf: location)
         } catch {
             throw Mp3File.Error.CannotReadFile
         }

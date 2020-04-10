@@ -31,6 +31,9 @@
 		517754322440494E005E43C5 /* ISO88591StringToBytesAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517754312440494E005E43C5 /* ISO88591StringToBytesAdapter.swift */; };
 		51775436244058DB005E43C5 /* TagData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51775435244058DB005E43C5 /* TagData.swift */; };
 		517754382440599C005E43C5 /* FrameData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517754372440599C005E43C5 /* FrameData.swift */; };
+		5177543B244136A3005E43C5 /* Endianess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5177543A244136A3005E43C5 /* Endianess.swift */; };
+		5177543E24413768005E43C5 /* UnsignedInteger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5177543D24413768005E43C5 /* UnsignedInteger.swift */; };
+		517754422441386B005E43C5 /* methods stashed for later use.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517754412441386B005E43C5 /* methods stashed for later use.swift */; };
 		517E886A243DBCA300F9F8D6 /* mp3-chaptered.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 517E8869243DBCA300F9F8D6 /* mp3-chaptered.mp3 */; };
 		51E432B6243DA257006574A1 /* SwiftTagger_MacOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51E432AC243DA257006574A1 /* SwiftTagger_MacOS.framework */; };
 		51E432BB243DA257006574A1 /* SwiftTagger_MacOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E432BA243DA257006574A1 /* SwiftTagger_MacOSTests.swift */; };
@@ -40,7 +43,7 @@
 		51E432CB243DA3F6006574A1 /* Mp3FileError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E432CA243DA3F6006574A1 /* Mp3FileError.swift */; };
 		51E432D2243DA64B006574A1 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E432D1243DA64B006574A1 /* Bundle.swift */; };
 		51E432D6243DAED8006574A1 /* TagValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E432D5243DAED8006574A1 /* TagValidator.swift */; };
-		51E432DA243DB096006574A1 /* ID3Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E432D9243DB096006574A1 /* ID3Version.swift */; };
+		51E432DA243DB096006574A1 /* Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E432D9243DB096006574A1 /* Version.swift */; };
 		51FA3503243FB03C000997EC /* TagProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FA3502243FB03C000997EC /* TagProperties.swift */; };
 		51FA350624402512000997EC /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FA350524402512000997EC /* Collection.swift */; };
 		51FA35082440255F000997EC /* Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FA35072440255F000997EC /* Sequence.swift */; };
@@ -98,6 +101,9 @@
 		517754312440494E005E43C5 /* ISO88591StringToBytesAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISO88591StringToBytesAdapter.swift; sourceTree = "<group>"; };
 		51775435244058DB005E43C5 /* TagData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagData.swift; sourceTree = "<group>"; };
 		517754372440599C005E43C5 /* FrameData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameData.swift; sourceTree = "<group>"; };
+		5177543A244136A3005E43C5 /* Endianess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endianess.swift; sourceTree = "<group>"; };
+		5177543D24413768005E43C5 /* UnsignedInteger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsignedInteger.swift; sourceTree = "<group>"; };
+		517754412441386B005E43C5 /* methods stashed for later use.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "methods stashed for later use.swift"; sourceTree = "<group>"; };
 		517E8869243DBCA300F9F8D6 /* mp3-chaptered.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "mp3-chaptered.mp3"; sourceTree = "<group>"; };
 		51E432AC243DA257006574A1 /* SwiftTagger_MacOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftTagger_MacOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		51E432AF243DA257006574A1 /* SwiftTagger_MacOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftTagger_MacOS.h; sourceTree = "<group>"; };
@@ -110,7 +116,7 @@
 		51E432CA243DA3F6006574A1 /* Mp3FileError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mp3FileError.swift; sourceTree = "<group>"; };
 		51E432D1243DA64B006574A1 /* Bundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bundle.swift; sourceTree = "<group>"; };
 		51E432D5243DAED8006574A1 /* TagValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagValidator.swift; sourceTree = "<group>"; };
-		51E432D9243DB096006574A1 /* ID3Version.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ID3Version.swift; sourceTree = "<group>"; };
+		51E432D9243DB096006574A1 /* Version.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Version.swift; sourceTree = "<group>"; };
 		51FA3502243FB03C000997EC /* TagProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagProperties.swift; sourceTree = "<group>"; };
 		51FA350524402512000997EC /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		51FA35072440255F000997EC /* Sequence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sequence.swift; sourceTree = "<group>"; };
@@ -145,7 +151,7 @@
 				51490E48243EBB4A009D4BA4 /* FrameInformation.swift */,
 				51490E4C243EBB99009D4BA4 /* FrameType.swift */,
 				51490E50243EDB4F009D4BA4 /* FrameName.swift */,
-				51E432D9243DB096006574A1 /* ID3Version.swift */,
+				51E432D9243DB096006574A1 /* Version.swift */,
 			);
 			path = ID3Properties;
 			sourceTree = "<group>";
@@ -165,12 +171,25 @@
 		51490E6B243F314D009D4BA4 /* AdaptorsAndTools */ = {
 			isa = PBXGroup;
 			children = (
-				51E432CF243DA608006574A1 /* Convenience Extensions */,
+				51E432CF243DA608006574A1 /* Extensions */,
 				51FA350B24402D48000997EC /* StringEncoding.swift */,
 				5177542F24404597005E43C5 /* UTF16StringToBytesAdapter.swift */,
 				517754312440494E005E43C5 /* ISO88591StringToBytesAdapter.swift */,
+				5177543A244136A3005E43C5 /* Endianess.swift */,
 			);
 			path = AdaptorsAndTools;
+			sourceTree = "<group>";
+		};
+		5177543C244136DA005E43C5 /* Convenience */ = {
+			isa = PBXGroup;
+			children = (
+				51E432C8243DA35E006574A1 /* URL.swift */,
+				51490E65243F1F92009D4BA4 /* Data.Subsquence.swift */,
+				51FA350524402512000997EC /* Collection.swift */,
+				51FA35072440255F000997EC /* Sequence.swift */,
+				51FA350924402580000997EC /* String.swift */,
+			);
+			path = Convenience;
 			sourceTree = "<group>";
 		};
 		51D2BB0A243DB6FF00D06FEB /* Frameworks */ = {
@@ -207,6 +226,7 @@
 				51E432B0243DA257006574A1 /* SwiftTagger_MacOS.plist */,
 				51E432D0243DA61B006574A1 /* SwiftID3Tagger */,
 				51490E6B243F314D009D4BA4 /* AdaptorsAndTools */,
+				517754412441386B005E43C5 /* methods stashed for later use.swift */,
 			);
 			path = SwiftTagger_MacOS;
 			sourceTree = "<group>";
@@ -238,19 +258,16 @@
 			path = TestMedia;
 			sourceTree = "<group>";
 		};
-		51E432CF243DA608006574A1 /* Convenience Extensions */ = {
+		51E432CF243DA608006574A1 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				51E432C8243DA35E006574A1 /* URL.swift */,
+				5177543C244136DA005E43C5 /* Convenience */,
 				51490E52243EF216009D4BA4 /* Data.swift */,
 				51490E54243EF28A009D4BA4 /* IntsExtensions.swift */,
-				51490E65243F1F92009D4BA4 /* Data.Subsquence.swift */,
-				51FA350524402512000997EC /* Collection.swift */,
-				51FA35072440255F000997EC /* Sequence.swift */,
-				51FA350924402580000997EC /* String.swift */,
 				51FA350D244034B2000997EC /* UInt32.swift */,
+				5177543D24413768005E43C5 /* UnsignedInteger.swift */,
 			);
-			path = "Convenience Extensions";
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		51E432D0243DA61B006574A1 /* SwiftID3Tagger */ = {
@@ -422,13 +439,15 @@
 				51E432C7243DA2E0006574A1 /* Mp3File.swift in Sources */,
 				51490E6D243F363E009D4BA4 /* ParserType.swift in Sources */,
 				51FA350E244034B2000997EC /* UInt32.swift in Sources */,
-				51E432DA243DB096006574A1 /* ID3Version.swift in Sources */,
+				51E432DA243DB096006574A1 /* Version.swift in Sources */,
 				51FA350C24402D48000997EC /* StringEncoding.swift in Sources */,
 				51E432CB243DA3F6006574A1 /* Mp3FileError.swift in Sources */,
+				5177543B244136A3005E43C5 /* Endianess.swift in Sources */,
 				51FA35082440255F000997EC /* Sequence.swift in Sources */,
 				51490E4D243EBB99009D4BA4 /* FrameType.swift in Sources */,
 				51E432D6243DAED8006574A1 /* TagValidator.swift in Sources */,
 				51FA3503243FB03C000997EC /* TagProperties.swift in Sources */,
+				517754422441386B005E43C5 /* methods stashed for later use.swift in Sources */,
 				51FA3510244038D0000997EC /* FrameProperties.swift in Sources */,
 				5177543024404597005E43C5 /* UTF16StringToBytesAdapter.swift in Sources */,
 				51490E51243EDB4F009D4BA4 /* FrameName.swift in Sources */,
@@ -437,6 +456,7 @@
 				51490E53243EF216009D4BA4 /* Data.swift in Sources */,
 				51490E64243F1916009D4BA4 /* FrameParser.swift in Sources */,
 				51E432C9243DA35E006574A1 /* URL.swift in Sources */,
+				5177543E24413768005E43C5 /* UnsignedInteger.swift in Sources */,
 				51490E66243F1F92009D4BA4 /* Data.Subsquence.swift in Sources */,
 				51490E55243EF28A009D4BA4 /* IntsExtensions.swift in Sources */,
 				51775436244058DB005E43C5 /* TagData.swift in Sources */,
