@@ -24,8 +24,8 @@ struct TagProperties {
     internal var tagHeaderSize: Int = 10
     
     /// the ID3 version of the tag
-    internal func version() throws -> ID3Version {
-        let mp3Data = try Data(contentsOf: self.mp3file.location)
+    internal var version: ID3Version {
+        let mp3Data = self.mp3file.data
         // the first five bytes of a valid ID3 Tag are "ID3"+ the version number in UInt8
         let version22Bytes: [UInt8] = [0x49, 0x44, 0x33, 0x02, 0x00]
         let version23Bytes: [UInt8] = [0x49, 0x44, 0x33, 0x03, 0x00]
@@ -39,13 +39,13 @@ struct TagProperties {
         } else if versionBytesFromMp3 == version24Bytes {
             return ID3Version.version24
         } else {
-            throw Mp3File.Error.InvalidTagData
-        }
+            print(Mp3File.Error.InvalidTagData)
+        }; return ID3Version.version24
     }
     
-    internal func size() throws -> UInt32 {
+    internal var size: UInt32 {
         let tagBytesOffset = 6
-        let mp3Data = try Data(contentsOf: self.mp3file.location) as NSData
+        let mp3Data = self.mp3file.data as NSData
         let tagDataBytes = mp3Data.bytes + tagBytesOffset
         let tagSize = tagDataBytes.assumingMemoryBound(
             to: UInt32.self).pointee.bigEndian
@@ -56,8 +56,8 @@ struct TagProperties {
     internal func tagData() throws -> FrameData {
         let validator = TagValidator(for: self.mp3file)
         if try validator.hasValidTag() {
-            _ = try size()
-            _ = try version()
+            _ = size
+            _ = version
         }
         let frameParser = FrameParser(forFile: self.mp3file)
         let data = try frameParser.parseFrames()

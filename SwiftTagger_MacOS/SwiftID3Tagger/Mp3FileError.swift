@@ -33,7 +33,7 @@ extension Mp3File {
 }
 
 extension Mp3File.Error: LocalizedError {
-    var errorDescription: String? {
+    public var errorDescription: String? {
         switch self {
             case .CannotReadFile:
                 return NSLocalizedString(

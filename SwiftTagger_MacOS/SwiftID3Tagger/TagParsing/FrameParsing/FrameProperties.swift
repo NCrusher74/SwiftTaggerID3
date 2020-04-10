@@ -71,11 +71,11 @@ struct FrameProperties {
             case .version23, .version24: return [0x0, 0x0]
         }
     }
-
+/*
     internal func frameSize() -> Int {
         
     }
-    
+   */
     /*
      func parse(mp3: NSData, framePosition: Int, version: ID3Version) -> Int {
      return frameContentSizeParser.parse(mp3: mp3, framePosition: framePosition, version: version) +
@@ -84,15 +84,18 @@ struct FrameProperties {
 
      */
     internal func contentSize(framePosition: Data.Index) throws -> Int {
-        let frameSizePosition = framePosition + sizeOffset
-        var frameSize: UInt32 = 0
-        let mp3Data = try Data(contentsOf: self.mp3File.location)
-        let frameData = mp3Data[frameSizePosition..<frameSizePosition+Int(frameSize)]
-        frameSize = frameSize.bigEndian & sizeMask
-        if self.version == .version24 {
-            frameSize = frameSize.synchSafeDecode
-        }
-        return Int(frameSize)
+//        let frameSizePosition = framePosition + sizeOffset
+//        var frameSize: UInt32 = 0
+//        let mp3Data = try Data(contentsOf: self.mp3File.location)
+//        let frameData = mp3Data[frameSizePosition..<frameSizePosition+Int(frameSize)]
+//        frameSize = frameSize.bigEndian & sizeMask
+//        if self.version == .version24 {
+//            frameSize = frameSize.synchSafeDecode
+//        }
+//        return Int(frameSize)
+        let lengthOfSizeDeclaration = UInt8(frameSizeDeclaration).nonzeroBitCount
+
+
     }
 }
 /*

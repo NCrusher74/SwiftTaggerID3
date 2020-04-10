@@ -16,16 +16,16 @@ struct FrameParser {
         self.mp3File = mp3File
     }
     
-    
+/*
     internal func parseFrames() throws -> FrameData {
         let tagProperties = TagProperties(for: self.mp3File)
         let framePosition = tagProperties.tagHeaderSize
-        let tagSize = try tagProperties.size()
+        let tagSize = tagProperties.size
         while framePosition < tagSize {
             
         }
     }
-    
+    */
 //    func parse(mp3: NSData, id3Tag: ID3Tag) {
 //        var currentFramePosition = id3TagConfiguration.headerSize();
 //        while currentFramePosition < id3Tag.properties.size {

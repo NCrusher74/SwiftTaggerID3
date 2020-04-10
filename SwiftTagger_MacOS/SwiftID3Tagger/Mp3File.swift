@@ -11,19 +11,16 @@ import AVFoundation
 
 public struct Mp3File {
     
-    let location: URL
+    public let location: URL
+    internal var data: Data
     
-    init(location: URL) {
+    public init(location: URL) throws {
         self.location = location
-    }
-    
-
-    internal var data: Data? {
         do {
-            return try Data(contentsOf: self.location)
+            self.data = try Data(contentsOf: self.location)
         } catch {
-            Mp3File.Error.CannotReadFile
-        }; return nil
+            throw Mp3File.Error.CannotReadFile
+        }
     }
 
 //    public func read(from sourceAudio: Mp3File) {
