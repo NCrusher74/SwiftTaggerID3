@@ -10,10 +10,12 @@ import Foundation
 
 struct FrameParser {
     
-    var mp3File: Mp3File
+    var validatedTag: TagValidator
+    var properties: TagProperties
     
-    init(for mp3File: Mp3File) {
-        self.mp3File = mp3File
+    init(for validatedTag: TagValidator, with properties: TagProperties) {
+        self.validatedTag = validatedTag
+        self.properties = properties
     }
     
     

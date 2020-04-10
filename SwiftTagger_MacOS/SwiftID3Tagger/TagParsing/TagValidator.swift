@@ -63,7 +63,7 @@ struct TagValidator {
     // MARK: Validate Tag Data
     
     // check that first five bytes are "ID3<version><null>"
-    private func hasValidVersionBytes(properties: TagProperties) throws -> Bool {
+    private func hasValidVersionBytes() throws -> Bool {
         if try self.isValidMp3() {
             let mp3Data = try Data(contentsOf: self.mp3File.location)
             let versionBytesFromMp3 = [UInt8](mp3Data.subdata(in: 0..<5))
@@ -87,7 +87,7 @@ struct TagValidator {
     private func hasValidTagSize() throws -> Bool {
         let tagProperties = TagProperties(for: self.mp3File)
         let mp3Data = try Data(contentsOf: self.mp3File.location)
-        if mp3Data.count < Int(try tagProperties.size()) + tagProperties.headerBytesCount {
+        if mp3Data.count < Int(try tagProperties.size()) + tagProperties.tagHeaderSize {
             throw Mp3File.Error.CorruptedFile
         } else {
             return true
@@ -96,7 +96,7 @@ struct TagValidator {
     
     // confirm valid tag tag data
     internal func hasValidTag(properties: TagProperties) throws -> Bool {
-        if try self.hasValidVersionBytes(properties: properties) && self.hasValidTagSize() {
+        if try self.hasValidVersionBytes() && self.hasValidTagSize() {
             return true
         } else {
             throw Mp3File.Error.InvalidTagData

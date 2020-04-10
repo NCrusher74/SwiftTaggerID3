@@ -62,7 +62,7 @@ struct FrameInformation {
             return self.frameName.rawValue
         }
     }
-
+    
     // MARK: Frame Type
     /* Determines the way the data in the frame will be presented to the user.
      In some cases, this means a frame containing a string with specific data, such as integers or integer arrays, will be converted from a string to an integer/array */
@@ -227,7 +227,7 @@ struct FrameInformation {
             case .year: return ParserType.dateParser
         }
     }
-
+    
     // MARK: ID3Identifier
     // The ID3 code for the frame
     // 3 bytes for ID3v2.2
@@ -366,7 +366,7 @@ struct FrameInformation {
                 switch version {
                     case .version22: return "TDA"
                     case .version23: return "TDAT"
-                    case .version24: return "TDRC"
+                    case .version24: return nil
             }
             case .discNumber:
                 switch version {
@@ -601,7 +601,7 @@ struct FrameInformation {
                 switch version {
                     case .version22: return "TRD"
                     case .version23: return "TRDA"
-                    case .version24: return nil
+                    case .version24: return "TDRC"
             }
             case .releaseTime:
                 switch version {
@@ -684,8 +684,12 @@ struct FrameInformation {
         }
     }
     
-    public func frameIdentifierBytes(version: ID3Version) -> [UInt8] {
-        return [UInt8](id3identifier(version: version)!.utf8)
+    internal func id3IdentifierBytes(version: ID3Version) -> [UInt8] {
+        if version == .version22 {
+            return [UInt8](id3identifier(version: version)?.utf8 ?? "TXX".utf8)
+        } else {
+            return [UInt8](id3identifier(version: version)?.utf8 ?? "TXXX".utf8)
+        }
     }
     
 }

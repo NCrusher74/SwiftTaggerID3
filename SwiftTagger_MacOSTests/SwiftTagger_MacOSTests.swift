@@ -13,6 +13,11 @@ import AVFoundation
 
 class SwiftTagger_MacOSTests: XCTestCase {
 
+    
+//    func testExtensions() {
+//        print("ID3".hexEncodedString)
+//    }
+    
     func testProperties() throws {
         let propertiesNoMeta = Bundle.propertiesNoMeta
         let propertiesV22 = Bundle.propertiesV22FileWritten

@@ -21,6 +21,12 @@ extension Mp3File {
         case CorruptedFile;
         /// Error generated if the file size is too small for a valid tag.
         case FileTooSmall;
+        /** Error generated if a frame is not available for a particular version and an equivalent user-text frame cannot be substituted */
+        case InvalidFrameForVersion
+        /// Error generated if frame is a date frame that was implemented in a later version of ID3v2
+        case InvalidDateFrameForVersion
+        /// Error thrown when string is not convertible
+        case InconvertibleString
     }
 }
 
@@ -43,6 +49,15 @@ extension Mp3File.Error: LocalizedError {
             case .FileTooSmall:
                 return NSLocalizedString(
                     "The file is too small to hold a valid ID3 tag", comment: "")
+            case .InvalidFrameForVersion:
+                return NSLocalizedString(
+                    "This frame type cannot be used with this version of ID3", comment: "")
+            case .InvalidDateFrameForVersion:
+                return NSLocalizedString(
+                    "This frame type was not implemented for this version of ID3. Please used another date type", comment: "")
+            case .InconvertibleString:
+                return NSLocalizedString(
+                    "String is not representable in ISO 8859‐1", comment: "")
         }
     }
 }

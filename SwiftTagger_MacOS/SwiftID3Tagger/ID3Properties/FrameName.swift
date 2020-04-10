@@ -23,7 +23,7 @@ enum FrameName: String {
     case audioFileWebpage = "AudioFileWebpage"
     case audioSourceWebpage = "AudioSourceWebpage"
     case bpm = "BPM"
-    case chapter = "CHAP"
+    case chapter = "Chapter"
     case comments = "Comments"
     case compilation = "Compilation"
     case composer = "Composer"
