@@ -16,8 +16,7 @@ struct StringFrame {
     let contentString: String
     
     /**
-     A frame with only string content, presented as a single string without line breaks.
-     
+     A frame with only string content, presented as a single string without `(/n)`.     
      - parameter contentString: the content of the frame.
      */
     init(contentString: String) {

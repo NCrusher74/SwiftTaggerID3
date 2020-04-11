@@ -1,5 +1,5 @@
 //
-//  TagParser.swift
+//  FrameParser.swift
 //  SwiftTagger_MacOS
 //
 //  Created by Nolaine Crusher on 4/9/20.
