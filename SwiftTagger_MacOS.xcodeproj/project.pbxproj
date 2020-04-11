@@ -27,8 +27,6 @@
 		51490E7B243F461E009D4BA4 /* mp3-v23-corrupted.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 51490E76243F461E009D4BA4 /* mp3-v23-corrupted.mp3 */; };
 		51490E7C243F461E009D4BA4 /* mp3-nometa.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 51490E77243F461E009D4BA4 /* mp3-nometa.mp3 */; };
 		51490E7D243F461E009D4BA4 /* mp3-v22-with-meta.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 51490E78243F461E009D4BA4 /* mp3-v22-with-meta.mp3 */; };
-		5177543024404597005E43C5 /* UTF16StringToBytesAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5177542F24404597005E43C5 /* UTF16StringToBytesAdapter.swift */; };
-		517754322440494E005E43C5 /* ISO88591StringToBytesAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517754312440494E005E43C5 /* ISO88591StringToBytesAdapter.swift */; };
 		51775436244058DB005E43C5 /* TagData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51775435244058DB005E43C5 /* TagData.swift */; };
 		517754382440599C005E43C5 /* FrameData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517754372440599C005E43C5 /* FrameData.swift */; };
 		5177543B244136A3005E43C5 /* Endianess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5177543A244136A3005E43C5 /* Endianess.swift */; };
@@ -97,8 +95,6 @@
 		51490E76243F461E009D4BA4 /* mp3-v23-corrupted.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "mp3-v23-corrupted.mp3"; sourceTree = "<group>"; };
 		51490E77243F461E009D4BA4 /* mp3-nometa.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "mp3-nometa.mp3"; sourceTree = "<group>"; };
 		51490E78243F461E009D4BA4 /* mp3-v22-with-meta.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "mp3-v22-with-meta.mp3"; sourceTree = "<group>"; };
-		5177542F24404597005E43C5 /* UTF16StringToBytesAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UTF16StringToBytesAdapter.swift; sourceTree = "<group>"; };
-		517754312440494E005E43C5 /* ISO88591StringToBytesAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISO88591StringToBytesAdapter.swift; sourceTree = "<group>"; };
 		51775435244058DB005E43C5 /* TagData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagData.swift; sourceTree = "<group>"; };
 		517754372440599C005E43C5 /* FrameData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameData.swift; sourceTree = "<group>"; };
 		5177543A244136A3005E43C5 /* Endianess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endianess.swift; sourceTree = "<group>"; };
@@ -173,8 +169,6 @@
 			children = (
 				51E432CF243DA608006574A1 /* Extensions */,
 				51FA350B24402D48000997EC /* StringEncoding.swift */,
-				5177542F24404597005E43C5 /* UTF16StringToBytesAdapter.swift */,
-				517754312440494E005E43C5 /* ISO88591StringToBytesAdapter.swift */,
 				5177543A244136A3005E43C5 /* Endianess.swift */,
 			);
 			path = AdaptorsAndTools;
@@ -449,9 +443,7 @@
 				51FA3503243FB03C000997EC /* TagProperties.swift in Sources */,
 				517754422441386B005E43C5 /* methods stashed for later use.swift in Sources */,
 				51FA3510244038D0000997EC /* FrameProperties.swift in Sources */,
-				5177543024404597005E43C5 /* UTF16StringToBytesAdapter.swift in Sources */,
 				51490E51243EDB4F009D4BA4 /* FrameName.swift in Sources */,
-				517754322440494E005E43C5 /* ISO88591StringToBytesAdapter.swift in Sources */,
 				51FA350A24402580000997EC /* String.swift in Sources */,
 				51490E53243EF216009D4BA4 /* Data.swift in Sources */,
 				51490E64243F1916009D4BA4 /* FrameParser.swift in Sources */,

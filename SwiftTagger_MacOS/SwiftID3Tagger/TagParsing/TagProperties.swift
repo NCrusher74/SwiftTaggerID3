@@ -19,19 +19,16 @@ struct TagProperties {
     init(for mp3File: Mp3File) {
         self.mp3file = mp3File
     }
-    
-    /// the size of the tag header, in bytes
-    internal var tagHeaderSize: Int = 10
-    
+
     /// the ID3 version of the tag
     internal var version: Version {
         let mp3Data = self.mp3file.data
         // the first five bytes of a valid ID3 Tag are "ID3"+ the version number in UInt8
-        let v2_2Bytes: [UInt8] = [0x49, 0x44, 0x33, 0x02, 0x00]
-        let v2_3Bytes: [UInt8] = [0x49, 0x44, 0x33, 0x03, 0x00]
-        let v2_4Bytes: [UInt8] = [0x49, 0x44, 0x33, 0x04, 0x00]
+        let v2_2Bytes: [UInt8] = [0x02, 0x00]
+        let v2_3Bytes: [UInt8] = [0x03, 0x00]
+        let v2_4Bytes: [UInt8] = [0x04, 0x00]
         
-        let versionBytesFromMp3 = [UInt8](mp3Data.subdata(in: 0..<5))
+        let versionBytesFromMp3 = [UInt8](mp3Data.subdata(in: versionBytesOffset..<tagFlagsOffset))
         if versionBytesFromMp3 == v2_2Bytes {
             return Version.v2_2
         } else if versionBytesFromMp3 == v2_3Bytes {
@@ -63,4 +60,53 @@ struct TagProperties {
 //        let data = try frameParser.parseFrames()
 //        return data
 //    }
+    
+}
+
+extension TagProperties {
+    /*
+     The first part of the ID3v2 tag is the 10 byte tag header, laid out
+     as follows:
+     
+     ID3v2/file identifier      "ID3" -- 3 bytes
+     ID3v2 version              $04 00 -- 2 bytes
+     ID3v2 flags                %abcd0000 -- 1 byte (Uint32)
+     ID3v2 size             4 * %0xxxxxxx -- 4 bytes (Uint32)
+     */
+    
+    /// the byte-count of the ID3 declaration
+    internal var id3DeclarationLength: Int {
+        return 3
+    }
+    
+    /// the byte-count of the ID3 version declaration
+    internal var versionDeclarationLength: Int {
+        return 2
+    }
+    
+    /// the byte-count of the tag's UInt32 flags
+    internal var tagFlagsLength: Int {
+        return 1
+    }
+    
+    /// the byte-count of the tag's UInt32 size declaration
+    internal var tagSizeDeclarationLength: Int {
+        return 4
+    }
+    
+    internal var tagHeaderLength: Int {
+        return id3DeclarationLength + versionDeclarationLength + tagFlagsLength + tagSizeDeclarationLength
+    }
+    
+    internal var versionBytesOffset: Int {
+        return id3DeclarationLength
+    }
+    
+    internal var tagFlagsOffset: Int {
+        return id3DeclarationLength + versionDeclarationLength
+    }
+    
+    internal var tagSizeDeclarationOffset: Int {
+        return id3DeclarationLength + versionDeclarationLength + tagFlagsLength
+    }
 }

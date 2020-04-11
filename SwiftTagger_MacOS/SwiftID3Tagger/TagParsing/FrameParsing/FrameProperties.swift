@@ -18,43 +18,13 @@ struct FrameProperties {
         self.version = version
     }
     
-    /// the version-dependent byte offset for frame size
-    internal var sizeOffset: Data.Index {
-        switch self.version {
-            case .v2_2: return 2
-            case .v2_3, .v2_4: return 4
-        }
-    }
+    internal let encodingByteSize: Int = 1
+
     
-    /// I have no idea what this is for
-    internal var sizeMask: UInt32 {
-        switch self.version {
-            case .v2_2: return 0x00FFFFFF
-            case .v2_3, .v2_4: return 0xFFFFFFFF
-        }
-    }
-    
-    /// the version-dependent position of the encoding byte
-    internal var encodingBytePosition: Data.Index {
-        switch self.version {
-            case .v2_2: return 6
-            case .v2_3, .v2_4: return 10
-        }
-    }
-        
-    internal var encodingByteSize: Int = 1
-    
-    internal var flags: [UInt8] {
-        switch self.version {
-            case .v2_2: return []
-            case .v2_3, .v2_4: return [0x0, 0x0]
-        }
-    }
-/*
-    internal func frameSize() -> Int {
-        
-    }
-   */
+
+//    internal func frameSize() -> Int {
+//    }
+
     /*
      func parse(mp3: NSData, framePosition: Int, version: Version) -> Int {
      return frameContentSizeParser.parse(mp3: mp3, framePosition: framePosition, version: version) +
@@ -64,7 +34,9 @@ struct FrameProperties {
      */
     
     
-    
+//    internal func frameContentSize() -> {
+//        
+//    }
         /*
          let lengthOfSizeDeclaration = 4 // ? Or whatever it actually is.
          let sizeDataRange = frameSizePosition ..< frameSizePosition+lengthOfSizeDeclaration

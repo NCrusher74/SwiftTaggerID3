@@ -17,21 +17,7 @@ enum StringEncoding: UInt8 {
     case utf16WithBOM = 0x01
     case utf16BigEndian = 0x02
     case utf8 = 0x03
-    
-    func exists(in version: Version) -> Bool {
-        switch self {
-            case .utf16WithBOM, .isoLatin1:
-                return true
-            case .utf8, .utf16BigEndian:
-                switch version {
-                    case .v2_2, .v2_3:
-                        return false
-                    case .v2_4:
-                        return true
-            }
-        }
-    }
-    
+        
     var standardLibraryEncoding: String.Encoding {
         switch self {
             case .isoLatin1:
@@ -44,27 +30,24 @@ enum StringEncoding: UInt8 {
                 return .utf16BigEndian
         }
     }
-    
-    //    func detect(frame: Data, version: Version) -> String.Encoding {
-    //        let encodingBytePosition = id3FrameConfiguration.encodingPositionFor(version: version)
-    //        let encoding = id3StringEncodingConverter.convert(
-    //            id3Encoding: ID3StringEncoding(rawValue: frame[encodingBytePosition]),
-    //            version: version
-    //        )
-    //        return encoding
-    //    }
-    
-//    func detect(mp3File: Mp3File, frame: Data, version: Version) -> String.Encoding {
-//        let frameProperties = FrameProperties(
-//            mp3File: mp3File, version: version)
-//        
-//    }
-    
-    func convert(version: Version) -> String.Encoding {
-        let validId3Encoding = self
-        if validId3Encoding.exists(in: version) {
-            return validId3Encoding.standardLibraryEncoding
-        }
-        return .isoLatin1
+
+    func detect(frame: Data, version: Version) throws -> String.Encoding {
+        let encodingByteOffset = version.encodingByteOffset
+        return StringEncoding(rawValue: frame[encodingByteOffset])?.standardLibraryEncoding ?? .isoLatin1
     }
+}
+
+extension StringEncoding {
+    var sizeOfTermination: Int {
+        switch self {
+            case .isoLatin1, .utf8:
+                return 1
+            case .utf16WithBOM, .utf16BigEndian:
+                return 2
+        }
+    }
+
+    // Because every string can be losslessly encoded this way,
+    // and because it is supported by all ID3 versions.
+    static let preferred = utf16WithBOM
 }

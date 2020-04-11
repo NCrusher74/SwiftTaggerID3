@@ -49,29 +49,17 @@ struct TagValidator {
             throw Mp3File.Error.InvalidFileFormat
         }
     }
-    
-    /*
-     The first part of the ID3v2 tag is the 10 byte tag header, laid out
-     as follows:
-     
-     ID3v2/file identifier      "ID3" -- 3 bytes
-     ID3v2 version              $04 00 -- 2 bytes
-     ID3v2 flags                %abcd0000 -- 1 byte (Uint32)
-     ID3v2 size             4 * %0xxxxxxx -- 4 bytes (Uint32)
-     */
-    
+        
     // MARK: Validate Tag Data
     
     // check that first five bytes are "ID3<version><null>"
     private func hasValidVersionBytes() throws -> Bool {
         if try self.isValidMp3() {
             let mp3Data = self.mp3File.data
-            let versionBytesFromMp3 = [UInt8](mp3Data.subdata(in: 0..<5))
+            let properties = TagProperties(for: self.mp3File)
+            let versionBytesFromMp3 = [UInt8](mp3Data.subdata(in: properties.versionBytesOffset..<properties.tagFlagsOffset))
             let versionBytes: [[UInt8]] = [
-            // the first five bytes of a valid ID3 Tag are "ID3"+ the version number in UInt8
-            [0x49, 0x44, 0x33, 0x02, 0x00],
-            [0x49, 0x44, 0x33, 0x03, 0x00],
-            [0x49, 0x44, 0x33, 0x04, 0x00]
+            [0x02, 0x00], [0x03, 0x00], [0x04, 0x00]
             ]
             if versionBytes.contains(versionBytesFromMp3) {
                 return true
@@ -87,7 +75,7 @@ struct TagValidator {
     private func hasValidTagSize() throws -> Bool {
         let tagProperties = TagProperties(for: self.mp3File)
         let mp3Data = self.mp3File.data
-        if mp3Data.count < Int(tagProperties.size) + tagProperties.tagHeaderSize {
+        if mp3Data.count < Int(tagProperties.size) + tagProperties.tagHeaderLength {
             throw Mp3File.Error.CorruptedFile
         } else {
             return true
