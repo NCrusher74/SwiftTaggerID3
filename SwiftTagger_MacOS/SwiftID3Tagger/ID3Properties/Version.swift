@@ -2,14 +2,13 @@
 //  Version.swift
 //  SwiftTagger_MacOS
 //
-//  This code is adapted from ID3TagEditor
-//  Created by Fabrizio Duroni on 27/02/2018.
-//  2018 Fabrizio Duroni. https://github.com/chicio/ID3TagEditor
-//
 //  Created by Nolaine Crusher on 4/8/20.
 //  Copyright © 2020 Nolaine Crusher. All rights reserved.
 //
 
+/**
+ An enum determining ID3 version and housing variables and methods are that dependent upon ID3 version
+ */
 public enum Version {
     /// ID3 v2.2
     case v2_2
@@ -26,7 +25,7 @@ public enum Version {
 }
 
 extension Version {
-    // Frame component sizes.
+    // MARK: Frame component sizes.
     /// the version-dependent byte-count of the id3identifier
     var identifierLength: Int {
         switch self {
@@ -62,7 +61,7 @@ extension Version {
         return identifierLength + sizeDeclarationLength + flagsLength
     }
     
-    // Frame component offsets:
+    // MARK: Frame component offsets:
     ///the byte offset of the frame identifier
     var identifierOffset: Data.Index {
         return 0
@@ -90,5 +89,4 @@ extension Version {
             case .v2_3, .v2_4: return [0x0, 0x0]
         }
     }
-    
 }

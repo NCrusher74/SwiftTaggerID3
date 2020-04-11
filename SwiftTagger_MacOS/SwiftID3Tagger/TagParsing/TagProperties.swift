@@ -12,10 +12,14 @@
 
 import Foundation
 
+/**
+ A type that contains the general properties of an ID3 tag, such as version and size
+ */
 internal struct TagProperties {
     
     internal var mp3file: Mp3File
     
+    ///  - parameter mp3File: the mp3 file containing the tag.
     internal init(for mp3File: Mp3File) {
         self.mp3file = mp3File
     }
@@ -24,12 +28,8 @@ internal struct TagProperties {
     internal var version: Version {
         let mp3Data = self.mp3file.data
         // the first five bytes of a valid ID3 Tag are "ID3"+ the version number in UInt8
-        let v2_2Bytes: [UInt8] = [0x02, 0x00]
-        let v2_3Bytes: [UInt8] = [0x03, 0x00]
-        let v2_4Bytes: [UInt8] = [0x04, 0x00]
-        
         let versionBytesFromMp3 = [UInt8](mp3Data.subdata(in: versionBytesOffset..<tagFlagsOffset))
-        if versionBytesFromMp3 == v2_2Bytes {
+        if versionBytesFromMp3 == v2_3Bytes {
             return Version.v2_2
         } else if versionBytesFromMp3 == v2_3Bytes {
             return Version.v2_3
@@ -40,8 +40,9 @@ internal struct TagProperties {
         }; return Version.v2_4
     }
     
+    /// the size of the ID3 tag
     internal var size: UInt32 {
-        let tagBytesOffset = 6
+        let tagBytesOffset = tagSizeDeclarationOffset
         let mp3Data = self.mp3file.data as NSData
         let tagDataBytes = mp3Data.bytes + tagBytesOffset
         let tagSize = tagDataBytes.assumingMemoryBound(
@@ -82,19 +83,45 @@ extension TagProperties {
         return 4
     }
     
+    /// the byte-count of the tag's header
     internal var tagHeaderLength: Int {
         return id3DeclarationLength + versionDeclarationLength + tagFlagsLength + tagSizeDeclarationLength
     }
     
-    internal var versionBytesOffset: Int {
+    /// the byte-offset of the version bytes
+    internal var versionBytesOffset: Data.Index {
         return id3DeclarationLength
     }
     
-    internal var tagFlagsOffset: Int {
+    /// the byte-offset of the tag's flag bytes
+    internal var tagFlagsOffset: Data.Index {
         return id3DeclarationLength + versionDeclarationLength
     }
     
-    internal var tagSizeDeclarationOffset: Int {
+    /// the byte-offset of the tag's size declaration
+    internal var tagSizeDeclarationOffset: Data.Index {
         return id3DeclarationLength + versionDeclarationLength + tagFlagsLength
     }
+    
+    /// the UInt8 byte array for version2.2
+    /// used as a comparison to determine which version to return
+    private var v2_2Bytes: [UInt8] {
+        return [0x02, 0x00]
+    }
+    /// the UInt8 byte array for version2.3
+    /// used as a comparison to determine which version to return
+    private var v2_3Bytes: [UInt8] {
+        return [0x03, 0x00]
+    }
+    /// the UInt8 byte array for version2.4
+    /// used as a comparison to determine which version to return
+    private var v2_4Bytes: [UInt8] {
+        return [0x04, 0x00]
+    }
+    /// the [UInt8] byte array for all possible versions
+    /// used as a comparison to determine which version to return
+    internal var versionBytes: [[UInt8]] {
+        return [v2_2Bytes, v2_3Bytes, v2_4Bytes]
+    }
+
 }

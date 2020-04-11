@@ -7,17 +7,23 @@
 //
 
 import Foundation
-
+/**
+ A type representing the properties of a frame
+ */
 struct FrameProperties {
     
     var mp3File: Mp3File
     var version: Version
-    
+
+    ///  - parameter mp3File: the mp3 file containing the tag containing the frame.
+    ///  - parameter version: the version of the tag, and hence the frame.
     init(mp3File: Mp3File, version: Version) {
         self.mp3File = mp3File
         self.version = version
     }
-        
+
+    /// the 3- or 4- byte ID3 identifier of the frame
+    /// returns `FrameName` type
     internal func identifier(
         from frameData: inout Data.SubSequence,
         version: Version,
@@ -31,6 +37,8 @@ struct FrameProperties {
         return FrameName(identifier: String(ascii: identifier))
     }
     
+    /// the size of the frame, in bytes
+    /// calculated from the size of the content and the size of the header
     internal func size(
         frameStart: Data.Index,
         version: Version
@@ -39,7 +47,8 @@ struct FrameProperties {
         return headerLength + contentSize(
             frameStart: frameStart, version: version)
     }
-    
+
+    ///  the size of the content of the frame, in bytes
     private func contentSize(
         frameStart: Data.Index,
         version: Version

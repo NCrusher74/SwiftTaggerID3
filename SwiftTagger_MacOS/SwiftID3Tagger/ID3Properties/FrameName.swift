@@ -8,7 +8,8 @@
 
 import Foundation
 
-/** FrameName describes how SwiftTagger refers to the frame type internally. All information, such as ParserType, FrameType, the ID3FrameIdentifier, */
+/** `FrameName` describes how SwiftTagger refers to the frame type internally.
+ All information for handling a frame, such as ParserType and FrameType, are determined by `FrameName` */
 enum FrameName: String {
     
     case album = "Album"
@@ -86,6 +87,7 @@ enum FrameName: String {
     case userDefinedWebpage = "UserDefinedWebpage"
     case year = "Year"
 
+    /** Uses the identifier string parsed out of a frame to initialize the `FrameName*/
     init(identifier: String) {
         if identifier == "TAL" || identifier == "TALB" {
             self = .album

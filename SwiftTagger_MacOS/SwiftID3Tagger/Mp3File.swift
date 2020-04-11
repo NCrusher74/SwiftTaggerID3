@@ -7,13 +7,19 @@
 //
 
 import Foundation
-import AVFoundation
+
+/// An audio file represents an audio file somewhere on disk.
+///
+/// This wrapper houses methods for querying or modifying information about the file.
 
 public struct Mp3File {
-    
+ 
     public let location: URL
     internal var data: Data
-    
+
+    /// - Parameters:
+    ///     - location: The location of the audio file in the local file system.
+    ///     - data: The content of the file presented as Data.
     public init(location: URL) throws {
         self.location = location
         do {

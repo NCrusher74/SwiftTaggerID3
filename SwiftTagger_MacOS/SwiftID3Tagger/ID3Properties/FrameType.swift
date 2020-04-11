@@ -8,8 +8,7 @@
 
 import Foundation
 
-/** Frame Type describes how the information in the frame will be returned from the API, not how it is read and stored */
-
+/** Frame Type describes how the information in the frame will be returned from the API, not how it is read and stored in the file */
 enum FrameType {
     case boolFrame
     case chapterFrame

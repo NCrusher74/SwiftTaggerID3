@@ -8,10 +8,12 @@
 
 import Foundation
 
+/** A type containing methods and variables for querying and handling information from a frame */
 struct FrameInformation {
     
     var frameName: FrameName
-    
+
+    ///  - parameter frameName: an enum used to determine how a frame is handled
     init(frameName: FrameName) {
         self.frameName = frameName
     }
@@ -51,7 +53,7 @@ struct FrameInformation {
         }
     }
     
-    //
+    /** the key used to refer to a particular frame. Usually this is the rawValue of the `FrameName`, but in cases where a frame may be duplicated, will derive from information contained in the frame, such as a description field */
     public var frameKey: String {
         if self.hasDescription /* && count for that ID3 Frame return > 1 */ {
             return "\(self.frameName.rawValue): description" // placeholder
@@ -63,7 +65,7 @@ struct FrameInformation {
     }
     
     // MARK: Frame Type
-    /* Determines the way the data in the frame will be presented to the user.
+    /* Determines the way the data in the frame will be presented from the API.
      In some cases, this means a frame containing a string with specific data, such as integers or integer arrays, will be converted from a string to an integer/array */
     public var frameType: FrameType {
         switch self.frameName {
@@ -146,8 +148,8 @@ struct FrameInformation {
     }
     
     // MARK: Parser Type
-    /* Determines the method used to parse the frame data */
-    internal var parser: ParserType {
+    /* Determines the parser used to parse the frame data */
+    internal var parserType: ParserType {
         switch self.frameName {
             
             case .album: return ParserType.stringParser
