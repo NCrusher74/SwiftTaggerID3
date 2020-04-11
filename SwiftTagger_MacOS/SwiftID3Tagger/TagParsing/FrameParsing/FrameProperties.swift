@@ -23,18 +23,18 @@ struct FrameProperties {
     }
 
     /// the 3- or 4- byte ID3 identifier of the frame
-    /// returns `FrameName` type
+    /// returns `FrameLayoutIdentifier` type
     internal func identifier(
         from frameData: inout Data.SubSequence,
         version: Version,
         frameInfo: FrameInformation
-    ) -> FrameName {
+    ) -> FrameLayoutIdentifier {
         let identifier = frameData.extractFirst(version.identifierLength)
         assert(
             String(ascii: identifier) == frameInfo.id3Identifier(version: version),
             "Mismatched frame name: \(String(ascii: identifier)) ≠ \(String(describing: frameInfo.id3Identifier))"
         )
-        return FrameName(identifier: String(ascii: identifier))
+        return FrameLayoutIdentifier(identifier: String(ascii: identifier))
     }
     
     /// the size of the frame, in bytes

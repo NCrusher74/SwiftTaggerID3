@@ -1207,7 +1207,7 @@ Abstract
 
 4.11.   Comments
 
-   This frame is indended for any kind of full text information that
+   This frame is intended for any kind of full text information that
    does not fit in any other frame. It consists of a frame header
    followed by encoding, language and content descriptors and is ended
    with the actual comment as a text string. Newline characters are

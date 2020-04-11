@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		51490E49243EBB4A009D4BA4 /* FrameInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51490E48243EBB4A009D4BA4 /* FrameInformation.swift */; };
 		51490E4D243EBB99009D4BA4 /* FrameType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51490E4C243EBB99009D4BA4 /* FrameType.swift */; };
-		51490E51243EDB4F009D4BA4 /* FrameName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51490E50243EDB4F009D4BA4 /* FrameName.swift */; };
+		51490E51243EDB4F009D4BA4 /* FrameLayoutIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51490E50243EDB4F009D4BA4 /* FrameLayoutIdentifier.swift */; };
 		51490E53243EF216009D4BA4 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51490E52243EF216009D4BA4 /* Data.swift */; };
 		51490E55243EF28A009D4BA4 /* IntsExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51490E54243EF28A009D4BA4 /* IntsExtensions.swift */; };
 		51490E5C243EF94E009D4BA4 /* id3v2.3.0.txt in Resources */ = {isa = PBXBuildFile; fileRef = 51490E57243EF94D009D4BA4 /* id3v2.3.0.txt */; };
@@ -34,6 +34,8 @@
 		517754422441386B005E43C5 /* methods stashed for later use.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517754412441386B005E43C5 /* methods stashed for later use.swift */; };
 		517754452441929F005E43C5 /* StringFrameParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517754442441929F005E43C5 /* StringFrameParser.swift */; };
 		5177544824423D46005E43C5 /* StringFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5177544724423D46005E43C5 /* StringFrame.swift */; };
+		5177544A2442743F005E43C5 /* FrameKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517754492442743F005E43C5 /* FrameKey.swift */; };
+		5177544C2442791C005E43C5 /* FrameProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5177544B2442791B005E43C5 /* FrameProtocol.swift */; };
 		517E886A243DBCA300F9F8D6 /* mp3-chaptered.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 517E8869243DBCA300F9F8D6 /* mp3-chaptered.mp3 */; };
 		51E432B6243DA257006574A1 /* SwiftTagger_MacOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51E432AC243DA257006574A1 /* SwiftTagger_MacOS.framework */; };
 		51E432BB243DA257006574A1 /* SwiftTagger_MacOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E432BA243DA257006574A1 /* SwiftTagger_MacOSTests.swift */; };
@@ -79,7 +81,7 @@
 /* Begin PBXFileReference section */
 		51490E48243EBB4A009D4BA4 /* FrameInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameInformation.swift; sourceTree = "<group>"; };
 		51490E4C243EBB99009D4BA4 /* FrameType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameType.swift; sourceTree = "<group>"; };
-		51490E50243EDB4F009D4BA4 /* FrameName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameName.swift; sourceTree = "<group>"; };
+		51490E50243EDB4F009D4BA4 /* FrameLayoutIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameLayoutIdentifier.swift; sourceTree = "<group>"; };
 		51490E52243EF216009D4BA4 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		51490E54243EF28A009D4BA4 /* IntsExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntsExtensions.swift; sourceTree = "<group>"; };
 		51490E57243EF94D009D4BA4 /* id3v2.3.0.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = id3v2.3.0.txt; sourceTree = "<group>"; };
@@ -104,6 +106,8 @@
 		517754412441386B005E43C5 /* methods stashed for later use.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "methods stashed for later use.swift"; sourceTree = "<group>"; };
 		517754442441929F005E43C5 /* StringFrameParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringFrameParser.swift; sourceTree = "<group>"; };
 		5177544724423D46005E43C5 /* StringFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringFrame.swift; sourceTree = "<group>"; };
+		517754492442743F005E43C5 /* FrameKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameKey.swift; sourceTree = "<group>"; };
+		5177544B2442791B005E43C5 /* FrameProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameProtocol.swift; sourceTree = "<group>"; };
 		517E8869243DBCA300F9F8D6 /* mp3-chaptered.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "mp3-chaptered.mp3"; sourceTree = "<group>"; };
 		51E432AC243DA257006574A1 /* SwiftTagger_MacOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftTagger_MacOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		51E432AF243DA257006574A1 /* SwiftTagger_MacOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftTagger_MacOS.h; sourceTree = "<group>"; };
@@ -151,8 +155,10 @@
 				5177544624423D2E005E43C5 /* FrameTypes */,
 				51490E48243EBB4A009D4BA4 /* FrameInformation.swift */,
 				51490E4C243EBB99009D4BA4 /* FrameType.swift */,
-				51490E50243EDB4F009D4BA4 /* FrameName.swift */,
+				51490E50243EDB4F009D4BA4 /* FrameLayoutIdentifier.swift */,
 				51E432D9243DB096006574A1 /* Version.swift */,
+				517754492442743F005E43C5 /* FrameKey.swift */,
+				5177544B2442791B005E43C5 /* FrameProtocol.swift */,
 			);
 			path = ID3Properties;
 			sourceTree = "<group>";
@@ -455,6 +461,7 @@
 				51E432C7243DA2E0006574A1 /* Mp3File.swift in Sources */,
 				51490E6D243F363E009D4BA4 /* ParserType.swift in Sources */,
 				51FA350E244034B2000997EC /* UInt32.swift in Sources */,
+				5177544A2442743F005E43C5 /* FrameKey.swift in Sources */,
 				51E432DA243DB096006574A1 /* Version.swift in Sources */,
 				51FA350C24402D48000997EC /* StringEncoding.swift in Sources */,
 				51E432CB243DA3F6006574A1 /* Mp3FileError.swift in Sources */,
@@ -465,7 +472,8 @@
 				51FA3503243FB03C000997EC /* TagProperties.swift in Sources */,
 				517754422441386B005E43C5 /* methods stashed for later use.swift in Sources */,
 				51FA3510244038D0000997EC /* FrameProperties.swift in Sources */,
-				51490E51243EDB4F009D4BA4 /* FrameName.swift in Sources */,
+				51490E51243EDB4F009D4BA4 /* FrameLayoutIdentifier.swift in Sources */,
+				5177544C2442791C005E43C5 /* FrameProtocol.swift in Sources */,
 				51FA350A24402580000997EC /* String.swift in Sources */,
 				51490E53243EF216009D4BA4 /* Data.swift in Sources */,
 				51490E64243F1916009D4BA4 /* FrameParser.swift in Sources */,

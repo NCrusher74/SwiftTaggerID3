@@ -12,7 +12,7 @@ import Foundation
  A protocol to which all frame parser types will conform
  */
 internal protocol FrameParser {
-    var frameName: FrameName { get }
+    var frameLayoutIdentifier: FrameLayoutIdentifier { get }
 }
 
 extension FrameParser {

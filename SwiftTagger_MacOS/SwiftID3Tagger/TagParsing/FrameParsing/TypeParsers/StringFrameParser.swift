@@ -13,7 +13,7 @@ import Foundation
  */
 //internal struct StringFrameParser: FrameParser {
 //    
-//    let frameName: FrameName
+//    let frameLayoutIdentifier: FrameLayoutIdentifier
 //
 //    ///  - parameter frameData: the data of frame
 //    ///  - parameter version: the ID3 version of the frame.
@@ -21,7 +21,7 @@ import Foundation
 //    /// returns the frame name and ????
 //    func parse(frame: Data, version: Version,
 //               frameInfo: FrameInformation,
-//               completed: (FrameName, FrameData) throws -> ()) {
+//               completed: (FrameLayoutIdentifier, FrameData) throws -> ()) {
 //        var parsing = frame[...]
 //        extractHeader(from: &parsing, version: version, frameInfo: frameInfo)
 //        
@@ -29,6 +29,6 @@ import Foundation
 //        
 //        let parsed = extractContentString(from: &parsing, encoding: encoding)
 //        let constructed = StringFrame(contentString: parsed)
-//        completed(frameName, constructed)
+//        completed(frameLayoutIdentifier, constructed)
 //    }
 //}
