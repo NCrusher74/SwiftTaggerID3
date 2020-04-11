@@ -36,9 +36,9 @@ enum StringEncoding: UInt8 {
         let encodingByte = frame[encodingByteOffset]
         let validEncodingBytes: [UInt8] = [0x00, 0x01, 0x02, 0x03]
         assert(
-            validEncodingBytes.contains(encodingByte), "Invalid encoding detected. Attempting to decode anyway."
+            validEncodingBytes.contains(encodingByte), "Invalid encoding detected. Attempting default encoding."
         )
-        return StringEncoding(rawValue: encodingByte)?.standardLibraryEncoding ?? .isoLatin1
+        return StringEncoding(rawValue: encodingByte)?.standardLibraryEncoding ?? .utf8
     }
 }
 

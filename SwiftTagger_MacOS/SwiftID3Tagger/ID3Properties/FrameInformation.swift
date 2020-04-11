@@ -68,80 +68,80 @@ struct FrameInformation {
     public var frameType: FrameType {
         switch self.frameName {
             
-            case .album: return FrameType.string
-            case .albumSort: return FrameType.string
-            case .albumArtist: return FrameType.string
-            case .albumArtistSort: return FrameType.string
-            case .arranger: return FrameType.string
-            case .artist: return FrameType.string
-            case .artistSort: return FrameType.string
-            case .artistWebpage: return FrameType.url
-            case .attachedPicture: return FrameType.image
-            case .audioFileWebpage: return FrameType.url
-            case .audioSourceWebpage: return FrameType.url
-            case .bpm: return FrameType.integer
-            case .chapter: return FrameType.chapter
-            case .comments: return FrameType.stringArray
-            case .compilation: return FrameType.bool
-            case .composer: return FrameType.string
-            case .composerSort: return FrameType.string
-            case .conductor: return FrameType.string
-            case .contentGroup: return FrameType.string
-            case .copyright: return FrameType.string
-            case .copyrightWebpage: return FrameType.url
-            case .date: return FrameType.date
-            case .discNumber: return FrameType.integerArray
-            case .encodingTime: return FrameType.integerArray
-            case .encodedBy: return FrameType.string
-            case .encodingSettings: return FrameType.string
-            case .fileType: return FrameType.string
-            case .fileOwner: return FrameType.string
-            case .genre: return FrameType.genre
-            case .grouping: return FrameType.string
-            case .initialKey: return FrameType.string
-            case .involvedPeopleList: return FrameType.tupleArray
-            case .isrc: return FrameType.integer
-            case .languages: return FrameType.stringArray
-            case .length: return FrameType.integer
-            case .lyricist: return FrameType.string
-            case .mediaType: return FrameType.string
-            case .mood: return FrameType.string
-            case .movementCount: return FrameType.integer
-            case .movementName: return FrameType.string
-            case .movementNumber: return FrameType.integer
-            case .musicianCreditsList: return FrameType.tupleArray
-            case .originalAlbum: return FrameType.string
-            case .originalArtist: return FrameType.string
-            case .originalFilename: return FrameType.string
-            case .originalLyricist: return FrameType.string
-            case .originalReleaseTime: return FrameType.date
-            case .paymentWebpage: return FrameType.url
-            case .playlistDelay: return FrameType.integer
-            case .podcastCategory: return FrameType.string
-            case .podcastDescription: return FrameType.string
-            case .podcastID: return FrameType.string
-            case .podcastKeywords: return FrameType.string
-            case .podcastFeedLink: return FrameType.string
-            case .producedNotice: return FrameType.string
-            case .publisher: return FrameType.string
-            case .publisherWebpage: return FrameType.url
-            case .radioStation: return FrameType.string
-            case .radioStationOwner: return FrameType.string
-            case .radioStationWebpage: return FrameType.url
-            case .recordingDate: return FrameType.date
-            case .releaseTime: return FrameType.date
-            case .setSubtitle: return FrameType.string
-            case .subtitle: return FrameType.string
-            case .tableOfContents: return FrameType.toc
-            case .taggingTime: return FrameType.date
-            case .time: return FrameType.date
-            case .title: return FrameType.string
-            case .titleSort: return FrameType.string
-            case .trackNumber: return FrameType.integerArray
-            case .unsynchronizedLyrics: return FrameType.stringArray
-            case .userDefinedText: return FrameType.stringArray
-            case .userDefinedWebpage: return FrameType.url
-            case .year: return FrameType.integer
+            case .album: return FrameType.stringFrame
+            case .albumSort: return FrameType.stringFrame
+            case .albumArtist: return FrameType.stringFrame
+            case .albumArtistSort: return FrameType.stringFrame
+            case .arranger: return FrameType.stringFrame
+            case .artist: return FrameType.stringFrame
+            case .artistSort: return FrameType.stringFrame
+            case .artistWebpage: return FrameType.urlFrame
+            case .attachedPicture: return FrameType.imageFrame
+            case .audioFileWebpage: return FrameType.urlFrame
+            case .audioSourceWebpage: return FrameType.urlFrame
+            case .bpm: return FrameType.integerFrame
+            case .chapter: return FrameType.chapterFrame
+            case .comments: return FrameType.stringArrayFrame
+            case .compilation: return FrameType.boolFrame
+            case .composer: return FrameType.stringFrame
+            case .composerSort: return FrameType.stringFrame
+            case .conductor: return FrameType.stringFrame
+            case .contentGroup: return FrameType.stringFrame
+            case .copyright: return FrameType.stringFrame
+            case .copyrightWebpage: return FrameType.urlFrame
+            case .date: return FrameType.dateFrame
+            case .discNumber: return FrameType.integerArrayFrame
+            case .encodingTime: return FrameType.integerArrayFrame
+            case .encodedBy: return FrameType.stringFrame
+            case .encodingSettings: return FrameType.stringFrame
+            case .fileType: return FrameType.stringFrame
+            case .fileOwner: return FrameType.stringFrame
+            case .genre: return FrameType.genreFrame
+            case .grouping: return FrameType.stringFrame
+            case .initialKey: return FrameType.stringFrame
+            case .involvedPeopleList: return FrameType.tupleArrayFrame
+            case .isrc: return FrameType.integerFrame
+            case .languages: return FrameType.stringArrayFrame
+            case .length: return FrameType.integerFrame
+            case .lyricist: return FrameType.stringFrame
+            case .mediaType: return FrameType.stringFrame
+            case .mood: return FrameType.stringFrame
+            case .movementCount: return FrameType.integerFrame
+            case .movementName: return FrameType.stringFrame
+            case .movementNumber: return FrameType.integerFrame
+            case .musicianCreditsList: return FrameType.tupleArrayFrame
+            case .originalAlbum: return FrameType.stringFrame
+            case .originalArtist: return FrameType.stringFrame
+            case .originalFilename: return FrameType.stringFrame
+            case .originalLyricist: return FrameType.stringFrame
+            case .originalReleaseTime: return FrameType.dateFrame
+            case .paymentWebpage: return FrameType.urlFrame
+            case .playlistDelay: return FrameType.integerFrame
+            case .podcastCategory: return FrameType.stringFrame
+            case .podcastDescription: return FrameType.stringFrame
+            case .podcastID: return FrameType.stringFrame
+            case .podcastKeywords: return FrameType.stringFrame
+            case .podcastFeedLink: return FrameType.stringFrame
+            case .producedNotice: return FrameType.stringFrame
+            case .publisher: return FrameType.stringFrame
+            case .publisherWebpage: return FrameType.urlFrame
+            case .radioStation: return FrameType.stringFrame
+            case .radioStationOwner: return FrameType.stringFrame
+            case .radioStationWebpage: return FrameType.urlFrame
+            case .recordingDate: return FrameType.dateFrame
+            case .releaseTime: return FrameType.dateFrame
+            case .setSubtitle: return FrameType.stringFrame
+            case .subtitle: return FrameType.stringFrame
+            case .tableOfContents: return FrameType.tocFrame
+            case .taggingTime: return FrameType.dateFrame
+            case .time: return FrameType.dateFrame
+            case .title: return FrameType.stringFrame
+            case .titleSort: return FrameType.stringFrame
+            case .trackNumber: return FrameType.integerArrayFrame
+            case .unsynchronizedLyrics: return FrameType.stringArrayFrame
+            case .userDefinedText: return FrameType.stringArrayFrame
+            case .userDefinedWebpage: return FrameType.urlFrame
+            case .year: return FrameType.integerFrame
         }
     }
     
@@ -683,12 +683,4 @@ struct FrameInformation {
         }
     }
     
-    internal func identifierBytes(version: Version) -> [UInt8] {
-        if version == .v2_2 {
-            return [UInt8](id3Identifier(version: version)?.utf8 ?? "TXX".utf8)
-        } else {
-            return [UInt8](id3Identifier(version: version)?.utf8 ?? "TXXX".utf8)
-        }
-    }
-
 }

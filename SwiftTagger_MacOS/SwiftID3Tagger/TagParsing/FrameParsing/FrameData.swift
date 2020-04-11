@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct FrameData {
+class FrameData {
     
     var mp3File: Mp3File
     

@@ -49,8 +49,7 @@ extension UInt8 {
     
     func paddingAdded(content: [UInt8], numberOfBytes: Int) -> [UInt8] {
         var newContent = content
-        newContent.append(contentsOf: [UInt8](
-            repeating: 0, count: numberOfBytes))
+        newContent.append(contentsOf: Data(repeating: 0x00, count: numberOfBytes))
         return newContent
     }
 }

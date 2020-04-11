@@ -8,8 +8,20 @@
 
 import Foundation
 
-struct StringFrameParser {
+internal struct StringFrameParser: FrameParser {
     
+    let frameName: FrameName
     
-    
+    func parse(frame: Data, version: Version,
+               frameInfo: FrameInformation,
+               completed: (FrameName, FrameData) throws -> ()) {
+        var parsing = frame[...]
+        extractHeader(from: &parsing, version: version, frameInfo: frameInfo)
+        
+        let encoding = try extractEncoding(from: &parsing)
+        
+        let parsed = extractContentString(from: &parsing, encoding: encoding)
+        let constructed = StringFrame(contentString: parsed)
+        completed(frameName, constructed)
+    }
 }

@@ -17,30 +17,30 @@ struct FrameProperties {
         self.mp3File = mp3File
         self.version = version
     }
-    
-    internal func frameIdentifier(
+        
+    internal func identifier(
         from frameData: inout Data.SubSequence,
         version: Version,
         frameInfo: FrameInformation
-    ) -> String {
+    ) -> FrameName {
         let identifier = frameData.extractFirst(version.identifierLength)
         assert(
             String(ascii: identifier) == frameInfo.id3Identifier(version: version),
             "Mismatched frame name: \(String(ascii: identifier)) ≠ \(String(describing: frameInfo.id3Identifier))"
         )
-        return String(ascii: identifier)
+        return FrameName(identifier: String(ascii: identifier))
     }
     
-    internal func frameSize(
+    internal func size(
         frameStart: Data.Index,
         version: Version
     ) -> Int {
         let headerLength = version.frameHeaderLength
-        return headerLength + frameContentSize(
+        return headerLength + contentSize(
             frameStart: frameStart, version: version)
     }
     
-    private func frameContentSize(
+    private func contentSize(
         frameStart: Data.Index,
         version: Version
     ) -> Int {

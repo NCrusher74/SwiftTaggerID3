@@ -11,17 +11,17 @@ import Foundation
 /** Frame Type describes how the information in the frame will be returned from the API, not how it is read and stored */
 
 enum FrameType {
-    case bool
-    case chapter
-    case date
-    case genre
-    case image
-    case integer
-    case integerArray
-    case string
-    case stringArray
-    case toc
-    case tupleArray
-    case url
+    case boolFrame
+    case chapterFrame
+    case dateFrame
+    case genreFrame
+    case imageFrame
+    case integerFrame
+    case integerArrayFrame
+    case stringFrame
+    case stringArrayFrame
+    case tocFrame
+    case tupleArrayFrame
+    case urlFrame
     
 }

@@ -33,6 +33,7 @@
 		5177543E24413768005E43C5 /* UnsignedInteger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5177543D24413768005E43C5 /* UnsignedInteger.swift */; };
 		517754422441386B005E43C5 /* methods stashed for later use.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517754412441386B005E43C5 /* methods stashed for later use.swift */; };
 		517754452441929F005E43C5 /* StringFrameParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517754442441929F005E43C5 /* StringFrameParser.swift */; };
+		5177544824423D46005E43C5 /* StringFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5177544724423D46005E43C5 /* StringFrame.swift */; };
 		517E886A243DBCA300F9F8D6 /* mp3-chaptered.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 517E8869243DBCA300F9F8D6 /* mp3-chaptered.mp3 */; };
 		51E432B6243DA257006574A1 /* SwiftTagger_MacOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51E432AC243DA257006574A1 /* SwiftTagger_MacOS.framework */; };
 		51E432BB243DA257006574A1 /* SwiftTagger_MacOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E432BA243DA257006574A1 /* SwiftTagger_MacOSTests.swift */; };
@@ -102,6 +103,7 @@
 		5177543D24413768005E43C5 /* UnsignedInteger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsignedInteger.swift; sourceTree = "<group>"; };
 		517754412441386B005E43C5 /* methods stashed for later use.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "methods stashed for later use.swift"; sourceTree = "<group>"; };
 		517754442441929F005E43C5 /* StringFrameParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringFrameParser.swift; sourceTree = "<group>"; };
+		5177544724423D46005E43C5 /* StringFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringFrame.swift; sourceTree = "<group>"; };
 		517E8869243DBCA300F9F8D6 /* mp3-chaptered.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "mp3-chaptered.mp3"; sourceTree = "<group>"; };
 		51E432AC243DA257006574A1 /* SwiftTagger_MacOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftTagger_MacOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		51E432AF243DA257006574A1 /* SwiftTagger_MacOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftTagger_MacOS.h; sourceTree = "<group>"; };
@@ -146,6 +148,7 @@
 		51490E43243EB647009D4BA4 /* ID3Properties */ = {
 			isa = PBXGroup;
 			children = (
+				5177544624423D2E005E43C5 /* FrameTypes */,
 				51490E48243EBB4A009D4BA4 /* FrameInformation.swift */,
 				51490E4C243EBB99009D4BA4 /* FrameType.swift */,
 				51490E50243EDB4F009D4BA4 /* FrameName.swift */,
@@ -194,6 +197,14 @@
 				517754442441929F005E43C5 /* StringFrameParser.swift */,
 			);
 			path = TypeParsers;
+			sourceTree = "<group>";
+		};
+		5177544624423D2E005E43C5 /* FrameTypes */ = {
+			isa = PBXGroup;
+			children = (
+				5177544724423D46005E43C5 /* StringFrame.swift */,
+			);
+			path = FrameTypes;
 			sourceTree = "<group>";
 		};
 		51D2BB0A243DB6FF00D06FEB /* Frameworks */ = {
@@ -306,11 +317,11 @@
 		51FA3504243FDB38000997EC /* FrameParsing */ = {
 			isa = PBXGroup;
 			children = (
+				51490E63243F1916009D4BA4 /* FrameParser.swift */,
 				5177544324419234005E43C5 /* TypeParsers */,
 				51490E6C243F363E009D4BA4 /* ParserType.swift */,
-				51FA350F244038D0000997EC /* FrameProperties.swift */,
-				51490E63243F1916009D4BA4 /* FrameParser.swift */,
 				517754372440599C005E43C5 /* FrameData.swift */,
+				51FA350F244038D0000997EC /* FrameProperties.swift */,
 			);
 			path = FrameParsing;
 			sourceTree = "<group>";
@@ -458,6 +469,7 @@
 				51FA350A24402580000997EC /* String.swift in Sources */,
 				51490E53243EF216009D4BA4 /* Data.swift in Sources */,
 				51490E64243F1916009D4BA4 /* FrameParser.swift in Sources */,
+				5177544824423D46005E43C5 /* StringFrame.swift in Sources */,
 				51E432C9243DA35E006574A1 /* URL.swift in Sources */,
 				5177543E24413768005E43C5 /* UnsignedInteger.swift in Sources */,
 				51490E66243F1F92009D4BA4 /* Data.Subsquence.swift in Sources */,
