@@ -12,11 +12,11 @@
 
 import Foundation
 
-struct TagProperties {
+internal struct TagProperties {
     
-    var mp3file: Mp3File
+    internal var mp3file: Mp3File
     
-    init(for mp3File: Mp3File) {
+    internal init(for mp3File: Mp3File) {
         self.mp3file = mp3File
     }
 
@@ -49,18 +49,6 @@ struct TagProperties {
         let decodedTagSize = tagSize.decodingSynchsafe()
         return decodedTagSize
     }
-    
-//    internal func tagData() throws -> FrameData {
-//        let validator = TagValidator(for: self.mp3file)
-//        if try validator.hasValidTag() {
-//            _ = size
-//            _ = version
-//        }
-//        let frameParser = FrameParser(forFile: self.mp3file)
-//        let data = try frameParser.parseFrames()
-//        return data
-//    }
-    
 }
 
 extension TagProperties {

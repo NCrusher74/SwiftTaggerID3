@@ -17,7 +17,7 @@ enum StringEncoding: UInt8 {
     case utf16WithBOM = 0x01
     case utf16BigEndian = 0x02
     case utf8 = 0x03
-        
+    
     var standardLibraryEncoding: String.Encoding {
         switch self {
             case .isoLatin1:
@@ -30,10 +30,15 @@ enum StringEncoding: UInt8 {
                 return .utf16BigEndian
         }
     }
-
+    
     func detect(frame: Data, version: Version) throws -> String.Encoding {
         let encodingByteOffset = version.encodingByteOffset
-        return StringEncoding(rawValue: frame[encodingByteOffset])?.standardLibraryEncoding ?? .isoLatin1
+        let encodingByte = frame[encodingByteOffset]
+        let validEncodingBytes: [UInt8] = [0x00, 0x01, 0x02, 0x03]
+        assert(
+            validEncodingBytes.contains(encodingByte), "Invalid encoding detected. Attempting to decode anyway."
+        )
+        return StringEncoding(rawValue: encodingByte)?.standardLibraryEncoding ?? .isoLatin1
     }
 }
 
@@ -46,7 +51,7 @@ extension StringEncoding {
                 return 2
         }
     }
-
+    
     // Because every string can be losslessly encoded this way,
     // and because it is supported by all ID3 versions.
     static let preferred = utf16WithBOM

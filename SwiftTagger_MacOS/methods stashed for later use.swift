@@ -6,6 +6,7 @@
 //  Copyright © 2020 Nolaine Crusher. All rights reserved.
 //
 
+/*
 import Foundation
 
 // You can put this method wherever
@@ -33,3 +34,4 @@ func declaredSize(
             return Int(raw.decodingSynchsafe())
     }
 }
+*/

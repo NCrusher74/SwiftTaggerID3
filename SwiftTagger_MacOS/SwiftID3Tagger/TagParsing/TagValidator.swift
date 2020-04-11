@@ -9,11 +9,11 @@
 import Foundation
 import AVFoundation
 
-struct TagValidator {
+internal struct TagValidator {
     
-    var mp3File: Mp3File
+    internal var mp3File: Mp3File
     
-    init(for mp3File: Mp3File) {
+    internal init(for mp3File: Mp3File) {
         self.mp3File = mp3File
     }
     
@@ -68,8 +68,6 @@ struct TagValidator {
             }
         }; return false
     }
-    
-    private var headerBytesTotal: Int = 10
     
     // check that tag size does not exceed file size
     private func hasValidTagSize() throws -> Bool {

@@ -20,7 +20,6 @@ struct FrameInformation {
     private var hasDescription: Bool {
         switch self.frameName {
             case .comments,
-                 .genre,
                  .unsynchronizedLyrics,
                  .userDefinedText,
                  .userDefinedWebpage:
@@ -148,7 +147,7 @@ struct FrameInformation {
     
     // MARK: Parser Type
     /* Determines the method used to parse the frame data */
-    public var parser: ParserType {
+    internal var parser: ParserType {
         switch self.frameName {
             
             case .album: return ParserType.stringParser
@@ -233,7 +232,7 @@ struct FrameInformation {
     // 3 bytes for ID3v2.2
     // 4 bytes for ID3v2.3 and ID3v2.4
     /* If ID3 identfier is `nil` the frame will be handled as a TXX/TXXX frame, unless it's a frame associated with date handling, in which case it will be handled depending on version. Musician Credits for ID3v2.2 and ID3v2.3 will be handled as InvolvedPeople */
-    public func id3identifier(version: Version) -> String? {
+    public func id3Identifier(version: Version) -> String? {
         switch self.frameName {
             
             case .album:
@@ -607,7 +606,7 @@ struct FrameInformation {
                 switch version {
                     case .v2_2: return nil
                     case .v2_3: return nil
-                    case .v2_4: return "TDLR"
+                    case .v2_4: return "TDRL"
             }
             case .setSubtitle:
                 switch version {
@@ -684,13 +683,12 @@ struct FrameInformation {
         }
     }
     
-    internal func id3IdentifierBytes(version: Version) -> [UInt8] {
+    internal func identifierBytes(version: Version) -> [UInt8] {
         if version == .v2_2 {
-            return [UInt8](id3identifier(version: version)?.utf8 ?? "TXX".utf8)
+            return [UInt8](id3Identifier(version: version)?.utf8 ?? "TXX".utf8)
         } else {
-            return [UInt8](id3identifier(version: version)?.utf8 ?? "TXXX".utf8)
+            return [UInt8](id3Identifier(version: version)?.utf8 ?? "TXXX".utf8)
         }
     }
-    
-    
+
 }

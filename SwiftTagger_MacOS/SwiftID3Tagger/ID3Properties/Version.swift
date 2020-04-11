@@ -18,21 +18,14 @@ public enum Version {
     /// ID3 v2.4
     case v2_4
     
+    init() {
+        self = .v2_2
+        self = .v2_3
+        self = .v2_4
+    }
 }
 
 extension Version {
-    // Tag Components    
-    /// the version-dependent byte-count of the version declaration
-    var versionLength: Int {
-        switch self {
-            case .v2_2:
-                return 3
-            case .v2_3, .v2_4:
-                return 4
-        }
-    }
-    
-    
     // Frame component sizes.
     /// the version-dependent byte-count of the id3identifier
     var identifierLength: Int {
@@ -71,22 +64,22 @@ extension Version {
     
     // Frame component offsets:
     ///the byte offset of the frame identifier
-    var identifierOffset: Int {
+    var identifierOffset: Data.Index {
         return 0
     }
     
     /// the byte offset of the frame size declaration
-    var sizeDeclarationOffset: Int {
+    var sizeDeclarationOffset: Data.Index {
         return identifierOffset  + identifierLength
     }
     
     /// the byte offset of the frame flags
-    var flagsOffset: Int {
+    var flagsOffset: Data.Index {
         return sizeDeclarationOffset + sizeDeclarationLength
     }
     
     /// the version-dependent position of the encoding byte
-    internal var encodingByteOffset: Int {
+    internal var encodingByteOffset: Data.Index {
         return frameHeaderLength
     }
     
@@ -97,6 +90,5 @@ extension Version {
             case .v2_3, .v2_4: return [0x0, 0x0]
         }
     }
-    
     
 }

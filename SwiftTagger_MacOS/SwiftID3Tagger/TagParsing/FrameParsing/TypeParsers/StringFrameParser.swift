@@ -1,5 +1,5 @@
 //
-//  FrameData.swift
+//  StringFrameParser.swift
 //  SwiftTagger_MacOS
 //
 //  Created by Nolaine Crusher on 4/10/20.
@@ -8,13 +8,7 @@
 
 import Foundation
 
-struct FrameData {
-    
-    var mp3File: Mp3File
-    
-    init(fromFile mp3File: Mp3File) {
-        self.mp3File = mp3File
-    }
+struct StringFrameParser {
     
     
     

@@ -18,64 +18,48 @@ struct FrameProperties {
         self.version = version
     }
     
-    internal let encodingByteSize: Int = 1
-
-    
-
-//    internal func frameSize() -> Int {
-//    }
-
-    /*
-     func parse(mp3: NSData, framePosition: Int, version: Version) -> Int {
-     return frameContentSizeParser.parse(mp3: mp3, framePosition: framePosition, version: version) +
-     id3FrameConfiguration.headerSizeFor(version: version)
-     }
-
-     */
-    
-    
-//    internal func frameContentSize() -> {
-//        
-//    }
-        /*
-         let lengthOfSizeDeclaration = 4 // ? Or whatever it actually is.
-         let sizeDataRange = frameSizePosition ..< frameSizePosition+lengthOfSizeDeclaration
-         guard sizeDataRange.upperBound <= mp3Data.endIndex else {
-         // If the data is corrupt and doesn’t even have room for a size declaration,
-         // describe the size of whatever is actually there instead.
-         return mp3Data.distance(from: frameSizePosition, to: mp3Data.endIndex)
-         }
-         let frameSizeData = mp3Data[sizeDataRange]
-         let frameSize = UInt32(parsing: frameSizeData)
-         }
-         */
-
-
-
-/*
-func parse(mp3: NSData, framePosition: Int, version: Version) -> Int {
-    var frameSize: UInt32 = getFrameSizeFrom(mp3: mp3, framePosition: framePosition, version: version)
-    frameSize = decodeIfIsASynchsafeInteger(frameSize: frameSize, for: version)
-    return Int(frameSize)
-}
-
-private func getFrameSizeFrom(mp3: NSData, framePosition: Int, version: Version) -> UInt32 {
-    //let frameSizePosition = framePosition + id3FrameConfiguration.sizeOffsetFor(version: version)
-    var frameSize: UInt32 = 0
-    mp3.getBytes(&frameSize, range: NSMakeRange(frameSizePosition, 4))
-    frameSize = frameSize.bigEndian & id3FrameConfiguration.sizeMaskFor(version: version)
-    return frameSize
-}
-
-private func decodeIfIsASynchsafeInteger(frameSize: UInt32, for version: Version) -> UInt32 {
-    var newFrameSize = frameSize
-    if version == .version4 {
-        newFrameSize = synchsafeIntegerDecoder.decode(integer: frameSize)
+    internal func frameIdentifier(
+        from frameData: inout Data.SubSequence,
+        version: Version,
+        frameInfo: FrameInformation
+    ) -> String {
+        let identifier = frameData.extractFirst(version.identifierLength)
+        assert(
+            String(ascii: identifier) == frameInfo.id3Identifier(version: version),
+            "Mismatched frame name: \(String(ascii: identifier)) ≠ \(String(describing: frameInfo.id3Identifier))"
+        )
+        return String(ascii: identifier)
     }
-    return newFrameSize
-}
-}
-*/
-
-
+    
+    internal func frameSize(
+        frameStart: Data.Index,
+        version: Version
+    ) -> Int {
+        let headerLength = version.frameHeaderLength
+        return headerLength + frameContentSize(
+            frameStart: frameStart, version: version)
+    }
+    
+    private func frameContentSize(
+        frameStart: Data.Index,
+        version: Version
+    ) -> Int {
+        let mp3Data = self.mp3File.data
+        let sizeDataStart = frameStart + version.sizeDeclarationOffset
+        let sizeDataRange = sizeDataStart ..< sizeDataStart + version.sizeDeclarationLength
+        guard sizeDataRange.upperBound <= mp3Data.endIndex else {
+            // If the data is corrupt and doesn’t even have room for a size declaration,
+            // it also doesn’t have room for content,
+            // and the header isn’t considered part of the size.
+            return 0
+        }
+        let frameSizeData = mp3Data[sizeDataRange]
+        let raw = UInt32(parsing: frameSizeData, .bigEndian)
+        switch version {
+            case .v2_2, .v2_3:
+                return Int(raw)
+            case .v2_4:
+                return Int(raw.decodingSynchsafe())
+        }
+    }
 }
