@@ -165,6 +165,7 @@ public enum FrameKey: Hashable {
     case year
     case unknown(uuid: UUID)
     
+    // MARK: Alternate Frame Keys
     /// also known as `Arranger` or `Interpreter`. Maps to the `Arranger` frame. If another `Arranger` frame is already present, the frame will be created as a `UserDefinedText` frame with the description, "Remixer"
     static var remixer: FrameKey { return .arranger }
 

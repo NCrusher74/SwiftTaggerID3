@@ -14,6 +14,7 @@ protocol FrameProtocol {
     
     var mp3File: Mp3File { get }
     var version: Version { get }
+    var frameData: Data.SubSequence { get }
     
     ///  - parameter mp3File: the mp3 file containing the tag containing the frame.
     ///  - parameter version: the version of the tag, and hence the frame.
@@ -22,34 +23,40 @@ protocol FrameProtocol {
 
 extension FrameProtocol {
     
-    /// the 3- or 4- byte ID3 identifier of the frame
-    /// returns `FrameLayoutIdentifier` type
-    func identifier(
+    internal func frameHeader(
         from frameData: inout Data.SubSequence,
         version: Version,
-        frameID: FrameLayoutIdentifier
-    ) -> FrameLayoutIdentifier {
-        let identifier = frameData.extractFirst(version.identifierLength)
+        frameID: FrameLayoutIdentifier) -> FrameLayoutIdentifier {
+        let name = frameData.extractFirst(version.identifierLength)
+        
         assert(
-            String(ascii: identifier) == frameID.id3Identifier(version: version),
-            "Mismatched frame name: \(String(ascii: identifier)) ≠ \(String(describing: frameID.id3Identifier))"
+            String(ascii: name) == frameID.id3Identifier(version: version),
+            "Mismatched frame name: \(String(ascii: name)) ≠ \(String(describing: frameID.id3Identifier))"
         )
-        return FrameLayoutIdentifier(identifier: String(ascii: identifier))
+        _ = frameData.extractFirst(version.sizeDeclarationLength)
+        _ = frameData.extractFirst(version.flagsLength)
+        return FrameLayoutIdentifier(identifier: (String(ascii: name)))
+    }
+    
+    
+    internal func frameEncoding(from frameData: inout Data.SubSequence) -> StringEncoding {
+        return frameData.extractFirst(1).first.flatMap({ StringEncoding(rawValue: $0) })
+            ?? .utf8
     }
     
     /// the size of the frame, in bytes
     /// calculated from the size of the content and the size of the header
-    func size(
+    internal func frameSize(
         frameStart: Data.Index,
         version: Version
     ) -> Int {
         let headerLength = version.frameHeaderLength
-        return headerLength + contentSize(
+        return headerLength + frameContentSize(
             frameStart: frameStart, version: version)
     }
     
     ///  the size of the content of the frame, in bytes
-    func contentSize(
+    private func frameContentSize(
         frameStart: Data.Index,
         version: Version
     ) -> Int {
@@ -71,4 +78,5 @@ extension FrameProtocol {
                 return Int(raw.decodingSynchsafe())
         }
     }
+    
 }

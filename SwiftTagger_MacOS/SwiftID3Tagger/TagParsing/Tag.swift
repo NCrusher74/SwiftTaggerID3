@@ -1,5 +1,5 @@
 //
-//  TagData.swift
+//  Tag.swift
 //  SwiftTagger_MacOS
 //
 //  Created by Nolaine Crusher on 4/10/20.
@@ -8,11 +8,13 @@
 
 import Foundation
 
-struct TagData {
+struct Tag {
     
-    var mp3File: Mp3File
+    var frames: [FrameKey : Frame]
     
-    init(fromFile mp3File: Mp3File) {
-        self.mp3File = mp3File
+    init(frames: [FrameKey: Frame]) {
+        self.frames = frames
     }
+    
+    
 }

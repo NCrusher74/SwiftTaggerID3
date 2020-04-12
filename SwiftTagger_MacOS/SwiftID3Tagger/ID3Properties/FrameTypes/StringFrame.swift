@@ -11,7 +11,7 @@ import Foundation
 /**
  A type representing an ID3 frame that holds a single string, such as Artist, Title, Album, etc
  */
-internal struct StringFrame {
+internal struct StringFrame {    
     
     let contentString: String
     
