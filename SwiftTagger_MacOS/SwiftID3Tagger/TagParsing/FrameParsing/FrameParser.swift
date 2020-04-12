@@ -2,55 +2,84 @@
 //  FrameParser.swift
 //  SwiftTagger_MacOS
 //
-//  Created by Nolaine Crusher on 4/9/20.
+//  Created by Nolaine Crusher on 4/12/20.
 //  Copyright © 2020 Nolaine Crusher. All rights reserved.
 //
 
 import Foundation
 
-/**
- A protocol to which all frame parser types will conform
- */
 internal protocol FrameParser {
-    var frameLayoutIdentifier: FrameLayoutIdentifier { get }
+    var frameName: FrameLayoutIdentifier { get }
 }
 
 extension FrameParser {
-
-    /// extracts the header data from the frame, which includes `identifier`, `sizeDeclaration`, and `flags`
-    ///  - parameter frameData: the data of frame
-    ///  - parameter version: the ID3 version of the frame.
-    ///  - parameter frameInfo: a type containing methods of handling the content of a frame based on frame type.
-    internal func extractHeader(
-        from frameData: inout Data.SubSequence,
-            version: Version,
-            frameInfo: FrameInformation) {
-        let identifier = frameData.extractFirst(version.identifierLength)
+    
+    internal func extractHeader(from frameData: inout Data.SubSequence, version: Version) {
+        let name = frameData.extractFirst(version.identifierLength)
         assert(
-            String(ascii: identifier) == frameInfo.id3Identifier(version: version),
-            "Mismatched frame name: \(String(ascii: identifier)) ≠ \(String(describing: frameInfo.id3Identifier))"
+            String(ascii: name) == frameName.id3Identifier(version: version),
+            "Mismatched frame name: \(String(ascii: name)) ≠ \(String(describing: frameName.id3Identifier))"
         )
         _ = frameData.extractFirst(version.sizeDeclarationLength)
         _ = frameData.extractFirst(version.flagsLength)
     }
     
-    /// extracts the encoding byte from the frame, which is the byte immediately following the header
-    ///  - parameter frameData: the data of frame
-    internal func extractEncoding(from frameData: inout Data.SubSequence) throws -> StringEncoding {
+    internal func extractEncoding(from frameData: inout Data.SubSequence) -> StringEncoding {
         return frameData.extractFirst(1).first.flatMap({ StringEncoding(rawValue: $0) })
             ?? .utf8
     }
-
-    /// extracts a content string from a `StringFrame` type of frame, based on encoding
-    ///  - parameter frameData: the data of frame
-    ///  - parameter encoding: the encoding of the string
-    internal func extractContentString(
+    
+    internal func extractDescriptionAndValue(
         from frameData: inout Data.SubSequence,
         encoding: StringEncoding
-    ) -> String {
-        return frameData.extractPrefixAsStringUntilNullTermination(encoding) ?? ""
+    ) -> (description: String?, value: String) {
+        let description = frameData.extractPrefixAsStringUntilNullTermination(encoding)
+        let content = frameData.extractPrefixAsStringUntilNullTermination(encoding) ?? ""
+        return (description: description, value: content)
     }
-
     
+    internal func extractCreditStrings(
+        from frameData: inout Data.SubSequence,
+        encoding: StringEncoding
+    ) -> [(String, String)] {
+        var strings: [String] = []
+        
+        while !frameData.isEmpty,
+            let next = frameData.extractPrefixAsStringUntilNullTermination(encoding) {
+                strings.append(next)
+        }
+        let rolePersonArray = strings.pairs()
+        return rolePersonArray as! [(String, String)]
+    }
     
+//    internal func extractChapterElements(
+//        from frameData: inout Data.SubSequence,
+//        version: Version,
+//        encoding: StringEncoding
+//    ) -> (
+//        elementID: String,
+//        startTime: Int,
+//        endTime: Int,
+//        startByteOffset: Int,
+//        endByteOffset: Int,
+//        embeddedSubframes: [FrameKey: Frame]?
+//        ) {
+//            let elementID = frameData.extractPrefixAsStringUntilNullTermination(encoding) ?? "chXX"
+//
+//            let startTime = Int(frameData.extractFirst(4).uint32)
+//            let endTime = Int(frameData.extractFirst(4).uint32)
+//            let startByteOffset = Int(frameData.extractFirst(4).uint32)
+//            let endByteOffset = Int(frameData.extractFirst(4).uint32)
+//
+//            let subframePseudoTag = subframePseudoTagParser.parse(
+//                subframeData: frameData, version: version)
+//            let embeddedSubframes = subframePseudoTag?.frames
+//
+//            return (elementID: elementID,
+//                    startTime: startTime,
+//                    endTime: endTime,
+//                    startByteOffset: startByteOffset,
+//                    endByteOffset: endByteOffset,
+//                    embeddedSubframes: embeddedSubframes)
+//    }
 }

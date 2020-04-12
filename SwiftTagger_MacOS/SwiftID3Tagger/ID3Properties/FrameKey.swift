@@ -9,7 +9,7 @@
 import Foundation
 
 /** the key used to refer to a particular frame. Usually this is the rawValue of the `FrameLayoutIdentifier`, but in cases where a frame may be duplicated, will derive from information contained in the frame, such as a description field */
-public enum FrameKey {
+public enum FrameKey: Hashable {
     
     /** The 'Album/Movie/Show title' frame is intended for the title of the recording (or source of sound) from which the audio in the file is taken. */
     case album
@@ -164,8 +164,6 @@ public enum FrameKey {
     /** The 'Year' frame is a numeric string with a year of the recording. This frames is always four characters long (until the year 10000). FOR VERSION 2.4: This frame is replaced by the TDRC frame, 'Recording time' */
     case year
     case unknown(uuid: UUID)
-
-    static var lyrics: FrameKey { return .unsynchronizedLyrics(description: "Lyrics")}
     
     /// also known as `Arranger` or `Interpreter`. Maps to the `Arranger` frame. If another `Arranger` frame is already present, the frame will be created as a `UserDefinedText` frame with the description, "Remixer"
     static var remixer: FrameKey { return .arranger }
