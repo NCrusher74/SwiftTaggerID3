@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum GenreType: Int {
+public enum GenreType: Int {
     case Blues = 0
     case ClassicRock = 1
     case Country = 2

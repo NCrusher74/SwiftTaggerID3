@@ -9,7 +9,7 @@
 /**
  An enum determining ID3 version and housing variables and methods are that dependent upon ID3 version
  */
-public enum Version {
+public enum Version: CaseIterable {
     /// ID3 v2.2
     case v2_2
     /// ID3 v2.3
