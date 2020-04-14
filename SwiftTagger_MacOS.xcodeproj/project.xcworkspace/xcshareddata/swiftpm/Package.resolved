@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "IsoCountryAndLanguageCodes",
+        "repositoryURL": "https://github.com/NCrusher74/IsoCountryandLanguageCodes.git",
+        "state": {
+          "branch": "master",
+          "revision": "93ececabfd31f68ad0b647e1f8ff8dba09295b0c",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}

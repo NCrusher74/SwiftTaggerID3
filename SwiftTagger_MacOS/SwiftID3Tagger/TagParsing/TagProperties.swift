@@ -93,6 +93,10 @@ extension TagProperties {
         return 4
     }
     
+    internal var tagHeaderLength: Int {
+        return 10
+    }
+    
     /// the byte-offset of the version bytes
     internal var versionBytesOffset: Data.Index {
         return id3DeclarationLength
