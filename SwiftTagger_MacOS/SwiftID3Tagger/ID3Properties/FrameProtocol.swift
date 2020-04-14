@@ -46,91 +46,49 @@ extension FrameProtocol {
     init(decodingFromStartOf data: inout Data.SubSequence,
          version: Version,
          frameIdentifier: FrameLayoutIdentifier) throws {
-        let size = try frameSize(frameStart: 0,
-                             version: version,
-                             mp3File: <#T##Mp3File#>)
-        let flags = try frameFlags(frameStart: 0,
-                               version: version,
-                               mp3File: <#T##Mp3File#>)
-        let contentData = // pull out however much you should
-            
-            try self.init(decodingContents: contentData, version: version, frameIdentifier: frameIdentifier, flags: flags)
+
+        let dataStart = data.startIndex
         
-        data.dropFirst(/* however much you pulled */)
-        // This line leaves the slice ready for the next frame to read from the beginning.
-    }
-}
-
-
-    
-    internal func extractHeader(
-        from frameData: inout Data.SubSequence,
-        version: Version) {
-        let id3Identifier = frameData.extractFirst(version.identifierLength)
-//        assert(
-//            String(ascii: name) == frameName.identifier(version: version),
-//            "Mismatched frame name: \(String(ascii: name)) ≠ \(String(describing: frameName.identifier))"
-//        )
-        _ = frameData.extractFirst(version.sizeDeclarationLength)
-        _ = frameData.extractFirst(version.flagsLength)
-    }
-
-
-    private func frameIdentifier(
-        frameStart: Data.Index,
-        version: Version,
-        mp3File: Mp3File,
-        knownFrameLayoutIdentifier: KnownFrameLayoutIdentifier
-    ) throws -> FrameLayoutIdentifier {
-        let mp3Data = mp3File.data
-        let frameDataStart = version.identifierOffset
+        // parse identifier
+        let frameDataStart = data.startIndex
         let frameIdentifierRange = frameDataStart ..< frameDataStart + version.identifierLength
-        guard frameIdentifierRange.upperBound <= mp3Data.endIndex
+        guard frameIdentifierRange.upperBound <= data.endIndex
             else { throw Mp3File.Error.DataOutOfBounds }
-        let frameIdentifierString = String(ascii: mp3Data[frameIdentifierRange])
-        let knownFrameId3Identifiers = knownFrameLayoutIdentifier.id3Identifier(version: version)
-        assert(frameIdentifierString == knownFrameId3Identifiers, "Unknown Frame Identifier")
-        return FrameLayoutIdentifier(identifier: frameIdentifierString)
-    }
-    
-    ///  the byte count of the frame
-    private func frameSize(
-        frameStart: Data.Index,
-        version: Version,
-        mp3File: Mp3File
-    ) throws -> Int {
-        // calculate content size
-        let mp3Data = mp3File.data
-        let sizeDataStart = frameStart + version.sizeDeclarationOffset
+        let frameIdentifierBytes = data.subdata(in: frameIdentifierRange)
+        let frameIdentifierString = String(ascii: frameIdentifierBytes)
+        let frameId3Identifiers = frameIdentifier.id3Identifier(version: version)
+        assert(frameIdentifierString == frameId3Identifiers, "Unknown Frame Identifier")
+
+        // parse size
+        let sizeDataStart = dataStart + version.sizeDeclarationOffset
         let sizeDataRange = sizeDataStart ..< sizeDataStart + version.sizeDeclarationLength
-        guard sizeDataRange.upperBound <= mp3Data.endIndex
+        guard sizeDataRange.upperBound <= data.endIndex
             else { throw Mp3File.Error.DataOutOfBounds }
-        
-        let frameSizeData = mp3Data[sizeDataRange]
-        var size: Int = 0
+        let frameSizeData = data.subdata(in: sizeDataRange)
+        var frameSize: Int = 0
         let raw = UInt32(parsing: frameSizeData, .bigEndian)
         switch version {
-            case .v2_2, .v2_3: size = Int(raw)
-            case .v2_4: size = Int(raw.decodingSynchsafe())
+            case .v2_2, .v2_3: frameSize = Int(raw)
+            case .v2_4: frameSize = Int(raw.decodingSynchsafe())
         }
         // total size is content size plus header size
-        return size + version.frameHeaderLength
-    }
-    
-    private func frameFlags(
-        frameStart: Data.Index,
-        version: Version,
-        mp3File: Mp3File
-    ) throws -> Data {
-        let mp3Data = mp3File.data
-        let flagDataStart = frameStart + version.flagsOffset
+        let size = frameSize + version.frameHeaderLength
+
+        // parse flags
+        let flagDataStart = data.startIndex + version.flagsOffset
         let flagDataRange = flagDataStart ..< flagDataStart + version.flagsLength
-        guard flagDataRange.upperBound <= mp3Data.endIndex
+        guard flagDataRange.upperBound <= data.endIndex
             else { throw Mp3File.Error.DataOutOfBounds }
-        return mp3Data[flagDataRange]
+        let flags = data.subdata(in: flagDataRange)
+
+        let contentDataStart = data.startIndex + version.frameHeaderLength
+        let contentDataRange = contentDataStart ..< contentDataStart + size
+        let contentData = data.subdata(in: contentDataRange)
+            try self.init(decodingContents: contentData, version: version, frameIdentifier: frameIdentifier, flags: flags)
+        
+        data.dropFirst(contentData.count)
+        // This line leaves the slice ready for the next frame to read from the beginning.
     }
-    
-    
     
     
 }

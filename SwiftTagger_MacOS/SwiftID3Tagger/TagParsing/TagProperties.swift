@@ -55,9 +55,8 @@ internal struct TagProperties {
     }
     
     
-    internal var frameData: Data.SubSequence {
-        let tagHeader = mp3Data.extractFirst(10)
-        return mp3Data - tagHeader
+    internal var framesData: Data.SubSequence {
+        return mp3Data.subdata(in: frameDataOffset..<mp3Data.endIndex)
     }
     
     
@@ -69,7 +68,7 @@ extension TagProperties {
      as follows:
      
      ID3v2/file identifier      "ID3" -- 3 bytes
-     ID3v2 version              $04 00 -- 2 bytes
+     ID3v2 version              $0x 00 -- 2 bytes
      ID3v2 flags                %abcd0000 -- 1 byte (Uint32)
      ID3v2 size             4 * %0xxxxxxx -- 4 bytes (Uint32)
      */
@@ -94,11 +93,6 @@ extension TagProperties {
         return 4
     }
     
-    /// the byte-count of the tag's header
-    internal var tagHeaderLength: Int {
-        return id3DeclarationLength + versionDeclarationLength + tagFlagsLength + tagSizeDeclarationLength
-    }
-    
     /// the byte-offset of the version bytes
     internal var versionBytesOffset: Data.Index {
         return id3DeclarationLength
@@ -111,7 +105,12 @@ extension TagProperties {
     
     /// the byte-offset of the tag's size declaration
     internal var tagSizeDeclarationOffset: Data.Index {
-        return id3DeclarationLength + versionDeclarationLength + tagFlagsLength
+        return tagFlagsOffset + tagFlagsLength
+    }
+    
+    /// the byte-count of the full tag header
+    internal var frameDataOffset: Data.Index {
+        return tagSizeDeclarationOffset + tagSizeDeclarationLength
     }
     
     /// the UInt8 byte array for version2.2
