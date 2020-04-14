@@ -13,7 +13,6 @@ import Foundation
 protocol FrameProtocol {
     
     var flags: Data { get set }
-    var size: Int { get }
     var identifier: FrameLayoutIdentifier { get }
     
     func encodeContents(version: Version) throws -> Data
@@ -40,12 +39,12 @@ extension FrameProtocol {
      Flags         $xx xx - 2 bytes
      */
     
-    func encode(version: Version) throws -> Data {
-        let contents = try self.encodeContents(version: version)
-        let size = Int(contents.count).uint32
-        let frameData = // header stuff plus the contents
-        return frameData
-    }
+//    func encode(version: Version) throws -> Data {
+//        let contents = try self.encodeContents(version: version)
+//
+//        let frameData = // header stuff plus the contents
+//        return frameData
+//    }
     
     
     init(decodingFromStartOf data: inout Data.SubSequence,
@@ -79,41 +78,11 @@ extension FrameProtocol {
         // This line leaves the slice ready for the next frame to read from the beginning.
     }
     
-    // MARK: Frame Handler
-    internal func frameHandler(identifier: KnownFrameLayoutIdentifier) -> Frame {        
-        if identifier == .chapter {
-            return ChapterFrame
-        } else if identifier == .tableOfContents {
-            return TableOfContentsFrame
-        } else if identifier == .compilation {
-            return BooleanFrame
-        } else if identifier == .genre {
-            return GenreFrame
-        } else if identifier == .languages {
-            return LanguageFrame
-        } else if identifier == .attachedPicture {
-            return ImageFrame
-        } else if identifier == .userDefinedText || self == .userDefinedWebpage {
-            return UserTextFrame
-        } else if identifier == .discNumber || self == .trackNumber {
-            return PartOfTotalFrame
-        } else if identifier == .involvedPeopleList || self == .musicianCreditsList {
-            return CreditsListFrame
-        } else if identifier == .comments || self == .unsynchronizedLyrics {
-            return LocalizedFrame
-        } else if identifier == .bpm || self == .isrc || self == .length || self == .movementNumber || self == .movementCount || self == .playlistDelay {
-            return IntegerFrame
-        } else if identifier == .date || self == .encodingTime || self = .originalReleaseTime || self == .recordingDate || self == .releaseTime || self == .time || self == .year {
-            return DateFrame
-        } else if identifier == .artistWebpage || self == .audioFileWebpage || self == .audioSourceWebpage || self == .copyrightWebpage || self == paymentWebpage || self == publisherWebpage || self == .radioStationWebpage {
-            return UrlFrame
-        } else {
-            return StringFrame
-        }
-    }
-    
-    
-    internal func extractEncoding(data: inout Data.SubSequence, version: Version) -> StringEncoding {
+//    internal static func calculateContentSize() -> Data {
+//        
+//    }
+            
+    internal static func extractEncoding(data: inout Data.SubSequence, version: Version) -> StringEncoding {
         let encodingByteOffset = version.encodingByteOffset
         let encodingByte = data[encodingByteOffset]
         let validEncodingBytes: [UInt8] = [0x00, 0x01, 0x02, 0x03]

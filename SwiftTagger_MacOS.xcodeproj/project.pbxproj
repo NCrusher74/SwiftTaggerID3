@@ -45,6 +45,7 @@
 		51A3C69E2442FB1A00909952 /* BooleanFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A3C69D2442FB1A00909952 /* BooleanFrame.swift */; };
 		51A3C6A02442FEF000909952 /* DateFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A3C69F2442FEF000909952 /* DateFrame.swift */; };
 		51A3C6A22442FFB300909952 /* UserTextFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A3C6A12442FFB300909952 /* UserTextFrame.swift */; };
+		51A3C6A724464FDC00909952 /* URLFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A3C6A624464FDC00909952 /* URLFrame.swift */; };
 		51E432B6243DA257006574A1 /* SwiftTagger_MacOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51E432AC243DA257006574A1 /* SwiftTagger_MacOS.framework */; };
 		51E432BB243DA257006574A1 /* SwiftTagger_MacOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E432BA243DA257006574A1 /* SwiftTagger_MacOSTests.swift */; };
 		51E432BD243DA257006574A1 /* SwiftTagger_MacOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 51E432AF243DA257006574A1 /* SwiftTagger_MacOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -124,6 +125,7 @@
 		51A3C69D2442FB1A00909952 /* BooleanFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooleanFrame.swift; sourceTree = "<group>"; };
 		51A3C69F2442FEF000909952 /* DateFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFrame.swift; sourceTree = "<group>"; };
 		51A3C6A12442FFB300909952 /* UserTextFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTextFrame.swift; sourceTree = "<group>"; };
+		51A3C6A624464FDC00909952 /* URLFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLFrame.swift; sourceTree = "<group>"; };
 		51E432AC243DA257006574A1 /* SwiftTagger_MacOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftTagger_MacOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		51E432AF243DA257006574A1 /* SwiftTagger_MacOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftTagger_MacOS.h; sourceTree = "<group>"; };
 		51E432B0243DA257006574A1 /* SwiftTagger_MacOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = SwiftTagger_MacOS.plist; sourceTree = "<group>"; };
@@ -216,6 +218,7 @@
 			isa = PBXGroup;
 			children = (
 				5177544724423D46005E43C5 /* StringFrame.swift */,
+				51A3C6A624464FDC00909952 /* URLFrame.swift */,
 				51A3C69F2442FEF000909952 /* DateFrame.swift */,
 				51A3C69B2442F9E800909952 /* IntegerFrame.swift */,
 				517754572442EB67005E43C5 /* CreditsListFrame.swift */,
@@ -505,6 +508,7 @@
 				51FA350A24402580000997EC /* String.swift in Sources */,
 				51490E53243EF216009D4BA4 /* Data.swift in Sources */,
 				5177544824423D46005E43C5 /* StringFrame.swift in Sources */,
+				51A3C6A724464FDC00909952 /* URLFrame.swift in Sources */,
 				51E432C9243DA35E006574A1 /* URL.swift in Sources */,
 				5177543E24413768005E43C5 /* UnsignedInteger.swift in Sources */,
 				51490E66243F1F92009D4BA4 /* Data.Subsquence.swift in Sources */,
