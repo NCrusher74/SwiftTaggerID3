@@ -9,7 +9,7 @@
 import Foundation
 
 /** `FrameLayoutIdentifier` describes how SwiftTagger refers to the frame type internally.
- All information for handling a frame, such as ParserType and FrameType, are determined by `FrameLayoutIdentifier` */
+ All information for handling a frame are determined by its `FrameLayoutIdentifier` */
 
 enum FrameLayoutIdentifier: Hashable {
     case known(KnownFrameLayoutIdentifier)
@@ -539,14 +539,13 @@ internal enum KnownFrameLayoutIdentifier: CaseIterable {
     private static let stringToLayoutMapping: [String: KnownFrameLayoutIdentifier] = {
         var mapping: [String: KnownFrameLayoutIdentifier] = [:]
         for layout in KnownFrameLayoutIdentifier.allCases {
-            for version in Version.allCases { // ← CaseIterable will get you this.
-                if let string = layout.id3Identifier(version: version) {
-                    mapping[layout] = string
-                    // Cannot assign value of type 'String' to subscript of type 'KnownFrameLayoutIdentifier'
-                    // Cannot convert value of type 'KnownFrameLayoutIdentifier' to expected argument type 'String'
+            for version in Version.allCases {
+                if let idString = layout.id3Identifier(version: version) {
+                    mapping[idString] = layout
                 }
             }
         }
+        return mapping
     }()
     
 }

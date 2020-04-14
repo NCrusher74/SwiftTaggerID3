@@ -17,16 +17,19 @@ import Foundation
  */
 internal struct TagProperties {
     
-    internal var mp3file: Mp3File
+    internal var mp3File: Mp3File
     
     ///  - parameter mp3File: the mp3 file containing the tag.
     internal init(for mp3File: Mp3File) {
-        self.mp3file = mp3File
+        self.mp3File = mp3File
     }
-
+    
+    private var mp3Data: Data {
+        return self.mp3File.data
+    }
+    
     /// the ID3 version of the tag
     internal var version: Version {
-        let mp3Data = self.mp3file.data
         // the first five bytes of a valid ID3 Tag are "ID3"+ the version number in UInt8
         let versionBytesFromMp3 = [UInt8](mp3Data.subdata(in: versionBytesOffset..<tagFlagsOffset))
         if versionBytesFromMp3 == v2_3Bytes {
@@ -43,13 +46,21 @@ internal struct TagProperties {
     /// the size of the ID3 tag
     internal var size: UInt32 {
         let tagBytesOffset = tagSizeDeclarationOffset
-        let mp3Data = self.mp3file.data as NSData
-        let tagDataBytes = mp3Data.bytes + tagBytesOffset
+        let mp3NSData = mp3Data as NSData
+        let tagDataBytes = mp3NSData.bytes + tagBytesOffset
         let tagSize = tagDataBytes.assumingMemoryBound(
             to: UInt32.self).pointee.bigEndian
         let decodedTagSize = tagSize.decodingSynchsafe()
         return decodedTagSize
     }
+    
+    
+    internal var frameData: Data.SubSequence {
+        let tagHeader = mp3Data.extractFirst(10)
+        return mp3Data - tagHeader
+    }
+    
+    
 }
 
 extension TagProperties {

@@ -58,13 +58,23 @@ extension Version {
     
     /// the version-dependent size of the frame header, in bytes
     internal var frameHeaderLength: Int {
-        return identifierLength + sizeDeclarationLength + flagsLength
+        let header = identifierLength + sizeDeclarationLength + flagsLength
+        if self == .v2_2 {
+            assert(
+                header == 6, "Expected header is the wrong size."
+            )
+        } else if self == .v2_3 || self == .v2_4 {
+            assert(
+                header == 10, "Expected header is the wrong size."
+            )
+        }
+        return header
     }
     
     // MARK: Frame component offsets:
     ///the byte offset of the frame identifier
     var identifierOffset: Data.Index {
-        return 0
+        return 10
     }
     
     /// the byte offset of the frame size declaration
@@ -80,13 +90,5 @@ extension Version {
     /// the version-dependent position of the encoding byte
     internal var encodingByteOffset: Data.Index {
         return frameHeaderLength
-    }
-    
-    /// the version-dependent flags in a frame header
-    internal var flags: [UInt8] {
-        switch self {
-            case .v2_2: return []
-            case .v2_3, .v2_4: return [0x0, 0x0]
-        }
     }
 }

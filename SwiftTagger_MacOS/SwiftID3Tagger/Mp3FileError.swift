@@ -29,6 +29,8 @@ extension Mp3File {
         case InvalidDateFrameForVersion
         /// Error thrown when string is not convertible
         case InconvertibleString
+        /// Error thrown when the data requested is out of bounds
+        case DataOutOfBounds
     }
 }
 
@@ -62,6 +64,9 @@ extension Mp3File.Error: LocalizedError {
             case .InconvertibleString:
                 return NSLocalizedString(
                     "String is not representable in ISO 8859‐1", comment: "")
+            case .DataOutOfBounds:
+                return NSLocalizedString(
+                    "The requested data range is out of bounds", comment: "")
         }
     }
 }
