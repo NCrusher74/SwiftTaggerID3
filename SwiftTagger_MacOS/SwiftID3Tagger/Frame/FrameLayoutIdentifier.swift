@@ -109,7 +109,7 @@ internal enum KnownFrameLayoutIdentifier: CaseIterable {
     case userDefinedText
     case userDefinedWebpage
     case year
-
+    
     
     init?(identifier: String) {
         self = KnownFrameLayoutIdentifier.stringToLayoutMapping[identifier] ?? .userDefinedText
@@ -146,6 +146,40 @@ internal enum KnownFrameLayoutIdentifier: CaseIterable {
                 return true
             default: return false
         }
+    }
+    
+    // MARK: Frame Handler
+    
+    internal var frameHandler: FrameProtocol {
+//        if self == .chapter {
+//            return ChapterFrame
+//        } else if self == .tableOfContents {
+//            return TableOfContentsFrame
+//        } else if self == .compilation {
+//            return BooleanFrame
+//        } else if self == .genre {
+//            return GenreFrame
+//        } else if self == .languages {
+//            return LanguageFrame
+//        } else if self == .attachedPicture {
+//            return ImageFrame
+//        } else if self == .userDefinedText || self == .userDefinedWebpage {
+//            return UserTextFrame
+//        } else if self == .discNumber || self == .trackNumber {
+//            return PartOfTotalFrame
+//        } else if self == .involvedPeopleList || self == .musicianCreditsList {
+//            return CreditsListFrame
+//        } else if self == .comments || self == .unsynchronizedLyrics {
+//            return LocalizedFrame
+//        } else if self == .bpm || self == .isrc || self == .length || self == .movementNumber || self == .movementCount || self == .playlistDelay {
+//            return IntegerFrame
+//        } else if self == .date || self == .encodingTime || self = .originalReleaseTime || self == .recordingDate || self == .releaseTime || self == .time || self == .year {
+//            return DateFrame
+//        } else if self == .artistWebpage || self == .audioFileWebpage || self == .audioSourceWebpage || self == .copyrightWebpage || self == paymentWebpage || self == publisherWebpage || self == .radioStationWebpage {
+//            return UrlFrame
+//        } else {
+            return StringFrame
+//        }
     }
     
     // MARK: ID3Identifier

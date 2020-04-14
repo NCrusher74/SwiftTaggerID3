@@ -165,7 +165,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		51490E43243EB647009D4BA4 /* ID3Properties */ = {
+		51490E43243EB647009D4BA4 /* Frame */ = {
 			isa = PBXGroup;
 			children = (
 				5177544624423D2E005E43C5 /* FrameTypes */,
@@ -175,7 +175,7 @@
 				517754492442743F005E43C5 /* FrameKey.swift */,
 				51FA350F244038D0000997EC /* FrameProtocol.swift */,
 			);
-			path = ID3Properties;
+			path = Frame;
 			sourceTree = "<group>";
 		};
 		51490E56243EF92F009D4BA4 /* Docs */ = {
@@ -216,17 +216,17 @@
 			isa = PBXGroup;
 			children = (
 				5177544724423D46005E43C5 /* StringFrame.swift */,
-				51A3C69B2442F9E800909952 /* IntegerFrame.swift */,
-				51A3C69D2442FB1A00909952 /* BooleanFrame.swift */,
-				517754532442E757005E43C5 /* LocalizedFrame.swift */,
 				51A3C69F2442FEF000909952 /* DateFrame.swift */,
-				518807202442ED4D008D488B /* LanguageFrame.swift */,
-				517754552442E8E1005E43C5 /* ImageFrame.swift */,
+				51A3C69B2442F9E800909952 /* IntegerFrame.swift */,
 				517754572442EB67005E43C5 /* CreditsListFrame.swift */,
-				517754592442EBE8005E43C5 /* GenreFrame.swift */,
-				518807222442EE58008D488B /* PartOfTotalFrame.swift */,
-				518807242442EF4E008D488B /* ChapterFrame.swift */,
 				51A3C6A12442FFB300909952 /* UserTextFrame.swift */,
+				518807222442EE58008D488B /* PartOfTotalFrame.swift */,
+				517754532442E757005E43C5 /* LocalizedFrame.swift */,
+				517754552442E8E1005E43C5 /* ImageFrame.swift */,
+				518807202442ED4D008D488B /* LanguageFrame.swift */,
+				517754592442EBE8005E43C5 /* GenreFrame.swift */,
+				518807242442EF4E008D488B /* ChapterFrame.swift */,
+				51A3C69D2442FB1A00909952 /* BooleanFrame.swift */,
 				518807262442F055008D488B /* TableOfContentsFrame.swift */,
 				51A3C6A524441F6100909952 /* Reference */,
 			);
@@ -324,8 +324,9 @@
 			children = (
 				51E432C6243DA2E0006574A1 /* Mp3File.swift */,
 				51E432CA243DA3F6006574A1 /* Mp3FileError.swift */,
-				51490E43243EB647009D4BA4 /* ID3Properties */,
-				51E432D4243DAEB6006574A1 /* TagParsing */,
+				51775435244058DB005E43C5 /* Tag.swift */,
+				51490E43243EB647009D4BA4 /* Frame */,
+				51E432D4243DAEB6006574A1 /* Tag */,
 			);
 			path = SwiftID3Tagger;
 			sourceTree = "<group>";
@@ -337,14 +338,13 @@
 			path = Ouput;
 			sourceTree = "<group>";
 		};
-		51E432D4243DAEB6006574A1 /* TagParsing */ = {
+		51E432D4243DAEB6006574A1 /* Tag */ = {
 			isa = PBXGroup;
 			children = (
 				51E432D5243DAED8006574A1 /* TagValidator.swift */,
 				51FA3502243FB03C000997EC /* TagProperties.swift */,
-				51775435244058DB005E43C5 /* Tag.swift */,
 			);
-			path = TagParsing;
+			path = Tag;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

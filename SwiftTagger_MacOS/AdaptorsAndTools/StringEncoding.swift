@@ -30,16 +30,6 @@ enum StringEncoding: UInt8 {
                 return .utf16BigEndian
         }
     }
-    
-    func detect(frame: Data, version: Version) throws -> String.Encoding {
-        let encodingByteOffset = version.encodingByteOffset
-        let encodingByte = frame[encodingByteOffset]
-        let validEncodingBytes: [UInt8] = [0x00, 0x01, 0x02, 0x03]
-        assert(
-            validEncodingBytes.contains(encodingByte), "Invalid encoding detected. Attempting default encoding."
-        )
-        return StringEncoding(rawValue: encodingByte)?.standardLibraryEncoding ?? .utf8
-    }
 }
 
 extension StringEncoding {

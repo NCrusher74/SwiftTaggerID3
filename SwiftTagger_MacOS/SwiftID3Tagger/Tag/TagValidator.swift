@@ -25,7 +25,7 @@ internal struct TagValidator {
         return self.mp3File.data
     }
     
-    internal var tagProperties: TagProperties {
+    private var tagProperties: TagProperties {
         return TagProperties(for: self.mp3File)
     }
     
@@ -58,19 +58,10 @@ internal struct TagValidator {
     }
     
     // MARK: Validate Tag Data
-    private func hasValidID3Bytes() throws -> Bool {
-        if try self.isValidMp3() {
-            let id3DeclarationBytes =  [UInt8](mp3Data.subdata(in: 0 ..< tagProperties.id3DeclarationLength))
-            if id3DeclarationBytes == [0x49, 0x44, 0x33] {
-                return true
-            }
-        }; return false
-    }
-    
     // check that first five bytes are "ID3<version><null>"
     private func hasValidVersionBytes() throws -> Bool {
-        if try self.hasValidID3Bytes() {
-            let versionBytesFromMp3 = [UInt8](mp3Data.subdata(in: tagProperties.versionBytesOffset..<tagProperties.tagFlagsOffset))
+        if try self.isValidMp3() {
+            let versionBytesFromMp3 = [UInt8](mp3Data.subdata(in: mp3Data.startIndex..<tagProperties.versionDeclarationLength))
             let versionBytes = tagProperties.versionBytes
             if versionBytes.contains(versionBytesFromMp3) {
                 return true
@@ -82,7 +73,8 @@ internal struct TagValidator {
     
     // check that tag size does not exceed file size
     private func hasValidTagSize() throws -> Bool {
-        if mp3Data.count < Int(tagProperties.size) + tagProperties.tagHeaderLength {
+        let tagSizeDataRange = mp3Data.subdata(in: tagProperties.tagSizeDeclarationOffset..<tagProperties.tagSizeDeclarationLength)
+        if mp3Data.count < Int(tagProperties.size(tagSizeData: tagSizeDataRange)) + tagProperties.tagHeaderLength {
             throw Mp3File.Error.CorruptedFile
         }; return true
     }

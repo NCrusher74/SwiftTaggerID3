@@ -24,42 +24,43 @@ internal struct TagProperties {
         self.mp3File = mp3File
     }
     
-    private var mp3Data: Data {
-        return self.mp3File.data
+    /// the ID3 version of the tag
+    internal var extractVersionData: Data {
+        var mp3Data = self.mp3File.data
+        return mp3Data.extractFirst(versionDeclarationLength)
     }
     
-    /// the ID3 version of the tag
-    internal var version: Version {
-        // the first five bytes of a valid ID3 Tag are "ID3"+ the version number in UInt8
-        let versionBytesFromMp3 = [UInt8](mp3Data.subdata(in: versionBytesOffset..<tagFlagsOffset))
-        if versionBytesFromMp3 == v2_3Bytes {
+    internal func version(versionData: Data) throws -> Version {
+        if versionData == Data(v2_3Bytes) {
             return Version.v2_2
-        } else if versionBytesFromMp3 == v2_3Bytes {
+        } else if versionData == Data(v2_3Bytes) {
             return Version.v2_3
-        } else if versionBytesFromMp3 == v2_4Bytes {
+        } else if versionData == Data(v2_4Bytes) {
             return Version.v2_4
         } else {
-            print(Mp3File.Error.InvalidTagData)
-        }; return Version.v2_4
+            throw Mp3File.Error.InvalidTagData
+        }
+    }
+    
+    internal var extractFlagData: Data {
+        var mp3Data = self.mp3File.data
+        return mp3Data.extractFirst(tagFlagsLength)
+    }
+    
+    internal var extractTagSizeData: Data {
+        var mp3Data = self.mp3File.data
+        return mp3Data.extractFirst(tagSizeDeclarationLength)
     }
     
     /// the size of the ID3 tag
-    internal var size: UInt32 {
-        let tagBytesOffset = tagSizeDeclarationOffset
-        let mp3NSData = mp3Data as NSData
-        let tagDataBytes = mp3NSData.bytes + tagBytesOffset
+    internal func size(tagSizeData: Data) -> UInt32 {
+        let tagSizeNSData = tagSizeData as NSData
+        let tagDataBytes = tagSizeNSData.bytes + tagSizeDeclarationOffset
         let tagSize = tagDataBytes.assumingMemoryBound(
             to: UInt32.self).pointee.bigEndian
         let decodedTagSize = tagSize.decodingSynchsafe()
         return decodedTagSize
     }
-    
-    
-    internal var framesData: Data.SubSequence {
-        return mp3Data.subdata(in: frameDataOffset..<mp3Data.endIndex)
-    }
-    
-    
 }
 
 extension TagProperties {
@@ -73,14 +74,9 @@ extension TagProperties {
      ID3v2 size             4 * %0xxxxxxx -- 4 bytes (Uint32)
      */
     
-    /// the byte-count of the ID3 declaration
-    internal var id3DeclarationLength: Int {
-        return 3
-    }
-    
     /// the byte-count of the ID3 version declaration
     internal var versionDeclarationLength: Int {
-        return 2
+        return 5
     }
     
     /// the byte-count of the tag's UInt32 flags
@@ -97,14 +93,9 @@ extension TagProperties {
         return 10
     }
     
-    /// the byte-offset of the version bytes
-    internal var versionBytesOffset: Data.Index {
-        return id3DeclarationLength
-    }
-    
     /// the byte-offset of the tag's flag bytes
     internal var tagFlagsOffset: Data.Index {
-        return id3DeclarationLength + versionDeclarationLength
+        return versionDeclarationLength
     }
     
     /// the byte-offset of the tag's size declaration
@@ -119,23 +110,22 @@ extension TagProperties {
     
     /// the UInt8 byte array for version2.2
     /// used as a comparison to determine which version to return
-    private var v2_2Bytes: [UInt8] {
-        return [0x02, 0x00]
+    internal var v2_2Bytes: [UInt8] {
+        return [0x49, 0x44, 0x33, 0x02, 0x00]
     }
     /// the UInt8 byte array for version2.3
     /// used as a comparison to determine which version to return
-    private var v2_3Bytes: [UInt8] {
-        return [0x03, 0x00]
+    internal var v2_3Bytes: [UInt8] {
+        return [0x49, 0x44, 0x33, 0x03, 0x00]
     }
     /// the UInt8 byte array for version2.4
     /// used as a comparison to determine which version to return
-    private var v2_4Bytes: [UInt8] {
-        return [0x04, 0x00]
+    internal var v2_4Bytes: [UInt8] {
+        return [0x49, 0x44, 0x33, 0x04, 0x00]
     }
     /// the [UInt8] byte array for all possible versions
     /// used as a comparison to determine which version to return
     internal var versionBytes: [[UInt8]] {
         return [v2_2Bytes, v2_3Bytes, v2_4Bytes]
     }
-
 }

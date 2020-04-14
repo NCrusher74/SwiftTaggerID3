@@ -58,23 +58,13 @@ extension Version {
     
     /// the version-dependent size of the frame header, in bytes
     internal var frameHeaderLength: Int {
-        let header = identifierLength + sizeDeclarationLength + flagsLength
-        if self == .v2_2 {
-            assert(
-                header == 6, "Expected header is the wrong size."
-            )
-        } else if self == .v2_3 || self == .v2_4 {
-            assert(
-                header == 10, "Expected header is the wrong size."
-            )
-        }
-        return header
+        return identifierLength + sizeDeclarationLength + flagsLength
     }
     
     // MARK: Frame component offsets:
-    ///the byte offset of the frame identifier
+    ///the byte offset of the frame identifier from start of frame data
     var identifierOffset: Data.Index {
-        return 10
+        return 0
     }
     
     /// the byte offset of the frame size declaration

@@ -16,7 +16,7 @@ protocol FrameProtocol {
     var size: Int { get }
     var identifier: FrameLayoutIdentifier { get }
     
-    func encodeContents(version: Version) throws -> Data
+//    func encodeContents(version: Version) throws -> Data
     init(decodingContents contents: Data.SubSequence,
          version: Version,
          frameIdentifier: FrameLayoutIdentifier,
@@ -28,13 +28,16 @@ extension FrameProtocol {
     /*
      (v2.2)
      The three character frame identifier is followed by a three byte size descriptor, making a total header size of six bytes in every frame. The size is calculated as framesize excluding frame identifier and size descriptor (frame size - 6).
-     
+
+     Frame ID      $xx xx xx  (three characters) - 3 bytes
+     Size      3 * %0xxxxx - 3 bytes
+
      (v2.3 & v2.4)
      All ID3v2 frames consists of one frame header followed by one or more fields containing the actual information. The header is always 10 bytes and laid out as follows:
      
-     Frame ID      $xx xx xx xx  (four characters)
-     Size      4 * %0xxxxxxx
-     Flags         $xx xx
+     Frame ID      $xx xx xx xx  (four characters) - 4 bytes
+     Size      4 * %0xxxxxxx - 4 bytes
+     Flags         $xx xx - 2 bytes
      */
     
     //    func encode(version: Version) throws -> Data {
@@ -49,26 +52,13 @@ extension FrameProtocol {
          version: Version,
          frameIdentifier: FrameLayoutIdentifier) throws {
         
-        let dataStart = data.startIndex
-        
-        // parse identifier
-        let identifierRange = dataStart ..< dataStart + version.identifierLength
-        guard identifierRange.upperBound <= data.endIndex
-            else { throw Mp3File.Error.DataOutOfBounds }
-        let identifierBytes = data.subdata(in: identifierRange)
-        let identifierString = String(ascii: identifierBytes)
-        let id3Identifiers = frameIdentifier.id3Identifier(version: version)
-        assert(identifierString == id3Identifiers, "Unknown Frame Identifier")
-        let identifier = FrameLayoutIdentifier(identifier: identifierString)
-        
+        _ = extractIdentifier(data: &data,
+                              version: version,
+                              frameIdentifier: frameIdentifier)
         // parse content size
         // (The ID3 size declaration describes only the content;
         // it does not include the header.)
-        let sizeDataStart = dataStart + version.sizeDeclarationOffset
-        let sizeDataRange = sizeDataStart ..< sizeDataStart + version.sizeDeclarationLength
-        guard sizeDataRange.upperBound <= data.endIndex
-            else { throw Mp3File.Error.DataOutOfBounds }
-        let frameSizeData = data.subdata(in: sizeDataRange)
+        let frameSizeData = data.extractFirst(version.sizeDeclarationLength)
         var frameSize: Int = 0
         let raw = UInt32(parsing: frameSizeData, .bigEndian)
         switch version {
@@ -77,12 +67,8 @@ extension FrameProtocol {
         }
         
         // parse flags
-        let flagDataStart = data.startIndex + version.flagsOffset
-        let flagDataRange = flagDataStart ..< flagDataStart + version.flagsLength
-        guard flagDataRange.upperBound <= data.endIndex
-            else { throw Mp3File.Error.DataOutOfBounds }
-        let flags = data.subdata(in: flagDataRange)
-        
+        let flagsData = data.extractFirst(version.flagsLength)
+
         let contentDataStart = data.startIndex + version.frameHeaderLength
         let contentDataRange = contentDataStart ..< contentDataStart + frameSize
         let contentData = data.subdata(in: contentDataRange)
@@ -90,13 +76,34 @@ extension FrameProtocol {
         try self.init(decodingContents: contentData,
                       version: version,
                       frameIdentifier: identifier,
-                      flags: flags)
-        
-        data.dropFirst(contentData.count)
+                      flags: flagsData)
+
+        data.dropFirst(version.frameHeaderLength + contentData.count)
         // This line leaves the slice ready for the next frame to read from the beginning.
     }
+ 
+    internal func extractIdentifier(
+        data: inout Data.SubSequence,
+        version: Version,
+        frameIdentifier: FrameLayoutIdentifier) -> FrameLayoutIdentifier {
+        let identifierBytes = data.extractFirst(version.identifierLength)
+        let identifierString = String(ascii: identifierBytes)
+        let id3Identifiers = frameIdentifier.id3Identifier(version: version)
+        assert(identifierString == id3Identifiers, "Unknown Frame Identifier")
+        return FrameLayoutIdentifier(identifier: identifierString)
+    }
     
+    internal func extractEncoding(data: inout Data.SubSequence, version: Version) -> StringEncoding {
+        let encodingByteOffset = version.encodingByteOffset
+        let encodingByte = data[encodingByteOffset]
+        let validEncodingBytes: [UInt8] = [0x00, 0x01, 0x02, 0x03]
+        assert(
+            validEncodingBytes.contains(encodingByte), "Invalid encoding detected. Attempting default encoding."
+        )
+        return StringEncoding(rawValue: encodingByte) ?? .utf8
+    }
     
-    
-    
+    internal func extractTerminatedString(data: inout Data.SubSequence, version: Version, encoding: StringEncoding) -> String {
+        return data.extractPrefixAsStringUntilNullTermination(encoding) ?? ""
+    }
 }
