@@ -36,10 +36,13 @@ struct Tag {
         }
         var frames: [FrameKey: Frame]
         while !remainder.isEmpty {
-            let identifier = FrameProtocol.extractIdentifier
-            let specificKind: FrameProtocol.Type = // look it up
+            let identifierBytes = remainder.extractFirst(version.identifierLength)
+            let identifier = String(ascii: identifierBytes)
+            let layout = FrameLayoutIdentifier(identifier: identifier)
             
-            let parsed = specificKind.init(
+            let frameHandler: FrameProtocol = FrameProtocol.frameHandler
+            
+            let parsed = frameHandler(
                 decodingFromStartOf: remainder,
                 version: version,
                 frameIdentifier: identifier

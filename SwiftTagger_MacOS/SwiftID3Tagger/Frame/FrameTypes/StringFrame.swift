@@ -22,33 +22,29 @@ internal struct StringFrame: FrameProtocol {
      */
     init(contentString: String) {
         self.contentString = contentString
+        // "Return from initializer without initializing all stored properties"
+        // But we don't want self.flags, self.size, and self.identifier in this initializer
     }
  
-    
-    
-    
+    func encodeContents(version: Version) throws -> Data {
+        
+    }
+        
     #warning("this is the 'read' part")
     var flags: Data
     var size: Int
     var identifier: FrameLayoutIdentifier
-    
-    //    func encodeContents(version: Version) throws -> Data {
-    //
-    //    }
-    
+        
     internal init(decodingContents contents: Data.SubSequence,
                   version: Version,
                   frameIdentifier: FrameLayoutIdentifier,
                   flags: Data) throws {
-        extractStringContent(content: contents, version: version)
-    }
-    
-    private func extractStringContent(
-        content: Data.SubSequence, version: Version) {
-        var parsing = content[...]
-        let encoding = extractEncoding(
-            data: &parsing, version: version)
+        var parsing = contents
+        let encoding = extractEncoding(data: &parsing, version: version)
+        // 'self' used before all stored properties are initialized
         _ = extractTerminatedString(
             data: &parsing, version: version, encoding: encoding)
+        // 'self' used before all stored properties are initialized
     }
+    
 }
