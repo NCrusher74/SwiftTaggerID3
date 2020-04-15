@@ -30,12 +30,12 @@ public struct LanguageFrame: FrameProtocol {
     //    }
     
     internal var flags: Data
-    internal var identifier: KnownFrameLayoutIdentifier
+    internal var layout: KnownFrameLayoutIdentifier
     
     /// if desired, return may be changed from "isoName" to "nativeName"
     internal init(decodingContents contents: Data.SubSequence,
          version: Version,
-         frameIdentifier: KnownFrameLayoutIdentifier,
+         layout: KnownFrameLayoutIdentifier,
          flags: Data) throws {
         let languageCode = contents.stringASCII ?? "und"
         let languages = IsoLanguages.allLanguages.filter({ $0.iso6392T == languageCode })

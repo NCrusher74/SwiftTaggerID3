@@ -30,20 +30,20 @@ public struct BooleanFrame: FrameProtocol {
     //    }
     
     internal var flags: Data
-    internal var identifier: KnownFrameLayoutIdentifier
+    internal var layout: KnownFrameLayoutIdentifier
     
     internal init(decodingContents contents: Data.SubSequence,
                   version: Version,
-                  frameIdentifier: KnownFrameLayoutIdentifier,
+                  layout: KnownFrameLayoutIdentifier,
                   flags: Data) throws {
         var parsing = contents
-        let encoding = StringFrame.extractEncoding(data: &parsing, version: version)
-        let contentString = extractTerminatedString(
+        let encoding = BooleanFrame.extractEncoding(data: &parsing, version: version)
+        let contentString = BooleanFrame.extractTerminatedString(
             data: &parsing, encoding: encoding)
-        self.value = getBooleanFromString(boolString: contentString)
+        self.value = BooleanFrame.getBooleanFromString(boolString: contentString)
     }
     
-    private func getBooleanFromString(boolString: String) -> Bool {
+    private static func getBooleanFromString(boolString: String) -> Bool {
         switch boolString.lowercased() {
             case "true", "t", "yes", "y", "1":
                 return true

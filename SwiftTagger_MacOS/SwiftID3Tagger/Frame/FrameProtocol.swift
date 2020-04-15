@@ -13,12 +13,12 @@ import Foundation
 protocol FrameProtocol {
     
     var flags: Data { get set }
-    var identifier: KnownFrameLayoutIdentifier { get }
+    var layout: KnownFrameLayoutIdentifier { get }
     
 //    func encodeContents(version: Version) throws -> Data
     init(decodingContents contents: Data.SubSequence,
          version: Version,
-         frameIdentifier: KnownFrameLayoutIdentifier,
+         layout: KnownFrameLayoutIdentifier,
          flags: Data) throws
 }
 
@@ -49,7 +49,7 @@ extension FrameProtocol {
     
     init(decodingFromStartOf data: inout Data.SubSequence,
          version: Version,
-         frameIdentifier: KnownFrameLayoutIdentifier) throws {
+         layout: KnownFrameLayoutIdentifier) throws {
         
         // parse content size
         let frameSizeData = data.extractFirst(version.sizeDeclarationLength)
@@ -69,7 +69,7 @@ extension FrameProtocol {
         
         try self.init(decodingContents: contentData,
                       version: version,
-                      frameIdentifier: frameIdentifier,
+                      layout: layout,
                       flags: flagsData)
         
         data = data.dropFirst(version.frameHeaderLength + contentData.count)
@@ -90,13 +90,13 @@ extension FrameProtocol {
         return StringEncoding(rawValue: encodingByte) ?? .utf8
     }
     
-    internal func extractTerminatedString(
+    internal static func extractTerminatedString(
         data: inout Data.SubSequence,
         encoding: StringEncoding) -> String {
         return data.extractPrefixAsStringUntilNullTermination(encoding) ?? ""
     }
     
-    internal func extractDescriptionAndContent(
+    internal static func extractDescriptionAndContent(
         from frameData: inout Data.SubSequence,
         encoding: StringEncoding
     ) throws -> (description: String?, content: String) {

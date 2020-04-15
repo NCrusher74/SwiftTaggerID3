@@ -31,15 +31,15 @@ struct PartOfTotalFrame: FrameProtocol {
     //    }
         
     var flags: Data
-    var identifier: KnownFrameLayoutIdentifier
+    var layout: KnownFrameLayoutIdentifier
     
     init(decodingContents contents: Data.SubSequence,
          version: Version,
-         frameIdentifier: KnownFrameLayoutIdentifier,
+         layout: KnownFrameLayoutIdentifier,
          flags: Data) throws {
         var parsing = contents
-        let encoding = StringFrame.extractEncoding(data: &parsing, version: version)
-        let contentString = extractTerminatedString(
+        let encoding = PartOfTotalFrame.extractEncoding(data: &parsing, version: version)
+        let contentString = Self.extractTerminatedString(
             data: &parsing, encoding: encoding)
         let contentComponents = contentString.components(separatedBy: "/")
         self.part = Int(contentComponents[0]) ?? 0

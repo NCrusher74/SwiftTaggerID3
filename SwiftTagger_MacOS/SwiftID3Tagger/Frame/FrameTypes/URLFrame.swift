@@ -27,11 +27,11 @@ public struct URLFrame: FrameProtocol {
     // MARK: Decode
     // decode incoming data and parse it into a frame
     internal var flags: Data
-    internal var identifier: KnownFrameLayoutIdentifier
+    internal var layout: KnownFrameLayoutIdentifier
     
     internal init(decodingContents contents: Data.SubSequence,
                   version: Version,
-                  frameIdentifier: KnownFrameLayoutIdentifier,
+                  layout: KnownFrameLayoutIdentifier,
                   flags: Data) throws {
         self.urlString = contents.stringASCII ?? ""
     }

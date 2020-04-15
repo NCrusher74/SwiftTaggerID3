@@ -24,8 +24,8 @@ struct GenreFrame: FrameProtocol {
     /**
      Init a ID3 genre frame.
      
-     - parameter genre: an ID3Genre to be setted in the ID3 tag.
-     - parameter description: a generic genre description. Useful to build your own genres.
+     - parameter genre: a numerical value from the list of commonly recognized genres.
+     - parameter description: a freeform string for customized genre descriptions.
      */
     public init(genreType: GenreType?, descriptionString: String?) {
         self.genreType = genreType
@@ -37,11 +37,15 @@ struct GenreFrame: FrameProtocol {
     //    }
     
     var flags: Data
-    var identifier: KnownFrameLayoutIdentifier
+    var layout: KnownFrameLayoutIdentifier
     
-    init(decodingContents contents: Data.SubSequence, version: Version, frameIdentifier: KnownFrameLayoutIdentifier, flags: Data) throws {
-        <#code#>
+    init(decodingContents contents: Data.SubSequence,
+         version: Version,
+         layout: KnownFrameLayoutIdentifier,
+         flags: Data) throws {
+        var parsing = contents
+        let encoding = GenreFrame.extractEncoding(data: &parsing, version: version)
     }
     
-
+    
 }

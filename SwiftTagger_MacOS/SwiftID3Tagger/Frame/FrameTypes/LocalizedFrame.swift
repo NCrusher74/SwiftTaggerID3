@@ -37,21 +37,24 @@ struct LocalizedFrame: FrameProtocol {
     }
 
     var flags: Data
-    var identifier: KnownFrameLayoutIdentifier
+    var layout: KnownFrameLayoutIdentifier
     
 //    func encodeContents(version: Version) throws -> Data {
 //        
 //    }
 
-    init(decodingContents contents: Data.SubSequence, version: Version, frameIdentifier: KnownFrameLayoutIdentifier, flags: Data) throws {
+    init(decodingContents contents: Data.SubSequence,
+         version: Version,
+         layout: KnownFrameLayoutIdentifier,
+         flags: Data) throws {
         var parsing = contents
-        let encoding = StringFrame.extractEncoding(data: &parsing, version: version)
+        let encoding = LocalizedFrame.extractEncoding(data: &parsing, version: version)
 
         let languageCode = parsing.extractFirst(3).stringASCII ?? "und"
         let languages = IsoLanguages.allLanguages.filter({ $0.iso6392T == languageCode })
         self.languageString = String(languages.first?.isoName ?? "undefined")
 
-        let parsed = try extractDescriptionAndContent(from: &parsing, encoding: encoding)
+        let parsed = try LocalizedFrame.extractDescriptionAndContent(from: &parsing, encoding: encoding)
         self.descriptionString = parsed.description
         self.contentString = parsed.content
     }

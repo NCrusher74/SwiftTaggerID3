@@ -25,16 +25,19 @@ struct UserTextFrame: FrameProtocol {
     }
     
     var flags: Data
-    var identifier: KnownFrameLayoutIdentifier
+    var layout: KnownFrameLayoutIdentifier
 
 //    func encodeContents(version: Version) throws -> Data {
 //        
 //    }
 
-    init(decodingContents contents: Data.SubSequence, version: Version, frameIdentifier: KnownFrameLayoutIdentifier, flags: Data) throws {
+    init(decodingContents contents: Data.SubSequence,
+         version: Version,
+         layout: KnownFrameLayoutIdentifier,
+         flags: Data) throws {
         var parsing = contents
-        let encoding = StringFrame.extractEncoding(data: &parsing, version: version)
-        let parsed = try extractDescriptionAndContent(from: &parsing, encoding: encoding)
+        let encoding = UserTextFrame.extractEncoding(data: &parsing, version: version)
+        let parsed = try UserTextFrame.extractDescriptionAndContent(from: &parsing, encoding: encoding)
         self.descriptionString = parsed.description
         self.contentString = parsed.content
     }

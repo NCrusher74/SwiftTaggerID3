@@ -28,7 +28,7 @@ struct DateFrame: FrameProtocol {
     
  
     var flags: Data
-    var identifier: KnownFrameLayoutIdentifier
+    var layout: KnownFrameLayoutIdentifier
     
 //    func encodeContents(version: Version) throws -> Data {
 //        
@@ -36,9 +36,9 @@ struct DateFrame: FrameProtocol {
     
     init(decodingContents contents: Data.SubSequence,
          version: Version,
-         frameIdentifier: KnownFrameLayoutIdentifier,
+         layout: KnownFrameLayoutIdentifier,
          flags: Data) throws {
-        <#code#>
+        //
     }
     
 }

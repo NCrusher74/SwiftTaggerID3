@@ -30,22 +30,22 @@ struct CreditsListFrame: FrameProtocol {
     //    }
     
     var flags: Data
-    var identifier: KnownFrameLayoutIdentifier
+    var layout: KnownFrameLayoutIdentifier
     
     init(decodingContents contents: Data.SubSequence,
          version: Version,
-         frameIdentifier: KnownFrameLayoutIdentifier,
+         layout: KnownFrameLayoutIdentifier,
          flags: Data) throws {
         var parsing = contents
-        let encoding = StringFrame.extractEncoding(data: &parsing, version: version)
-        let parsed = extractCreditStrings(from: &parsing, encoding: encoding)
+        let encoding = CreditsListFrame.extractEncoding(data: &parsing, version: version)
+        let parsed = CreditsListFrame.extractCreditStrings(from: &parsing, encoding: encoding)
         var entries: [(role: String, person: String)] = []
         for pair in parsed {
             entries.append((role: pair.0, person: pair.1))
         }
     }
     
-    private func extractCreditStrings(
+    private static func extractCreditStrings(
         from frameData: inout Data.SubSequence,
         encoding: StringEncoding
     ) -> [(String, String)] {
