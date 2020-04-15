@@ -18,6 +18,8 @@ public struct BooleanFrame: FrameProtocol {
     /**
      A frame with a single-integer string, 1 or 0, presented as a boolean.
      - parameter value: the content of the frame.
+     
+     This frame is stored in the tag as a string. For the sake of user-friendliness, this is converted to a boolean value as long as the stored value is recognizable as a boolean-like word.
      */
     public init(value: Bool) {
         self.value = value
