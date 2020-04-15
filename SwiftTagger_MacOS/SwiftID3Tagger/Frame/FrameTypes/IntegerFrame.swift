@@ -11,28 +11,34 @@ import Foundation
 /**
  A type representing an ID3 frame that holds a single integer value
  */
-internal struct IntegerFrame: FrameProtocol {
+public struct IntegerFrame: FrameProtocol {
     
-    let value: Int
+    public let value: Int
     
     /**
      A frame with only an integer string as content, presented as an integer
      - parameter value: the content of the frame.
      */
-    init(value: Int) {
+    public init(value: Int) {
         self.value = value
     }
-
-    var flags: Data
-    var identifier: FrameLayoutIdentifier
+    //    func encodeContents(version: Version) throws -> Data {
+    //
+    //    }
     
-//    func encodeContents(version: Version) throws -> Data {
-//        <#code#>
-//    }
-
-    init(decodingContents contents: Data.SubSequence, version: Version, frameIdentifier: FrameLayoutIdentifier, flags: Data) throws {
-        <#code#>
+    // MARK: Decode
+    // decode incoming data and parse it into a frame
+    internal var flags: Data
+    internal var identifier: KnownFrameLayoutIdentifier
+    
+    internal init(decodingContents contents: Data.SubSequence,
+                  version: Version,
+                  frameIdentifier: KnownFrameLayoutIdentifier,
+                  flags: Data) throws {
+        var parsing = contents
+        let encoding = StringFrame.extractEncoding(data: &parsing, version: version)
+        self.value = Int(extractTerminatedString(
+            data: &parsing, encoding: encoding)) ?? 0
     }
     
-
 }

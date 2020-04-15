@@ -61,14 +61,14 @@ struct TableOfContentsFrame: FrameProtocol {
     }
 
     
-    var flags: Data
-    var identifier: FrameLayoutIdentifier
+    //    func encodeContents(version: Version) throws -> Data {
+    //        
+    //    }
     
-//    func encodeContents(version: Version) throws -> Data {
-//        <#code#>
-//    }
-
-    init(decodingContents contents: Data.SubSequence, version: Version, frameIdentifier: FrameLayoutIdentifier, flags: Data) throws {
+    var flags: Data
+    var identifier: KnownFrameLayoutIdentifier
+    
+    init(decodingContents contents: Data.SubSequence, version: Version, frameIdentifier: KnownFrameLayoutIdentifier, flags: Data) throws {
         <#code#>
     }
     

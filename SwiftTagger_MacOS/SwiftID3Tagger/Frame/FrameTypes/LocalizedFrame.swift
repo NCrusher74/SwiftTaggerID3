@@ -17,18 +17,18 @@ import IsoCountryAndLanguageCodes
 struct LocalizedFrame: FrameProtocol {
     
     /// ISO-639-2 languge code
-    public var languageString: IsoLanguageInfo
+    public var languageString: String
     /// A short description of the frame content.
     public var descriptionString: String?
     /// the content of the frame
     public var contentString: String
     
     /**
-     - parameter language: the ISO-639-2 language code.
-     - parameter contentDescription: a terminated text string describing the frame content
-     - parameter contentText: the full text of the comment or lyric frame.
+     - parameter languageString: the ISO-639-2 language code.
+     - parameter descriptionString: a terminated text string describing the frame content
+     - parameter contentString: the full text of the comment or lyric frame.
      */
-    public init(languageString: IsoLanguageInfo,
+    public init(languageString: String,
                 descriptionString: String?,
                 contentString: String) {
         self.languageString = languageString
@@ -37,14 +37,23 @@ struct LocalizedFrame: FrameProtocol {
     }
 
     var flags: Data
-    var identifier: FrameLayoutIdentifier
+    var identifier: KnownFrameLayoutIdentifier
     
 //    func encodeContents(version: Version) throws -> Data {
-//        <#code#>
+//        
 //    }
 
-    init(decodingContents contents: Data.SubSequence, version: Version, frameIdentifier: FrameLayoutIdentifier, flags: Data) throws {
-        <#code#>
+    init(decodingContents contents: Data.SubSequence, version: Version, frameIdentifier: KnownFrameLayoutIdentifier, flags: Data) throws {
+        var parsing = contents
+        let encoding = StringFrame.extractEncoding(data: &parsing, version: version)
+
+        let languageCode = parsing.extractFirst(3).stringASCII ?? "und"
+        let languages = IsoLanguages.allLanguages.filter({ $0.iso6392T == languageCode })
+        self.languageString = String(languages.first?.isoName ?? "undefined")
+
+        let parsed = try extractDescriptionAndContent(from: &parsing, encoding: encoding)
+        self.descriptionString = parsed.description
+        self.contentString = parsed.content
     }
     
 

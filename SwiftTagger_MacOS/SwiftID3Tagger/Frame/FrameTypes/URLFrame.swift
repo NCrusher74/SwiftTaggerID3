@@ -10,37 +10,29 @@ import Foundation
 /**
  A type representing an ID3 frame that holds a single string, such as Artist, Title, Album, etc
  */
-internal struct URLFrame: FrameProtocol {
+public struct URLFrame: FrameProtocol {
     
-    var urlString: String
+    public var urlString: String
     
     /**
      A frame with only string content, presented as a single string without `(/n)`.
      - parameter contentString: the content of the frame.
      */
-    init(urlString: String) {
+    public init(urlString: String) {
         self.urlString = urlString
         // "Return from initializer without initializing all stored properties"
         // But we don't want self.flags, self.size, and self.identifier in this initializer
     }
     
-    var flags: Data
-    var identifier: FrameLayoutIdentifier
-
-    //    func encodeContents(version: Version) throws -> Data {
-    //
-    //    }    
-
+    // MARK: Decode
+    // decode incoming data and parse it into a frame
+    internal var flags: Data
+    internal var identifier: KnownFrameLayoutIdentifier
+    
     internal init(decodingContents contents: Data.SubSequence,
                   version: Version,
-                  frameIdentifier: FrameLayoutIdentifier,
+                  frameIdentifier: KnownFrameLayoutIdentifier,
                   flags: Data) throws {
-        var parsing = contents
-        let encoding = URLFrame.extractEncoding(data: &parsing, version: version)
-        // 'self' used before all stored properties are initialized
-        _ = extractTerminatedString(
-            data: &parsing, version: version, encoding: encoding)
-        // 'self' used before all stored properties are initialized
+        self.urlString = contents.stringASCII ?? ""
     }
-    
 }

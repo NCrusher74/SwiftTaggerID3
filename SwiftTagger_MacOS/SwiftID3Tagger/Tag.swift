@@ -38,59 +38,12 @@ struct Tag {
         while !remainder.isEmpty {
             let identifierBytes = remainder.extractFirst(version.identifierLength)
             let identifier = String(ascii: identifierBytes)
-            let layout = KnownFrameLayoutIdentifier(identifier: identifier) ?? .userDefinedText
-            
-            let frameHandler: FrameProtocol.Type = Tag.frameHandler(layout: layout)
-            
-            let parsed = frameHandler.init(
-                // Cannot invoke value of type '(Data.SubSequence, Version, FrameLayoutIdentifier, Data) throws -> FrameProtocol' (aka '(Data, Version, FrameLayoutIdentifier, Data) throws -> FrameProtocol') with argument list '(decodingFromStartOf: Data.SubSequence, version: Version, frameIdentifier: String)'
-                decodingFromStartOf: remainder,
-                version: version,
-                frameIdentifier: identifier
-            )
-            frames[parsed.frameKey] = parsed
+            let layout: KnownFrameLayoutIdentifier = KnownFrameLayoutIdentifier(identifier: identifier) ?? .userDefinedText
+            let frame = try Frame(
+                layout: layout,
+                data: &remainder,
+                version: version)
+            frames[frameKey] = frame
         }
     }
-    
-    private static func frameHandler(layout: KnownFrameLayoutIdentifier) -> FrameProtocol.Type {
-        switch layout {
-            case .chapter: /* return ChapterFrame.self */ break
-            case .tableOfContents: /* return TableOfContentsFrame.self */ break
-            case .compilation: /* return BooleanFrame.self */ break
-            case .genre: /* return GenreFrame.self */ break
-            case .languages: /* return LanguageFrame.self */ break
-            case .attachedPicture: /* return ImageFrame.self */ break
-            case .comments,
-                 .unsynchronizedLyrics: /* return LocalizedFrame.self */ break
-            case .discNumber,
-                 .trackNumber: /* return PartOfTotalFrame.self */ break
-            case .userDefinedText,
-                 .userDefinedWebpage: /* return UserTextFrame.self */ break
-            case .involvedPeopleList,
-                 .musicianCreditsList: /* return CreditsListFrame.self */ break
-            case .bpm,
-                 .isrc,
-                 .length,
-                 .movementCount,
-                 .movementNumber,
-                 .playlistDelay: /* return IntegerFrame.self */ break
-            case .date,
-                 .encodingTime,
-                 .originalReleaseTime,
-                 .recordingDate,
-                 .releaseTime,
-                 .taggingTime,
-                 .time,
-                 .year: /* return DateFrame.self */ break
-            case .artistWebpage,
-                 .audioFileWebpage,
-                 .audioSourceWebpage,
-                 .copyrightWebpage,
-                 .paymentWebpage,
-                 .publisherWebpage,
-                 .radioStationWebpage: /* return URLFrame.self */ break
-            default: return StringFrame.self
-        }
-    }
-    
 }

@@ -17,11 +17,6 @@ public enum Version: CaseIterable {
     /// ID3 v2.4
     case v2_4
     
-    init() {
-        self = .v2_2
-        self = .v2_3
-        self = .v2_4
-    }
 }
 
 extension Version {

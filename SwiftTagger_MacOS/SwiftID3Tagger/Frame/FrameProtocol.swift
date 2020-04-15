@@ -13,12 +13,12 @@ import Foundation
 protocol FrameProtocol {
     
     var flags: Data { get set }
-    var identifier: FrameLayoutIdentifier { get }
+    var identifier: KnownFrameLayoutIdentifier { get }
     
-    func encodeContents(version: Version) throws -> Data
+//    func encodeContents(version: Version) throws -> Data
     init(decodingContents contents: Data.SubSequence,
          version: Version,
-         frameIdentifier: FrameLayoutIdentifier,
+         frameIdentifier: KnownFrameLayoutIdentifier,
          flags: Data) throws
 }
 
@@ -49,11 +49,9 @@ extension FrameProtocol {
     
     init(decodingFromStartOf data: inout Data.SubSequence,
          version: Version,
-         frameIdentifier: FrameLayoutIdentifier) throws {
+         frameIdentifier: KnownFrameLayoutIdentifier) throws {
         
         // parse content size
-        // (The ID3 size declaration describes only the content;
-        // it does not include the header.)
         let frameSizeData = data.extractFirst(version.sizeDeclarationLength)
         var frameSize: Int = 0
         let raw = UInt32(parsing: frameSizeData, .bigEndian)
@@ -94,8 +92,17 @@ extension FrameProtocol {
     
     internal func extractTerminatedString(
         data: inout Data.SubSequence,
-        version: Version,
         encoding: StringEncoding) -> String {
         return data.extractPrefixAsStringUntilNullTermination(encoding) ?? ""
     }
+    
+    internal func extractDescriptionAndContent(
+        from frameData: inout Data.SubSequence,
+        encoding: StringEncoding
+    ) throws -> (description: String?, content: String) {
+        let description = frameData.extractPrefixAsStringUntilNullTermination(encoding)
+        let content = frameData.extractPrefixAsStringUntilNullTermination(encoding) ?? ""
+        return (description: description, content: content)
+    }
+
 }

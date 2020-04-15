@@ -26,15 +26,24 @@ struct PartOfTotalFrame: FrameProtocol {
         self.total = total
     }
     
+    //    func encodeContents(version: Version) throws -> Data {
+    //
+    //    }
+        
     var flags: Data
-    var identifier: FrameLayoutIdentifier
+    var identifier: KnownFrameLayoutIdentifier
     
-//    func encodeContents(version: Version) throws -> Data {
-//        <#code#>
-//    }
-
-    init(decodingContents contents: Data.SubSequence, version: Version, frameIdentifier: FrameLayoutIdentifier, flags: Data) throws {
-        <#code#>
+    init(decodingContents contents: Data.SubSequence,
+         version: Version,
+         frameIdentifier: KnownFrameLayoutIdentifier,
+         flags: Data) throws {
+        var parsing = contents
+        let encoding = StringFrame.extractEncoding(data: &parsing, version: version)
+        let contentString = extractTerminatedString(
+            data: &parsing, encoding: encoding)
+        let contentComponents = contentString.components(separatedBy: "/")
+        self.part = Int(contentComponents[0]) ?? 0
+        self.total = Int(contentComponents[1])
     }
     
 

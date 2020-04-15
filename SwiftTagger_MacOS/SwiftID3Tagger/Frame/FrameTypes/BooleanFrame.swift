@@ -11,28 +11,45 @@ import Foundation
 /**
  A type representing an ID3 frame that holds a single integer
  */
-internal struct BooleanFrame: FrameProtocol {
+public struct BooleanFrame: FrameProtocol {
     
-    let value: Bool
+    public let value: Bool
     
     /**
      A frame with a single-integer string, 1 or 0, presented as a boolean.
      - parameter value: the content of the frame.
      */
-    init(value: Bool) {
+    public init(value: Bool) {
         self.value = value
     }
     
-    var flags: Data
-    var identifier: FrameLayoutIdentifier
+    //    func encodeContents(version: Version) throws -> Data {
+    //
+    //    }
     
-//    func encodeContents(version: Version) throws -> Data {
-//        <#code#>
-//    }
-
-    init(decodingContents contents: Data.SubSequence, version: Version, frameIdentifier: FrameLayoutIdentifier, flags: Data) throws {
-        <#code#>
+    internal var flags: Data
+    internal var identifier: KnownFrameLayoutIdentifier
+    
+    internal init(decodingContents contents: Data.SubSequence,
+                  version: Version,
+                  frameIdentifier: KnownFrameLayoutIdentifier,
+                  flags: Data) throws {
+        var parsing = contents
+        let encoding = StringFrame.extractEncoding(data: &parsing, version: version)
+        let contentString = extractTerminatedString(
+            data: &parsing, encoding: encoding)
+        self.value = getBooleanFromString(boolString: contentString)
     }
     
-
+    private func getBooleanFromString(boolString: String) -> Bool {
+        switch boolString.lowercased() {
+            case "true", "t", "yes", "y", "1":
+                return true
+            case "false", "f", "no", "n", "0":
+                return false
+            default:
+                return false
+        }
+    }
+    
 }

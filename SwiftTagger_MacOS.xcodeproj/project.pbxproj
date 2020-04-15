@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		511E400A2446A96A0041F7AE /* ISOLanguages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511E40092446A96A0041F7AE /* ISOLanguages.swift */; };
 		51490E49243EBB4A009D4BA4 /* Frame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51490E48243EBB4A009D4BA4 /* Frame.swift */; };
 		51490E51243EDB4F009D4BA4 /* FrameLayoutIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51490E50243EDB4F009D4BA4 /* FrameLayoutIdentifier.swift */; };
 		51490E53243EF216009D4BA4 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51490E52243EF216009D4BA4 /* Data.swift */; };
@@ -29,7 +30,6 @@
 		5177543E24413768005E43C5 /* UnsignedInteger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5177543D24413768005E43C5 /* UnsignedInteger.swift */; };
 		5177544824423D46005E43C5 /* StringFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5177544724423D46005E43C5 /* StringFrame.swift */; };
 		5177544A2442743F005E43C5 /* FrameKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517754492442743F005E43C5 /* FrameKey.swift */; };
-		517754522442E6D3005E43C5 /* IsoCountryAndLanguageCodes in Frameworks */ = {isa = PBXBuildFile; productRef = 517754512442E6D3005E43C5 /* IsoCountryAndLanguageCodes */; };
 		517754542442E757005E43C5 /* LocalizedFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517754532442E757005E43C5 /* LocalizedFrame.swift */; };
 		517754562442E8E1005E43C5 /* ImageFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517754552442E8E1005E43C5 /* ImageFrame.swift */; };
 		517754582442EB67005E43C5 /* CreditsListFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517754572442EB67005E43C5 /* CreditsListFrame.swift */; };
@@ -88,6 +88,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		511E40092446A96A0041F7AE /* ISOLanguages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISOLanguages.swift; sourceTree = "<group>"; };
 		51490E48243EBB4A009D4BA4 /* Frame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Frame.swift; sourceTree = "<group>"; };
 		51490E50243EDB4F009D4BA4 /* FrameLayoutIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameLayoutIdentifier.swift; sourceTree = "<group>"; };
 		51490E52243EF216009D4BA4 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
@@ -152,7 +153,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				517754522442E6D3005E43C5 /* IsoCountryAndLanguageCodes in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -218,18 +218,18 @@
 			isa = PBXGroup;
 			children = (
 				5177544724423D46005E43C5 /* StringFrame.swift */,
+				51A3C69D2442FB1A00909952 /* BooleanFrame.swift */,
 				51A3C6A624464FDC00909952 /* URLFrame.swift */,
-				51A3C69F2442FEF000909952 /* DateFrame.swift */,
 				51A3C69B2442F9E800909952 /* IntegerFrame.swift */,
+				518807222442EE58008D488B /* PartOfTotalFrame.swift */,
+				518807202442ED4D008D488B /* LanguageFrame.swift */,
 				517754572442EB67005E43C5 /* CreditsListFrame.swift */,
 				51A3C6A12442FFB300909952 /* UserTextFrame.swift */,
-				518807222442EE58008D488B /* PartOfTotalFrame.swift */,
 				517754532442E757005E43C5 /* LocalizedFrame.swift */,
-				517754552442E8E1005E43C5 /* ImageFrame.swift */,
-				518807202442ED4D008D488B /* LanguageFrame.swift */,
 				517754592442EBE8005E43C5 /* GenreFrame.swift */,
+				517754552442E8E1005E43C5 /* ImageFrame.swift */,
+				51A3C69F2442FEF000909952 /* DateFrame.swift */,
 				518807242442EF4E008D488B /* ChapterFrame.swift */,
-				51A3C69D2442FB1A00909952 /* BooleanFrame.swift */,
 				518807262442F055008D488B /* TableOfContentsFrame.swift */,
 				51A3C6A524441F6100909952 /* Reference */,
 			);
@@ -241,6 +241,7 @@
 			children = (
 				518807282442F1CB008D488B /* ImageTypes.swift */,
 				5188072A2442F3DE008D488B /* GenreTypes.swift */,
+				511E40092446A96A0041F7AE /* ISOLanguages.swift */,
 			);
 			path = Reference;
 			sourceTree = "<group>";
@@ -380,7 +381,6 @@
 			);
 			name = SwiftTagger_MacOS;
 			packageProductDependencies = (
-				517754512442E6D3005E43C5 /* IsoCountryAndLanguageCodes */,
 			);
 			productName = SwiftTagger_MacOS;
 			productReference = 51E432AC243DA257006574A1 /* SwiftTagger_MacOS.framework */;
@@ -433,7 +433,6 @@
 			);
 			mainGroup = 51E432A2243DA257006574A1;
 			packageReferences = (
-				517754502442E6D3005E43C5 /* XCRemoteSwiftPackageReference "IsoCountryandLanguageCodes" */,
 			);
 			productRefGroup = 51E432AD243DA257006574A1 /* Products */;
 			projectDirPath = "";
@@ -505,6 +504,7 @@
 				51A3C6A02442FEF000909952 /* DateFrame.swift in Sources */,
 				51490E51243EDB4F009D4BA4 /* FrameLayoutIdentifier.swift in Sources */,
 				518807232442EE58008D488B /* PartOfTotalFrame.swift in Sources */,
+				511E400A2446A96A0041F7AE /* ISOLanguages.swift in Sources */,
 				51FA350A24402580000997EC /* String.swift in Sources */,
 				51490E53243EF216009D4BA4 /* Data.swift in Sources */,
 				5177544824423D46005E43C5 /* StringFrame.swift in Sources */,
@@ -775,25 +775,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		517754502442E6D3005E43C5 /* XCRemoteSwiftPackageReference "IsoCountryandLanguageCodes" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/NCrusher74/IsoCountryandLanguageCodes.git";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		517754512442E6D3005E43C5 /* IsoCountryAndLanguageCodes */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 517754502442E6D3005E43C5 /* XCRemoteSwiftPackageReference "IsoCountryandLanguageCodes" */;
-			productName = IsoCountryAndLanguageCodes;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 51E432A3243DA257006574A1 /* Project object */;
 }

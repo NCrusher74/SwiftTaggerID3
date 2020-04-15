@@ -114,40 +114,7 @@ internal enum KnownFrameLayoutIdentifier: CaseIterable {
     init?(identifier: String) {
         self = KnownFrameLayoutIdentifier.stringToLayoutMapping[identifier] ?? .userDefinedText
     }
-    
-    // Checks if the frame as a Description field
-    private var hasDescription: Bool {
-        switch self {
-            case .comments,
-                 .unsynchronizedLyrics,
-                 .userDefinedText,
-                 .userDefinedWebpage:
-                return true
-            default: return false
-        }
-    }
-    
-    // Checks if the frame has a Language field
-    private var hasLanguage: Bool {
-        switch self {
-            case .comments,
-                 .languages,
-                 .unsynchronizedLyrics:
-                return true
-            default: return false
-        }
-    }
-    
-    // Checks if the frame is a CreditsList type
-    private var isCreditFrame: Bool {
-        switch self {
-            case .involvedPeopleList,
-                 .musicianCreditsList:
-                return true
-            default: return false
-        }
-    }
-     
+         
     // MARK: ID3Identifier
     // The ID3 code for the frame
     // 3 bytes for ID3v2.2

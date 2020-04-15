@@ -25,17 +25,39 @@ struct CreditsListFrame: FrameProtocol {
         self.entries = entries
     }
     
-    var flags: Data
-    var identifier: FrameLayoutIdentifier
+    //    func encodeContents(version: Version) throws -> Data {
+    //
+    //    }
     
-//    func encodeContents(version: Version) throws -> Data {
-//        <#code#>
-//    }
-
-    init(decodingContents contents: Data.SubSequence, version: Version, frameIdentifier: FrameLayoutIdentifier, flags: Data) throws {
-        <#code#>
+    var flags: Data
+    var identifier: KnownFrameLayoutIdentifier
+    
+    init(decodingContents contents: Data.SubSequence,
+         version: Version,
+         frameIdentifier: KnownFrameLayoutIdentifier,
+         flags: Data) throws {
+        var parsing = contents
+        let encoding = StringFrame.extractEncoding(data: &parsing, version: version)
+        let parsed = extractCreditStrings(from: &parsing, encoding: encoding)
+        var entries: [(role: String, person: String)] = []
+        for pair in parsed {
+            entries.append((role: pair.0, person: pair.1))
+        }
     }
     
+    private func extractCreditStrings(
+        from frameData: inout Data.SubSequence,
+        encoding: StringEncoding
+    ) -> [(String, String)] {
+        var strings: [String] = []
+        
+        while !frameData.isEmpty,
+            let next = frameData.extractPrefixAsStringUntilNullTermination(encoding) {
+                strings.append(next)
+        }
+        let rolePersonArray = strings.pairs()
+        return rolePersonArray as! [(String, String)]
+    }
 
     
 }

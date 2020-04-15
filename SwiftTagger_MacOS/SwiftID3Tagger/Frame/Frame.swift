@@ -25,41 +25,82 @@ internal enum Frame {
     case toc(TableOfContentsFrame)
     case userText(UserTextFrame)
     case url(URLFrame)
-//    /// will most likely be handled as a `UserTextFrame` unless it can't be for some reason
-////    case unknownFrame(UnknownFrame)
+    /// will most likely be handled as a `UserTextFrame` unless it can't be for some reason
+    //    case unknownFrame(UnknownFrame)
     
-    internal var handling: KnownFrameLayoutIdentifier {
-        switch self {
-
-            case .chapter(_):
-                return .chapter
-            case .localizedFrame(_):
-                return .comments, .
-            case .languageFrame(_):
-            <#code#>
-            case .creditsList(_):
-            <#code#>
-            case .date(_):
-            <#code#>
-            case .genre(_):
-            <#code#>
-            case .image(_):
-            <#code#>
-            case .string(_):
-            <#code#>
-            case .integer(_):
-            <#code#>
-            case .boolean(_):
-            <#code#>
-            case .partOfTotalFrame(_):
-            <#code#>
-            case .toc(_):
-            <#code#>
-            case .userText(_):
-            <#code#>
-            case .url(_):
-            <#code#>
+    init(layout: KnownFrameLayoutIdentifier,
+         data: inout Data.SubSequence,
+         version: Version) throws {
+        switch layout {
+            //            case .attachedPicture:
+            //                self = .image(try ImageFrame)
+            //            case .chapter:
+            //                self = .chapter(try ChapterFrame)
+            //            case .tableOfContents:
+            //                self = .toc(try TableOfContentsFrame)
+            case .compilation:
+                self = .boolean(try BooleanFrame(
+                    decodingFromStartOf: &data,
+                    version: version,
+                    frameIdentifier: layout))
+            //            case .genre:
+            //                self = .genre(try GenreFrame)
+            case .languages:
+                self = .languageFrame(try LanguageFrame(
+                    decodingFromStartOf: &data,
+                    version: version,
+                    frameIdentifier: layout))
+            case .comments,
+                 .unsynchronizedLyrics:
+                self = .localizedFrame(try LocalizedFrame(
+                    decodingFromStartOf: &data,
+                    version: version,
+                    frameIdentifier: layout))
+            case .discNumber,
+                 .trackNumber:
+                self = .partOfTotalFrame(try PartOfTotalFrame(
+                    decodingFromStartOf: &data,
+                    version: version,
+                    frameIdentifier: layout))
+            case .involvedPeopleList,
+                 .musicianCreditsList:
+                self = .creditsList(try CreditsListFrame(
+                    decodingFromStartOf: &data,
+                    version: version,
+                    frameIdentifier: layout))
+            case .userDefinedText,
+                 .userDefinedWebpage:
+                self = .userText(try UserTextFrame(
+                    decodingFromStartOf: &data,
+                    version: version,
+                    frameIdentifier: layout))
+            case .bpm,
+                 .isrc,
+                 .length,
+                 .movementCount,
+                 .movementNumber,
+                 .playlistDelay:
+                self = .integer(try IntegerFrame(
+                    decodingFromStartOf: &data,
+                    version: version,
+                    frameIdentifier: layout))
+            case .artistWebpage,
+                 .audioFileWebpage,
+                 .audioSourceWebpage,
+                 .copyrightWebpage,
+                 .paymentWebpage,
+                 .publisherWebpage,
+                 .radioStationWebpage:
+                self = .url(try URLFrame(
+                    decodingFromStartOf: &data,
+                    version: version,
+                    frameIdentifier: layout))
+//            case .date, .encodingTime, .originalReleaseTime, .recordingDate, .releaseTime, .taggingTime, .time, .year: self = .date(try DataFrame)
+            default:
+                self = .string(try StringFrame(
+                    decodingFromStartOf: &data,
+                    version: version,
+                    frameIdentifier: layout))            
         }
     }
-    
 }

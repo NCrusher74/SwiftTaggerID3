@@ -11,37 +11,35 @@ import Foundation
 /**
  A type representing an ID3 frame that holds a single string, such as Artist, Title, Album, etc
  */
-internal struct StringFrame: FrameProtocol {
-        
-    var contentString: String
+public struct StringFrame: FrameProtocol {
+    
+    public var contentString: String
     
     /**
-     A frame with only string content, presented as a single string without `(/n)`.     
+     A frame with only string content, presented as a single string without`(/n)` newline characters.
      - parameter contentString: the content of the frame.
      */
-    init(contentString: String) {
+    public init(contentString: String) {
         self.contentString = contentString
-        // "Return from initializer without initializing all stored properties"
-        // But we don't want self.flags, self.size, and self.identifier in this initializer
     }
- 
-    func encodeContents(version: Version) throws -> Data {
-        
-    }
-        
-    var flags: Data
-    var identifier: FrameLayoutIdentifier
-        
+    
+    //    func encodeContents(version: Version) throws -> Data {
+    //
+    //    }
+    
+    // MARK: Decode
+    // decode incoming data and parse it into a frame
+    internal var flags: Data
+    internal var identifier: KnownFrameLayoutIdentifier
+    
     internal init(decodingContents contents: Data.SubSequence,
                   version: Version,
-                  frameIdentifier: FrameLayoutIdentifier,
+                  frameIdentifier: KnownFrameLayoutIdentifier,
                   flags: Data) throws {
         var parsing = contents
         let encoding = StringFrame.extractEncoding(data: &parsing, version: version)
-        // 'self' used before all stored properties are initialized
-        _ = extractTerminatedString(
-            data: &parsing, version: version, encoding: encoding)
-        // 'self' used before all stored properties are initialized
+        self.contentString = extractTerminatedString(
+            data: &parsing, encoding: encoding)
     }
     
 }
