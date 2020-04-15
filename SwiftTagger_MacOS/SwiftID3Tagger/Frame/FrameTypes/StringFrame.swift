@@ -36,6 +36,8 @@ public struct StringFrame: FrameProtocol {
                   version: Version,
                   layout: KnownFrameLayoutIdentifier,
                   flags: Data) throws {
+        self.flags = StringFrame.defaultFlags(version: version)
+        self.layout = layout
         var parsing = contents
         let encoding = StringFrame.extractEncoding(data: &parsing, version: version)
         self.contentString = StringFrame.extractTerminatedString(

@@ -37,6 +37,8 @@ struct UserTextFrame: FrameProtocol {
          flags: Data) throws {
         var parsing = contents
         let encoding = UserTextFrame.extractEncoding(data: &parsing, version: version)
+        self.flags = UserTextFrame.defaultFlags(version: version)
+        self.layout = layout
         let parsed = try UserTextFrame.extractDescriptionAndContent(from: &parsing, encoding: encoding)
         self.descriptionString = parsed.description
         self.contentString = parsed.content

@@ -95,7 +95,15 @@ internal enum Frame {
                     decodingFromStartOf: &data,
                     version: version,
                     layout: layout))
-//            case .date, .encodingTime, .originalReleaseTime, .recordingDate, .releaseTime, .taggingTime, .time, .year: self = .date(try DataFrame)
+//            case .date,
+//                 .encodingTime,
+//                 .originalReleaseTime,
+//                 .recordingDate,
+//                 .releaseTime,
+//                 .taggingTime,
+//                 .time,
+//                 .year:
+//                self = .date(try DataFrame)
             default:
                 self = .string(try StringFrame(
                     decodingFromStartOf: &data,

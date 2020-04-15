@@ -38,7 +38,8 @@ struct DateFrame: FrameProtocol {
          version: Version,
          layout: KnownFrameLayoutIdentifier,
          flags: Data) throws {
-        //
+        self.flags = DateFrame.defaultFlags(version: version)
+        self.layout = layout
     }
     
 }

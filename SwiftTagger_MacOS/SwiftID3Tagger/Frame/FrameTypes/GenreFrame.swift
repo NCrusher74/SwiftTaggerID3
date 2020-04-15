@@ -43,9 +43,40 @@ struct GenreFrame: FrameProtocol {
          version: Version,
          layout: KnownFrameLayoutIdentifier,
          flags: Data) throws {
+        self.flags = GenreFrame.defaultFlags(version: version)
+        self.layout = layout
         var parsing = contents
         let encoding = GenreFrame.extractEncoding(data: &parsing, version: version)
-    }
+        let unparsedString = GenreFrame.extractTerminatedString(data: &parsing, encoding: encoding)
+        if let parsedRange = unparsedString.range(of: #"(\\()\\w*\\d*(\\))"#,
+                         options: .regularExpression) {
+            let genreWithParenthesis = String(unparsedString[parsedRange])
+
+        }
+        
     
+
+    }
+
+    
+    private func getGenreIdentifier(genreWithParenthesis: String) -> GenreType? {
+        let genreIdentifierStartIndex = genreWithParenthesis.index(after: genreWithParenthesis.startIndex)
+        let genreIdentifierEndIndex = genreWithParenthesis.index(before: genreWithParenthesis.endIndex)
+        let genreIdentifierRange = genreIdentifierStartIndex..<genreIdentifierEndIndex
+        let genreWithoutParenthesis = genreWithParenthesis[genreIdentifierRange]
+        if let genreIdentifier = Int(genreWithoutParenthesis),
+            let validGenre = GenreType(rawValue: genreIdentifier) {
+            return validGenre
+        }
+        if (genreWithoutParenthesis == "RX") {
+            return .Remix
+        }
+        if (genreWithoutParenthesis == "CR") {
+            return .Cover
+        }
+        return nil
+    }
+
+
     
 }

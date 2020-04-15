@@ -36,6 +36,8 @@ struct CreditsListFrame: FrameProtocol {
          version: Version,
          layout: KnownFrameLayoutIdentifier,
          flags: Data) throws {
+        self.flags = CreditsListFrame.defaultFlags(version: version)
+        self.layout = layout
         var parsing = contents
         let encoding = CreditsListFrame.extractEncoding(data: &parsing, version: version)
         let parsed = CreditsListFrame.extractCreditStrings(from: &parsing, encoding: encoding)
@@ -43,6 +45,7 @@ struct CreditsListFrame: FrameProtocol {
         for pair in parsed {
             entries.append((role: pair.0, person: pair.1))
         }
+        self.entries = entries
     }
     
     private static func extractCreditStrings(

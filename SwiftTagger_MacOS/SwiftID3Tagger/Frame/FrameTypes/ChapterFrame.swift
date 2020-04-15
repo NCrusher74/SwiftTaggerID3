@@ -63,6 +63,8 @@ struct ChapterFrame: FrameProtocol {
          version: Version,
          layout: KnownFrameLayoutIdentifier,
          flags: Data) throws {
+        self.flags = ChapterFrame.defaultFlags(version: version)
+        self.layout = layout
         //
     }
     

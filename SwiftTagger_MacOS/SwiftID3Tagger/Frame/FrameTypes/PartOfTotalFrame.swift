@@ -37,6 +37,8 @@ struct PartOfTotalFrame: FrameProtocol {
          version: Version,
          layout: KnownFrameLayoutIdentifier,
          flags: Data) throws {
+        self.flags = PartOfTotalFrame.defaultFlags(version: version)
+        self.layout = layout
         var parsing = contents
         let encoding = PartOfTotalFrame.extractEncoding(data: &parsing, version: version)
         let contentString = Self.extractTerminatedString(

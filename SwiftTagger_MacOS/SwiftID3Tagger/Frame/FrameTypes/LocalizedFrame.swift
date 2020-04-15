@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import IsoCountryAndLanguageCodes
 
 /**
  A type representing an ID3 frame that holds a three string fields: `Language` contains the 3-charcter string for the ISO-639-2 language code, `Description` contains a null-terminated string describing the frame content, and `Content`.
@@ -47,6 +46,8 @@ struct LocalizedFrame: FrameProtocol {
          version: Version,
          layout: KnownFrameLayoutIdentifier,
          flags: Data) throws {
+        self.flags = LocalizedFrame.defaultFlags(version: version)
+        self.layout = layout
         var parsing = contents
         let encoding = LocalizedFrame.extractEncoding(data: &parsing, version: version)
 

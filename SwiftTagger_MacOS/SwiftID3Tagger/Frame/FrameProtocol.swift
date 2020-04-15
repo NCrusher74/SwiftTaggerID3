@@ -79,7 +79,16 @@ extension FrameProtocol {
 //    internal static func calculateContentSize() -> Data {
 //        
 //    }
-            
+    
+    internal static func defaultFlags(version: Version) -> Data {
+        var flagBytes: [UInt8] = []
+        switch version {
+            case .v2_2: flagBytes = []
+            case .v2_3, .v2_4: flagBytes = [0x00, 0x00]
+        }
+        return Data(flagBytes)
+    }
+    
     internal static func extractEncoding(data: inout Data.SubSequence, version: Version) -> StringEncoding {
         let encodingByteOffset = version.encodingByteOffset
         let encodingByte = data[encodingByteOffset]
