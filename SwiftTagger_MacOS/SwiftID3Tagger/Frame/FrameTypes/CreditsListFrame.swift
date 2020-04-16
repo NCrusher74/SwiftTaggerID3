@@ -29,14 +29,14 @@ struct CreditsListFrame: FrameProtocol {
     //
     //    }
     
-    var flags: Data
-    var layout: FrameLayoutIdentifier
+    internal var flags: Data
+    internal var layout: FrameLayoutIdentifier
     
-    init(decodingContents contents: Data.SubSequence,
+    internal init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,
          flags: Data) throws {
-        self.flags = CreditsListFrame.defaultFlags(version: version)
+        self.flags = flags
         self.layout = layout
         var parsing = contents
         let encoding = CreditsListFrame.extractEncoding(data: &parsing, version: version)

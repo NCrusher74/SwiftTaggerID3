@@ -35,7 +35,7 @@ public struct IntegerFrame: FrameProtocol {
                   version: Version,
                   layout: FrameLayoutIdentifier,
                   flags: Data) throws {
-        self.flags = IntegerFrame.defaultFlags(version: version)
+        self.flags = flags
         self.layout = layout
         var parsing = contents
         let encoding = IntegerFrame.extractEncoding(data: &parsing, version: version)

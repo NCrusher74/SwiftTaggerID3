@@ -36,7 +36,7 @@ public struct BooleanFrame: FrameProtocol {
                   version: Version,
                   layout: FrameLayoutIdentifier,
                   flags: Data) throws {
-        self.flags = BooleanFrame.defaultFlags(version: version)
+        self.flags = flags
         self.layout = layout
         var parsing = contents
         let encoding = BooleanFrame.extractEncoding(data: &parsing, version: version)

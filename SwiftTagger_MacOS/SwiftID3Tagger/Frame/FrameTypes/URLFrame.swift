@@ -33,7 +33,7 @@ public struct URLFrame: FrameProtocol {
                   version: Version,
                   layout: FrameLayoutIdentifier,
                   flags: Data) throws {
-        self.flags = URLFrame.defaultFlags(version: version)
+        self.flags = flags
         self.layout = layout
         self.urlString = contents.stringASCII ?? ""
     }

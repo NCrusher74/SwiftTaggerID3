@@ -27,18 +27,18 @@ struct DateFrame: FrameProtocol {
 
     
  
-    var flags: Data
-    var layout: FrameLayoutIdentifier
+    internal var flags: Data
+    internal var layout: FrameLayoutIdentifier
     
 //    func encodeContents(version: Version) throws -> Data {
 //        
 //    }
     
-    init(decodingContents contents: Data.SubSequence,
+    internal init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,
          flags: Data) throws {
-        self.flags = DateFrame.defaultFlags(version: version)
+        self.flags = flags
         self.layout = layout
     }
     

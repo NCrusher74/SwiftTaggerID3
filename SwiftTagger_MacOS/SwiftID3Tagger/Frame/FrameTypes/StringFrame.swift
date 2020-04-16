@@ -30,13 +30,13 @@ public struct StringFrame: FrameProtocol {
     // MARK: Decode
     // decode incoming data and parse it into a frame
     internal var flags: Data
-    internal var layout: KnownFrameLayoutIdentifier
+    internal var layout: FrameLayoutIdentifier
     
     internal init(decodingContents contents: Data.SubSequence,
                   version: Version,
-                  layout: KnownFrameLayoutIdentifier,
+                  layout: FrameLayoutIdentifier,
                   flags: Data) throws {
-        self.flags = StringFrame.defaultFlags(version: version)
+        self.flags = flags
         self.layout = layout
         var parsing = contents
         let encoding = StringFrame.extractEncoding(data: &parsing, version: version)

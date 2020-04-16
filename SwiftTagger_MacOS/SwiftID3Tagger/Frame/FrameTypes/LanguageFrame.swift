@@ -37,7 +37,7 @@ public struct LanguageFrame: FrameProtocol {
          version: Version,
          layout: FrameLayoutIdentifier,
          flags: Data) throws {
-        self.flags = LanguageFrame.defaultFlags(version: version)
+        self.flags = flags
         self.layout = layout
         let languageCode = contents.stringASCII ?? "und"
         let languages = IsoLanguages.allLanguages.filter({ $0.iso6392T == languageCode })

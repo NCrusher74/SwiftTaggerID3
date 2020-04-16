@@ -15,7 +15,7 @@ protocol FrameProtocol {
     var flags: Data { get set }
     var layout: FrameLayoutIdentifier { get }
     
-//    func encodeContents(version: Version) throws -> Data
+    func encodeContents(version: Version) throws -> Data
     init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,
@@ -39,12 +39,12 @@ extension FrameProtocol {
      Flags         $xx xx - 2 bytes
      */
     
-//    func encode(version: Version) throws -> Data {
-//        let contents = try self.encodeContents(version: version)
-//
-//        let frameData = // header stuff plus the contents
-//        return frameData
-//    }
+    func encode(version: Version) throws -> Data {
+        let contents = try self.encodeContents(version: version)
+
+        let frameData = // header stuff plus the contents
+        return frameData
+    }
     
     
     init(decodingFromStartOf data: inout Data.SubSequence,
