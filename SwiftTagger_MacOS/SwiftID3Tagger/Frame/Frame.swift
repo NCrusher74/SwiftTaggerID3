@@ -25,10 +25,11 @@ internal enum Frame {
     case toc(TableOfContentsFrame)
     case userText(UserTextFrame)
     case url(URLFrame)
+    case unknown(UnknownFrame)
     /// will most likely be handled as a `UserTextFrame` unless it can't be for some reason
     //    case unknownFrame(UnknownFrame)
     
-    init(layout: KnownFrameLayoutIdentifier,
+    init(layout: FrameLayoutIdentifier,
          data: inout Data.SubSequence,
          version: Version) throws {
         switch layout {
@@ -38,7 +39,7 @@ internal enum Frame {
             //                self = .chapter(try ChapterFrame)
             //            case .tableOfContents:
             //                self = .toc(try TableOfContentsFrame)
-            case .compilation:
+            case .known(KnownFrameLayoutIdentifier(identifier: "TCMP")):
                 self = .boolean(try BooleanFrame(
                     decodingFromStartOf: &data,
                     version: version,

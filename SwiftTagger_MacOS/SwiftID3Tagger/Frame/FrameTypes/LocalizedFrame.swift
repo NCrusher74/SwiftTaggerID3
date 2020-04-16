@@ -36,7 +36,7 @@ struct LocalizedFrame: FrameProtocol {
     }
 
     var flags: Data
-    var layout: KnownFrameLayoutIdentifier
+    var layout: FrameLayoutIdentifier
     
 //    func encodeContents(version: Version) throws -> Data {
 //        
@@ -44,7 +44,7 @@ struct LocalizedFrame: FrameProtocol {
 
     init(decodingContents contents: Data.SubSequence,
          version: Version,
-         layout: KnownFrameLayoutIdentifier,
+         layout: FrameLayoutIdentifier,
          flags: Data) throws {
         self.flags = LocalizedFrame.defaultFlags(version: version)
         self.layout = layout

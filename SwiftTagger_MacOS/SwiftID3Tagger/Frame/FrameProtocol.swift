@@ -13,12 +13,12 @@ import Foundation
 protocol FrameProtocol {
     
     var flags: Data { get set }
-    var layout: KnownFrameLayoutIdentifier { get }
+    var layout: FrameLayoutIdentifier { get }
     
 //    func encodeContents(version: Version) throws -> Data
     init(decodingContents contents: Data.SubSequence,
          version: Version,
-         layout: KnownFrameLayoutIdentifier,
+         layout: FrameLayoutIdentifier,
          flags: Data) throws
 }
 
@@ -49,7 +49,7 @@ extension FrameProtocol {
     
     init(decodingFromStartOf data: inout Data.SubSequence,
          version: Version,
-         layout: KnownFrameLayoutIdentifier) throws {
+         layout: FrameLayoutIdentifier) throws {
         
         // parse content size
         let frameSizeData = data.extractFirst(version.sizeDeclarationLength)

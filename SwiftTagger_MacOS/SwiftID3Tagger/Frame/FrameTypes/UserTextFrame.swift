@@ -25,7 +25,7 @@ struct UserTextFrame: FrameProtocol {
     }
     
     var flags: Data
-    var layout: KnownFrameLayoutIdentifier
+    var layout: FrameLayoutIdentifier
 
 //    func encodeContents(version: Version) throws -> Data {
 //        
@@ -33,7 +33,7 @@ struct UserTextFrame: FrameProtocol {
 
     init(decodingContents contents: Data.SubSequence,
          version: Version,
-         layout: KnownFrameLayoutIdentifier,
+         layout: FrameLayoutIdentifier,
          flags: Data) throws {
         var parsing = contents
         let encoding = UserTextFrame.extractEncoding(data: &parsing, version: version)

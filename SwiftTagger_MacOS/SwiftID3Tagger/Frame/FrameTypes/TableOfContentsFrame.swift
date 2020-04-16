@@ -66,11 +66,11 @@ struct TableOfContentsFrame: FrameProtocol {
     //    }
     
     var flags: Data
-    var layout: KnownFrameLayoutIdentifier
+    var layout: FrameLayoutIdentifier
     
     init(decodingContents contents: Data.SubSequence,
          version: Version,
-         layout: KnownFrameLayoutIdentifier,
+         layout: FrameLayoutIdentifier,
          flags: Data) throws {
         self.flags = TableOfContentsFrame.defaultFlags(version: version)
         self.layout = layout

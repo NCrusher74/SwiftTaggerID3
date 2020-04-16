@@ -31,11 +31,11 @@ struct PartOfTotalFrame: FrameProtocol {
     //    }
         
     var flags: Data
-    var layout: KnownFrameLayoutIdentifier
+    var layout: FrameLayoutIdentifier
     
     init(decodingContents contents: Data.SubSequence,
          version: Version,
-         layout: KnownFrameLayoutIdentifier,
+         layout: FrameLayoutIdentifier,
          flags: Data) throws {
         self.flags = PartOfTotalFrame.defaultFlags(version: version)
         self.layout = layout

@@ -43,11 +43,11 @@ struct ImageFrame: FrameProtocol {
     //    }
     
     var flags: Data
-    var layout: KnownFrameLayoutIdentifier
+    var layout: FrameLayoutIdentifier
     
     init(decodingContents contents: Data.SubSequence,
          version: Version,
-         layout: KnownFrameLayoutIdentifier,
+         layout: FrameLayoutIdentifier,
          flags: Data) throws {
         self.flags = ImageFrame.defaultFlags(version: version)
         self.layout = layout

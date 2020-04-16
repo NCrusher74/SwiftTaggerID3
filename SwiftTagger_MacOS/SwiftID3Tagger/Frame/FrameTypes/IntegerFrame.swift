@@ -29,11 +29,11 @@ public struct IntegerFrame: FrameProtocol {
     // MARK: Decode
     // decode incoming data and parse it into a frame
     internal var flags: Data
-    internal var layout: KnownFrameLayoutIdentifier
+    internal var layout: FrameLayoutIdentifier
     
     internal init(decodingContents contents: Data.SubSequence,
                   version: Version,
-                  layout: KnownFrameLayoutIdentifier,
+                  layout: FrameLayoutIdentifier,
                   flags: Data) throws {
         self.flags = IntegerFrame.defaultFlags(version: version)
         self.layout = layout

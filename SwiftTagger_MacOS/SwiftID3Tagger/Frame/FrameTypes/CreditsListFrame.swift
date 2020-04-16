@@ -30,11 +30,11 @@ struct CreditsListFrame: FrameProtocol {
     //    }
     
     var flags: Data
-    var layout: KnownFrameLayoutIdentifier
+    var layout: FrameLayoutIdentifier
     
     init(decodingContents contents: Data.SubSequence,
          version: Version,
-         layout: KnownFrameLayoutIdentifier,
+         layout: FrameLayoutIdentifier,
          flags: Data) throws {
         self.flags = CreditsListFrame.defaultFlags(version: version)
         self.layout = layout
