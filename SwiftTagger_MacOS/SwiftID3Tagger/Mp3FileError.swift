@@ -31,6 +31,8 @@ extension Mp3File {
         case InconvertibleString
         /// Error thrown when the data requested is out of bounds
         case DataOutOfBounds
+        /// Error thrown when the image is in an unhandled format
+        case UnhandledImageFormat
     }
 }
 
@@ -67,6 +69,9 @@ extension Mp3File.Error: LocalizedError {
             case .DataOutOfBounds:
                 return NSLocalizedString(
                     "The requested data range is out of bounds", comment: "")
+            case .UnhandledImageFormat:
+                return NSLocalizedString(
+                    "This image type is not handled by SwiftTagger", comment: "")
         }
     }
 }

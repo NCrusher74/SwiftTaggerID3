@@ -47,36 +47,63 @@ struct GenreFrame: FrameProtocol {
         self.layout = layout
         var parsing = contents
         let encoding = GenreFrame.extractEncoding(data: &parsing, version: version)
-        let unparsedString = GenreFrame.extractTerminatedString(data: &parsing, encoding: encoding)
-        if let parsedRange = unparsedString.range(of: #"(\\()\\w*\\d*(\\))"#,
-                         options: .regularExpression) {
-            let genreWithParenthesis = String(unparsedString[parsedRange])
-
+        var parsedArray: [String] = []
+        if version == .v2_2 || version == .v2_3 {
+            let unparsedString = GenreFrame.extractTerminatedString(data: &parsing, encoding: encoding)
+            parsedArray = parseParentheticalString(unparsedString: unparsedString)
+        } else {
+            while !parsing.isEmpty,
+                let next = parsing.extractPrefixAsStringUntilNullTermination(encoding) {
+                    parsedArray.append(next)
+            }
+            for component in parsedArray {
+                var genre: GenreType = .None
+                if component == "CR" {
+                    genre = .Cover
+                } else if component == "RX" {
+                    genre = .Remix
+                } else if let genreInt = Int(component),
+                    let validGenre = GenreType(rawValue: genreInt) {
+                    genre = validGenre
+                } else {
+                    self.descriptionString = component
+                }
+                self.genreType = genre
+            }
         }
-        
-    
-
     }
-
     
-    private func getGenreIdentifier(genreWithParenthesis: String) -> GenreType? {
-        let genreIdentifierStartIndex = genreWithParenthesis.index(after: genreWithParenthesis.startIndex)
-        let genreIdentifierEndIndex = genreWithParenthesis.index(before: genreWithParenthesis.endIndex)
-        let genreIdentifierRange = genreIdentifierStartIndex..<genreIdentifierEndIndex
-        let genreWithoutParenthesis = genreWithParenthesis[genreIdentifierRange]
-        if let genreIdentifier = Int(genreWithoutParenthesis),
-            let validGenre = GenreType(rawValue: genreIdentifier) {
-            return validGenre
+    func parseParentheticalString(unparsedString: String) -> [String] {
+        var stringComponents = unparsedString.components(separatedBy: "(")
+        for (index, value) in stringComponents.enumerated() {
+            if index != 0 && value == "" {
+                let rangeToReplace = (index - 1)...(index + 1)
+                stringComponents[index + 1].insert("(", at: stringComponents[index + 1].startIndex)
+                let componentsToJoin = [stringComponents[index - 1], stringComponents[index + 1]]
+                let joinedComponents = [componentsToJoin.joined()]
+                stringComponents.replaceSubrange(rangeToReplace, with: joinedComponents)
+                stringComponents.removeAll(where: {$0 == ""})
+            }
         }
-        if (genreWithoutParenthesis == "RX") {
-            return .Remix
+        var refinedComponents: [String] = []
+        for component in stringComponents {
+            if component.contains(")") {
+                var separatedComponents = component.components(separatedBy: ")")
+                separatedComponents.removeAll(where: {$0 == ""})
+                for (index, value) in separatedComponents.enumerated() {
+                    if value.contains("(") {
+                        var valueToChange = value
+                        valueToChange.append(")")
+                        separatedComponents.remove(at: index)
+                        separatedComponents.insert(valueToChange, at: index)
+                    }
+                }
+                refinedComponents.append(contentsOf: separatedComponents)
+            }
         }
-        if (genreWithoutParenthesis == "CR") {
-            return .Cover
-        }
-        return nil
+        return refinedComponents
     }
-
-
     
+
+
 }

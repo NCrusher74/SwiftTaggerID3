@@ -76,4 +76,5 @@ extension Version {
     internal var encodingByteOffset: Data.Index {
         return frameHeaderLength
     }
+    
 }
