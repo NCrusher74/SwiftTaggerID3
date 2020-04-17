@@ -18,7 +18,7 @@ struct LocalizedFrame: FrameProtocol {
     /// ISO-639-2 languge code
     public var languageString: String
     /// A short description of the frame content.
-    public var descriptionString: String?
+    public var descriptionString: String = ""
     /// the content of the frame
     public var contentString: String
     
@@ -29,11 +29,12 @@ struct LocalizedFrame: FrameProtocol {
      */
     public init(layout: FrameLayoutIdentifier,
                 languageString: String,
-                descriptionString: String?,
+                descriptionString: String,
                 contentString: String) {
         self.languageString = languageString
         self.descriptionString = descriptionString
         self.contentString = contentString
+        self.layout = layout
         self.flags = LocalizedFrame.defaultFlags()
     }
 
@@ -41,7 +42,10 @@ struct LocalizedFrame: FrameProtocol {
     internal var layout: FrameLayoutIdentifier
     
     func encodeContents(version: Version) throws -> Data {
-        
+        let encodedLanguageString = self.languageString.encoded(withNullTermination: false)
+        let encodedDescriptionString = self.descriptionString.encoded(withNullTermination: true)
+        let encodedContentsString = self.contentString.encoded(withNullTermination: false)
+        return encodedLanguageString + encodedDescriptionString + encodedContentsString
     }
 
     internal init(decodingContents contents: Data.SubSequence,
@@ -58,7 +62,7 @@ struct LocalizedFrame: FrameProtocol {
         self.languageString = String(languages.first?.isoName ?? "undefined")
 
         let parsed = try LocalizedFrame.extractDescriptionAndContent(from: &parsing, encoding: encoding)
-        self.descriptionString = parsed.description
+        self.descriptionString = parsed.description ?? ""
         self.contentString = parsed.content
     }
     

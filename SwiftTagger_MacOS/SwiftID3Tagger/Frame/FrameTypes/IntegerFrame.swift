@@ -26,7 +26,7 @@ public struct IntegerFrame: FrameProtocol {
     }
     
     func encodeContents(version: Version) throws -> Data {
-        
+        return self.value.data
     }
     
     // MARK: Decode

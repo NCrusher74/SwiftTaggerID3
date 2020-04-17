@@ -28,7 +28,12 @@ public struct BooleanFrame: FrameProtocol {
     }
     
     func encodeContents(version: Version) throws -> Data {
-        
+        let contents = self.value
+        if contents == true {
+            return "1".encoded(withNullTermination: false)
+        } else {
+            return "0".encoded(withNullTermination: false)
+        }
     }
     
     internal var flags: Data

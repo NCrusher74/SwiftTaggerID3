@@ -30,9 +30,7 @@ extension FrameProtocol {
         
         // header data
         let identifier = Self.assignLayout(layout: layout, version: version)
-        
         let size = Self.calculateFrameContentSize(encodedContent: contents, version: version)
-        
         var flags = Data()
         switch version {
             case .v2_2:

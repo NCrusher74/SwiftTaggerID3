@@ -19,7 +19,7 @@ struct PresetOptionsFrame: FrameProtocol {
     /// Commonly recognized genres
     public var presetOption: PresetOption?
     /// further refinement options
-    public var mediaTypeRefinements: MediaTypeRefinements?
+    public var mediaTypeRefinement: MediaTypeRefinement
     /// A customizable genre description
     public var customizationString: String?
     
@@ -31,10 +31,10 @@ struct PresetOptionsFrame: FrameProtocol {
      */
     private init(layout: FrameLayoutIdentifier,
                  presetOption: PresetOption?,
-                 mediaTypeRefinements: MediaTypeRefinements?,
+                 mediaTypeRefinement: MediaTypeRefinement,
                  customizationString: String?) {
         self.presetOption = presetOption
-        self.mediaTypeRefinements = mediaTypeRefinements
+        self.mediaTypeRefinement = mediaTypeRefinement
         self.customizationString = customizationString
         self.flags = PresetOptionsFrame.defaultFlags()
         self.layout = layout
@@ -46,6 +46,7 @@ struct PresetOptionsFrame: FrameProtocol {
     
     internal var flags: Data
     internal var layout: FrameLayoutIdentifier
+    
     
     internal init(decodingContents contents: Data.SubSequence,
                   version: Version,
@@ -65,18 +66,27 @@ struct PresetOptionsFrame: FrameProtocol {
                     parsedArray.append(next)
             }
             for component in parsedArray {
-                var genre: GenreType = .None
-                if component == "CR" {
-                    genre = .Cover
-                } else if component == "RX" {
-                    genre = .Remix
-                } else if let genreInt = Int(component),
-                    let validGenre = GenreType(rawValue: genreInt) {
-                    genre = validGenre
-                } else {
+                if layout == FrameLayoutIdentifier.known(
+                    KnownFrameLayoutIdentifier.genre) {
+                    var genre: GenreType = .None
+                    if component == "CR" {
+                        genre = .Cover
+                    } else if component == "RX" {
+                        genre = .Remix
+                    } else if let genreInt = Int(component),
+                        let validGenre = GenreType(rawValue: genreInt) {
+                        genre = validGenre
+                    } else {
+                        self.customizationString = component
+                    }
+                    self.presetOption = .genreTypes(genre)
+                } else if layout == FrameLayoutIdentifier.known(
+                    KnownFrameLayoutIdentifier.mediaType) {
+                    var mediaType: MediaType = .none
+                    self.presetOption = .mediaTypes(mediaType)
+                    self.mediaTypeRefinement = MediaType.refinement.self
                     self.customizationString = component
                 }
-                self.presetOption = genre
             }
         }
     }
@@ -114,16 +124,22 @@ struct PresetOptionsFrame: FrameProtocol {
     
     
     init(genreID: GenreType?, description: String?) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.genre), presetOption: genreID, customizationString: description)
+        self.init(layout: .known(KnownFrameLayoutIdentifier.genre),
+                  presetOption: .genreTypes(genreID ?? .None),
+                  mediaTypeRefinement: .none,
+                  customizationString: description)
     }
     
-    init(mediaType: MediaTypes?, additionalInfo: MediaTypeRefinements, description: String?) {
+    init(mediaType: MediaType?, additionalInfo: MediaTypeRefinement, description: String?) {
         self.init(layout: .known(
             KnownFrameLayoutIdentifier.mediaType),
                   genreType: mediaType,
                   mediaTypeRefinements: additionalInfo,
                   customizationString: description)
     }
-    
+}
 
+enum PresetOption {
+    case genreTypes(GenreType)
+    case mediaTypes(MediaType)
 }

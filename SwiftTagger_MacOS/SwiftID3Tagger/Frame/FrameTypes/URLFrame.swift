@@ -25,7 +25,8 @@ public struct URLFrame: FrameProtocol {
     }
 
     func encodeContents(version: Version) throws -> Data {
-        <#code#>
+        let contents = self.urlString
+        return contents.encoded(withNullTermination: false)
     }
     
     // MARK: Decode

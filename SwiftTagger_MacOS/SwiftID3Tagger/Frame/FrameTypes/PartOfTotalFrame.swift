@@ -29,7 +29,13 @@ struct PartOfTotalFrame: FrameProtocol {
     }
     
     func encodeContents(version: Version) throws -> Data {
-        
+        if self.total == nil {
+            let partOfTotalString = String(self.part)
+            return partOfTotalString.encoded(withNullTermination: false)
+        } else {
+            let partOfTotalString = "\(self.part)/\(self.total ?? 0)"
+            return partOfTotalString.encoded(withNullTermination: false)
+        }
     }
     
     internal var flags: Data

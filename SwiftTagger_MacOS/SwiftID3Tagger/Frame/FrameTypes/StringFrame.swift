@@ -26,7 +26,8 @@ public struct StringFrame: FrameProtocol {
     }
     
     internal func encodeContents(version: Version) throws -> Data {
-        
+        let contents = self.contentString
+        return contents.encoded(withNullTermination: false)
     }
     
     // MARK: Decode

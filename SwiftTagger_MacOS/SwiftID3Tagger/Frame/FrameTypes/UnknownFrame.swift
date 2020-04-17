@@ -10,16 +10,16 @@ import Foundation
 
 public struct UnknownFrame: FrameProtocol {
     
-    var uuid: UUID
+    var contents: Data
     
-    init(layout: FrameLayoutIdentifier,
-         uuid: UUID){
-        self.uuid = uuid
+    init(layout: FrameLayoutIdentifier, contents: Data){
         self.flags = UnknownFrame.defaultFlags()
+        self.layout = layout
+        self.contents = contents
     }
 
     func encodeContents(version: Version) throws -> Data {
-        <#code#>
+        return self.contents
     }
     
     internal var flags = Data()
@@ -31,5 +31,6 @@ public struct UnknownFrame: FrameProtocol {
          flags: Data) throws {
         self.flags = flags
         self.layout = layout
+        self.contents = contents
     }
 }

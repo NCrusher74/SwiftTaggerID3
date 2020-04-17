@@ -28,7 +28,7 @@ public struct LanguageFrame: FrameProtocol {
     }
     
     func encodeContents(version: Version) throws -> Data {
-        
+        return self.languageString.encoded(withNullTermination: false)
     }
     
     internal var flags: Data

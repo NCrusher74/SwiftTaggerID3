@@ -28,7 +28,12 @@ struct CreditsListFrame: FrameProtocol {
     }
     
     func encodeContents(version: Version) throws -> Data {
-        
+        var entriesAsData = Data()
+        for entry in self.entries {
+            entriesAsData.append(contentsOf: entry.role.encoded(withNullTermination: true))
+            entriesAsData.append(contentsOf: entry.person.encoded(withNullTermination: true))
+        }
+        return entriesAsData
     }
     
     internal var flags: Data
@@ -51,13 +56,13 @@ struct CreditsListFrame: FrameProtocol {
     }
     
     private static func extractCreditStrings(
-        from frameData: inout Data.SubSequence,
+        from data: inout Data.SubSequence,
         encoding: StringEncoding
     ) -> [(String, String)] {
         var strings: [String] = []
         
-        while !frameData.isEmpty,
-            let next = frameData.extractPrefixAsStringUntilNullTermination(encoding) {
+        while !data.isEmpty,
+            let next = data.extractPrefixAsStringUntilNullTermination(encoding) {
                 strings.append(next)
         }
         let rolePersonArray = strings.pairs()
