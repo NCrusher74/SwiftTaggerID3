@@ -13,7 +13,7 @@ import Foundation
  */
 public struct BooleanFrame: FrameProtocol {
     
-    public let value: Bool
+    private let value: Bool
     
     /**
      A frame with a single-integer string, 1 or 0, presented as a boolean.
@@ -21,13 +21,15 @@ public struct BooleanFrame: FrameProtocol {
      
      This frame is stored in the tag as a string. For the sake of user-friendliness, this is converted to a boolean value as long as the stored value is recognizable as a boolean-like word.
      */
-    public init(value: Bool) {
+    private init(layout: FrameLayoutIdentifier, value: Bool) {
         self.value = value
+        self.flags = BooleanFrame.defaultFlags()
+        self.layout = layout
     }
     
-    //    func encodeContents(version: Version) throws -> Data {
-    //
-    //    }
+    func encodeContents(version: Version) throws -> Data {
+        
+    }
     
     internal var flags: Data
     internal var layout: FrameLayoutIdentifier
@@ -40,8 +42,7 @@ public struct BooleanFrame: FrameProtocol {
         self.layout = layout
         var parsing = contents
         let encoding = BooleanFrame.extractEncoding(data: &parsing, version: version)
-        let contentString = BooleanFrame.extractTerminatedString(
-            data: &parsing, encoding: encoding)
+        let contentString = parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? ""
         self.value = BooleanFrame.getBooleanFromString(boolString: contentString)
     }
     
@@ -56,4 +57,8 @@ public struct BooleanFrame: FrameProtocol {
         }
     }
     
+    init(value: Bool) {
+        self.init(layout: .known(KnownFrameLayoutIdentifier.compilation), value: value)
+    }
+
 }

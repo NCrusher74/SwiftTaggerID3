@@ -13,34 +13,41 @@ import Foundation
  
  Though this frame is stored in the tag as an `ISO-639-2` code, parsing will return the isoName of the language in full, for user-friendliness. It will also take an `isoName` or `nativeName` as the `languageString` and convert it to the appropriate 3-letter code.
  */
-public struct LanguageFrame: FrameProtocol {
+public struct LanguageFrame: FrameProtocol {    
     
     /// ISO-639-2 languge code
-    public var languageString: String
+    private var languageString: String
     
     /**
      - parameter language: the ISO-639-2 language code.
      */
-    public init(languageString: String) {
+    private init(layout: FrameLayoutIdentifier, languageString: String) {
         self.languageString = languageString
+        self.flags = LanguageFrame.defaultFlags()
+        self.layout = layout
     }
     
-    //    func encodeContents(version: Version) throws -> Data {
-    //
-    //    }
+    func encodeContents(version: Version) throws -> Data {
+        
+    }
     
     internal var flags: Data
     internal var layout: FrameLayoutIdentifier
     
     /// if desired, return may be changed from "isoName" to "nativeName"
     internal init(decodingContents contents: Data.SubSequence,
-         version: Version,
-         layout: FrameLayoutIdentifier,
-         flags: Data) throws {
+                  version: Version,
+                  layout: FrameLayoutIdentifier,
+                  flags: Data) throws {
         self.flags = flags
         self.layout = layout
         let languageCode = contents.stringASCII ?? "und"
         let languages = IsoLanguages.allLanguages.filter({ $0.iso6392T == languageCode })
         self.languageString = String(languages.first?.isoName ?? "undefined")
     }
+    
+    init(language: String) {
+        self.init(layout: .known(KnownFrameLayoutIdentifier.languages), languageString: language)
+    }
+
 }

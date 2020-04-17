@@ -38,34 +38,49 @@ struct ChapterFrame: FrameProtocol {
      - parameter endByteOffset: integer indicating the byte offset for the end of the chapter
      - parameter embeddedSubFrames: the (optional) frames containing title and descriptor text for the CHAP frame. A title is recommended at the least.
      */
-    public init(elementID: String,
-                startTime: Int,
-                endTime: Int,
-                startByteOffset: Int,
-                endByteOffset: Int,
-                embeddedSubframes: [FrameKey: Frame]) {
+    private init(layout: FrameLayoutIdentifier,
+                 elementID: String,
+                 startTime: Int,
+                 endTime: Int,
+                 startByteOffset: Int?,
+                 endByteOffset: Int?,
+                 embeddedSubframes: [FrameKey: Frame]) {
         self.elementID = elementID
         self.startTime = startTime
         self.endTime = endTime
-        self.startByteOffset = startByteOffset
-        self.endByteOffset = endByteOffset
+        self.startByteOffset = startByteOffset ?? 0
+        self.endByteOffset = endByteOffset ?? 0
         self.embeddedSubframes = embeddedSubframes
+        self.flags = ChapterFrame.defaultFlags()
+        self.layout = layout
     }
     
-    //    func encodeContents(version: Version) throws -> Data {
-    //        
-    //    }
+    func encodeContents(version: Version) throws -> Data {
+        
+    }
     
     internal var flags: Data
     internal var layout: FrameLayoutIdentifier
     
     internal init(decodingContents contents: Data.SubSequence,
-         version: Version,
-         layout: FrameLayoutIdentifier,
-         flags: Data) throws {
+                  version: Version,
+                  layout: FrameLayoutIdentifier,
+                  flags: Data) throws {
         self.flags = flags
         self.layout = layout
     }
     
-
+    
+    init(startTime: Int,
+         endTime: Int,
+         embeddedSubframes: [FrameKey: Frame]) {
+        self.init(layout: .known(KnownFrameLayoutIdentifier.chapter),
+                  elementID: elementID,
+                  startTime: startTime,
+                  endTime: endTime,
+                  startByteOffset: nil,
+                  endByteOffset: nil,
+                  embeddedSubframes: embeddedSubframes)
+    }
+    
 }

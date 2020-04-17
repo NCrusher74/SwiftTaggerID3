@@ -16,6 +16,7 @@ protocol FrameProtocol {
     var layout: FrameLayoutIdentifier { get }
     
     func encodeContents(version: Version) throws -> Data
+    
     init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,
@@ -24,25 +25,23 @@ protocol FrameProtocol {
 
 extension FrameProtocol {
     
-    /*
-     (v2.2)
-     The three character frame identifier is followed by a three byte size descriptor, making a total header size of six bytes in every frame. The size is calculated as framesize excluding frame identifier and size descriptor (frame size - 6).
-     
-     Frame ID      $xx xx xx  (three characters) - 3 bytes
-     Size      3 * %0xxxxx - 3 bytes
-     
-     (v2.3 & v2.4)
-     All ID3v2 frames consists of one frame header followed by one or more fields containing the actual information. The header is always 10 bytes and laid out as follows:
-     
-     Frame ID      $xx xx xx xx  (four characters) - 4 bytes
-     Size      4 * %0xxxxxxx - 4 bytes
-     Flags         $xx xx - 2 bytes
-     */
-    
     func encode(version: Version) throws -> Data {
         let contents = try self.encodeContents(version: version)
-
-        let frameData = // header stuff plus the contents
+        
+        // header data
+        let identifier = Self.assignLayout(layout: layout, version: version)
+        
+        let size = Self.calculateFrameContentSize(encodedContent: contents, version: version)
+        
+        var flags = Data()
+        switch version {
+            case .v2_2:
+                break // Skip flags.
+            case .v2_3, .v2_4:
+                flags = Self.defaultFlags()
+        }
+        
+        let frameData = identifier + size + flags + contents
         return frameData
     }
     
@@ -61,7 +60,11 @@ extension FrameProtocol {
         }
         
         // parse flags
-        let flagsData = data.extractFirst(version.flagsLength)
+        var flagsData: Data
+        switch version {
+            case .v2_2: flagsData = Self.defaultFlags()
+            case .v2_3, .v2_4: flagsData = data.extractFirst(version.flagsLength)
+        }
         
         let contentDataStart = data.startIndex + version.frameHeaderLength
         let contentDataRange = contentDataStart ..< contentDataStart + frameSize
@@ -76,12 +79,32 @@ extension FrameProtocol {
         // This line leaves the slice ready for the next frame to read from the beginning.
     }
     
-//    internal static func calculateContentSize() -> Data {
-//        
-//    }
+    internal static func calculateFrameContentSize(encodedContent: Data, version: Version) -> Data {
+        let contentSize = UInt32(encodedContent.count)
+        switch version {
+            case .v2_2:
+                let contentUInt8Array = [UInt8](contentSize.data)
+                return Data(contentUInt8Array.dropFirst())
+            case .v2_3: return contentSize.data
+            case .v2_4: return contentSize.encodingSynchsafe().data
+        }
+    }
     
-    internal static func defaultFlags(version: Version) -> Data {
+    internal static func assignLayout(layout: FrameLayoutIdentifier, version: Version) -> Data {
+        guard let identifierString = layout.id3Identifier(version: version)?.encoded(withNullTermination: false) else {
+            switch version {
+                case .v2_2: return "TXX".encoded(withNullTermination: false)
+                case .v2_3, .v2_4: return "TXXX".encoded(
+                    withNullTermination: false)
+            }
+        }
+        return identifierString
+    }
+    
+    
+    internal static func defaultFlags() -> Data {
         var flagBytes: [UInt8] = []
+        let version = Version()
         switch version {
             case .v2_2: flagBytes = []
             case .v2_3, .v2_4: flagBytes = [0x00, 0x00]
@@ -99,12 +122,6 @@ extension FrameProtocol {
         return StringEncoding(rawValue: encodingByte) ?? .utf8
     }
     
-    internal static func extractTerminatedString(
-        data: inout Data.SubSequence,
-        encoding: StringEncoding) -> String {
-        return data.extractPrefixAsStringUntilNullTermination(encoding) ?? ""
-    }
-    
     internal static func extractDescriptionAndContent(
         from frameData: inout Data.SubSequence,
         encoding: StringEncoding
@@ -113,5 +130,5 @@ extension FrameProtocol {
         let content = frameData.extractPrefixAsStringUntilNullTermination(encoding) ?? ""
         return (description: description, content: content)
     }
-
+    
 }

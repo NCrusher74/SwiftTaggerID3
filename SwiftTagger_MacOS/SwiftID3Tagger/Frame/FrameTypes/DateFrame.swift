@@ -16,13 +16,16 @@ import Foundation
  */
 struct DateFrame: FrameProtocol {
     /// The recordin date time information. This field contains date and time of the recording.
-    public let dateTime: Date
+    public let date: Date
     
     /**
      - parameter recordingDateTime: a RecordingDateTime struct.
      */
-    public init(dateTime: Date) {
-        self.dateTime = dateTime
+    private init(layout: FrameLayoutIdentifier,
+                date: Date) {
+        self.date = date
+        self.flags = DateFrame.defaultFlags()
+        self.layout = layout
     }
 
     
@@ -30,9 +33,9 @@ struct DateFrame: FrameProtocol {
     internal var flags: Data
     internal var layout: FrameLayoutIdentifier
     
-//    func encodeContents(version: Version) throws -> Data {
-//        
-//    }
+    func encodeContents(version: Version) throws -> Data {
+        
+    }
     
     internal init(decodingContents contents: Data.SubSequence,
          version: Version,
@@ -41,5 +44,7 @@ struct DateFrame: FrameProtocol {
         self.flags = flags
         self.layout = layout
     }
+    
+    
     
 }

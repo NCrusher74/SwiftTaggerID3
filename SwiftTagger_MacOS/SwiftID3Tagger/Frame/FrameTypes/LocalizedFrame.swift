@@ -27,20 +27,22 @@ struct LocalizedFrame: FrameProtocol {
      - parameter descriptionString: a terminated text string describing the frame content
      - parameter contentString: the full text of the comment or lyric frame.
      */
-    public init(languageString: String,
+    public init(layout: FrameLayoutIdentifier,
+                languageString: String,
                 descriptionString: String?,
                 contentString: String) {
         self.languageString = languageString
         self.descriptionString = descriptionString
         self.contentString = contentString
+        self.flags = LocalizedFrame.defaultFlags()
     }
 
     internal var flags: Data
     internal var layout: FrameLayoutIdentifier
     
-//    func encodeContents(version: Version) throws -> Data {
-//        
-//    }
+    func encodeContents(version: Version) throws -> Data {
+        
+    }
 
     internal init(decodingContents contents: Data.SubSequence,
          version: Version,

@@ -16,7 +16,7 @@ internal enum Frame {
     case languageFrame(LanguageFrame)
     case creditsList(CreditsListFrame)
     case date(DateFrame)
-    case genre(GenreFrame)
+    case presetOptions(PresetOptionsFrame)
     case image(ImageFrame)
     case string(StringFrame)
     case integer(IntegerFrame)
@@ -26,12 +26,11 @@ internal enum Frame {
     case userText(UserTextFrame)
     case url(URLFrame)
     case unknown(UnknownFrame)
-    /// will most likely be handled as a `UserTextFrame` unless it can't be for some reason
-    //    case unknownFrame(UnknownFrame)
     
-    init(layout: FrameLayoutIdentifier,
+    init(identifier: String,
          data: inout Data.SubSequence,
          version: Version) throws {
+        let layout = FrameLayoutIdentifier(identifier: identifier)
         switch layout {
             //            case .known(KnownFrameLayoutIdentifier.attachedPicture):
             //                self = .image(try ImageFrame)
@@ -44,8 +43,12 @@ internal enum Frame {
                     decodingFromStartOf: &data,
                     version: version,
                     layout: layout))
-            //            case .known(KnownFrameLayoutIdentifier.genre):
-            //                self = .genre(try GenreFrame)
+            case .known(KnownFrameLayoutIdentifier.genre),
+                 .known(KnownFrameLayoutIdentifier.mediaType):
+                self = .presetOptions(try PresetOptionsFrame(
+                    decodingFromStartOf: &data,
+                    version: version,
+                    layout: layout))
             case .known(KnownFrameLayoutIdentifier.languages):
                 self = .languageFrame(try LanguageFrame(
                     decodingFromStartOf: &data,
@@ -96,20 +99,25 @@ internal enum Frame {
                     decodingFromStartOf: &data,
                     version: version,
                     layout: layout))
-//            case .known(KnownFrameLayoutIdentifier.date),
-//                 .known(KnownFrameLayoutIdentifier.encodingTime),
-//                 .known(KnownFrameLayoutIdentifier.originalReleaseTime),
-//                 .known(KnownFrameLayoutIdentifier.recordingDate),
-//                 .known(KnownFrameLayoutIdentifier.releaseTime),
-//                 .known(KnownFrameLayoutIdentifier.taggingTime),
-//                 .known(KnownFrameLayoutIdentifier.time),
-//                 .known(KnownFrameLayoutIdentifier.year):
-//                self = .date(try DataFrame)
-            default:
-                self = .string(try StringFrame(
+            //            case .known(KnownFrameLayoutIdentifier.date),
+            //                 .known(KnownFrameLayoutIdentifier.encodingTime),
+            //                 .known(KnownFrameLayoutIdentifier.originalReleaseTime),
+            //                 .known(KnownFrameLayoutIdentifier.recordingDate),
+            //                 .known(KnownFrameLayoutIdentifier.releaseTime),
+            //                 .known(KnownFrameLayoutIdentifier.taggingTime),
+            //                 .known(KnownFrameLayoutIdentifier.time),
+            //                 .known(KnownFrameLayoutIdentifier.year):
+            //                self = .date(try DataFrame)
+            case .unknown(identifier):
+                self = .unknown(try UnknownFrame(
                     decodingFromStartOf: &data,
                     version: version,
-                    layout: layout))            
+                    layout: layout))
+            default:
+                self = .string( try StringFrame(
+                    decodingFromStartOf: &data,
+                    version: version,
+                    layout: layout))
         }
     }
 }

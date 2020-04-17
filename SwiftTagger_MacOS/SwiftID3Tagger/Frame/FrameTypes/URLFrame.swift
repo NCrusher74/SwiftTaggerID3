@@ -12,16 +12,20 @@ import Foundation
  */
 public struct URLFrame: FrameProtocol {
     
-    public var urlString: String
+    private var urlString: String
     
     /**
      A frame with only string content, presented as a single string without `(/n)`.
      - parameter contentString: the content of the frame.
      */
-    public init(urlString: String) {
+    private init(layout: FrameLayoutIdentifier, urlString: String) {
         self.urlString = urlString
-        // "Return from initializer without initializing all stored properties"
-        // But we don't want self.flags, self.size, and self.identifier in this initializer
+        self.flags = URLFrame.defaultFlags()
+        self.layout = layout
+    }
+
+    func encodeContents(version: Version) throws -> Data {
+        <#code#>
     }
     
     // MARK: Decode
@@ -37,4 +41,33 @@ public struct URLFrame: FrameProtocol {
         self.layout = layout
         self.urlString = contents.stringASCII ?? ""
     }
+    
+    init(artistWebsiteUrl: String) {
+        self.init(layout: .known(KnownFrameLayoutIdentifier.artistWebpage), urlString: artistWebsiteUrl)
+    }
+
+    init(officialAudioFileWebsiteUrl: String) {
+        self.init(layout: .known(KnownFrameLayoutIdentifier.audioFileWebpage), urlString: officialAudioFileWebsiteUrl)
+    }
+
+    init(officialAudioSourceWebsiteUrl: String) {
+        self.init(layout: .known(KnownFrameLayoutIdentifier.audioSourceWebpage), urlString: officialAudioSourceWebsiteUrl)
+    }
+
+    init(copyrightWebsiteUrl: String) {
+        self.init(layout: .known(KnownFrameLayoutIdentifier.copyrightWebpage), urlString: copyrightWebsiteUrl)
+    }
+
+    init(paymentWebsiteUrl: String) {
+        self.init(layout: .known(KnownFrameLayoutIdentifier.paymentWebpage), urlString: paymentWebsiteUrl)
+    }
+    
+    init(publisherWebsiteUrl: String) {
+        self.init(layout: .known(KnownFrameLayoutIdentifier.publisherWebpage), urlString: publisherWebsiteUrl)
+    }
+
+    init(internetRadioStationWebsiteUrl: String) {
+        self.init(layout: .known(KnownFrameLayoutIdentifier.radioStationWebpage), urlString: internetRadioStationWebsiteUrl)
+    }
+
 }

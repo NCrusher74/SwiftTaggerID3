@@ -19,17 +19,18 @@ struct UserTextFrame: FrameProtocol {
      - parameter contentDescription: a terminated text string describing the frame content
      - parameter contentText: the full text of the comment or lyric frame.
      */
-    public init(descriptionString: String?, contentString: String) {
+    public init(layout: FrameLayoutIdentifier, descriptionString: String?, contentString: String) {
         self.descriptionString = descriptionString
         self.contentString = contentString
+        self.flags = UserTextFrame.defaultFlags()
     }
     
     internal var flags: Data
     internal var layout: FrameLayoutIdentifier
 
-//    func encodeContents(version: Version) throws -> Data {
-//        
-//    }
+    func encodeContents(version: Version) throws -> Data {
+        
+    }
 
     internal init(decodingContents contents: Data.SubSequence,
          version: Version,

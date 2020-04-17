@@ -38,12 +38,8 @@ struct Tag {
         while !remainder.isEmpty {
             let identifierBytes = remainder.extractFirst(version.identifierLength)
             let identifier = String(ascii: identifierBytes)
-            var layout: FrameLayoutIdentifier = .known(KnownFrameLayoutIdentifier(identifier: identifier) ?? .userDefinedText)
-            if UnhandledFrameIdentifier.allCases.contains(UnhandledFrameIdentifier(rawValue: identifier) ?? .USER) {
-                layout = .unknown(identifier)
-            }
             let frame = try Frame(
-                layout: layout,
+                identifier: identifier,
                 data: &remainder,
                 version: version)
             frames[frameKey] = frame

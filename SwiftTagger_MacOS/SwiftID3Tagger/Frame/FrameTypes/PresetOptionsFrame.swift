@@ -1,5 +1,5 @@
 //
-//  GenreFrame.swift
+//  PresetOptionsFrame.swift
 //  SwiftTagger_MacOS
 //
 //  Some of this code is adapted from ID3TagEditor
@@ -15,11 +15,13 @@ import Foundation
 /**
  A type used to represent an ID3 genre frame
  */
-struct GenreFrame: FrameProtocol {
+struct PresetOptionsFrame: FrameProtocol {
     /// Commonly recognized genres
-    public var genreType: GenreType?
+    public var presetOption: PresetOption?
+    /// further refinement options
+    public var mediaTypeRefinements: MediaTypeRefinements?
     /// A customizable genre description
-    public var descriptionString: String?
+    public var customizationString: String?
     
     /**
      Init a ID3 genre frame.
@@ -27,29 +29,35 @@ struct GenreFrame: FrameProtocol {
      - parameter genre: a numerical value from the list of commonly recognized genres.
      - parameter description: a freeform string for customized genre descriptions.
      */
-    public init(genreType: GenreType?, descriptionString: String?) {
-        self.genreType = genreType
-        self.descriptionString = descriptionString
+    private init(layout: FrameLayoutIdentifier,
+                 presetOption: PresetOption?,
+                 mediaTypeRefinements: MediaTypeRefinements?,
+                 customizationString: String?) {
+        self.presetOption = presetOption
+        self.mediaTypeRefinements = mediaTypeRefinements
+        self.customizationString = customizationString
+        self.flags = PresetOptionsFrame.defaultFlags()
+        self.layout = layout
     }
     
-    //    func encodeContents(version: Version) throws -> Data {
-    //        
-    //    }
+    func encodeContents(version: Version) throws -> Data {
+        
+    }
     
     internal var flags: Data
     internal var layout: FrameLayoutIdentifier
     
     internal init(decodingContents contents: Data.SubSequence,
-         version: Version,
-         layout: FrameLayoutIdentifier,
-         flags: Data) throws {
+                  version: Version,
+                  layout: FrameLayoutIdentifier,
+                  flags: Data) throws {
         self.flags = flags
         self.layout = layout
         var parsing = contents
-        let encoding = GenreFrame.extractEncoding(data: &parsing, version: version)
+        let encoding = PresetOptionsFrame.extractEncoding(data: &parsing, version: version)
         var parsedArray: [String] = []
         if version == .v2_2 || version == .v2_3 {
-            let unparsedString = GenreFrame.extractTerminatedString(data: &parsing, encoding: encoding)
+            let unparsedString = parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? ""
             parsedArray = parseParentheticalString(unparsedString: unparsedString)
         } else {
             while !parsing.isEmpty,
@@ -66,9 +74,9 @@ struct GenreFrame: FrameProtocol {
                     let validGenre = GenreType(rawValue: genreInt) {
                     genre = validGenre
                 } else {
-                    self.descriptionString = component
+                    self.customizationString = component
                 }
-                self.genreType = genre
+                self.presetOption = genre
             }
         }
     }
@@ -104,6 +112,18 @@ struct GenreFrame: FrameProtocol {
         return refinedComponents
     }
     
-
+    
+    init(genreID: GenreType?, description: String?) {
+        self.init(layout: .known(KnownFrameLayoutIdentifier.genre), presetOption: genreID, customizationString: description)
+    }
+    
+    init(mediaType: MediaTypes?, additionalInfo: MediaTypeRefinements, description: String?) {
+        self.init(layout: .known(
+            KnownFrameLayoutIdentifier.mediaType),
+                  genreType: mediaType,
+                  mediaTypeRefinements: additionalInfo,
+                  customizationString: description)
+    }
+    
 
 }

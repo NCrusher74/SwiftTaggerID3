@@ -10,10 +10,11 @@ import Foundation
 
 /**
  A type representing a Table Of Contents frame.
-
+ 
  There may be more than one Table of Contents frame per tag, but only one may have the top-level flag set, and each one must have a unique `elementID`. Therefore, the `elementID` will serve as the `FrameKey`
  */
 struct TableOfContentsFrame: FrameProtocol {
+    
     /** A null-terminated string with a unique ID. The Element ID uniquely identifies the frame. It is not intended to be human readable and should not be presented to the end-user. */
     public var elementID: String
     
@@ -46,35 +47,52 @@ struct TableOfContentsFrame: FrameProtocol {
      - parameter embeddedSubFrames: the (optional) frames containing title and descriptor text for the CTOC frame.
      
      */
-    public init(elementID: String,
-                topLevelFlag: Bool,
-                orderedFlag: Bool,
-                entryCount: UInt8,
-                childElementIDs: [String],
-                embeddedSubFrames: [FrameKey: Frame]) {
+    private init(layout: FrameLayoutIdentifier,
+                 elementID: String,
+                 topLevelFlag: Bool,
+                 orderedFlag: Bool,
+                 entryCount: UInt8,
+                 childElementIDs: [String],
+                 embeddedSubFrames: [FrameKey: Frame]) {
         self.elementID = elementID
         self.topLevelFlag = topLevelFlag
         self.orderedFlag = orderedFlag
         self.entryCount = entryCount
         self.childElementIDs = childElementIDs
         self.embeddedSubFrames = embeddedSubFrames
+        self.flags = TableOfContentsFrame.defaultFlags()
+        self.layout = layout
     }
-
     
-    //    func encodeContents(version: Version) throws -> Data {
-    //        
-    //    }
+    
+    func encodeContents(version: Version) throws -> Data {
+        
+    }
     
     internal var flags: Data
     internal var layout: FrameLayoutIdentifier
     
     internal init(decodingContents contents: Data.SubSequence,
-         version: Version,
-         layout: FrameLayoutIdentifier,
-         flags: Data) throws {
-        self.flags = TableOfContentsFrame.defaultFlags(version: version)
+                  version: Version,
+                  layout: FrameLayoutIdentifier,
+                  flags: Data) throws {
+        self.flags = flags
         self.layout = layout
     }
     
-
+    init(elementID: String,
+         topLevelFlag: Bool,
+         orderedFlag: Bool,
+         entryCount: UInt8,
+         childElementIDs: [String],
+         embeddedSubFrames: [FrameKey: Frame]) {
+        self.init(layout: .known(KnownFrameLayoutIdentifier.tableOfContents),
+                  elementID: elementID,
+                  topLevelFlag: topLevelFlag,
+                  orderedFlag: orderedFlag,
+                  entryCount: entryCount,
+                  childElementIDs: childElementIDs,
+                  embeddedSubFrames: embeddedSubFrames)
+    }
 }
+
