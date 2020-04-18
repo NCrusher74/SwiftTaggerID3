@@ -11,18 +11,18 @@ import Foundation
 /** A type containing methods and variables for querying and handling information from a frame */
 internal enum Frame {
     
-    case chapter(ChapterFrame)
+//    case chapter(ChapterFrame)
     case localizedFrame(LocalizedFrame)
     case languageFrame(LanguageFrame)
     case creditsList(CreditsListFrame)
-    case date(DateFrame)
-    case presetOptions(PresetOptionsFrame)
-    case image(ImageFrame)
+//    case date(DateFrame)
+    case genre(GenreFrame)
+//    case image(ImageFrame)
     case string(StringFrame)
     case integer(IntegerFrame)
     case boolean(BooleanFrame)
     case partOfTotalFrame(PartOfTotalFrame)
-    case toc(TableOfContentsFrame)
+//    case toc(TableOfContentsFrame)
     case userText(UserTextFrame)
     case url(URLFrame)
     case unknown(UnknownFrame)
@@ -45,7 +45,7 @@ internal enum Frame {
                     layout: layout))
             case .known(KnownFrameLayoutIdentifier.genre),
                  .known(KnownFrameLayoutIdentifier.mediaType):
-                self = .presetOptions(try PresetOptionsFrame(
+                self = .genre(try GenreFrame(
                     decodingFromStartOf: &data,
                     version: version,
                     layout: layout))

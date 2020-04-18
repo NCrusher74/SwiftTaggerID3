@@ -1,5 +1,5 @@
 //
-//  PresetOptionsFrame.swift
+//  GenreFrame.swift
 //  SwiftTagger_MacOS
 //
 //  Some of this code is adapted from ID3TagEditor
@@ -15,13 +15,11 @@ import Foundation
 /**
  A type used to represent an ID3 genre frame
  */
-struct PresetOptionsFrame: FrameProtocol {
+struct GenreFrame: FrameProtocol {
     /// Commonly recognized genres
-    public var presetOption: PresetOption?
-    /// further refinement options
-    public var mediaTypeRefinement: MediaTypeRefinement
+    public var genreType: GenreType?
     /// A customizable genre description
-    public var customizationString: String?
+    public var refinementString: String?
     
     /**
      Init a ID3 genre frame.
@@ -30,18 +28,35 @@ struct PresetOptionsFrame: FrameProtocol {
      - parameter description: a freeform string for customized genre descriptions.
      */
     private init(layout: FrameLayoutIdentifier,
-                 presetOption: PresetOption?,
-                 mediaTypeRefinement: MediaTypeRefinement,
-                 customizationString: String?) {
-        self.presetOption = presetOption
-        self.mediaTypeRefinement = mediaTypeRefinement
-        self.customizationString = customizationString
-        self.flags = PresetOptionsFrame.defaultFlags()
+                 genreType: GenreType?,
+                 refinementString: String?) {
+        self.genreType = genreType
+        self.refinementString = refinementString
+        self.flags = GenreFrame.defaultFlags()
         self.layout = layout
     }
     
     func encodeContents(version: Version) throws -> Data {
-        
+        var genreTypeAsData = Data()
+        var refinementStringAsData = Data()
+        switch version {
+            case .v2_2, .v2_3:
+                if let genreTypeAsString = self.genreType?.stringValue {
+                    genreTypeAsData = genreTypeAsString.encoded(withNullTermination: false)
+                }
+                if let refinementStringData = refinementString?.encoded(withNullTermination: false) {
+                    refinementStringAsData = refinementStringData
+                }
+                return genreTypeAsData + refinementStringAsData
+            case .v2_4:
+                if let genreTypeAsString = self.genreType?.stringValue {
+                    genreTypeAsData = genreTypeAsString.encoded(withNullTermination: true)
+                }
+                if let refinementStringData = refinementString?.encoded(withNullTermination: true) {
+                    refinementStringAsData = refinementStringData
+                }
+                return genreTypeAsData + refinementStringAsData
+        }
     }
     
     internal var flags: Data
@@ -55,7 +70,7 @@ struct PresetOptionsFrame: FrameProtocol {
         self.flags = flags
         self.layout = layout
         var parsing = contents
-        let encoding = PresetOptionsFrame.extractEncoding(data: &parsing, version: version)
+        let encoding = GenreFrame.extractEncoding(data: &parsing, version: version)
         var parsedArray: [String] = []
         if version == .v2_2 || version == .v2_3 {
             let unparsedString = parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? ""
@@ -66,27 +81,18 @@ struct PresetOptionsFrame: FrameProtocol {
                     parsedArray.append(next)
             }
             for component in parsedArray {
-                if layout == FrameLayoutIdentifier.known(
-                    KnownFrameLayoutIdentifier.genre) {
-                    var genre: GenreType = .None
-                    if component == "CR" {
-                        genre = .Cover
-                    } else if component == "RX" {
-                        genre = .Remix
-                    } else if let genreInt = Int(component),
-                        let validGenre = GenreType(rawValue: genreInt) {
-                        genre = validGenre
-                    } else {
-                        self.customizationString = component
-                    }
-                    self.presetOption = .genreTypes(genre)
-                } else if layout == FrameLayoutIdentifier.known(
-                    KnownFrameLayoutIdentifier.mediaType) {
-                    var mediaType: MediaType = .none
-                    self.presetOption = .mediaTypes(mediaType)
-                    self.mediaTypeRefinement = MediaType.refinement.self
-                    self.customizationString = component
+                var genre: GenreType = .None
+                if component == "CR" {
+                    genre = .Cover
+                } else if component == "RX" {
+                    genre = .Remix
+                } else if let genreInt = Int(component),
+                    let validGenre = GenreType(rawValue: genreInt) {
+                    genre = validGenre
+                } else {
+                    self.refinementString = component
                 }
+                self.genreType = genre
             }
         }
     }
@@ -125,21 +131,7 @@ struct PresetOptionsFrame: FrameProtocol {
     
     init(genreID: GenreType?, description: String?) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.genre),
-                  presetOption: .genreTypes(genreID ?? .None),
-                  mediaTypeRefinement: .none,
-                  customizationString: description)
+                  genreType: genreID,
+                  refinementString: description)
     }
-    
-    init(mediaType: MediaType?, additionalInfo: MediaTypeRefinement, description: String?) {
-        self.init(layout: .known(
-            KnownFrameLayoutIdentifier.mediaType),
-                  genreType: mediaType,
-                  mediaTypeRefinements: additionalInfo,
-                  customizationString: description)
-    }
-}
-
-enum PresetOption {
-    case genreTypes(GenreType)
-    case mediaTypes(MediaType)
 }

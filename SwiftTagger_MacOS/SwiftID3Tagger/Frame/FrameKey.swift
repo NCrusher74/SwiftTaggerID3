@@ -180,7 +180,7 @@ public enum FrameKey: Hashable {
     
     /// For audiobook use. Maps to the `artist` frame, which is usually used for authors of audiobooks.
     static var author: FrameKey { return .artist }
-    static var authorSort: FrameKey { return .authorSort }
+    static var authorSort: FrameKey { return .artistSort }
     
     /// For audiobook use. Maps to the `composer` frame, which is usually used for narrators of audiobooks
     static var narrator: FrameKey { return .composer }

@@ -8,6 +8,7 @@
 
 import Foundation
 
+/*
 /**
  A type representing a Table Of Contents frame.
  
@@ -96,3 +97,4 @@ struct TableOfContentsFrame: FrameProtocol {
     }
 }
 
+*/

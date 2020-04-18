@@ -27,7 +27,6 @@
 		51490E7D243F461E009D4BA4 /* mp3-v22-with-meta.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 51490E78243F461E009D4BA4 /* mp3-v22-with-meta.mp3 */; };
 		515AF6592449A099005C29FA /* CreditedRoles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515AF6582449A098005C29FA /* CreditedRoles.swift */; };
 		515AF65B2449A8E2005C29FA /* KeySignatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515AF65A2449A8E2005C29FA /* KeySignatures.swift */; };
-		515AF65D2449AC93005C29FA /* MediaTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515AF65C2449AC93005C29FA /* MediaTypes.swift */; };
 		515CC1052448EB0C005906D0 /* UnknownFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515CC1042448EB0C005906D0 /* UnknownFrame.swift */; };
 		515CC10A24491047005906D0 /* Processing Order in Resources */ = {isa = PBXBuildFile; fileRef = 515CC10924491047005906D0 /* Processing Order */; };
 		51775436244058DB005E43C5 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51775435244058DB005E43C5 /* Tag.swift */; };
@@ -38,7 +37,7 @@
 		517754542442E757005E43C5 /* LocalizedFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517754532442E757005E43C5 /* LocalizedFrame.swift */; };
 		517754562442E8E1005E43C5 /* ImageFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517754552442E8E1005E43C5 /* ImageFrame.swift */; };
 		517754582442EB67005E43C5 /* CreditsListFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517754572442EB67005E43C5 /* CreditsListFrame.swift */; };
-		5177545A2442EBE8005E43C5 /* PresetOptionsFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517754592442EBE8005E43C5 /* PresetOptionsFrame.swift */; };
+		5177545A2442EBE8005E43C5 /* GenreFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517754592442EBE8005E43C5 /* GenreFrame.swift */; };
 		517E886A243DBCA300F9F8D6 /* mp3-chaptered.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 517E8869243DBCA300F9F8D6 /* mp3-chaptered.mp3 */; };
 		518807212442ED4D008D488B /* LanguageFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518807202442ED4D008D488B /* LanguageFrame.swift */; };
 		518807232442EE58008D488B /* PartOfTotalFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518807222442EE58008D488B /* PartOfTotalFrame.swift */; };
@@ -113,7 +112,6 @@
 		51490E78243F461E009D4BA4 /* mp3-v22-with-meta.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "mp3-v22-with-meta.mp3"; sourceTree = "<group>"; };
 		515AF6582449A098005C29FA /* CreditedRoles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditedRoles.swift; sourceTree = "<group>"; };
 		515AF65A2449A8E2005C29FA /* KeySignatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySignatures.swift; sourceTree = "<group>"; };
-		515AF65C2449AC93005C29FA /* MediaTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaTypes.swift; sourceTree = "<group>"; };
 		515CC1042448EB0C005906D0 /* UnknownFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnknownFrame.swift; sourceTree = "<group>"; };
 		515CC10924491047005906D0 /* Processing Order */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Processing Order"; sourceTree = "<group>"; };
 		51775435244058DB005E43C5 /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
@@ -124,7 +122,7 @@
 		517754532442E757005E43C5 /* LocalizedFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedFrame.swift; sourceTree = "<group>"; };
 		517754552442E8E1005E43C5 /* ImageFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFrame.swift; sourceTree = "<group>"; };
 		517754572442EB67005E43C5 /* CreditsListFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditsListFrame.swift; sourceTree = "<group>"; };
-		517754592442EBE8005E43C5 /* PresetOptionsFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetOptionsFrame.swift; sourceTree = "<group>"; };
+		517754592442EBE8005E43C5 /* GenreFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreFrame.swift; sourceTree = "<group>"; };
 		517E8869243DBCA300F9F8D6 /* mp3-chaptered.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "mp3-chaptered.mp3"; sourceTree = "<group>"; };
 		518807202442ED4D008D488B /* LanguageFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageFrame.swift; sourceTree = "<group>"; };
 		518807222442EE58008D488B /* PartOfTotalFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartOfTotalFrame.swift; sourceTree = "<group>"; };
@@ -238,7 +236,7 @@
 				517754572442EB67005E43C5 /* CreditsListFrame.swift */,
 				51A3C6A12442FFB300909952 /* UserTextFrame.swift */,
 				517754532442E757005E43C5 /* LocalizedFrame.swift */,
-				517754592442EBE8005E43C5 /* PresetOptionsFrame.swift */,
+				517754592442EBE8005E43C5 /* GenreFrame.swift */,
 				517754552442E8E1005E43C5 /* ImageFrame.swift */,
 				51A3C69F2442FEF000909952 /* DateFrame.swift */,
 				518807242442EF4E008D488B /* ChapterFrame.swift */,
@@ -256,7 +254,6 @@
 				511E40092446A96A0041F7AE /* ISOLanguages.swift */,
 				515AF6582449A098005C29FA /* CreditedRoles.swift */,
 				515AF65A2449A8E2005C29FA /* KeySignatures.swift */,
-				515AF65C2449AC93005C29FA /* MediaTypes.swift */,
 			);
 			path = Reference;
 			sourceTree = "<group>";
@@ -514,7 +511,7 @@
 				518807252442EF4E008D488B /* ChapterFrame.swift in Sources */,
 				51A3C69C2442F9E800909952 /* IntegerFrame.swift in Sources */,
 				51FA3503243FB03C000997EC /* TagProperties.swift in Sources */,
-				5177545A2442EBE8005E43C5 /* PresetOptionsFrame.swift in Sources */,
+				5177545A2442EBE8005E43C5 /* GenreFrame.swift in Sources */,
 				5188072B2442F3DE008D488B /* GenreType.swift in Sources */,
 				51A3C69E2442FB1A00909952 /* BooleanFrame.swift in Sources */,
 				51FA3510244038D0000997EC /* FrameProtocol.swift in Sources */,
@@ -525,7 +522,6 @@
 				51FA350A24402580000997EC /* String.swift in Sources */,
 				51490E53243EF216009D4BA4 /* Data.swift in Sources */,
 				5177544824423D46005E43C5 /* StringFrame.swift in Sources */,
-				515AF65D2449AC93005C29FA /* MediaTypes.swift in Sources */,
 				51A3C6A724464FDC00909952 /* URLFrame.swift in Sources */,
 				515AF6592449A099005C29FA /* CreditedRoles.swift in Sources */,
 				51E432C9243DA35E006574A1 /* URL.swift in Sources */,

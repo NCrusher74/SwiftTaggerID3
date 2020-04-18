@@ -8,7 +8,8 @@
 
 import Foundation
 
-public enum GenreType: Int, CaseIterable {
+public enum GenreType: Int, CaseIterable  {
+    
     case Blues = 0
     case ClassicRock = 1
     case Country = 2
@@ -207,4 +208,8 @@ public enum GenreType: Int, CaseIterable {
     
     static var RX: GenreType { return .Remix }
     static var CR: GenreType { return .Cover }
+    
+    var stringValue: String {
+        return String(describing: self.rawValue)
+    }
 }
