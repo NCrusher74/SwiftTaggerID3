@@ -84,4 +84,15 @@ extension Version {
         return frameHeaderLength
     }
     
+    internal var specialCaseFrameIdentifiers: [String] {
+        var identifiers: [String] = []
+        switch self {
+            case .v2_2:
+            identifiers = ["COM", "TLA", "ULT", "TXX", "WXX"]
+            case .v2_3, .v2_4:
+            identifiers = ["CHAP", "COMM", "TLAN", "USLT", "CTOC", "TXXX", "WXXX"]
+        }
+        return identifiers
+    }
+
 }

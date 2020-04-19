@@ -38,6 +38,21 @@ struct Tag {
         while !remainder.isEmpty {
             let identifierBytes = remainder.extractFirst(version.identifierLength)
             let identifier = String(ascii: identifierBytes)
+            
+            var uniqueInformation: String = ""
+            let specialCaseFrames = version.specialCaseFrameIdentifiers
+            if specialCaseFrames.contains(identifier) {
+                if identifier = "TLA" || identifier = "TLAN" {
+                    uniqueInformation = // language
+                } else if identifier == "CHAP" || identifier == "CTOC" {
+                    uniqueInformation = // elementID
+                } else {
+                    uniqueInformation = // description string 
+                }
+            }
+            
+            
+            let keyForIdentifier = FrameKey.getFrameKeyForIdentifier(identifier: identifier, uniqueInfo: <#T##String#>)
             let frame = try Frame(
                 identifier: identifier,
                 data: &remainder,

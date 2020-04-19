@@ -72,7 +72,7 @@ public enum FrameKey: Hashable {
      You may also use any of the following keywords:
      RX  Remix
      CR  Cover */
-    case genre(description: String)
+    case genre
     /** Frame used by iTunes to group works */
     case grouping
     /** The 'Initial key' frame contains the musical key in which the sound starts. It is represented as a string with a maximum length of three characters. The ground keys are represented with "A","B","C","D","E", "F" and "G" and halfkeys represented with "b" and "#". Minor is represented as "m", e.g. "Dbm" $00. Off key is represented with an "o" only. */
@@ -174,10 +174,7 @@ public enum FrameKey: Hashable {
     
     /// also known as `contentGroup`. Maps to the `contentGroup` frame. If another `contentGroup` frame is already present, the frame will be created as a `grouping` frame. If another `grouping` frame is present, the frame will be created as a `UserDefinedText` frame with the description, "Work"
     static var work: FrameKey { return .contentGroup }
-    
-    /// Maps to the `subtitle` frame, which is often used for description text. If another `subtitle` frame is already present, the frame will be created as a `Comment` frame with the description, "Description"
-    static var description: FrameKey { return .subtitle }
-    
+        
     /// For audiobook use. Maps to the `artist` frame, which is usually used for authors of audiobooks.
     static var author: FrameKey { return .artist }
     static var authorSort: FrameKey { return .artistSort }
@@ -190,176 +187,134 @@ public enum FrameKey: Hashable {
     static var recordCompany: FrameKey { return .publisher }
     static var label: FrameKey { return .publisher }
     static var studio: FrameKey { return .publisher }
-    
-    
+        
     static var series: FrameKey { return .contentGroup }
     
+    
+    // MARK: Preset Frame Convenient Keys
     // These should be pre-set options for involved people and/or musician credits
-    static var producer: FrameKey { return involvedPeopleList }
-    static var executiveProducer: FrameKey { return involvedPeopleList }
-    static var songProducer: FrameKey { return involvedPeopleList }
-    static var engineer: FrameKey { return involvedPeopleList }
-    static var director: FrameKey { return involvedPeopleList }
-    static var performer: FrameKey { return involvedPeopleList } // or Musician Credit List if version 2.4
-    static var soloist: FrameKey { return involvedPeopleList } // or Musician Credit List if version 2.4
-    static var cast: FrameKey { return involvedPeopleList }
+    static var producer: FrameKey { return .involvedPeopleList }
+    static var executiveProducer: FrameKey { return .involvedPeopleList }
+    static var songProducer: FrameKey { return .involvedPeopleList }
+    static var engineer: FrameKey { return .involvedPeopleList }
+    static var director: FrameKey { return .involvedPeopleList }
+    static var performer: FrameKey { return .involvedPeopleList } // or Musician Credit List if version 2.4
+    static var soloist: FrameKey { return .involvedPeopleList } // or Musician Credit List if version 2.4
+    static var cast: FrameKey { return .involvedPeopleList }
     
     
-//    var layout: FrameLayoutIdentifier {
-//        switch self {
-//
-//            case .album:
-//                return .known(KnownFrameLayoutIdentifier.album)
-//            case .albumSort:
-//                return .known(KnownFrameLayoutIdentifier.albumSort)
-//            case .albumArtist:
-//                return .known(KnownFrameLayoutIdentifier.albumArtist)
-//            case .albumArtistSort:
-//                return .known(KnownFrameLayoutIdentifier.albumArtistSort)
-//            case .arranger:
-//                return .known(KnownFrameLayoutIdentifier.arranger)
-//            case .artist:
-//                return .known(KnownFrameLayoutIdentifier.artist)
-//            case .artistSort:
-//                return .known(KnownFrameLayoutIdentifier.artistSort)
-//            case .artistWebpage:
-//                return .known(KnownFrameLayoutIdentifier.artistWebpage)
-//            case .attachedPicture:
-//                return .known(KnownFrameLayoutIdentifier.attachedPicture)
-//            case .audioFileWebpage:
-//                return .known(KnownFrameLayoutIdentifier.audioFileWebpage)
-//            case .audioSourceWebpage:
-//                return .known(KnownFrameLayoutIdentifier.audioSourceWebpage)
-//            case .bpm:
-//                return .known(KnownFrameLayoutIdentifier.bpm)
-//            case .chapter(elementID: let elementID):
-//                return .known(KnownFrameLayoutIdentifier.chapter)
-//            case .comments(description: let description):
-//                return .known(KnownFrameLayoutIdentifier.comments)
-//            case .compilation:
-//                return .known(KnownFrameLayoutIdentifier.compilation)
-//            case .composer:
-//                return .known(KnownFrameLayoutIdentifier.composer)
-//            case .composerSort:
-//                return .known(KnownFrameLayoutIdentifier.composerSort)
-//            case .conductor:
-//                return .known(KnownFrameLayoutIdentifier.conductor)
-//            case .contentGroup:
-//                return .known(KnownFrameLayoutIdentifier.contentGroup)
-//            case .copyright:
-//                return .known(KnownFrameLayoutIdentifier.copyright)
-//            case .copyrightWebpage:
-//                return .known(KnownFrameLayoutIdentifier.copyrightWebpage)
-//            case .date:
-//                return .known(KnownFrameLayoutIdentifier.date)
-//            case .discNumber:
-//                return .known(KnownFrameLayoutIdentifier.discNumber)
-//            case .encodingTime:
-//                return .known(KnownFrameLayoutIdentifier.encodingTime)
-//            case .encodedBy:
-//                return .known(KnownFrameLayoutIdentifier.encodedBy)
-//            case .encodingSettings:
-//                return .known(KnownFrameLayoutIdentifier.encodingSettings)
-//            case .fileType:
-//                return .known(KnownFrameLayoutIdentifier.fileType)
-//            case .fileOwner:
-//                return .known(KnownFrameLayoutIdentifier.fileOwner)
-//            case .genre(description: let description):
-//                return .known(KnownFrameLayoutIdentifier.genre)
-//            case .grouping:
-//                return .known(KnownFrameLayoutIdentifier.grouping)
-//            case .initialKey:
-//                return .known(KnownFrameLayoutIdentifier.initialKey)
-//            case .involvedPeopleList:
-//                return .known(KnownFrameLayoutIdentifier.involvedPeopleList)
-//            case .isrc:
-//                return .known(KnownFrameLayoutIdentifier.isrc)
-//            case .languages(language: let language):
-//                return .known(KnownFrameLayoutIdentifier.languages)
-//            case .length:
-//                return .known(KnownFrameLayoutIdentifier.length)
-//            case .lyricist:
-//                return .known(KnownFrameLayoutIdentifier.lyricist)
-//            case .mediaType:
-//                return .known(KnownFrameLayoutIdentifier.mediaType)
-//            case .mood:
-//                return .known(KnownFrameLayoutIdentifier.mood)
-//            case .movementCount:
-//                return .known(KnownFrameLayoutIdentifier.movementCount)
-//            case .movementName:
-//                return .known(KnownFrameLayoutIdentifier.movementName)
-//            case .movementNumber:
-//                return .known(KnownFrameLayoutIdentifier.movementNumber)
-//            case .musicianCreditsList:
-//                return .known(KnownFrameLayoutIdentifier.musicianCreditsList)
-//            case .originalAlbum:
-//                return .known(KnownFrameLayoutIdentifier.originalAlbum)
-//            case .originalArtist:
-//                return .known(KnownFrameLayoutIdentifier.originalArtist)
-//            case .originalFilename:
-//                return .known(KnownFrameLayoutIdentifier.originalFilename)
-//            case .originalLyricist:
-//                return .known(KnownFrameLayoutIdentifier.originalLyricist)
-//            case .originalReleaseTime:
-//                return .known(KnownFrameLayoutIdentifier.originalReleaseTime)
-//            case .paymentWebpage:
-//                return .known(KnownFrameLayoutIdentifier.paymentWebpage)
-//            case .playlistDelay:
-//                return .known(KnownFrameLayoutIdentifier.playlistDelay)
-//            case .podcastCategory:
-//                return .known(KnownFrameLayoutIdentifier.podcastCategory)
-//            case .podcastDescription:
-//                return .known(KnownFrameLayoutIdentifier.podcastDescription)
-//            case .podcastID:
-//                return .known(KnownFrameLayoutIdentifier.podcastID)
-//            case .podcastKeywords:
-//                return .known(KnownFrameLayoutIdentifier.podcastKeywords)
-//            case .podcastFeedLink:
-//                return .known(KnownFrameLayoutIdentifier.podcastFeedLink)
-//            case .producedNotice:
-//                return .known(KnownFrameLayoutIdentifier.producedNotice)
-//            case .publisher:
-//                return .known(KnownFrameLayoutIdentifier.publisher)
-//            case .publisherWebpage:
-//                return .known(KnownFrameLayoutIdentifier.publisherWebpage)
-//            case .radioStation:
-//                return .known(KnownFrameLayoutIdentifier.radioStation)
-//            case .radioStationOwner:
-//                return .known(KnownFrameLayoutIdentifier.radioStationOwner)
-//            case .radioStationWebpage:
-//                return .known(KnownFrameLayoutIdentifier.radioStationWebpage)
-//            case .recordingDate:
-//                return .known(KnownFrameLayoutIdentifier.recordingDate)
-//            case .releaseTime:
-//                return .known(KnownFrameLayoutIdentifier.releaseTime)
-//            case .setSubtitle:
-//                return .known(KnownFrameLayoutIdentifier.setSubtitle)
-//            case .subtitle:
-//                return .known(KnownFrameLayoutIdentifier.subtitle)
-//            case .tableOfContents(elementID: let elementID):
-//                return .known(KnownFrameLayoutIdentifier.tableOfContents)
-//            case .taggingTime:
-//                return .known(KnownFrameLayoutIdentifier.taggingTime)
-//            case .time:
-//                return .known(KnownFrameLayoutIdentifier.time)
-//            case .title:
-//                return .known(KnownFrameLayoutIdentifier.title)
-//            case .titleSort:
-//                return .known(KnownFrameLayoutIdentifier.titleSort)
-//            case .trackNumber:
-//                return .known(KnownFrameLayoutIdentifier.trackNumber)
-//            case .unsynchronizedLyrics(description: let description):
-//                return .known(KnownFrameLayoutIdentifier.unsynchronizedLyrics)
-//            case .userDefinedText(description: let description):
-//                return .known(KnownFrameLayoutIdentifier.userDefinedText)
-//            case .userDefinedWebpage(description: let description):
-//                return .known(KnownFrameLayoutIdentifier.userDefinedWebpage)
-//            case .year:
-//                return .known(KnownFrameLayoutIdentifier.year)
-//            case .unknown(uuid: let uuid):
-//                return .unknown("\(uuid)")
-//        }
-//    }
-    
-    
+    /// Maps to `Comment` frame with the description, "Description"
+    static var description: FrameKey { return .comments(description: "Description") }
+
+    /// Maps to `Comment` frame with the description, "Short Description"
+    static var shortDescription: FrameKey { return .comments(description: "Short Description") }
+
+    /// Maps to `Comment` frame with the description, "Long Description"
+    static var longDescription: FrameKey { return .comments(description: "Long Description") }
+
+    /// Maps to `Comment` frame with the description, "Long Description"
+    static var songDescription: FrameKey { return .comments(description: "Song Description") }
+
+    /// Maps to `Comment` frame with the description, "Long Description"
+    static var seriesDescription: FrameKey { return .comments(description: "Series Description") }
+
+    /// Maps to `Comment` frame with the description, "Liner Notes"
+    static var linerNotes: FrameKey { return .comments(description: "Liner Notes") }
+
+    /// Maps to `UserText` frame with the description, "Acknowledgments"
+    static var acknowledgments: FrameKey { return .userDefinedText(description: "Acknowledgments") }
+
+    /// Maps to `UserText` frame with the description, "Thanks"
+    static var thanks: FrameKey { return .userDefinedText(description: "Thanks") }
+
+    /// Maps to `UserText` frame with the description, "Credit"
+    static var credit: FrameKey { return .userDefinedText(description: "Credit") }
+   
+    static func getFrameKeyForIdentifier(identifier: String, additionalInfo: String) -> FrameKey {
+        let layout = FrameLayoutIdentifier(identifier: identifier)
+        switch layout {
+            case .known(_):
+            let knownLayouts = KnownFrameLayoutIdentifier(identifier: identifier)
+            switch knownLayouts {
+                case .album: return .album
+                case .albumArtist: return .albumArtist
+                case .artist: return .artist
+                case .albumSort: return .albumSort
+                case .albumArtistSort: return .albumArtistSort
+                case .arranger: return .arranger
+                case .artistSort: return .artistSort
+                case .artistWebpage: return .artistWebpage
+                case .audioFileWebpage: return .audioFileWebpage
+                case .audioSourceWebpage: return .audioSourceWebpage
+                case .none: break
+                case .attachedPicture: return .attachedPicture
+                case .bpm: return .bpm
+                case .chapter: return .chapter(elementID: additionalInfo)
+                case .comments: return .comments(description: additionalInfo)
+                case .compilation: return .compilation
+                case .composer: return .composer
+                case .composerSort: return .composerSort
+                case .conductor: return .conductor
+                case .contentGroup: return .contentGroup
+                case .copyright: return .copyright
+                case .copyrightWebpage: return .copyrightWebpage
+                case .date: return .date
+                case .discNumber: return .discNumber
+                case .encodingTime: return .encodingTime
+                case .encodedBy: return .encodedBy
+                case .encodingSettings: return .encodingSettings
+                case .fileType: return .fileType
+                case .fileOwner: return .fileOwner
+                case .genre: return .genre
+                case .grouping: return .grouping
+                case .initialKey: return .initialKey
+                case .involvedPeopleList: return .involvedPeopleList
+                case .isrc: return .isrc
+                case .languages: return .languages(language: additionalInfo)
+                case .length: return .length
+                case .lyricist: return .lyricist
+                case .mediaType: return .mediaType
+                case .mood: return .mood
+                case .movementCount: return .movementCount
+                case .movementName: return .movementName
+                case .movementNumber: return .movementNumber
+                case .musicianCreditsList: return .musicianCreditsList
+                case .originalAlbum: return .originalAlbum
+                case .originalArtist: return .originalArtist
+                case .originalFilename: return .originalFilename
+                case .originalLyricist: return .originalLyricist
+                case .originalReleaseTime: return .originalReleaseTime
+                case .paymentWebpage: return .paymentWebpage
+                case .playlistDelay: return .playlistDelay
+                case .podcastCategory: return .podcastCategory
+                case .podcastDescription: return .podcastDescription
+                case .podcastID: return .podcastID
+                case .podcastKeywords: return .podcastKeywords
+                case .podcastFeedLink: return .podcastFeedLink
+                case .producedNotice: return .producedNotice
+                case .publisher: return .publisher
+                case .publisherWebpage: return .publisherWebpage
+                case .radioStation: return .radioStation
+                case .radioStationOwner: return .radioStationOwner
+                case .radioStationWebpage: return .radioStationWebpage
+                case .recordingDate: return .recordingDate
+                case .releaseTime: return .releaseTime
+                case .setSubtitle: return .setSubtitle
+                case .subtitle: return .subtitle
+                case .tableOfContents: return .tableOfContents(elementID: additionalInfo)
+                case .taggingTime: return .taggingTime
+                case .time: return .time
+                case .title: return .title
+                case .titleSort: return .titleSort
+                case .trackNumber: return .trackNumber
+                case .unsynchronizedLyrics: return .unsynchronizedLyrics(description: additionalInfo)
+                case .userDefinedText: return .userDefinedText(description: additionalInfo)
+                case .userDefinedWebpage: return .userDefinedWebpage(description: additionalInfo)
+                case .year: return .year
+            }
+            case .unknown(_):
+                let uuid = UUID(uuidString: identifier)!
+                return .unknown(uuid: uuid)
+        }
+    }
 }
