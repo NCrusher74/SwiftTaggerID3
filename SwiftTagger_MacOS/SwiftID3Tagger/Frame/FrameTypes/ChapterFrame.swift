@@ -12,7 +12,7 @@ import Foundation
 /**
  A type representing an ID3 chapter frame. There may be multiple chapter frames in a tag, but the `elementID` must be unique. Therefore, the `elementID` will serve as the `FrameKey`
  */
-struct ChapterFrame: FrameProtocol {
+public struct ChapterFrame: FrameProtocol {
     
     /** The Element ID uniquely identifies the frame. It is not intended to be human readable and should not be presented to the end user. Null terminated */
     public var elementID: String
@@ -60,10 +60,10 @@ struct ChapterFrame: FrameProtocol {
         
     }
     
-    internal var flags: Data
-    internal var layout: FrameLayoutIdentifier
+    var flags: Data
+    var layout: FrameLayoutIdentifier
     
-    internal init(decodingContents contents: Data.SubSequence,
+    init(decodingContents contents: Data.SubSequence,
                   version: Version,
                   layout: FrameLayoutIdentifier,
                   flags: Data) throws {

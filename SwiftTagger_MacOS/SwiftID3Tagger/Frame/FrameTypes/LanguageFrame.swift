@@ -27,24 +27,25 @@ public struct LanguageFrame: FrameProtocol {
      */
     private init(layout: FrameLayoutIdentifier, languageString: String) {
         self.languageString = languageString
-        self.flags = LanguageFrame.defaultFlags()
+//        self.flags = LanguageFrame.defaultFlags()
         self.layout = layout
     }
     
-    internal func encodeContents(version: Version) throws -> Data {
+    func encodeContents(version: Version) throws -> Data {
         return self.languageString.encoded(withNullTermination: false)
     }
     
     // MARK: Decoding
-    internal var flags: Data
-    internal var layout: FrameLayoutIdentifier
+//    var flags: Data
+    var layout: FrameLayoutIdentifier
     
     /// if desired, return may be changed from "isoName" to "nativeName"
-    internal init(decodingContents contents: Data.SubSequence,
+    init(decodingContents contents: Data.SubSequence,
                   version: Version,
-                  layout: FrameLayoutIdentifier,
-                  flags: Data) throws {
-        self.flags = flags
+                  layout: FrameLayoutIdentifier
+//                  flags: Data
+    ) throws {
+//        self.flags = flags
         self.layout = layout
         var parsing = contents
         self.languageString = parsing.extractFirst(3).stringASCII ?? "und"

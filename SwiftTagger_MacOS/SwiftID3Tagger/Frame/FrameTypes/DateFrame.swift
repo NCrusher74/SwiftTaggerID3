@@ -15,7 +15,7 @@ import Foundation
 /**
  A type used to represent an ID3 recording date time frame to be used in the ID3 tag. Valid only for ID3 tag version 2.4.
  */
-struct DateFrame: FrameProtocol {
+public struct DateFrame: FrameProtocol {
     /// The recordin date time information. This field contains date and time of the recording.
     public let date: Date
     
@@ -31,14 +31,14 @@ struct DateFrame: FrameProtocol {
 
     
  
-    internal var flags: Data
-    internal var layout: FrameLayoutIdentifier
+    var flags: Data
+    var layout: FrameLayoutIdentifier
     
     func encodeContents(version: Version) throws -> Data {
         
     }
     
-    internal init(decodingContents contents: Data.SubSequence,
+    init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,
          flags: Data) throws {

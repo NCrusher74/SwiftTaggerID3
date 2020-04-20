@@ -21,25 +21,26 @@ public struct StringFrame: FrameProtocol {
      */
     private init(layout: FrameLayoutIdentifier, contentString: String) {
         self.contentString = contentString
-        self.flags = StringFrame.defaultFlags()
+//        self.flags = StringFrame.defaultFlags(version: version)
         self.layout = layout
     }
     
-    internal func encodeContents(version: Version) throws -> Data {
+    func encodeContents(version: Version) throws -> Data {
         let contents = self.contentString
         return contents.encoded(withNullTermination: false)
     }
     
     // MARK: Decode
     // decode incoming data and parse it into a frame
-    internal var flags: Data
-    internal var layout: FrameLayoutIdentifier
+//    var flags: Data
+    var layout: FrameLayoutIdentifier
     
-    internal init(decodingContents contents: Data.SubSequence,
+    init(decodingContents contents: Data.SubSequence,
                   version: Version,
-                  layout: FrameLayoutIdentifier,
-                  flags: Data) throws {
-        self.flags = flags
+                  layout: FrameLayoutIdentifier
+//                  flags: Data
+    ) throws {
+//        self.flags = flags
         self.layout = layout
         var parsing = contents
         let encoding = StringFrame.extractEncoding(data: &parsing, version: version)

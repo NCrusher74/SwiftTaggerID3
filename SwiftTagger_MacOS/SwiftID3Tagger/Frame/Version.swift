@@ -16,13 +16,7 @@ public enum Version: CaseIterable {
     case v2_3
     /// ID3 v2.4
     case v2_4
-    
-    init() {
-        self = .v2_2
-        self = .v2_3
-        self = .v2_4
-    }
-    
+        
 }
 
 
@@ -59,7 +53,7 @@ extension Version {
     }
     
     /// the version-dependent size of the frame header, in bytes
-    internal var frameHeaderLength: Int {
+    var frameHeaderLength: Int {
         return identifierLength + sizeDeclarationLength + flagsLength
     }
     
@@ -80,11 +74,11 @@ extension Version {
     }
     
     /// the version-dependent position of the encoding byte
-    internal var encodingByteOffset: Data.Index {
+    var encodingByteOffset: Data.Index {
         return frameHeaderLength
     }
     
-    internal var specialCaseFrameIdentifiers: [String] {
+    var specialCaseFrameIdentifiers: [String] {
         var identifiers: [String] = []
         switch self {
             case .v2_2:

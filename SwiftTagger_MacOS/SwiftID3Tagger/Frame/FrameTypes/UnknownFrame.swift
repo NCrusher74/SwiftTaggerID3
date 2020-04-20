@@ -13,7 +13,7 @@ public struct UnknownFrame: FrameProtocol {
     var contents: Data
     
     init(layout: FrameLayoutIdentifier, contents: Data){
-        self.flags = UnknownFrame.defaultFlags()
+//        self.flags = UnknownFrame.defaultFlags()
         self.layout = layout
         self.contents = contents
     }
@@ -22,14 +22,15 @@ public struct UnknownFrame: FrameProtocol {
         return self.contents
     }
     
-    internal var flags: Data
-    internal var layout: FrameLayoutIdentifier
+//    var flags: Data
+    var layout: FrameLayoutIdentifier
     
-    internal init(decodingContents contents: Data.SubSequence,
+    init(decodingContents contents: Data.SubSequence,
          version: Version,
-         layout: FrameLayoutIdentifier,
-         flags: Data) throws {
-        self.flags = flags
+         layout: FrameLayoutIdentifier
+//         flags: Data
+    ) throws {
+//        self.flags = flags
         self.layout = layout
         self.contents = contents
     }

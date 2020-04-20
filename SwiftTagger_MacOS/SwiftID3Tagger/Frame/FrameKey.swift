@@ -191,7 +191,7 @@ public enum FrameKey: Hashable {
     static var series: FrameKey { return .contentGroup }
     
     
-    // MARK: Preset Frame Convenient Keys
+    // MARK: Preset Frame Convenience Keys
     // These should be pre-set options for involved people and/or musician credits
     static var producer: FrameKey { return .involvedPeopleList }
     static var executiveProducer: FrameKey { return .involvedPeopleList }
@@ -319,4 +319,16 @@ public enum FrameKey: Hashable {
                 return .unknown(uuid: uuid)
         }; return .userDefinedText(description: additionalIdentifier)
     }
+    
+//    func getAdditionalIdentifier(version: Version, identifier: String) -> String {
+//        for frameType in version.specialCaseFrameIdentifiers {
+//            switch version {
+//                case .v2_2:
+//                    if identifier == "COM" {
+//                        let layout = FrameLayoutIdentifier(identifier: identifier)
+//                        
+//                }
+//            }
+//        }
+//    }
 }

@@ -32,6 +32,7 @@
 		51689499244C10E1008F6124 /* PresetOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51689498244C10E1008F6124 /* PresetOptions.swift */; };
 		5168949B244C112E008F6124 /* MediaType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5168949A244C112E008F6124 /* MediaType.swift */; };
 		51753026244DC5700005B2AB /* MusicianPerformerCredits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51753025244DC5700005B2AB /* MusicianPerformerCredits.swift */; };
+		5175303F244DF1B20005B2AB /* StringEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5175303E244DF1B20005B2AB /* StringEncoding.swift */; };
 		51775436244058DB005E43C5 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51775435244058DB005E43C5 /* Tag.swift */; };
 		5177543B244136A3005E43C5 /* Endianess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5177543A244136A3005E43C5 /* Endianess.swift */; };
 		5177543E24413768005E43C5 /* UnsignedInteger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5177543D24413768005E43C5 /* UnsignedInteger.swift */; };
@@ -67,7 +68,6 @@
 		51FA350624402512000997EC /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FA350524402512000997EC /* Collection.swift */; };
 		51FA35082440255F000997EC /* Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FA35072440255F000997EC /* Sequence.swift */; };
 		51FA350A24402580000997EC /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FA350924402580000997EC /* String.swift */; };
-		51FA350C24402D48000997EC /* StringEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FA350B24402D48000997EC /* StringEncoding.swift */; };
 		51FA350E244034B2000997EC /* UInt32.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FA350D244034B2000997EC /* UInt32.swift */; };
 		51FA3510244038D0000997EC /* FrameProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FA350F244038D0000997EC /* FrameProtocol.swift */; };
 /* End PBXBuildFile section */
@@ -121,6 +121,7 @@
 		51689498244C10E1008F6124 /* PresetOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetOptions.swift; sourceTree = "<group>"; };
 		5168949A244C112E008F6124 /* MediaType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaType.swift; sourceTree = "<group>"; };
 		51753025244DC5700005B2AB /* MusicianPerformerCredits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicianPerformerCredits.swift; sourceTree = "<group>"; };
+		5175303E244DF1B20005B2AB /* StringEncoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringEncoding.swift; sourceTree = "<group>"; };
 		51775435244058DB005E43C5 /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		5177543A244136A3005E43C5 /* Endianess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endianess.swift; sourceTree = "<group>"; };
 		5177543D24413768005E43C5 /* UnsignedInteger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsignedInteger.swift; sourceTree = "<group>"; };
@@ -159,7 +160,6 @@
 		51FA350524402512000997EC /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		51FA35072440255F000997EC /* Sequence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sequence.swift; sourceTree = "<group>"; };
 		51FA350924402580000997EC /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
-		51FA350B24402D48000997EC /* StringEncoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringEncoding.swift; sourceTree = "<group>"; };
 		51FA350D244034B2000997EC /* UInt32.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UInt32.swift; sourceTree = "<group>"; };
 		51FA350F244038D0000997EC /* FrameProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameProtocol.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -212,10 +212,10 @@
 		51490E6B243F314D009D4BA4 /* AdaptorsAndTools */ = {
 			isa = PBXGroup;
 			children = (
-				51A3C6A524441F6100909952 /* Reference */,
+				51A3C6A524441F6100909952 /* ReferenceEnums */,
 				51E432CF243DA608006574A1 /* Extensions */,
-				51FA350B24402D48000997EC /* StringEncoding.swift */,
 				5177543A244136A3005E43C5 /* Endianess.swift */,
+				5175303E244DF1B20005B2AB /* StringEncoding.swift */,
 			);
 			path = AdaptorsAndTools;
 			sourceTree = "<group>";
@@ -255,7 +255,7 @@
 			path = FrameTypes;
 			sourceTree = "<group>";
 		};
-		51A3C6A524441F6100909952 /* Reference */ = {
+		51A3C6A524441F6100909952 /* ReferenceEnums */ = {
 			isa = PBXGroup;
 			children = (
 				518807282442F1CB008D488B /* ImageTypes.swift */,
@@ -267,7 +267,7 @@
 				51689498244C10E1008F6124 /* PresetOptions.swift */,
 				51D58B38244D497000DBA9FB /* ISOLanguages.swift */,
 			);
-			path = Reference;
+			path = ReferenceEnums;
 			sourceTree = "<group>";
 		};
 		51E432A2243DA257006574A1 = {
@@ -344,7 +344,6 @@
 			children = (
 				51E432C6243DA2E0006574A1 /* Mp3File.swift */,
 				51E432CA243DA3F6006574A1 /* Mp3FileError.swift */,
-				51775435244058DB005E43C5 /* Tag.swift */,
 				51490E43243EB647009D4BA4 /* Frame */,
 				51E432D4243DAEB6006574A1 /* Tag */,
 			);
@@ -361,6 +360,7 @@
 		51E432D4243DAEB6006574A1 /* Tag */ = {
 			isa = PBXGroup;
 			children = (
+				51775435244058DB005E43C5 /* Tag.swift */,
 				51E432D5243DAED8006574A1 /* TagValidator.swift */,
 				51FA3502243FB03C000997EC /* TagProperties.swift */,
 			);
@@ -496,6 +496,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5175303F244DF1B20005B2AB /* StringEncoding.swift in Sources */,
 				51490E49243EBB4A009D4BA4 /* Frame.swift in Sources */,
 				51FA350624402512000997EC /* Collection.swift in Sources */,
 				51E432C7243DA2E0006574A1 /* Mp3File.swift in Sources */,
@@ -507,7 +508,6 @@
 				51753026244DC5700005B2AB /* MusicianPerformerCredits.swift in Sources */,
 				518807292442F1CB008D488B /* ImageTypes.swift in Sources */,
 				51E432DA243DB096006574A1 /* Version.swift in Sources */,
-				51FA350C24402D48000997EC /* StringEncoding.swift in Sources */,
 				51E432CB243DA3F6006574A1 /* Mp3FileError.swift in Sources */,
 				517754542442E757005E43C5 /* LocalizedFrame.swift in Sources */,
 				51A3C6A22442FFB300909952 /* UserTextFrame.swift in Sources */,

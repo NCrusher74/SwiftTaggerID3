@@ -15,7 +15,7 @@ import Foundation
 public struct Mp3File {
  
     public let location: URL
-    internal var data: Data
+    var data: Data
 
     /// - Parameters:
     ///     - location: The location of the audio file in the local file system.
@@ -29,9 +29,10 @@ public struct Mp3File {
         }
     }
 
-//    public func read(from sourceAudio: Mp3File) {
-//
-//    }
+    public func read() throws {
+        let tag = try Tag(mp3File: self)
+        try tag.read()
+    }
     
 //    public func write(from sourceAudio: Mp3File, to outputLocation: URL) throws {
 //    }

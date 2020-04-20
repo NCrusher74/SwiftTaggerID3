@@ -20,25 +20,26 @@ public struct URLFrame: FrameProtocol {
      */
     private init(layout: FrameLayoutIdentifier, urlString: String) {
         self.urlString = urlString
-        self.flags = URLFrame.defaultFlags()
+//        self.flags = URLFrame.defaultFlags()
         self.layout = layout
     }
 
-    internal func encodeContents(version: Version) throws -> Data {
+    func encodeContents(version: Version) throws -> Data {
         let contents = self.urlString
         return contents.encoded(withNullTermination: false)
     }
     
     // MARK: Decode
     // decode incoming data and parse it into a frame
-    internal var flags: Data
-    internal var layout: FrameLayoutIdentifier
+//    var flags: Data
+    var layout: FrameLayoutIdentifier
     
-    internal init(decodingContents contents: Data.SubSequence,
+    init(decodingContents contents: Data.SubSequence,
                   version: Version,
-                  layout: FrameLayoutIdentifier,
-                  flags: Data) throws {
-        self.flags = flags
+                  layout: FrameLayoutIdentifier
+//                  flags: Data
+    ) throws {
+//        self.flags = flags
         self.layout = layout
         self.urlString = contents.stringASCII ?? ""
     }

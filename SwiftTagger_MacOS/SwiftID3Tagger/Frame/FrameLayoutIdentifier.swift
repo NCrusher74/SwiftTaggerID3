@@ -23,7 +23,7 @@ enum FrameLayoutIdentifier: Hashable {
         }
     }
     
-    internal func id3Identifier(version: Version) -> String? {
+    func id3Identifier(version: Version) -> String? {
         switch self {
             case .known(let known):
                 return known.id3Identifier(version: version)
@@ -33,7 +33,7 @@ enum FrameLayoutIdentifier: Hashable {
     }
 }
 
-internal enum KnownFrameLayoutIdentifier: CaseIterable {
+enum KnownFrameLayoutIdentifier: CaseIterable {
     
     case album
     case albumSort
@@ -120,7 +120,7 @@ internal enum KnownFrameLayoutIdentifier: CaseIterable {
     // 3 bytes for ID3v2.2
     // 4 bytes for ID3v2.3 and ID3v2.4
     /* If ID3 identfier is `nil` the frame will be handled as a TXX/TXXX frame, unless it's a frame associated with date handling, in which case it will be handled depending on version. Musician Credits for ID3v2.2 and ID3v2.3 will be handled as InvolvedPeople */
-    internal func id3Identifier(version: Version) -> String? {
+    func id3Identifier(version: Version) -> String? {
         switch self {
             
             case .album:

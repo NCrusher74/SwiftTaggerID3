@@ -16,7 +16,7 @@ import Foundation
 /**
  A type representing an ID3 frame that contains an attached image
  */
-struct ImageFrame: FrameProtocol {
+public struct ImageFrame: FrameProtocol {
     
     /// The ID3 type of the image (see `ImageType`).
     public let imageType: ImageType
@@ -48,10 +48,10 @@ struct ImageFrame: FrameProtocol {
         
     }
     
-    internal var flags: Data
-    internal var layout: FrameLayoutIdentifier
+    var flags: Data
+    var layout: FrameLayoutIdentifier
     
-    internal init(decodingContents contents: Data.SubSequence,
+    init(decodingContents contents: Data.SubSequence,
                   version: Version,
                   layout: FrameLayoutIdentifier,
                   flags: Data) throws {

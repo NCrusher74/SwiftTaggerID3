@@ -15,7 +15,7 @@ import Foundation
 /**
  A type used to represent an ID3 genre frame
  */
-struct PresetOptionsFrame: FrameProtocol {
+public struct PresetOptionsFrame: FrameProtocol {
     
     // initializer for Genre Frame
     public init(genreName: GenreType.RawValue?,
@@ -53,16 +53,16 @@ struct PresetOptionsFrame: FrameProtocol {
         self.presetName = presetName
         self.presetRefinement = presetRefinement
         self.refinementDescription = refinementDescription
-        self.flags = PresetOptionsFrame.defaultFlags()
+//        self.flags = PresetOptionsFrame.defaultFlags()
         self.layout = layout
     }
     
-    internal var flags: Data
-    internal var layout: FrameLayoutIdentifier
+//    var flags: Data
+    var layout: FrameLayoutIdentifier
     
     
     // MARK: Encode contents for writing
-    internal func encodeContents(version: Version) throws -> Data {
+    func encodeContents(version: Version) throws -> Data {
         var encodedName = Data()
         var encodedPresetRefinement = Data()
         var encodedRefinement = Data()
@@ -127,11 +127,12 @@ struct PresetOptionsFrame: FrameProtocol {
     }
     
     // MARK: parse contents for reading
-    internal init(decodingContents contents: Data.SubSequence,
+    init(decodingContents contents: Data.SubSequence,
                   version: Version,
-                  layout: FrameLayoutIdentifier,
-                  flags: Data) throws {
-        self.flags = flags // this is just here for protocol comformance
+                  layout: FrameLayoutIdentifier
+//                  flags: Data
+    ) throws {
+//        self.flags = flags // this is just here for protocol comformance
         self.layout = layout
         var parsing = contents
         

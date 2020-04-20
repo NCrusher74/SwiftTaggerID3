@@ -11,7 +11,7 @@ import Foundation
 /**
  A type representing the track/disc index of the total tracks or discs.
  */
-struct PartOfTotalFrame: FrameProtocol {
+public struct PartOfTotalFrame: FrameProtocol {
     
     public init(disc: Int, totalDiscs: Int?) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.discNumber), part: disc, total: totalDiscs)
@@ -33,11 +33,11 @@ struct PartOfTotalFrame: FrameProtocol {
     private init(layout: FrameLayoutIdentifier, part: Int, total: Int?) {
         self.part = part
         self.total = total
-        self.flags = PartOfTotalFrame.defaultFlags()
+//        self.flags = PartOfTotalFrame.defaultFlags()
         self.layout = layout
     }
     
-    internal func encodeContents(version: Version) throws -> Data {
+    func encodeContents(version: Version) throws -> Data {
         if self.total == nil {
             let partOfTotalString = String(self.part)
             return partOfTotalString.encoded(withNullTermination: false)
@@ -47,14 +47,15 @@ struct PartOfTotalFrame: FrameProtocol {
         }
     }
     
-    internal var flags: Data
-    internal var layout: FrameLayoutIdentifier
+//    var flags: Data
+    var layout: FrameLayoutIdentifier
     
-    internal init(decodingContents contents: Data.SubSequence,
+    init(decodingContents contents: Data.SubSequence,
                   version: Version,
-                  layout: FrameLayoutIdentifier,
-                  flags: Data) throws {
-        self.flags = flags
+                  layout: FrameLayoutIdentifier
+//                  flags: Data
+    ) throws {
+//        self.flags = flags
         self.layout = layout
         var parsing = contents
         let encoding = PartOfTotalFrame.extractEncoding(data: &parsing, version: version)

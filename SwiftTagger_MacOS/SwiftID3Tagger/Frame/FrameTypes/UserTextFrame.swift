@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct UserTextFrame: FrameProtocol {
+public struct UserTextFrame: FrameProtocol {
    
     // public initializers
     public init(description: String, content: String) {
@@ -53,27 +53,28 @@ struct UserTextFrame: FrameProtocol {
     private init(layout: FrameLayoutIdentifier, descriptionString: String, contentString: String) {
         self.descriptionString = descriptionString
         self.contentString = contentString
-        self.flags = UserTextFrame.defaultFlags()
+//        self.flags = UserTextFrame.defaultFlags()
         self.layout = layout
     }
     
-    internal var flags: Data
-    internal var layout: FrameLayoutIdentifier
+//    var flags: Data
+    var layout: FrameLayoutIdentifier
 
-    internal func encodeContents(version: Version) throws -> Data {
+    func encodeContents(version: Version) throws -> Data {
         let encodedDescriptionString = self.descriptionString.encoded(withNullTermination: true)
         let encodedContentsString = self.contentString.encoded(withNullTermination: false)
         return encodedDescriptionString + encodedContentsString
 
     }
 
-    internal init(decodingContents contents: Data.SubSequence,
+    init(decodingContents contents: Data.SubSequence,
          version: Version,
-         layout: FrameLayoutIdentifier,
-         flags: Data) throws {
+         layout: FrameLayoutIdentifier
+//         flags: Data
+    ) throws {
         var parsing = contents
         let encoding = UserTextFrame.extractEncoding(data: &parsing, version: version)
-        self.flags = flags
+//        self.flags = flags
         self.layout = layout
         let parsed = try UserTextFrame.extractDescriptionAndContent(from: &parsing, encoding: encoding)
         self.descriptionString = parsed.description ?? ""

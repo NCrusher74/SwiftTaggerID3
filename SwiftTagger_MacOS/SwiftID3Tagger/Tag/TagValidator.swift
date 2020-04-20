@@ -7,17 +7,16 @@
 //
 
 import Foundation
-import AVFoundation
 
 /**
  A type containing methods and properties to validate the content of the mp3 file and tag
  */
-internal struct TagValidator {
+struct TagValidator {
     
-    internal var mp3File: Mp3File
+    var mp3File: Mp3File
     
     ///  - parameter mp3File: the mp3 file containing the tag.
-    internal init(for mp3File: Mp3File) {
+    init(for mp3File: Mp3File) {
         self.mp3File = mp3File
     }
     
@@ -25,9 +24,7 @@ internal struct TagValidator {
         return self.mp3File.data
     }
     
-    private var tagProperties: TagProperties {
-        return TagProperties(for: self.mp3File)
-    }
+    private var tagProperties = TagProperties()
     
     // MARK: Validate file
     // Check that mp3 has a valid file extension
@@ -45,7 +42,7 @@ internal struct TagValidator {
     }
     
     // confirm valid MP3 or throw error
-    internal func isValidMp3() throws -> Bool {
+    func isValidMp3() throws -> Bool {
         if self.hasValidExtension {
             if self.isValidSize {
                 return true
@@ -80,7 +77,7 @@ internal struct TagValidator {
     }
     
     // confirm valid tag tag data
-    internal func hasValidTag() throws -> Bool {
+    func hasValidTag() throws -> Bool {
         if try self.hasValidVersionBytes() && self.hasValidTagSize() {
             return true
         } else {

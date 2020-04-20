@@ -13,7 +13,7 @@ import Foundation
  
  This frame type will be used for both `Comment` and `UnsynchronizedLyrics` frames. A tag may have multiple frames of these types, but only one frame with the same `Description` and `Language`. To preserve frame uniqueness while allowing multiple frames of these types, the `Description` field will be used as the `FrameKey`
  */
-struct LocalizedFrame: FrameProtocol {
+public struct LocalizedFrame: FrameProtocol {
     
     // public initializers
     public init(language: String?, description: String?, lyrics: String) {
@@ -92,24 +92,25 @@ struct LocalizedFrame: FrameProtocol {
         self.descriptionString = descriptionString ?? ""
         self.contentString = contentString
         self.layout = layout
-        self.flags = LocalizedFrame.defaultFlags()
+//        self.flags = LocalizedFrame.defaultFlags()
     }
 
-    internal var flags: Data
-    internal var layout: FrameLayoutIdentifier
+//    var flags: Data
+    var layout: FrameLayoutIdentifier
     
-    internal func encodeContents(version: Version) throws -> Data {
+    func encodeContents(version: Version) throws -> Data {
         let encodedLanguageString = self.languageString?.encoded(withNullTermination: false) ?? "und".encoded(withNullTermination: false)
         let encodedDescriptionString = self.descriptionString?.encoded(withNullTermination: true) ?? "".encoded(withNullTermination: true)
         let encodedContentsString = self.contentString.encoded(withNullTermination: false)
         return encodedLanguageString + encodedDescriptionString + encodedContentsString
     }
 
-    internal init(decodingContents contents: Data.SubSequence,
+    init(decodingContents contents: Data.SubSequence,
          version: Version,
-         layout: FrameLayoutIdentifier,
-         flags: Data) throws {
-        self.flags = flags
+         layout: FrameLayoutIdentifier
+//         flags: Data
+    ) throws {
+//        self.flags = flags
         self.layout = layout
         var parsing = contents
         let encoding = LocalizedFrame.extractEncoding(data: &parsing, version: version)

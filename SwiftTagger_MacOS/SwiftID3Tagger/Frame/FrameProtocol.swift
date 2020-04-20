@@ -12,15 +12,16 @@ import Foundation
  */
 protocol FrameProtocol {
     
-    var flags: Data { get set }
+//    var flags: Data { get set }
     var layout: FrameLayoutIdentifier { get }
     
     func encodeContents(version: Version) throws -> Data
     
     init(decodingContents contents: Data.SubSequence,
          version: Version,
-         layout: FrameLayoutIdentifier,
-         flags: Data) throws
+         layout: FrameLayoutIdentifier
+//         flags: Data
+    ) throws
 }
 
 extension FrameProtocol {
@@ -36,7 +37,7 @@ extension FrameProtocol {
             case .v2_2:
                 break // Skip flags.
             case .v2_3, .v2_4:
-                flags = Self.defaultFlags()
+                flags = Self.defaultFlags(version: version)
         }
         
         let frameData = identifier + size + flags + contents
@@ -60,7 +61,7 @@ extension FrameProtocol {
         // parse flags
         var flagsData: Data
         switch version {
-            case .v2_2: flagsData = Self.defaultFlags()
+            case .v2_2: flagsData = Self.defaultFlags(version: version)
             case .v2_3, .v2_4: flagsData = data.extractFirst(version.flagsLength)
         }
         
@@ -70,14 +71,15 @@ extension FrameProtocol {
         
         try self.init(decodingContents: contentData,
                       version: version,
-                      layout: layout,
-                      flags: flagsData)
+                      layout: layout
+//                      flags: flagsData
+        )
         
         data = data.dropFirst(version.frameHeaderLength + contentData.count)
         // This line leaves the slice ready for the next frame to read from the beginning.
     }
     
-    internal static func calculateFrameContentSize(encodedContent: Data, version: Version) -> Data {
+    static func calculateFrameContentSize(encodedContent: Data, version: Version) -> Data {
         let contentSize = UInt32(encodedContent.count)
         switch version {
             case .v2_2:
@@ -88,7 +90,7 @@ extension FrameProtocol {
         }
     }
     
-    internal static func assignLayout(layout: FrameLayoutIdentifier, version: Version) -> Data {
+    static func assignLayout(layout: FrameLayoutIdentifier, version: Version) -> Data {
         guard let identifierString = layout.id3Identifier(version: version)?.encoded(withNullTermination: false) else {
             switch version {
                 case .v2_2: return "TXX".encoded(withNullTermination: false)
@@ -100,9 +102,8 @@ extension FrameProtocol {
     }
     
     
-    internal static func defaultFlags() -> Data {
+    static func defaultFlags(version: Version) -> Data {
         var flagBytes: [UInt8] = []
-        let version = Version()
         switch version {
             case .v2_2: flagBytes = []
             case .v2_3, .v2_4: flagBytes = [0x00, 0x00]
@@ -110,7 +111,7 @@ extension FrameProtocol {
         return Data(flagBytes)
     }
     
-    internal static func extractEncoding(data: inout Data.SubSequence, version: Version) -> StringEncoding {
+    static func extractEncoding(data: inout Data.SubSequence, version: Version) -> StringEncoding {
         let encodingByteOffset = version.encodingByteOffset
         let encodingByte = data[encodingByteOffset]
         let validEncodingBytes: [UInt8] = [0x00, 0x01, 0x02, 0x03]
@@ -120,7 +121,7 @@ extension FrameProtocol {
         return StringEncoding(rawValue: encodingByte) ?? .utf8
     }
     
-    internal static func extractDescriptionAndContent(
+    static func extractDescriptionAndContent(
         from frameData: inout Data.SubSequence,
         encoding: StringEncoding
     ) throws -> (description: String?, content: String) {

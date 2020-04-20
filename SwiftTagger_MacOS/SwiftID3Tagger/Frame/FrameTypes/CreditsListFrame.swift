@@ -44,11 +44,11 @@ struct CreditsListFrame: FrameProtocol {
      */
     private init(layout: FrameLayoutIdentifier, entries: [(role: String, person: String)]) {
         self.entries = entries
-        self.flags = CreditsListFrame.defaultFlags()
+//        self.flags = CreditsListFrame.defaultFlags()
         self.layout = layout
     }
     
-    internal func encodeContents(version: Version) throws -> Data {
+    func encodeContents(version: Version) throws -> Data {
         var entriesAsData = Data()
         for entry in self.entries {
             entriesAsData.append(contentsOf: entry.role.encoded(withNullTermination: true))
@@ -57,15 +57,16 @@ struct CreditsListFrame: FrameProtocol {
         return entriesAsData
     }
     
-    internal var flags: Data
-    internal var layout: FrameLayoutIdentifier
+//    var flags: Data
+    var layout: FrameLayoutIdentifier
     
     // MARK: Decoding
-    internal init(decodingContents contents: Data.SubSequence,
+    init(decodingContents contents: Data.SubSequence,
                   version: Version,
-                  layout: FrameLayoutIdentifier,
-                  flags: Data) throws {
-        self.flags = flags
+                  layout: FrameLayoutIdentifier
+//                  flags: Data
+    ) throws {
+//        self.flags = flags
         self.layout = layout
         var parsing = contents
         let encoding = CreditsListFrame.extractEncoding(data: &parsing, version: version)

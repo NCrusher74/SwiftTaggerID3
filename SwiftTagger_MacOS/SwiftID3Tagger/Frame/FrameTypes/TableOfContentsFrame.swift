@@ -14,7 +14,7 @@ import Foundation
  
  There may be more than one Table of Contents frame per tag, but only one may have the top-level flag set, and each one must have a unique `elementID`. Therefore, the `elementID` will serve as the `FrameKey`
  */
-struct TableOfContentsFrame: FrameProtocol {
+public struct TableOfContentsFrame: FrameProtocol {
     
     /** A null-terminated string with a unique ID. The Element ID uniquely identifies the frame. It is not intended to be human readable and should not be presented to the end-user. */
     public var elementID: String
@@ -70,10 +70,10 @@ struct TableOfContentsFrame: FrameProtocol {
         
     }
     
-    internal var flags: Data
-    internal var layout: FrameLayoutIdentifier
+    var flags: Data
+    var layout: FrameLayoutIdentifier
     
-    internal init(decodingContents contents: Data.SubSequence,
+    init(decodingContents contents: Data.SubSequence,
                   version: Version,
                   layout: FrameLayoutIdentifier,
                   flags: Data) throws {

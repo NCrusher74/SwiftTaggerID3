@@ -9,7 +9,7 @@
 import Foundation
 
 /** A type containing methods and variables for querying and handling information from a frame */
-internal enum Frame {
+enum Frame {
     
 //    case chapter(ChapterFrame)
     case localizedFrame(LocalizedFrame)
