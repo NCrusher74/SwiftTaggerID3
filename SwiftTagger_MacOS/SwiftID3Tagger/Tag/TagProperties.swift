@@ -16,6 +16,17 @@ import Foundation
  A type that contains the general properties of an ID3 tag, such as version and size
  */
 struct TagProperties {
+
+    var mp3File: Mp3File
+    
+    ///  - parameter mp3File: the mp3 file containing the tag.
+    init(for mp3File: Mp3File) {
+        self.mp3File = mp3File
+    }
+    
+    private var mp3Data: Data {
+        return self.mp3File.data
+    }
     
     /// the ID3 version of the tag
     func extractVersionData(data: Data) -> Data {
@@ -23,8 +34,9 @@ struct TagProperties {
         return fileData.extractFirst(versionDeclarationLength)
     }
     
-    func version(versionData: Data) throws -> Version {
-        if versionData == Data(v2_3Bytes) {
+    func version(data: Data) throws -> Version {
+        let versionData = extractVersionData(data: data)
+        if versionData == Data(v2_2Bytes) {
             return Version.v2_2
         } else if versionData == Data(v2_3Bytes) {
             return Version.v2_3
@@ -36,12 +48,12 @@ struct TagProperties {
     }
     
     func extractFlagData(data: Data) -> Data {
-        var flagData = data
-        return flagData.extractFirst(tagFlagsLength)
+        var flagsData = extractVersionData(data: data)
+        return flagsData.extractFirst(tagFlagsLength)
     }
     
     func extractTagSizeData(data: Data) -> Data {
-        var tagSizeData = data
+        var tagSizeData = extractFlagData(data: data)
         return tagSizeData.extractFirst(tagSizeDeclarationLength)
     }
     
@@ -101,17 +113,17 @@ extension TagProperties {
         return tagSizeDeclarationOffset + tagSizeDeclarationLength
     }
     
-    /// the UInt8 byte array for version2.2
+    /// the UInt8 byte array for version2.2 ("ID320")
     /// used as a comparison to determine which version to return
     var v2_2Bytes: [UInt8] {
         return [0x49, 0x44, 0x33, 0x02, 0x00]
     }
-    /// the UInt8 byte array for version2.3
+    /// the UInt8 byte array for version2.3 ("ID330")
     /// used as a comparison to determine which version to return
     var v2_3Bytes: [UInt8] {
         return [0x49, 0x44, 0x33, 0x03, 0x00]
     }
-    /// the UInt8 byte array for version2.4
+    /// the UInt8 byte array for version2.4 ("ID340")
     /// used as a comparison to determine which version to return
     var v2_4Bytes: [UInt8] {
         return [0x49, 0x44, 0x33, 0x04, 0x00]

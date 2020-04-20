@@ -18,12 +18,12 @@ struct Tag {
         self.mp3File = mp3File
     }
     
-    func read() throws {
+    func parseFramesFromTag() throws {
         let fileData: Data = self.mp3File.data
         
         var remainder: Data.SubSequence = fileData[fileData.startIndex..<fileData.endIndex]
         
-        let tagProperties = TagProperties()
+        let tagProperties = TagProperties(for: self.mp3File)
         let tagValidator = TagValidator(for: self.mp3File)
         
         // parse version from tag header
@@ -33,7 +33,7 @@ struct Tag {
         } else {
             // the first five bytes of a valid ID3 Tag are "ID3"+ the version number in UInt8
             let versionData = tagProperties.extractVersionData(data: fileData)
-            version = try tagProperties.version(versionData: versionData)
+            version = try tagProperties.version(data: versionData)
             
             // parse flags from tag header
             _ = tagProperties.extractFlagData(data: fileData)

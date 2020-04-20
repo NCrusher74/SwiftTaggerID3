@@ -24,18 +24,20 @@ struct TagValidator {
         return self.mp3File.data
     }
     
-    private var tagProperties = TagProperties()
+    private var tagProperties: TagProperties {
+        return TagProperties(for: mp3File)
+    }
     
     // MARK: Validate file
     // Check that mp3 has a valid file extension
-    private var hasValidExtension: Bool {
+    var hasValidExtension: Bool {
         if self.mp3File.location.fileExtension.lowercased() == "mp3" {
             return true
         }; return false
     }
     
     // Check if MP3 is too small for a tag
-    private var isValidSize: Bool {
+    var isValidSize: Bool {
         if mp3Data.count < 5 {
             return false
         }; return true
@@ -56,11 +58,14 @@ struct TagValidator {
     
     // MARK: Validate Tag Data
     // check that first five bytes are "ID3<version><null>"
-    private func hasValidVersionBytes() throws -> Bool {
+    func hasValidVersionBytes() throws -> Bool {
         if try self.isValidMp3() {
-            let versionBytesFromMp3 = [UInt8](mp3Data.subdata(in: mp3Data.startIndex..<tagProperties.versionDeclarationLength))
+            
+            let versionData = tagProperties.extractVersionData(data: self.mp3Data)
+            let versionUInt8 = [versionData.uint8]
+
             let versionBytes = tagProperties.versionBytes
-            if versionBytes.contains(versionBytesFromMp3) {
+            if versionBytes.contains(versionUInt8) {
                 return true
             } else {
                 throw Mp3File.Error.InvalidTagData
@@ -69,9 +74,17 @@ struct TagValidator {
     }
     
     // check that tag size does not exceed file size
-    private func hasValidTagSize() throws -> Bool {
-        let tagSizeDataRange = mp3Data.subdata(in: tagProperties.tagSizeDeclarationOffset..<tagProperties.tagSizeDeclarationLength)
-        if mp3Data.count < Int(tagProperties.size(tagSizeData: tagSizeDataRange)) + tagProperties.tagHeaderLength {
+    func hasValidTagSize() throws -> Bool {
+        let byteOffset = tagProperties.tagSizeDeclarationOffset
+        let endOfRelevantBytes = byteOffset + tagProperties.tagSizeDeclarationLength
+        let tagSizeDataRange = byteOffset ..< endOfRelevantBytes
+        let tagSizeData = mp3Data.subdata(in: tagSizeDataRange)
+
+        let sizeInt = Int(tagProperties.size(tagSizeData: tagSizeData))
+        let headerSize = tagProperties.tagHeaderLength
+        let tagSize =  sizeInt + headerSize
+
+        if mp3Data.count < tagSize {
             throw Mp3File.Error.CorruptedFile
         }; return true
     }
