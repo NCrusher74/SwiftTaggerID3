@@ -267,13 +267,6 @@
 			path = Reference;
 			sourceTree = "<group>";
 		};
-		51D2BB0A243DB6FF00D06FEB /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		51E432A2243DA257006574A1 = {
 			isa = PBXGroup;
 			children = (
@@ -281,7 +274,6 @@
 				51E432AE243DA257006574A1 /* SwiftTagger_MacOS */,
 				51E432B9243DA257006574A1 /* SwiftTagger_MacOSTests */,
 				51E432AD243DA257006574A1 /* Products */,
-				51D2BB0A243DB6FF00D06FEB /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
