@@ -228,9 +228,11 @@ public enum FrameKey: Hashable {
     static var thanks: FrameKey { return .userDefinedText(description: "Thanks") }
 
     /// Maps to `UserText` frame with the description, "Credit"
-    static var credit: FrameKey { return .userDefinedText(description: "Credit") }
-   
-    static func getFrameKeyForIdentifier(identifier: String, additionalInfo: String) -> FrameKey {
+    static var credit: FrameKey { return .userDefinedText(description: "Source Credit") }
+
+    
+    
+    static func getFrameKeyForIdentifier(identifier: String, additionalIdentifier: String) -> FrameKey {
         let layout = FrameLayoutIdentifier(identifier: identifier)
         switch layout {
             case .known(_):
@@ -249,8 +251,8 @@ public enum FrameKey: Hashable {
                 case .none: break
                 case .attachedPicture: return .attachedPicture
                 case .bpm: return .bpm
-                case .chapter: return .chapter(elementID: additionalInfo)
-                case .comments: return .comments(description: additionalInfo)
+                case .chapter: return .chapter(elementID: additionalIdentifier)
+                case .comments: return .comments(description: additionalIdentifier)
                 case .compilation: return .compilation
                 case .composer: return .composer
                 case .composerSort: return .composerSort
@@ -270,7 +272,7 @@ public enum FrameKey: Hashable {
                 case .initialKey: return .initialKey
                 case .involvedPeopleList: return .involvedPeopleList
                 case .isrc: return .isrc
-                case .languages: return .languages(language: additionalInfo)
+                case .languages: return .languages(language: additionalIdentifier)
                 case .length: return .length
                 case .lyricist: return .lyricist
                 case .mediaType: return .mediaType
@@ -301,20 +303,20 @@ public enum FrameKey: Hashable {
                 case .releaseTime: return .releaseTime
                 case .setSubtitle: return .setSubtitle
                 case .subtitle: return .subtitle
-                case .tableOfContents: return .tableOfContents(elementID: additionalInfo)
+                case .tableOfContents: return .tableOfContents(elementID: additionalIdentifier)
                 case .taggingTime: return .taggingTime
                 case .time: return .time
                 case .title: return .title
                 case .titleSort: return .titleSort
                 case .trackNumber: return .trackNumber
-                case .unsynchronizedLyrics: return .unsynchronizedLyrics(description: additionalInfo)
-                case .userDefinedText: return .userDefinedText(description: additionalInfo)
-                case .userDefinedWebpage: return .userDefinedWebpage(description: additionalInfo)
+                case .unsynchronizedLyrics: return .unsynchronizedLyrics(description: additionalIdentifier)
+                case .userDefinedText: return .userDefinedText(description: additionalIdentifier)
+                case .userDefinedWebpage: return .userDefinedWebpage(description: additionalIdentifier)
                 case .year: return .year
             }
             case .unknown(_):
                 let uuid = UUID(uuidString: identifier)!
                 return .unknown(uuid: uuid)
-        }
+        }; return .userDefinedText(description: additionalIdentifier)
     }
 }

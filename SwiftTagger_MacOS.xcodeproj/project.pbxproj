@@ -24,13 +24,14 @@
 		51490E7B243F461E009D4BA4 /* mp3-v23-corrupted.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 51490E76243F461E009D4BA4 /* mp3-v23-corrupted.mp3 */; };
 		51490E7C243F461E009D4BA4 /* mp3-nometa.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 51490E77243F461E009D4BA4 /* mp3-nometa.mp3 */; };
 		51490E7D243F461E009D4BA4 /* mp3-v22-with-meta.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 51490E78243F461E009D4BA4 /* mp3-v22-with-meta.mp3 */; };
-		515AF6592449A099005C29FA /* CreditedRoles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515AF6582449A098005C29FA /* CreditedRoles.swift */; };
+		515AF6592449A099005C29FA /* InvolvedPersonCredits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515AF6582449A098005C29FA /* InvolvedPersonCredits.swift */; };
 		515AF65B2449A8E2005C29FA /* KeySignatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515AF65A2449A8E2005C29FA /* KeySignatures.swift */; };
 		515CC1052448EB0C005906D0 /* UnknownFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515CC1042448EB0C005906D0 /* UnknownFrame.swift */; };
 		515CC10A24491047005906D0 /* Processing Order in Resources */ = {isa = PBXBuildFile; fileRef = 515CC10924491047005906D0 /* Processing Order */; };
 		51689497244B9D2F008F6124 /* CaseIterable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51689496244B9D2F008F6124 /* CaseIterable.swift */; };
 		51689499244C10E1008F6124 /* PresetOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51689498244C10E1008F6124 /* PresetOptions.swift */; };
 		5168949B244C112E008F6124 /* MediaType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5168949A244C112E008F6124 /* MediaType.swift */; };
+		51753026244DC5700005B2AB /* MusicianPerformerCredits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51753025244DC5700005B2AB /* MusicianPerformerCredits.swift */; };
 		51775436244058DB005E43C5 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51775435244058DB005E43C5 /* Tag.swift */; };
 		5177543B244136A3005E43C5 /* Endianess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5177543A244136A3005E43C5 /* Endianess.swift */; };
 		5177543E24413768005E43C5 /* UnsignedInteger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5177543D24413768005E43C5 /* UnsignedInteger.swift */; };
@@ -112,13 +113,14 @@
 		51490E76243F461E009D4BA4 /* mp3-v23-corrupted.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "mp3-v23-corrupted.mp3"; sourceTree = "<group>"; };
 		51490E77243F461E009D4BA4 /* mp3-nometa.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "mp3-nometa.mp3"; sourceTree = "<group>"; };
 		51490E78243F461E009D4BA4 /* mp3-v22-with-meta.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "mp3-v22-with-meta.mp3"; sourceTree = "<group>"; };
-		515AF6582449A098005C29FA /* CreditedRoles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditedRoles.swift; sourceTree = "<group>"; };
+		515AF6582449A098005C29FA /* InvolvedPersonCredits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvolvedPersonCredits.swift; sourceTree = "<group>"; };
 		515AF65A2449A8E2005C29FA /* KeySignatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySignatures.swift; sourceTree = "<group>"; };
 		515CC1042448EB0C005906D0 /* UnknownFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnknownFrame.swift; sourceTree = "<group>"; };
 		515CC10924491047005906D0 /* Processing Order */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Processing Order"; sourceTree = "<group>"; };
 		51689496244B9D2F008F6124 /* CaseIterable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaseIterable.swift; sourceTree = "<group>"; };
 		51689498244C10E1008F6124 /* PresetOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetOptions.swift; sourceTree = "<group>"; };
 		5168949A244C112E008F6124 /* MediaType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaType.swift; sourceTree = "<group>"; };
+		51753025244DC5700005B2AB /* MusicianPerformerCredits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicianPerformerCredits.swift; sourceTree = "<group>"; };
 		51775435244058DB005E43C5 /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		5177543A244136A3005E43C5 /* Endianess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endianess.swift; sourceTree = "<group>"; };
 		5177543D24413768005E43C5 /* UnsignedInteger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsignedInteger.swift; sourceTree = "<group>"; };
@@ -259,7 +261,8 @@
 				518807282442F1CB008D488B /* ImageTypes.swift */,
 				5188072A2442F3DE008D488B /* GenreType.swift */,
 				5168949A244C112E008F6124 /* MediaType.swift */,
-				515AF6582449A098005C29FA /* CreditedRoles.swift */,
+				515AF6582449A098005C29FA /* InvolvedPersonCredits.swift */,
+				51753025244DC5700005B2AB /* MusicianPerformerCredits.swift */,
 				515AF65A2449A8E2005C29FA /* KeySignatures.swift */,
 				51689498244C10E1008F6124 /* PresetOptions.swift */,
 				51D58B38244D497000DBA9FB /* ISOLanguages.swift */,
@@ -501,6 +504,7 @@
 				51FA350E244034B2000997EC /* UInt32.swift in Sources */,
 				5177544A2442743F005E43C5 /* FrameKey.swift in Sources */,
 				517754582442EB67005E43C5 /* CreditsListFrame.swift in Sources */,
+				51753026244DC5700005B2AB /* MusicianPerformerCredits.swift in Sources */,
 				518807292442F1CB008D488B /* ImageTypes.swift in Sources */,
 				51E432DA243DB096006574A1 /* Version.swift in Sources */,
 				51FA350C24402D48000997EC /* StringEncoding.swift in Sources */,
@@ -526,7 +530,7 @@
 				51490E53243EF216009D4BA4 /* Data.swift in Sources */,
 				5177544824423D46005E43C5 /* StringFrame.swift in Sources */,
 				51A3C6A724464FDC00909952 /* URLFrame.swift in Sources */,
-				515AF6592449A099005C29FA /* CreditedRoles.swift in Sources */,
+				515AF6592449A099005C29FA /* InvolvedPersonCredits.swift in Sources */,
 				51E432C9243DA35E006574A1 /* URL.swift in Sources */,
 				51D58B39244D497000DBA9FB /* ISOLanguages.swift in Sources */,
 				5177543E24413768005E43C5 /* UnsignedInteger.swift in Sources */,

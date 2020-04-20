@@ -13,6 +13,7 @@ struct Tag {
     var frames: [FrameKey : Frame]
     var mp3File: Mp3File
     
+    // handles the parsing of an ID3 tag
     init(frames: [FrameKey: Frame]) throws {
         let file: Data = self.mp3File.data
         
@@ -34,29 +35,31 @@ struct Tag {
             let tagSizeData = tagProperties.extractTagSizeData
             let size = tagProperties.size(tagSizeData: tagSizeData)
         }
+        
         var frames: [FrameKey: Frame]
         while !remainder.isEmpty {
             let identifierBytes = remainder.extractFirst(version.identifierLength)
             let identifier = String(ascii: identifierBytes)
-            
-            var uniqueInformation: String = ""
-            let specialCaseFrames = version.specialCaseFrameIdentifiers
-            if specialCaseFrames.contains(identifier) {
-                if identifier = "TLA" || identifier = "TLAN" {
-                    uniqueInformation = // language
-                } else if identifier == "CHAP" || identifier == "CTOC" {
-                    uniqueInformation = // elementID
-                } else {
-                    uniqueInformation = // description string 
-                }
-            }
-            
-            
-            let keyForIdentifier = FrameKey.getFrameKeyForIdentifier(identifier: identifier, uniqueInfo: <#T##String#>)
+
             let frame = try Frame(
                 identifier: identifier,
                 data: &remainder,
                 version: version)
+
+            var additionalIdentifier: String = ""
+            let specialCaseFrames = version.specialCaseFrameIdentifiers
+            if specialCaseFrames.contains(identifier) {
+                if identifier == "TLA" || identifier == "TLAN" {
+                    additionalIdentifier =
+                } else if identifier == "CHAP" || identifier == "CTOC" {
+                    additionalIdentifier = // elementID
+                } else {
+                    additionalIdentifier = // description string
+                }
+            }
+            let keyForIdentifier = FrameKey.getFrameKeyForIdentifier(identifier: identifier, additionalIdentifier: additionalIdentifier)
+
+            
             frames[frameKey] = frame
         }
     }

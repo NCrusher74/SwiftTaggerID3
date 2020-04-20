@@ -9,17 +9,48 @@
 import Foundation
 
 struct UserTextFrame: FrameProtocol {
-    
+   
+    // public initializers
+    public init(description: String, content: String) {
+        self.init(layout: .known(KnownFrameLayoutIdentifier.userDefinedText),
+                  descriptionString: description,
+                  contentString: content)
+    }
+
+    public init(acknowledgmentsContent: String) {
+        self.init(layout: .known(KnownFrameLayoutIdentifier.userDefinedText),
+                  descriptionString: "Acknowledgments",
+                  contentString: acknowledgmentsContent)
+    }
+
+    public init(thanksContent: String) {
+        self.init(layout: .known(KnownFrameLayoutIdentifier.userDefinedText),
+                  descriptionString: "Thanks",
+                  contentString: thanksContent)
+    }
+
+    public init(sourceCreditContent: String) {
+        self.init(layout: .known(KnownFrameLayoutIdentifier.userDefinedText),
+                  descriptionString: "Source Credit",
+                  contentString: sourceCreditContent)
+    }
+
+    public init(description: String, webpage: String) {
+        self.init(layout: .known(KnownFrameLayoutIdentifier.userDefinedWebpage),
+                  descriptionString: description,
+                  contentString: webpage)
+    }
+
     /// A short description of the frame content.
-    public var descriptionString: String = ""
+    var descriptionString: String = ""
     /// the content of the frame
-    public var contentString: String
+    var contentString: String
     
     /**
      - parameter contentDescription: a terminated text string describing the frame content
      - parameter contentText: the full text of the comment or lyric frame.
      */
-    public init(layout: FrameLayoutIdentifier, descriptionString: String, contentString: String) {
+    private init(layout: FrameLayoutIdentifier, descriptionString: String, contentString: String) {
         self.descriptionString = descriptionString
         self.contentString = contentString
         self.flags = UserTextFrame.defaultFlags()
@@ -29,7 +60,7 @@ struct UserTextFrame: FrameProtocol {
     internal var flags: Data
     internal var layout: FrameLayoutIdentifier
 
-    func encodeContents(version: Version) throws -> Data {
+    internal func encodeContents(version: Version) throws -> Data {
         let encodedDescriptionString = self.descriptionString.encoded(withNullTermination: true)
         let encodedContentsString = self.contentString.encoded(withNullTermination: false)
         return encodedDescriptionString + encodedContentsString

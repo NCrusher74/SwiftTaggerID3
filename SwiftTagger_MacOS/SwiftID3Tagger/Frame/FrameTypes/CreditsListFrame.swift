@@ -21,17 +21,21 @@ struct CreditsListFrame: FrameProtocol {
     public init(role: InvolvedPersonCredits.RawValue, creditedPerson: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.involvedPeopleList), entries: [(role: role, person: creditedPerson)])
     }
-    
+
+    public init(part: MusicianAndPerformerCredits.RawValue, creditedPerson: String) {
+        self.init(layout: .known(KnownFrameLayoutIdentifier.involvedPeopleList), entries: [(role: part, person: creditedPerson)])
+    }
+
     public init(role: String, creditedMusician: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.musicianCreditsList), entries: [(role: role, person: creditedMusician)])
     }
     
-    public init(role: PerformerCredits.RawValue, creditedPerformer: String) {
+    public init(role: MusicianAndPerformerCredits.RawValue, creditedPerformer: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.musicianCreditsList), entries: [(role: role, person: creditedPerformer)])
     }
 
     /// An array of the role:person tuples
-    private var entries: [(role: String, person: String)]
+    var entries: [(role: String, person: String)]
     
     /**
      - parameter entries: the array of `role`:`person` tuples

@@ -13,7 +13,7 @@ import Foundation
  */
 public struct StringFrame: FrameProtocol {
     
-    private var contentString: String
+    var contentString: String
     
     /**
      A frame with only string content, presented as a single string without`(/n)` newline characters.

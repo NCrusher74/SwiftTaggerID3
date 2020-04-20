@@ -21,46 +21,44 @@ struct PresetOptionsFrame: FrameProtocol {
     public init(genreName: GenreType.RawValue?,
                 genreDescription: String?) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.genre),
-                  presetType: PresetOption.genreType(
-                    GenreType(rawValue: genreName ?? "") ?? .none),
+                  presetName: genreName ?? "",
                   presetRefinement: nil,
                   refinementDescription: genreDescription)
     }
-
+    
     public init(mediaType: MediaType.RawValue?,
-                additionalMediaInfo: MediaTypeRefinements?,
+                additionalMediaInfo: String?,
                 mediaTypeDescription: String?) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.mediaType),
-                  presetType: PresetOption.mediaType(
-                    MediaType(rawValue: mediaType ?? "") ?? .none),
+                  presetName: mediaType,
                   presetRefinement: additionalMediaInfo,
                   refinementDescription: mediaTypeDescription)
     }
-
+    
     // MARK: Private Initializer
     
-    private var presetType: PresetOption?
-    private var presetRefinement: MediaTypeRefinements?
-    private var refinementDescription: String?
+    var presetName: String?
+    var presetRefinement: String?
+    var refinementDescription: String?
     
     /**
-     - parameter presetType: the list of names of the genres or media types.
+     - parameter presetName: the list of names of the genres or media types.
      - parameter presetRefinement: a list of preset refinements for media types.
      - parameter refinementDescription: a freeform string for customized descriptions.
      */
     private init(layout: FrameLayoutIdentifier,
-                 presetType: PresetOption?,
-                 presetRefinement: MediaTypeRefinements?,
+                 presetName: String?,
+                 presetRefinement: String?,
                  refinementDescription: String?) {
-        self.presetType = presetType
+        self.presetName = presetName
         self.presetRefinement = presetRefinement
         self.refinementDescription = refinementDescription
         self.flags = PresetOptionsFrame.defaultFlags()
         self.layout = layout
     }
     
-    var flags: Data
-    var layout: FrameLayoutIdentifier
+    internal var flags: Data
+    internal var layout: FrameLayoutIdentifier
     
     
     // MARK: Encode contents for writing
@@ -90,26 +88,24 @@ struct PresetOptionsFrame: FrameProtocol {
     private func convertAndEncodePresetType(version: Version) -> Data? {
         switch version {
             case .v2_2, .v2_3 :
-                if let presetCode = self.presetType?.code {
-                    return (presetCode).encoded(withNullTermination: false)
-            }
+                let presetCode = PresetOption(presetName: presetName ?? "").code
+                return (presetCode).encoded(withNullTermination: false)
             case .v2_4 :
-                if let presetCode = self.presetType?.code {
-                    return (presetCode).encoded(withNullTermination: true)
-            }
-        }; return nil
+                let presetCode = PresetOption(presetName: presetName ?? "").code
+                return (presetCode).encoded(withNullTermination: true)
+        }
     }
     
     // encode presetRefinement
     private func convertAndEncodePresetRefinement(version: Version) -> Data? {
         switch version {
             case .v2_2, .v2_3 :
-                if let refinement = self.presetRefinement?.rawValue {
+                if let refinement = self.presetRefinement {
                     let refinementCode = MediaTypeRefinements(rawValue: refinement)?.code ?? ""
                     return refinementCode.encoded(withNullTermination: false)
             }
             case .v2_4 :
-                if let refinement = self.presetRefinement?.rawValue {
+                if let refinement = self.presetRefinement {
                     let refinementCode = MediaTypeRefinements(rawValue: refinement)?.code ?? ""
                     return refinementCode.encoded(withNullTermination: true)
             }
@@ -165,7 +161,7 @@ struct PresetOptionsFrame: FrameProtocol {
                         
                         // if not, check to make sure it's a valid genre "code"
                     } else if let genreInt = Int(parsedComponent) {
-                        let parsedName = (GenreType.codeToRawValueMapping[genreInt]) ?? "None"
+                        let parsedName = (GenreType.codeToRawValueMapping[genreInt]) ?? ""
                         let validGenre = GenreType(rawValue: parsedName)
                         genreType = validGenre ?? .none
                         
@@ -173,21 +169,19 @@ struct PresetOptionsFrame: FrameProtocol {
                     } else {
                         self.refinementDescription = parsedComponent
                     }
-                    self.presetType = PresetOption(presetName: genreType.rawValue)
+                    self.presetName = genreType.rawValue
                     
                 } else if layout == .known(KnownFrameLayoutIdentifier.mediaType) {
-                    var mediaType: MediaType = .none
                     
                     // check to see if it's a preset refinement string
                     // only preset refinement strings should start with "/"
                     if parsedComponent.first == "/" {
-                        self.presetRefinement = MediaTypeRefinements(rawValue: parsedComponent)
+                        self.presetRefinement = MediaTypeRefinements(rawValue: parsedComponent)!.rawValue
                         
                         // if it's not a preset refinement string
                         // check to see if it's a known media type code
                     } else if let parsedName = MediaType.codeToNameMapping[parsedComponent] {
-                        mediaType = MediaType(rawValue: parsedName) ?? .none
-                        self.presetType = PresetOption(presetName: mediaType.rawValue)
+                        self.presetName = MediaType(rawValue: parsedName)!.rawValue
                         
                         // if neither of those is true, treat it as a freeform string
                     } else {

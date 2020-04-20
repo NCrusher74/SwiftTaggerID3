@@ -17,7 +17,7 @@ public struct BooleanFrame: FrameProtocol {
         self.init(layout: .known(KnownFrameLayoutIdentifier.compilation), value: value)
     }
 
-    private let value: Bool
+    var value: Bool
     
     /**
      A frame with a single-integer string, 1 or 0, presented as a boolean.

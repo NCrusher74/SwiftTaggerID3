@@ -20,7 +20,7 @@ public struct LanguageFrame: FrameProtocol {
     }
     
     /// ISO-639-2 languge code
-    private var languageString: String
+    var languageString: String
     
     /**
      - parameter language: the ISO-639-2 language code.
@@ -46,8 +46,7 @@ public struct LanguageFrame: FrameProtocol {
                   flags: Data) throws {
         self.flags = flags
         self.layout = layout
-        let languageCode = contents.stringASCII ?? "und"
-            if ISO6392Codes.allCases.contains(languageCode) {
-        }
+        var parsing = contents
+        self.languageString = parsing.extractFirst(3).stringASCII ?? "und"
     }
 }

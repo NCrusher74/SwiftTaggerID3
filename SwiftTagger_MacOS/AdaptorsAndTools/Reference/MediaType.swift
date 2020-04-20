@@ -44,7 +44,7 @@ public enum MediaType: String, CaseIterable {
             case .telephone: return "TEL"
             case .normalCassette: return "MC"
             case .reel: return "REE"
-            case .none: return "None"
+            case .none: return ""
         }
     }
     

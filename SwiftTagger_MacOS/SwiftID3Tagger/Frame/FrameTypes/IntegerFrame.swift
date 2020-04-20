@@ -13,7 +13,7 @@ import Foundation
  */
 public struct IntegerFrame: FrameProtocol {
     
-    private let value: Int
+    var value: Int
     
     /**
      A frame with only an integer string as content, presented as an integer

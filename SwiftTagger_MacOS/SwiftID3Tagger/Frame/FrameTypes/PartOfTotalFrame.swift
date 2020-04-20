@@ -21,10 +21,10 @@ struct PartOfTotalFrame: FrameProtocol {
         self.init(layout: .known(KnownFrameLayoutIdentifier.trackNumber), part: track, total: totalTracks)
     }
 
-    /// The position of the track/disc.
-    private var part: Int
-    /// The total number of tracks/discs in recordings.
-    private var total: Int?
+    /// The index of the track/disc.
+    var part: Int
+    /// The total number of tracks/discs.
+    var total: Int?
     
     /**
      - parameter part: the index of the track/disc.

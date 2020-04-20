@@ -12,7 +12,7 @@ import Foundation
  */
 public struct URLFrame: FrameProtocol {
     
-    private var urlString: String
+    var urlString: String
     
     /**
      A frame with only string content, presented as a single string without `(/n)`.

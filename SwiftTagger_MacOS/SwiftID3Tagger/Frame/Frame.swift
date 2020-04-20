@@ -14,18 +14,18 @@ internal enum Frame {
 //    case chapter(ChapterFrame)
     case localizedFrame(LocalizedFrame)
     case languageFrame(LanguageFrame)
-    case creditsList(CreditsListFrame)
+    case creditsListFrame(CreditsListFrame)
 //    case date(DateFrame)
-    case genre(GenreFrame)
+    case presetOptionsFrame(PresetOptionsFrame)
 //    case image(ImageFrame)
-    case string(StringFrame)
-    case integer(IntegerFrame)
-    case boolean(BooleanFrame)
+    case stringFrame(StringFrame)
+    case integerFrame(IntegerFrame)
+    case booleanFrame(BooleanFrame)
     case partOfTotalFrame(PartOfTotalFrame)
 //    case toc(TableOfContentsFrame)
-    case userText(UserTextFrame)
-    case url(URLFrame)
-    case unknown(UnknownFrame)
+    case userTextFrame(UserTextFrame)
+    case urlFrame(URLFrame)
+    case unknownFrame(UnknownFrame)
     
     init(identifier: String,
          data: inout Data.SubSequence,
@@ -39,13 +39,13 @@ internal enum Frame {
             //            case .known(KnownFrameLayoutIdentifier.tableOfContents):
             //                self = .toc(try TableOfContentsFrame)
             case .known(KnownFrameLayoutIdentifier.compilation):
-                self = .boolean(try BooleanFrame(
+                self = .booleanFrame(try BooleanFrame(
                     decodingFromStartOf: &data,
                     version: version,
                     layout: layout))
             case .known(KnownFrameLayoutIdentifier.genre),
                  .known(KnownFrameLayoutIdentifier.mediaType):
-                self = .genre(try GenreFrame(
+                self = .presetOptionsFrame(try PresetOptionsFrame(
                     decodingFromStartOf: &data,
                     version: version,
                     layout: layout))
@@ -68,13 +68,13 @@ internal enum Frame {
                     layout: layout))
             case .known(KnownFrameLayoutIdentifier.involvedPeopleList),
                  .known(KnownFrameLayoutIdentifier.musicianCreditsList):
-                self = .creditsList(try CreditsListFrame(
+                self = .creditsListFrame(try CreditsListFrame(
                     decodingFromStartOf: &data,
                     version: version,
                     layout: layout))
             case .known(KnownFrameLayoutIdentifier.userDefinedText),
                  .known(KnownFrameLayoutIdentifier.userDefinedWebpage):
-                self = .userText(try UserTextFrame(
+                self = .userTextFrame(try UserTextFrame(
                     decodingFromStartOf: &data,
                     version: version,
                     layout: layout))
@@ -84,7 +84,7 @@ internal enum Frame {
                  .known(KnownFrameLayoutIdentifier.movementCount),
                  .known(KnownFrameLayoutIdentifier.movementNumber),
                  .known(KnownFrameLayoutIdentifier.playlistDelay):
-                self = .integer(try IntegerFrame(
+                self = .integerFrame(try IntegerFrame(
                     decodingFromStartOf: &data,
                     version: version,
                     layout: layout))
@@ -95,7 +95,7 @@ internal enum Frame {
                  .known(KnownFrameLayoutIdentifier.paymentWebpage),
                  .known(KnownFrameLayoutIdentifier.publisherWebpage),
                  .known(KnownFrameLayoutIdentifier.radioStationWebpage):
-                self = .url(try URLFrame(
+                self = .urlFrame(try URLFrame(
                     decodingFromStartOf: &data,
                     version: version,
                     layout: layout))
@@ -109,12 +109,12 @@ internal enum Frame {
             //                 .known(KnownFrameLayoutIdentifier.year):
             //                self = .date(try DataFrame)
             case .unknown(identifier):
-                self = .unknown(try UnknownFrame(
+                self = .unknownFrame(try UnknownFrame(
                     decodingFromStartOf: &data,
                     version: version,
                     layout: layout))
             default:
-                self = .string( try StringFrame(
+                self = .stringFrame( try StringFrame(
                     decodingFromStartOf: &data,
                     version: version,
                     layout: layout))

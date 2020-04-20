@@ -22,7 +22,7 @@ public struct UnknownFrame: FrameProtocol {
         return self.contents
     }
     
-    internal var flags = Data()
+    internal var flags: Data
     internal var layout: FrameLayoutIdentifier
     
     internal init(decodingContents contents: Data.SubSequence,

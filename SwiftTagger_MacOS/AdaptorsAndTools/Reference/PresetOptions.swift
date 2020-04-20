@@ -15,9 +15,8 @@ enum PresetOption {
     init(presetName: String) {
         if let mediaType = MediaType(rawValue: presetName) {
             self = .mediaType(mediaType)
-        }
-        if let genreType = GenreType(rawValue: presetName) {
-            self = .genreType(genreType)
+        } else {
+            self = .genreType(GenreType(rawValue: presetName) ?? .none)
         }
     }
     
