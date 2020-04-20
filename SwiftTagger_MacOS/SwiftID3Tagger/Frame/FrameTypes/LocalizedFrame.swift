@@ -16,19 +16,19 @@ import Foundation
 struct LocalizedFrame: FrameProtocol {
     
     /// ISO-639-2 languge code
-    public var languageString: String
+    private var languageString: ISO6392Codes
     /// A short description of the frame content.
-    public var descriptionString: String = ""
+    private var descriptionString: String = ""
     /// the content of the frame
-    public var contentString: String
+    private var contentString: String
     
     /**
      - parameter languageString: the ISO-639-2 language code.
      - parameter descriptionString: a terminated text string describing the frame content
      - parameter contentString: the full text of the comment or lyric frame.
      */
-    public init(layout: FrameLayoutIdentifier,
-                languageString: String,
+    private init(layout: FrameLayoutIdentifier,
+                languageString: ISO6392Codes,
                 descriptionString: String,
                 contentString: String) {
         self.languageString = languageString
@@ -41,8 +41,8 @@ struct LocalizedFrame: FrameProtocol {
     internal var flags: Data
     internal var layout: FrameLayoutIdentifier
     
-    func encodeContents(version: Version) throws -> Data {
-        let encodedLanguageString = self.languageString.encoded(withNullTermination: false)
+    internal func encodeContents(version: Version) throws -> Data {
+        let encodedLanguageString = self.languageString.rawValue.encoded(withNullTermination: false)
         let encodedDescriptionString = self.descriptionString.encoded(withNullTermination: true)
         let encodedContentsString = self.contentString.encoded(withNullTermination: false)
         return encodedLanguageString + encodedDescriptionString + encodedContentsString
@@ -58,8 +58,9 @@ struct LocalizedFrame: FrameProtocol {
         let encoding = LocalizedFrame.extractEncoding(data: &parsing, version: version)
 
         let languageCode = parsing.extractFirst(3).stringASCII ?? "und"
-        let languages = IsoLanguages.allLanguages.filter({ $0.iso6392T == languageCode })
-        self.languageString = String(languages.first?.isoName ?? "undefined")
+        if ISO6392Codes.allCases.contains(ISO6392Codes(rawValue: languageCode) ?? .und) {
+            self.languageString = ISO6392Codes(rawValue: languageCode) ?? .und
+        }
 
         let parsed = try LocalizedFrame.extractDescriptionAndContent(from: &parsing, encoding: encoding)
         self.descriptionString = parsed.description ?? ""

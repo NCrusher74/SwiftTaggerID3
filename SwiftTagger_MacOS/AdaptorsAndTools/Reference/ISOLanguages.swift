@@ -2,731 +2,1760 @@
 //  ISOLanguages.swift
 //  SwiftTagger_MacOS
 //
-//  Created by Nolaine Crusher on 4/19/20.
+//  Created by Nolaine Crusher on 4/14/20.
 //  Copyright © 2020 Nolaine Crusher. All rights reserved.
 //
 
-import Foundation
-//
-//  IsoLanguages.swift
-
-//  Original Code by Sidney de Koning on 09/01/15.
-//  Copyright (c) 2015 Funky Monkey, www.funky-monkey.nl. All rights reserved.
-//  Adapted by Nolaine Crusher on 3/24/20.
-
-
-public struct IsoLanguageInfo {
+public enum ISO6392Codes: String, CaseIterable {
     
-    public let isoName: String
-    public let nativeName: String
-    public let iso6391: String
-    public let iso6392T: String
-    public let iso6392B: String
-}
-
-// swiftlint:disable type_body_length
-public class IsoLanguages {
+    public init?(nativeName: String) {
+        self = ISO6392Codes.nativeNameToIsoCode[nativeName] ?? .und
+    }
     
-    // swiftlint:disable line_length
-    static let allLanguages: [IsoLanguageInfo] = [
-        IsoLanguageInfo(isoName: "Afar", nativeName: "Qafaraf", iso6391: "aa", iso6392T: "aar", iso6392B: "aar"),
-        IsoLanguageInfo(isoName: "Abkhazian", nativeName: "Аҧсуа бызшәа", iso6391: "ab", iso6392T: "abk", iso6392B: "abk"),
-        IsoLanguageInfo(isoName: "Abkhaz", nativeName: "Аҧсшәа", iso6391: "ab", iso6392T: "abk", iso6392B: "abk"),
-        IsoLanguageInfo(isoName: "Afar", nativeName: "’Afar Af", iso6391: "aa", iso6392T: "aar", iso6392B: "aar"),
-        IsoLanguageInfo(isoName: "Afar", nativeName: "Afaraf", iso6391: "aa", iso6392T: "aar", iso6392B: "aar"),
-        IsoLanguageInfo(isoName: "Afar", nativeName: "Qafar af", iso6391: "aa", iso6392T: "aar", iso6392B: "aar"),
-        IsoLanguageInfo(isoName: "بهسا اچيه", nativeName: "", iso6391: "", iso6392T: "ace", iso6392B: "ace"),
-        IsoLanguageInfo(isoName: "Acehnese", nativeName: "", iso6391: "", iso6392T: "ace", iso6392B: "ace"),
-        IsoLanguageInfo(isoName: "Lwo", nativeName: "", iso6391: "", iso6392T: "ach", iso6392B: "ach"),
-        IsoLanguageInfo(isoName: "Acholi", nativeName: "", iso6391: "", iso6392T: "ach", iso6392B: "ach"),
-        IsoLanguageInfo(isoName: "Dangme", nativeName: "", iso6391: "", iso6392T: "ada", iso6392B: "ada"),
-        IsoLanguageInfo(isoName: "Dangme", nativeName: "", iso6391: "", iso6392T: "ada", iso6392B: "ada"),
-        IsoLanguageInfo(isoName: "Адыгабзэ", nativeName: "", iso6391: "", iso6392T: "ady", iso6392B: "ady"),
-        IsoLanguageInfo(isoName: "Кӏахыбзэ", nativeName: "", iso6391: "", iso6392T: "ady", iso6392B: "ady"),
-        IsoLanguageInfo(isoName: "West Circassian", nativeName: "", iso6391: "", iso6392T: "ady", iso6392B: "ady"),
-        IsoLanguageInfo(isoName: "Afro-Asiatic languages", nativeName: "", iso6391: "", iso6392T: "afa", iso6392B: "afa"),
-        IsoLanguageInfo(isoName: "El-Afrihili", nativeName: "", iso6391: "", iso6392T: "afh", iso6392B: "afh"),
-        IsoLanguageInfo(isoName: "Afrikaans", nativeName: "Afrikaans", iso6391: "af", iso6392T: "afr", iso6392B: "afr"),
-        IsoLanguageInfo(isoName: "アイヌ・イタㇰ", nativeName: "", iso6391: "", iso6392T: "ain", iso6392B: "ain"),
-        IsoLanguageInfo(isoName: "Akan", nativeName: "Akan", iso6391: "ak", iso6392T: "aka", iso6392B: "aka"),
-        IsoLanguageInfo(isoName: "𒀝𒅗𒁺𒌑", nativeName: "", iso6391: "", iso6392T: "akk", iso6392B: "akk"),
-        IsoLanguageInfo(isoName: "Albanian", nativeName: "Shqip", iso6391: "sq", iso6392T: "sqi", iso6392B: "alb"),
-        IsoLanguageInfo(isoName: "Уна́ӈам тунуу́", nativeName: "", iso6391: "", iso6392T: "ale", iso6392B: "ale"),
-        IsoLanguageInfo(isoName: "Унаӈан умсуу", nativeName: "", iso6391: "", iso6392T: "ale", iso6392B: "ale"),
-        IsoLanguageInfo(isoName: "Algonquian languages", nativeName: "", iso6391: "", iso6392T: "alg", iso6392B: "alg"),
-        IsoLanguageInfo(isoName: "Алтай тили", nativeName: "", iso6391: "", iso6392T: "alt", iso6392B: "alt"),
-        IsoLanguageInfo(isoName: "Amharic", nativeName: "አማርኛ", iso6391: "am", iso6392T: "amh", iso6392B: "amh"),
-        IsoLanguageInfo(isoName: "Ænglisc", nativeName: "", iso6391: "", iso6392T: "ang", iso6392B: "ang"),
-        IsoLanguageInfo(isoName: "Anglisc", nativeName: "", iso6391: "", iso6392T: "ang", iso6392B: "ang"),
-        IsoLanguageInfo(isoName: "Englisc", nativeName: "", iso6391: "", iso6392T: "ang", iso6392B: "ang"),
-        IsoLanguageInfo(isoName: "Southern Athabaskan languages", nativeName: "", iso6391: "", iso6392T: "anp", iso6392B: "anp"),
-        IsoLanguageInfo(isoName: "Angika", nativeName: "", iso6391: "", iso6392T: "anp", iso6392B: "anp"),
-        IsoLanguageInfo(isoName: "Apache languages", nativeName: "", iso6391: "", iso6392T: "apa", iso6392B: "apa"),
-        IsoLanguageInfo(isoName: "Arabic", nativeName: "العَرَبِيَّة", iso6391: "ar", iso6392T: "ara", iso6392B: "ara"),
-        IsoLanguageInfo(isoName: "Official Aramaic (700–300 BCE); Imperial Aramaic (700–300 BCE)", nativeName: "", iso6391: "", iso6392T: "arc", iso6392B: "arc"),
-        IsoLanguageInfo(isoName: "Aragonese", nativeName: "aragonés", iso6391: "an", iso6392T: "arg", iso6392B: "arg"),
-        IsoLanguageInfo(isoName: "Mapudungun", nativeName: "", iso6391: "", iso6392T: "arn", iso6392B: "arn"),
-        IsoLanguageInfo(isoName: "Mapuche", nativeName: "", iso6391: "", iso6392T: "arn", iso6392B: "arn"),
-        IsoLanguageInfo(isoName: "Hinónoʼeitíít", nativeName: "", iso6391: "", iso6392T: "arp", iso6392B: "arp"),
-        IsoLanguageInfo(isoName: "Artificial languages", nativeName: "", iso6391: "", iso6392T: "art", iso6392B: "art"),
-        IsoLanguageInfo(isoName: "Lokono", nativeName: "", iso6391: "", iso6392T: "arw", iso6392B: "arw"),
-        IsoLanguageInfo(isoName: "Assamese", nativeName: "অসমীয়া", iso6391: "as", iso6392T: "asm", iso6392B: "asm"),
-        IsoLanguageInfo(isoName: "Asturianu", nativeName: "", iso6391: "", iso6392T: "ast", iso6392B: "ast"),
-        IsoLanguageInfo(isoName: "Asturianu", nativeName: "", iso6391: "", iso6392T: "ast", iso6392B: "ast"),
-        IsoLanguageInfo(isoName: "Asturianu", nativeName: "", iso6391: "", iso6392T: "ast", iso6392B: "ast"),
-        IsoLanguageInfo(isoName: "Asturianu", nativeName: "", iso6391: "", iso6392T: "ast", iso6392B: "ast"),
-        IsoLanguageInfo(isoName: "Athapascan languages", nativeName: "", iso6391: "", iso6392T: "ath", iso6392B: "ath"),
-        IsoLanguageInfo(isoName: "Athabaskan languages", nativeName: "", iso6391: "", iso6392T: "ath", iso6392B: "ath"),
-        IsoLanguageInfo(isoName: "Australian languages", nativeName: "", iso6391: "", iso6392T: "aus", iso6392B: "aus"),
-        IsoLanguageInfo(isoName: "Avaric", nativeName: "Магӏарул мацӏ", iso6391: "av", iso6392T: "ava", iso6392B: "ava"),
-        IsoLanguageInfo(isoName: "Avar", nativeName: "Авар мацӏ", iso6391: "av", iso6392T: "ava", iso6392B: "ava"),
-        IsoLanguageInfo(isoName: "Avestan", nativeName: "Avestan", iso6391: "ae", iso6392T: "ave", iso6392B: "ave"),
-        IsoLanguageInfo(isoName: "अवधी", nativeName: "", iso6391: "", iso6392T: "awa", iso6392B: "awa"),
-        IsoLanguageInfo(isoName: "Aymara", nativeName: "Aymar aru", iso6391: "ay", iso6392T: "aym", iso6392B: "aym"),
-        IsoLanguageInfo(isoName: "Azerbaijani", nativeName: "Azərbaycan dili", iso6391: "az", iso6392T: "aze", iso6392B: "aze"),
-        IsoLanguageInfo(isoName: "Azerbaijani", nativeName: "Азәрбајҹан дили", iso6391: "az", iso6392T: "aze", iso6392B: "aze"),
-        IsoLanguageInfo(isoName: "Azerbaijani", nativeName: " آذربایجان دیلی", iso6391: "az", iso6392T: "aze", iso6392B: "aze"),
-        IsoLanguageInfo(isoName: "Banda languages", nativeName: "", iso6391: "", iso6392T: "bad", iso6392B: "bad"),
-        IsoLanguageInfo(isoName: "Bamiléké", nativeName: "", iso6391: "", iso6392T: "bai", iso6392B: "bai"),
-        IsoLanguageInfo(isoName: "Bashkir", nativeName: "Башҡорт теле", iso6391: "ba", iso6392T: "bak", iso6392B: "bak"),
-        IsoLanguageInfo(isoName: "Bashkir", nativeName: "Başqort tele", iso6391: "ba", iso6392T: "bak", iso6392B: "bak"),
-        IsoLanguageInfo(isoName: "Balochi", nativeName: "", iso6391: "", iso6392T: "bal", iso6392B: "bal"),
-        IsoLanguageInfo(isoName: "بلوچی", nativeName: "", iso6391: "", iso6392T: "bal", iso6392B: "bal"),
-        IsoLanguageInfo(isoName: "Bambara", nativeName: "ߓߊߡߊߣߊߣߞߊߣ", iso6391: "bm", iso6392T: "bam", iso6392B: "bam"),
-        IsoLanguageInfo(isoName: "ᬪᬵᬱᬩᬮᬶ", nativeName: "", iso6391: "", iso6392T: "ban", iso6392B: "ban"),
-        IsoLanguageInfo(isoName: "ᬩᬲᬩᬮᬶ", nativeName: "", iso6391: "", iso6392T: "ban", iso6392B: "ban"),
-        IsoLanguageInfo(isoName: "Basque", nativeName: "euskara", iso6391: "eu", iso6392T: "eus", iso6392B: "baq"),
-        IsoLanguageInfo(isoName: "Ɓasaá", nativeName: "", iso6391: "", iso6392T: "bas", iso6392B: "bas"),
-        IsoLanguageInfo(isoName: "Mbene", nativeName: "", iso6391: "", iso6392T: "bas", iso6392B: "bas"),
-        IsoLanguageInfo(isoName: "Baltic languages", nativeName: "", iso6391: "", iso6392T: "bat", iso6392B: "bat"),
-        IsoLanguageInfo(isoName: "Bidhaawyeet", nativeName: "", iso6391: "", iso6392T: "bej", iso6392B: "bej"),
-        IsoLanguageInfo(isoName: "Bedawiyet", nativeName: "", iso6391: "", iso6392T: "bej", iso6392B: "bej"),
-        IsoLanguageInfo(isoName: "Belarusian", nativeName: "Беларуская мова", iso6391: "be", iso6392T: "bel", iso6392B: "bel"),
-        IsoLanguageInfo(isoName: "Chibemba", nativeName: "", iso6391: "", iso6392T: "bem", iso6392B: "bem"),
-        IsoLanguageInfo(isoName: "Bengali", nativeName: "বাংলা", iso6391: "bn", iso6392T: "ben", iso6392B: "ben"),
-        IsoLanguageInfo(isoName: "Tamaziɣt", nativeName: "", iso6391: "", iso6392T: "ber", iso6392B: "ber"),
-        IsoLanguageInfo(isoName: "Tamazight", nativeName: "", iso6391: "", iso6392T: "ber", iso6392B: "ber"),
-        IsoLanguageInfo(isoName: "ⵜⴰⵎⴰⵣⵉⵖⵜ", nativeName: "", iso6391: "", iso6392T: "ber", iso6392B: "ber"),
-        IsoLanguageInfo(isoName: "ⵝⴰⵎⴰⵣⵉⵗⵝ", nativeName: "", iso6391: "", iso6392T: "ber", iso6392B: "ber"),
-        IsoLanguageInfo(isoName: "ⵜⴰⵎⴰⵣⵉⵗⵜ", nativeName: "", iso6391: "", iso6392T: "ber", iso6392B: "ber"),
-        IsoLanguageInfo(isoName: "ⵜⴰⵎⴰⵣⵉⵗⵜ", nativeName: "", iso6391: "", iso6392T: "ber", iso6392B: "ber"),
-        IsoLanguageInfo(isoName: "भोजपुरी", nativeName: "", iso6391: "", iso6392T: "bho", iso6392B: "bho"),
-        IsoLanguageInfo(isoName: "Bihari languages", nativeName: "Bihari languages", iso6391: "bh", iso6392T: "bih", iso6392B: "bih"),
-        IsoLanguageInfo(isoName: "Bikol", nativeName: "", iso6391: "", iso6392T: "bik", iso6392B: "bik"),
-        IsoLanguageInfo(isoName: "Ẹ̀dó", nativeName: "", iso6391: "", iso6392T: "bin", iso6392B: "bin"),
-        IsoLanguageInfo(isoName: "Ẹ̀dó", nativeName: "", iso6391: "", iso6392T: "bin", iso6392B: "bin"),
-        IsoLanguageInfo(isoName: "Bislama", nativeName: "Bislama", iso6391: "bi", iso6392T: "bis", iso6392B: "bis"),
-        IsoLanguageInfo(isoName: "ᓱᖽᐧᖿ", nativeName: "", iso6391: "", iso6392T: "bla", iso6392B: "bla"),
-        IsoLanguageInfo(isoName: "ᓱᖽᐧᖿ", nativeName: "", iso6391: "", iso6392T: "bla", iso6392B: "bla"),
-        IsoLanguageInfo(isoName: "Bantu (Other)", nativeName: "", iso6391: "", iso6392T: "bnt", iso6392B: "bnt"),
-        IsoLanguageInfo(isoName: "Tibetan", nativeName: "ལྷ་སའི་སྐད་", iso6391: "bo", iso6392T: "bod", iso6392B: "tib"),
-        IsoLanguageInfo(isoName: "Tibetan", nativeName: "བོད་སྐད་", iso6391: "bo", iso6392T: "bod", iso6392B: "tib"),
-        IsoLanguageInfo(isoName: "Bosnian", nativeName: "босански", iso6391: "bs", iso6392T: "bos", iso6392B: "bos"),
-        IsoLanguageInfo(isoName: "Bosnian", nativeName: "bosanski", iso6391: "bs", iso6392T: "bos", iso6392B: "bos"),
-        IsoLanguageInfo(isoName: "Braj", nativeName: "", iso6391: "", iso6392T: "bra", iso6392B: "bra"),
-        IsoLanguageInfo(isoName: "Braj Bhāshā", nativeName: "", iso6391: "", iso6392T: "bra", iso6392B: "bra"),
-        IsoLanguageInfo(isoName: "Breton", nativeName: "Brezhoneg", iso6391: "br", iso6392T: "bre", iso6392B: "bre"),
-        IsoLanguageInfo(isoName: "Batak languages", nativeName: "", iso6391: "", iso6392T: "btk", iso6392B: "btk"),
-        IsoLanguageInfo(isoName: "буряад хэлэн", nativeName: "", iso6391: "", iso6392T: "bua", iso6392B: "bua"),
-        IsoLanguageInfo(isoName: "буряад хэлэн", nativeName: "", iso6391: "", iso6392T: "bua", iso6392B: "bua"),
-        IsoLanguageInfo(isoName: "ᨅᨔ ᨕᨘᨁᨗ", nativeName: "", iso6391: "", iso6392T: "bug", iso6392B: "bug"),
-        IsoLanguageInfo(isoName: "Bulgarian", nativeName: "български език", iso6391: "bg", iso6392T: "bul", iso6392B: "bul"),
-        IsoLanguageInfo(isoName: "Burmese", nativeName: "မြန်မာစာ", iso6391: "my", iso6392T: "mya", iso6392B: "bur"),
-        IsoLanguageInfo(isoName: "Myanmar", nativeName: "မြန်မာစကား", iso6391: "my", iso6392T: "mya", iso6392B: "bur"),
-        IsoLanguageInfo(isoName: "ብሊና", nativeName: "", iso6391: "", iso6392T: "byn", iso6392B: "byn"),
-        IsoLanguageInfo(isoName: "ብሊን", nativeName: "", iso6391: "", iso6392T: "byn", iso6392B: "byn"),
-        IsoLanguageInfo(isoName: "ብሊን", nativeName: "", iso6391: "", iso6392T: "byn", iso6392B: "byn"),
-        IsoLanguageInfo(isoName: "Hasí:nay", nativeName: "", iso6391: "", iso6392T: "cad", iso6392B: "cad"),
-        IsoLanguageInfo(isoName: "Central American Indian languages", nativeName: "", iso6391: "", iso6392T: "cai", iso6392B: "cai"),
-        IsoLanguageInfo(isoName: "Kari'nja", nativeName: "", iso6391: "", iso6392T: "car", iso6392B: "car"),
-        IsoLanguageInfo(isoName: "Carib", nativeName: "", iso6391: "", iso6392T: "car", iso6392B: "car"),
-        IsoLanguageInfo(isoName: "Catalan", nativeName: "català", iso6391: "ca", iso6392T: "cat", iso6392B: "cat"),
-        IsoLanguageInfo(isoName: "Valencian", nativeName: "català", iso6391: "ca", iso6392T: "cat", iso6392B: "cat"),
-        IsoLanguageInfo(isoName: "Caucasian languages", nativeName: "", iso6391: "", iso6392T: "cau", iso6392B: "cau"),
-        IsoLanguageInfo(isoName: "Sinugbuanong Binisayâ", nativeName: "", iso6391: "", iso6392T: "ceb", iso6392B: "ceb"),
-        IsoLanguageInfo(isoName: "Celtic languages", nativeName: "", iso6391: "", iso6392T: "cel", iso6392B: "cel"),
-        IsoLanguageInfo(isoName: "Czech", nativeName: "čeština", iso6391: "cs", iso6392T: "ces", iso6392B: "cze"),
-        IsoLanguageInfo(isoName: "Czech", nativeName: "český jazyk", iso6391: "cs", iso6392T: "ces", iso6392B: "cze"),
-        IsoLanguageInfo(isoName: "Chamorro", nativeName: "Finu' Chamoru", iso6391: "ch", iso6392T: "cha", iso6392B: "cha"),
-        IsoLanguageInfo(isoName: "Muysccubun", nativeName: "", iso6391: "", iso6392T: "chb", iso6392B: "chb"),
-        IsoLanguageInfo(isoName: "Chechen", nativeName: "Нохчийн мотт", iso6391: "ce", iso6392T: "che", iso6392B: "che"),
-        IsoLanguageInfo(isoName: "Chechen", nativeName: "ნახჩიე მუოთთ", iso6391: "ce", iso6392T: "che", iso6392B: "che"),
-        IsoLanguageInfo(isoName: "Chechen", nativeName: " نَاخچیین موٓتت", iso6391: "ce", iso6392T: "che", iso6392B: "che"),
-        IsoLanguageInfo(isoName: "جغتای", nativeName: "", iso6391: "", iso6392T: "chg", iso6392B: "chg"),
-        IsoLanguageInfo(isoName: "Chinese", nativeName: "中文", iso6391: "zh", iso6392T: "zho", iso6392B: "chi"),
-        IsoLanguageInfo(isoName: "Chinese", nativeName: "汉语", iso6391: "zh", iso6392T: "zho", iso6392B: "chi"),
-        IsoLanguageInfo(isoName: "Chinese", nativeName: "漢語", iso6391: "zh", iso6392T: "zho", iso6392B: "chi"),
-        IsoLanguageInfo(isoName: "Chuukese", nativeName: "", iso6391: "", iso6392T: "chk", iso6392B: "chk"),
-        IsoLanguageInfo(isoName: "марий йылме", nativeName: "", iso6391: "", iso6392T: "chm", iso6392B: "chm"),
-        IsoLanguageInfo(isoName: "chinuk wawa", nativeName: "", iso6391: "", iso6392T: "chn", iso6392B: "chn"),
-        IsoLanguageInfo(isoName: "wawa", nativeName: "", iso6391: "", iso6392T: "chn", iso6392B: "chn"),
-        IsoLanguageInfo(isoName: "chinook lelang", nativeName: "", iso6391: "", iso6392T: "chn", iso6392B: "chn"),
-        IsoLanguageInfo(isoName: "lelang", nativeName: "", iso6391: "", iso6392T: "chn", iso6392B: "chn"),
-        IsoLanguageInfo(isoName: "Chahta'", nativeName: "", iso6391: "", iso6392T: "cho", iso6392B: "cho"),
-        IsoLanguageInfo(isoName: "ᑌᓀᓱᒼᕄᓀ", nativeName: "", iso6391: "", iso6392T: "chp", iso6392B: "chp"),
-        IsoLanguageInfo(isoName: "Dënesųłiné", nativeName: "", iso6391: "", iso6392T: "chp", iso6392B: "chp"),
-        IsoLanguageInfo(isoName: "ᏣᎳᎩ ᎦᏬᏂᎯᏍᏗ", nativeName: "", iso6391: "", iso6392T: "chr", iso6392B: "chr"),
-        IsoLanguageInfo(isoName: "Church Slavic", nativeName: "Славе́нскїй ѧ҆зы́къ", iso6391: "cu", iso6392T: "chu", iso6392B: "chu"),
-        IsoLanguageInfo(isoName: "Church Slavic", nativeName: "Славе́нскїй ѧ҆зы́къ", iso6391: "cu", iso6392T: "chu", iso6392B: "chu"),
-        IsoLanguageInfo(isoName: "Church Slavonic", nativeName: "Славе́нскїй ѧ҆зы́къ", iso6391: "cu", iso6392T: "chu", iso6392B: "chu"),
-        IsoLanguageInfo(isoName: "Old Bulgarian", nativeName: "Славе́нскїй ѧ҆зы́къ", iso6391: "cu", iso6392T: "chu", iso6392B: "chu"),
-        IsoLanguageInfo(isoName: "Old Church Slavonic", nativeName: "Славе́нскїй ѧ҆зы́къ", iso6391: "cu", iso6392T: "chu", iso6392B: "chu"),
-        IsoLanguageInfo(isoName: "Chuvash", nativeName: "Чӑвашла", iso6391: "cv", iso6392T: "chv", iso6392B: "chv"),
-        IsoLanguageInfo(isoName: "Tsėhésenėstsestȯtse", nativeName: "", iso6391: "", iso6392T: "chy", iso6392B: "chy"),
-        IsoLanguageInfo(isoName: "Chamic languages", nativeName: "", iso6391: "", iso6392T: "cmc", iso6392B: "cmc"),
-        IsoLanguageInfo(isoName: "crnogorski", nativeName: "", iso6391: "", iso6392T: "cnr", iso6392B: "cnr"),
-        IsoLanguageInfo(isoName: "црногорски", nativeName: "", iso6391: "", iso6392T: "cnr", iso6392B: "cnr"),
-        IsoLanguageInfo(isoName: "ⲧⲙⲛ̄ⲧⲣⲙ̄ⲛ̄ⲕⲏⲙⲉ", nativeName: "", iso6391: "", iso6392T: "cop", iso6392B: "cop"),
-        IsoLanguageInfo(isoName: "ϯⲙⲉⲑⲣⲉⲙⲛ̀ⲭⲏⲙⲓ", nativeName: "", iso6391: "", iso6392T: "cop", iso6392B: "cop"),
-        IsoLanguageInfo(isoName: "Cornish", nativeName: "Kernowek", iso6391: "kw", iso6392T: "cor", iso6392B: "cor"),
-        IsoLanguageInfo(isoName: "Corsican", nativeName: "Corsu", iso6391: "co", iso6392T: "cos", iso6392B: "cos"),
-        IsoLanguageInfo(isoName: "Corsican", nativeName: "Lingua corsa", iso6391: "co", iso6392T: "cos", iso6392B: "cos"),
-        IsoLanguageInfo(isoName: "Creoles and pidgins, English based", nativeName: "", iso6391: "", iso6392T: "cpe", iso6392B: "cpe"),
-        IsoLanguageInfo(isoName: "Creoles and pidgins, French-based", nativeName: "", iso6391: "", iso6392T: "cpf", iso6392B: "cpf"),
-        IsoLanguageInfo(isoName: "Creoles and pidgins, Portuguese-based", nativeName: "", iso6391: "", iso6392T: "cpp", iso6392B: "cpp"),
-        IsoLanguageInfo(isoName: "Cree", nativeName: "Cree", iso6391: "cr", iso6392T: "cre", iso6392B: "cre"),
-        IsoLanguageInfo(isoName: "Къырымтатарджа", nativeName: "", iso6391: "", iso6392T: "crh", iso6392B: "crh"),
-        IsoLanguageInfo(isoName: "Къырымтатар тили", nativeName: "", iso6391: "", iso6392T: "crh", iso6392B: "crh"),
-        IsoLanguageInfo(isoName: "Ҡырымтатар тили", nativeName: "", iso6391: "", iso6392T: "crh", iso6392B: "crh"),
-        IsoLanguageInfo(isoName: "Ҡырымтатарҗа", nativeName: "", iso6391: "", iso6392T: "crh", iso6392B: "crh"),
-        IsoLanguageInfo(isoName: "Creoles and pidgins", nativeName: "", iso6391: "", iso6392T: "crp", iso6392B: "crp"),
-        IsoLanguageInfo(isoName: "Kaszëbsczi jãzëk", nativeName: "", iso6391: "", iso6392T: "csb", iso6392B: "csb"),
-        IsoLanguageInfo(isoName: "Kaszëbsczi jãzëk", nativeName: "", iso6391: "", iso6392T: "csb", iso6392B: "csb"),
-        IsoLanguageInfo(isoName: "Cushitic languages", nativeName: "", iso6391: "", iso6392T: "cus", iso6392B: "cus"),
-        IsoLanguageInfo(isoName: "Welsh", nativeName: "y Gymraeg", iso6391: "cy", iso6392T: "cym", iso6392B: "wel"),
-        IsoLanguageInfo(isoName: "Welsh", nativeName: "Cymraeg", iso6391: "cy", iso6392T: "cym", iso6392B: "wel"),
-        IsoLanguageInfo(isoName: "Czech", nativeName: "čeština", iso6391: "cs", iso6392T: "ces", iso6392B: "cze"),
-        IsoLanguageInfo(isoName: "Czech", nativeName: "český jazyk", iso6391: "cs", iso6392T: "ces", iso6392B: "cze"),
-        IsoLanguageInfo(isoName: "Dakȟótiyapi", nativeName: "", iso6391: "", iso6392T: "dak", iso6392B: "dak"),
-        IsoLanguageInfo(isoName: "Dakhótiyapi", nativeName: "", iso6391: "", iso6392T: "dak", iso6392B: "dak"),
-        IsoLanguageInfo(isoName: "Danish", nativeName: "dansk", iso6391: "da", iso6392T: "dan", iso6392B: "dan"),
-        IsoLanguageInfo(isoName: "дарган мез", nativeName: "", iso6391: "", iso6392T: "dar", iso6392B: "dar"),
-        IsoLanguageInfo(isoName: "Land Dayak languages", nativeName: "", iso6391: "", iso6392T: "day", iso6392B: "day"),
-        IsoLanguageInfo(isoName: "Delaware", nativeName: "", iso6391: "", iso6392T: "del", iso6392B: "del"),
-        IsoLanguageInfo(isoName: "Dene K'e", nativeName: "", iso6391: "", iso6392T: "den", iso6392B: "den"),
-        IsoLanguageInfo(isoName: "German", nativeName: "Deutsch", iso6391: "de", iso6392T: "deu", iso6392B: "ger"),
-        IsoLanguageInfo(isoName: "Dene K'e", nativeName: "", iso6391: "", iso6392T: "den", iso6392B: "den"),
-        IsoLanguageInfo(isoName: "ڈوگرى", nativeName: "", iso6391: "", iso6392T: "dgr", iso6392B: "dgr"),
-        IsoLanguageInfo(isoName: "डोगरी", nativeName: "", iso6391: "", iso6392T: "dgr", iso6392B: "dgr"),
-        IsoLanguageInfo(isoName: "Thuɔŋjäŋ", nativeName: "", iso6391: "", iso6392T: "din", iso6392B: "din"),
-        IsoLanguageInfo(isoName: "Divehi", nativeName: "ދިވެހި; ދިވެހިބަސް", iso6391: "dv", iso6392T: "div", iso6392B: "div"),
-        IsoLanguageInfo(isoName: "Dhivehi", nativeName: "ދިވެހިބަސް", iso6391: "dv", iso6392T: "div", iso6392B: "div"),
-        IsoLanguageInfo(isoName: "Maldivian", nativeName: "ދިވެހި", iso6391: "dv", iso6392T: "div", iso6392B: "div"),
-        IsoLanguageInfo(isoName: "डोगरी", nativeName: "", iso6391: "", iso6392T: "doi", iso6392B: "doi"),
-        IsoLanguageInfo(isoName: "ڈوگرى", nativeName: "", iso6391: "", iso6392T: "doi", iso6392B: "doi"),
-        IsoLanguageInfo(isoName: "Dravidian languages", nativeName: "", iso6391: "", iso6392T: "dra", iso6392B: "dra"),
-        IsoLanguageInfo(isoName: "Dolnoserbšćina", nativeName: "", iso6391: "", iso6392T: "dsb", iso6392B: "dsb"),
-        IsoLanguageInfo(isoName: "Dolnoserbski", nativeName: "", iso6391: "", iso6392T: "dsb", iso6392B: "dsb"),
-        IsoLanguageInfo(isoName: "Duala", nativeName: "", iso6391: "", iso6392T: "dua", iso6392B: "dua"),
-        IsoLanguageInfo(isoName: "Dutch, Middle (ca. 1050–1350)", nativeName: "", iso6391: "", iso6392T: "dum", iso6392B: "dum"),
-        IsoLanguageInfo(isoName: "Dutch", nativeName: "Nederlands", iso6391: "nl", iso6392T: "nld", iso6392B: "dut"),
-        IsoLanguageInfo(isoName: "Flemish", nativeName: "Vlaams", iso6391: "nl", iso6392T: "nld", iso6392B: "dut"),
-        IsoLanguageInfo(isoName: "Julakan", nativeName: "", iso6391: "", iso6392T: "dyu", iso6392B: "dyu"),
-        IsoLanguageInfo(isoName: "Julakan", nativeName: "", iso6391: "", iso6392T: "dyu", iso6392B: "dyu"),
-        IsoLanguageInfo(isoName: "Dzongkha", nativeName: "རྫོང་ཁ་", iso6391: "dz", iso6392T: "dzo", iso6392B: "dzo"),
-        IsoLanguageInfo(isoName: "Efik", nativeName: "", iso6391: "", iso6392T: "efi", iso6392B: "efi"),
-        IsoLanguageInfo(isoName: "Egyptian (Ancient)", nativeName: "", iso6391: "", iso6392T: "egy", iso6392B: "egy"),
-        IsoLanguageInfo(isoName: "Ekajuk", nativeName: "", iso6391: "", iso6392T: "eka", iso6392B: "eka"),
-        IsoLanguageInfo(isoName: "Kajuk", nativeName: "", iso6391: "", iso6392T: "eka", iso6392B: "eka"),
-        IsoLanguageInfo(isoName: "Greek, Modern (1453–)", nativeName: "Νέα Ελληνικά", iso6391: "el", iso6392T: "ell", iso6392B: "gre"),
-        IsoLanguageInfo(isoName: "Elamite", nativeName: "", iso6391: "", iso6392T: "elx", iso6392B: "elx"),
-        IsoLanguageInfo(isoName: "English", nativeName: "English", iso6391: "en", iso6392T: "eng", iso6392B: "eng"),
-        IsoLanguageInfo(isoName: "English, Middle (1100–1500)", nativeName: "", iso6391: "", iso6392T: "enm", iso6392B: "enm"),
-        IsoLanguageInfo(isoName: "Esperanto", nativeName: "Esperanto", iso6391: "eo", iso6392T: "epo", iso6392B: "epo"),
-        IsoLanguageInfo(isoName: "Estonian", nativeName: "eesti keel", iso6391: "et", iso6392T: "est", iso6392B: "est"),
-        IsoLanguageInfo(isoName: "Basque", nativeName: "euskara", iso6391: "eu", iso6392T: "eus", iso6392B: "baq"),
-        IsoLanguageInfo(isoName: "Ewe", nativeName: "Èʋegbe", iso6391: "ee", iso6392T: "ewe", iso6392B: "ewe"),
-        IsoLanguageInfo(isoName: "Ewondo", nativeName: "", iso6391: "", iso6392T: "ewo", iso6392B: "ewo"),
-        IsoLanguageInfo(isoName: "Kolo", nativeName: "", iso6391: "", iso6392T: "ewo", iso6392B: "ewo"),
-        IsoLanguageInfo(isoName: "Fang", nativeName: "", iso6391: "", iso6392T: "fan", iso6392B: "fan"),
-        IsoLanguageInfo(isoName: "Faroese", nativeName: "føroyskt", iso6391: "fo", iso6392T: "fao", iso6392B: "fao"),
-        IsoLanguageInfo(isoName: "Persian", nativeName: "فارسی", iso6391: "fa", iso6392T: "fas", iso6392B: "per"),
-        IsoLanguageInfo(isoName: "Farsi", nativeName: "فارسی", iso6391: "fa", iso6392T: "fas", iso6392B: "per"),
-        IsoLanguageInfo(isoName: "Fante", nativeName: "", iso6391: "", iso6392T: "fat", iso6392B: "fat"),
-        IsoLanguageInfo(isoName: "Mfantse", nativeName: "", iso6391: "", iso6392T: "fat", iso6392B: "fat"),
-        IsoLanguageInfo(isoName: "Fanti", nativeName: "", iso6391: "", iso6392T: "fat", iso6392B: "fat"),
-        IsoLanguageInfo(isoName: "Fijian", nativeName: "Na Vosa Vakaviti", iso6391: "fj", iso6392T: "fij", iso6392B: "fij"),
-        IsoLanguageInfo(isoName: "Wikang Filipino", nativeName: "", iso6391: "", iso6392T: "fil", iso6392B: "fil"),
-        IsoLanguageInfo(isoName: "Wikang Filipino", nativeName: "", iso6391: "", iso6392T: "fil", iso6392B: "fil"),
-        IsoLanguageInfo(isoName: "Finnish", nativeName: "suomen kieli", iso6391: "fi", iso6392T: "fin", iso6392B: "fin"),
-        IsoLanguageInfo(isoName: "Finno-Ugrian languages", nativeName: "", iso6391: "", iso6392T: "fiu", iso6392B: "fiu"),
-        IsoLanguageInfo(isoName: "Fon gbè", nativeName: "", iso6391: "", iso6392T: "fon", iso6392B: "fon"),
-        IsoLanguageInfo(isoName: "French", nativeName: "français", iso6391: "fr", iso6392T: "fra", iso6392B: "fre"),
-        IsoLanguageInfo(isoName: "françois", nativeName: "", iso6391: "", iso6392T: "frm", iso6392B: "frm"),
-        IsoLanguageInfo(isoName: "franceis", nativeName: "", iso6391: "", iso6392T: "frm", iso6392B: "frm"),
-        IsoLanguageInfo(isoName: "Franceis", nativeName: "", iso6391: "", iso6392T: "fro", iso6392B: "fro"),
-        IsoLanguageInfo(isoName: "Romanz", nativeName: "", iso6391: "", iso6392T: "fro", iso6392B: "fro"),
-        IsoLanguageInfo(isoName: "François", nativeName: "", iso6391: "", iso6392T: "fro", iso6392B: "fro"),
-        IsoLanguageInfo(isoName: "Frasch", nativeName: "", iso6391: "", iso6392T: "frr", iso6392B: "frr"),
-        IsoLanguageInfo(isoName: "Fresk", nativeName: "", iso6391: "", iso6392T: "frr", iso6392B: "frr"),
-        IsoLanguageInfo(isoName: "Freesk", nativeName: "", iso6391: "", iso6392T: "frr", iso6392B: "frr"),
-        IsoLanguageInfo(isoName: "Friisk", nativeName: "", iso6391: "", iso6392T: "frr", iso6392B: "frr"),
-        IsoLanguageInfo(isoName: "Seeltersk", nativeName: "", iso6391: "", iso6392T: "frs", iso6392B: "frs"),
-        IsoLanguageInfo(isoName: "Western Frisian", nativeName: "Frysk", iso6391: "fy", iso6392T: "fry", iso6392B: "fry"),
-        IsoLanguageInfo(isoName: "Fulah", nativeName: "Fulfulde", iso6391: "ff", iso6392T: "ful", iso6392B: "ful"),
-        IsoLanguageInfo(isoName: "Fulah", nativeName: "Pular", iso6391: "ff", iso6392T: "ful", iso6392B: "ful"),
-        IsoLanguageInfo(isoName: "Fulah", nativeName: "Pulaar", iso6391: "ff", iso6392T: "ful", iso6392B: "ful"),
-        IsoLanguageInfo(isoName: "Furlan", nativeName: "", iso6391: "", iso6392T: "fur", iso6392B: "fur"),
-        IsoLanguageInfo(isoName: "Gã", nativeName: "", iso6391: "", iso6392T: "gaa", iso6392B: "gaa"),
-        IsoLanguageInfo(isoName: "Basa Gayo", nativeName: "", iso6391: "", iso6392T: "gay", iso6392B: "gay"),
-        IsoLanguageInfo(isoName: "Gbaya", nativeName: "", iso6391: "", iso6392T: "gba", iso6392B: "gba"),
-        IsoLanguageInfo(isoName: "Germanic languages", nativeName: "", iso6391: "", iso6392T: "gem", iso6392B: "gem"),
-        IsoLanguageInfo(isoName: "Georgian", nativeName: "ქართული", iso6391: "ka", iso6392T: "kat", iso6392B: "geo"),
-        IsoLanguageInfo(isoName: "ግዕዝ", nativeName: "", iso6391: "", iso6392T: "gez", iso6392B: "gez"),
-        IsoLanguageInfo(isoName: "Taetae ni Kiribati", nativeName: "", iso6391: "", iso6392T: "gil", iso6392B: "gil"),
-        IsoLanguageInfo(isoName: "Gaelic", nativeName: "Gàidhlig", iso6391: "gd", iso6392T: "gla", iso6392B: "gla"),
-        IsoLanguageInfo(isoName: "Scottish Gaelic", nativeName: "Gàidhlig", iso6391: "gd", iso6392T: "gla", iso6392B: "gla"),
-        IsoLanguageInfo(isoName: "Irish", nativeName: "Gaeilge", iso6391: "ga", iso6392T: "gle", iso6392B: "gle"),
-        IsoLanguageInfo(isoName: "Galician", nativeName: "galego", iso6391: "gl", iso6392T: "glg", iso6392B: "glg"),
-        IsoLanguageInfo(isoName: "Manx", nativeName: "Gaelg", iso6391: "gv", iso6392T: "glv", iso6392B: "glv"),
-        IsoLanguageInfo(isoName: "Manx", nativeName: "Gailck", iso6391: "gv", iso6392T: "glv", iso6392B: "glv"),
-        IsoLanguageInfo(isoName: "Diutsch", nativeName: "", iso6391: "", iso6392T: "gmh", iso6392B: "gmh"),
-        IsoLanguageInfo(isoName: "Diutisk", nativeName: "", iso6391: "", iso6392T: "goh", iso6392B: "goh"),
-        IsoLanguageInfo(isoName: "Gondi", nativeName: "", iso6391: "", iso6392T: "gon", iso6392B: "gon"),
-        IsoLanguageInfo(isoName: "Bahasa Hulontalo", nativeName: "", iso6391: "", iso6392T: "gor", iso6392B: "gor"),
-        IsoLanguageInfo(isoName: "Gothic", nativeName: "", iso6391: "", iso6392T: "got", iso6392B: "got"),
-        IsoLanguageInfo(isoName: "Grebo", nativeName: "", iso6391: "", iso6392T: "grb", iso6392B: "grb"),
-        IsoLanguageInfo(isoName: "Ἑλληνική", nativeName: "", iso6391: "", iso6392T: "grc", iso6392B: "grc"),
-        IsoLanguageInfo(isoName: "Guarani", nativeName: "Avañe'ẽ", iso6391: "gn", iso6392T: "grn", iso6392B: "grn"),
-        IsoLanguageInfo(isoName: "Schwiizerdütsch", nativeName: "", iso6391: "", iso6392T: "gsw", iso6392B: "gsw"),
-        IsoLanguageInfo(isoName: "Schwiizerdütsch", nativeName: "", iso6391: "", iso6392T: "gsw", iso6392B: "gsw"),
-        IsoLanguageInfo(isoName: "Schwiizerdütsch", nativeName: "", iso6391: "", iso6392T: "gsw", iso6392B: "gsw"),
-        IsoLanguageInfo(isoName: "Gujarati", nativeName: "ગુજરાતી", iso6391: "gu", iso6392T: "guj", iso6392B: "guj"),
-        IsoLanguageInfo(isoName: "Dinjii Zhu’ Ginjik", nativeName: "", iso6391: "", iso6392T: "gwi", iso6392B: "gwi"),
-        IsoLanguageInfo(isoName: "X̱aat Kíl", nativeName: "", iso6391: "", iso6392T: "hai", iso6392B: "hai"),
-        IsoLanguageInfo(isoName: "X̱aadas Kíl", nativeName: "", iso6391: "", iso6392T: "hai", iso6392B: "hai"),
-        IsoLanguageInfo(isoName: "X̱aayda Kil", nativeName: "", iso6391: "", iso6392T: "hai", iso6392B: "hai"),
-        IsoLanguageInfo(isoName: "Xaad kil", nativeName: "", iso6391: "", iso6392T: "hai", iso6392B: "hai"),
-        IsoLanguageInfo(isoName: "Haitian", nativeName: "kreyòl ayisyen", iso6391: "ht", iso6392T: "hat", iso6392B: "hat"),
-        IsoLanguageInfo(isoName: "Haitian Creole", nativeName: "kreyòl ayisyen", iso6391: "ht", iso6392T: "hat", iso6392B: "hat"),
-        IsoLanguageInfo(isoName: "Hausa", nativeName: "هَرْشَن", iso6391: "ha", iso6392T: "hau", iso6392B: "hau"),
-        IsoLanguageInfo(isoName: "Hausa", nativeName: "Harshen Hausa", iso6391: "ha", iso6392T: "hau", iso6392B: "hau"),
-        IsoLanguageInfo(isoName: "ʻŌlelo Hawaiʻi", nativeName: "", iso6391: "", iso6392T: "haw", iso6392B: "haw"),
-        IsoLanguageInfo(isoName: "Hebrew", nativeName: "עברית", iso6391: "he", iso6392T: "heb", iso6392B: "heb"),
-        IsoLanguageInfo(isoName: "Herero", nativeName: "Otjiherero", iso6391: "hz", iso6392T: "her", iso6392B: "her"),
-        IsoLanguageInfo(isoName: "Ilonggo", nativeName: "", iso6391: "", iso6392T: "hil", iso6392B: "hil"),
-        IsoLanguageInfo(isoName: "Pahari languages", nativeName: "", iso6391: "", iso6392T: "him", iso6392B: "him"),
-        IsoLanguageInfo(isoName: "Himachali languages", nativeName: "", iso6391: "", iso6392T: "him", iso6392B: "him"),
-        IsoLanguageInfo(isoName: "Hindi", nativeName: "हिन्दी", iso6391: "hi", iso6392T: "hin", iso6392B: "hin"),
-        IsoLanguageInfo(isoName: "𒉈𒅆𒇷", nativeName: "", iso6391: "", iso6392T: "hit", iso6392B: "hit"),
-        IsoLanguageInfo(isoName: "lus Hmoob", nativeName: "", iso6391: "", iso6392T: "hmn", iso6392B: "hmn"),
-        IsoLanguageInfo(isoName: "lug Moob", nativeName: "", iso6391: "", iso6392T: "hmn", iso6392B: "hmn"),
-        IsoLanguageInfo(isoName: "lol Hmongb", nativeName: "", iso6391: "", iso6392T: "hmn", iso6392B: "hmn"),
-        IsoLanguageInfo(isoName: "Hiri Motu", nativeName: "Hiri Motu", iso6391: "ho", iso6392T: "hmo", iso6392B: "hmo"),
-        IsoLanguageInfo(isoName: "Croatian", nativeName: "hrvatski", iso6391: "hr", iso6392T: "hrv", iso6392B: "hrv"),
-        IsoLanguageInfo(isoName: "hornjoserbšćina", nativeName: "", iso6391: "", iso6392T: "hsb", iso6392B: "hsb"),
-        IsoLanguageInfo(isoName: "Hungarian", nativeName: "magyar nyelv", iso6391: "hu", iso6392T: "hun", iso6392B: "hun"),
-        IsoLanguageInfo(isoName: "Na:tinixwe Mixine:whe'", nativeName: "", iso6391: "", iso6392T: "hup", iso6392B: "hup"),
-        IsoLanguageInfo(isoName: "Armenian", nativeName: "Հայերեն", iso6391: "hy", iso6392T: "hye", iso6392B: "arm"),
-        IsoLanguageInfo(isoName: "Armenian", nativeName: "Հայերէն", iso6391: "hy", iso6392T: "hye", iso6392B: "arm"),
-        IsoLanguageInfo(isoName: "Jaku Iban", nativeName: "", iso6391: "", iso6392T: "iba", iso6392B: "iba"),
-        IsoLanguageInfo(isoName: "Igbo", nativeName: "Asụsụ Igbo", iso6391: "ig", iso6392T: "ibo", iso6392B: "ibo"),
-        IsoLanguageInfo(isoName: "Icelandic", nativeName: "íslenska", iso6391: "is", iso6392T: "isl", iso6392B: "ice"),
-        IsoLanguageInfo(isoName: "Ido", nativeName: "Ido", iso6391: "io", iso6392T: "ido", iso6392B: "ido"),
-        IsoLanguageInfo(isoName: "Sichuan Yi", nativeName: "ꆈꌠꉙ", iso6391: "ii", iso6392T: "iii", iso6392B: "iii"),
-        IsoLanguageInfo(isoName: "Nuosu", nativeName: "ꆈꌠꉙ", iso6391: "ii", iso6392T: "iii", iso6392B: "iii"),
-        IsoLanguageInfo(isoName: "Ịjọ", nativeName: "", iso6391: "", iso6392T: "ijo", iso6392B: "ijo"),
-        IsoLanguageInfo(isoName: "Inuktitut", nativeName: "ᐃᓄᒃᑎᑐᑦ", iso6391: "iu", iso6392T: "iku", iso6392B: "iku"),
-        IsoLanguageInfo(isoName: "Occidental", nativeName: "Occidental", iso6391: "ie", iso6392T: "ile", iso6392B: "ile"),
-        IsoLanguageInfo(isoName: "Interlingue", nativeName: "Interlingue", iso6391: "ie", iso6392T: "ile", iso6392B: "ile"),
-        IsoLanguageInfo(isoName: "Pagsasao nga Ilokano", nativeName: "", iso6391: "", iso6392T: "ilo", iso6392B: "ilo"),
-        IsoLanguageInfo(isoName: "Ilokano", nativeName: "", iso6391: "", iso6392T: "ilo", iso6392B: "ilo"),
-        IsoLanguageInfo(isoName: "Interlingua (International Auxiliary Language Association)", nativeName: "", iso6391: "ia",iso6392T: "ina", iso6392B: "ina"),
-        IsoLanguageInfo(isoName: "Indic languages", nativeName: "", iso6391: "", iso6392T: "inc", iso6392B: "inc"),
-        IsoLanguageInfo(isoName: "Indo-Aryan languages", nativeName: "", iso6391: "", iso6392T: "inc", iso6392B: "inc"),
-        IsoLanguageInfo(isoName: "Indonesian", nativeName: "bahasa Indonesia", iso6391: "id", iso6392T: "ind", iso6392B: "ind"),
-        IsoLanguageInfo(isoName: "Indo-European languages", nativeName: "", iso6391: "", iso6392T: "ine", iso6392B: "ine"),
-        IsoLanguageInfo(isoName: "ГӀалгӀай мотт", nativeName: "", iso6391: "", iso6392T: "inh", iso6392B: "inh"),
-        IsoLanguageInfo(isoName: "Inupiaq", nativeName: "Iñupiaq", iso6391: "ik", iso6392T: "ipk", iso6392B: "ipk"),
-        IsoLanguageInfo(isoName: "Iranian languages", nativeName: "", iso6391: "", iso6392T: "ira", iso6392B: "ira"),
-        IsoLanguageInfo(isoName: "Iroquoian languages", nativeName: "", iso6391: "", iso6392T: "iro", iso6392B: "iro"),
-        IsoLanguageInfo(isoName: "Icelandic", nativeName: "íslenska", iso6391: "is", iso6392T: "isl", iso6392B: "ice"),
-        IsoLanguageInfo(isoName: "Italian", nativeName: "italiano", iso6391: "it", iso6392T: "ita", iso6392B: "ita"),
-        IsoLanguageInfo(isoName: "Italian", nativeName: "lingua italiana", iso6391: "it", iso6392T: "ita", iso6392B: "ita"),
-        IsoLanguageInfo(isoName: "Javanese", nativeName: "ꦧꦱꦗꦮ", iso6391: "jv", iso6392T: "jav", iso6392B: "jav"),
-        IsoLanguageInfo(isoName: "la .lojban.", nativeName: "", iso6391: "", iso6392T: "jbo", iso6392B: "jbo"),
-        IsoLanguageInfo(isoName: "Japanese", nativeName: "日本語", iso6391: "ja", iso6392T: "jpn", iso6392B: "jpn"),
-        IsoLanguageInfo(isoName: "Dzhidi", nativeName: "", iso6391: "", iso6392T: "jpr", iso6392B: "jpr"),
-        IsoLanguageInfo(isoName: "عربية يهودية / ערבית יהודית", nativeName: "", iso6391: "", iso6392T: "jrb", iso6392B: "jrb"),
-        IsoLanguageInfo(isoName: "Qaraqalpaq tili", nativeName: "", iso6391: "", iso6392T: "kaa", iso6392B: "kaa"),
-        IsoLanguageInfo(isoName: "Қарақалпақ тили", nativeName: "", iso6391: "", iso6392T: "kaa", iso6392B: "kaa"),
-        IsoLanguageInfo(isoName: "Tamaziɣt Taqbaylit", nativeName: "", iso6391: "", iso6392T: "kab", iso6392B: "kab"),
-        IsoLanguageInfo(isoName: "Tazwawt", nativeName: "", iso6391: "", iso6392T: "kab", iso6392B: "kab"),
-        IsoLanguageInfo(isoName: "Jingpho", nativeName: "", iso6391: "", iso6392T: "kac", iso6392B: "kac"),
-        IsoLanguageInfo(isoName: "Jingpho", nativeName: "", iso6391: "", iso6392T: "kac", iso6392B: "kac"),
-        IsoLanguageInfo(isoName: "Kalaallisut", nativeName: "Kalaallisut", iso6391: "kl", iso6392T: "kal", iso6392B: "kal"),
-        IsoLanguageInfo(isoName: "Greenlandic", nativeName: "Greenlandic", iso6391: "kl", iso6392T: "kal", iso6392B: "kal"),
-        IsoLanguageInfo(isoName: "Kamba", nativeName: "", iso6391: "", iso6392T: "kam", iso6392B: "kam"),
-        IsoLanguageInfo(isoName: "Kannada", nativeName: "ಕನ್ನಡ", iso6391: "kn", iso6392T: "kan", iso6392B: "kan"),
-        IsoLanguageInfo(isoName: "Karen languages", nativeName: "", iso6391: "", iso6392T: "kar", iso6392B: "kar"),
-        IsoLanguageInfo(isoName: "Kashmiri", nativeName: "कॉशुर / كأشُر", iso6391: "ks", iso6392T: "kas", iso6392B: "kas"),
-        IsoLanguageInfo(isoName: "Kanuri", nativeName: "Kanuri", iso6391: "kr", iso6392T: "kau", iso6392B: "kau"),
-        IsoLanguageInfo(isoName: "ꦧꦱꦗꦮ", nativeName: "", iso6391: "", iso6392T: "kaw", iso6392B: "kaw"),
-        IsoLanguageInfo(isoName: "Kazakh", nativeName: "қазақ тілі / qazaq tili", iso6391: "kk", iso6392T: "kaz", iso6392B: "kaz"),
-        IsoLanguageInfo(isoName: "Адыгэбзэ (Къэбэрдейбзэ)", nativeName: "", iso6391: "", iso6392T: "kbd", iso6392B: "kbd"),
-        IsoLanguageInfo(isoName: "কা কতিয়েন খাশি", nativeName: "", iso6391: "", iso6392T: "kha", iso6392B: "kha"),
-        IsoLanguageInfo(isoName: "Khoisan languages", nativeName: "", iso6391: "", iso6392T: "khi", iso6392B: "khi"),
-        IsoLanguageInfo(isoName: "Central Khmer", nativeName: "ភាសាខ្មែរ", iso6391: "km", iso6392T: "khm", iso6392B: "khm"),
-        IsoLanguageInfo(isoName: "Khotanese", nativeName: "", iso6391: "", iso6392T: "kho", iso6392B: "kho"),
-        IsoLanguageInfo(isoName: "Sakan", nativeName: "", iso6391: "", iso6392T: "kho", iso6392B: "kho"),
-        IsoLanguageInfo(isoName: "Kikuyu", nativeName: "Gĩkũyũ", iso6391: "ki", iso6392T: "kik", iso6392B: "kik"),
-        IsoLanguageInfo(isoName: "Gikuyu", nativeName: "Gĩkũyũ", iso6391: "ki", iso6392T: "kik", iso6392B: "kik"),
-        IsoLanguageInfo(isoName: "Kinyarwanda", nativeName: "Kinyarwanda", iso6391: "rw", iso6392T: "kin", iso6392B: "kin"),
-        IsoLanguageInfo(isoName: "Kyrgyz", nativeName: "кыргыз тили", iso6391: "ky", iso6392T: "kir", iso6392B: "kir"),
-        IsoLanguageInfo(isoName: "Kirghiz", nativeName: "кыргызча", iso6391: "ky", iso6392T: "kir", iso6392B: "kir"),
-        IsoLanguageInfo(isoName: "Kimbundu", nativeName: "", iso6391: "", iso6392T: "kmb", iso6392B: "kmb"),
-        IsoLanguageInfo(isoName: "कोंकणी", nativeName: "", iso6391: "", iso6392T: "kok", iso6392B: "kok"),
-        IsoLanguageInfo(isoName: "Komi", nativeName: "Коми кыв", iso6391: "kv", iso6392T: "kom", iso6392B: "kom"),
-        IsoLanguageInfo(isoName: "Kongo", nativeName: "Kongo", iso6391: "kg", iso6392T: "kon", iso6392B: "kon"),
-        IsoLanguageInfo(isoName: "Korean", nativeName: "한국어", iso6391: "ko", iso6392T: "kor", iso6392B: "kor"),
-        IsoLanguageInfo(isoName: "Kosraean", nativeName: "", iso6391: "", iso6392T: "kos", iso6392B: "kos"),
-        IsoLanguageInfo(isoName: "Kpɛlɛwoo", nativeName: "", iso6391: "", iso6392T: "kpe", iso6392B: "kpe"),
-        IsoLanguageInfo(isoName: "Къарачай-Малкъар тил", nativeName: "", iso6391: "", iso6392T: "krc", iso6392B: "krc"),
-        IsoLanguageInfo(isoName: "Таулу тил", nativeName: "", iso6391: "", iso6392T: "krc", iso6392B: "krc"),
-        IsoLanguageInfo(isoName: "karjal", nativeName: "", iso6391: "", iso6392T: "krl", iso6392B: "krl"),
-        IsoLanguageInfo(isoName: "kariela", nativeName: "", iso6391: "", iso6392T: "krl", iso6392B: "krl"),
-        IsoLanguageInfo(isoName: "karjala", nativeName: "", iso6391: "", iso6392T: "krl", iso6392B: "krl"),
-        IsoLanguageInfo(isoName: "Kru languages", nativeName: "", iso6391: "", iso6392T: "kro", iso6392B: "kro"),
-        IsoLanguageInfo(isoName: "कुड़ुख़", nativeName: "", iso6391: "", iso6392T: "kru", iso6392B: "kru"),
-        IsoLanguageInfo(isoName: "Kuanyama", nativeName: "Kuanyama", iso6391: "kj", iso6392T: "kua", iso6392B: "kua"),
-        IsoLanguageInfo(isoName: "Kwanyama", nativeName: "Kwanyama", iso6391: "kj", iso6392T: "kua", iso6392B: "kua"),
-        IsoLanguageInfo(isoName: "къумукъ тил/qumuq til", nativeName: "", iso6391: "", iso6392T: "kum", iso6392B: "kum"),
-        IsoLanguageInfo(isoName: "Kurdish", nativeName: "Kurdî / کوردی", iso6391: "ku", iso6392T: "kur", iso6392B: "kur"),
-        IsoLanguageInfo(isoName: "Kutenai", nativeName: "", iso6391: "", iso6392T: "kut", iso6392B: "kut"),
-        IsoLanguageInfo(isoName: "Judeo-español", nativeName: "", iso6391: "", iso6392T: "lad", iso6392B: "lad"),
-        IsoLanguageInfo(isoName: "Judeo-español", nativeName: "", iso6391: "", iso6392T: "lad", iso6392B: "lad"),
-        IsoLanguageInfo(isoName: "بھارت کا", nativeName: "", iso6391: "", iso6392T: "lah", iso6392B: "lah"),
-        IsoLanguageInfo(isoName: "بھارت کا", nativeName: "", iso6391: "", iso6392T: "lah", iso6392B: "lah"),
-        IsoLanguageInfo(isoName: "Lamba", nativeName: "", iso6391: "", iso6392T: "lam", iso6392B: "lam"),
-        IsoLanguageInfo(isoName: "Lao", nativeName: "ພາສາລາວ", iso6391: "lo", iso6392T: "lao", iso6392B: "lao"),
-        IsoLanguageInfo(isoName: "Latin", nativeName: "Lingua latīna", iso6391: "la", iso6392T: "lat", iso6392B: "lat"),
-        IsoLanguageInfo(isoName: "Latvian", nativeName: "Latviešu valoda", iso6391: "lv", iso6392T: "lav", iso6392B: "lav"),
-        IsoLanguageInfo(isoName: "Лезги чӏал", nativeName: "", iso6391: "", iso6392T: "lez", iso6392B: "lez"),
-        IsoLanguageInfo(isoName: "Limburgan", nativeName: "Lèmburgs", iso6391: "li", iso6392T: "lim", iso6392B: "lim"),
-        IsoLanguageInfo(isoName: "Limburger", nativeName: "Lèmburgs", iso6391: "li", iso6392T: "lim", iso6392B: "lim"),
-        IsoLanguageInfo(isoName: "Limburgish", nativeName: "Lèmburgs", iso6391: "li", iso6392T: "lim", iso6392B: "lim"),
-        IsoLanguageInfo(isoName: "Lingala", nativeName: "Lingala", iso6391: "ln", iso6392T: "lin", iso6392B: "lin"),
-        IsoLanguageInfo(isoName: "Lithuanian", nativeName: "lietuvių kalba", iso6391: "lt", iso6392T: "lit", iso6392B: "lit"),
-        IsoLanguageInfo(isoName: "Lomongo", nativeName: "", iso6391: "", iso6392T: "lol", iso6392B: "lol"),
-        IsoLanguageInfo(isoName: "Lozi", nativeName: "", iso6391: "", iso6392T: "loz", iso6392B: "loz"),
-        IsoLanguageInfo(isoName: "Letzeburgesch", nativeName: "Lëtzebuergesch", iso6391: "lb", iso6392T: "ltz", iso6392B: "ltz"),
-        IsoLanguageInfo(isoName: "Luxembourgish", nativeName: "Lëtzebuergesch", iso6391: "lb", iso6392T: "ltz", iso6392B: "ltz"),
-        IsoLanguageInfo(isoName: "Tshiluba", nativeName: "", iso6391: "", iso6392T: "lua", iso6392B: "lua"),
-        IsoLanguageInfo(isoName: "Tshiluba", nativeName: "", iso6391: "", iso6392T: "lua", iso6392B: "lua"),
-        IsoLanguageInfo(isoName: "Luba-Katanga", nativeName: "Kiluba", iso6391: "lu", iso6392T: "lub", iso6392B: "lub"),
-        IsoLanguageInfo(isoName: "Ganda", nativeName: "Luganda", iso6391: "lg", iso6392T: "lug", iso6392B: "lug"),
-        IsoLanguageInfo(isoName: "Cham'teela", nativeName: "", iso6391: "", iso6392T: "lui", iso6392B: "lui"),
-        IsoLanguageInfo(isoName: "Chilunda", nativeName: "", iso6391: "", iso6392T: "lun", iso6392B: "lun"),
-        IsoLanguageInfo(isoName: "Dholuo", nativeName: "", iso6391: "", iso6392T: "luo", iso6392B: "luo"),
-        IsoLanguageInfo(isoName: "Mizo ṭawng", nativeName: "", iso6391: "", iso6392T: "lus", iso6392B: "lus"),
-        IsoLanguageInfo(isoName: "Mizo ṭawng", nativeName: "", iso6391: "", iso6392T: "lus", iso6392B: "lus"),
-        IsoLanguageInfo(isoName: "Macedonian", nativeName: "македонски јазик", iso6391: "mk", iso6392T: "mkd", iso6392B: "mac"),
-        IsoLanguageInfo(isoName: "Madhura", nativeName: "", iso6391: "", iso6392T: "mad", iso6392B: "mad"),
-        IsoLanguageInfo(isoName: "मगही", nativeName: "", iso6391: "", iso6392T: "mag", iso6392B: "mag"),
-        IsoLanguageInfo(isoName: "Marshallese", nativeName: "Kajin M̧ajeļ", iso6391: "mh", iso6392T: "mah", iso6392B: "mah"),
-        IsoLanguageInfo(isoName: "মৈথিলী", nativeName: "", iso6391: "", iso6392T: "mai", iso6392B: "mai"),
-        IsoLanguageInfo(isoName: "मैथिली", nativeName: "", iso6391: "", iso6392T: "mai", iso6392B: "mai"),
-        IsoLanguageInfo(isoName: "Basa Mangkasara' / ᨅᨔ ᨆᨀᨔᨑ", nativeName: "", iso6391: "", iso6392T: "mak", iso6392B: "mak"),
-        IsoLanguageInfo(isoName: "Basa Mangkasara' / ᨅᨔ ᨆᨀᨔᨑ", nativeName: "", iso6391: "", iso6392T: "mak", iso6392B: "mak"),
-        IsoLanguageInfo(isoName: "Malayalam", nativeName: "മലയാളം", iso6391: "ml", iso6392T: "mal", iso6392B: "mal"),
-        IsoLanguageInfo(isoName: "Mandi'nka kango", nativeName: "", iso6391: "", iso6392T: "man", iso6392B: "man"),
-        IsoLanguageInfo(isoName: "Maori", nativeName: "Te Reo Māori", iso6391: "mi", iso6392T: "mri", iso6392B: "mao"),
-        IsoLanguageInfo(isoName: "Austronesian languages", nativeName: "", iso6391: "", iso6392T: "map", iso6392B: "map"),
-        IsoLanguageInfo(isoName: "Marathi", nativeName: "मराठी", iso6391: "mr", iso6392T: "mar", iso6392B: "mar"),
-        IsoLanguageInfo(isoName: "ɔl", nativeName: "", iso6391: "", iso6392T: "mas", iso6392B: "mas"),
-        IsoLanguageInfo(isoName: "Malay", nativeName: "Bahasa Melayu", iso6391: "ms", iso6392T: "msa", iso6392B: "may"),
-        IsoLanguageInfo(isoName: "мокшень кяль", nativeName: "", iso6391: "", iso6392T: "mdf", iso6392B: "mdf"),
-        IsoLanguageInfo(isoName: "Mandar", nativeName: "", iso6391: "", iso6392T: "mdr", iso6392B: "mdr"),
-        IsoLanguageInfo(isoName: "Mɛnde yia", nativeName: "", iso6391: "", iso6392T: "men", iso6392B: "men"),
-        IsoLanguageInfo(isoName: "Gaoidhealg", nativeName: "", iso6391: "", iso6392T: "mga", iso6392B: "mga"),
-        IsoLanguageInfo(isoName: "Míkmawísimk", nativeName: "", iso6391: "", iso6392T: "mic", iso6392B: "mic"),
-        IsoLanguageInfo(isoName: "Míkmawísimk", nativeName: "", iso6391: "", iso6392T: "mic", iso6392B: "mic"),
-        IsoLanguageInfo(isoName: "Baso Minang", nativeName: "", iso6391: "", iso6392T: "min", iso6392B: "min"),
-        IsoLanguageInfo(isoName: "Uncoded languages", nativeName: "", iso6391: "", iso6392T: "mis", iso6392B: "mis"),
-        IsoLanguageInfo(isoName: "Mon-Khmer languages", nativeName: "", iso6391: "", iso6392T: "mkh", iso6392B: "mkh"),
-        IsoLanguageInfo(isoName: "Austroasiatic languages", nativeName: "", iso6391: "", iso6392T: "mkh", iso6392B: "mkh"),
-        IsoLanguageInfo(isoName: "Malagasy", nativeName: "Malagasy", iso6391: "mg", iso6392T: "mlg", iso6392B: "mlg"),
-        IsoLanguageInfo(isoName: "Maltese", nativeName: "Malti", iso6391: "mt", iso6392T: "mlt", iso6392B: "mlt"),
-        IsoLanguageInfo(isoName: "ᠮᠠᠨᠵᡠ ᡤᡳᠰᡠᠨ", nativeName: "", iso6391: "", iso6392T: "mnc", iso6392B: "mnc"),
-        IsoLanguageInfo(isoName: "Manipuri", nativeName: "", iso6391: "", iso6392T: "mni", iso6392B: "mni"),
-        IsoLanguageInfo(isoName: "Meitei", nativeName: "", iso6391: "", iso6392T: "mni", iso6392B: "mni"),
-        IsoLanguageInfo(isoName: "Manobo languages", nativeName: "", iso6391: "", iso6392T: "mno", iso6392B: "mno"),
-        IsoLanguageInfo(isoName: "Kanien’kéha", nativeName: "", iso6391: "", iso6392T: "moh", iso6392B: "moh"),
-        IsoLanguageInfo(isoName: "Mongolian", nativeName: "монгол хэл", iso6391: "mn", iso6392T: "mon", iso6392B: "mon"),
-        IsoLanguageInfo(isoName: "Mongolian", nativeName: "ᠮᠣᠩᠭᠣᠯ ᠬᠡᠯᠡ", iso6391: "mn", iso6392T: "mon", iso6392B: "mon"),
-        IsoLanguageInfo(isoName: "Mooré", nativeName: "", iso6391: "", iso6392T: "mos", iso6392B: "mos"),
-        IsoLanguageInfo(isoName: "Multiple languages", nativeName: "", iso6391: "", iso6392T: "mul", iso6392B: "mul"),
-        IsoLanguageInfo(isoName: "Munda languages", nativeName: "", iso6391: "", iso6392T: "mun", iso6392B: "mun"),
-        IsoLanguageInfo(isoName: "Mvskoke", nativeName: "", iso6391: "", iso6392T: "mus", iso6392B: "mus"),
-        IsoLanguageInfo(isoName: "Mvskoke", nativeName: "", iso6391: "", iso6392T: "mus", iso6392B: "mus"),
-        IsoLanguageInfo(isoName: "lhéngua mirandesa", nativeName: "", iso6391: "", iso6392T: "mwl", iso6392B: "mwl"),
-        IsoLanguageInfo(isoName: "mirandés", nativeName: "", iso6391: "", iso6392T: "mwl", iso6392B: "mwl"),
-        IsoLanguageInfo(isoName: "मारवाड़ी", nativeName: "", iso6391: "", iso6392T: "mwr", iso6392B: "mwr"),
-        IsoLanguageInfo(isoName: "Mayan languages", nativeName: "", iso6391: "", iso6392T: "myn", iso6392B: "myn"),
-        IsoLanguageInfo(isoName: "эрзянь кель", nativeName: "", iso6391: "", iso6392T: "myv", iso6392B: "myv"),
-        IsoLanguageInfo(isoName: "Nahuatl languages", nativeName: "", iso6391: "", iso6392T: "nah", iso6392B: "nah"),
-        IsoLanguageInfo(isoName: "North American Indian languages", nativeName: "", iso6391: "", iso6392T: "nai", iso6392B: "nai"),
-        IsoLanguageInfo(isoName: "napulitano", nativeName: "", iso6391: "", iso6392T: "nap", iso6392B: "nap"),
-        IsoLanguageInfo(isoName: "Nauru", nativeName: "dorerin Naoero", iso6391: "na", iso6392T: "nau", iso6392B: "nau"),
-        IsoLanguageInfo(isoName: "Navajo", nativeName: "Diné bizaad", iso6391: "nv", iso6392T: "nav", iso6392B: "nav"),
-        IsoLanguageInfo(isoName: "Navaho", nativeName: "Naabeehó bizaad", iso6391: "nv", iso6392T: "nav", iso6392B: "nav"),
-        IsoLanguageInfo(isoName: "Ndebele, South; South Ndebele", nativeName: "isiNdebele seSewula", iso6391: "nr", iso6392T: "nbl", iso6392B: "nbl"),
-        IsoLanguageInfo(isoName: "Ndebele, North; North Ndebele", nativeName: "siNdebele saseNyakatho", iso6391: "nd", iso6392T: "nde", iso6392B: "nde"),
-        IsoLanguageInfo(isoName: "Ndonga", nativeName: "ndonga", iso6391: "ng", iso6392T: "ndo", iso6392B: "ndo"),
-        IsoLanguageInfo(isoName: "Plattdütsch", nativeName: "", iso6391: "", iso6392T: "nds", iso6392B: "nds"),
-        IsoLanguageInfo(isoName: "Plattdüütsch", nativeName: "", iso6391: "", iso6392T: "nds", iso6392B: "nds"),
-        IsoLanguageInfo(isoName: "Nepali", nativeName: "नेपाली भाषा", iso6391: "ne", iso6392T: "nep", iso6392B: "nep"),
-        IsoLanguageInfo(isoName: "नेपाल भाषा", nativeName: "", iso6391: "", iso6392T: "new", iso6392B: "new"),
-        IsoLanguageInfo(isoName: "नेवाः भाय्", nativeName: "", iso6391: "", iso6392T: "new", iso6392B: "new"),
-        IsoLanguageInfo(isoName: "Li Niha", nativeName: "", iso6391: "", iso6392T: "nia", iso6392B: "nia"),
-        IsoLanguageInfo(isoName: "Niger-Kordofanian languages", nativeName: "", iso6391: "", iso6392T: "nic", iso6392B: "nic"),
-        IsoLanguageInfo(isoName: "ko e vagahau Niuē", nativeName: "", iso6391: "", iso6392T: "niu", iso6392B: "niu"),
-        IsoLanguageInfo(isoName: "Norwegian Nynorsk; Nynorsk, Norwegian", nativeName: "nynorsk", iso6391: "nn", iso6392T: "nno", iso6392B: "nno"),
-        IsoLanguageInfo(isoName: "Bokmål, Norwegian; Norwegian Bokmål", nativeName: "bokmål", iso6391: "nb", iso6392T: "nob", iso6392B: "nob"),
-        IsoLanguageInfo(isoName: "Ногай тили", nativeName: "", iso6391: "", iso6392T: "nog", iso6392B: "nog"),
-        IsoLanguageInfo(isoName: "Norrœnt mál", nativeName: "", iso6391: "", iso6392T: "non", iso6392B: "non"),
-        IsoLanguageInfo(isoName: "Dǫnsk tunga", nativeName: "", iso6391: "", iso6392T: "non", iso6392B: "non"),
-        IsoLanguageInfo(isoName: "Norwegian", nativeName: "norsk", iso6391: "no", iso6392T: "nor", iso6392B: "nor"),
-        IsoLanguageInfo(isoName: "N'Ko", nativeName: "", iso6391: "", iso6392T: "nqo", iso6392B: "nqo"),
-        IsoLanguageInfo(isoName: "Sesotho sa Leboa", nativeName: "", iso6391: "", iso6392T: "nso", iso6392B: "nso"),
-        IsoLanguageInfo(isoName: "Sesotho sa Leboa", nativeName: "", iso6391: "", iso6392T: "nso", iso6392B: "nso"),
-        IsoLanguageInfo(isoName: "Sesotho sa Leboa", nativeName: "", iso6391: "", iso6392T: "nso", iso6392B: "nso"),
-        IsoLanguageInfo(isoName: "لغات نوبية", nativeName: "", iso6391: "", iso6392T: "nub", iso6392B: "nub"),
-        IsoLanguageInfo(isoName: "पुलां भाय्", nativeName: "", iso6391: "", iso6392T: "nwc", iso6392B: "nwc"),
-        IsoLanguageInfo(isoName: "पुलाङु नेपाल भाय्", nativeName: "", iso6391: "", iso6392T: "nwc", iso6392B: "nwc"),
-        IsoLanguageInfo(isoName: "पुलां भाय्; पुलाङु नेपाल भाय्", nativeName: "", iso6391: "", iso6392T: "nwc", iso6392B: "nwc"),
-        IsoLanguageInfo(isoName: "Chichewa", nativeName: "Chichewa", iso6391: "ny", iso6392T: "nya", iso6392B: "nya"),
-        IsoLanguageInfo(isoName: "Chewa", nativeName: "Chinyanja", iso6391: "ny", iso6392T: "nya", iso6392B: "nya"),
-        IsoLanguageInfo(isoName: "Nyanja", nativeName: "Chinyanja", iso6391: "ny", iso6392T: "nya", iso6392B: "nya"),
-        IsoLanguageInfo(isoName: "Nyanja", nativeName: "Chichewa", iso6391: "ny", iso6392T: "nya", iso6392B: "nya"),
-        IsoLanguageInfo(isoName: "Nyamwezi", nativeName: "", iso6391: "", iso6392T: "nym", iso6392B: "nym"),
-        IsoLanguageInfo(isoName: "Nyankole", nativeName: "", iso6391: "", iso6392T: "nyn", iso6392B: "nyn"),
-        IsoLanguageInfo(isoName: "Runyoro", nativeName: "", iso6391: "", iso6392T: "nyo", iso6392B: "nyo"),
-        IsoLanguageInfo(isoName: "Nzima", nativeName: "", iso6391: "", iso6392T: "nzi", iso6392B: "nzi"),
-        IsoLanguageInfo(isoName: "Occitan (post 1500)", nativeName: "occitan", iso6391: "oc", iso6392T: "oci", iso6392B: "oci"),
-        IsoLanguageInfo(isoName: "Provençal", nativeName: "lenga d'òc", iso6391: "oc", iso6392T: "oci", iso6392B: "oci"),
-        IsoLanguageInfo(isoName: "Occitan (post 1500); Provençal", nativeName: "provençal", iso6391: "oc", iso6392T: "oci", iso6392B: "oci"),
-        IsoLanguageInfo(isoName: "Ojibwa", nativeName: "Ojibwa", iso6391: "oj", iso6392T: "oji", iso6392B: "oji"),
-        IsoLanguageInfo(isoName: "Ojibwe", nativeName: "Ojibwe", iso6391: "oj", iso6392T: "oji", iso6392B: "oji"),
-        IsoLanguageInfo(isoName: "Oriya", nativeName: "ଓଡ଼ିଆ", iso6391: "or", iso6392T: "ori", iso6392B: "ori"),
-        IsoLanguageInfo(isoName: "Odia", nativeName: "ଓଡ଼ିଆ", iso6391: "or", iso6392T: "ori", iso6392B: "ori"),
-        IsoLanguageInfo(isoName: "Oromo", nativeName: "Afaan Oromoo", iso6391: "om", iso6392T: "orm", iso6392B: "orm"),
-        IsoLanguageInfo(isoName: "Wazhazhe ie", nativeName: "", iso6391: "", iso6392T: "osa", iso6392B: "osa"),
-        IsoLanguageInfo(isoName: "Ossetian", nativeName: "Ирон æвзаг", iso6391: "os", iso6392T: "oss", iso6392B: "oss"),
-        IsoLanguageInfo(isoName: "Ossetic", nativeName: "Ирон æвзаг", iso6391: "os", iso6392T: "oss", iso6392B: "oss"),
-        IsoLanguageInfo(isoName: "لسان عثمانى / lisân-ı Osmânî", nativeName: "", iso6391: "", iso6392T: "ota", iso6392B: "ota"),
-        IsoLanguageInfo(isoName: "Otomian languages", nativeName: "", iso6391: "", iso6392T: "oto", iso6392B: "oto"),
-        IsoLanguageInfo(isoName: "Papuan languages", nativeName: "", iso6391: "", iso6392T: "paa", iso6392B: "paa"),
-        IsoLanguageInfo(isoName: "Salitan Pangasinan", nativeName: "", iso6391: "", iso6392T: "pag", iso6392B: "pag"),
-        IsoLanguageInfo(isoName: "Pārsīk", nativeName: "", iso6391: "", iso6392T: "pal", iso6392B: "pal"),
-        IsoLanguageInfo(isoName: "Pārsīg", nativeName: "", iso6391: "", iso6392T: "pal", iso6392B: "pal"),
-        IsoLanguageInfo(isoName: "Amánung Kapampangan", nativeName: "", iso6391: "", iso6392T: "pam", iso6392B: "pam"),
-        IsoLanguageInfo(isoName: "Amánung Sísuan", nativeName: "", iso6391: "", iso6392T: "pam", iso6392B: "pam"),
-        IsoLanguageInfo(isoName: "Panjabi", nativeName: "ਪੰਜਾਬੀ / پنجابی", iso6391: "pa", iso6392T: "pan", iso6392B: "pan"),
-        IsoLanguageInfo(isoName: "Punjabi", nativeName: "ਪੰਜਾਬੀ / پنجابی", iso6391: "pa", iso6392T: "pan", iso6392B: "pan"),
-        IsoLanguageInfo(isoName: "Papiamentu", nativeName: "", iso6391: "", iso6392T: "pap", iso6392B: "pap"),
-        IsoLanguageInfo(isoName: "a tekoi er a Belau", nativeName: "", iso6391: "", iso6392T: "pau", iso6392B: "pau"),
-        IsoLanguageInfo(isoName: "Persian, Old (ca. 600–400 B.C.)", nativeName: "", iso6391: "", iso6392T: "peo", iso6392B: "peo"),
-        IsoLanguageInfo(isoName: "Philippine languages", nativeName: "", iso6391: "", iso6392T: "phi", iso6392B: "phi"),
-        IsoLanguageInfo(isoName: "𐤃𐤁𐤓𐤉𐤌 𐤊𐤍𐤏𐤍𐤉𐤌", nativeName: "", iso6391: "", iso6392T: "phn", iso6392B: "phn"),
-        IsoLanguageInfo(isoName: "Pali", nativeName: "Pāli", iso6391: "pi", iso6392T: "pli", iso6392B: "pli"),
-        IsoLanguageInfo(isoName: "Polish", nativeName: "Język polski", iso6391: "pl", iso6392T: "pol", iso6392B: "pol"),
-        IsoLanguageInfo(isoName: "Pohnpeian", nativeName: "", iso6391: "", iso6392T: "pon", iso6392B: "pon"),
-        IsoLanguageInfo(isoName: "Portuguese", nativeName: "português", iso6391: "pt", iso6392T: "por", iso6392B: "por"),
-        IsoLanguageInfo(isoName: "Prakrit languages", nativeName: "", iso6391: "", iso6392T: "pra", iso6392B: "pra"),
-        IsoLanguageInfo(isoName: "Provençal, Old (to 1500)", nativeName: "", iso6391: "", iso6392T: "pro", iso6392B: "pro"),
-        IsoLanguageInfo(isoName: "Old Occitan (to 1500)", nativeName: "", iso6391: "", iso6392T: "pro", iso6392B: "pro"),
-        IsoLanguageInfo(isoName: "Pashto", nativeName: "پښتو", iso6391: "ps", iso6392T: "pus", iso6392B: "pus"),
-        IsoLanguageInfo(isoName: "Pushto", nativeName: "پښتو", iso6391: "ps", iso6392T: "pus", iso6392B: "pus"),
-        IsoLanguageInfo(isoName: "Quechua", nativeName: "Runa simi", iso6391: "qu", iso6392T: "que", iso6392B: "que"),
-        IsoLanguageInfo(isoName: "Quechua", nativeName: "kichwa simi", iso6391: "qu", iso6392T: "que", iso6392B: "que"),
-        IsoLanguageInfo(isoName: "Quechua", nativeName: "Nuna shimi", iso6391: "qu", iso6392T: "que", iso6392B: "que"),
-        IsoLanguageInfo(isoName: "राजस्थानी", nativeName: "", iso6391: "", iso6392T: "raj", iso6392B: "raj"),
-        IsoLanguageInfo(isoName: "Vananga rapa nui", nativeName: "", iso6391: "", iso6392T: "rap", iso6392B: "rap"),
-        IsoLanguageInfo(isoName: "Māori Kūki 'Āirani", nativeName: "", iso6391: "", iso6392T: "rar", iso6392B: "rar"),
-        IsoLanguageInfo(isoName: "Māori Kūki 'Āirani", nativeName: "", iso6391: "", iso6392T: "rar", iso6392B: "rar"),
-        IsoLanguageInfo(isoName: "Romance languages", nativeName: "", iso6391: "", iso6392T: "roa", iso6392B: "roa"),
-        IsoLanguageInfo(isoName: "Romansh", nativeName: "Rumantsch", iso6391: "rm", iso6392T: "roh", iso6392B: "roh"),
-        IsoLanguageInfo(isoName: "Romansh", nativeName: "Rumàntsch", iso6391: "rm", iso6392T: "roh", iso6392B: "roh"),
-        IsoLanguageInfo(isoName: "Romansh", nativeName: "Romauntsch", iso6391: "rm", iso6392T: "roh", iso6392B: "roh"),
-        IsoLanguageInfo(isoName: "Romansh", nativeName: "Romontsch", iso6391: "rm", iso6392T: "roh", iso6392B: "roh"),
-        IsoLanguageInfo(isoName: "romani čhib", nativeName: "", iso6391: "", iso6392T: "rom", iso6392B: "rom"),
-        IsoLanguageInfo(isoName: "romani čhib", nativeName: "", iso6391: "", iso6392T: "rom", iso6392B: "rom"),
-        IsoLanguageInfo(isoName: "Romanian", nativeName: "limba română", iso6391: "ro", iso6392T: "ron", iso6392B: "rum"),
-        IsoLanguageInfo(isoName: "Moldavian", nativeName: "limba română", iso6391: "ro", iso6392T: "ron", iso6392B: "rum"),
-        IsoLanguageInfo(isoName: "Moldovan", nativeName: "limba română", iso6391: "ro", iso6392T: "ron", iso6392B: "rum"),
-        IsoLanguageInfo(isoName: "Rundi", nativeName: "Ikirundi", iso6391: "rn", iso6392T: "run", iso6392B: "run"),
-        IsoLanguageInfo(isoName: "Kirundi", nativeName: "Ikirundi", iso6391: "rn", iso6392T: "run", iso6392B: "run"),
-        IsoLanguageInfo(isoName: "armãneashce", nativeName: "", iso6391: "", iso6392T: "rup", iso6392B: "rup"),
-        IsoLanguageInfo(isoName: "armãneashti", nativeName: "", iso6391: "", iso6392T: "rup", iso6392B: "rup"),
-        IsoLanguageInfo(isoName: "rrãmãneshti", nativeName: "", iso6391: "", iso6392T: "rup", iso6392B: "rup"),
-        IsoLanguageInfo(isoName: "Russian", nativeName: "русский язык", iso6391: "ru", iso6392T: "rus", iso6392B: "rus"),
-        IsoLanguageInfo(isoName: "Sandaweeki", nativeName: "", iso6391: "", iso6392T: "sad", iso6392B: "sad"),
-        IsoLanguageInfo(isoName: "Sango", nativeName: "yângâ tî sängö", iso6391: "sg", iso6392T: "sag", iso6392B: "sag"),
-        IsoLanguageInfo(isoName: "Сахалыы", nativeName: "", iso6391: "", iso6392T: "sah", iso6392B: "sah"),
-        IsoLanguageInfo(isoName: "South American Indian (Other)", nativeName: "", iso6391: "", iso6392T: "sai", iso6392B: "sai"),
-        IsoLanguageInfo(isoName: "Salishan languages", nativeName: "", iso6391: "", iso6392T: "sal", iso6392B: "sal"),
-        IsoLanguageInfo(isoName: "ארמית", nativeName: "", iso6391: "", iso6392T: "sam", iso6392B: "sam"),
-        IsoLanguageInfo(isoName: "Sanskrit", nativeName: "संस्कृतम्", iso6391: "sa", iso6392T: "san", iso6392B: "san"),
-        IsoLanguageInfo(isoName: "Sasak", nativeName: "", iso6391: "", iso6392T: "sas", iso6392B: "sas"),
-        IsoLanguageInfo(isoName: "ᱥᱟᱱᱛᱟᱲᱤ", nativeName: "", iso6391: "", iso6392T: "sat", iso6392B: "sat"),
-        IsoLanguageInfo(isoName: "Sicilianu", nativeName: "", iso6391: "", iso6392T: "scn", iso6392B: "scn"),
-        IsoLanguageInfo(isoName: "Braid Scots", nativeName: "", iso6391: "", iso6392T: "sco", iso6392B: "sco"),
-        IsoLanguageInfo(isoName: "Lallans", nativeName: "", iso6391: "", iso6392T: "sco", iso6392B: "sco"),
-        IsoLanguageInfo(isoName: "Selkup", nativeName: "", iso6391: "", iso6392T: "sel", iso6392B: "sel"),
-        IsoLanguageInfo(isoName: "Semitic languages", nativeName: "", iso6391: "", iso6392T: "sem", iso6392B: "sem"),
-        IsoLanguageInfo(isoName: "Goídelc", nativeName: "", iso6391: "", iso6392T: "sga", iso6392B: "sga"),
-        IsoLanguageInfo(isoName: "Sign Languages", nativeName: "", iso6391: "", iso6392T: "sgn", iso6392B: "sgn"),
-        IsoLanguageInfo(isoName: "ၵႂၢမ်းတႆးယႂ်", nativeName: "", iso6391: "", iso6392T: "shn", iso6392B: "shn"),
-        IsoLanguageInfo(isoName: "Sidaamu Afoo", nativeName: "", iso6391: "", iso6392T: "sid", iso6392B: "sid"),
-        IsoLanguageInfo(isoName: "Sinhala", nativeName: "සිංහල", iso6391: "si", iso6392T: "sin", iso6392B: "sin"),
-        IsoLanguageInfo(isoName: "Sinhalese", nativeName: "සිංහල", iso6391: "si", iso6392T: "sin", iso6392B: "sin"),
-        IsoLanguageInfo(isoName: "Siouan languages", nativeName: "", iso6391: "", iso6392T: "sio", iso6392B: "sio"),
-        IsoLanguageInfo(isoName: "Sino-Tibetan languages", nativeName: "", iso6391: "", iso6392T: "sit", iso6392B: "sit"),
-        IsoLanguageInfo(isoName: "Slavic languages", nativeName: "", iso6391: "", iso6392T: "sla", iso6392B: "sla"),
-        IsoLanguageInfo(isoName: "Slovak", nativeName: "slovenčina", iso6391: "sk", iso6392T: "slk", iso6392B: "slo"),
-        IsoLanguageInfo(isoName: "Slovak", nativeName: "slovenský jazyk", iso6391: "sk", iso6392T: "slk", iso6392B: "slo"),
-        IsoLanguageInfo(isoName: "Slovenian", nativeName: "slovenski jezik", iso6391: "sl", iso6392T: "slv", iso6392B: "slv"),
-        IsoLanguageInfo(isoName: "Slovene", nativeName: "slovenščina", iso6391: "sl", iso6392T: "slv", iso6392B: "slv"),
-        IsoLanguageInfo(isoName: "Åarjelsaemien gïele", nativeName: "", iso6391: "", iso6392T: "sma", iso6392B: "sma"),
-        IsoLanguageInfo(isoName: "Northern Sami", nativeName: "davvisámegiella", iso6391: "se", iso6392T: "sme", iso6392B: "sme"),
-        IsoLanguageInfo(isoName: "Sami languages", nativeName: "", iso6391: "", iso6392T: "smi", iso6392B: "smi"),
-        IsoLanguageInfo(isoName: "julevsámegiella", nativeName: "", iso6391: "", iso6392T: "smj", iso6392B: "smj"),
-        IsoLanguageInfo(isoName: "anarâškielâ", nativeName: "", iso6391: "", iso6392T: "smn", iso6392B: "smn"),
-        IsoLanguageInfo(isoName: "Samoan", nativeName: "Gagana faʻa Sāmoa", iso6391: "sm", iso6392T: "smo", iso6392B: "smo"),
-        IsoLanguageInfo(isoName: "sääʹmǩiõll", nativeName: "", iso6391: "", iso6392T: "sms", iso6392B: "sms"),
-        IsoLanguageInfo(isoName: "Shona", nativeName: "chiShona", iso6391: "sn", iso6392T: "sna", iso6392B: "sna"),
-        IsoLanguageInfo(isoName: "Sindhi", nativeName: "سنڌي / सिन्धी / ਸਿੰਧੀ", iso6391: "sd", iso6392T: "snd", iso6392B: "snd"),
-        IsoLanguageInfo(isoName: "Sooninkanxanne", nativeName: "", iso6391: "", iso6392T: "snk", iso6392B: "snk"),
-        IsoLanguageInfo(isoName: "Sogdian", nativeName: "", iso6391: "", iso6392T: "sog", iso6392B: "sog"),
-        IsoLanguageInfo(isoName: "Somali", nativeName: "af Soomaali", iso6391: "so", iso6392T: "som", iso6392B: "som"),
-        IsoLanguageInfo(isoName: "Songhai languages", nativeName: "", iso6391: "", iso6392T: "son", iso6392B: "son"),
-        IsoLanguageInfo(isoName: "Songhay languages", nativeName: "", iso6391: "", iso6392T: "son", iso6392B: "son"),
-        IsoLanguageInfo(isoName: "Sotho, Southern", nativeName: "Sesotho [southern]", iso6391: "st", iso6392T: "sot", iso6392B: "sot"),
-        IsoLanguageInfo(isoName: "Spanish", nativeName: "español", iso6391: "es", iso6392T: "spa", iso6392B: "spa"),
-        IsoLanguageInfo(isoName: "Castilian", nativeName: "castellano", iso6391: "es", iso6392T: "spa", iso6392B: "spa"),
-        IsoLanguageInfo(isoName: "Albanian", nativeName: "Shqip", iso6391: "sq", iso6392T: "sqi", iso6392B: "alb"),
-        IsoLanguageInfo(isoName: "Sardinian", nativeName: "limba sarda", iso6391: "sc", iso6392T: "srd", iso6392B: "srd"),
-        IsoLanguageInfo(isoName: "Sardinian", nativeName: "sardu", iso6391: "sc", iso6392T: "srd", iso6392B: "srd"),
-        IsoLanguageInfo(isoName: "Sardinian", nativeName: "lingua sarda", iso6391: "sc", iso6392T: "srd", iso6392B: "srd"),
-        IsoLanguageInfo(isoName: "Sranan Tongo", nativeName: "", iso6391: "", iso6392T: "srn", iso6392B: "srn"),
-        IsoLanguageInfo(isoName: "Serbian", nativeName: "српски / srpski", iso6391: "sr", iso6392T: "srp", iso6392B: "srp"),
-        IsoLanguageInfo(isoName: "Seereer", nativeName: "", iso6391: "", iso6392T: "srr", iso6392B: "srr"),
-        IsoLanguageInfo(isoName: "Nilo-Saharan languages", nativeName: "", iso6391: "", iso6392T: "ssa", iso6392B: "ssa"),
-        IsoLanguageInfo(isoName: "Swati", nativeName: "siSwati", iso6391: "ss", iso6392T: "ssw", iso6392B: "ssw"),
-        IsoLanguageInfo(isoName: "Swazi", nativeName: "siSwati", iso6391: "ss", iso6392T: "ssw", iso6392B: "ssw"),
-        IsoLanguageInfo(isoName: "Kɪsukuma", nativeName: "", iso6391: "", iso6392T: "suk", iso6392B: "suk"),
-        IsoLanguageInfo(isoName: "Sundanese", nativeName: "ᮘᮞ ᮞᮥᮔ᮪ᮓ / Basa Sunda", iso6391: "su", iso6392T: "sun", iso6392B: "sun"),
-        IsoLanguageInfo(isoName: "Sosoxui", nativeName: "", iso6391: "", iso6392T: "sus", iso6392B: "sus"),
-        IsoLanguageInfo(isoName: "𒅴𒂠", nativeName: "", iso6391: "", iso6392T: "sux", iso6392B: "sux"),
-        IsoLanguageInfo(isoName: "Swahili", nativeName: "Kiswahili", iso6391: "sw", iso6392T: "swa", iso6392B: "swa"),
-        IsoLanguageInfo(isoName: "Swedish", nativeName: "svenska", iso6391: "sv", iso6392T: "swe", iso6392B: "swe"),
-        IsoLanguageInfo(isoName: "Classical Syriac", nativeName: "", iso6391: "", iso6392T: "syc", iso6392B: "syc"),
-        IsoLanguageInfo(isoName: "ܠܫܢܐ ܣܘܪܝܝܐ", nativeName: "", iso6391: "", iso6392T: "syr", iso6392B: "syr"),
-        IsoLanguageInfo(isoName: "Tahitian", nativeName: "Reo Tahiti", iso6391: "ty", iso6392T: "tah", iso6392B: "tah"),
-        IsoLanguageInfo(isoName: "Tahitian", nativeName: "Reo Mā'ohi", iso6391: "ty", iso6392T: "tah", iso6392B: "tah"),
-        IsoLanguageInfo(isoName: "ภาษาไท", nativeName: "", iso6391: "", iso6392T: "tai", iso6392B: "tai"),
-        IsoLanguageInfo(isoName: "ภาษาไต", nativeName: "", iso6391: "", iso6392T: "tai", iso6392B: "tai"),
-        IsoLanguageInfo(isoName: "Tamil", nativeName: "தமிழ்", iso6391: "ta", iso6392T: "tam", iso6392B: "tam"),
-        IsoLanguageInfo(isoName: "Tatar", nativeName: "татар теле / tatar tele / تاتار", iso6391: "tt", iso6392T: "tat", iso6392B: "tat"),
-        IsoLanguageInfo(isoName: "Telugu", nativeName: "తెలుగు", iso6391: "te", iso6392T: "tel", iso6392B: "tel"),
-        IsoLanguageInfo(isoName: "KʌThemnɛ", nativeName: "", iso6391: "", iso6392T: "tem", iso6392B: "tem"),
-        IsoLanguageInfo(isoName: "KʌThemnɛ", nativeName: "", iso6391: "", iso6392T: "tem", iso6392B: "tem"),
-        IsoLanguageInfo(isoName: "Terêna", nativeName: "", iso6391: "", iso6392T: "ter", iso6392B: "ter"),
-        IsoLanguageInfo(isoName: "Terêna", nativeName: "", iso6391: "", iso6392T: "ter", iso6392B: "ter"),
-        IsoLanguageInfo(isoName: "Lia-Tetun", nativeName: "", iso6391: "", iso6392T: "tet", iso6392B: "tet"),
-        IsoLanguageInfo(isoName: "Tajik", nativeName: "тоҷикӣ / tojikī", iso6391: "tg", iso6392T: "tgk", iso6392B: "tgk"),
-        IsoLanguageInfo(isoName: "Tagalog", nativeName: "Wikang Tagalog", iso6391: "tl", iso6392T: "tgl", iso6392B: "tgl"),
-        IsoLanguageInfo(isoName: "Thai", nativeName: "ภาษาไทย", iso6391: "th", iso6392T: "tha", iso6392B: "tha"),
-        IsoLanguageInfo(isoName: "ኻሳ", nativeName: "", iso6391: "", iso6392T: "tig", iso6392B: "tig"),
-        IsoLanguageInfo(isoName: "ትግራይት", nativeName: "", iso6391: "", iso6392T: "tig", iso6392B: "tig"),
-        IsoLanguageInfo(isoName: "Tigrinya", nativeName: "ትግርኛ", iso6391: "ti", iso6392T: "tir", iso6392B: "tir"),
-        IsoLanguageInfo(isoName: "ትግረ", nativeName: "", iso6391: "", iso6392T: "tig", iso6392B: "tig"),
-        IsoLanguageInfo(isoName: "ትግሬ", nativeName: "", iso6391: "", iso6392T: "tig", iso6392B: "tig"),
-        IsoLanguageInfo(isoName: "Tiv", nativeName: "", iso6391: "", iso6392T: "tiv", iso6392B: "tiv"),
-        IsoLanguageInfo(isoName: "Tokelau", nativeName: "", iso6391: "", iso6392T: "tkl", iso6392B: "tkl"),
-        IsoLanguageInfo(isoName: "Tokelauan", nativeName: "", iso6391: "", iso6392T: "tkl", iso6392B: "tkl"),
-        IsoLanguageInfo(isoName: "tlhIngan-Hol", nativeName: "", iso6391: "", iso6392T: "tlh", iso6392B: "tlh"),
-        IsoLanguageInfo(isoName: "Lingít", nativeName: "", iso6391: "", iso6392T: "tli", iso6392B: "tli"),
-        IsoLanguageInfo(isoName: "Tamashek", nativeName: "", iso6391: "", iso6392T: "tmh", iso6392B: "tmh"),
-        IsoLanguageInfo(isoName: "Tamasheq", nativeName: "", iso6391: "", iso6392T: "tmh", iso6392B: "tmh"),
-        IsoLanguageInfo(isoName: "chiTonga", nativeName: "", iso6391: "", iso6392T: "tog", iso6392B: "tog"),
-        IsoLanguageInfo(isoName: "Tonga (Tonga Islands)", nativeName: "lea faka-Tonga", iso6391: "to", iso6392T: "ton", iso6392B: "ton"),
-        IsoLanguageInfo(isoName: "Tongan", nativeName: "lea faka-Tonga", iso6391: "to", iso6392T: "ton", iso6392B: "ton"),
-        IsoLanguageInfo(isoName: "Tok Pisin", nativeName: "", iso6391: "", iso6392T: "tpi", iso6392B: "tpi"),
-        IsoLanguageInfo(isoName: "Tsimshian", nativeName: "", iso6391: "", iso6392T: "tsi", iso6392B: "tsi"),
-        IsoLanguageInfo(isoName: "Tswana", nativeName: "Setswana", iso6391: "tn", iso6392T: "tsn", iso6392B: "tsn"),
-        IsoLanguageInfo(isoName: "Tsonga", nativeName: "Xitsonga", iso6391: "ts", iso6392T: "tso", iso6392B: "tso"),
-        IsoLanguageInfo(isoName: "Turkmen", nativeName: "türkmen dili / түркмен дили", iso6391: "tk", iso6392T: "tuk", iso6392B: "tuk"),
-        IsoLanguageInfo(isoName: "Turkmen", nativeName: "Türkmençe / Түркменче / تورکمن تیلی تورکمن", iso6391: "tk", iso6392T: "tuk", iso6392B: "tuk"),
-        IsoLanguageInfo(isoName: "chiTumbuka", nativeName: "", iso6391: "", iso6392T: "tum", iso6392B: "tum"),
-        IsoLanguageInfo(isoName: "Tupi languages", nativeName: "", iso6391: "", iso6392T: "tup", iso6392B: "tup"),
-        IsoLanguageInfo(isoName: "Tupian languages", nativeName: "", iso6391: "", iso6392T: "tup", iso6392B: "tup"),
-        IsoLanguageInfo(isoName: "Turkish", nativeName: "Türkçe", iso6391: "tr", iso6392T: "tur", iso6392B: "tur"),
-        IsoLanguageInfo(isoName: "Altaic languages", nativeName: "", iso6391: "", iso6392T: "tut", iso6392B: "tut"),
-        IsoLanguageInfo(isoName: "Te Ggana Tuuvalu", nativeName: "", iso6391: "", iso6392T: "tvl", iso6392B: "tvl"),
-        IsoLanguageInfo(isoName: "Te Gagana Tuuvalu", nativeName: "", iso6391: "", iso6392T: "tvl", iso6392B: "tvl"),
-        IsoLanguageInfo(isoName: "Twi", nativeName: "Twi", iso6391: "tw", iso6392T: "twi", iso6392B: "twi"),
-        IsoLanguageInfo(isoName: "тыва дыл", nativeName: "", iso6391: "", iso6392T: "tyv", iso6392B: "tyv"),
-        IsoLanguageInfo(isoName: "тыва дыл", nativeName: "", iso6391: "", iso6392T: "tyv", iso6392B: "tyv"),
-        IsoLanguageInfo(isoName: "удмурт кыл", nativeName: "", iso6391: "", iso6392T: "udm", iso6392B: "udm"),
-        IsoLanguageInfo(isoName: "Ugaritic", nativeName: "", iso6391: "", iso6392T: "uga", iso6392B: "uga"),
-        IsoLanguageInfo(isoName: "Uighur", nativeName: "ئۇيغۇرچە", iso6391: "ug", iso6392T: "uig", iso6392B: "uig"),
-        IsoLanguageInfo(isoName: "Uyghur", nativeName: " ئۇيغۇر تىلى", iso6391: "ug", iso6392T: "uig", iso6392B: "uig"),
-        IsoLanguageInfo(isoName: "Ukrainian", nativeName: "українська мова", iso6391: "uk", iso6392T: "ukr", iso6392B: "ukr"),
-        IsoLanguageInfo(isoName: "Úmbúndú", nativeName: "", iso6391: "", iso6392T: "umb", iso6392B: "umb"),
-        IsoLanguageInfo(isoName: "Undetermined", nativeName: "", iso6391: "", iso6392T: "und", iso6392B: "und"),
-        IsoLanguageInfo(isoName: "Urdu", nativeName: "اُردُو", iso6391: "ur", iso6392T: "urd", iso6392B: "urd"),
-        IsoLanguageInfo(isoName: "Uzbek", nativeName: "Oʻzbekcha / ўзбекча / ئوزبېچه", iso6391: "uz", iso6392T: "uzb", iso6392B: "uzb"),
-        IsoLanguageInfo(isoName: "Uzbek", nativeName: "oʻzbek tili / ўзбек тили / ئوبېک تیلی", iso6391: "uz", iso6392T: "uzb", iso6392B: "uzb"),
-        IsoLanguageInfo(isoName: "ꕙꔤ", nativeName: "", iso6391: "", iso6392T: "vai", iso6392B: "vai"),
-        IsoLanguageInfo(isoName: "Venda", nativeName: "Tshivenḓa", iso6391: "ve", iso6392T: "ven", iso6392B: "ven"),
-        IsoLanguageInfo(isoName: "Vietnamese", nativeName: "Tiếng Việt", iso6391: "vi", iso6392T: "vie", iso6392B: "vie"),
-        IsoLanguageInfo(isoName: "Volapük", nativeName: "Volapük", iso6391: "vo", iso6392T: "vol", iso6392B: "vol"),
-        IsoLanguageInfo(isoName: "vađđa ceeli", nativeName: "", iso6391: "", iso6392T: "vot", iso6392B: "vot"),
-        IsoLanguageInfo(isoName: "Wakashan languages", nativeName: "", iso6391: "", iso6392T: "wak", iso6392B: "wak"),
-        IsoLanguageInfo(isoName: "Wolaitta", nativeName: "", iso6391: "", iso6392T: "wal", iso6392B: "wal"),
-        IsoLanguageInfo(isoName: "Wolaytta", nativeName: "", iso6391: "", iso6392T: "wal", iso6392B: "wal"),
-        IsoLanguageInfo(isoName: "Winaray", nativeName: "", iso6391: "", iso6392T: "war", iso6392B: "war"),
-        IsoLanguageInfo(isoName: "Samareño", nativeName: "", iso6391: "", iso6392T: "war", iso6392B: "war"),
-        IsoLanguageInfo(isoName: "Lineyte-Samarnon", nativeName: "", iso6391: "", iso6392T: "war", iso6392B: "war"),
-        IsoLanguageInfo(isoName: "Binisayâ nga Samar-Leyte", nativeName: "", iso6391: "", iso6392T: "war", iso6392B: "war"),
-        IsoLanguageInfo(isoName: "Binisayâ nga Winaray", nativeName: "", iso6391: "", iso6392T: "war", iso6392B: "war"),
-        IsoLanguageInfo(isoName: "Binisayâ nga Waray", nativeName: "", iso6391: "", iso6392T: "war", iso6392B: "war"),
-        IsoLanguageInfo(isoName: "wá:šiw ʔítlu", nativeName: "", iso6391: "", iso6392T: "was", iso6392B: "was"),
-        IsoLanguageInfo(isoName: "Serbsce / Serbski", nativeName: "", iso6391: "", iso6392T: "wen", iso6392B: "wen"),
-        IsoLanguageInfo(isoName: "Walloon", nativeName: "Walon", iso6391: "wa", iso6392T: "wln", iso6392B: "wln"),
-        IsoLanguageInfo(isoName: "Wolof", nativeName: "Wolof", iso6391: "wo", iso6392T: "wol", iso6392B: "wol"),
-        IsoLanguageInfo(isoName: "Хальмг келн / Xaľmg keln", nativeName: "", iso6391: "", iso6392T: "xal", iso6392B: "xal"),
-        IsoLanguageInfo(isoName: "Хальмг келн / Xaľmg keln", nativeName: "", iso6391: "", iso6392T: "xal", iso6392B: "xal"),
-        IsoLanguageInfo(isoName: "Xhosa", nativeName: "isiXhosa", iso6391: "xh", iso6392T: "xho", iso6392B: "xho"),
-        IsoLanguageInfo(isoName: "Yao", nativeName: "", iso6391: "", iso6392T: "yao", iso6392B: "yao"),
-        IsoLanguageInfo(isoName: "Yapese", nativeName: "", iso6391: "", iso6392T: "yap", iso6392B: "yap"),
-        IsoLanguageInfo(isoName: "Yiddish", nativeName: "אידיש", iso6391: "yi", iso6392T: "yid", iso6392B: "yid"),
-        IsoLanguageInfo(isoName: "Yiddish", nativeName: " יידיש", iso6391: "yi", iso6392T: "yid", iso6392B: "yid"),
-        IsoLanguageInfo(isoName: "Yiddish", nativeName: "ייִדיש", iso6391: "yi", iso6392T: "yid", iso6392B: "yid"),
-        IsoLanguageInfo(isoName: "Yoruba", nativeName: "èdè Yorùbá", iso6391: "yo", iso6392T: "yor", iso6392B: "yor"),
-        IsoLanguageInfo(isoName: "Yupik languages", nativeName: "", iso6391: "", iso6392T: "ypk", iso6392B: "ypk"),
-        IsoLanguageInfo(isoName: "Diidxazá", nativeName: "", iso6391: "", iso6392T: "zap", iso6392B: "zap"),
-        IsoLanguageInfo(isoName: "Blissymbols", nativeName: "", iso6391: "", iso6392T: "zbl", iso6392B: "zbl"),
-        IsoLanguageInfo(isoName: "Blissymbolics", nativeName: "", iso6391: "", iso6392T: "zbl", iso6392B: "zbl"),
-        IsoLanguageInfo(isoName: "Bliss", nativeName: "", iso6391: "", iso6392T: "zbl", iso6392B: "zbl"),
-        IsoLanguageInfo(isoName: "Tuḍḍungiyya", nativeName: "", iso6391: "", iso6392T: "zen", iso6392B: "zen"),
-        IsoLanguageInfo(isoName: "ⵜⴰⵎⴰⵣⵉⵖⵜ ⵜⴰⵏⴰⵡⴰⵢⵜ", nativeName: "", iso6391: "", iso6392T: "zgh", iso6392B: "zgh"),
-        IsoLanguageInfo(isoName: "ⵜⴰⵎⴰⵣⵉⵖⵜ ⵜⴰⵏⴰⵡⴰⵢⵜ", nativeName: "", iso6391: "", iso6392T: "zgh", iso6392B: "zgh"),
-        IsoLanguageInfo(isoName: "Zhuang", nativeName: "Vahcuengh / 話僮", iso6391: "za", iso6392T: "zha", iso6392B: "zha"),
-        IsoLanguageInfo(isoName: "Chuang", nativeName: "Vahcuengh / 話僮", iso6391: "za", iso6392T: "zha", iso6392B: "zha"),
-        IsoLanguageInfo(isoName: "Zande languages", nativeName: "", iso6391: "", iso6392T: "znd", iso6392B: "znd"),
-        IsoLanguageInfo(isoName: "Zulu", nativeName: "isiZulu", iso6391: "zu", iso6392T: "zul", iso6392B: "zul"),
-        IsoLanguageInfo(isoName: "Shiwi'ma", nativeName: "", iso6391: "", iso6392T: "zun", iso6392B: "zun"),
-        IsoLanguageInfo(isoName: "No linguistic content; Not applicable", nativeName: "", iso6391: "", iso6392T: "zxx", iso6392B: "zxx"),
-        IsoLanguageInfo(isoName: "Zaza", nativeName: "", iso6391: "", iso6392T: "zza", iso6392B: "zza"),
-        IsoLanguageInfo(isoName: "Dimili", nativeName: "", iso6391: "", iso6392T: "zza", iso6392B: "zza"),
-        IsoLanguageInfo(isoName: "Dimli", nativeName: "", iso6391: "", iso6392T: "zza", iso6392B: "zza"),
-        IsoLanguageInfo(isoName: "Kirdki", nativeName: "", iso6391: "", iso6392T: "zza", iso6392B: "zza"),
-        IsoLanguageInfo(isoName: "Kirmanjki", nativeName: "", iso6391: "", iso6392T: "zza", iso6392B: "zza"),
-        IsoLanguageInfo(isoName: "Zazaki", nativeName: "", iso6391: "", iso6392T: "zza", iso6392B: "zza"),
-    ]
-    // swiftlint:enable line_length
+    /// Afar
+    case aar = "Afar"
+    /// Abkhazian
+    case abk = "Abkhazian"
+    /// Achinese
+    case ace = "Achinese"
+    /// Acoli
+    case ach = "Acoli"
+    /// Adangme
+    case ada = "Adangme"
+    /// Adyghe; Adygei
+    case ady = "Adyghe; Adygei"
+    /// Afro-Asiatic languages
+    case afa = "Afro-Asiatic languages"
+    /// Afrihili
+    case afh = "Afrihili"
+    /// Afrikaans
+    case afr = "Afrikaans"
+    /// Ainu
+    case ain = "Ainu"
+    /// Akan
+    case aka = "Akan"
+    /// Akkadian
+    case akk = "Akkadian"
+    /// Albanian
+    case sqi = "Albanian"
+    /// Aleut
+    case ale = "Aleut"
+    /// Algonquian languages
+    case alg = "Algonquian languages"
+    /// Southern Altai
+    case alt = "Southern Altai"
+    /// Amharic
+    case amh = "Amharic"
+    /// English, Old (ca.450–1100)
+    case ang = "English, Old (ca.450–1100)"
+    /// Angika
+    case anp = "Angika"
+    /// Apache languages
+    case apa = "Apache languages"
+    /// Arabic
+    case ara = "Arabic"
+    /// Official Aramaic, (700–300 BCE); Imperial Aramaic, (700–300 BCE)
+    case arc = "Official Aramaic, (700–300 BCE); Imperial Aramaic, (700–300 BCE)"
+    /// Aragonese
+    case arg = "Aragonese"
+    /// Armenian
+    case hye = "Armenian"
+    /// Mapudungun; Mapuche
+    case arn = "Mapudungun; Mapuche"
+    /// Arapaho
+    case arp = "Arapaho"
+    /// Artificial languages
+    case art = "Artificial languages"
+    /// Arawak
+    case arw = "Arawak"
+    /// Assamese
+    case asm = "Assamese"
+    /// Asturian; Bable; Leonese; Asturleonese
+    case ast = "Asturian; Bable; Leonese; Asturleonese"
+    /// Athapascan languages
+    case ath = "Athapascan languages"
+    /// Australian languages
+    case aus = "Australian languages"
+    /// Avaric
+    case ava = "Avaric"
+    /// Avestan
+    case ave = "Avestan"
+    /// Awadhi
+    case awa = "Awadhi"
+    /// Aymara
+    case aym = "Aymara"
+    /// Azerbaijani
+    case aze = "Azerbaijani"
+    /// Banda languages
+    case bad = "Banda languages"
+    /// Bamileke languages
+    case bai = "Bamileke languages"
+    /// Bashkir
+    case bak = "Bashkir"
+    /// Baluchi
+    case bal = "Baluchi"
+    /// Bambara
+    case bam = "Bambara"
+    /// Balinese
+    case ban = "Balinese"
+    /// Basque
+    case eus = "Basque"
+    /// Basa
+    case bas = "Basa"
+    /// Baltic languages
+    case bat = "Baltic languages"
+    /// Beja; Bedawiyet
+    case bej = "Beja; Bedawiyet"
+    /// Belarusian
+    case bel = "Belarusian"
+    /// Bemba
+    case bem = "Bemba"
+    /// Bengali
+    case ben = "Bengali"
+    /// Berber languages
+    case ber = "Berber languages"
+    /// Bhojpuri
+    case bho = "Bhojpuri"
+    /// Bihari languages
+    case bih = "Bihari languages"
+    /// Bikol
+    case bik = "Bikol"
+    /// Bini; Edo
+    case bin = "Bini; Edo"
+    /// Bislama
+    case bis = "Bislama"
+    /// Siksika
+    case bla = "Siksika"
+    /// Bantu (Other)
+    case bnt = "Bantu (Other)"
+    /// Tibetan
+    case bod = "Tibetan"
+    /// Bosnian
+    case bos = "Bosnian"
+    /// Braj
+    case bra = "Braj"
+    /// Breton
+    case bre = "Breton"
+    /// Batak languages
+    case btk = "Batak languages"
+    /// Buriat
+    case bua = "Buriat"
+    /// Buginese
+    case bug = "Buginese"
+    /// Bulgarian
+    case bul = "Bulgarian"
+    /// Burmese
+    case mya = "Burmese"
+    /// Blin; Bilin
+    case byn = "Blin; Bilin"
+    /// Caddo
+    case cad = "Caddo"
+    /// Central American Indian languages
+    case cai = "Central American Indian languages"
+    /// Galibi Carib
+    case car = "Galibi Carib"
+    /// Catalan; Valencian
+    case cat = "Catalan; Valencian"
+    /// Caucasian languages
+    case cau = "Caucasian languages"
+    /// Cebuano
+    case ceb = "Cebuano"
+    /// Celtic languages
+    case cel = "Celtic languages"
+    /// Czech
+    case ces = "Czech"
+    /// Chamorro
+    case cha = "Chamorro"
+    /// Chibcha
+    case chb = "Chibcha"
+    /// Chechen
+    case che = "Chechen"
+    /// Chagatai
+    case chg = "Chagatai"
+    /// Chinese
+    case zho = "Chinese"
+    /// Chuukese
+    case chk = "Chuukese"
+    /// Mari
+    case chm = "Mari"
+    /// Chinook jargon
+    case chn = "Chinook jargon"
+    /// Choctaw
+    case cho = "Choctaw"
+    /// Chipewyan; Dene Suline
+    case chp = "Chipewyan; Dene Suline"
+    /// Cherokee
+    case chr = "Cherokee"
+    /// Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church Slavonic
+    case chu = "Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church Slavonic"
+    /// Chuvash
+    case chv = "Chuvash"
+    /// Cheyenne
+    case chy = "Cheyenne"
+    /// Chamic languages
+    case cmc = "Chamic languages"
+    /// Montenegrin
+    case cnr = "Montenegrin"
+    /// Coptic
+    case cop = "Coptic"
+    /// Cornish
+    case cor = "Cornish"
+    /// Corsican
+    case cos = "Corsican"
+    /// Creoles and pidgins, English based
+    case cpe = "Creoles and pidgins, English based"
+    /// Creoles and pidgins, French-based
+    case cpf = "Creoles and pidgins, French-based"
+    /// Creoles and pidgins, Portuguese-based
+    case cpp = "Creoles and pidgins, Portuguese-based"
+    /// Cree
+    case cre = "Cree"
+    /// Crimean Tatar; Crimean Turkish
+    case crh = "Crimean Tatar; Crimean Turkish"
+    /// Creoles and pidgins
+    case crp = "Creoles and pidgins"
+    /// Kashubian
+    case csb = "Kashubian"
+    /// Cushitic languages
+    case cus = "Cushitic languages"
+    /// Welsh
+    case cym = "Welsh"
+    /// Dakota
+    case dak = "Dakota"
+    /// Danish
+    case dan = "Danish"
+    /// Dargwa
+    case dar = "Dargwa"
+    /// Land Dayak languages
+    case day = "Land Dayak languages"
+    /// Delaware
+    case del = "Delaware"
+    /// Slave (isoName: Athapascan)
+    case den = "Slave (isoName: Athapascan)"
+    /// German
+    case deu = "German"
+    /// Dogrib
+    case dgr = "Dogrib"
+    /// Dinka
+    case din = "Dinka"
+    /// Divehi; Dhivehi; Maldivian
+    case div = "Divehi; Dhivehi; Maldivian"
+    /// Dogri
+    case doi = "Dogri"
+    /// Dravidian languages
+    case dra = "Dravidian languages"
+    /// Lower Sorbian
+    case dsb = "Lower Sorbian"
+    /// Duala
+    case dua = "Duala"
+    /// Dutch, Middle (ca. 1050–1350)
+    case dum = "Dutch, Middle (ca. 1050–1350)"
+    /// Dutch; Flemish
+    case nld = "Dutch; Flemish"
+    /// Dyula
+    case dyu = "Dyula"
+    /// Dzongkha
+    case dzo = "Dzongkha"
+    /// Efik
+    case efi = "Efik"
+    /// Egyptian (Ancient)
+    case egy = "Egyptian (Ancient)"
+    /// Ekajuk
+    case eka = "Ekajuk"
+    /// Greek, Modern (1453–)
+    case ell = "Greek, Modern (1453–)"
+    /// Elamite
+    case elx = "Elamite"
+    /// English
+    case eng = "English"
+    /// English, Middle (1100–1500)
+    case enm = "English, Middle (1100–1500)"
+    /// Esperanto
+    case epo = "Esperanto"
+    /// Estonian
+    case est = "Estonian"
+    /// Ewe
+    case ewe = "Ewe"
+    /// Ewondo
+    case ewo = "Ewondo"
+    /// Fang
+    case fan = "Fang"
+    /// Faroese
+    case fao = "Faroese"
+    /// Persian
+    case fas = "Persian"
+    /// Fanti
+    case fat = "Fanti"
+    /// Fijian
+    case fij = "Fijian"
+    /// Filipino; Pilipino
+    case fil = "Filipino; Pilipino"
+    /// Finnish
+    case fin = "Finnish"
+    /// Finno-Ugrian languages
+    case fiu = "Finno-Ugrian languages"
+    /// Fon
+    case fon = "Fon"
+    /// French
+    case fra = "French"
+    /// French, Middle (ca. 1400–1600)
+    case frm = "French, Middle (ca. 1400–1600)"
+    /// French, Old (842–ca. 1400)
+    case fro = "French, Old (842–ca. 1400)"
+    /// Northern Frisian
+    case frr = "Northern Frisian"
+    /// Eastern Frisian
+    case frs = "Eastern Frisian"
+    /// Western Frisian
+    case fry = "Western Frisian"
+    /// Fulah
+    case ful = "Fulah"
+    /// Friulian
+    case fur = "Friulian"
+    /// Ga
+    case gaa = "Ga"
+    /// Gayo
+    case gay = "Gayo"
+    /// Gbaya
+    case gba = "Gbaya"
+    /// Germanic languages
+    case gem = "Germanic languages"
+    /// Georgian
+    case kat = "Georgian"
+    /// Geez
+    case gez = "Geez"
+    /// Gilbertese
+    case gil = "Gilbertese"
+    /// Gaelic; Scottish Gaelic
+    case gla = "Gaelic; Scottish Gaelic"
+    /// Irish
+    case gle = "Irish"
+    /// Galician
+    case glg = "Galician"
+    /// Manx
+    case glv = "Manx"
+    /// German, Middle High (ca. 1050–1500)
+    case gmh = "German, Middle High (ca. 1050–1500)"
+    /// German, Old High (ca. 750–1050)
+    case goh = "German, Old High (ca. 750–1050)"
+    /// Gondi
+    case gon = "Gondi"
+    /// Gorontalo
+    case gor = "Gorontalo"
+    /// Gothic
+    case got = "Gothic"
+    /// Grebo
+    case grb = "Grebo"
+    /// Greek, Ancient (to 1453)
+    case grc = "Greek, Ancient (to 1453)"
+    /// Guarani
+    case grn = "Guarani"
+    /// Swiss German; Alemannic; Alsatian
+    case gsw = "Swiss German; Alemannic; Alsatian"
+    /// Gujarati
+    case guj = "Gujarati"
+    /// Gwich'in
+    case gwi = "Gwich'in"
+    /// Haida
+    case hai = "Haida"
+    /// Haitian; Haitian Creole
+    case hat = "Haitian; Haitian Creole"
+    /// Hausa
+    case hau = "Hausa"
+    /// Hawaiian
+    case haw = "Hawaiian"
+    /// Hebrew
+    case heb = "Hebrew"
+    /// Herero
+    case her = "Herero"
+    /// Hiligaynon
+    case hil = "Hiligaynon"
+    /// Himachali languages; Pahari languages
+    case him = "Himachali languages; Pahari languages"
+    /// Hindi
+    case hin = "Hindi"
+    /// Hittite
+    case hit = "Hittite"
+    /// Hmong; Mong
+    case hmn = "Hmong; Mong"
+    /// Hiri Motu
+    case hmo = "Hiri Motu"
+    /// Croatian
+    case hrv = "Croatian"
+    /// Upper Sorbian
+    case hsb = "Upper Sorbian"
+    /// Hungarian
+    case hun = "Hungarian"
+    /// Hupa
+    case hup = "Hupa"
+    /// Iban
+    case iba = "Iban"
+    /// Igbo
+    case ibo = "Igbo"
+    /// Icelandic
+    case isl = "Icelandic"
+    /// Ido
+    case ido = "Ido"
+    /// Sichuan Yi; Nuosu
+    case iii = "Sichuan Yi; Nuosu"
+    /// Ijo languages
+    case ijo = "Ijo languages"
+    /// Inuktitut
+    case iku = "Inuktitut"
+    /// Interlingue; Occidental
+    case ile = "Interlingue; Occidental"
+    /// Iloko
+    case ilo = "Iloko"
+    /// Interlingua (International Auxiliary Language Association)
+    case ina = "Interlingua (International Auxiliary Language Association)"
+    /// Indic languages
+    case inc = "Indic languages"
+    /// Indonesian
+    case ind = "Indonesian"
+    /// Indo-European languages
+    case ine = "Indo-European languages"
+    /// Ingush
+    case inh = "Ingush"
+    /// Inupiaq
+    case ipk = "Inupiaq"
+    /// Iranian languages
+    case ira = "Iranian languages"
+    /// Iroquoian languages
+    case iro = "Iroquoian languages"
+    /// Italian
+    case ita = "Italian"
+    /// Javanese
+    case jav = "Javanese"
+    /// Lojban
+    case jbo = "Lojban"
+    /// Japanese
+    case jpn = "Japanese"
+    /// Judeo-Persian
+    case jpr = "Judeo-Persian"
+    /// Judeo-Arabic
+    case jrb = "Judeo-Arabic"
+    /// Kara-Kalpak
+    case kaa = "Kara-Kalpak"
+    /// Kabyle
+    case kab = "Kabyle"
+    /// Kachin; Jingpho
+    case kac = "Kachin; Jingpho"
+    /// Kalaallisut; Greenlandic
+    case kal = "Kalaallisut; Greenlandic"
+    /// Kamba
+    case kam = "Kamba"
+    /// Kannada
+    case kan = "Kannada"
+    /// Karen languages
+    case kar = "Karen languages"
+    /// Kashmiri
+    case kas = "Kashmiri"
+    /// Kanuri
+    case kau = "Kanuri"
+    /// Kawi
+    case kaw = "Kawi"
+    /// Kazakh
+    case kaz = "Kazakh"
+    /// Kabardian
+    case kbd = "Kabardian"
+    /// Khasi
+    case kha = "Khasi"
+    /// Khoisan languages
+    case khi = "Khoisan languages"
+    /// Central Khmer
+    case khm = "Central Khmer"
+    /// Khotanese; Sakan
+    case kho = "Khotanese; Sakan"
+    /// Kikuyu; Gikuyu
+    case kik = "Kikuyu; Gikuyu"
+    /// Kinyarwanda
+    case kin = "Kinyarwanda"
+    /// Kirghiz; Kyrgyz
+    case kir = "Kirghiz; Kyrgyz"
+    /// Kimbundu
+    case kmb = "Kimbundu"
+    /// Konkani
+    case kok = "Konkani"
+    /// Komi
+    case kom = "Komi"
+    /// Kongo
+    case kon = "Kongo"
+    /// Korean
+    case kor = "Korean"
+    /// Kosraean
+    case kos = "Kosraean"
+    /// Kpelle
+    case kpe = "Kpelle"
+    /// Karachay-Balkar
+    case krc = "Karachay-Balkar"
+    /// Karelian
+    case krl = "Karelian"
+    /// Kru languages
+    case kro = "Kru languages"
+    /// Kurukh
+    case kru = "Kurukh"
+    /// Kuanyama; Kwanyama
+    case kua = "Kuanyama; Kwanyama"
+    /// Kumyk
+    case kum = "Kumyk"
+    /// Kurdish
+    case kur = "Kurdish"
+    /// Kutenai
+    case kut = "Kutenai"
+    /// Ladino
+    case lad = "Ladino"
+    /// Lahnda
+    case lah = "Lahnda"
+    /// Lamba
+    case lam = "Lamba"
+    /// Lao
+    case lao = "Lao"
+    /// Latin
+    case lat = "Latin"
+    /// Latvian
+    case lav = "Latvian"
+    /// Lezghian
+    case lez = "Lezghian"
+    /// Limburgan; Limburger; Limburgish
+    case lim = "Limburgan; Limburger; Limburgish"
+    /// Lingala
+    case lin = "Lingala"
+    /// Lithuanian
+    case lit = "Lithuanian"
+    /// Mongo
+    case lol = "Mongo"
+    /// Lozi
+    case loz = "Lozi"
+    /// Luxembourgish; Letzeburgesch
+    case ltz = "Luxembourgish; Letzeburgesch"
+    /// Luba-Lulua
+    case lua = "Luba-Lulua"
+    /// Luba-Katanga
+    case lub = "Luba-Katanga"
+    /// Ganda
+    case lug = "Ganda"
+    /// Luiseno
+    case lui = "Luiseno"
+    /// Lunda
+    case lun = "Lunda"
+    /// Luo (Kenya and Tanzania)
+    case luo = "Luo (Kenya and Tanzania)"
+    /// Lushai
+    case lus = "Lushai"
+    /// Macedonian
+    case mkd = "Macedonian"
+    /// Madurese
+    case mad = "Madurese"
+    /// Magahi
+    case mag = "Magahi"
+    /// Marshallese
+    case mah = "Marshallese"
+    /// Maithili
+    case mai = "Maithili"
+    /// Makasar
+    case mak = "Makasar"
+    /// Malayalam
+    case mal = "Malayalam"
+    /// Mandingo
+    case man = "Mandingo"
+    /// Maori
+    case mri = "Maori"
+    /// Austronesian languages
+    case map = "Austronesian languages"
+    /// Marathi
+    case mar = "Marathi"
+    /// Masai
+    case mas = "Masai"
+    /// Malay
+    case msa = "Malay"
+    /// Moksha
+    case mdf = "Moksha"
+    /// Mandar
+    case mdr = "Mandar"
+    /// Mende
+    case men = "Mende"
+    /// Irish, Middle (900–1200)
+    case mga = "Irish, Middle (900–1200)"
+    /// Mi'kmaq; Micmac
+    case mic = "Mi'kmaq; Micmac"
+    /// Minangkabau
+    case min = "Minangkabau"
+    /// Uncoded languages
+    case mis = "Uncoded languages"
+    /// Mon-Khmer languages
+    case mkh = "Mon-Khmer languages"
+    /// Malagasy
+    case mlg = "Malagasy"
+    /// Maltese
+    case mlt = "Maltese"
+    /// Manchu
+    case mnc = "Manchu"
+    /// Manipuri
+    case mni = "Manipuri"
+    /// Manobo languages
+    case mno = "Manobo languages"
+    /// Mohawk
+    case moh = "Mohawk"
+    /// Mongolian
+    case mon = "Mongolian"
+    /// Mossi
+    case mos = "Mossi"
+    /// Multiple languages
+    case mul = "Multiple languages"
+    /// Munda languages
+    case mun = "Munda languages"
+    /// Creek
+    case mus = "Creek"
+    /// Mirandese
+    case mwl = "Mirandese"
+    /// Marwari
+    case mwr = "Marwari"
+    /// Mayan languages
+    case myn = "Mayan languages"
+    /// Erzya
+    case myv = "Erzya"
+    /// Nahuatl languages
+    case nah = "Nahuatl languages"
+    /// North American Indian languages
+    case nai = "North American Indian languages"
+    /// Neapolitan
+    case nap = "Neapolitan"
+    /// Nauru
+    case nau = "Nauru"
+    /// Navajo; Navaho
+    case nav = "Navajo; Navaho"
+    /// Ndebele, South; South Ndebele
+    case nbl = "Ndebele, South; South Ndebele"
+    /// Ndebele, North; North Ndebele
+    case nde = "Ndebele, North; North Ndebele"
+    /// Ndonga
+    case ndo = "Ndonga"
+    /// Low German; Low Saxon; German, Low; Saxon, Low
+    case nds = "Low German; Low Saxon; German, Low; Saxon, Low"
+    /// Nepali
+    case nep = "Nepali"
+    /// Nepal Bhasa; Newari
+    case new = "Nepal Bhasa; Newari"
+    /// Nias
+    case nia = "Nias"
+    /// Niger-Kordofanian languages
+    case nic = "Niger-Kordofanian languages"
+    /// Niuean
+    case niu = "Niuean"
+    /// Norwegian Nynorsk; Nynorsk, Norwegian
+    case nno = "Norwegian Nynorsk; Nynorsk, Norwegian"
+    /// Bokmål, Norwegian; Norwegian Bokmål
+    case nob = "Bokmål, Norwegian; Norwegian Bokmål"
+    /// Nogai
+    case nog = "Nogai"
+    /// Norse, Old
+    case non = "Norse, Old"
+    /// Norwegian
+    case nor = "Norwegian"
+    /// N'Ko
+    case nqo = "N'Ko"
+    /// Pedi; Sepedi; Northern Sotho
+    case nso = "Pedi; Sepedi; Northern Sotho"
+    /// Nubian languages
+    case nub = "Nubian languages"
+    /// Classical Newari; Old Newari; Classical Nepal Bhasa
+    case nwc = "Classical Newari; Old Newari; Classical Nepal Bhasa"
+    /// Chichewa; Chewa; Nyanja
+    case nya = "Chichewa; Chewa; Nyanja"
+    /// Nyamwezi
+    case nym = "Nyamwezi"
+    /// Nyankole
+    case nyn = "Nyankole"
+    /// Nyoro
+    case nyo = "Nyoro"
+    /// Nzima
+    case nzi = "Nzima"
+    /// Occitan (post 1500); Provençal
+    case oci = "Occitan (post 1500); Provençal"
+    /// Ojibwa
+    case oji = "Ojibwa"
+    /// Oriya
+    case ori = "Oriya"
+    /// Oromo
+    case orm = "Oromo"
+    /// Osage
+    case osa = "Osage"
+    /// Ossetian; Ossetic
+    case oss = "Ossetian; Ossetic"
+    /// Turkish, Ottoman (1500–1928)
+    case ota = "Turkish, Ottoman (1500–1928)"
+    /// Otomian languages
+    case oto = "Otomian languages"
+    /// Papuan languages
+    case paa = "Papuan languages"
+    /// Pangasinan
+    case pag = "Pangasinan"
+    /// Pahlavi
+    case pal = "Pahlavi"
+    /// Pampanga; Kapampangan
+    case pam = "Pampanga; Kapampangan"
+    /// Panjabi; Punjabi
+    case pan = "Panjabi; Punjabi"
+    /// Papiamento
+    case pap = "Papiamento"
+    /// Palauan
+    case pau = "Palauan"
+    /// Persian, Old (ca. 600–400 B.C.)
+    case peo = "Persian, Old (ca. 600–400 B.C.)"
+    /// Philippine languages
+    case phi = "Philippine languages"
+    /// Phoenician
+    case phn = "Phoenician"
+    /// Pali
+    case pli = "Pali"
+    /// Polish
+    case pol = "Polish"
+    /// Pohnpeian
+    case pon = "Pohnpeian"
+    /// Portuguese
+    case por = "Portuguese"
+    /// Prakrit languages
+    case pra = "Prakrit languages"
+    /// Provençal, Old (to 1500); Old Occitan (to 1500)
+    case pro = "Provençal, Old (to 1500); Old Occitan (to 1500)"
+    /// Pushto; Pashto
+    case pus = "Pushto; Pashto"
+    /// Quechua
+    case que = "Quechua"
+    /// Rajasthani
+    case raj = "Rajasthani"
+    /// Rapanui
+    case rap = "Rapanui"
+    /// Rarotongan; Cook Islands Maori
+    case rar = "Rarotongan; Cook Islands Maori"
+    /// Romance languages
+    case roa = "Romance languages"
+    /// Romansh
+    case roh = "Romansh"
+    /// Romany
+    case rom = "Romany"
+    /// Romanian; Moldavian; Moldovan
+    case ron = "Romanian; Moldavian; Moldovan"
+    /// Rundi
+    case run = "Rundi"
+    /// Aromanian; Arumanian; Macedo-Romanian
+    case rup = "Aromanian; Arumanian; Macedo-Romanian"
+    /// Russian
+    case rus = "Russian"
+    /// Sandawe
+    case sad = "Sandawe"
+    /// Sango
+    case sag = "Sango"
+    /// Yakut
+    case sah = "Yakut"
+    /// South American Indian (Other)
+    case sai = "South American Indian (Other)"
+    /// Salishan languages
+    case sal = "Salishan languages"
+    /// Samaritan Aramaic
+    case sam = "Samaritan Aramaic"
+    /// Sanskrit
+    case san = "Sanskrit"
+    /// Sasak
+    case sas = "Sasak"
+    /// Santali
+    case sat = "Santali"
+    /// Sicilian
+    case scn = "Sicilian"
+    /// Scots
+    case sco = "Scots"
+    /// Selkup
+    case sel = "Selkup"
+    /// Semitic languages
+    case sem = "Semitic languages"
+    /// Irish, Old (to 900)
+    case sga = "Irish, Old (to 900)"
+    /// Sign Languages
+    case sgn = "Sign Languages"
+    /// Shan
+    case shn = "Shan"
+    /// Sidamo
+    case sid = "Sidamo"
+    /// Sinhala; Sinhalese
+    case sin = "Sinhala; Sinhalese"
+    /// Siouan languages
+    case sio = "Siouan languages"
+    /// Sino-Tibetan languages
+    case sit = "Sino-Tibetan languages"
+    /// Slavic languages
+    case sla = "Slavic languages"
+    /// Slovak
+    case slk = "Slovak"
+    /// Slovenian
+    case slv = "Slovenian"
+    /// Southern Sami
+    case sma = "Southern Sami"
+    /// Northern Sami
+    case sme = "Northern Sami"
+    /// Sami languages
+    case smi = "Sami languages"
+    /// Lule Sami
+    case smj = "Lule Sami"
+    /// Inari Sami
+    case smn = "Inari Sami"
+    /// Samoan
+    case smo = "Samoan"
+    /// Skolt Sami
+    case sms = "Skolt Sami"
+    /// Shona
+    case sna = "Shona"
+    /// Sindhi
+    case snd = "Sindhi"
+    /// Soninke
+    case snk = "Soninke"
+    /// Sogdian
+    case sog = "Sogdian"
+    /// Somali
+    case som = "Somali"
+    /// Songhai languages
+    case son = "Songhai languages"
+    /// Sotho, Southern
+    case sot = "Sotho, Southern"
+    /// Spanish; Castilian
+    case spa = "Spanish; Castilian"
+    /// Sardinian
+    case srd = "Sardinian"
+    /// Sranan Tongo
+    case srn = "Sranan Tongo"
+    /// Serbian
+    case srp = "Serbian"
+    /// Serer
+    case srr = "Serer"
+    /// Nilo-Saharan languages
+    case ssa = "Nilo-Saharan languages"
+    /// Swati
+    case ssw = "Swati"
+    /// Sukuma
+    case suk = "Sukuma"
+    /// Sundanese
+    case sun = "Sundanese"
+    /// Susu
+    case sus = "Susu"
+    /// Sumerian
+    case sux = "Sumerian"
+    /// Swahili
+    case swa = "Swahili"
+    /// Swedish
+    case swe = "Swedish"
+    /// Classical Syriac
+    case syc = "Classical Syriac"
+    /// Syriac
+    case syr = "Syriac"
+    /// Tahitian
+    case tah = "Tahitian"
+    /// Tai languages
+    case tai = "Tai languages"
+    /// Tamil
+    case tam = "Tamil"
+    /// Tatar
+    case tat = "Tatar"
+    /// Telugu
+    case tel = "Telugu"
+    /// Timne
+    case tem = "Timne"
+    /// Tereno
+    case ter = "Tereno"
+    /// Tetum
+    case tet = "Tetum"
+    /// Tajik
+    case tgk = "Tajik"
+    /// Tagalog
+    case tgl = "Tagalog"
+    /// Thai
+    case tha = "Thai"
+    /// Tigre
+    case tig = "Tigre"
+    /// Tigrinya
+    case tir = "Tigrinya"
+    /// Tiv
+    case tiv = "Tiv"
+    /// Tokelau
+    case tkl = "Tokelau"
+    /// Klingon; tlhIngan-Hol
+    case tlh = "Klingon; tlhIngan-Hol"
+    /// Tlingit
+    case tli = "Tlingit"
+    /// Tamashek
+    case tmh = "Tamashek"
+    /// Tonga, Nyasa
+    case tog = "Tonga, Nyasa"
+    /// Tonga (Tonga Islands)
+    case ton = "Tonga (Tonga Islands)"
+    /// Tok Pisin
+    case tpi = "Tok Pisin"
+    /// Tsimshian
+    case tsi = "Tsimshian"
+    /// Tswana
+    case tsn = "Tswana"
+    /// Tsonga
+    case tso = "Tsonga"
+    /// Turkmen
+    case tuk = "Turkmen"
+    /// Tumbuka
+    case tum = "Tumbuka"
+    /// Tupi languages
+    case tup = "Tupi languages"
+    /// Turkish
+    case tur = "Turkish"
+    /// Altaic languages
+    case tut = "Altaic languages"
+    /// Tuvalu
+    case tvl = "Tuvalu"
+    /// Twi
+    case twi = "Twi"
+    /// Tuvinian
+    case tyv = "Tuvinian"
+    /// Udmurt
+    case udm = "Udmurt"
+    /// Ugaritic
+    case uga = "Ugaritic"
+    /// Uighur; Uyghur
+    case uig = "Uighur; Uyghur"
+    /// Ukrainian
+    case ukr = "Ukrainian"
+    /// Umbundu
+    case umb = "Umbundu"
+    /// Undetermined
+    case und = "Undetermined"
+    /// Urdu
+    case urd = "Urdu"
+    /// Uzbek
+    case uzb = "Uzbek"
+    /// Vai
+    case vai = "Vai"
+    /// Venda
+    case ven = "Venda"
+    /// Vietnamese
+    case vie = "Vietnamese"
+    /// Volapük
+    case vol = "Volapük"
+    /// Votic
+    case vot = "Votic"
+    /// Wakashan languages
+    case wak = "Wakashan languages"
+    /// Wolaitta; Wolaytta
+    case wal = "Wolaitta; Wolaytta"
+    /// Waray
+    case war = "Waray"
+    /// Washo
+    case was = "Washo"
+    /// Sorbian languages
+    case wen = "Sorbian languages"
+    /// Walloon
+    case wln = "Walloon"
+    /// Wolof
+    case wol = "Wolof"
+    /// Kalmyk; Oirat
+    case xal = "Kalmyk; Oirat"
+    /// Xhosa
+    case xho = "Xhosa"
+    /// Yao
+    case yao = "Yao"
+    /// Yapese
+    case yap = "Yapese"
+    /// Yiddish
+    case yid = "Yiddish"
+    /// Yoruba
+    case yor = "Yoruba"
+    /// Yupik languages
+    case ypk = "Yupik languages"
+    /// Zapotec
+    case zap = "Zapotec"
+    /// Blissymbols; Blissymbolics; Bliss
+    case zbl = "Blissymbols; Blissymbolics; Bliss"
+    /// Zenaga
+    case zen = "Zenaga"
+    /// Standard Moroccan Tamazight
+    case zgh = "Standard Moroccan Tamazight"
+    /// Zhuang; Chuang
+    case zha = "Zhuang; Chuang"
+    /// Zande languages
+    case znd = "Zande languages"
+    /// Zulu
+    case zul = "Zulu"
+    /// Zuni
+    case zun = "Zuni"
+    /// No linguistic content; Not applicable
+    case zxx = "No linguistic content; Not applicable"
+    /// Zaza; Dimili; Dimli; Kirdki; Kirmanjki; Zazaki
+    case zza = "Zaza; Dimili; Dimli; Kirdki; Kirmanjki; Zazaki"
+    
+    public var nativeName: String {
+        switch self {
+            /// Afar
+            case .aar: return "Qafaraf; ’Afar Af; Afaraf; Qafar af"
+            /// Abkhazian
+            case .abk: return "Аҧсуа бызшәа; Аҧсшәа"
+            /// Achinese
+            case .ace: return "بهسا اچيه"
+            /// Acoli
+            case .ach: return "Lwo"
+            /// Adangme
+            case .ada: return "Dangme"
+            /// Adyghe; Adygei
+            case .ady: return "Адыгабзэ; Кӏахыбзэ"
+            /// Afrihili
+            case .afh: return "El-Afrihili"
+            /// Ainu
+            case .ain: return "アイヌ・イタㇰ"
+            /// Akkadian
+            case .akk: return "𒀝𒅗𒁺𒌑"
+            /// Albanian
+            case .sqi: return "Shqip"
+            /// Aleut
+            case .ale: return "Уна́ӈам тунуу́; Унаӈан умсуу"
+            /// Southern Altai
+            case .alt: return "Алтай тили"
+            /// Amharic
+            case .amh: return "አማርኛ"
+            /// English, Old (ca.450–1100)
+            case .ang: return "Ænglisc; Anglisc; Englisc"
+            /// Arabic
+            case .ara: return "العَرَبِيَّة"
+            /// Aragonese
+            case .arg: return "aragonés"
+            /// Armenian
+            case .hye: return "Հայերէն; Հայերեն"
+            /// Arapaho
+            case .arp: return "Hinónoʼeitíít"
+            /// Arawak
+            case .arw: return "Lokono"
+            /// Assamese
+            case .asm: return "অসমীয়া"
+            /// Asturian; Bable; Leonese; Asturleonese
+            case .ast: return "Asturianu"
+            /// Avaric
+            case .ava: return "Магӏарул мацӏ; Авар мацӏ"
+            /// Awadhi
+            case .awa: return "अवधी"
+            /// Aymara
+            case .aym: return "Aymar aru"
+            /// Azerbaijani
+            case .aze: return "Azərbaycan dili; آذربایجان دیلی; Азәрбајҹан дили"
+            /// Bamileke languages
+            case .bai: return "Bamiléké"
+            /// Bashkir
+            case .bak: return "Башҡорт теле; Başqort tele"
+            /// Baluchi
+            case .bal: return "بلوچی"
+            /// Bambara
+            case .bam: return "ߓߊߡߊߣߊߣߞߊߣ"
+            /// Balinese
+            case .ban: return "ᬪᬵᬱᬩᬮᬶ; ᬩᬲᬩᬮᬶ"
+            /// Basque
+            case .eus: return "euskara"
+            /// Basa
+            case .bas: return "Mbene; Ɓasaá"
+            /// Beja; Bedawiyet
+            case .bej: return "Bidhaawyeet"
+            /// Belarusian
+            case .bel: return "Беларуская мова"
+            /// Bemba
+            case .bem: return "Chibemba"
+            /// Bengali
+            case .ben: return "বাংলা"
+            /// Berber languages
+            case .ber: return "Tamaziɣt; Tamazight; ⵜⴰⵎⴰⵣⵉⵖⵜ; ⵝⴰⵎⴰⵣⵉⵗⵝ; ⵜⴰⵎⴰⵣⵉⵗⵜ"
+            /// Bhojpuri
+            case .bho: return "भोजपुरी"
+            /// Bini; Edo
+            case .bin: return "Ẹ̀dó"
+            /// Siksika
+            case .bla: return "ᓱᖽᐧᖿ"
+            /// Tibetan
+            case .bod: return "བོད་སྐད་; ལྷ་སའི་སྐད་"
+            /// Bosnian
+            case .bos: return "bosanski; босански"
+            /// Breton
+            case .bre: return "Brezhoneg"
+            /// Buriat
+            case .bua: return "буряад хэлэн"
+            /// Buginese
+            case .bug: return "ᨅᨔ ᨕᨘᨁᨗ"
+            /// Bulgarian
+            case .bul: return "български език"
+            /// Burmese
+            case .mya: return "မြန်မာစာ; မြန်မာစကား"
+            /// Blin; Bilin
+            case .byn: return "ብሊና; ብሊን"
+            /// Caddo
+            case .cad: return "Hasí:nay"
+            /// Galibi Carib
+            case .car: return "Kari'nja"
+            /// Catalan; Valencian
+            case .cat: return "català"
+            /// Cebuano
+            case .ceb: return "Sinugbuanong Binisayâ"
+            /// Czech
+            case .ces: return "čeština; český jazyk"
+            /// Chamorro
+            case .cha: return "Finu' Chamoru"
+            /// Chibcha
+            case .chb: return "Muysccubun"
+            /// Chechen
+            case .che: return "Нохчийн мотт; نَاخچیین موٓتت; ნახჩიე მუოთთ"
+            /// Chagatai
+            case .chg: return "جغتای"
+            /// Chinese
+            case .zho: return "中文; 汉语; 漢語"
+            /// Mari
+            case .chm: return "марий йылме"
+            /// Chinook jargon
+            case .chn: return "chinuk wawa; wawa; chinook lelang; lelang"
+            /// Choctaw
+            case .cho: return "Chahta'"
+            /// Chipewyan; Dene Suline
+            case .chp: return "ᑌᓀᓱᒼᕄᓀ (Dënesųłiné)"
+            /// Cherokee
+            case .chr: return "ᏣᎳᎩ ᎦᏬᏂᎯᏍᏗ"
+            /// Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church Slavonic
+            case .chu: return "Славе́нскїй ѧ҆зы́къ"
+            /// Chuvash
+            case .chv: return "Чӑвашла"
+            /// Cheyenne
+            case .chy: return "Tsėhésenėstsestȯtse"
+            /// Montenegrin
+            case .cnr: return "crnogorski / црногорски"
+            /// Coptic
+            case .cop: return "ϯⲙⲉⲑⲣⲉⲙⲛ̀ⲭⲏⲙⲓ; ⲧⲙⲛ̄ⲧⲣⲙ̄ⲛ̄ⲕⲏⲙⲉ"
+            /// Cornish
+            case .cor: return "Kernowek"
+            /// Corsican
+            case .cos: return "Corsu; Lingua corsa"
+            /// Crimean Tatar; Crimean Turkish
+            case .crh: return "Къырымтатарджа; Къырымтатар тили; Ҡырымтатарҗа; Ҡырымтатар тили"
+            /// Kashubian
+            case .csb: return "Kaszëbsczi jãzëk"
+            /// Welsh
+            case .cym: return "Cymraeg; y Gymraeg"
+            /// Dakota
+            case .dak: return "Dakhótiyapi; Dakȟótiyapi"
+            /// Danish
+            case .dan: return "dansk"
+            /// Dargwa
+            case .dar: return "дарган мез"
+            /// Slave (isoName: Athapascan)
+            case .den: return "Dene K'e"
+            /// German
+            case .deu: return "Deutsch"
+            /// Dogrib
+            case .dgr: return "डोगरी; ڈوگرى"
+            /// Dinka
+            case .din: return "Thuɔŋjäŋ"
+            /// Divehi; Dhivehi; Maldivian
+            case .div: return "ދިވެހި; ދިވެހިބަސް"
+            /// Dogri
+            case .doi: return "डोगरी; ڈوگرى"
+            /// Lower Sorbian
+            case .dsb: return "Dolnoserbski; Dolnoserbšćina"
+            /// Dutch; Flemish
+            case .nld: return "Nederlands; Vlaams"
+            /// Dyula
+            case .dyu: return "Julakan"
+            /// Dzongkha
+            case .dzo: return "རྫོང་ཁ་"
+            /// Egyptian (Ancient)
+            case .egy: return "Egyptian (isAncient)"
+            /// Greek, Modern (1453–)
+            case .ell: return "Νέα Ελληνικά"
+            /// Estonian
+            case .est: return "eesti keel"
+            /// Ewe
+            case .ewe: return "Èʋegbe"
+            /// Faroese
+            case .fao: return "føroyskt"
+            /// Persian
+            case .fas: return "فارسی"
+            /// Fanti
+            case .fat: return "Mfantse; Fante; Fanti"
+            /// Fijian
+            case .fij: return "Na Vosa Vakaviti"
+            /// Filipino; Pilipino
+            case .fil: return "Wikang Filipino"
+            /// Finnish
+            case .fin: return "suomen kieli"
+            /// Fon
+            case .fon: return "Fon gbè"
+            /// French
+            case .fra: return "français"
+            /// French, Middle (ca. 1400–1600)
+            case .frm: return "françois; franceis"
+            /// French, Old (842–ca. 1400)
+            case .fro: return "Franceis; François; Romanz"
+            /// Northern Frisian
+            case .frr: return "Frasch; Fresk; Freesk; Friisk"
+            /// Eastern Frisian
+            case .frs: return "Seeltersk"
+            /// Western Frisian
+            case .fry: return "Frysk"
+            /// Fulah
+            case .ful: return "Fulfulde; Pulaar; Pular"
+            /// Friulian
+            case .fur: return "Furlan"
+            /// Ga
+            case .gaa: return "Gã"
+            /// Gayo
+            case .gay: return "Basa Gayo"
+            /// Georgian
+            case .kat: return "ქართული"
+            /// Geez
+            case .gez: return "ግዕዝ"
+            /// Gilbertese
+            case .gil: return "Taetae ni Kiribati"
+            /// Gaelic; Scottish Gaelic
+            case .gla: return "Gàidhlig"
+            /// Irish
+            case .gle: return "Gaeilge"
+            /// Galician
+            case .glg: return "galego"
+            /// Manx
+            case .glv: return "Gaelg; Gailck"
+            /// German, Middle High (ca. 1050–1500)
+            case .gmh: return "Diutsch"
+            /// German, Old High (ca. 750–1050)
+            case .goh: return "Diutisk"
+            /// Gorontalo
+            case .gor: return "Bahasa Hulontalo"
+            /// Greek, Ancient (to 1453)
+            case .grc: return "Ἑλληνική"
+            /// Guarani
+            case .grn: return "Avañe'ẽ"
+            /// Swiss German; Alemannic; Alsatian
+            case .gsw: return "Schwiizerdütsch"
+            /// Gujarati
+            case .guj: return "ગુજરાતી"
+            /// Gwich'in
+            case .gwi: return "Dinjii Zhu’ Ginjik"
+            /// Haida
+            case .hai: return "X̱aat Kíl; X̱aadas Kíl; X̱aayda Kil; Xaad kil"
+            /// Haitian; Haitian Creole
+            case .hat: return "kreyòl ayisyen"
+            /// Hausa
+            case .hau: return "Harshen Hausa; هَرْشَن"
+            /// Hawaiian
+            case .haw: return "ʻŌlelo Hawaiʻi"
+            /// Hebrew
+            case .heb: return "עברית"
+            /// Herero
+            case .her: return "Otjiherero"
+            /// Hiligaynon
+            case .hil: return "Ilonggo"
+            /// Hindi
+            case .hin: return "हिन्दी"
+            /// Hittite
+            case .hit: return "𒉈𒅆𒇷"
+            /// Hmong; Mong
+            case .hmn: return "lus Hmoob; lug Moob; lol Hmongb"
+            /// Croatian
+            case .hrv: return "hrvatski"
+            /// Upper Sorbian
+            case .hsb: return "hornjoserbšćina"
+            /// Hungarian
+            case .hun: return "magyar nyelv"
+            /// Hupa
+            case .hup: return "Na:tinixwe Mixine:whe'"
+            /// Iban
+            case .iba: return "Jaku Iban"
+            /// Igbo
+            case .ibo: return "Asụsụ Igbo"
+            /// Icelandic
+            case .isl: return "íslenska"
+            /// Sichuan Yi; Nuosu
+            case .iii: return "ꆈꌠꉙ"
+            /// Ijo languages
+            case .ijo: return "Ịjọ"
+            /// Inuktitut
+            case .iku: return "ᐃᓄᒃᑎᑐᑦ"
+            /// Iloko
+            case .ilo: return "Pagsasao nga Ilokano; Ilokano"
+            /// Indonesian
+            case .ind: return "bahasa Indonesia"
+            /// Ingush
+            case .inh: return "ГӀалгӀай мотт"
+            /// Inupiaq
+            case .ipk: return "Iñupiaq"
+            /// Italian
+            case .ita: return "italiano; lingua italiana"
+            /// Javanese
+            case .jav: return "ꦧꦱꦗꦮ"
+            /// Lojban
+            case .jbo: return "la .lojban."
+            /// Japanese
+            case .jpn: return "日本語"
+            /// Judeo-Persian
+            case .jpr: return "Dzhidi"
+            /// Judeo-Arabic
+            case .jrb: return "عربية يهودية / ערבית יהודית"
+            /// Kara-Kalpak
+            case .kaa: return "Qaraqalpaq tili; Қарақалпақ тили"
+            /// Kabyle
+            case .kab: return "Tamaziɣt Taqbaylit; Tazwawt"
+            /// Kachin; Jingpho
+            case .kac: return "Jingpho"
+            /// Kannada
+            case .kan: return "ಕನ್ನಡ"
+            /// Kashmiri
+            case .kas: return "कॉशुर / كأشُر"
+            /// Kawi
+            case .kaw: return "ꦧꦱꦗꦮ"
+            /// Kazakh
+            case .kaz: return "қазақ тілі / qazaq tili"
+            /// Kabardian
+            case .kbd: return "Адыгэбзэ (Къэбэрдейбзэ)"
+            /// Khasi
+            case .kha: return "কা কতিয়েন খাশি"
+            /// Central Khmer
+            case .khm: return "ភាសាខ្មែរ"
+            /// Kikuyu; Gikuyu
+            case .kik: return "Gĩkũyũ"
+            /// Kirghiz; Kyrgyz
+            case .kir: return "кыргызча; кыргыз тили"
+            /// Konkani
+            case .kok: return "कोंकणी"
+            /// Komi
+            case .kom: return "Коми кыв"
+            /// Korean
+            case .kor: return "한국어"
+            /// Kpelle
+            case .kpe: return "Kpɛlɛwoo"
+            /// Karachay-Balkar
+            case .krc: return "Къарачай-Малкъар тил; Таулу тил"
+            /// Karelian
+            case .krl: return "karjal; kariela; karjala"
+            /// Kurukh
+            case .kru: return "कुड़ुख़"
+            /// Kumyk
+            case .kum: return "къумукъ тил/qumuq til"
+            /// Kurdish
+            case .kur: return "Kurdî / کوردی"
+            /// Ladino
+            case .lad: return "Judeo-español"
+            /// Lahnda
+            case .lah: return "بھارت کا"
+            /// Lao
+            case .lao: return "ພາສາລາວ"
+            /// Latin
+            case .lat: return "Lingua latīna"
+            /// Latvian
+            case .lav: return "Latviešu valoda"
+            /// Lezghian
+            case .lez: return "Лезги чӏал"
+            /// Limburgan; Limburger; Limburgish
+            case .lim: return "Lèmburgs"
+            /// Lithuanian
+            case .lit: return "lietuvių kalba"
+            /// Mongo
+            case .lol: return "Lomongo"
+            /// Luxembourgish; Letzeburgesch
+            case .ltz: return "Lëtzebuergesch"
+            /// Luba-Lulua
+            case .lua: return "Tshiluba"
+            /// Luba-Katanga
+            case .lub: return "Kiluba"
+            /// Ganda
+            case .lug: return "Luganda"
+            /// Luiseno
+            case .lui: return "Cham'teela"
+            /// Lunda
+            case .lun: return "Chilunda"
+            /// Luo (Kenya and Tanzania)
+            case .luo: return "Dholuo"
+            /// Lushai
+            case .lus: return "Mizo ṭawng"
+            /// Macedonian
+            case .mkd: return "македонски јазик"
+            /// Madurese
+            case .mad: return "Madhura"
+            /// Magahi
+            case .mag: return "मगही"
+            /// Marshallese
+            case .mah: return "Kajin M̧ajeļ"
+            /// Maithili
+            case .mai: return "मैथिली; মৈথিলী"
+            /// Makasar
+            case .mak: return "Basa Mangkasara' / ᨅᨔ ᨆᨀᨔᨑ"
+            /// Malayalam
+            case .mal: return "മലയാളം"
+            /// Mandingo
+            case .man: return "Mandi'nka kango"
+            /// Maori
+            case .mri: return "Te Reo Māori"
+            /// Marathi
+            case .mar: return "मराठी"
+            /// Masai
+            case .mas: return "ɔl"
+            /// Malay
+            case .msa: return "Bahasa Melayu"
+            /// Moksha
+            case .mdf: return "мокшень кяль"
+            /// Mende
+            case .men: return "Mɛnde yia"
+            /// Irish, Middle (900–1200)
+            case .mga: return "Gaoidhealg"
+            /// Mi'kmaq; Micmac
+            case .mic: return "Míkmawísimk"
+            /// Minangkabau
+            case .min: return "Baso Minang"
+            /// Maltese
+            case .mlt: return "Malti"
+            /// Manchu
+            case .mnc: return "ᠮᠠᠨᠵᡠ ᡤᡳᠰᡠᠨ"
+            /// Mohawk
+            case .moh: return "Kanien’kéha"
+            /// Mongolian
+            case .mon: return "монгол хэл; ᠮᠣᠩᠭᠣᠯ ᠬᠡᠯᠡ"
+            /// Mossi
+            case .mos: return "Mooré"
+            /// Creek
+            case .mus: return "Mvskoke"
+            /// Mirandese
+            case .mwl: return "mirandés; lhéngua mirandesa"
+            /// Marwari
+            case .mwr: return "मारवाड़ी"
+            /// Erzya
+            case .myv: return "эрзянь кель"
+            /// Neapolitan
+            case .nap: return "napulitano"
+            /// Nauru
+            case .nau: return "dorerin Naoero"
+            /// Navajo; Navaho
+            case .nav: return "Diné bizaad; Naabeehó bizaad"
+            /// Ndebele, South; South Ndebele
+            case .nbl: return "isiNdebele seSewula"
+            /// Ndebele, North; North Ndebele
+            case .nde: return "siNdebele saseNyakatho"
+            /// Ndonga
+            case .ndo: return "ndonga"
+            /// Low German; Low Saxon; German, Low; Saxon, Low
+            case .nds: return "Plattdütsch; Plattdüütsch"
+            /// Nepali
+            case .nep: return "नेपाली भाषा"
+            /// Nepal Bhasa; Newari
+            case .new: return "नेपाल भाषा; नेवाः भाय्"
+            /// Nias
+            case .nia: return "Li Niha"
+            /// Niuean
+            case .niu: return "ko e vagahau Niuē"
+            /// Norwegian Nynorsk; Nynorsk, Norwegian
+            case .nno: return "nynorsk"
+            /// Bokmål, Norwegian; Norwegian Bokmål
+            case .nob: return "bokmål"
+            /// Nogai
+            case .nog: return "Ногай тили"
+            /// Norse, Old
+            case .non: return "Dǫnsk tunga; Norrœnt mál"
+            /// Norwegian
+            case .nor: return "norsk"
+            /// Pedi; Sepedi; Northern Sotho
+            case .nso: return "Sesotho sa Leboa"
+            /// Nubian languages
+            case .nub: return "لغات نوبية"
+            /// Classical Newari; Old Newari; Classical Nepal Bhasa
+            case .nwc: return "पुलां भाय्; पुलाङु नेपाल भाय्"
+            /// Chichewa; Chewa; Nyanja
+            case .nya: return "Chichewa; Chinyanja"
+            /// Nyoro
+            case .nyo: return "Runyoro"
+            /// Occitan (post 1500); Provençal
+            case .oci: return "occitan; lenga d'òc; provençal"
+            /// Oriya
+            case .ori: return "ଓଡ଼ିଆ"
+            /// Oromo
+            case .orm: return "Afaan Oromoo"
+            /// Osage
+            case .osa: return "Wazhazhe ie"
+            /// Ossetian; Ossetic
+            case .oss: return "Ирон æвзаг"
+            /// Turkish, Ottoman (1500–1928)
+            case .ota: return "لسان عثمانى / lisân-ı Osmânî"
+            /// Pangasinan
+            case .pag: return "Salitan Pangasinan"
+            /// Pahlavi
+            case .pal: return "Pārsīk; Pārsīg"
+            /// Pampanga; Kapampangan
+            case .pam: return "Amánung Kapampangan; Amánung Sísuan"
+            /// Panjabi; Punjabi
+            case .pan: return "ਪੰਜਾਬੀ / پنجابی"
+            /// Papiamento
+            case .pap: return "Papiamentu"
+            /// Palauan
+            case .pau: return "a tekoi er a Belau"
+            /// Phoenician
+            case .phn: return "𐤃𐤁𐤓𐤉𐤌 𐤊𐤍𐤏𐤍𐤉𐤌"
+            /// Pali
+            case .pli: return "Pāli"
+            /// Polish
+            case .pol: return "Język polski"
+            /// Portuguese
+            case .por: return "português"
+            /// Pushto; Pashto
+            case .pus: return "پښتو"
+            /// Quechua
+            case .que: return "Runa simi; kichwa simi; Nuna shimi"
+            /// Rajasthani
+            case .raj: return "राजस्थानी"
+            /// Rapanui
+            case .rap: return "Vananga rapa nui"
+            /// Rarotongan; Cook Islands Maori
+            case .rar: return "Māori Kūki 'Āirani"
+            /// Romansh
+            case .roh: return "Rumantsch; Rumàntsch; Romauntsch; Romontsch"
+            /// Romany
+            case .rom: return "romani čhib"
+            /// Romanian; Moldavian; Moldovan
+            case .ron: return "limba română"
+            /// Rundi
+            case .run: return "Ikirundi"
+            /// Aromanian; Arumanian; Macedo-Romanian
+            case .rup: return "armãneashce; armãneashti; rrãmãneshti"
+            /// Russian
+            case .rus: return "русский язык"
+            /// Sandawe
+            case .sad: return "Sandaweeki"
+            /// Sango
+            case .sag: return "yângâ tî sängö"
+            /// Yakut
+            case .sah: return "Сахалыы"
+            /// Samaritan Aramaic
+            case .sam: return "ארמית"
+            /// Santali
+            case .sat: return "ᱥᱟᱱᱛᱟᱲᱤ"
+            /// Sicilian
+            case .scn: return "Sicilianu"
+            /// Scots
+            case .sco: return "Braid Scots; Lallans"
+            /// Irish, Old (to 900)
+            case .sga: return "Goídelc"
+            /// Shan
+            case .shn: return "ၵႂၢမ်းတႆးယႂ်"
+            /// Sidamo
+            case .sid: return "Sidaamu Afoo"
+            /// Sinhala; Sinhalese
+            case .sin: return "සිංහල"
+            /// Slovak
+            case .slk: return "slovenčina; slovenský jazyk"
+            /// Slovenian
+            case .slv: return "slovenski jezik; slovenščina"
+            /// Southern Sami
+            case .sma: return "Åarjelsaemien gïele"
+            /// Northern Sami
+            case .sme: return "davvisámegiella"
+            /// Lule Sami
+            case .smj: return "julevsámegiella"
+            /// Inari Sami
+            case .smn: return "anarâškielâ"
+            /// Samoan
+            case .smo: return "Gagana faʻa Sāmoa"
+            /// Skolt Sami
+            case .sms: return "sääʹmǩiõll"
+            /// Shona
+            case .sna: return "chiShona"
+            /// Sindhi
+            case .snd: return "سنڌي / सिन्धी / ਸਿੰਧੀ"
+            /// Soninke
+            case .snk: return "Sooninkanxanne"
+            /// Somali
+            case .som: return "af Soomaali"
+            /// Sotho, Southern
+            case .sot: return "Sesotho [southern]"
+            /// Spanish; Castilian
+            case .spa: return "español; castellano"
+            /// Sardinian
+            case .srd: return "sardu; limba sarda; lingua sarda"
+            /// Serbian
+            case .srp: return "српски / srpski"
+            /// Serer
+            case .srr: return "Seereer"
+            /// Swati
+            case .ssw: return "siSwati"
+            /// Sukuma
+            case .suk: return "Kɪsukuma"
+            /// Sundanese
+            case .sun: return "ᮘᮞ ᮞᮥᮔ᮪ᮓ / Basa Sunda"
+            /// Susu
+            case .sus: return "Sosoxui"
+            /// Sumerian
+            case .sux: return "𒅴𒂠"
+            /// Swahili
+            case .swa: return "Kiswahili"
+            /// Swedish
+            case .swe: return "svenska"
+            /// Syriac
+            case .syr: return "ܠܫܢܐ ܣܘܪܝܝܐ"
+            /// Tahitian
+            case .tah: return "Reo Tahiti; Reo Mā'ohi"
+            /// Tai languages
+            case .tai: return "ภาษาไท; ภาษาไต"
+            /// Tamil
+            case .tam: return "தமிழ்"
+            /// Tatar
+            case .tat: return "татар теле / tatar tele / تاتار"
+            /// Telugu
+            case .tel: return "తెలుగు"
+            /// Timne
+            case .tem: return "KʌThemnɛ"
+            /// Tereno
+            case .ter: return "Terêna"
+            /// Tetum
+            case .tet: return "Lia-Tetun"
+            /// Tajik
+            case .tgk: return "тоҷикӣ / tojikī"
+            /// Tagalog
+            case .tgl: return "Wikang Tagalog"
+            /// Thai
+            case .tha: return "ภาษาไทย"
+            /// Tigre
+            case .tig: return "ትግረ; ትግሬ; ኻሳ; ትግራይት"
+            /// Tigrinya
+            case .tir: return "ትግርኛ"
+            /// Tlingit
+            case .tli: return "Lingít"
+            /// Tonga, Nyasa
+            case .tog: return "chiTonga"
+            /// Tonga (Tonga Islands)
+            case .ton: return "lea faka-Tonga"
+            /// Tswana
+            case .tsn: return "Setswana"
+            /// Tsonga
+            case .tso: return "Xitsonga"
+            /// Turkmen
+            case .tuk: return "Türkmençe / Түркменче / تورکمن تیلی تورکمنچ; türkmen dili / түркмен дили"
+            /// Tumbuka
+            case .tum: return "chiTumbuka"
+            /// Turkish
+            case .tur: return "Türkçe"
+            /// Tuvalu
+            case .tvl: return "Te Ggana Tuuvalu; Te Gagana Tuuvalu"
+            /// Tuvinian
+            case .tyv: return "тыва дыл"
+            /// Udmurt
+            case .udm: return "удмурт кыл"
+            /// Uighur; Uyghur
+            case .uig: return "ئۇيغۇرچە ; ئۇيغۇر تىلى"
+            /// Ukrainian
+            case .ukr: return "українська мова"
+            /// Umbundu
+            case .umb: return "Úmbúndú"
+            /// Urdu
+            case .urd: return "اُردُو"
+            /// Uzbek
+            case .uzb: return "Oʻzbekcha / ўзбекча / ئوزبېچه; oʻzbek tili / ўзбек тили / ئوبېک تیلی"
+            /// Vai
+            case .vai: return "ꕙꔤ"
+            /// Venda
+            case .ven: return "Tshivenḓa"
+            /// Vietnamese
+            case .vie: return "Tiếng Việt"
+            /// Votic
+            case .vot: return "vađđa ceeli"
+            /// Waray
+            case .war: return "Winaray; Samareño; Lineyte-Samarnon; Binisayâ nga Winaray; Binisayâ nga Samar-Leyte; “Binisayâ nga Waray”"
+            /// Washo
+            case .was: return "wá:šiw ʔítlu"
+            /// Sorbian languages
+            case .wen: return "Serbsce / Serbski"
+            /// Walloon
+            case .wln: return "Walon"
+            /// Kalmyk; Oirat
+            case .xal: return "Хальмг келн / Xaľmg keln"
+            /// Xhosa
+            case .xho: return "isiXhosa"
+            /// Yiddish
+            case .yid: return "ייִדיש; יידיש; אידיש"
+            /// Yoruba
+            case .yor: return "èdè Yorùbá"
+            /// Zapotec
+            case .zap: return "Diidxazá"
+            /// Zenaga
+            case .zen: return "Tuḍḍungiyya"
+            /// Standard Moroccan Tamazight
+            case .zgh: return "ⵜⴰⵎⴰⵣⵉⵖⵜ ⵜⴰⵏⴰⵡⴰⵢⵜ"
+            /// Zhuang; Chuang
+            case .zha: return "Vahcuengh / 話僮"
+            /// Zulu
+            case .zul: return "isiZulu"
+            /// Zuni
+            case .zun: return "Shiwi'ma"
+            default: return self.rawValue
+        }
+    }
+    
+    public var isoBibliographicCode: String {
+        switch self {
+            /// Albanian
+            case .sqi: return "alb"
+            /// Armenian
+            case .hye: return "arm"
+            /// Basque
+            case .eus: return "baq"
+            /// Tibetan
+            case .bod: return "tib"
+            /// Burmese
+            case .mya: return "bur"
+            /// Czech
+            case .ces: return "cze"
+            /// Chinese
+            case .zho: return "chi"
+            /// Welsh
+            case .cym: return "wel"
+            /// German
+            case .deu: return "ger"
+            /// Dutch; Flemish
+            case .nld: return "dut"
+            /// Greek, Modern (1453–)
+            case .ell: return "gre"
+            /// Persian
+            case .fas: return "per"
+            /// French
+            case .fra: return "fre"
+            /// Georgian
+            case .kat: return "geo"
+            /// Icelandic
+            case .isl: return "ice"
+            /// Macedonian
+            case .mkd: return "mac"
+            /// Maori
+            case .mri: return "mao"
+            /// Malay
+            case .msa: return "may"
+            /// Romanian; Moldavian; Moldovan
+            case .ron: return "rum"
+            /// Slovak
+            case .slk: return "slo"
+            default: break
+        }; return self.rawValue
+    }
+    
+    public static let isoNameToNativeNameMapping: [String: String] = {
+        var mapping: [String: String] = [:]
+        for name in ISO6392Codes.allCases {
+            let isoName = name.rawValue
+            mapping[isoName] = name.nativeName
+        }
+        return mapping
+    }()
+    
+    public static let nativeNameToIsoNameMapping: [String: String] = {
+        var mapping: [String: String] = [:]
+        for name in ISO6392Codes.allCases {
+            let nativeName = name.nativeName
+            mapping[nativeName] = name.rawValue
+        }
+        return mapping
+    }()
+    
+    public static let nativeNameToIsoCode: [String: ISO6392Codes] = {
+        var mapping: [String: ISO6392Codes] = [:]
+        for code in ISO6392Codes.allCases {
+            let nativeName = code.nativeName
+            mapping[nativeName] = code
+        }
+        return mapping
+    }()
+    
 }
-// swiftlint:enable type_body_length

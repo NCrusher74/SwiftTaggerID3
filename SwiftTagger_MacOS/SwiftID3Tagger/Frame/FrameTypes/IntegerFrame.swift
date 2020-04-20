@@ -17,6 +17,9 @@ public struct IntegerFrame: FrameProtocol {
     
     /**
      A frame with only an integer string as content, presented as an integer
+     
+     Usually the tag stores these values as an integer string.
+     
      - parameter value: the content of the frame.
      */
     private init(layout: FrameLayoutIdentifier, value: Int) {
@@ -26,7 +29,7 @@ public struct IntegerFrame: FrameProtocol {
     }
     
     internal func encodeContents(version: Version) throws -> Data {
-        return self.value.data
+        return String(self.value).encoded(withNullTermination: false)
     }
     
     // MARK: Decode

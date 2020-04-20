@@ -8,7 +8,7 @@
 
 import Foundation
 /**
- A type representing an ID3 frame that holds a single string, such as Artist, Title, Album, etc
+ A type representing an ID3 frame that holds a single string that is the URL for an external web page
  */
 public struct URLFrame: FrameProtocol {
     
@@ -16,7 +16,7 @@ public struct URLFrame: FrameProtocol {
     
     /**
      A frame with only string content, presented as a single string without `(/n)`.
-     - parameter contentString: the content of the frame.
+     - parameter urlString: the url of a webpage.
      */
     private init(layout: FrameLayoutIdentifier, urlString: String) {
         self.urlString = urlString

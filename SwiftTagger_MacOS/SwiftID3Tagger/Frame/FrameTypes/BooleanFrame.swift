@@ -9,7 +9,7 @@
 import Foundation
 
 /**
- A type representing an ID3 frame that holds a single integer
+ A type representing an ID3 frame that holds a single integer stored as an integer string, 1 for true and 0 for false.
  */
 public struct BooleanFrame: FrameProtocol {
 

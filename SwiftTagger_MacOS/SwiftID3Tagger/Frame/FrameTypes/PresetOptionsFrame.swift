@@ -18,21 +18,21 @@ import Foundation
 struct PresetOptionsFrame: FrameProtocol {
     
     // initializer for Genre Frame
-    public init(genreName: GenreType?,
+    public init(genreName: GenreType.RawValue?,
                 genreDescription: String?) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.genre),
                   presetType: PresetOption.genreType(
-                    GenreType(rawValue: genreName?.rawValue ?? "") ?? .none),
+                    GenreType(rawValue: genreName ?? "") ?? .none),
                   presetRefinement: nil,
                   refinementDescription: genreDescription)
     }
 
-    public init(mediaType: MediaType?,
+    public init(mediaType: MediaType.RawValue?,
                 additionalMediaInfo: MediaTypeRefinements?,
                 mediaTypeDescription: String?) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.mediaType),
                   presetType: PresetOption.mediaType(
-                    MediaType(rawValue: mediaType?.rawValue ?? "") ?? .none),
+                    MediaType(rawValue: mediaType ?? "") ?? .none),
                   presetRefinement: additionalMediaInfo,
                   refinementDescription: mediaTypeDescription)
     }
@@ -165,8 +165,8 @@ struct PresetOptionsFrame: FrameProtocol {
                         
                         // if not, check to make sure it's a valid genre "code"
                     } else if let genreInt = Int(parsedComponent) {
-                        let genreName = (GenreType.codeToRawValueMapping[genreInt]) ?? "None"
-                        let validGenre = GenreType(rawValue: genreName)
+                        let parsedName = (GenreType.codeToRawValueMapping[genreInt]) ?? "None"
+                        let validGenre = GenreType(rawValue: parsedName)
                         genreType = validGenre ?? .none
                         
                         // if it's not a special case or valid genre code, handle it as a freeform string

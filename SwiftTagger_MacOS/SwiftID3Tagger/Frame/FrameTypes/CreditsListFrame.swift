@@ -12,7 +12,24 @@ import Foundation
  A type used to represent an ID3 involved peeople list or musician credits frame.
  */
 struct CreditsListFrame: FrameProtocol {
+ 
+    // public initializers
+    public init(role: String, involvedPerson: String) {
+        self.init(layout: .known(KnownFrameLayoutIdentifier.involvedPeopleList), entries: [(role: role, person: involvedPerson)])
+    }
     
+    public init(role: InvolvedPersonCredits.RawValue, creditedPerson: String) {
+        self.init(layout: .known(KnownFrameLayoutIdentifier.involvedPeopleList), entries: [(role: role, person: creditedPerson)])
+    }
+    
+    public init(role: String, creditedMusician: String) {
+        self.init(layout: .known(KnownFrameLayoutIdentifier.musicianCreditsList), entries: [(role: role, person: creditedMusician)])
+    }
+    
+    public init(role: PerformerCredits.RawValue, creditedPerformer: String) {
+        self.init(layout: .known(KnownFrameLayoutIdentifier.musicianCreditsList), entries: [(role: role, person: creditedPerformer)])
+    }
+
     /// An array of the role:person tuples
     private var entries: [(role: String, person: String)]
     
@@ -27,7 +44,7 @@ struct CreditsListFrame: FrameProtocol {
         self.layout = layout
     }
     
-    func encodeContents(version: Version) throws -> Data {
+    internal func encodeContents(version: Version) throws -> Data {
         var entriesAsData = Data()
         for entry in self.entries {
             entriesAsData.append(contentsOf: entry.role.encoded(withNullTermination: true))
@@ -39,6 +56,7 @@ struct CreditsListFrame: FrameProtocol {
     internal var flags: Data
     internal var layout: FrameLayoutIdentifier
     
+    // MARK: Decoding
     internal init(decodingContents contents: Data.SubSequence,
                   version: Version,
                   layout: FrameLayoutIdentifier,
@@ -68,21 +86,4 @@ struct CreditsListFrame: FrameProtocol {
         let rolePersonArray = strings.pairs()
         return rolePersonArray as! [(String, String)]
     }
-    
-    init(role: String, involvedPerson: String) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.involvedPeopleList), entries: [(role: role, person: involvedPerson)])
-    }
-
-    init(role: InvolvedPersonCredits.RawValue, creditedPerson: String) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.involvedPeopleList), entries: [(role: role, person: creditedPerson)])
-    }
-
-    init(role: String, creditedMusician: String) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.musicianCreditsList), entries: [(role: role, person: creditedMusician)])
-    }
-
-    init(role: PerformerCredits.RawValue, creditedPerformer: String) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.musicianCreditsList), entries: [(role: role, person: creditedPerformer)])
-    }
-
 }
