@@ -25,7 +25,7 @@ public struct IntegerFrame: FrameProtocol {
         self.layout = layout
     }
     
-    func encodeContents(version: Version) throws -> Data {
+    internal func encodeContents(version: Version) throws -> Data {
         return self.value.data
     }
     
@@ -45,30 +45,28 @@ public struct IntegerFrame: FrameProtocol {
         self.value = Int(parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? "") ?? 0
     }
     
-    init(bpm: Int) {
+    // MARK: Public initializers
+    public init(bpm: Int) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.bpm), value: bpm)
     }
 
-    init(isrc: Int) {
+    public init(isrc: Int) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.isrc), value: isrc)
     }
     
-    init(length: Int) {
+    public init(length: Int) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.length), value: length)
     }
     
-    init(movementNumber: Int) {
+    public init(movementNumber: Int) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.movementNumber), value: movementNumber)
     }
     
-    init(totalMovements: Int) {
+    public init(totalMovements: Int) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.movementCount), value: totalMovements)
     }
     
-    init(playlistDelay: Int) {
+    public init(playlistDelay: Int) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.playlistDelay), value: playlistDelay)
     }
-    
-    
-    
 }

@@ -12,6 +12,15 @@ import Foundation
  A type representing the track/disc index of the total tracks or discs.
  */
 struct PartOfTotalFrame: FrameProtocol {
+    
+    public init(disc: Int, totalDiscs: Int?) {
+        self.init(layout: .known(KnownFrameLayoutIdentifier.discNumber), part: disc, total: totalDiscs)
+    }
+    
+    public init(track: Int, totalTracks: Int?) {
+        self.init(layout: .known(KnownFrameLayoutIdentifier.trackNumber), part: track, total: totalTracks)
+    }
+
     /// The position of the track/disc.
     private var part: Int
     /// The total number of tracks/discs in recordings.
@@ -28,7 +37,7 @@ struct PartOfTotalFrame: FrameProtocol {
         self.layout = layout
     }
     
-    func encodeContents(version: Version) throws -> Data {
+    internal func encodeContents(version: Version) throws -> Data {
         if self.total == nil {
             let partOfTotalString = String(self.part)
             return partOfTotalString.encoded(withNullTermination: false)
@@ -54,17 +63,4 @@ struct PartOfTotalFrame: FrameProtocol {
         self.part = Int(contentComponents[0]) ?? 0
         self.total = Int(contentComponents[1])
     }
-    
-    init(disc: Int, totalDiscs: Int?) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.discNumber), part: disc, total: totalDiscs)
-    }
-    
-    init(track: Int, totalTracks: Int?) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.trackNumber), part: track, total: totalTracks)
-    }
-
-    
-    
-    
-    
 }

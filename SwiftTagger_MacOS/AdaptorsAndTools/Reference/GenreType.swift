@@ -1,3 +1,11 @@
+//
+//  GenreType.swift
+//  SwiftTagger_MacOS
+//
+//  Created by Nolaine Crusher on 4/18/20.
+//  Copyright © 2020 Nolaine Crusher. All rights reserved.
+//
+
 public enum GenreType: String, CaseIterable  {
     
     case Blues = "Blues"
@@ -196,7 +204,7 @@ public enum GenreType: String, CaseIterable  {
     case Remix = "Remix"
     case Cover = "Cover"
     
-    var code: Int {
+    public var code: Int {
         switch self {
             case .Blues: return 0
             case .ClassicRock: return 1
@@ -396,7 +404,7 @@ public enum GenreType: String, CaseIterable  {
         }
     }
     
-    private static let codeToNameMapping: [Int: String] = {
+    public static let codeToRawValueMapping: [Int: String] = {
         var mapping: [Int: String] = [:]
         for genre in GenreType.allCases {
             let id = genre.code
@@ -404,5 +412,4 @@ public enum GenreType: String, CaseIterable  {
         }
         return mapping
     }()
-    
 }

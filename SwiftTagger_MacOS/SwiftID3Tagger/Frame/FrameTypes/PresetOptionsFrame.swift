@@ -16,20 +16,41 @@ import Foundation
  A type used to represent an ID3 genre frame
  */
 struct PresetOptionsFrame: FrameProtocol {
-    private var presetType: PresetOptions?
-    private var presetRefinement: PresetOptions?
-    private var refinementDescription: String?
+    
+    // initializer for Genre Frame
+    public init(genreName: GenreType?,
+                genreDescription: String?) {
+        self.init(layout: .known(KnownFrameLayoutIdentifier.genre),
+                  presetType: PresetOption.genreType(
+                    GenreType(rawValue: genreName?.rawValue ?? "") ?? .none),
+                  presetRefinement: nil,
+                  refinementDescription: genreDescription)
+    }
 
+    public init(mediaType: MediaType?,
+                additionalMediaInfo: MediaTypeRefinements?,
+                mediaTypeDescription: String?) {
+        self.init(layout: .known(KnownFrameLayoutIdentifier.mediaType),
+                  presetType: PresetOption.mediaType(
+                    MediaType(rawValue: mediaType?.rawValue ?? "") ?? .none),
+                  presetRefinement: additionalMediaInfo,
+                  refinementDescription: mediaTypeDescription)
+    }
+
+    // MARK: Private Initializer
+    
+    private var presetType: PresetOption?
+    private var presetRefinement: MediaTypeRefinements?
+    private var refinementDescription: String?
+    
     /**
-     Init a ID3 genre frame.
-     
      - parameter presetType: the list of names of the genres or media types.
      - parameter presetRefinement: a list of preset refinements for media types.
      - parameter refinementDescription: a freeform string for customized descriptions.
      */
     private init(layout: FrameLayoutIdentifier,
-                 presetType: PresetOptions?,
-                 presetRefinement: PresetOptions?,
+                 presetType: PresetOption?,
+                 presetRefinement: MediaTypeRefinements?,
                  refinementDescription: String?) {
         self.presetType = presetType
         self.presetRefinement = presetRefinement
@@ -38,77 +59,91 @@ struct PresetOptionsFrame: FrameProtocol {
         self.layout = layout
     }
     
-    func encodeContents(version: Version) throws -> Data {
-        var typeContentAsData = Data()
-        var presetRefinementAsData = Data()
-        var refinementStringAsData = Data()
-        switch version {
-            case .v2_2, .v2_3:
-                if layout == .known(KnownFrameLayoutIdentifier.genre) {
-                    if let typeContent = self.presetType?.genreCode.data {
-                        typeContentAsData = typeContent
-                    }
-                    if let refinement = self.refinementDescription?.encoded(
-                        withNullTermination: false) {
-                        refinementStringAsData = refinement
-                    }
-                    return typeContentAsData + refinementStringAsData
-                } else if layout == .known(KnownFrameLayoutIdentifier.mediaType) {
-                    if let typeContent = self.presetType?.mediaTypeCode.encoded(
-                        withNullTermination: false) {
-                        typeContentAsData = typeContent
-                    }
-                    if let presetRefinement = self.presetType?.mediaRefinementCode.encoded(
-                        withNullTermination: false) {
-                        presetRefinementAsData = presetRefinement
-                    }
-                    if let refinement = self.refinementDescription?.encoded(
-                        withNullTermination: false) {
-                        refinementStringAsData = refinement
-                    }
-                    return typeContentAsData + presetRefinementAsData + refinementStringAsData
-            }
-            case .v2_4:
-                if layout == .known(KnownFrameLayoutIdentifier.genre) {
-                    if let typeContent = self.presetType?.genreCode.data {
-                        typeContentAsData = typeContent
-                    }
-                    if let refinement = self.refinementDescription?.encoded(
-                        withNullTermination: true) {
-                        refinementStringAsData = refinement
-                    }
-                    return typeContentAsData + refinementStringAsData
-                } else if layout == .known(KnownFrameLayoutIdentifier.mediaType) {
-                    if let typeContent = self.presetType?.mediaTypeCode.encoded(
-                        withNullTermination: true) {
-                        typeContentAsData = typeContent
-                    }
-                    if let presetRefinement = self.presetType?.mediaRefinementCode.encoded(
-                        withNullTermination: true) {
-                        presetRefinementAsData = presetRefinement
-                    }
-                    if let refinement = self.refinementDescription?.encoded(
-                        withNullTermination: true) {
-                        refinementStringAsData = refinement
-                    }
-                    return typeContentAsData + presetRefinementAsData + refinementStringAsData
-            }
-        }; return "".encoded(withNullTermination: false)
+    var flags: Data
+    var layout: FrameLayoutIdentifier
+    
+    
+    // MARK: Encode contents for writing
+    internal func encodeContents(version: Version) throws -> Data {
+        var encodedName = Data()
+        var encodedPresetRefinement = Data()
+        var encodedRefinement = Data()
+        
+        // encode presetType
+        if let convertedType = convertAndEncodePresetType(version: version) {
+            encodedName = convertedType
+        }
+        
+        // encode presetRefinement
+        if let convertedPresetRefinement = convertAndEncodePresetRefinement(version: version) {
+            encodedPresetRefinement = convertedPresetRefinement
+        }
+        
+        // encode freeform refinement/description
+        if let convertedRefinement = encodeRefinementString(version: version) {
+            encodedRefinement = convertedRefinement
+        }
+        return encodedName + encodedPresetRefinement + encodedRefinement
     }
-
-    internal var flags: Data
-    internal var layout: FrameLayoutIdentifier
     
+    // encode presetType
+    private func convertAndEncodePresetType(version: Version) -> Data? {
+        switch version {
+            case .v2_2, .v2_3 :
+                if let presetCode = self.presetType?.code {
+                    return (presetCode).encoded(withNullTermination: false)
+            }
+            case .v2_4 :
+                if let presetCode = self.presetType?.code {
+                    return (presetCode).encoded(withNullTermination: true)
+            }
+        }; return nil
+    }
     
+    // encode presetRefinement
+    private func convertAndEncodePresetRefinement(version: Version) -> Data? {
+        switch version {
+            case .v2_2, .v2_3 :
+                if let refinement = self.presetRefinement?.rawValue {
+                    let refinementCode = MediaTypeRefinements(rawValue: refinement)?.code ?? ""
+                    return refinementCode.encoded(withNullTermination: false)
+            }
+            case .v2_4 :
+                if let refinement = self.presetRefinement?.rawValue {
+                    let refinementCode = MediaTypeRefinements(rawValue: refinement)?.code ?? ""
+                    return refinementCode.encoded(withNullTermination: true)
+            }
+        }; return nil
+    }
+    
+    // encode freeform refinement/description
+    private func encodeRefinementString(version: Version) -> Data? {
+        switch version {
+            case .v2_2, .v2_3 :
+                if let refinement = self.refinementDescription {
+                    return refinement.encoded(withNullTermination: false)
+            }
+            case .v2_4 :
+                if let refinement = self.refinementDescription {
+                    return refinement.encoded(withNullTermination: true)
+            }
+        }; return nil
+    }
+    
+    // MARK: parse contents for reading
     internal init(decodingContents contents: Data.SubSequence,
                   version: Version,
                   layout: FrameLayoutIdentifier,
                   flags: Data) throws {
-        self.flags = flags
+        self.flags = flags // this is just here for protocol comformance
         self.layout = layout
         var parsing = contents
+        
         let encoding = PresetOptionsFrame.extractEncoding(data: &parsing, version: version)
         var parsedArray: [String] = []
+        
+        // versions 2.2 and 2.3 handle strings differently than version 2.4.
+        // 2.2 and 2.3 relies on parentheses, while 2.4 just uses null termination
         if version == .v2_2 || version == .v2_3 {
             let unparsedString = parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? ""
             parsedArray = parseParentheticalString(unparsedString: unparsedString)
@@ -117,26 +152,62 @@ struct PresetOptionsFrame: FrameProtocol {
                 let next = parsing.extractPrefixAsStringUntilNullTermination(encoding) {
                     parsedArray.append(next)
             }
-            for component in parsedArray {
+            
+            for parsedComponent in parsedArray {
                 if layout == .known(KnownFrameLayoutIdentifier.genre) {
-                    var genreCodes: [Int] = []
-                    for genre in GenreType.allCases {
-                        genreCodes.append(genre.code)
-                    }
-                } else if layout == .known(KnownFrameLayoutIdentifier.mediaType) {
+                    var genreType: GenreType = .none
                     
+                    // check to see if the component is one of the genre "special cases"
+                    if parsedComponent == "CR" {
+                        genreType = .Cover
+                    } else if parsedComponent == "RX" {
+                        genreType = .Remix
+                        
+                        // if not, check to make sure it's a valid genre "code"
+                    } else if let genreInt = Int(parsedComponent) {
+                        let genreName = (GenreType.codeToRawValueMapping[genreInt]) ?? "None"
+                        let validGenre = GenreType(rawValue: genreName)
+                        genreType = validGenre ?? .none
+                        
+                        // if it's not a special case or valid genre code, handle it as a freeform string
+                    } else {
+                        self.refinementDescription = parsedComponent
+                    }
+                    self.presetType = PresetOption(presetName: genreType.rawValue)
+                    
+                } else if layout == .known(KnownFrameLayoutIdentifier.mediaType) {
+                    var mediaType: MediaType = .none
+                    
+                    // check to see if it's a preset refinement string
+                    // only preset refinement strings should start with "/"
+                    if parsedComponent.first == "/" {
+                        self.presetRefinement = MediaTypeRefinements(rawValue: parsedComponent)
+                        
+                        // if it's not a preset refinement string
+                        // check to see if it's a known media type code
+                    } else if let parsedName = MediaType.codeToNameMapping[parsedComponent] {
+                        mediaType = MediaType(rawValue: parsedName) ?? .none
+                        self.presetType = PresetOption(presetName: mediaType.rawValue)
+                        
+                        // if neither of those is true, treat it as a freeform string
+                    } else {
+                        self.refinementDescription = parsedComponent
+                    }
                 }
             }
         }
     }
     
-    func parseParentheticalString(unparsedString: String) -> [String] {
+    // parse the parentheses out of version 2.2 and 2.3 strings
+    private func parseParentheticalString(unparsedString: String) -> [String] {
         var stringComponents = unparsedString.components(separatedBy: "(")
         for (index, value) in stringComponents.enumerated() {
             if index != 0 && value == "" {
-                let rangeToReplace = (index - 1)...(index + 1)
-                stringComponents[index + 1].insert("(", at: stringComponents[index + 1].startIndex)
-                let componentsToJoin = [stringComponents[index - 1], stringComponents[index + 1]]
+                let previousIndex = index - 1
+                let nextIndex = index + 1
+                let rangeToReplace = previousIndex...nextIndex
+                stringComponents[nextIndex].insert("(", at: stringComponents[nextIndex].startIndex)
+                let componentsToJoin = [stringComponents[previousIndex], stringComponents[nextIndex]]
                 let joinedComponents = [componentsToJoin.joined()]
                 stringComponents.replaceSubrange(rangeToReplace, with: joinedComponents)
                 stringComponents.removeAll(where: {$0 == ""})
@@ -161,3 +232,4 @@ struct PresetOptionsFrame: FrameProtocol {
         return refinedComponents
     }
 }
+

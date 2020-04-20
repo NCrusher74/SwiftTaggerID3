@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum MediaType: String, CaseIterable {
+public enum MediaType: String, CaseIterable {
     
     case otherDigital = "Other digital media"
     case otherAnalog = "Other analogue media"
@@ -27,7 +27,7 @@ enum MediaType: String, CaseIterable {
     case reel = "Reel"
     case none = ""
     
-    var code: String {
+    public var code: String {
         switch self {
             case .otherDigital: return "DIG"
             case .otherAnalog: return "ANA"
@@ -44,11 +44,11 @@ enum MediaType: String, CaseIterable {
             case .telephone: return "TEL"
             case .normalCassette: return "MC"
             case .reel: return "REE"
-            case .none: return ""
+            case .none: return "None"
         }
     }
     
-    private static let codeToNameMapping: [String: String] = {
+    public static let codeToNameMapping: [String: String] = {
         var mapping: [String: String] = [:]
         for mediaType in MediaType.allCases {
             let id = mediaType.code
@@ -56,10 +56,9 @@ enum MediaType: String, CaseIterable {
         }
         return mapping
     }()
-
 }
 
-enum MediaTypeRefinements: String, CaseIterable {
+public enum MediaTypeRefinements: String, CaseIterable {
     
     case analogTransfer = "Analog transfer from media"
     case waxCylinder = "Wax cylinder"
@@ -101,7 +100,7 @@ enum MediaTypeRefinements: String, CaseIterable {
     case typeIV = "Type IV cassette (metal)"
     case none = ""
     
-    var code: String {
+    public var code: String {
         switch self {
             case .analogTransfer: return "/A"
             case .waxCylinder: return "/WC"
@@ -145,7 +144,7 @@ enum MediaTypeRefinements: String, CaseIterable {
         }
     }
     
-    private static let codeToNameMapping: [String: String] = {
+    public static let codeToTypeMapping: [String: String] = {
         var mapping: [String: String] = [:]
         for refinement in MediaTypeRefinements.allCases {
             let id = refinement.code
@@ -153,5 +152,4 @@ enum MediaTypeRefinements: String, CaseIterable {
         }
         return mapping
     }()
-
 }

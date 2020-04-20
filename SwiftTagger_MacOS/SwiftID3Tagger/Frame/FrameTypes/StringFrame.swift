@@ -46,199 +46,200 @@ public struct StringFrame: FrameProtocol {
         self.contentString = parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? ""
     }
     
-    init(artist: String) {
+    // MARK: Public Initializers
+    public init(artist: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.artist), contentString: artist)
     }
     
-    init(album: String) {
+    public init(album: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.album), contentString: album)
     }
 
-    init(albumSort: String) {
+    public init(albumSort: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.albumSort), contentString: albumSort)
     }
 
-    init(albumArtist: String) {
+    public init(albumArtist: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.albumArtist), contentString: albumArtist)
     }
 
-    init(albumArtistSort: String) {
+    public init(albumArtistSort: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.albumArtistSort), contentString: albumArtistSort)
     }
 
-    init(artistSort: String) {
+    public init(artistSort: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.artistSort), contentString: artistSort)
     }
 
-    init(arranger: String) {
+    public init(arranger: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.arranger), contentString: arranger)
     }
 
-    init(composer: String) {
+    public init(composer: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.composer), contentString: composer)
     }
 
-    init(composerSort: String) {
+    public init(composerSort: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.composerSort), contentString: composerSort)
     }
 
-    init(conductor: String) {
+    public init(conductor: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.conductor), contentString: conductor)
     }
 
-    init(contentGroup: String) {
+    public init(contentGroup: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.contentGroup), contentString: contentGroup)
     }
     
-    init(copyright: String) {
+    public init(copyright: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.copyright), contentString: copyright)
     }
 
-    init(encodedBy: String) {
+    public init(encodedBy: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.encodedBy), contentString: encodedBy)
     }
 
-    init(encodingSettings: String) {
+    public init(encodingSettings: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.encodingSettings), contentString: encodingSettings)
     }
     
-    init(fileType: String) {
+    public init(fileType: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.fileType), contentString: fileType)
     }
 
-    init(fileOwner: String) {
+    public init(fileOwner: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.fileOwner), contentString: fileOwner)
     }
 
-    init(grouping: String) {
+    public init(grouping: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.grouping), contentString: grouping)
     }
 
-    init(initialKey: KeySignature.RawValue) {
+    public init(initialKey: KeySignature.RawValue) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.initialKey), contentString: initialKey)
     }
 
-    init(lyricist: String) {
+    public init(lyricist: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.lyricist), contentString: lyricist)
     }
     
-    init(mediaType: String) {
+    public init(mediaType: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.mediaType), contentString: mediaType)
     }
 
-    init(mood: String) {
+    public init(mood: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.mood), contentString: mood)
     }
 
-    init(movementName: String) {
+    public init(movementName: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.movementName), contentString: movementName)
     }
 
-    init(originalAlbum: String) {
+    public init(originalAlbum: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.originalAlbum), contentString: originalAlbum)
     }
 
-    init(originalArtist: String) {
+    public init(originalArtist: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.originalArtist), contentString: originalArtist)
     }
 
-    init(originalFilename: String) {
+    public init(originalFilename: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.originalFilename), contentString: originalFilename)
     }
 
-    init(originalLyricist: String) {
+    public init(originalLyricist: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.originalLyricist), contentString: originalLyricist)
     }
 
-    init(podcastCategory: String) {
+    public init(podcastCategory: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.podcastCategory), contentString: podcastCategory)
     }
 
-    init(podcastDescription: String) {
+    public init(podcastDescription: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.podcastDescription), contentString: podcastDescription)
     }
 
-    init(podcastID: String) {
+    public init(podcastID: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.podcastID), contentString: podcastID)
     }
 
-    init(podcastKeywords: String) {
+    public init(podcastKeywords: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.podcastKeywords), contentString: podcastKeywords)
     }
 
-    init(podcastFeedLink: String) {
+    public init(podcastFeedLink: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.podcastFeedLink), contentString: podcastFeedLink)
     }
 
-    init(producedNotice: String) {
+    public init(producedNotice: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.producedNotice), contentString: producedNotice)
     }
 
-    init(publisher: String) {
+    public init(publisher: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.publisher), contentString: publisher)
     }
 
-    init(internetRadioStation: String) {
+    public init(internetRadioStation: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.radioStation), contentString: internetRadioStation)
     }
 
-    init(internetRadioStationOwner: String) {
+    public init(internetRadioStationOwner: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.radioStationOwner), contentString: internetRadioStationOwner)
     }
 
-    init(setSubtitle: String) {
+    public init(setSubtitle: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.setSubtitle), contentString: setSubtitle)
     }
 
-    init(subtitle: String) {
+    public init(subtitle: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.subtitle), contentString: subtitle)
     }
 
-    init(title: String) {
+    public init(title: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.titleSort), contentString: title)
     }
 
-    init(remixer: String) {
+    public init(remixer: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.arranger), contentString: remixer)
     }
 
-    init(interpretedBy: String) {
+    public init(interpretedBy: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.arranger), contentString: interpretedBy)
     }
 
-    init(work: String) {
+    public init(work: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.contentGroup), contentString: work)
     }
 
-    init(author: String) {
+    public init(author: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.artist), contentString: author)
     }
 
-    init(authorSort: String) {
+    public init(authorSort: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.artistSort), contentString: authorSort)
     }
 
-    init(narrator: String) {
+    public init(narrator: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.composer), contentString: narrator)
     }
 
-    init(narratorSort: String) {
+    public init(narratorSort: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.composerSort), contentString: narratorSort)
     }
 
-    init(recordCompany: String) {
+    public init(recordCompany: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.publisher), contentString: recordCompany)
     }
 
-    init(studio: String) {
+    public init(studio: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.publisher), contentString: studio)
     }
 
-    init(label: String) {
+    public init(label: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.publisher), contentString: label)
     }
 
-    init(series: String) {
+    public init(series: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.contentGroup), contentString: series)
     }
 

@@ -24,7 +24,7 @@ public struct URLFrame: FrameProtocol {
         self.layout = layout
     }
 
-    func encodeContents(version: Version) throws -> Data {
+    internal func encodeContents(version: Version) throws -> Data {
         let contents = self.urlString
         return contents.encoded(withNullTermination: false)
     }
@@ -43,31 +43,32 @@ public struct URLFrame: FrameProtocol {
         self.urlString = contents.stringASCII ?? ""
     }
     
-    init(artistWebsiteUrl: String) {
+    // MARK: Public initializers
+    public init(artistWebsiteUrl: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.artistWebpage), urlString: artistWebsiteUrl)
     }
 
-    init(officialAudioFileWebsiteUrl: String) {
+    public init(officialAudioFileWebsiteUrl: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.audioFileWebpage), urlString: officialAudioFileWebsiteUrl)
     }
 
-    init(officialAudioSourceWebsiteUrl: String) {
+    public init(officialAudioSourceWebsiteUrl: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.audioSourceWebpage), urlString: officialAudioSourceWebsiteUrl)
     }
 
-    init(copyrightWebsiteUrl: String) {
+    public init(copyrightWebsiteUrl: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.copyrightWebpage), urlString: copyrightWebsiteUrl)
     }
 
-    init(paymentWebsiteUrl: String) {
+    public init(paymentWebsiteUrl: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.paymentWebpage), urlString: paymentWebsiteUrl)
     }
     
-    init(publisherWebsiteUrl: String) {
+    public init(publisherWebsiteUrl: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.publisherWebpage), urlString: publisherWebsiteUrl)
     }
 
-    init(internetRadioStationWebsiteUrl: String) {
+    public init(internetRadioStationWebsiteUrl: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.radioStationWebpage), urlString: internetRadioStationWebsiteUrl)
     }
 

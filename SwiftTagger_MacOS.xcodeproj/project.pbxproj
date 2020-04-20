@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		511E400A2446A96A0041F7AE /* ISOLanguages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511E40092446A96A0041F7AE /* ISOLanguages.swift */; };
 		51490E49243EBB4A009D4BA4 /* Frame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51490E48243EBB4A009D4BA4 /* Frame.swift */; };
 		51490E51243EDB4F009D4BA4 /* FrameLayoutIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51490E50243EDB4F009D4BA4 /* FrameLayoutIdentifier.swift */; };
 		51490E53243EF216009D4BA4 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51490E52243EF216009D4BA4 /* Data.swift */; };
@@ -53,6 +52,7 @@
 		51A3C6A02442FEF000909952 /* DateFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A3C69F2442FEF000909952 /* DateFrame.swift */; };
 		51A3C6A22442FFB300909952 /* UserTextFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A3C6A12442FFB300909952 /* UserTextFrame.swift */; };
 		51A3C6A724464FDC00909952 /* URLFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A3C6A624464FDC00909952 /* URLFrame.swift */; };
+		51D58B39244D497000DBA9FB /* ISOLanguages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D58B38244D497000DBA9FB /* ISOLanguages.swift */; };
 		51E432B6243DA257006574A1 /* SwiftTagger_MacOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51E432AC243DA257006574A1 /* SwiftTagger_MacOS.framework */; };
 		51E432BB243DA257006574A1 /* SwiftTagger_MacOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E432BA243DA257006574A1 /* SwiftTagger_MacOSTests.swift */; };
 		51E432BD243DA257006574A1 /* SwiftTagger_MacOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 51E432AF243DA257006574A1 /* SwiftTagger_MacOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -95,7 +95,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		511E40092446A96A0041F7AE /* ISOLanguages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISOLanguages.swift; sourceTree = "<group>"; };
 		51490E48243EBB4A009D4BA4 /* Frame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Frame.swift; sourceTree = "<group>"; };
 		51490E50243EDB4F009D4BA4 /* FrameLayoutIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameLayoutIdentifier.swift; sourceTree = "<group>"; };
 		51490E52243EF216009D4BA4 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
@@ -141,6 +140,7 @@
 		51A3C69F2442FEF000909952 /* DateFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFrame.swift; sourceTree = "<group>"; };
 		51A3C6A12442FFB300909952 /* UserTextFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTextFrame.swift; sourceTree = "<group>"; };
 		51A3C6A624464FDC00909952 /* URLFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLFrame.swift; sourceTree = "<group>"; };
+		51D58B38244D497000DBA9FB /* ISOLanguages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISOLanguages.swift; sourceTree = "<group>"; };
 		51E432AC243DA257006574A1 /* SwiftTagger_MacOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftTagger_MacOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		51E432AF243DA257006574A1 /* SwiftTagger_MacOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftTagger_MacOS.h; sourceTree = "<group>"; };
 		51E432B0243DA257006574A1 /* SwiftTagger_MacOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = SwiftTagger_MacOS.plist; sourceTree = "<group>"; };
@@ -259,10 +259,10 @@
 				518807282442F1CB008D488B /* ImageTypes.swift */,
 				5188072A2442F3DE008D488B /* GenreType.swift */,
 				5168949A244C112E008F6124 /* MediaType.swift */,
-				511E40092446A96A0041F7AE /* ISOLanguages.swift */,
 				515AF6582449A098005C29FA /* CreditedRoles.swift */,
 				515AF65A2449A8E2005C29FA /* KeySignatures.swift */,
 				51689498244C10E1008F6124 /* PresetOptions.swift */,
+				51D58B38244D497000DBA9FB /* ISOLanguages.swift */,
 			);
 			path = Reference;
 			sourceTree = "<group>";
@@ -522,13 +522,13 @@
 				51A3C6A02442FEF000909952 /* DateFrame.swift in Sources */,
 				51490E51243EDB4F009D4BA4 /* FrameLayoutIdentifier.swift in Sources */,
 				518807232442EE58008D488B /* PartOfTotalFrame.swift in Sources */,
-				511E400A2446A96A0041F7AE /* ISOLanguages.swift in Sources */,
 				51FA350A24402580000997EC /* String.swift in Sources */,
 				51490E53243EF216009D4BA4 /* Data.swift in Sources */,
 				5177544824423D46005E43C5 /* StringFrame.swift in Sources */,
 				51A3C6A724464FDC00909952 /* URLFrame.swift in Sources */,
 				515AF6592449A099005C29FA /* CreditedRoles.swift in Sources */,
 				51E432C9243DA35E006574A1 /* URL.swift in Sources */,
+				51D58B39244D497000DBA9FB /* ISOLanguages.swift in Sources */,
 				5177543E24413768005E43C5 /* UnsignedInteger.swift in Sources */,
 				515AF65B2449A8E2005C29FA /* KeySignatures.swift in Sources */,
 				51490E66243F1F92009D4BA4 /* Data.Subsquence.swift in Sources */,

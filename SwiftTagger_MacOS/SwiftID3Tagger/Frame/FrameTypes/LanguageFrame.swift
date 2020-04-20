@@ -15,19 +15,24 @@ import Foundation
  */
 public struct LanguageFrame: FrameProtocol {    
     
+    
+    public init(language: String) {
+        self.init(layout: .known(KnownFrameLayoutIdentifier.languages), languageString: language)
+    }
+    
     /// ISO-639-2 languge code
-    private var languageString: String
+    private var languageString: IsoLanguageInfo
     
     /**
      - parameter language: the ISO-639-2 language code.
      */
-    private init(layout: FrameLayoutIdentifier, languageString: String) {
+    private init(layout: FrameLayoutIdentifier, languageString: IsoLanguageInfo) {
         self.languageString = languageString
         self.flags = LanguageFrame.defaultFlags()
         self.layout = layout
     }
     
-    func encodeContents(version: Version) throws -> Data {
+    internal func encodeContents(version: Version) throws -> Data {
         return self.languageString.encoded(withNullTermination: false)
     }
     
@@ -45,9 +50,4 @@ public struct LanguageFrame: FrameProtocol {
         let languages = IsoLanguages.allLanguages.filter({ $0.iso6392T == languageCode })
         self.languageString = String(languages.first?.isoName ?? "undefined")
     }
-    
-    init(language: String) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.languages), languageString: language)
-    }
-
 }
