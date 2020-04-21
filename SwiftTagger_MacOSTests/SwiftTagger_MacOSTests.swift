@@ -51,8 +51,7 @@ class SwiftTagger_MacOSTests: XCTestCase {
         let validatorCorrupted = TagValidator(for: mp3Corrupted)
         XCTAssertTrue(try validatorCorrupted.isValidMp3())
         XCTAssertTrue(try validatorCorrupted.hasValidTagSize())
-        XCTAssertThrowsError(try validatorCorrupted.hasValidVersionBytes())
-        XCTAssertThrowsError(try validatorCorrupted.hasValidTag())
+        XCTAssertThrowsError(try validatorCorrupted.hasValidVersionData())
         XCTAssertThrowsError(try validatorCorrupted.hasValidTag())
  
         let v22Validator = TagValidator(for: try Mp3File(location: Bundle.writtenV22))
@@ -61,19 +60,19 @@ class SwiftTagger_MacOSTests: XCTestCase {
 
         // test v2.2
         XCTAssertTrue(try v22Validator.isValidMp3())
-        XCTAssertTrue(try v22Validator.hasValidVersionBytes())
+        XCTAssertTrue(try v22Validator.hasValidVersionData())
         XCTAssertTrue(try v22Validator.hasValidTagSize())
         XCTAssertTrue(try v22Validator.hasValidTag())
 
         // test v2.3
         XCTAssertTrue(try v23Validator.isValidMp3())
-        XCTAssertTrue(try v23Validator.hasValidVersionBytes())
+        XCTAssertTrue(try v23Validator.hasValidVersionData())
         XCTAssertTrue(try v23Validator.hasValidTagSize())
         XCTAssertTrue(try v23Validator.hasValidTag())
 
         // test v2.4
         XCTAssertTrue(try v24Validator.isValidMp3())
-        XCTAssertTrue(try v24Validator.hasValidVersionBytes())
+        XCTAssertTrue(try v24Validator.hasValidVersionData())
         XCTAssertTrue(try v24Validator.hasValidTagSize())
         XCTAssertTrue(try v24Validator.hasValidTag())
     }

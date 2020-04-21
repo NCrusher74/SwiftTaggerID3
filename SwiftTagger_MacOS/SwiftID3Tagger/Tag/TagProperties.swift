@@ -133,4 +133,12 @@ extension TagProperties {
     var versionBytes: [[UInt8]] {
         return [v2_2Bytes, v2_3Bytes, v2_4Bytes]
     }
+
+    var versionData: [Data] {
+        let v22Data = Data(bytes: v2_2Bytes, count: 5)
+        let v23Data = Data(bytes: v2_3Bytes, count: 5)
+        let v24Data = Data(bytes: v2_4Bytes, count: 5)
+        
+        return [v22Data, v23Data, v24Data]
+    }
 }
