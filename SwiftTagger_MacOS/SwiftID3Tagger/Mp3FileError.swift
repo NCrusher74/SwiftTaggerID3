@@ -17,6 +17,8 @@ extension Mp3File {
         case InvalidFileFormat;
         /// Error generated when the tag size exceed 256 MB.
         case TagTooBig;
+        /// Error generated when a tag isn't large enough to hold meaningful content
+        case TagTooSmall;
         /// Error generated when there's not valid data in the tag.
         case InvalidTagData;
         /// Error generated when the file is corrupted.
@@ -48,6 +50,9 @@ extension Mp3File.Error: LocalizedError {
             case .TagTooBig:
                 return NSLocalizedString(
                     "Tag size exceeds limit", comment: "")
+            case .TagTooSmall:
+                return NSLocalizedString(
+                    "Tag is not large enough to hold valid content beyond the tag header", comment: "")
             case .InvalidTagData:
                 return NSLocalizedString(
                     "The tag header is unrecognized", comment: "")

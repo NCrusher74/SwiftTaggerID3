@@ -30,8 +30,8 @@ public struct Mp3File {
     }
 
     public func read() throws {
-        let tag = try Tag(mp3File: self)
-        try tag.parseFramesFromTag()
+        let tag = Tag()
+        try tag.parseFramesFromTag(file: self)
     }
     
 //    public func write(from sourceAudio: Mp3File, to outputLocation: URL) throws {

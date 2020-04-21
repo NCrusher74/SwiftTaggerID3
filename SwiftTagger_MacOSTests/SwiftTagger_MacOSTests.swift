@@ -14,34 +14,11 @@ import AVFoundation
 class SwiftTagger_MacOSTests: XCTestCase {
 
     
-    func testToolsAndExtensions() throws {
+    func testPrint() throws {
+        let v22Validator = TagValidator(for: try Mp3File(location: Bundle.writtenV22))
+        XCTAssertTrue(try v22Validator.hasValidTagSize())
     }
     
-    func testRead() throws {
-        let mp3NoMetaFile = try Mp3File(location: Bundle.v23NoMeta)
-        let noMetaData = mp3NoMetaFile.data
-        let propertiesNoMeta = TagProperties(for: mp3NoMetaFile)
-        
-        let mp3v22File = try Mp3File(location: Bundle.writtenV22)
-        let v22Data = mp3v22File.data
-        let propertiesV22 = TagProperties(for: mp3v22File)
-//        print(propertiesV22.extractVersionData(data: v22Data))
-
-        let mp3v23File = try Mp3File(location: Bundle.writtenV23)
-        let v23Data = mp3v23File.data
-        let propertiesV23 = TagProperties(for: mp3v23File)
-        
-        let mp3v24File = try Mp3File(location: Bundle.writtenV24)
-        let v24Data = mp3v24File.data
-        let propertiesV24 = TagProperties(for: mp3v24File)
-        
-        XCTAssertEqual(try propertiesNoMeta.version(data: noMetaData), Version.v2_3)
-        XCTAssertEqual(try propertiesV22.version(data: v22Data), Version.v2_2)
-        XCTAssertEqual(try propertiesV23.version(data: v23Data), Version.v2_3)
-        XCTAssertEqual(try propertiesV24.version(data: v24Data), Version.v2_4)
-
-    }
-
     func testValidation() throws {
         // test error handling
         let notMp3File = try Mp3File(location: Bundle.notMp3)
@@ -49,11 +26,15 @@ class SwiftTagger_MacOSTests: XCTestCase {
 
         let mp3Corrupted = try Mp3File(location: Bundle.corruptedV23)
         let validatorCorrupted = TagValidator(for: mp3Corrupted)
-        XCTAssertTrue(try validatorCorrupted.isValidMp3())
-        XCTAssertTrue(try validatorCorrupted.hasValidTagSize())
-        XCTAssertThrowsError(try validatorCorrupted.hasValidVersionData())
+        let propertiesCorrupted = TagProperties(for: mp3Corrupted)
+        let dataCorrupted = mp3Corrupted.data
+
+        XCTAssertNoThrow(try validatorCorrupted.isValidMp3())
+        print(try validatorCorrupted.isValidMp3())
+        XCTAssertNoThrow(try validatorCorrupted.hasValidVersionData())
+        XCTAssertThrowsError(try validatorCorrupted.hasValidTagSize())
         XCTAssertThrowsError(try validatorCorrupted.hasValidTag())
- 
+
         let v22Validator = TagValidator(for: try Mp3File(location: Bundle.writtenV22))
         let v23Validator = TagValidator(for: try Mp3File(location: Bundle.writtenV23))
         let v24Validator = TagValidator(for: try Mp3File(location: Bundle.writtenV24))
@@ -75,6 +56,31 @@ class SwiftTagger_MacOSTests: XCTestCase {
         XCTAssertTrue(try v24Validator.hasValidVersionData())
         XCTAssertTrue(try v24Validator.hasValidTagSize())
         XCTAssertTrue(try v24Validator.hasValidTag())
+    }
+
+    func testRead() throws {
+        let mp3NoMetaFile = try Mp3File(location: Bundle.v23NoMeta)
+        let noMetaData = mp3NoMetaFile.data
+        let propertiesNoMeta = TagProperties(for: mp3NoMetaFile)
+        
+        let mp3v22File = try Mp3File(location: Bundle.writtenV22)
+        let v22Data = mp3v22File.data
+        let propertiesV22 = TagProperties(for: mp3v22File)
+        print(propertiesV22.extractVersionData(data: v22Data))
+        
+        let mp3v23File = try Mp3File(location: Bundle.writtenV23)
+        let v23Data = mp3v23File.data
+        let propertiesV23 = TagProperties(for: mp3v23File)
+        
+        let mp3v24File = try Mp3File(location: Bundle.writtenV24)
+        let v24Data = mp3v24File.data
+        let propertiesV24 = TagProperties(for: mp3v24File)
+        
+        XCTAssertEqual(try propertiesNoMeta.version(data: noMetaData), Version.v2_3)
+        XCTAssertEqual(try propertiesV22.version(data: v22Data), Version.v2_2)
+        XCTAssertEqual(try propertiesV23.version(data: v23Data), Version.v2_3)
+        XCTAssertEqual(try propertiesV24.version(data: v24Data), Version.v2_4)
+        
     }
 
 }

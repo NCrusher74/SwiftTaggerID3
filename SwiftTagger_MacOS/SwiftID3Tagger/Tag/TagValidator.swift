@@ -25,7 +25,7 @@ struct TagValidator {
     }
     
     private var tagProperties: TagProperties {
-        return TagProperties(for: mp3File)
+        return TagProperties(for: self.mp3File)
     }
     
     // MARK: Validate file
@@ -60,10 +60,7 @@ struct TagValidator {
     // check that first five bytes are "ID3<version><null>"
     func hasValidVersionData() throws -> Bool {
         if try self.isValidMp3() {
-            
             let versionData = tagProperties.extractVersionData(data: self.mp3Data)
-//            let versionUInt8 = [versionData.uint8]
-
             let knownVersionData = tagProperties.versionData
             if knownVersionData.contains(versionData) {
                 return true
@@ -75,18 +72,19 @@ struct TagValidator {
     
     // check that tag size does not exceed file size
     func hasValidTagSize() throws -> Bool {
-        let byteOffset = tagProperties.tagSizeDeclarationOffset
-        let endOfRelevantBytes = byteOffset + tagProperties.tagSizeDeclarationLength
-        let tagSizeDataRange = byteOffset ..< endOfRelevantBytes
-        let tagSizeData = mp3Data.subdata(in: tagSizeDataRange)
-
-        let sizeInt = Int(tagProperties.size(tagSizeData: tagSizeData))
+        let tagSizeData = tagProperties.extractTagSizeData(data: self.mp3Data)
+        //        print(tagSizeData.hexadecimal()) // 0 0 18 3e
+        let sizeInt = try tagProperties.size(data: tagSizeData)
+        //        print(sizeInt) - this doesn't print at all
         let headerSize = tagProperties.tagHeaderLength
         let tagSize =  sizeInt + headerSize
-
-        if mp3Data.count < tagSize {
-            throw Mp3File.Error.CorruptedFile
-        }; return true
+        if tagSize <= headerSize {
+            throw Mp3File.Error.TagTooSmall
+        } else if tagSize > mp3Data.count {
+            throw Mp3File.Error.TagTooBig
+        }   else {
+            return true
+        }
     }
     
     // confirm valid tag tag data
@@ -97,5 +95,4 @@ struct TagValidator {
             throw Mp3File.Error.InvalidTagData
         }
     }
-    
 }

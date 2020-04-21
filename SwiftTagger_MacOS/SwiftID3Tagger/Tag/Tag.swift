@@ -10,21 +10,21 @@ import Foundation
 
 struct Tag {
     
-    //    var frames: [FrameKey : Frame]
-    var mp3File: Mp3File
+//    //    var frames: [FrameKey : Frame]
+//    var [FrameKey : Frame]
+//
+//    // handles the parsing of an ID3 tag
+//    init([FrameKey : Frame]) throws {
+//        self init [FrameKey : Frame]
+//    }
     
-    // handles the parsing of an ID3 tag
-    init(mp3File: Mp3File) throws {
-        self.mp3File = mp3File
-    }
-    
-    func parseFramesFromTag() throws {
-        let fileData: Data = self.mp3File.data
+    func parseFramesFromTag(file: Mp3File) throws {
+        let fileData: Data = file.data
         
         var remainder: Data.SubSequence = fileData[fileData.startIndex..<fileData.endIndex]
         
-        let tagProperties = TagProperties(for: self.mp3File)
-        let tagValidator = TagValidator(for: self.mp3File)
+        let tagProperties = TagProperties(for: file)
+        let tagValidator = TagValidator(for: file)
         
         // parse version from tag header
         var version: Version = .v2_4
@@ -40,7 +40,7 @@ struct Tag {
             
             // parse size from tag header
             let tagSizeData = tagProperties.extractTagSizeData(data: fileData)
-            _ = tagProperties.size(tagSizeData: tagSizeData)
+            _ = try tagProperties.size(data: tagSizeData)
         }
         
         while !remainder.isEmpty {

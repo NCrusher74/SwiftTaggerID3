@@ -48,23 +48,27 @@ struct TagProperties {
     }
     
     func extractFlagData(data: Data) -> Data {
-        var flagsData = extractVersionData(data: data)
+        var flagsData = data.dropFirst(versionDeclarationLength)
         return flagsData.extractFirst(tagFlagsLength)
     }
     
     func extractTagSizeData(data: Data) -> Data {
-        var tagSizeData = extractFlagData(data: data)
+        var tagSizeData = data.dropFirst(versionDeclarationLength + tagFlagsLength)
         return tagSizeData.extractFirst(tagSizeDeclarationLength)
     }
     
     /// the size of the ID3 tag
-    func size(tagSizeData: Data) -> UInt32 {
-        let tagSizeNSData = tagSizeData as NSData
-        let tagDataBytes = tagSizeNSData.bytes + tagSizeDeclarationOffset
-        let tagSize = tagDataBytes.assumingMemoryBound(
-            to: UInt32.self).pointee.bigEndian
-        let decodedTagSize = tagSize.decodingSynchsafe()
-        return decodedTagSize
+    func size(data: Data) throws -> Int {
+        let tagSizeData = extractTagSizeData(data: data)
+//        print(tagSizeData.hexadecimal()) // 0 0 18 3e
+        let raw = UInt32(parsing: tagSizeData, .bigEndian)
+//        print(raw) - 0?
+        switch try version(data: tagSizeData) {
+            case .v2_2, .v2_3:
+                return Int(raw)
+            case .v2_4:
+                return Int(raw.decodingSynchsafe())
+        }
     }
 }
 
@@ -135,9 +139,9 @@ extension TagProperties {
     }
 
     var versionData: [Data] {
-        let v22Data = Data(bytes: v2_2Bytes, count: 5)
-        let v23Data = Data(bytes: v2_3Bytes, count: 5)
-        let v24Data = Data(bytes: v2_4Bytes, count: 5)
+        let v22Data = Data(v2_2Bytes)
+        let v23Data = Data(v2_3Bytes)
+        let v24Data = Data(v2_4Bytes)
         
         return [v22Data, v23Data, v24Data]
     }

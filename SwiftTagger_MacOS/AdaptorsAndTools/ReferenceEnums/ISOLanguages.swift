@@ -2738,5 +2738,4 @@ public enum ISO6392Codes: String, CaseIterable {
         }
         return mapping
     }()
-    
 }
