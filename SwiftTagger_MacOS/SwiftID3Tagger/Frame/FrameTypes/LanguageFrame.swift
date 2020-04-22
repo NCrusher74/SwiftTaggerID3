@@ -27,7 +27,7 @@ public struct LanguageFrame: FrameProtocol {
      */
     private init(layout: FrameLayoutIdentifier, languageString: String) {
         self.languageString = languageString
-        //        self.flags = LanguageFrame.defaultFlags()
+        self.flags = LanguageFrame.defaultFlags
         self.layout = layout
     }
     
@@ -36,16 +36,16 @@ public struct LanguageFrame: FrameProtocol {
     }
     
     // MARK: Decoding
-    //    var flags: Data
+    var flags: Data
     var layout: FrameLayoutIdentifier
     
     /// if desired, return may be changed from "isoName" to "nativeName"
     init(decodingContents contents: Data.SubSequence,
          version: Version,
-         layout: FrameLayoutIdentifier
-        //                  flags: Data
+         layout: FrameLayoutIdentifier,
+         flags: Data
     ) throws {
-        //        self.flags = flags
+                self.flags = flags
         self.layout = layout
         var parsing = contents
         let languageCode = parsing.extractFirst(3).stringASCII ?? "und"

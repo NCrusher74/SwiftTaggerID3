@@ -33,7 +33,7 @@ public struct PartOfTotalFrame: FrameProtocol {
     private init(layout: FrameLayoutIdentifier, part: Int, total: Int?) {
         self.part = part
         self.total = total
-//        self.flags = PartOfTotalFrame.defaultFlags()
+        self.flags = PartOfTotalFrame.defaultFlags
         self.layout = layout
     }
     
@@ -47,15 +47,15 @@ public struct PartOfTotalFrame: FrameProtocol {
         }
     }
     
-//    var flags: Data
+    var flags: Data
     var layout: FrameLayoutIdentifier
     
     init(decodingContents contents: Data.SubSequence,
                   version: Version,
-                  layout: FrameLayoutIdentifier
-//                  flags: Data
+                  layout: FrameLayoutIdentifier,
+                  flags: Data
     ) throws {
-//        self.flags = flags
+        self.flags = flags
         self.layout = layout
         var parsing = contents
         let encoding = PartOfTotalFrame.extractEncoding(data: &parsing, version: version)

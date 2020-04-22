@@ -21,7 +21,7 @@ public struct StringFrame: FrameProtocol {
      */
     private init(layout: FrameLayoutIdentifier, contentString: String) {
         self.contentString = contentString
-        //        self.flags = StringFrame.defaultFlags(version: version)
+        self.flags = StringFrame.defaultFlags
         self.layout = layout
     }
     
@@ -32,15 +32,15 @@ public struct StringFrame: FrameProtocol {
     
     // MARK: Decode
     // decode incoming data and parse it into a frame
-    //    var flags: Data
+    var flags: Data
     var layout: FrameLayoutIdentifier
     
     init(decodingContents contents: Data.SubSequence,
          version: Version,
-         layout: FrameLayoutIdentifier
-        //                  flags: Data
+         layout: FrameLayoutIdentifier,
+         flags: Data
     ) throws {
-        //        self.flags = flags
+        self.flags = flags
         self.layout = layout
         var parsing = contents
         let encoding = StringFrame.extractEncoding(data: &parsing, version: version)

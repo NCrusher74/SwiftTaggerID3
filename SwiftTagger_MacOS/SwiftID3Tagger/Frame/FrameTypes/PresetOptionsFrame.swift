@@ -53,11 +53,11 @@ public struct PresetOptionsFrame: FrameProtocol {
         self.presetName = presetName
         self.presetRefinement = presetRefinement
         self.refinementDescription = refinementDescription
-//        self.flags = PresetOptionsFrame.defaultFlags()
+        self.flags = PresetOptionsFrame.defaultFlags
         self.layout = layout
     }
     
-//    var flags: Data
+    var flags: Data
     var layout: FrameLayoutIdentifier
     
     
@@ -129,10 +129,10 @@ public struct PresetOptionsFrame: FrameProtocol {
     // MARK: parse contents for reading
     init(decodingContents contents: Data.SubSequence,
                   version: Version,
-                  layout: FrameLayoutIdentifier
-//                  flags: Data
+                  layout: FrameLayoutIdentifier,
+                  flags: Data
     ) throws {
-//        self.flags = flags // this is just here for protocol comformance
+        self.flags = flags // this is just here for protocol comformance
         self.layout = layout
         var parsing = contents
         

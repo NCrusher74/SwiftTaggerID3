@@ -53,11 +53,11 @@ public struct UserTextFrame: FrameProtocol {
     private init(layout: FrameLayoutIdentifier, descriptionString: String, contentString: String) {
         self.descriptionString = descriptionString
         self.contentString = contentString
-//        self.flags = UserTextFrame.defaultFlags()
+        self.flags = UserTextFrame.defaultFlags
         self.layout = layout
     }
     
-//    var flags: Data = UserTextFrame.defaultFlags()
+    var flags: Data
     var layout: FrameLayoutIdentifier
 
     func encodeContents(version: Version) throws -> Data {
@@ -69,12 +69,12 @@ public struct UserTextFrame: FrameProtocol {
 
     init(decodingContents contents: Data.SubSequence,
          version: Version,
-         layout: FrameLayoutIdentifier
-//         flags: Data
+         layout: FrameLayoutIdentifier,
+         flags: Data
     ) throws {
         var parsing = contents
         let encoding = UserTextFrame.extractEncoding(data: &parsing, version: version)
-//        self.flags = flags
+        self.flags = flags
         self.layout = layout
         let parsed = try UserTextFrame.extractDescriptionAndContent(from: &parsing, encoding: encoding)
         self.descriptionString = parsed.description ?? ""

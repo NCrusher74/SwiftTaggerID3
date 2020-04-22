@@ -44,7 +44,7 @@ public struct CreditsListFrame: FrameProtocol {
      */
     private init(layout: FrameLayoutIdentifier, entries: [(role: String, person: String)]) {
         self.entries = entries
-//        self.flags = CreditsListFrame.defaultFlags()
+        self.flags = CreditsListFrame.defaultFlags
         self.layout = layout
     }
     
@@ -57,16 +57,16 @@ public struct CreditsListFrame: FrameProtocol {
         return entriesAsData
     }
     
-//    var flags: Data
+    var flags: Data
     var layout: FrameLayoutIdentifier
     
     // MARK: Decoding
     init(decodingContents contents: Data.SubSequence,
                   version: Version,
-                  layout: FrameLayoutIdentifier
-//                  flags: Data
+                  layout: FrameLayoutIdentifier,
+                  flags: Data
     ) throws {
-//        self.flags = flags
+        self.flags = flags
         self.layout = layout
         var parsing = contents
         let encoding = CreditsListFrame.extractEncoding(data: &parsing, version: version)

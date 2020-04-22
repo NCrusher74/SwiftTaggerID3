@@ -313,10 +313,10 @@
 		51E432B9243DA257006574A1 /* SwiftTagger_MacOSTests */ = {
 			isa = PBXGroup;
 			children = (
-				51E432CC243DA5B4006574A1 /* TestMedia */,
+				51779430245016AF0022E02F /* SwiftTagger_ID3_Read_Tests.swift */,
 				51E432BA243DA257006574A1 /* SwiftTagger_ID3_Properties_and_Validation_Tests.swift */,
 				51E432BC243DA257006574A1 /* SwiftTagger_MacOSTests.plist */,
-				51779430245016AF0022E02F /* SwiftTagger_ID3_Read_Tests.swift */,
+				51E432CC243DA5B4006574A1 /* TestMedia */,
 			);
 			path = SwiftTagger_MacOSTests;
 			sourceTree = "<group>";

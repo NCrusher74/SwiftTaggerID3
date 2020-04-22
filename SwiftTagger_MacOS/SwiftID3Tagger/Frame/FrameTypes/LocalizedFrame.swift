@@ -92,10 +92,10 @@ public struct LocalizedFrame: FrameProtocol {
         self.descriptionString = descriptionString ?? ""
         self.contentString = contentString
         self.layout = layout
-//        self.flags = LocalizedFrame.defaultFlags()
+        self.flags = LocalizedFrame.defaultFlags
     }
 
-//    var flags: Data
+    var flags: Data
     var layout: FrameLayoutIdentifier
     
     func encodeContents(version: Version) throws -> Data {
@@ -107,10 +107,10 @@ public struct LocalizedFrame: FrameProtocol {
 
     init(decodingContents contents: Data.SubSequence,
          version: Version,
-         layout: FrameLayoutIdentifier
-//         flags: Data
+         layout: FrameLayoutIdentifier,
+         flags: Data
     ) throws {
-//        self.flags = flags
+        self.flags = flags
         self.layout = layout
         var parsing = contents
         let encoding = LocalizedFrame.extractEncoding(data: &parsing, version: version)

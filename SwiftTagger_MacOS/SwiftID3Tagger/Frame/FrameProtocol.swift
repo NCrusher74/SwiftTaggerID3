@@ -12,15 +12,15 @@ import Foundation
  */
 protocol FrameProtocol {
     
-//    var flags: Data { get set }
+    var flags: Data { get set }
     var layout: FrameLayoutIdentifier { get }
     
     func encodeContents(version: Version) throws -> Data
     
     init(decodingContents contents: Data.SubSequence,
          version: Version,
-         layout: FrameLayoutIdentifier
-//         flags: Data
+         layout: FrameLayoutIdentifier,
+         flags: Data
     ) throws
 }
 
@@ -37,7 +37,7 @@ extension FrameProtocol {
             case .v2_2:
                 break // Skip flags.
             case .v2_3, .v2_4:
-                flags = Self.defaultFlags(version: version)
+                flags = Self.defaultFlags
         }
         
         let frameData = identifier + size + flags + contents
@@ -61,7 +61,7 @@ extension FrameProtocol {
         // parse flags
         var flagsData: Data
         switch version {
-            case .v2_2: flagsData = Self.defaultFlags(version: version)
+            case .v2_2: flagsData = Data()
             case .v2_3, .v2_4: flagsData = data.extractFirst(version.flagsLength)
         }
         
@@ -71,8 +71,8 @@ extension FrameProtocol {
         
         try self.init(decodingContents: contentData,
                       version: version,
-                      layout: layout
-//                      flags: flagsData
+                      layout: layout,
+                      flags: flagsData
         )
         
         data = data.dropFirst(version.frameHeaderLength + contentData.count)
@@ -101,12 +101,8 @@ extension FrameProtocol {
         return identifierString
     }
         
-    static func defaultFlags(version: Version) -> Data {
-        var flagBytes: [UInt8] = []
-        switch version {
-            case .v2_2: flagBytes = []
-            case .v2_3, .v2_4: flagBytes = [0x00, 0x00]
-        }
+    static var defaultFlags: Data {
+        let flagBytes: [UInt8] = [0x00, 0x00]
         return Data(flagBytes)
     }
     
@@ -128,5 +124,4 @@ extension FrameProtocol {
         let content = frameData.extractPrefixAsStringUntilNullTermination(encoding) ?? ""
         return (description: description, content: content)
     }
-    
 }

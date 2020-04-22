@@ -27,7 +27,7 @@ public struct BooleanFrame: FrameProtocol {
      */
     private init(layout: FrameLayoutIdentifier, value: Bool) {
         self.value = value
-        //        self.flags = BooleanFrame.defaultFlags()
+        self.flags = BooleanFrame.defaultFlags
         self.layout = layout
     }
     
@@ -40,15 +40,15 @@ public struct BooleanFrame: FrameProtocol {
         }
     }
     
-    //    var flags: Data
+    var flags: Data
     var layout: FrameLayoutIdentifier
     
     init(decodingContents contents: Data.SubSequence,
          version: Version,
-         layout: FrameLayoutIdentifier
-        //                  flags: Data
+         layout: FrameLayoutIdentifier,
+         flags: Data
     ) throws {
-        //        self.flags = flags
+        self.flags = flags
         self.layout = layout
         var parsing = contents
         let encoding = BooleanFrame.extractEncoding(data: &parsing, version: version)
