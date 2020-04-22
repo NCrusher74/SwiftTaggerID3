@@ -100,8 +100,7 @@ extension FrameProtocol {
         }
         return identifierString
     }
-    
-    
+        
     static func defaultFlags(version: Version) -> Data {
         var flagBytes: [UInt8] = []
         switch version {

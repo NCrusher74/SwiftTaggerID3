@@ -60,12 +60,12 @@ struct TagProperties {
     }
     
     /// the size of the ID3 tag
-    func size(data: Data) throws -> Int {
+    func size(data: Data, version: Version) throws -> Int {
         let tagSizeData = extractTagSizeData(data: data)
 //        print(tagSizeData.hexadecimal()) // 0 0 18 3e
         let raw = UInt32(parsing: tagSizeData, .bigEndian)
 //        print(raw) - 6206
-        switch try version(data: tagSizeData) {
+        switch version {
             case .v2_2, .v2_3:
                 return Int(raw)
 

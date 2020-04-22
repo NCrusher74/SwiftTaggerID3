@@ -40,7 +40,7 @@ struct Tag {
             
             // parse size from tag header
             let tagSizeData = tagProperties.extractTagSizeData(data: fileData)
-            _ = try tagProperties.size(data: tagSizeData)
+            _ = try tagProperties.size(data: tagSizeData, version: version)
         }
         
         while !remainder.isEmpty {

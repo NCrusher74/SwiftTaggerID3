@@ -28,7 +28,7 @@
 		515AF65B2449A8E2005C29FA /* KeySignatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515AF65A2449A8E2005C29FA /* KeySignatures.swift */; };
 		515CC1052448EB0C005906D0 /* UnknownFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515CC1042448EB0C005906D0 /* UnknownFrame.swift */; };
 		515CC10A24491047005906D0 /* Processing Order in Resources */ = {isa = PBXBuildFile; fileRef = 515CC10924491047005906D0 /* Processing Order */; };
-		515F2921244FAB4100B4CC44 /* bytes dump v22 in Resources */ = {isa = PBXBuildFile; fileRef = 515F2920244FAB4100B4CC44 /* bytes dump v22 */; };
+		515F2923244FDE0400B4CC44 /* Tag Header Data For Test Files in Resources */ = {isa = PBXBuildFile; fileRef = 515F2922244FDE0400B4CC44 /* Tag Header Data For Test Files */; };
 		51689497244B9D2F008F6124 /* CaseIterable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51689496244B9D2F008F6124 /* CaseIterable.swift */; };
 		51689499244C10E1008F6124 /* PresetOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51689498244C10E1008F6124 /* PresetOptions.swift */; };
 		5168949B244C112E008F6124 /* MediaType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5168949A244C112E008F6124 /* MediaType.swift */; };
@@ -121,7 +121,7 @@
 		515AF65A2449A8E2005C29FA /* KeySignatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySignatures.swift; sourceTree = "<group>"; };
 		515CC1042448EB0C005906D0 /* UnknownFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnknownFrame.swift; sourceTree = "<group>"; };
 		515CC10924491047005906D0 /* Processing Order */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Processing Order"; sourceTree = "<group>"; };
-		515F2920244FAB4100B4CC44 /* bytes dump v22 */ = {isa = PBXFileReference; lastKnownFileType = text; path = "bytes dump v22"; sourceTree = "<group>"; };
+		515F2922244FDE0400B4CC44 /* Tag Header Data For Test Files */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Tag Header Data For Test Files"; sourceTree = "<group>"; };
 		51689496244B9D2F008F6124 /* CaseIterable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaseIterable.swift; sourceTree = "<group>"; };
 		51689498244C10E1008F6124 /* PresetOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetOptions.swift; sourceTree = "<group>"; };
 		5168949A244C112E008F6124 /* MediaType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaType.swift; sourceTree = "<group>"; };
@@ -321,7 +321,7 @@
 		51E432CC243DA5B4006574A1 /* TestMedia */ = {
 			isa = PBXGroup;
 			children = (
-				515F2920244FAB4100B4CC44 /* bytes dump v22 */,
+				515F2922244FDE0400B4CC44 /* Tag Header Data For Test Files */,
 				51E432D3243DA9D0006574A1 /* Ouput */,
 				51E432D1243DA64B006574A1 /* Bundle.swift */,
 				51490E77243F461E009D4BA4 /* mp3-nometa.mp3 */,
@@ -491,12 +491,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				51490E6F243F3AA9009D4BA4 /* not-an-mp3.m4a in Resources */,
-				515F2921244FAB4100B4CC44 /* bytes dump v22 in Resources */,
 				51490E7C243F461E009D4BA4 /* mp3-nometa.mp3 in Resources */,
 				51753041244ECDD00005B2AB /* v24-test-file-raw-tag-info in Resources */,
 				51490E79243F461E009D4BA4 /* mp3-v24-with-meta.mp3 in Resources */,
 				51490E7B243F461E009D4BA4 /* mp3-v23-corrupted.mp3 in Resources */,
 				517E886A243DBCA300F9F8D6 /* mp3-chaptered.mp3 in Resources */,
+				515F2923244FDE0400B4CC44 /* Tag Header Data For Test Files in Resources */,
 				51753043244ECF6C0005B2AB /* v23-test-file-raw-tag-info in Resources */,
 				51490E7A243F461E009D4BA4 /* mp3-v23-with-meta.mp3 in Resources */,
 				51490E71243F3CE9009D4BA4 /* samplecover-green.jpg in Resources */,
