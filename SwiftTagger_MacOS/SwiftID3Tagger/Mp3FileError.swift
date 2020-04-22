@@ -43,7 +43,7 @@ extension Mp3File.Error: LocalizedError {
         switch self {
             case .CannotReadFile:
                 return NSLocalizedString(
-                    "Cannot get data from MP3 File", comment: "")
+                    "Cannot Read MP3 File", comment: "")
             case .InvalidFileFormat:
                 return NSLocalizedString(
                     "The file needs to be an MP3 file", comment: "")
@@ -52,7 +52,7 @@ extension Mp3File.Error: LocalizedError {
                     "Tag size exceeds limit", comment: "")
             case .TagTooSmall:
                 return NSLocalizedString(
-                    "Tag is not large enough to hold valid content beyond the tag header", comment: "")
+                    "Tag is not large enough to hold valid content", comment: "")
             case .InvalidTagData:
                 return NSLocalizedString(
                     "The tag header is unrecognized", comment: "")
@@ -64,7 +64,7 @@ extension Mp3File.Error: LocalizedError {
                     "The file is too small to hold a valid ID3 tag", comment: "")
             case .InvalidFrameForVersion:
                 return NSLocalizedString(
-                    "This frame type cannot be used with this version of ID3", comment: "")
+                    "This frame type is incompatible with this version of ID3", comment: "")
             case .InvalidDateFrameForVersion:
                 return NSLocalizedString(
                     "This frame type was not implemented for this version of ID3. Please used another date type", comment: "")

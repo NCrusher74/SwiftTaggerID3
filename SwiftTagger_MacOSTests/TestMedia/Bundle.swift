@@ -34,7 +34,7 @@ extension Bundle {
     }()
 
     // MARK: Other Files
-    static let mp3Chaptered: URL = {
+    static let chapteredMp3: URL = {
         guard let location = Bundle.testBundle.url(forResource: "mp3-chaptered", withExtension: "mp3") else {
             fatalError("The mp3 file cannot be found")
         }
@@ -62,4 +62,59 @@ extension Bundle {
         return location
     }()
     
+    // MARK: Files as MP3Files instances
+    static func mp3V22() throws -> Mp3File {
+        return try Mp3File(location: writtenV22)
+    }
+
+    static func mp3V23() throws -> Mp3File {
+        return try Mp3File(location: writtenV23)
+    }
+
+    static func mp3V24() throws -> Mp3File {
+        return try Mp3File(location: writtenV24)
+    }
+
+    static func mp3Corrupted() throws -> Mp3File {
+        return try Mp3File(location: corruptedV23)
+    }
+
+    static func mp3Chaptered() throws -> Mp3File {
+        return try Mp3File(location: chapteredMp3)
+    }
+
+    static func mp3NoMeta() throws -> Mp3File {
+        return try Mp3File(location: v23NoMeta)
+    }
+
+    // MARK: Files as MP3File.data instances
+    static func mp3V22Data() throws -> Data {
+        let mp3File = try Mp3File(location: writtenV22)
+        return mp3File.data
+    }
+    
+    static func mp3V23Data() throws -> Data {
+        let mp3File = try Mp3File(location: writtenV23)
+        return mp3File.data
+    }
+    
+    static func mp3V24Data() throws -> Data {
+        let mp3File = try Mp3File(location: writtenV24)
+        return mp3File.data
+    }
+    
+    static func mp3CorruptedData() throws -> Data {
+        let mp3File = try Mp3File(location: corruptedV23)
+        return mp3File.data
+    }
+    
+    static func mp3ChapteredData() throws -> Data {
+        let mp3File = try Mp3File(location: chapteredMp3)
+        return mp3File.data
+    }
+    
+    static func mp3NoMetaData() throws -> Data {
+        let mp3File = try Mp3File(location: v23NoMeta)
+        return mp3File.data
+    }
 }

@@ -73,14 +73,14 @@ struct TagValidator {
     // check that tag size does not exceed file size
     func hasValidTagSize() throws -> Bool {
         let tagSizeData = tagProperties.extractTagSizeData(data: self.mp3Data)
-        //        print(tagSizeData.hexadecimal()) // 0 0 18 3e
+//        print(tagSizeData.hexadecimal()) // 0 0 18 3e
         let sizeInt = try tagProperties.size(data: tagSizeData)
-        //        print(sizeInt) - this doesn't print at all
+//        print(sizeInt)
         let headerSize = tagProperties.tagHeaderLength
         let tagSize =  sizeInt + headerSize
-        if tagSize <= headerSize {
+        /*if tagSize <= headerSize {
             throw Mp3File.Error.TagTooSmall
-        } else if tagSize > mp3Data.count {
+        } else */if tagSize > mp3Data.count {
             throw Mp3File.Error.TagTooBig
         }   else {
             return true

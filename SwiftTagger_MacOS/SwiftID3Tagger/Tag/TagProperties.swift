@@ -36,7 +36,9 @@ struct TagProperties {
     
     func version(data: Data) throws -> Version {
         let versionData = extractVersionData(data: data)
+//        print(versionData.hexadecimal()) - 49 44 33 2 0 for v22 exactly right
         if versionData == Data(v2_2Bytes) {
+//            print(Data(v2_2Bytes).hexadecimal()) - 49 44 33 2 0
             return Version.v2_2
         } else if versionData == Data(v2_3Bytes) {
             return Version.v2_3
@@ -62,10 +64,11 @@ struct TagProperties {
         let tagSizeData = extractTagSizeData(data: data)
 //        print(tagSizeData.hexadecimal()) // 0 0 18 3e
         let raw = UInt32(parsing: tagSizeData, .bigEndian)
-//        print(raw) - 0?
+//        print(raw) - 6206
         switch try version(data: tagSizeData) {
             case .v2_2, .v2_3:
                 return Int(raw)
+
             case .v2_4:
                 return Int(raw.decodingSynchsafe())
         }
