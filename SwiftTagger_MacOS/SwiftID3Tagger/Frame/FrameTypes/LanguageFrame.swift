@@ -55,4 +55,13 @@ public struct LanguageFrame: FrameProtocol {
             self.languageString = "und"
         }
     }
+    
+    func frameKey(version: Version) -> FrameKey? {
+        if self.layout == .known(KnownFrameLayoutIdentifier.languages) {
+            return .languages(language: self.languageString)
+        } else {
+            return nil
+        }
+    }
+
 }

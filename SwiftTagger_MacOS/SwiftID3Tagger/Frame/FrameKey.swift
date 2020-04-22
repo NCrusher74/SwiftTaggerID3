@@ -163,7 +163,7 @@ public enum FrameKey: Hashable {
     case userDefinedWebpage(description: String)
     /** The 'Year' frame is a numeric string with a year of the recording. This frames is always four characters long (until the year 10000). FOR VERSION 2.4: This frame is replaced by the TDRC frame, 'Recording time' */
     case year
-    case unknown(uuid: UUID)
+    case unknown(uuid: String)
     
     // MARK: Alternate Frame Keys
     /// also known as `Arranger` or `Interpreter`. Maps to the `Arranger` frame. If another `Arranger` frame is already present, the frame will be created as a `UserDefinedText` frame with the description, "Remixer"
@@ -230,105 +230,4 @@ public enum FrameKey: Hashable {
     /// Maps to `UserText` frame with the description, "Credit"
     static var credit: FrameKey { return .userDefinedText(description: "Source Credit") }
 
-    
-    
-    static func getFrameKeyForIdentifier(identifier: String, additionalIdentifier: String) -> FrameKey {
-        let layout = FrameLayoutIdentifier(identifier: identifier)
-        switch layout {
-            case .known(_):
-            let knownLayouts = KnownFrameLayoutIdentifier(identifier: identifier)
-            switch knownLayouts {
-                case .album: return .album
-                case .albumArtist: return .albumArtist
-                case .artist: return .artist
-                case .albumSort: return .albumSort
-                case .albumArtistSort: return .albumArtistSort
-                case .arranger: return .arranger
-                case .artistSort: return .artistSort
-                case .artistWebpage: return .artistWebpage
-                case .audioFileWebpage: return .audioFileWebpage
-                case .audioSourceWebpage: return .audioSourceWebpage
-                case .none: break
-                case .attachedPicture: return .attachedPicture
-                case .bpm: return .bpm
-                case .chapter: return .chapter(elementID: additionalIdentifier)
-                case .comments: return .comments(description: additionalIdentifier)
-                case .compilation: return .compilation
-                case .composer: return .composer
-                case .composerSort: return .composerSort
-                case .conductor: return .conductor
-                case .contentGroup: return .contentGroup
-                case .copyright: return .copyright
-                case .copyrightWebpage: return .copyrightWebpage
-                case .date: return .date
-                case .discNumber: return .discNumber
-                case .encodingTime: return .encodingTime
-                case .encodedBy: return .encodedBy
-                case .encodingSettings: return .encodingSettings
-                case .fileType: return .fileType
-                case .fileOwner: return .fileOwner
-                case .genre: return .genre
-                case .grouping: return .grouping
-                case .initialKey: return .initialKey
-                case .involvedPeopleList: return .involvedPeopleList
-                case .isrc: return .isrc
-                case .languages: return .languages(language: additionalIdentifier)
-                case .length: return .length
-                case .lyricist: return .lyricist
-                case .mediaType: return .mediaType
-                case .mood: return .mood
-                case .movementCount: return .movementCount
-                case .movementName: return .movementName
-                case .movementNumber: return .movementNumber
-                case .musicianCreditsList: return .musicianCreditsList
-                case .originalAlbum: return .originalAlbum
-                case .originalArtist: return .originalArtist
-                case .originalFilename: return .originalFilename
-                case .originalLyricist: return .originalLyricist
-                case .originalReleaseTime: return .originalReleaseTime
-                case .paymentWebpage: return .paymentWebpage
-                case .playlistDelay: return .playlistDelay
-                case .podcastCategory: return .podcastCategory
-                case .podcastDescription: return .podcastDescription
-                case .podcastID: return .podcastID
-                case .podcastKeywords: return .podcastKeywords
-                case .podcastFeedLink: return .podcastFeedLink
-                case .producedNotice: return .producedNotice
-                case .publisher: return .publisher
-                case .publisherWebpage: return .publisherWebpage
-                case .radioStation: return .radioStation
-                case .radioStationOwner: return .radioStationOwner
-                case .radioStationWebpage: return .radioStationWebpage
-                case .recordingDate: return .recordingDate
-                case .releaseTime: return .releaseTime
-                case .setSubtitle: return .setSubtitle
-                case .subtitle: return .subtitle
-                case .tableOfContents: return .tableOfContents(elementID: additionalIdentifier)
-                case .taggingTime: return .taggingTime
-                case .time: return .time
-                case .title: return .title
-                case .titleSort: return .titleSort
-                case .trackNumber: return .trackNumber
-                case .unsynchronizedLyrics: return .unsynchronizedLyrics(description: additionalIdentifier)
-                case .userDefinedText: return .userDefinedText(description: additionalIdentifier)
-                case .userDefinedWebpage: return .userDefinedWebpage(description: additionalIdentifier)
-                case .year: return .year
-            }
-            case .unknown(_):
-                let uuid = UUID(uuidString: identifier)!
-                return .unknown(uuid: uuid)
-        }; return .userDefinedText(description: additionalIdentifier)
-    }
-    
-//    func getAdditionalIdentifier(version: Version, identifier: String) -> String {
-//        for frameType in version.specialCaseFrameIdentifiers {
-//            switch version {
-//                case .v2_2:
-//                    if identifier == "COM" {
-//                        let layout = FrameLayoutIdentifier(identifier: identifier)
-//                        
-//                }
-//            }
-//        }
-//    }
 }

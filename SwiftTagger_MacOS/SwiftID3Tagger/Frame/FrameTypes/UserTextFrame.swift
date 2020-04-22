@@ -80,6 +80,16 @@ public struct UserTextFrame: FrameProtocol {
         self.descriptionString = parsed.description ?? ""
         self.contentString = parsed.content
     }
-    
+
+    func frameKey(version: Version) -> FrameKey? {
+        if self.layout == .known(KnownFrameLayoutIdentifier.userDefinedText) {
+            return .userDefinedText(description: self.descriptionString)
+        } else if self.layout == .known(KnownFrameLayoutIdentifier.userDefinedWebpage) {
+            return .userDefinedWebpage(description: self.descriptionString)
+        } else {
+            return nil
+        }
+    }
+
     
 }

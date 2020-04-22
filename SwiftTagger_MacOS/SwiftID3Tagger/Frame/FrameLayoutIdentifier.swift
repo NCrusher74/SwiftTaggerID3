@@ -440,8 +440,8 @@ enum KnownFrameLayoutIdentifier: CaseIterable {
             }
             case .setSubtitle:
                 switch version {
-                    case .v2_2: return nil
-                    case .v2_3, .v2_4: return "TSST"
+                    case .v2_2, .v2_3: return nil
+                    case .v2_4: return "TSST"
             }
             case .subtitle:
                 switch version {

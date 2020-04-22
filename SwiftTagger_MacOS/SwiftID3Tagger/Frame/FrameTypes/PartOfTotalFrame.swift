@@ -64,4 +64,15 @@ public struct PartOfTotalFrame: FrameProtocol {
         self.part = Int(contentComponents[0]) ?? 0
         self.total = Int(contentComponents[1])
     }
+    
+    func frameKey(version: Version) -> FrameKey? {
+        if self.layout == .known(KnownFrameLayoutIdentifier.discNumber) {
+            return .discNumber
+        } else if self.layout == .known(KnownFrameLayoutIdentifier.trackNumber) {
+            return .trackNumber
+        } else {
+            return nil
+        }
+    }
+
 }

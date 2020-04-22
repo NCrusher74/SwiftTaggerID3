@@ -91,4 +91,15 @@ struct CreditsListFrame: FrameProtocol {
         let rolePersonArray = strings.pairs()
         return rolePersonArray as! [(String, String)]
     }
+    
+    func frameKey(version: Version) -> FrameKey? {
+        if self.layout == .known(KnownFrameLayoutIdentifier.involvedPeopleList) {
+            return .involvedPeopleList
+        } else if self.layout == .known(KnownFrameLayoutIdentifier.musicianCreditsList) {
+            return .musicianCreditsList
+        } else {
+            return nil
+        }
+    }
+
 }

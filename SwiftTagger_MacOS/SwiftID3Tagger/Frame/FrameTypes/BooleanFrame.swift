@@ -12,11 +12,11 @@ import Foundation
  A type representing an ID3 frame that holds a single integer stored as an integer string, 1 for true and 0 for false.
  */
 public struct BooleanFrame: FrameProtocol {
-
+    
     public init(value: Bool) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.compilation), value: value)
     }
-
+    
     var value: Bool
     
     /**
@@ -27,7 +27,7 @@ public struct BooleanFrame: FrameProtocol {
      */
     private init(layout: FrameLayoutIdentifier, value: Bool) {
         self.value = value
-//        self.flags = BooleanFrame.defaultFlags()
+        //        self.flags = BooleanFrame.defaultFlags()
         self.layout = layout
     }
     
@@ -40,15 +40,15 @@ public struct BooleanFrame: FrameProtocol {
         }
     }
     
-//    var flags: Data
+    //    var flags: Data
     var layout: FrameLayoutIdentifier
     
     init(decodingContents contents: Data.SubSequence,
-                  version: Version,
-                  layout: FrameLayoutIdentifier
-//                  flags: Data
+         version: Version,
+         layout: FrameLayoutIdentifier
+        //                  flags: Data
     ) throws {
-//        self.flags = flags
+        //        self.flags = flags
         self.layout = layout
         var parsing = contents
         let encoding = BooleanFrame.extractEncoding(data: &parsing, version: version)
@@ -64,6 +64,14 @@ public struct BooleanFrame: FrameProtocol {
                 return false
             default:
                 return false
+        }
+    }
+    
+    func frameKey(version: Version) -> FrameKey? {
+        if self.layout == .known(KnownFrameLayoutIdentifier.compilation) {
+            return .compilation
+        } else {
+            return nil
         }
     }
 }

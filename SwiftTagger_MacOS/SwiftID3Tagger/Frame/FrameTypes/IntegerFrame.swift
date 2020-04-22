@@ -49,6 +49,18 @@ public struct IntegerFrame: FrameProtocol {
         self.value = Int(parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? "") ?? 0
     }
     
+    func frameKey(version: Version) -> FrameKey? {
+        switch self.layout {
+            case .known(KnownFrameLayoutIdentifier.bpm): return .bpm
+            case .known(KnownFrameLayoutIdentifier.isrc): return .isrc
+            case .known(KnownFrameLayoutIdentifier.length): return .length
+            case .known(KnownFrameLayoutIdentifier.movementCount): return .movementCount
+            case .known(KnownFrameLayoutIdentifier.movementNumber): return .movementNumber
+            case .known(KnownFrameLayoutIdentifier.playlistDelay): return .playlistDelay
+            default: return nil
+        }
+    }
+    
     // MARK: Public initializers
     public init(bpm: Int) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.bpm), value: bpm)

@@ -34,4 +34,13 @@ public struct UnknownFrame: FrameProtocol {
         self.layout = layout
         self.contents = contents
     }
+    
+    func frameKey(version: Version, identifier: String) -> FrameKey? {
+        if self.layout == .unknown(identifier) {
+            return .unknown(uuid: identifier)
+        } else {
+            return nil
+        }
+    }
+
 }

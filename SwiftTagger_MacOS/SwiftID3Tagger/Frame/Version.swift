@@ -19,7 +19,6 @@ public enum Version: CaseIterable {
         
 }
 
-
 extension Version {
     // MARK: Frame component sizes.
     /// the version-dependent byte-count of the id3identifier

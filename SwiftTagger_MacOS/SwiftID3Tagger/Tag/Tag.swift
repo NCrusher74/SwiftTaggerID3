@@ -10,16 +10,12 @@ import Foundation
 
 struct Tag {
     
-//    //    var frames: [FrameKey : Frame]
-//    var [FrameKey : Frame]
-//
-//    // handles the parsing of an ID3 tag
-//    init([FrameKey : Frame]) throws {
-//        self init [FrameKey : Frame]
-//    }
-    
-    func parseFramesFromTag(file: Mp3File) throws {
+    var frames: [FrameLayoutIdentifier : Frame]
+
+    // handles the parsing of an ID3 tag
+    init(from file: Mp3File) throws {
         let fileData: Data = file.data
+        var frames: [FrameLayoutIdentifier : Frame] = [:]
         
         var remainder: Data.SubSequence = fileData[fileData.startIndex..<fileData.endIndex]
         
@@ -47,10 +43,14 @@ struct Tag {
             let identifierBytes = remainder.extractFirst(version.identifierLength)
             let identifier = String(ascii: identifierBytes)
             
-            _ = try Frame(
+            let frame = try Frame(
                 identifier: identifier,
                 data: &remainder,
                 version: version)
+            
+            let layout = FrameLayoutIdentifier(identifier: identifier)
+            frames = [layout : frame]
         }
+        self.frames = frames
     }
 }

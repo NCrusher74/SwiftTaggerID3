@@ -127,5 +127,14 @@ public struct LocalizedFrame: FrameProtocol {
         self.contentString = parsed.content
     }
     
+    func frameKey(version: Version) -> FrameKey? {
+        if self.layout == .known(KnownFrameLayoutIdentifier.comments) {
+            return .comments(description: self.descriptionString ?? "")
+        } else if self.layout == .known(KnownFrameLayoutIdentifier.unsynchronizedLyrics) {
+            return .unsynchronizedLyrics(description: self.descriptionString ?? "")
+        } else {
+            return nil
+        }
+    }
 
 }

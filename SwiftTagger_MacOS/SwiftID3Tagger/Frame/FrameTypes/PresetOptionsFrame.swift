@@ -226,5 +226,16 @@ public struct PresetOptionsFrame: FrameProtocol {
         }
         return refinedComponents
     }
+    
+    func frameKey(version: Version) -> FrameKey? {
+        if self.layout == .known(KnownFrameLayoutIdentifier.genre) {
+            return .genre
+        } else if self.layout == .known(KnownFrameLayoutIdentifier.mediaType) {
+            return .mediaType
+        } else {
+            return nil
+        }
+    }
+
 }
 

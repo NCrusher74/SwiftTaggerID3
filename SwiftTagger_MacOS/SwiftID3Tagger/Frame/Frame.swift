@@ -120,4 +120,79 @@ enum Frame {
                     layout: layout))
         }
     }
+    
+    func getFrameKeyForFrame(data: Data.SubSequence,
+                             version: Version,
+                             layout: FrameLayoutIdentifier,
+                             identifier: String) throws -> FrameKey {
+        switch self {
+            case .localizedFrame(_):
+                let frame = try LocalizedFrame(
+                    decodingContents: data,
+                    version: version,
+                    layout: layout)
+                return frame.frameKey(version: version) ?? .album
+            case .languageFrame(_):
+                let frame = try LanguageFrame(
+                    decodingContents: data,
+                    version: version,
+                    layout: layout)
+                return frame.frameKey(version: version) ?? .album
+            case .creditsListFrame(_):
+                let frame = try CreditsListFrame(
+                    decodingContents: data,
+                    version: version,
+                    layout: layout)
+                return frame.frameKey(version: version) ?? .album
+            case .presetOptionsFrame(_):
+                let frame = try PresetOptionsFrame(
+                    decodingContents: data,
+                    version: version,
+                    layout: layout)
+                return frame.frameKey(version: version) ?? .album
+            case .stringFrame(_):
+                let frame = try StringFrame(
+                    decodingContents: data,
+                    version: version,
+                    layout: layout)
+                return frame.frameKey(version: version) ?? .album
+            case .integerFrame(_):
+                let frame = try IntegerFrame(
+                    decodingContents: data,
+                    version: version,
+                    layout: layout)
+                return frame.frameKey(version: version) ?? .album
+            case .booleanFrame(_):
+                let frame = try BooleanFrame(
+                    decodingContents: data,
+                    version: version,
+                    layout: layout)
+                return frame.frameKey(version: version) ?? .album
+            case .partOfTotalFrame(_):
+                let frame = try PartOfTotalFrame(
+                    decodingContents: data,
+                    version: version,
+                    layout: layout)
+                return frame.frameKey(version: version) ?? .album
+            case .userTextFrame(_):
+                let frame = try UserTextFrame(
+                    decodingContents: data,
+                    version: version,
+                    layout: layout)
+                return frame.frameKey(version: version) ?? .album
+            case .urlFrame(_):
+                let frame = try URLFrame(
+                    decodingContents: data,
+                    version: version,
+                    layout: layout)
+                return frame.frameKey(version: version) ?? .album
+            case .unknownFrame(_):
+                let frame = try UnknownFrame(
+                    decodingContents: data,
+                    version: version,
+                    layout: layout)
+                return frame.frameKey(version: version,
+                                      identifier: identifier) ?? .album
+        }
+    }
 }

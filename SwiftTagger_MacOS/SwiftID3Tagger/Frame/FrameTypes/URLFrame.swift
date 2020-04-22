@@ -44,6 +44,29 @@ public struct URLFrame: FrameProtocol {
         self.urlString = contents.stringASCII ?? ""
     }
     
+    func frameKey(version: Version) -> FrameKey? {
+        switch self.layout {
+            case .known(KnownFrameLayoutIdentifier.artistWebpage):
+                return .artistWebpage
+            case .known(KnownFrameLayoutIdentifier.audioFileWebpage):
+                return .audioFileWebpage
+            case .known(KnownFrameLayoutIdentifier.audioSourceWebpage):
+                return .audioSourceWebpage
+            case .known(KnownFrameLayoutIdentifier.copyrightWebpage):
+                return .copyrightWebpage
+            case .known(KnownFrameLayoutIdentifier.paymentWebpage):
+                switch version {
+                    case .v2_2: return nil
+                    case .v2_3, .v2_4: return .paymentWebpage
+            }
+            case .known(KnownFrameLayoutIdentifier.publisherWebpage):
+                return .publisherWebpage
+            case .known(KnownFrameLayoutIdentifier.radioStationWebpage):
+                return .radioStationWebpage
+            default: return nil
+        }
+    }
+
     // MARK: Public initializers
     public init(artistWebsiteUrl: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.artistWebpage), urlString: artistWebsiteUrl)
