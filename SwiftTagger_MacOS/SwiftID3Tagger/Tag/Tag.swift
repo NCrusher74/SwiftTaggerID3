@@ -10,7 +10,7 @@ import Foundation
 
 struct Tag {
     
-    var frames: [FrameLayoutIdentifier : Frame]
+    public var frames: [FrameLayoutIdentifier : Frame]
 
     // handles the parsing of an ID3 tag
     init(from file: Mp3File) throws {
@@ -47,6 +47,13 @@ struct Tag {
                 identifier: identifier,
                 data: &remainder,
                 version: version)
+
+// no idea how to get the frameKey out of the frame without re-initializing the frame
+//            let frameKey = frame.getFrameKeyForFrame(
+//                data: <#T##Data.SubSequence#>,
+//                version: <#T##Version#>,
+//                layout: <#T##FrameLayoutIdentifier#>,
+//                identifier: <#T##String#>)
             
             let layout = FrameLayoutIdentifier(identifier: identifier)
             frames = [layout : frame]

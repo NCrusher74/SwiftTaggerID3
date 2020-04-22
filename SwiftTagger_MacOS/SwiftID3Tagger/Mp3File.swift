@@ -29,8 +29,9 @@ public struct Mp3File {
         }
     }
 
-    public func read() throws {
+    public func read() throws -> [FrameLayoutIdentifier : Frame]{
         let tag = try Tag(from: self)
+        return tag.frames
     }
     
 //    public func write(from sourceAudio: Mp3File, to outputLocation: URL) throws {

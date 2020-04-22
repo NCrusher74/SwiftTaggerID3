@@ -57,7 +57,7 @@ public struct UserTextFrame: FrameProtocol {
         self.layout = layout
     }
     
-//    var flags: Data
+//    var flags: Data = UserTextFrame.defaultFlags()
     var layout: FrameLayoutIdentifier
 
     func encodeContents(version: Version) throws -> Data {
@@ -90,6 +90,4 @@ public struct UserTextFrame: FrameProtocol {
             return nil
         }
     }
-
-    
 }

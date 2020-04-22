@@ -11,7 +11,7 @@ import Foundation
 /** `FrameLayoutIdentifier` describes how SwiftTagger refers to the frame type internally.
  All information for handling a frame are determined by its `FrameLayoutIdentifier` */
 
-enum FrameLayoutIdentifier: Hashable {
+public enum FrameLayoutIdentifier: Hashable {
     case known(KnownFrameLayoutIdentifier)
     case unknown(String)
     
@@ -33,7 +33,7 @@ enum FrameLayoutIdentifier: Hashable {
     }
 }
 
-enum KnownFrameLayoutIdentifier: CaseIterable {
+public enum KnownFrameLayoutIdentifier: CaseIterable {
     
     case album
     case albumSort

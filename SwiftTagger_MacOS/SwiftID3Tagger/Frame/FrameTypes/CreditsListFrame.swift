@@ -11,7 +11,7 @@ import Foundation
 /**
  A type used to represent an ID3 involved peeople list or musician credits frame.
  */
-struct CreditsListFrame: FrameProtocol {
+public struct CreditsListFrame: FrameProtocol {
  
     // public initializers
     public init(role: String, involvedPerson: String) {
