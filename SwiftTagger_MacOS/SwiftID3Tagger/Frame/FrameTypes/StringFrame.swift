@@ -13,6 +13,67 @@ import Foundation
  */
 public struct StringFrame: FrameProtocol {
     
+    // MARK: Decoding
+    // decode incoming data and parse it into a frame
+    var flags: Data
+    var layout: FrameLayoutIdentifier
+    var frameKey: FrameKey
+    
+    init(decodingContents contents: Data.SubSequence,
+         version: Version,
+         layout: FrameLayoutIdentifier,
+         flags: Data
+    ) throws {
+        self.flags = flags
+        self.layout = layout
+        
+        switch layout {
+            case .known(.album): self.frameKey = .album
+            case .known(.albumSort): self.frameKey = .albumSort
+            case .known(.albumArtist): self.frameKey = .albumArtist
+            case .known(.albumArtistSort): self.frameKey = .albumArtistSort
+            case .known(.arranger): self.frameKey = .arranger
+            case .known(.artist): self.frameKey = .artist
+            case .known(.artistSort): self.frameKey = .artistSort
+            case .known(.composer): self.frameKey = .composer
+            case .known(.composerSort): self.frameKey = .composerSort
+            case .known(.conductor): self.frameKey = .conductor
+            case .known(.contentGroup): self.frameKey = .contentGroup
+            case .known(.copyright): self.frameKey = .copyright
+            case .known(.encodedBy): self.frameKey = .encodedBy
+            case .known(.encodingSettings): self.frameKey = .encodingSettings
+            case .known(.fileOwner): self.frameKey = .fileOwner
+            case .known(.grouping): self.frameKey = .grouping
+            case .known(.initialKey): self.frameKey = .initialKey
+            case .known(.lyricist): self.frameKey = .lyricist
+            case .known(.mood): self.frameKey = .mood
+            case .known(.movementName): self.frameKey = .movementName
+            case .known(.originalAlbum): self.frameKey = .originalAlbum
+            case .known(.originalArtist): self.frameKey = .originalArtist
+            case .known(.originalFilename): self.frameKey = .originalFilename
+            case .known(.originalLyricist): self.frameKey = .originalLyricist
+            case .known(.podcastCategory): self.frameKey = .podcastCategory
+            case .known(.podcastDescription): self.frameKey = .podcastDescription
+            case .known(.podcastFeedLink): self.frameKey = .podcastFeedLink
+            case .known(.podcastID): self.frameKey = .podcastID
+            case .known(.podcastKeywords): self.frameKey = .podcastKeywords
+            case .known(.producedNotice): self.frameKey = .producedNotice
+            case .known(.publisher): self.frameKey = .publisher
+            case .known(.radioStation): self.frameKey = .radioStation
+            case .known(.radioStationOwner): self.frameKey = .radioStationOwner
+            case .known(.setSubtitle): self.frameKey = .setSubtitle
+            case .known(.subtitle): self.frameKey = .subtitle
+            case .known(.title): self.frameKey = .title
+            case .known(.titleSort): self.frameKey = .titleSort
+            default: self.frameKey = .userDefinedText(description: "")
+        }
+                
+        var parsing = contents
+        let encoding = StringFrame.extractEncoding(data: &parsing, version: version)
+        self.contentString = parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? ""
+    }
+
+    // MARK: Private initializer for encoding
     var contentString: String
     
     /**
@@ -23,6 +84,48 @@ public struct StringFrame: FrameProtocol {
         self.contentString = contentString
         self.flags = StringFrame.defaultFlags
         self.layout = layout
+        
+        switch layout {
+            case .known(.album): self.frameKey = .album
+            case .known(.albumSort): self.frameKey = .albumSort
+            case .known(.albumArtist): self.frameKey = .albumArtist
+            case .known(.albumArtistSort): self.frameKey = .albumArtistSort
+            case .known(.arranger): self.frameKey = .arranger
+            case .known(.artist): self.frameKey = .artist
+            case .known(.artistSort): self.frameKey = .artistSort
+            case .known(.composer): self.frameKey = .composer
+            case .known(.composerSort): self.frameKey = .composerSort
+            case .known(.conductor): self.frameKey = .conductor
+            case .known(.contentGroup): self.frameKey = .contentGroup
+            case .known(.copyright): self.frameKey = .copyright
+            case .known(.encodedBy): self.frameKey = .encodedBy
+            case .known(.encodingSettings): self.frameKey = .encodingSettings
+            case .known(.fileOwner): self.frameKey = .fileOwner
+            case .known(.grouping): self.frameKey = .grouping
+            case .known(.initialKey): self.frameKey = .initialKey
+            case .known(.lyricist): self.frameKey = .lyricist
+            case .known(.mood): self.frameKey = .mood
+            case .known(.movementName): self.frameKey = .movementName
+            case .known(.originalAlbum): self.frameKey = .originalAlbum
+            case .known(.originalArtist): self.frameKey = .originalArtist
+            case .known(.originalFilename): self.frameKey = .originalFilename
+            case .known(.originalLyricist): self.frameKey = .originalLyricist
+            case .known(.podcastCategory): self.frameKey = .podcastCategory
+            case .known(.podcastDescription): self.frameKey = .podcastDescription
+            case .known(.podcastFeedLink): self.frameKey = .podcastFeedLink
+            case .known(.podcastID): self.frameKey = .podcastID
+            case .known(.podcastKeywords): self.frameKey = .podcastKeywords
+            case .known(.producedNotice): self.frameKey = .producedNotice
+            case .known(.publisher): self.frameKey = .publisher
+            case .known(.radioStation): self.frameKey = .radioStation
+            case .known(.radioStationOwner): self.frameKey = .radioStationOwner
+            case .known(.setSubtitle): self.frameKey = .setSubtitle
+            case .known(.subtitle): self.frameKey = .subtitle
+            case .known(.title): self.frameKey = .title
+            case .known(.titleSort): self.frameKey = .titleSort
+            default: self.frameKey = .userDefinedText(description: "")
+        }
+
     }
     
     func encodeContents(version: Version) throws -> Data {
@@ -30,111 +133,7 @@ public struct StringFrame: FrameProtocol {
         return contents.encoded(withNullTermination: false)
     }
     
-    // MARK: Decode
-    // decode incoming data and parse it into a frame
-    var flags: Data
-    var layout: FrameLayoutIdentifier
-    
-    init(decodingContents contents: Data.SubSequence,
-         version: Version,
-         layout: FrameLayoutIdentifier,
-         flags: Data
-    ) throws {
-        self.flags = flags
-        self.layout = layout
-        var parsing = contents
-        let encoding = StringFrame.extractEncoding(data: &parsing, version: version)
-        self.contentString = parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? ""
-    }
-    
-    // MARK Assign Frame Key
-    
-    func frameKey(version: Version) -> FrameKey? {
-        switch self.layout {
-            case .known(KnownFrameLayoutIdentifier.album): return .album
-            case .known(KnownFrameLayoutIdentifier.albumArtist): return .albumArtist
-            case .known(KnownFrameLayoutIdentifier.albumArtistSort): return .albumArtistSort
-            case .known(KnownFrameLayoutIdentifier.albumSort): return .albumSort
-            case .known(KnownFrameLayoutIdentifier.arranger): return .arranger
-            case .known(KnownFrameLayoutIdentifier.artist): return .artist
-            case .known(KnownFrameLayoutIdentifier.artistSort): return .artistSort
-            case .known(KnownFrameLayoutIdentifier.composer): return .composer
-            case .known(KnownFrameLayoutIdentifier.composerSort): return .composerSort
-            case .known(KnownFrameLayoutIdentifier.conductor): return .conductor
-            case .known(KnownFrameLayoutIdentifier.contentGroup): return .contentGroup
-            case .known(KnownFrameLayoutIdentifier.copyright): return .copyright
-            case .known(KnownFrameLayoutIdentifier.encodedBy): return .encodedBy
-            case .known(KnownFrameLayoutIdentifier.encodingSettings): return .encodingSettings
-            case .known(KnownFrameLayoutIdentifier.fileOwner):
-                switch version {
-                    case .v2_2: return nil
-                    case .v2_3, .v2_4: return .fileOwner
-            }
-            case .known(KnownFrameLayoutIdentifier.grouping):
-                switch version {
-                    case .v2_2: return nil
-                    case .v2_3, .v2_4: return .grouping
-            }
-            case .known(KnownFrameLayoutIdentifier.initialKey): return .initialKey
-            case .known(KnownFrameLayoutIdentifier.lyricist): return .lyricist
-            case .known(KnownFrameLayoutIdentifier.mood):
-                switch version {
-                    case .v2_2, .v2_3: return nil
-                    case .v2_4: return .mood
-            }
-            case .known(KnownFrameLayoutIdentifier.movementName):
-                switch version {
-                    case .v2_2: return nil
-                    case .v2_3, .v2_4: return .movementName
-            }
-            case .known(KnownFrameLayoutIdentifier.originalAlbum): return .originalAlbum
-            case .known(KnownFrameLayoutIdentifier.originalArtist): return .originalArtist
-            case .known(KnownFrameLayoutIdentifier.originalFilename): return .originalFilename
-            case .known(KnownFrameLayoutIdentifier.originalLyricist): return .originalLyricist
-            case .known(KnownFrameLayoutIdentifier.podcastCategory):
-                switch version {
-                    case .v2_2: return nil
-                    case .v2_3, .v2_4: return .podcastCategory
-            }
-            case .known(KnownFrameLayoutIdentifier.podcastDescription):       switch version {
-                case .v2_2: return nil
-                case .v2_3, .v2_4: return .podcastDescription
-            }
-            case .known(KnownFrameLayoutIdentifier.podcastFeedLink):
-                switch version {
-                    case .v2_2: return nil
-                    case .v2_3, .v2_4: return .podcastFeedLink
-            }
-            case .known(KnownFrameLayoutIdentifier.podcastID):
-                switch version {
-                    case .v2_2: return nil
-                    case .v2_3, .v2_4: return .podcastID
-            }
-            case .known(KnownFrameLayoutIdentifier.podcastKeywords):
-                switch version {
-                    case .v2_2: return nil
-                    case .v2_3, .v2_4: return .podcastKeywords
-            }
-            case .known(KnownFrameLayoutIdentifier.producedNotice):
-                switch version {
-                    case .v2_2, .v2_3: return nil
-                    case .v2_4: return .producedNotice
-            }
-            case .known(KnownFrameLayoutIdentifier.publisher): return .publisher
-            case .known(KnownFrameLayoutIdentifier.radioStation): return .radioStation
-            case .known(KnownFrameLayoutIdentifier.radioStationOwner): return .radioStationOwner
-            case .known(KnownFrameLayoutIdentifier.setSubtitle):
-                switch version {
-                    case .v2_2, .v2_3: return nil
-                    case .v2_4: return .setSubtitle
-            }
-            case .known(KnownFrameLayoutIdentifier.subtitle): return .subtitle
-            case .known(KnownFrameLayoutIdentifier.title): return .title
-            case .known(KnownFrameLayoutIdentifier.titleSort): return .titleSort
-            default: return nil
-        }
-    }
-    
+
     // MARK: Public Initializers
     public init(artist: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.artist), contentString: artist)

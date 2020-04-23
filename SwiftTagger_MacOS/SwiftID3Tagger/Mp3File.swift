@@ -30,7 +30,7 @@ public struct Mp3File {
     }
 
     public func read() throws -> [FrameLayoutIdentifier : Frame]{
-        let tag = try Tag(from: self)
+        let tag = try Tag(readFrom: self)
         return tag.frames
     }
     

@@ -55,10 +55,19 @@ public struct PresetOptionsFrame: FrameProtocol {
         self.refinementDescription = refinementDescription
         self.flags = PresetOptionsFrame.defaultFlags
         self.layout = layout
+        
+        switch layout {
+            case .known(.genre) : self.frameKey = .genre
+            case .known(.mediaType) : self.frameKey = .mediaType
+            case .known(.fileType) : self.frameKey = .fileType
+            default: self.frameKey = .userDefinedText(description: "")
+        }
     }
     
     var flags: Data
     var layout: FrameLayoutIdentifier
+    var frameKey: FrameKey
+//    var identifier: String
     
     
     // MARK: Encode contents for writing
@@ -134,6 +143,14 @@ public struct PresetOptionsFrame: FrameProtocol {
     ) throws {
         self.flags = flags // this is just here for protocol comformance
         self.layout = layout
+        
+        switch layout {
+            case .known(.genre) : self.frameKey = .genre
+            case .known(.mediaType) : self.frameKey = .mediaType
+            case .known(.fileType) : self.frameKey = .fileType
+            default: self.frameKey = .userDefinedText(description: "")
+        }
+        
         var parsing = contents
         
         let encoding = PresetOptionsFrame.extractEncoding(data: &parsing, version: version)
@@ -226,16 +243,5 @@ public struct PresetOptionsFrame: FrameProtocol {
         }
         return refinedComponents
     }
-    
-    func frameKey(version: Version) -> FrameKey? {
-        if self.layout == .known(KnownFrameLayoutIdentifier.genre) {
-            return .genre
-        } else if self.layout == .known(KnownFrameLayoutIdentifier.mediaType) {
-            return .mediaType
-        } else {
-            return nil
-        }
-    }
-
 }
 

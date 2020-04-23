@@ -24,6 +24,8 @@ public struct UnknownFrame: FrameProtocol {
     
     var flags: Data
     var layout: FrameLayoutIdentifier
+    var frameKey: FrameKey
+//    var identifier: String
     
     init(decodingContents contents: Data.SubSequence,
          version: Version,
@@ -32,15 +34,7 @@ public struct UnknownFrame: FrameProtocol {
     ) throws {
         self.flags = flags
         self.layout = layout
+        self.frameKey = .unknown(uuid: )
         self.contents = contents
     }
-    
-    func frameKey(version: Version, identifier: String) -> FrameKey? {
-        if self.layout == .unknown(identifier) {
-            return .unknown(uuid: identifier)
-        } else {
-            return nil
-        }
-    }
-
 }

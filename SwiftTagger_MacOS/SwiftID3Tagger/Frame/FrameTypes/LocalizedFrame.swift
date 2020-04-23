@@ -93,10 +93,17 @@ public struct LocalizedFrame: FrameProtocol {
         self.contentString = contentString
         self.layout = layout
         self.flags = LocalizedFrame.defaultFlags
+
+        switch layout {
+            case .known(.comments) : self.frameKey = .comments(description: descriptionString ?? "")
+            case .known(.unsynchronizedLyrics) : self.frameKey = .unsynchronizedLyrics(description: descriptionString ?? "")
+            default: self.frameKey = .userDefinedText(description: descriptionString ?? "")
+        }
     }
 
     var flags: Data
     var layout: FrameLayoutIdentifier
+    var frameKey: FrameKey
     
     func encodeContents(version: Version) throws -> Data {
         let encodedLanguageString = self.languageString?.encoded(withNullTermination: false) ?? "und".encoded(withNullTermination: false)
@@ -112,6 +119,13 @@ public struct LocalizedFrame: FrameProtocol {
     ) throws {
         self.flags = flags
         self.layout = layout
+        
+        switch layout {
+            case .known(.comments) : self.frameKey = .comments(description: descriptionString ?? "")
+            case .known(.unsynchronizedLyrics) : self.frameKey = .unsynchronizedLyrics(description: descriptionString ?? "")
+            default: self.frameKey = .userDefinedText(description: descriptionString ?? "")
+        }
+
         var parsing = contents
         let encoding = LocalizedFrame.extractEncoding(data: &parsing, version: version)
 
@@ -125,16 +139,6 @@ public struct LocalizedFrame: FrameProtocol {
         let parsed = try LocalizedFrame.extractDescriptionAndContent(from: &parsing, encoding: encoding)
         self.descriptionString = parsed.description ?? ""
         self.contentString = parsed.content
-    }
-    
-    func frameKey(version: Version) -> FrameKey? {
-        if self.layout == .known(KnownFrameLayoutIdentifier.comments) {
-            return .comments(description: self.descriptionString ?? "")
-        } else if self.layout == .known(KnownFrameLayoutIdentifier.unsynchronizedLyrics) {
-            return .unsynchronizedLyrics(description: self.descriptionString ?? "")
-        } else {
-            return nil
-        }
-    }
 
+    }
 }

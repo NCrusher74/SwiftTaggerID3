@@ -22,6 +22,22 @@ public struct URLFrame: FrameProtocol {
         self.urlString = urlString
         self.flags = URLFrame.defaultFlags
         self.layout = layout
+        switch self.layout {
+            case .known(KnownFrameLayoutIdentifier.artistWebpage):
+                self.frameKey = .artistWebpage
+            case .known(KnownFrameLayoutIdentifier.audioFileWebpage):
+                self.frameKey = .audioFileWebpage
+            case .known(KnownFrameLayoutIdentifier.audioSourceWebpage):
+                self.frameKey = .audioSourceWebpage
+            case .known(KnownFrameLayoutIdentifier.copyrightWebpage):
+                self.frameKey = .copyrightWebpage
+            case .known(KnownFrameLayoutIdentifier.paymentWebpage): self.frameKey = .paymentWebpage
+            case .known(KnownFrameLayoutIdentifier.publisherWebpage):
+                self.frameKey = .publisherWebpage
+            case .known(KnownFrameLayoutIdentifier.radioStationWebpage):
+                self.frameKey = .radioStationWebpage
+            default: self.frameKey = .userDefinedWebpage(description: "")
+        }
     }
 
     func encodeContents(version: Version) throws -> Data {
@@ -33,6 +49,8 @@ public struct URLFrame: FrameProtocol {
     // decode incoming data and parse it into a frame
     var flags: Data
     var layout: FrameLayoutIdentifier
+    var frameKey: FrameKey
+//    var identifier: String
     
     init(decodingContents contents: Data.SubSequence,
                   version: Version,
@@ -41,32 +59,25 @@ public struct URLFrame: FrameProtocol {
     ) throws {
         self.flags = flags
         self.layout = layout
+        switch self.layout {
+            case .known(KnownFrameLayoutIdentifier.artistWebpage):
+                self.frameKey = .artistWebpage
+            case .known(KnownFrameLayoutIdentifier.audioFileWebpage):
+                self.frameKey = .audioFileWebpage
+            case .known(KnownFrameLayoutIdentifier.audioSourceWebpage):
+                self.frameKey = .audioSourceWebpage
+            case .known(KnownFrameLayoutIdentifier.copyrightWebpage):
+                self.frameKey = .copyrightWebpage
+            case .known(KnownFrameLayoutIdentifier.paymentWebpage): self.frameKey = .paymentWebpage
+            case .known(KnownFrameLayoutIdentifier.publisherWebpage):
+                self.frameKey = .publisherWebpage
+            case .known(KnownFrameLayoutIdentifier.radioStationWebpage):
+                self.frameKey = .radioStationWebpage
+            default: self.frameKey = .userDefinedWebpage(description: "")
+        }
         self.urlString = contents.stringASCII ?? ""
     }
     
-    func frameKey(version: Version) -> FrameKey? {
-        switch self.layout {
-            case .known(KnownFrameLayoutIdentifier.artistWebpage):
-                return .artistWebpage
-            case .known(KnownFrameLayoutIdentifier.audioFileWebpage):
-                return .audioFileWebpage
-            case .known(KnownFrameLayoutIdentifier.audioSourceWebpage):
-                return .audioSourceWebpage
-            case .known(KnownFrameLayoutIdentifier.copyrightWebpage):
-                return .copyrightWebpage
-            case .known(KnownFrameLayoutIdentifier.paymentWebpage):
-                switch version {
-                    case .v2_2: return nil
-                    case .v2_3, .v2_4: return .paymentWebpage
-            }
-            case .known(KnownFrameLayoutIdentifier.publisherWebpage):
-                return .publisherWebpage
-            case .known(KnownFrameLayoutIdentifier.radioStationWebpage):
-                return .radioStationWebpage
-            default: return nil
-        }
-    }
-
     // MARK: Public initializers
     public init(artistWebsiteUrl: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.artistWebpage), urlString: artistWebsiteUrl)

@@ -14,6 +14,7 @@ protocol FrameProtocol {
     
     var flags: Data { get set }
     var layout: FrameLayoutIdentifier { get }
+    var frameKey: FrameKey { get set }
     
     func encodeContents(version: Version) throws -> Data
     
@@ -30,7 +31,7 @@ extension FrameProtocol {
         let contents = try self.encodeContents(version: version)
         
         // header data
-        let identifier = Self.assignLayout(layout: layout, version: version)
+        let identifier = Self.identifierData(layout: layout, version: version)
         let size = Self.calculateFrameContentSize(encodedContent: contents, version: version)
         var flags = Data()
         switch version {
@@ -90,7 +91,7 @@ extension FrameProtocol {
         }
     }
     
-    static func assignLayout(layout: FrameLayoutIdentifier, version: Version) -> Data {
+    static func identifierData(layout: FrameLayoutIdentifier, version: Version) -> Data {
         guard let identifierString = layout.id3Identifier(version: version)?.encoded(withNullTermination: false) else {
             switch version {
                 case .v2_2: return "TXX".encoded(withNullTermination: false)
@@ -100,7 +101,7 @@ extension FrameProtocol {
         }
         return identifierString
     }
-        
+    
     static var defaultFlags: Data {
         let flagBytes: [UInt8] = [0x00, 0x00]
         return Data(flagBytes)

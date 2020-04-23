@@ -13,7 +13,7 @@ struct Tag {
     public var frames: [FrameLayoutIdentifier : Frame]
 
     // handles the parsing of an ID3 tag
-    init(from file: Mp3File) throws {
+    init(readFrom file: Mp3File) throws {
         let fileData: Data = file.data
         var frames: [FrameLayoutIdentifier : Frame] = [:]
         
@@ -60,4 +60,9 @@ struct Tag {
         }
         self.frames = frames
     }
+    
+    
+    
+    
+    
 }

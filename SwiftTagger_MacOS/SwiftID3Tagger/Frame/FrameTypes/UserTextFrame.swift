@@ -55,10 +55,17 @@ public struct UserTextFrame: FrameProtocol {
         self.contentString = contentString
         self.flags = UserTextFrame.defaultFlags
         self.layout = layout
+        
+        switch layout {
+            case .known(.userDefinedText) : self.frameKey = .userDefinedText(description: descriptionString)
+            case .known(.userDefinedWebpage) : self.frameKey = .userDefinedWebpage(description: descriptionString)
+            default: self.frameKey = .userDefinedText(description: descriptionString)
+        }
     }
     
     var flags: Data
     var layout: FrameLayoutIdentifier
+    var frameKey: FrameKey
 
     func encodeContents(version: Version) throws -> Data {
         let encodedDescriptionString = self.descriptionString.encoded(withNullTermination: true)
@@ -76,18 +83,14 @@ public struct UserTextFrame: FrameProtocol {
         let encoding = UserTextFrame.extractEncoding(data: &parsing, version: version)
         self.flags = flags
         self.layout = layout
+        switch layout {
+            case .known(.userDefinedText) : self.frameKey = .userDefinedText(description: descriptionString)
+            case .known(.userDefinedWebpage) : self.frameKey = .userDefinedWebpage(description: descriptionString)
+            default: self.frameKey = .userDefinedText(description: descriptionString)
+        }
+        
         let parsed = try UserTextFrame.extractDescriptionAndContent(from: &parsing, encoding: encoding)
         self.descriptionString = parsed.description ?? ""
         self.contentString = parsed.content
-    }
-
-    func frameKey(version: Version) -> FrameKey? {
-        if self.layout == .known(KnownFrameLayoutIdentifier.userDefinedText) {
-            return .userDefinedText(description: self.descriptionString)
-        } else if self.layout == .known(KnownFrameLayoutIdentifier.userDefinedWebpage) {
-            return .userDefinedWebpage(description: self.descriptionString)
-        } else {
-            return nil
-        }
     }
 }

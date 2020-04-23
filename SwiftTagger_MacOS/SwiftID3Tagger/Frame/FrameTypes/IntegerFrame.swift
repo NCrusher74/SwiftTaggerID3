@@ -26,6 +26,15 @@ public struct IntegerFrame: FrameProtocol {
         self.value = value
         self.flags = IntegerFrame.defaultFlags
         self.layout = layout
+        switch layout {
+            case .known(KnownFrameLayoutIdentifier.bpm): self.frameKey = .bpm
+            case .known(KnownFrameLayoutIdentifier.isrc): self.frameKey = .isrc
+            case .known(KnownFrameLayoutIdentifier.length): self.frameKey = .length
+            case .known(KnownFrameLayoutIdentifier.movementCount): self.frameKey = .movementCount
+            case .known(KnownFrameLayoutIdentifier.movementNumber): self.frameKey = .movementNumber
+            case .known(KnownFrameLayoutIdentifier.playlistDelay): self.frameKey = .playlistDelay
+            default: self.frameKey = .userDefinedText(description: "")
+        }
     }
     
     func encodeContents(version: Version) throws -> Data {
@@ -36,6 +45,7 @@ public struct IntegerFrame: FrameProtocol {
     // decode incoming data and parse it into a frame
     var flags: Data
     var layout: FrameLayoutIdentifier
+    var frameKey: FrameKey
     
     init(decodingContents contents: Data.SubSequence,
                   version: Version,
@@ -44,23 +54,20 @@ public struct IntegerFrame: FrameProtocol {
     ) throws {
         self.flags = flags
         self.layout = layout
+        switch layout {
+            case .known(KnownFrameLayoutIdentifier.bpm): self.frameKey = .bpm
+            case .known(KnownFrameLayoutIdentifier.isrc): self.frameKey = .isrc
+            case .known(KnownFrameLayoutIdentifier.length): self.frameKey = .length
+            case .known(KnownFrameLayoutIdentifier.movementCount): self.frameKey = .movementCount
+            case .known(KnownFrameLayoutIdentifier.movementNumber): self.frameKey = .movementNumber
+            case .known(KnownFrameLayoutIdentifier.playlistDelay): self.frameKey = .playlistDelay
+            default: self.frameKey = .userDefinedText(description: "")
+        }
         var parsing = contents
         let encoding = IntegerFrame.extractEncoding(data: &parsing, version: version)
         self.value = Int(parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? "") ?? 0
     }
-    
-    func frameKey(version: Version) -> FrameKey? {
-        switch self.layout {
-            case .known(KnownFrameLayoutIdentifier.bpm): return .bpm
-            case .known(KnownFrameLayoutIdentifier.isrc): return .isrc
-            case .known(KnownFrameLayoutIdentifier.length): return .length
-            case .known(KnownFrameLayoutIdentifier.movementCount): return .movementCount
-            case .known(KnownFrameLayoutIdentifier.movementNumber): return .movementNumber
-            case .known(KnownFrameLayoutIdentifier.playlistDelay): return .playlistDelay
-            default: return nil
-        }
-    }
-    
+        
     // MARK: Public initializers
     public init(bpm: Int) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.bpm), value: bpm)

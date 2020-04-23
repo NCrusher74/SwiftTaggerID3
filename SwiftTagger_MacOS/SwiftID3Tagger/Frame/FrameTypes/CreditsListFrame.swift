@@ -46,6 +46,12 @@ public struct CreditsListFrame: FrameProtocol {
         self.entries = entries
         self.flags = CreditsListFrame.defaultFlags
         self.layout = layout
+        
+        switch layout {
+            case .known(.involvedPeopleList) : self.frameKey = .involvedPeopleList
+            case .known(.musicianCreditsList) : self.frameKey = .musicianCreditsList
+            default: self.frameKey = .userDefinedText(description: "")
+        }
     }
     
     func encodeContents(version: Version) throws -> Data {
@@ -59,6 +65,8 @@ public struct CreditsListFrame: FrameProtocol {
     
     var flags: Data
     var layout: FrameLayoutIdentifier
+    var frameKey: FrameKey
+//    var identifier: String
     
     // MARK: Decoding
     init(decodingContents contents: Data.SubSequence,
@@ -68,6 +76,13 @@ public struct CreditsListFrame: FrameProtocol {
     ) throws {
         self.flags = flags
         self.layout = layout
+        
+        switch layout {
+            case .known(.involvedPeopleList) : self.frameKey = .involvedPeopleList
+            case .known(.musicianCreditsList) : self.frameKey = .musicianCreditsList
+            default: self.frameKey = .userDefinedText(description: "")
+        }
+        
         var parsing = contents
         let encoding = CreditsListFrame.extractEncoding(data: &parsing, version: version)
         let parsed = CreditsListFrame.extractCreditStrings(from: &parsing, encoding: encoding)
@@ -91,15 +106,4 @@ public struct CreditsListFrame: FrameProtocol {
         let rolePersonArray = strings.pairs()
         return rolePersonArray as! [(String, String)]
     }
-    
-    func frameKey(version: Version) -> FrameKey? {
-        if self.layout == .known(KnownFrameLayoutIdentifier.involvedPeopleList) {
-            return .involvedPeopleList
-        } else if self.layout == .known(KnownFrameLayoutIdentifier.musicianCreditsList) {
-            return .musicianCreditsList
-        } else {
-            return nil
-        }
-    }
-
 }

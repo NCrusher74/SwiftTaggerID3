@@ -35,6 +35,11 @@ public struct PartOfTotalFrame: FrameProtocol {
         self.total = total
         self.flags = PartOfTotalFrame.defaultFlags
         self.layout = layout
+        switch layout {
+            case .known(.discNumber) : self.frameKey = .discNumber
+            case .known(.trackNumber): self.frameKey = .trackNumber
+            default: self.frameKey = .userDefinedText(description: "")
+        }
     }
     
     func encodeContents(version: Version) throws -> Data {
@@ -49,6 +54,8 @@ public struct PartOfTotalFrame: FrameProtocol {
     
     var flags: Data
     var layout: FrameLayoutIdentifier
+    var frameKey: FrameKey
+//    var identifier: String
     
     init(decodingContents contents: Data.SubSequence,
                   version: Version,
@@ -57,6 +64,12 @@ public struct PartOfTotalFrame: FrameProtocol {
     ) throws {
         self.flags = flags
         self.layout = layout
+        switch layout {
+            case .known(.discNumber) : self.frameKey = .discNumber
+            case .known(.trackNumber): self.frameKey = .trackNumber
+            default: self.frameKey = .userDefinedText(description: "")
+        }
+
         var parsing = contents
         let encoding = PartOfTotalFrame.extractEncoding(data: &parsing, version: version)
         let contentString = parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? ""
@@ -64,15 +77,4 @@ public struct PartOfTotalFrame: FrameProtocol {
         self.part = Int(contentComponents[0]) ?? 0
         self.total = Int(contentComponents[1])
     }
-    
-    func frameKey(version: Version) -> FrameKey? {
-        if self.layout == .known(KnownFrameLayoutIdentifier.discNumber) {
-            return .discNumber
-        } else if self.layout == .known(KnownFrameLayoutIdentifier.trackNumber) {
-            return .trackNumber
-        } else {
-            return nil
-        }
-    }
-
 }

@@ -29,6 +29,7 @@ public struct BooleanFrame: FrameProtocol {
         self.value = value
         self.flags = BooleanFrame.defaultFlags
         self.layout = layout
+        self.frameKey = .compilation
     }
     
     func encodeContents(version: Version) throws -> Data {
@@ -42,6 +43,8 @@ public struct BooleanFrame: FrameProtocol {
     
     var flags: Data
     var layout: FrameLayoutIdentifier
+    var frameKey: FrameKey
+//    var identifier: String
     
     init(decodingContents contents: Data.SubSequence,
          version: Version,
@@ -50,6 +53,12 @@ public struct BooleanFrame: FrameProtocol {
     ) throws {
         self.flags = flags
         self.layout = layout
+        self.frameKey = .compilation
+//        switch version {
+//            case .v2_2: self.identifier = layout.id3Identifier(version: version) ?? "TXX"
+//            case .v2_3, .v2_4 : self.identifier = layout.id3Identifier(version: version) ?? "TXXX"
+//        }
+        
         var parsing = contents
         let encoding = BooleanFrame.extractEncoding(data: &parsing, version: version)
         let contentString = parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? ""
@@ -66,12 +75,5 @@ public struct BooleanFrame: FrameProtocol {
                 return false
         }
     }
-    
-    func frameKey(version: Version) -> FrameKey? {
-        if self.layout == .known(KnownFrameLayoutIdentifier.compilation) {
-            return .compilation
-        } else {
-            return nil
-        }
-    }
+
 }

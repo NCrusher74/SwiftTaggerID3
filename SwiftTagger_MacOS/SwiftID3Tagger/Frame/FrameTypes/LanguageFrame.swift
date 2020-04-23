@@ -29,6 +29,7 @@ public struct LanguageFrame: FrameProtocol {
         self.languageString = languageString
         self.flags = LanguageFrame.defaultFlags
         self.layout = layout
+        self.frameKey = .languages(language: languageString)
     }
     
     func encodeContents(version: Version) throws -> Data {
@@ -38,6 +39,7 @@ public struct LanguageFrame: FrameProtocol {
     // MARK: Decoding
     var flags: Data
     var layout: FrameLayoutIdentifier
+    var frameKey: FrameKey
     
     /// if desired, return may be changed from "isoName" to "nativeName"
     init(decodingContents contents: Data.SubSequence,
@@ -47,6 +49,7 @@ public struct LanguageFrame: FrameProtocol {
     ) throws {
                 self.flags = flags
         self.layout = layout
+        
         var parsing = contents
         let languageCode = parsing.extractFirst(3).stringASCII ?? "und"
         if ISO6392Codes.allCases.contains(where: { $0.iso6392TCode == languageCode }) {
@@ -54,14 +57,8 @@ public struct LanguageFrame: FrameProtocol {
         } else {
             self.languageString = "und"
         }
+        self.frameKey = .languages(language: languageString)
     }
     
-    func frameKey(version: Version) -> FrameKey? {
-        if self.layout == .known(KnownFrameLayoutIdentifier.languages) {
-            return .languages(language: self.languageString)
-        } else {
-            return nil
-        }
-    }
 
 }
