@@ -49,7 +49,14 @@ extension FrameProtocol {
     init(decodingFromStartOf data: inout Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier) throws {
-        
+        // data is 158693 bytes here
+        // parse flags
+        var flagsData: Data
+        switch version {
+            case .v2_2: flagsData = Data()
+            case .v2_3, .v2_4: flagsData = data.extractFirst(version.flagsLength)
+        }
+
         // parse content size
         let frameSizeData = data.extractFirst(version.sizeDeclarationLength)
         var frameSize: Int = 0
@@ -58,14 +65,7 @@ extension FrameProtocol {
             case .v2_2, .v2_3: frameSize = Int(raw)
             case .v2_4: frameSize = Int(raw.decodingSynchsafe())
         }
-        
-        // parse flags
-        var flagsData: Data
-        switch version {
-            case .v2_2: flagsData = Data()
-            case .v2_3, .v2_4: flagsData = data.extractFirst(version.flagsLength)
-        }
-        
+                
         let contentDataStart = data.startIndex + version.frameHeaderLength
         let contentDataRange = contentDataStart ..< contentDataStart + frameSize
         let contentData = data.subdata(in: contentDataRange)

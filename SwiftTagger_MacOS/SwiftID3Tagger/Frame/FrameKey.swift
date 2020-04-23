@@ -163,7 +163,7 @@ public enum FrameKey: Hashable {
     case userDefinedWebpage(description: String)
     /** The 'Year' frame is a numeric string with a year of the recording. This frames is always four characters long (until the year 10000). FOR VERSION 2.4: This frame is replaced by the TDRC frame, 'Recording time' */
     case year
-    case unknown(uuid: String)
+    case unknown(uuid: UUID)
     
     // MARK: Alternate Frame Keys
     /// also known as `Arranger` or `Interpreter`. Maps to the `Arranger` frame. If another `Arranger` frame is already present, the frame will be created as a `UserDefinedText` frame with the description, "Remixer"

@@ -10,12 +10,12 @@ import Foundation
 
 struct Tag {
     
-    public var frames: [FrameLayoutIdentifier : Frame]
+    public var frames: [FrameKey : Frame]
 
     // handles the parsing of an ID3 tag
     init(readFrom file: Mp3File) throws {
         let fileData: Data = file.data
-        var frames: [FrameLayoutIdentifier : Frame] = [:]
+        var frames: [FrameKey : Frame] = [:]
         
         var remainder: Data.SubSequence = fileData[fileData.startIndex..<fileData.endIndex]
         
@@ -42,21 +42,14 @@ struct Tag {
         while !remainder.isEmpty {
             let identifierBytes = remainder.extractFirst(version.identifierLength)
             let identifier = String(ascii: identifierBytes)
-            
+            // bytes are not ASCII (86 35 a0 0)
             let frame = try Frame(
                 identifier: identifier,
                 data: &remainder,
                 version: version)
-
-// no idea how to get the frameKey out of the frame without re-initializing the frame
-//            let frameKey = frame.getFrameKeyForFrame(
-//                data: <#T##Data.SubSequence#>,
-//                version: <#T##Version#>,
-//                layout: <#T##FrameLayoutIdentifier#>,
-//                identifier: <#T##String#>)
             
-            let layout = FrameLayoutIdentifier(identifier: identifier)
-            frames = [layout : frame]
+            let frameKey = frame.frameKey
+            frames = [frameKey : frame]
         }
         self.frames = frames
     }

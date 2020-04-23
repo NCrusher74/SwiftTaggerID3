@@ -15,7 +15,7 @@ import Foundation
 public struct Mp3File {
  
     public let location: URL
-    var data: Data
+    public var data: Data
 
     /// - Parameters:
     ///     - location: The location of the audio file in the local file system.
@@ -29,7 +29,7 @@ public struct Mp3File {
         }
     }
 
-    public func read() throws -> [FrameLayoutIdentifier : Frame]{
+    public func read() throws -> [FrameKey : Frame]{
         let tag = try Tag(readFrom: self)
         return tag.frames
     }

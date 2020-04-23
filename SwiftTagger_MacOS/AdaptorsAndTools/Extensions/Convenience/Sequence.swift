@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension Sequence where Element: BinaryInteger {
+public extension Sequence where Element: BinaryInteger {
     
     func hexadecimal() -> String {
         return lazy.map({ String($0, radix: 16) }).joined(separator: " ")

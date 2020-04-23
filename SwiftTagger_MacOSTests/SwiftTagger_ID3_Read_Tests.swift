@@ -14,6 +14,5 @@ class SwiftTagger_ID3_Read_Tests: XCTestCase {
     func testRead() throws {
         let mp3File = try Bundle.mp3V24()
         XCTAssertNotNil(try mp3File.read())
-        
-    }
+   }
 }

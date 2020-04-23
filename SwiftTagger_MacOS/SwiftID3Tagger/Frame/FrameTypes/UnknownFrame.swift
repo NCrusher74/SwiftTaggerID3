@@ -10,12 +10,22 @@ import Foundation
 
 public struct UnknownFrame: FrameProtocol {
     
+ 
+    public init(identifier: String, key: UUID = UUID(), contents: Data){
+        self.flags = UnknownFrame.defaultFlags
+        self.layout = .unknown(self.uuid.uuidString)
+        self.contents = contents
+        self.frameKey = .unknown(uuid: uuid)
+    }
+
     var contents: Data
     
-    init(layout: FrameLayoutIdentifier, contents: Data){
+    private init(layout: FrameLayoutIdentifier, uuid: UUID, contents: Data){
         self.flags = UnknownFrame.defaultFlags
         self.layout = layout
         self.contents = contents
+        self.uuid = uuid
+        self.frameKey = .unknown(uuid: uuid)
     }
 
     func encodeContents(version: Version) throws -> Data {
@@ -25,7 +35,7 @@ public struct UnknownFrame: FrameProtocol {
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
-//    var identifier: String
+    var uuid = UUID()
     
     init(decodingContents contents: Data.SubSequence,
          version: Version,
@@ -34,7 +44,7 @@ public struct UnknownFrame: FrameProtocol {
     ) throws {
         self.flags = flags
         self.layout = layout
-        self.frameKey = .unknown(uuid: )
+        self.frameKey = .unknown(uuid: self.uuid)
         self.contents = contents
     }
 }
