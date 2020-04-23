@@ -41,7 +41,7 @@ struct Tag {
         
         while !remainder.isEmpty {
             let identifierBytes = remainder.extractFirst(version.identifierLength)
-            let identifier = String(ascii: identifierBytes)
+            let identifier = identifierBytes.stringUTF8 ?? "TXXX"
             // bytes are not ASCII (86 35 a0 0)
             let frame = try Frame(
                 identifier: identifier,

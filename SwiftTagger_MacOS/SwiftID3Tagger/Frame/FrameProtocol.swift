@@ -49,7 +49,6 @@ extension FrameProtocol {
     init(decodingFromStartOf data: inout Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier) throws {
-        // data is 158693 bytes here
         // parse flags
         var flagsData: Data
         switch version {
@@ -59,17 +58,26 @@ extension FrameProtocol {
 
         // parse content size
         let frameSizeData = data.extractFirst(version.sizeDeclarationLength)
+//        print(frameSizeData.hexadecimal()) //0 0 15 36 for the frame before (0 0 21 54)
         var frameSize: Int = 0
         let raw = UInt32(parsing: frameSizeData, .bigEndian)
+//        print(raw) // 5430 for previous frame
         switch version {
             case .v2_2, .v2_3: frameSize = Int(raw)
             case .v2_4: frameSize = Int(raw.decodingSynchsafe())
         }
-                
+//        print(frameSize) // - 2742 for previous frame
         let contentDataStart = data.startIndex + version.frameHeaderLength
-        let contentDataRange = contentDataStart ..< contentDataStart + frameSize
-        let contentData = data.subdata(in: contentDataRange)
+//        print(contentDataStart)
+        // 20 for previous frame but 2782 for this frame. (according to the Yate raw data, the last frame is at (1663 - 1708). First frame should be (10 to 26)
         
+        let contentDataRange = contentDataStart ..< contentDataStart + frameSize
+//        print(contentDataRange)
+        //        Thread 1: EXC_BAD_INSTRUCTION (code=EXC_I386_INVOP, subcode=0x0)
+        //        20..<2762
+        //        2782..<13118310
+        let contentData = data.subdata(in: contentDataRange)
+
         try self.init(decodingContents: contentData,
                       version: version,
                       layout: layout,
