@@ -80,7 +80,7 @@ public struct UserTextFrame: FrameProtocol {
          flags: Data
     ) throws {
         var parsing = contents
-        let encoding = UserTextFrame.extractEncoding(data: &parsing, version: version)
+        let encoding = try UserTextFrame.extractEncoding(data: &parsing, version: version)
         self.flags = flags
         self.layout = layout
         switch layout {

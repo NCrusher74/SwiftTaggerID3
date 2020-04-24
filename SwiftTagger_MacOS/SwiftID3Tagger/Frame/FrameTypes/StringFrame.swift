@@ -67,9 +67,8 @@ public struct StringFrame: FrameProtocol {
             case .known(.titleSort): self.frameKey = .titleSort
             default: self.frameKey = .userDefinedText(description: "")
         }
-                
         var parsing = contents
-        let encoding = StringFrame.extractEncoding(data: &parsing, version: version)
+        let encoding = try StringFrame.extractEncoding(data: &parsing, version: version)
         self.contentString = parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? ""
     }
 

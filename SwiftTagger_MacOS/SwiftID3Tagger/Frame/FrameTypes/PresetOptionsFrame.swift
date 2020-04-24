@@ -153,7 +153,7 @@ public struct PresetOptionsFrame: FrameProtocol {
         
         var parsing = contents
         
-        let encoding = PresetOptionsFrame.extractEncoding(data: &parsing, version: version)
+        let encoding = try PresetOptionsFrame.extractEncoding(data: &parsing, version: version)
         var parsedArray: [String] = []
         
         // versions 2.2 and 2.3 handle strings differently than version 2.4.

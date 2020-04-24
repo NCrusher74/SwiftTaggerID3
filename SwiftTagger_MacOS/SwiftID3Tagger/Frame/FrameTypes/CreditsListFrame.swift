@@ -84,7 +84,7 @@ public struct CreditsListFrame: FrameProtocol {
         }
         
         var parsing = contents
-        let encoding = CreditsListFrame.extractEncoding(data: &parsing, version: version)
+        let encoding = try CreditsListFrame.extractEncoding(data: &parsing, version: version)
         let parsed = CreditsListFrame.extractCreditStrings(from: &parsing, encoding: encoding)
         var entries: [(role: String, person: String)] = []
         for pair in parsed {

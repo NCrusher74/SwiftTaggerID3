@@ -71,7 +71,7 @@ public struct PartOfTotalFrame: FrameProtocol {
         }
 
         var parsing = contents
-        let encoding = PartOfTotalFrame.extractEncoding(data: &parsing, version: version)
+        let encoding = try PartOfTotalFrame.extractEncoding(data: &parsing, version: version)
         let contentString = parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? ""
         let contentComponents = contentString.components(separatedBy: "/")
         self.part = Int(contentComponents[0]) ?? 0

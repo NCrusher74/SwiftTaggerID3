@@ -31,6 +31,7 @@ public enum Frame {
          data: inout Data.SubSequence,
          version: Version) throws {
         let layout = FrameLayoutIdentifier(identifier: identifier)
+//        print(layout) - known(SwiftTagger_MacOS.KnownFrameLayoutIdentifier.title) (checks)
         switch layout {
             //            case .known(KnownFrameLayoutIdentifier.attachedPicture):
             //                self = .image(try ImageFrame)

@@ -88,17 +88,17 @@ public struct LocalizedFrame: FrameProtocol {
                 languageString: String?,
                 descriptionString: String?,
                 contentString: String) {
-        self.languageString = languageString ?? "und"
-        self.descriptionString = descriptionString ?? ""
-        self.contentString = contentString
         self.layout = layout
-        self.flags = LocalizedFrame.defaultFlags
-
         switch layout {
             case .known(.comments) : self.frameKey = .comments(description: descriptionString ?? "")
             case .known(.unsynchronizedLyrics) : self.frameKey = .unsynchronizedLyrics(description: descriptionString ?? "")
             default: self.frameKey = .userDefinedText(description: descriptionString ?? "")
         }
+        self.flags = LocalizedFrame.defaultFlags
+
+        self.languageString = languageString ?? "und"
+        self.descriptionString = descriptionString ?? ""
+        self.contentString = contentString
     }
 
     var flags: Data
@@ -117,17 +117,17 @@ public struct LocalizedFrame: FrameProtocol {
          layout: FrameLayoutIdentifier,
          flags: Data
     ) throws {
-        self.flags = flags
         self.layout = layout
-        
         switch layout {
             case .known(.comments) : self.frameKey = .comments(description: descriptionString ?? "")
             case .known(.unsynchronizedLyrics) : self.frameKey = .unsynchronizedLyrics(description: descriptionString ?? "")
             default: self.frameKey = .userDefinedText(description: descriptionString ?? "")
         }
 
+        self.flags = flags
+        
         var parsing = contents
-        let encoding = LocalizedFrame.extractEncoding(data: &parsing, version: version)
+        let encoding = try LocalizedFrame.extractEncoding(data: &parsing, version: version)
 
         let languageCode = parsing.extractFirst(3).stringASCII ?? "und"
         if ISO6392Codes.allCases.contains(where: { $0.iso6392TCode == languageCode }) {

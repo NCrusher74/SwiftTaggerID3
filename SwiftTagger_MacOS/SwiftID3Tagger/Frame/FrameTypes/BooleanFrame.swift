@@ -60,7 +60,7 @@ public struct BooleanFrame: FrameProtocol {
 //        }
         
         var parsing = contents
-        let encoding = BooleanFrame.extractEncoding(data: &parsing, version: version)
+        let encoding = try BooleanFrame.extractEncoding(data: &parsing, version: version)
         let contentString = parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? ""
         self.value = BooleanFrame.getBooleanFromString(boolString: contentString)
     }

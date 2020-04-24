@@ -49,33 +49,27 @@ extension FrameProtocol {
     init(decodingFromStartOf data: inout Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier) throws {
-        // parse flags
+        // parse flags first
         var flagsData: Data
         switch version {
             case .v2_2: flagsData = Data()
             case .v2_3, .v2_4: flagsData = data.extractFirst(version.flagsLength)
         }
-
-        // parse content size
+//        print(flagsData.hexadecimal()) - 0 0 exactly right
+        
+        // parse content size second
         let frameSizeData = data.extractFirst(version.sizeDeclarationLength)
-//        print(frameSizeData.hexadecimal()) //0 0 15 36 for the frame before (0 0 21 54)
+//        print(frameSizeData.hexadecimal()) - 0 6 0 0 - ?? according to Yate frame should be 16 bytes, confirmed with print of first 20 bytes this is accurate for bytes 16-20
         var frameSize: Int = 0
         let raw = UInt32(parsing: frameSizeData, .bigEndian)
-//        print(raw) // 5430 for previous frame
         switch version {
             case .v2_2, .v2_3: frameSize = Int(raw)
             case .v2_4: frameSize = Int(raw.decodingSynchsafe())
         }
-//        print(frameSize) // - 2742 for previous frame
+//        print(Int(raw)) - 393216
+        // parse content last
         let contentDataStart = data.startIndex + version.frameHeaderLength
-//        print(contentDataStart)
-        // 20 for previous frame but 2782 for this frame. (according to the Yate raw data, the last frame is at (1663 - 1708). First frame should be (10 to 26)
-        
         let contentDataRange = contentDataStart ..< contentDataStart + frameSize
-//        print(contentDataRange)
-        //        Thread 1: EXC_BAD_INSTRUCTION (code=EXC_I386_INVOP, subcode=0x0)
-        //        20..<2762
-        //        2782..<13118310
         let contentData = data.subdata(in: contentDataRange)
 
         try self.init(decodingContents: contentData,
@@ -115,13 +109,9 @@ extension FrameProtocol {
         return Data(flagBytes)
     }
     
-    static func extractEncoding(data: inout Data.SubSequence, version: Version) -> StringEncoding {
+    static func extractEncoding(data: inout Data.SubSequence, version: Version) throws -> StringEncoding {
         let encodingByteOffset = version.encodingByteOffset
         let encodingByte = data[encodingByteOffset]
-        let validEncodingBytes: [UInt8] = [0x00, 0x01, 0x02, 0x03]
-        assert(
-            validEncodingBytes.contains(encodingByte), "Invalid encoding detected. Attempting default encoding."
-        )
         return StringEncoding(rawValue: encodingByte) ?? .utf8
     }
     

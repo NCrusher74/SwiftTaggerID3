@@ -46,6 +46,8 @@
 		517754582442EB67005E43C5 /* CreditsListFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517754572442EB67005E43C5 /* CreditsListFrame.swift */; };
 		5177545A2442EBE8005E43C5 /* PresetOptionsFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517754592442EBE8005E43C5 /* PresetOptionsFrame.swift */; };
 		51779431245016AF0022E02F /* SwiftTagger_ID3_Read_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51779430245016AF0022E02F /* SwiftTagger_ID3_Read_Tests.swift */; };
+		51779437245201B00022E02F /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51779436245201B00022E02F /* Date.swift */; };
+		5177943A2452BE150022E02F /* TagProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517794392452BE150022E02F /* TagProperties.swift */; };
 		517E886A243DBCA300F9F8D6 /* mp3-chaptered.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 517E8869243DBCA300F9F8D6 /* mp3-chaptered.mp3 */; };
 		518807212442ED4D008D488B /* LanguageFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518807202442ED4D008D488B /* LanguageFrame.swift */; };
 		518807232442EE58008D488B /* PartOfTotalFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518807222442EE58008D488B /* PartOfTotalFrame.swift */; };
@@ -60,15 +62,13 @@
 		51A3C6A724464FDC00909952 /* URLFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A3C6A624464FDC00909952 /* URLFrame.swift */; };
 		51D58B39244D497000DBA9FB /* ISOLanguages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D58B38244D497000DBA9FB /* ISOLanguages.swift */; };
 		51E432B6243DA257006574A1 /* SwiftTagger_MacOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51E432AC243DA257006574A1 /* SwiftTagger_MacOS.framework */; };
-		51E432BB243DA257006574A1 /* SwiftTagger_ID3_Properties_and_Validation_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E432BA243DA257006574A1 /* SwiftTagger_ID3_Properties_and_Validation_Tests.swift */; };
+		51E432BB243DA257006574A1 /* SwiftTagger_ID3_Properties_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E432BA243DA257006574A1 /* SwiftTagger_ID3_Properties_Tests.swift */; };
 		51E432BD243DA257006574A1 /* SwiftTagger_MacOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 51E432AF243DA257006574A1 /* SwiftTagger_MacOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		51E432C7243DA2E0006574A1 /* Mp3File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E432C6243DA2E0006574A1 /* Mp3File.swift */; };
 		51E432C9243DA35E006574A1 /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E432C8243DA35E006574A1 /* URL.swift */; };
 		51E432CB243DA3F6006574A1 /* Mp3FileError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E432CA243DA3F6006574A1 /* Mp3FileError.swift */; };
 		51E432D2243DA64B006574A1 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E432D1243DA64B006574A1 /* Bundle.swift */; };
-		51E432D6243DAED8006574A1 /* TagValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E432D5243DAED8006574A1 /* TagValidator.swift */; };
 		51E432DA243DB096006574A1 /* Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E432D9243DB096006574A1 /* Version.swift */; };
-		51FA3503243FB03C000997EC /* TagProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FA3502243FB03C000997EC /* TagProperties.swift */; };
 		51FA350624402512000997EC /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FA350524402512000997EC /* Collection.swift */; };
 		51FA35082440255F000997EC /* Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FA35072440255F000997EC /* Sequence.swift */; };
 		51FA350A24402580000997EC /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FA350924402580000997EC /* String.swift */; };
@@ -140,6 +140,8 @@
 		517754572442EB67005E43C5 /* CreditsListFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditsListFrame.swift; sourceTree = "<group>"; };
 		517754592442EBE8005E43C5 /* PresetOptionsFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetOptionsFrame.swift; sourceTree = "<group>"; };
 		51779430245016AF0022E02F /* SwiftTagger_ID3_Read_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftTagger_ID3_Read_Tests.swift; sourceTree = "<group>"; };
+		51779436245201B00022E02F /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		517794392452BE150022E02F /* TagProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagProperties.swift; sourceTree = "<group>"; };
 		517E8869243DBCA300F9F8D6 /* mp3-chaptered.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "mp3-chaptered.mp3"; sourceTree = "<group>"; };
 		518807202442ED4D008D488B /* LanguageFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageFrame.swift; sourceTree = "<group>"; };
 		518807222442EE58008D488B /* PartOfTotalFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartOfTotalFrame.swift; sourceTree = "<group>"; };
@@ -157,15 +159,13 @@
 		51E432AF243DA257006574A1 /* SwiftTagger_MacOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftTagger_MacOS.h; sourceTree = "<group>"; };
 		51E432B0243DA257006574A1 /* SwiftTagger_MacOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = SwiftTagger_MacOS.plist; sourceTree = "<group>"; };
 		51E432B5243DA257006574A1 /* SwiftTagger_MacOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftTagger_MacOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		51E432BA243DA257006574A1 /* SwiftTagger_ID3_Properties_and_Validation_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftTagger_ID3_Properties_and_Validation_Tests.swift; sourceTree = "<group>"; };
+		51E432BA243DA257006574A1 /* SwiftTagger_ID3_Properties_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftTagger_ID3_Properties_Tests.swift; sourceTree = "<group>"; };
 		51E432BC243DA257006574A1 /* SwiftTagger_MacOSTests.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = SwiftTagger_MacOSTests.plist; sourceTree = "<group>"; };
 		51E432C6243DA2E0006574A1 /* Mp3File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mp3File.swift; sourceTree = "<group>"; };
 		51E432C8243DA35E006574A1 /* URL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
 		51E432CA243DA3F6006574A1 /* Mp3FileError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mp3FileError.swift; sourceTree = "<group>"; };
 		51E432D1243DA64B006574A1 /* Bundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bundle.swift; sourceTree = "<group>"; };
-		51E432D5243DAED8006574A1 /* TagValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagValidator.swift; sourceTree = "<group>"; };
 		51E432D9243DB096006574A1 /* Version.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Version.swift; sourceTree = "<group>"; };
-		51FA3502243FB03C000997EC /* TagProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagProperties.swift; sourceTree = "<group>"; };
 		51FA350524402512000997EC /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		51FA35072440255F000997EC /* Sequence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sequence.swift; sourceTree = "<group>"; };
 		51FA350924402580000997EC /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
@@ -314,7 +314,7 @@
 			isa = PBXGroup;
 			children = (
 				51779430245016AF0022E02F /* SwiftTagger_ID3_Read_Tests.swift */,
-				51E432BA243DA257006574A1 /* SwiftTagger_ID3_Properties_and_Validation_Tests.swift */,
+				51E432BA243DA257006574A1 /* SwiftTagger_ID3_Properties_Tests.swift */,
 				51E432BC243DA257006574A1 /* SwiftTagger_MacOSTests.plist */,
 				51E432CC243DA5B4006574A1 /* TestMedia */,
 			);
@@ -350,6 +350,7 @@
 				51490E54243EF28A009D4BA4 /* IntsExtensions.swift */,
 				51FA350D244034B2000997EC /* UInt32.swift */,
 				5177543D24413768005E43C5 /* UnsignedInteger.swift */,
+				51779436245201B00022E02F /* Date.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -376,8 +377,7 @@
 			isa = PBXGroup;
 			children = (
 				51775435244058DB005E43C5 /* Tag.swift */,
-				51FA3502243FB03C000997EC /* TagProperties.swift */,
-				51E432D5243DAED8006574A1 /* TagValidator.swift */,
+				517794392452BE150022E02F /* TagProperties.swift */,
 			);
 			path = Tag;
 			sourceTree = "<group>";
@@ -532,12 +532,11 @@
 				51A3C6A22442FFB300909952 /* UserTextFrame.swift in Sources */,
 				5177543B244136A3005E43C5 /* Endianess.swift in Sources */,
 				51FA35082440255F000997EC /* Sequence.swift in Sources */,
-				51E432D6243DAED8006574A1 /* TagValidator.swift in Sources */,
 				518807252442EF4E008D488B /* ChapterFrame.swift in Sources */,
 				51A3C69C2442F9E800909952 /* IntegerFrame.swift in Sources */,
-				51FA3503243FB03C000997EC /* TagProperties.swift in Sources */,
 				5168949B244C112E008F6124 /* MediaType.swift in Sources */,
 				5177545A2442EBE8005E43C5 /* PresetOptionsFrame.swift in Sources */,
+				51779437245201B00022E02F /* Date.swift in Sources */,
 				51689499244C10E1008F6124 /* PresetOptions.swift in Sources */,
 				5188072B2442F3DE008D488B /* GenreType.swift in Sources */,
 				51A3C69E2442FB1A00909952 /* BooleanFrame.swift in Sources */,
@@ -554,6 +553,7 @@
 				51D58B39244D497000DBA9FB /* ISOLanguages.swift in Sources */,
 				5177543E24413768005E43C5 /* UnsignedInteger.swift in Sources */,
 				515AF65B2449A8E2005C29FA /* KeySignatures.swift in Sources */,
+				5177943A2452BE150022E02F /* TagProperties.swift in Sources */,
 				51490E66243F1F92009D4BA4 /* Data.Subsquence.swift in Sources */,
 				51490E55243EF28A009D4BA4 /* IntsExtensions.swift in Sources */,
 				51775436244058DB005E43C5 /* Tag.swift in Sources */,
@@ -568,7 +568,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				51779431245016AF0022E02F /* SwiftTagger_ID3_Read_Tests.swift in Sources */,
-				51E432BB243DA257006574A1 /* SwiftTagger_ID3_Properties_and_Validation_Tests.swift in Sources */,
+				51E432BB243DA257006574A1 /* SwiftTagger_ID3_Properties_Tests.swift in Sources */,
 				51E432D2243DA64B006574A1 /* Bundle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

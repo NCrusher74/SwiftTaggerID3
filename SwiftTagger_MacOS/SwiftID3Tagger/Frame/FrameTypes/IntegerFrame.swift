@@ -64,7 +64,7 @@ public struct IntegerFrame: FrameProtocol {
             default: self.frameKey = .userDefinedText(description: "")
         }
         var parsing = contents
-        let encoding = IntegerFrame.extractEncoding(data: &parsing, version: version)
+        let encoding = try IntegerFrame.extractEncoding(data: &parsing, version: version)
         self.value = Int(parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? "") ?? 0
     }
         
