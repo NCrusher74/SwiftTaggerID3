@@ -55,20 +55,20 @@ extension FrameProtocol {
             case .v2_2: flagsData = Data()
             case .v2_3, .v2_4: flagsData = data.extractFirst(version.flagsLength)
         }
-//        print(flagsData.hexadecimal()) - 0 0 exactly right
-        
+
         // parse content size second
         let frameSizeData = data.extractFirst(version.sizeDeclarationLength)
-//        print(frameSizeData.hexadecimal()) - 0 6 0 0 - ?? according to Yate frame should be 16 bytes, confirmed with print of first 20 bytes this is accurate for bytes 16-20
+
         var frameSize: Int = 0
-        let raw = UInt32(parsing: frameSizeData, .bigEndian)
+        let sizeUInt8 = [UInt8](frameSizeData)
+        let byteOfInterest = sizeUInt8[1]
         switch version {
-            case .v2_2, .v2_3: frameSize = Int(raw)
-            case .v2_4: frameSize = Int(raw.decodingSynchsafe())
+            case .v2_2, .v2_3: frameSize = Int(byteOfInterest)
+            case .v2_4: frameSize = Int(byteOfInterest.decodingSynchsafe())
         }
-//        print(Int(raw)) - 393216
+
         // parse content last
-        let contentDataStart = data.startIndex + version.frameHeaderLength
+        let contentDataStart = data.startIndex
         let contentDataRange = contentDataStart ..< contentDataStart + frameSize
         let contentData = data.subdata(in: contentDataRange)
 
@@ -110,8 +110,10 @@ extension FrameProtocol {
     }
     
     static func extractEncoding(data: inout Data.SubSequence, version: Version) throws -> StringEncoding {
-        let encodingByteOffset = version.encodingByteOffset
-        let encodingByte = data[encodingByteOffset]
+//        let encodingByteOffset = version.encodingByteOffset
+        let encodingData = data.extractFirst(1)
+        let encodingByteArray = [UInt8](encodingData)
+        let encodingByte = encodingByteArray.first ?? 0x00
         return StringEncoding(rawValue: encodingByte) ?? .utf8
     }
     

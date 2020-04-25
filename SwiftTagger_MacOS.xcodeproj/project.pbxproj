@@ -48,6 +48,7 @@
 		51779431245016AF0022E02F /* SwiftTagger_ID3_Read_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51779430245016AF0022E02F /* SwiftTagger_ID3_Read_Tests.swift */; };
 		51779437245201B00022E02F /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51779436245201B00022E02F /* Date.swift */; };
 		5177943A2452BE150022E02F /* TagProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517794392452BE150022E02F /* TagProperties.swift */; };
+		5177943E2454F30B0022E02F /* mp3-v23-with-large-lyrics.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5177943D2454F30B0022E02F /* mp3-v23-with-large-lyrics.mp3 */; };
 		517E886A243DBCA300F9F8D6 /* mp3-chaptered.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 517E8869243DBCA300F9F8D6 /* mp3-chaptered.mp3 */; };
 		518807212442ED4D008D488B /* LanguageFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518807202442ED4D008D488B /* LanguageFrame.swift */; };
 		518807232442EE58008D488B /* PartOfTotalFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518807222442EE58008D488B /* PartOfTotalFrame.swift */; };
@@ -142,6 +143,7 @@
 		51779430245016AF0022E02F /* SwiftTagger_ID3_Read_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftTagger_ID3_Read_Tests.swift; sourceTree = "<group>"; };
 		51779436245201B00022E02F /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		517794392452BE150022E02F /* TagProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagProperties.swift; sourceTree = "<group>"; };
+		5177943D2454F30B0022E02F /* mp3-v23-with-large-lyrics.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "mp3-v23-with-large-lyrics.mp3"; sourceTree = "<group>"; };
 		517E8869243DBCA300F9F8D6 /* mp3-chaptered.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "mp3-chaptered.mp3"; sourceTree = "<group>"; };
 		518807202442ED4D008D488B /* LanguageFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageFrame.swift; sourceTree = "<group>"; };
 		518807222442EE58008D488B /* PartOfTotalFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartOfTotalFrame.swift; sourceTree = "<group>"; };
@@ -327,6 +329,7 @@
 				515F2922244FDE0400B4CC44 /* Tag Header Data For Test Files */,
 				51E432D3243DA9D0006574A1 /* Ouput */,
 				51E432D1243DA64B006574A1 /* Bundle.swift */,
+				5177943D2454F30B0022E02F /* mp3-v23-with-large-lyrics.mp3 */,
 				51490E77243F461E009D4BA4 /* mp3-nometa.mp3 */,
 				51490E78243F461E009D4BA4 /* mp3-v22-with-meta.mp3 */,
 				51490E76243F461E009D4BA4 /* mp3-v23-corrupted.mp3 */,
@@ -505,6 +508,7 @@
 				51490E71243F3CE9009D4BA4 /* samplecover-green.jpg in Resources */,
 				51490E7D243F461E009D4BA4 /* mp3-v22-with-meta.mp3 in Resources */,
 				51FE588D244F6F3C0042570F /* v22-test-file-raw-tag-info in Resources */,
+				5177943E2454F30B0022E02F /* mp3-v23-with-large-lyrics.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

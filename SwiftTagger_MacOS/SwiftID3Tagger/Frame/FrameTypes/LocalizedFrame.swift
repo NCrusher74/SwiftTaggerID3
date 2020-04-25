@@ -117,6 +117,7 @@ public struct LocalizedFrame: FrameProtocol {
          layout: FrameLayoutIdentifier,
          flags: Data
     ) throws {
+        self.flags = flags
         self.layout = layout
         switch layout {
             case .known(.comments) : self.frameKey = .comments(description: descriptionString ?? "")
@@ -124,7 +125,6 @@ public struct LocalizedFrame: FrameProtocol {
             default: self.frameKey = .userDefinedText(description: descriptionString ?? "")
         }
 
-        self.flags = flags
         
         var parsing = contents
         let encoding = try LocalizedFrame.extractEncoding(data: &parsing, version: version)

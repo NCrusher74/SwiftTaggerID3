@@ -117,4 +117,12 @@ extension Bundle {
         let mp3File = try Mp3File(location: v23NoMeta)
         return mp3File.data
     }
+    
+    static let longLyricsFile: URL = {
+        guard let location = Bundle.testBundle.url(forResource: "mp3-v23-with-large-lyrics", withExtension: "mp3") else {
+            fatalError("The audio file cannot be found")
+        }
+        return location
+    }()
+
 }

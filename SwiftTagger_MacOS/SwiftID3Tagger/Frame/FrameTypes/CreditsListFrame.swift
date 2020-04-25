@@ -22,10 +22,6 @@ public struct CreditsListFrame: FrameProtocol {
         self.init(layout: .known(KnownFrameLayoutIdentifier.involvedPeopleList), entries: [(role: role, person: creditedPerson)])
     }
 
-    public init(part: MusicianAndPerformerCredits.RawValue, creditedPerson: String) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.involvedPeopleList), entries: [(role: part, person: creditedPerson)])
-    }
-
     public init(role: String, creditedMusician: String) {
         self.init(layout: .known(KnownFrameLayoutIdentifier.musicianCreditsList), entries: [(role: role, person: creditedMusician)])
     }
@@ -66,7 +62,6 @@ public struct CreditsListFrame: FrameProtocol {
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
-//    var identifier: String
     
     // MARK: Decoding
     init(decodingContents contents: Data.SubSequence,

@@ -17,8 +17,11 @@ class SwiftTagger_ID3_Read_Tests: XCTestCase {
    }
     
     func testPrint() throws {
-        var v23Data = try Bundle.mp3V23Data()
-        print(v23Data.extractFirst(20).hexadecimal())
-//        49 44 33 3 0 - 0 - 0 0 1e 3b - 54 49 54 32 - 0 0 - 0 6 0 0
+        let longLyricsFile = Bundle.longLyricsFile
+        let longLyricsMp3File = try Mp3File(location: longLyricsFile)
+        let longLyricsData = longLyricsMp3File.data
+        let frameSizeRange = 1221..<5689
+        print(longLyricsData.subdata(in: frameSizeRange).hexadecimal())
     }
+    
 }

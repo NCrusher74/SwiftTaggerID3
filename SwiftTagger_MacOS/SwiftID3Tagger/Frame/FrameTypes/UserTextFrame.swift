@@ -79,8 +79,6 @@ public struct UserTextFrame: FrameProtocol {
          layout: FrameLayoutIdentifier,
          flags: Data
     ) throws {
-        var parsing = contents
-        let encoding = try UserTextFrame.extractEncoding(data: &parsing, version: version)
         self.flags = flags
         self.layout = layout
         switch layout {
@@ -89,6 +87,8 @@ public struct UserTextFrame: FrameProtocol {
             default: self.frameKey = .userDefinedText(description: descriptionString)
         }
         
+        var parsing = contents
+        let encoding = try UserTextFrame.extractEncoding(data: &parsing, version: version)
         let parsed = try UserTextFrame.extractDescriptionAndContent(from: &parsing, encoding: encoding)
         self.descriptionString = parsed.description ?? ""
         self.contentString = parsed.content

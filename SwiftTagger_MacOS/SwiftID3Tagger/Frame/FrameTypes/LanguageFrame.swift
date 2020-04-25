@@ -47,7 +47,7 @@ public struct LanguageFrame: FrameProtocol {
          layout: FrameLayoutIdentifier,
          flags: Data
     ) throws {
-                self.flags = flags
+        self.flags = flags
         self.layout = layout
         
         var parsing = contents

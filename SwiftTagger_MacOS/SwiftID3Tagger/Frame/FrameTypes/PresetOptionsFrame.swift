@@ -67,7 +67,6 @@ public struct PresetOptionsFrame: FrameProtocol {
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
-//    var identifier: String
     
     
     // MARK: Encode contents for writing
