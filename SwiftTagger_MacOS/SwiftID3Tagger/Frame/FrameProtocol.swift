@@ -56,17 +56,21 @@ extension FrameProtocol {
             case .v2_3, .v2_4: flagsData = data.extractFirst(version.flagsLength)
         }
         // parse content size second
-        let frameSizeData = data.extractFirst(version.sizeDeclarationLength)
-
+        let frameSizeDataUnordered = [UInt8](data.extractFirst(version.sizeDeclarationLength))
+        let frameSizeOrdered = [
+            frameSizeDataUnordered[2],
+            frameSizeDataUnordered[3],
+            frameSizeDataUnordered[0],
+            frameSizeDataUnordered[1]
+        ]
+        let frameSizeData = Data(frameSizeOrdered)
         var frameSize: Int = 0
-        let sizeUInt8 = [UInt8](frameSizeData)
-        let byteOfInterest = sizeUInt8[1]
+        let raw = UInt32(parsing: frameSizeData, .bigEndian)
         switch version {
-            case .v2_2, .v2_3: frameSize = Int(byteOfInterest)
-            case .v2_4: frameSize = Int(byteOfInterest.decodingSynchsafe())
+            case .v2_2, .v2_3: frameSize = Int(raw)
+            case .v2_4: frameSize = Int(raw.decodingSynchsafe())
         }
 
-        #warning("^^^this won't work for long frames like lyrics, as the 'byteOfInterest' should be sizeUInt8[0] and sizeUInt8[1]")
         // parse content last
         let contentDataStart = data.startIndex
         let contentDataRange = contentDataStart ..< contentDataStart + frameSize

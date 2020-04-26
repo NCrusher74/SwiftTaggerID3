@@ -11,16 +11,10 @@ import Foundation
 extension String {
     
     init<S>(ascii: S) throws where S: Sequence, S.Element == UInt8 {
-//        assert(!ascii.contains(where: { $0 > 0x7F }), "Bytes are not ASCII: \(ascii.hexadecimal())")
         let scalars = String.UnicodeScalarView(ascii.lazy.map({ Unicode.Scalar($0) }))
         self = String(scalars)
     }
-    
-    var paddingRemoved: String {
-        return self.trimmingCharacters(
-            in: CharacterSet(charactersIn: "\0"))
-    }
-    
+        
     func encoded(withNullTermination: Bool) -> Data {
         let encoding = StringEncoding.preferred
         guard var result = data(using: encoding.standardLibraryEncoding) else {
