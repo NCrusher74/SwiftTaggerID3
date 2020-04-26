@@ -16,12 +16,12 @@ class SwiftTagger_ID3_Read_Tests: XCTestCase {
         try mp3File.read()
    }
     
-    func testPrint() throws {
-        let longLyricsFile = Bundle.longLyricsFile
-        let longLyricsMp3File = try Mp3File(location: longLyricsFile)
-        let longLyricsData = longLyricsMp3File.data
-        let frameSizeRange = 1221..<5689
-        print(longLyricsData.subdata(in: frameSizeRange).hexadecimal())
-    }
+//    func testPrint() throws {
+//        let longLyricsFile = Bundle.longLyricsFile
+//        let longLyricsMp3File = try Mp3File(location: longLyricsFile)
+//        let longLyricsData = longLyricsMp3File.data
+//        let frameSizeRange = 1221..<5689
+//        print(longLyricsData.subdata(in: frameSizeRange).hexadecimal())
+//    }
     
 }

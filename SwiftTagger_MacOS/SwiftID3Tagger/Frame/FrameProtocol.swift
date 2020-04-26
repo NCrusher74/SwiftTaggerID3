@@ -55,7 +55,6 @@ extension FrameProtocol {
             case .v2_2: flagsData = Data()
             case .v2_3, .v2_4: flagsData = data.extractFirst(version.flagsLength)
         }
-
         // parse content size second
         let frameSizeData = data.extractFirst(version.sizeDeclarationLength)
 
@@ -66,19 +65,17 @@ extension FrameProtocol {
             case .v2_2, .v2_3: frameSize = Int(byteOfInterest)
             case .v2_4: frameSize = Int(byteOfInterest.decodingSynchsafe())
         }
-
         // parse content last
         let contentDataStart = data.startIndex
         let contentDataRange = contentDataStart ..< contentDataStart + frameSize
         let contentData = data.subdata(in: contentDataRange)
-
         try self.init(decodingContents: contentData,
                       version: version,
                       layout: layout,
                       flags: flagsData
         )
         
-        data = data.dropFirst(version.frameHeaderLength + contentData.count)
+        data = data.dropFirst(contentData.count)
         // This line leaves the slice ready for the next frame to read from the beginning.
     }
     

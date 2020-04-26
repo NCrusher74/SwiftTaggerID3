@@ -31,7 +31,7 @@ struct Tag {
             _ = remainder.extractFirst(properties.tagFlagsLength)
             // parse size from tag header
             let tagSizeData = remainder.extractFirst(properties.tagSizeDeclarationLength)
-            let size = try properties.size(data: tagSizeData, version: version)
+            _ = try properties.size(data: tagSizeData, version: version)
         }
         
         var frames: [FrameKey : Frame] = [:]
