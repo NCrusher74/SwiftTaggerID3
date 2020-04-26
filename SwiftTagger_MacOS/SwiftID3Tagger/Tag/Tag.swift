@@ -17,7 +17,7 @@ struct Tag {
         let properties = TagProperties()
         let fileData: Data = file.data
         var remainder: Data.SubSequence = fileData[fileData.startIndex..<fileData.endIndex]
-
+        var tagSize: Data.Index = 0
         var version: Version = .v2_4
         // validate file
         if file.location.fileExtension.lowercased() != "mp3" {
@@ -31,13 +31,16 @@ struct Tag {
             _ = remainder.extractFirst(properties.tagFlagsLength)
             // parse size from tag header
             let tagSizeData = remainder.extractFirst(properties.tagSizeDeclarationLength)
-            _ = try properties.size(data: tagSizeData, version: version)
+            tagSize = try properties.size(data: tagSizeData, version: version)
         }
-        
+
+        let tagDataRange = remainder.startIndex ..< remainder.startIndex + tagSize
+        remainder = remainder.subdata(in: tagDataRange)
         var frames: [FrameKey : Frame] = [:]
         while !remainder.isEmpty {
             let identifierBytes = remainder.extractFirst(version.identifierLength)
             let identifier = try String(ascii: identifierBytes)
+            print(identifier)
             let frame = try Frame(
                 identifier: identifier,
                 data: &remainder,
@@ -45,6 +48,7 @@ struct Tag {
 
             let frameKey = frame.frameKey
             frames = [frameKey : frame]
+            print(frames)
         }
         self.frames = frames
     }
