@@ -31,13 +31,15 @@ struct Tag {
             _ = remainder.extractFirst(properties.tagFlagsLength)
             // parse size from tag header
             let tagSizeData = remainder.extractFirst(properties.tagSizeDeclarationLength)
-            tagSize = try properties.size(data: tagSizeData, version: version)
+            tagSize = try properties.size(data: tagSizeData)
+            print(tagSize)
         }
 
         let tagDataRange = remainder.startIndex ..< remainder.startIndex + tagSize
         remainder = remainder.subdata(in: tagDataRange)
         var frames: [FrameKey : Frame] = [:]
         while !remainder.isEmpty {
+            print(remainder.count)
             let identifierBytes = remainder.extractFirst(version.identifierLength)
             let identifier = try String(ascii: identifierBytes)
             print(identifier)
@@ -48,7 +50,6 @@ struct Tag {
 
             let frameKey = frame.frameKey
             frames = [frameKey : frame]
-            print(frames)
         }
         self.frames = frames
     }

@@ -23,13 +23,10 @@ struct TagProperties {
     }
     
     /// the size of the ID3 tag
-    func size(data: Data, version: Version) throws -> Int {
-        let sizeUInt8 = [UInt8](data)
-        let sizeUInt32 = sizeUInt8.reduce(0) { soFar, byte in
-            return soFar << 8 | UInt32(byte)
-        }
-        let sizeInt = Int(sizeUInt32)
-        return sizeInt
+    func size(data: Data) throws -> Int {
+        let tagSize = (data as NSData).bytes.assumingMemoryBound(to: UInt32.self).pointee.bigEndian
+        let decodedTagSize = tagSize.decodingSynchsafe()
+        return Int(decodedTagSize)
     }
 }
 

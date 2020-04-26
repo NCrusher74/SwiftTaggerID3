@@ -65,6 +65,8 @@ extension FrameProtocol {
             case .v2_2, .v2_3: frameSize = Int(byteOfInterest)
             case .v2_4: frameSize = Int(byteOfInterest.decodingSynchsafe())
         }
+
+        #warning("^^^this won't work for long frames like lyrics, as the 'byteOfInterest' should be sizeUInt8[0] and sizeUInt8[1]")
         // parse content last
         let contentDataStart = data.startIndex
         let contentDataRange = contentDataStart ..< contentDataStart + frameSize
