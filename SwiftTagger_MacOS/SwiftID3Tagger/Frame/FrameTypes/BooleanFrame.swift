@@ -14,7 +14,7 @@ import Foundation
 public struct BooleanFrame: FrameProtocol {
     
     public init(value: Bool) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.compilation), value: value)
+        self.init(layout: .known(.compilation), value: value)
     }
     
     var value: Bool

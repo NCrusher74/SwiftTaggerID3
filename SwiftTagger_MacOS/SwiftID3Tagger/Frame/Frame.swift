@@ -18,8 +18,8 @@ public enum Frame {
     case languageFrame(LanguageFrame)
     case creditsListFrame(CreditsListFrame)
     case integerFrame(IntegerFrame)
-//    case date(DateFrame)
-//    case image(ImageFrame)
+    case dateFrame(DateFrame)
+    //    case image(ImageFrame)
     case booleanFrame(BooleanFrame)
     case presetOptionsFrame(PresetOptionsFrame)
     case urlFrame(URLFrame)
@@ -31,84 +31,87 @@ public enum Frame {
          data: inout Data.SubSequence,
          version: Version) throws {
         let layout = FrameLayoutIdentifier(identifier: identifier)
-//        print(layout) - known(SwiftTagger_MacOS.KnownFrameLayoutIdentifier.title) (checks)
+        //        print(layout) - known(SwiftTagger_MacOS.title) (checks)
         switch layout {
-            //            case .known(KnownFrameLayoutIdentifier.attachedPicture):
+            //            case .known(.attachedPicture):
             //                self = .image(try ImageFrame)
-            //            case .known(KnownFrameLayoutIdentifier.chapter):
+            //            case .known(.chapter):
             //                self = .chapter(try ChapterFrame)
-            //            case .known(KnownFrameLayoutIdentifier.tableOfContents):
+            //            case .known(.tableOfContents):
             //                self = .toc(try TableOfContentsFrame)
-            case .known(KnownFrameLayoutIdentifier.compilation):
+            case .known(.compilation):
                 self = .booleanFrame(try BooleanFrame(
                     decodingFromStartOf: &data,
                     version: version,
                     layout: layout))
-            case .known(KnownFrameLayoutIdentifier.genre),
-                 .known(KnownFrameLayoutIdentifier.mediaType):
+            case .known(.genre),
+                 .known(.mediaType):
                 self = .presetOptionsFrame(try PresetOptionsFrame(
                     decodingFromStartOf: &data,
                     version: version,
                     layout: layout))
-            case .known(KnownFrameLayoutIdentifier.languages):
+            case .known(.languages):
                 self = .languageFrame(try LanguageFrame(
                     decodingFromStartOf: &data,
                     version: version,
                     layout: layout))
-            case .known(KnownFrameLayoutIdentifier.comments),
-                 .known(KnownFrameLayoutIdentifier.unsynchronizedLyrics):
+            case .known(.comments),
+                 .known(.unsynchronizedLyrics):
                 self = .localizedFrame(try LocalizedFrame(
                     decodingFromStartOf: &data,
                     version: version,
                     layout: layout))
-            case .known(KnownFrameLayoutIdentifier.discNumber),
-                 .known(KnownFrameLayoutIdentifier.trackNumber):
+            case .known(.discNumber),
+                 .known(.trackNumber):
                 self = .partOfTotalFrame(try PartOfTotalFrame(
                     decodingFromStartOf: &data,
                     version: version,
                     layout: layout))
-            case .known(KnownFrameLayoutIdentifier.involvedPeopleList),
-                 .known(KnownFrameLayoutIdentifier.musicianCreditsList):
+            case .known(.involvedPeopleList),
+                 .known(.musicianCreditsList):
                 self = .creditsListFrame(try CreditsListFrame(
                     decodingFromStartOf: &data,
                     version: version,
                     layout: layout))
-            case .known(KnownFrameLayoutIdentifier.userDefinedText),
-                 .known(KnownFrameLayoutIdentifier.userDefinedWebpage):
+            case .known(.userDefinedText),
+                 .known(.userDefinedWebpage):
                 self = .userTextFrame(try UserTextFrame(
                     decodingFromStartOf: &data,
                     version: version,
                     layout: layout))
-            case .known(KnownFrameLayoutIdentifier.bpm),
-                 .known(KnownFrameLayoutIdentifier.isrc),
-                 .known(KnownFrameLayoutIdentifier.length),
-                 .known(KnownFrameLayoutIdentifier.movementCount),
-                 .known(KnownFrameLayoutIdentifier.movementNumber),
-                 .known(KnownFrameLayoutIdentifier.playlistDelay):
+            case .known(.bpm),
+                 .known(.isrc),
+                 .known(.length),
+                 .known(.movementCount),
+                 .known(.movementNumber),
+                 .known(.playlistDelay):
                 self = .integerFrame(try IntegerFrame(
                     decodingFromStartOf: &data,
                     version: version,
                     layout: layout))
-            case .known(KnownFrameLayoutIdentifier.artistWebpage),
-                 .known(KnownFrameLayoutIdentifier.audioFileWebpage),
-                 .known(KnownFrameLayoutIdentifier.audioSourceWebpage),
-                 .known(KnownFrameLayoutIdentifier.copyrightWebpage),
-                 .known(KnownFrameLayoutIdentifier.paymentWebpage),
-                 .known(KnownFrameLayoutIdentifier.publisherWebpage),
-                 .known(KnownFrameLayoutIdentifier.radioStationWebpage):
+            case .known(.artistWebpage),
+                 .known(.audioFileWebpage),
+                 .known(.audioSourceWebpage),
+                 .known(.copyrightWebpage),
+                 .known(.paymentWebpage),
+                 .known(.publisherWebpage),
+                 .known(.radioStationWebpage):
                 self = .urlFrame(try URLFrame(
                     decodingFromStartOf: &data,
                     version: version,
                     layout: layout))
-            //            case .known(KnownFrameLayoutIdentifier.date),
-            //                 .known(KnownFrameLayoutIdentifier.encodingTime),
-            //                 .known(KnownFrameLayoutIdentifier.originalReleaseTime),
-            //                 .known(KnownFrameLayoutIdentifier.recordingDate),
-            //                 .known(KnownFrameLayoutIdentifier.releaseTime),
-            //                 .known(KnownFrameLayoutIdentifier.taggingTime),
-            //                 .known(KnownFrameLayoutIdentifier.time),
-            //                 .known(KnownFrameLayoutIdentifier.year):
-            //                self = .date(try DataFrame)
+            case .known(.date),
+                 .known(.encodingTime),
+                 .known(.originalReleaseTime),
+                 .known(.recordingDate),
+                 .known(.releaseTime),
+                 .known(.taggingTime),
+                 .known(.time),
+                 .known(.year):
+                self = .dateFrame(try DateFrame(
+                    decodingFromStartOf: &data,
+                    version: version,
+                    layout: layout))
             case .unknown(identifier):
                 self = .unknownFrame(try UnknownFrame(
                     decodingFromStartOf: &data,
@@ -146,6 +149,8 @@ public enum Frame {
                 return urlFrame.frameKey
             case .unknownFrame(let unknownFrame):
                 return unknownFrame.frameKey
+            case .dateFrame(let dateFrame):
+                return dateFrame.frameKey
         }
     }
 }

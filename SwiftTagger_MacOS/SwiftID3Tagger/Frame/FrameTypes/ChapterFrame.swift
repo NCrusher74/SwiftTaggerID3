@@ -75,7 +75,7 @@ public struct ChapterFrame: FrameProtocol {
     init(startTime: Int,
          endTime: Int,
          embeddedSubframes: [FrameKey: Frame]) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.chapter),
+        self.init(layout: .known(.chapter),
                   elementID: elementID,
                   startTime: startTime,
                   endTime: endTime,

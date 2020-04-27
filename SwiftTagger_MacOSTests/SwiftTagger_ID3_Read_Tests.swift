@@ -11,16 +11,14 @@ import SwiftTagger_MacOS
 
 class SwiftTagger_ID3_Read_Tests: XCTestCase {
 
-    func testRead() throws {
-        let mp3File = try Bundle.mp3V22()
-        print(try mp3File.read())
-   }
-    
-    func testPrint() throws {
-        let mp3File = try Bundle.mp3V22()
-        let mp3Data = mp3File.data
-        let frameSizeRange = 10..<31
-        print(mp3Data.subdata(in: frameSizeRange).hexadecimal())
+    func testReadV23() throws {
+        let mp3File = try Bundle.mp3V23()
+        let tag = try mp3File.read()
+
+        XCTAssertEqual(tag.frames.count, 56) // ??
+        let frames = tag.frames
+        print(frames[.album])
     }
+    
     
 }

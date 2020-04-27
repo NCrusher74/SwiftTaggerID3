@@ -17,56 +17,56 @@ public struct LocalizedFrame: FrameProtocol {
     
     // public initializers
     public init(language: String?, description: String?, lyrics: String) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.unsynchronizedLyrics),
+        self.init(layout: .known(.unsynchronizedLyrics),
                   languageString: language ?? "und",
                   descriptionString: description ?? "",
                   contentString: lyrics)
     }
 
     public init(language: String?, description: String?, comments: String) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.comments),
+        self.init(layout: .known(.comments),
                   languageString: language ?? "und",
                   descriptionString: description ?? "",
                   contentString: comments)
     }
 
     public init(language: String?, contentDescription: String) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.comments),
+        self.init(layout: .known(.comments),
                   languageString: language ?? "und",
                   descriptionString: "Description",
                   contentString: contentDescription)
     }
 
     public init(language: String?, linerNotes: String) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.comments),
+        self.init(layout: .known(.comments),
                   languageString: language ?? "und",
                   descriptionString: "Liner Notes",
                   contentString: linerNotes)
     }
 
     public init(language: String?, shortDescription: String) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.comments),
+        self.init(layout: .known(.comments),
                   languageString: language ?? "und",
                   descriptionString: "Short Description",
                   contentString: shortDescription)
     }
 
     public init(language: String?, longDescription: String) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.comments),
+        self.init(layout: .known(.comments),
                   languageString: language ?? "und",
                   descriptionString: "Long Description",
                   contentString: longDescription)
     }
 
     public init(language: String?, songDescription: String) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.comments),
+        self.init(layout: .known(.comments),
                   languageString: language ?? "und",
                   descriptionString: "Song Description",
                   contentString: songDescription)
     }
 
     public init(language: String?, seriesDescription: String) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.comments),
+        self.init(layout: .known(.comments),
                   languageString: language ?? "und",
                   descriptionString: "Series Description",
                   contentString: seriesDescription)

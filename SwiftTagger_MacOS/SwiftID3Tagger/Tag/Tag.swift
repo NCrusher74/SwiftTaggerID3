@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Tag {
+public struct Tag {
     
     public var frames: [FrameKey : Frame]
     
@@ -20,7 +20,7 @@ struct Tag {
         var tagSize: Data.Index = 0
         var version: Version = .v2_4
         // validate file
-        if file.location.fileExtension.lowercased() != "mp3" {
+        if file.location.pathExtension.lowercased() != "mp3" {
             throw Mp3File.Error.InvalidFileFormat
         } else {
             // parse version from tag header

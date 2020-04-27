@@ -14,11 +14,11 @@ import Foundation
 public struct PartOfTotalFrame: FrameProtocol {
     
     public init(disc: Int, totalDiscs: Int?) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.discNumber), part: disc, total: totalDiscs)
+        self.init(layout: .known(.discNumber), part: disc, total: totalDiscs)
     }
     
     public init(track: Int, totalTracks: Int?) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.trackNumber), part: track, total: totalTracks)
+        self.init(layout: .known(.trackNumber), part: track, total: totalTracks)
     }
 
     /// The index of the track/disc.

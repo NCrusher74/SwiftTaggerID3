@@ -14,7 +14,7 @@ extension String {
         let scalars = String.UnicodeScalarView(ascii.lazy.map({ Unicode.Scalar($0) }))
         self = String(scalars)
     }
-        
+    
     func encoded(withNullTermination: Bool) -> Data {
         let encoding = StringEncoding.preferred
         guard var result = data(using: encoding.standardLibraryEncoding) else {
@@ -30,6 +30,6 @@ extension String {
         // UTF‐8 is a superset of ASCII.
         return Data(utf8)
     }
-
-
+    
+    
 }

@@ -27,12 +27,12 @@ public struct IntegerFrame: FrameProtocol {
         self.flags = IntegerFrame.defaultFlags
         self.layout = layout
         switch layout {
-            case .known(KnownFrameLayoutIdentifier.bpm): self.frameKey = .bpm
-            case .known(KnownFrameLayoutIdentifier.isrc): self.frameKey = .isrc
-            case .known(KnownFrameLayoutIdentifier.length): self.frameKey = .length
-            case .known(KnownFrameLayoutIdentifier.movementCount): self.frameKey = .movementCount
-            case .known(KnownFrameLayoutIdentifier.movementNumber): self.frameKey = .movementNumber
-            case .known(KnownFrameLayoutIdentifier.playlistDelay): self.frameKey = .playlistDelay
+            case .known(.bpm): self.frameKey = .bpm
+            case .known(.isrc): self.frameKey = .isrc
+            case .known(.length): self.frameKey = .length
+            case .known(.movementCount): self.frameKey = .movementCount
+            case .known(.movementNumber): self.frameKey = .movementNumber
+            case .known(.playlistDelay): self.frameKey = .playlistDelay
             default: self.frameKey = .userDefinedText(description: "")
         }
     }
@@ -55,41 +55,42 @@ public struct IntegerFrame: FrameProtocol {
         self.flags = flags
         self.layout = layout
         switch layout {
-            case .known(KnownFrameLayoutIdentifier.bpm): self.frameKey = .bpm
-            case .known(KnownFrameLayoutIdentifier.isrc): self.frameKey = .isrc
-            case .known(KnownFrameLayoutIdentifier.length): self.frameKey = .length
-            case .known(KnownFrameLayoutIdentifier.movementCount): self.frameKey = .movementCount
-            case .known(KnownFrameLayoutIdentifier.movementNumber): self.frameKey = .movementNumber
-            case .known(KnownFrameLayoutIdentifier.playlistDelay): self.frameKey = .playlistDelay
+            case .known(.bpm): self.frameKey = .bpm
+            case .known(.isrc): self.frameKey = .isrc
+            case .known(.length): self.frameKey = .length
+            case .known(.movementCount): self.frameKey = .movementCount
+            case .known(.movementNumber): self.frameKey = .movementNumber
+            case .known(.playlistDelay): self.frameKey = .playlistDelay
             default: self.frameKey = .userDefinedText(description: "")
         }
         var parsing = contents
         let encoding = try IntegerFrame.extractEncoding(data: &parsing, version: version)
-        self.value = Int(parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? "") ?? 0
+        self.value = Int(
+            parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? "") ?? 0
     }
         
     // MARK: Public initializers
     public init(bpm: Int) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.bpm), value: bpm)
+        self.init(layout: .known(.bpm), value: bpm)
     }
 
     public init(isrc: Int) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.isrc), value: isrc)
+        self.init(layout: .known(.isrc), value: isrc)
     }
     
     public init(length: Int) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.length), value: length)
+        self.init(layout: .known(.length), value: length)
     }
     
     public init(movementNumber: Int) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.movementNumber), value: movementNumber)
+        self.init(layout: .known(.movementNumber), value: movementNumber)
     }
     
     public init(totalMovements: Int) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.movementCount), value: totalMovements)
+        self.init(layout: .known(.movementCount), value: totalMovements)
     }
     
     public init(playlistDelay: Int) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.playlistDelay), value: playlistDelay)
+        self.init(layout: .known(.playlistDelay), value: playlistDelay)
     }
 }

@@ -82,7 +82,7 @@ public struct ImageFrame: FrameProtocol {
     init(imageType: ImageType,
          imageDescription: String?,
          image: Data){
-        self.init(layout: .known(KnownFrameLayoutIdentifier.attachedPicture),
+        self.init(layout: .known(.attachedPicture),
                   imageType: imageType,
                   imageDescription: imageDescription,
                   image: image)

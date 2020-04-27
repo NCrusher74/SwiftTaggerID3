@@ -87,7 +87,7 @@ public struct TableOfContentsFrame: FrameProtocol {
          entryCount: UInt8,
          childElementIDs: [String],
          embeddedSubFrames: [FrameKey: Frame]) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.tableOfContents),
+        self.init(layout: .known(.tableOfContents),
                   elementID: elementID,
                   topLevelFlag: topLevelFlag,
                   orderedFlag: orderedFlag,

@@ -29,10 +29,10 @@ public struct Mp3File {
         }
     }
 
-    public func read() throws -> [FrameKey : Frame] {
-        let tag = try Tag(readFrom: self)
-        return tag.frames
+    public func read() throws -> Tag {
+       return try Tag(readFrom: self)
     }
+    
     
 //    public func write(from sourceAudio: Mp3File, to outputLocation: URL) throws {
 //    }

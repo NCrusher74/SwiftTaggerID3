@@ -12,31 +12,31 @@ public struct UserTextFrame: FrameProtocol {
    
     // public initializers
     public init(description: String, content: String) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.userDefinedText),
+        self.init(layout: .known(.userDefinedText),
                   descriptionString: description,
                   contentString: content)
     }
 
     public init(acknowledgmentsContent: String) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.userDefinedText),
+        self.init(layout: .known(.userDefinedText),
                   descriptionString: "Acknowledgments",
                   contentString: acknowledgmentsContent)
     }
 
     public init(thanksContent: String) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.userDefinedText),
+        self.init(layout: .known(.userDefinedText),
                   descriptionString: "Thanks",
                   contentString: thanksContent)
     }
 
     public init(sourceCreditContent: String) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.userDefinedText),
+        self.init(layout: .known(.userDefinedText),
                   descriptionString: "Source Credit",
                   contentString: sourceCreditContent)
     }
 
     public init(description: String, webpage: String) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.userDefinedWebpage),
+        self.init(layout: .known(.userDefinedWebpage),
                   descriptionString: description,
                   contentString: webpage)
     }

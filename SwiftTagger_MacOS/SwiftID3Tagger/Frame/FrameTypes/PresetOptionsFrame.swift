@@ -20,7 +20,7 @@ public struct PresetOptionsFrame: FrameProtocol {
     // initializer for Genre Frame
     public init(genreName: GenreType.RawValue?,
                 genreDescription: String?) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.genre),
+        self.init(layout: .known(.genre),
                   presetName: genreName ?? "",
                   presetRefinement: nil,
                   refinementDescription: genreDescription)
@@ -29,7 +29,7 @@ public struct PresetOptionsFrame: FrameProtocol {
     public init(mediaType: MediaType.RawValue?,
                 additionalMediaInfo: String?,
                 mediaTypeDescription: String?) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.mediaType),
+        self.init(layout: .known(.mediaType),
                   presetName: mediaType,
                   presetRefinement: additionalMediaInfo,
                   refinementDescription: mediaTypeDescription)
@@ -167,7 +167,7 @@ public struct PresetOptionsFrame: FrameProtocol {
             }
             
             for parsedComponent in parsedArray {
-                if layout == .known(KnownFrameLayoutIdentifier.genre) {
+                if layout == .known(.genre) {
                     var genreType: GenreType = .none
                     
                     // check to see if the component is one of the genre "special cases"
@@ -188,7 +188,7 @@ public struct PresetOptionsFrame: FrameProtocol {
                     }
                     self.presetName = genreType.rawValue
                     
-                } else if layout == .known(KnownFrameLayoutIdentifier.mediaType) {
+                } else if layout == .known(.mediaType) {
                     
                     // check to see if it's a preset refinement string
                     // only preset refinement strings should start with "/"

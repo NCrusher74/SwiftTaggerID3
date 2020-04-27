@@ -15,19 +15,19 @@ public struct CreditsListFrame: FrameProtocol {
  
     // public initializers
     public init(role: String, involvedPerson: String) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.involvedPeopleList), entries: [(role: role, person: involvedPerson)])
+        self.init(layout: .known(.involvedPeopleList), entries: [(role: role, person: involvedPerson)])
     }
     
     public init(role: InvolvedPersonCredits.RawValue, creditedPerson: String) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.involvedPeopleList), entries: [(role: role, person: creditedPerson)])
+        self.init(layout: .known(.involvedPeopleList), entries: [(role: role, person: creditedPerson)])
     }
 
     public init(role: String, creditedMusician: String) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.musicianCreditsList), entries: [(role: role, person: creditedMusician)])
+        self.init(layout: .known(.musicianCreditsList), entries: [(role: role, person: creditedMusician)])
     }
     
     public init(role: MusicianAndPerformerCredits.RawValue, creditedPerformer: String) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.musicianCreditsList), entries: [(role: role, person: creditedPerformer)])
+        self.init(layout: .known(.musicianCreditsList), entries: [(role: role, person: creditedPerformer)])
     }
 
     /// An array of the role:person tuples

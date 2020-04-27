@@ -16,7 +16,7 @@ import Foundation
 public struct LanguageFrame: FrameProtocol {
     
     public init(language: ISO6392Codes.RawValue) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.languages), languageString: language)
+        self.init(layout: .known(.languages), languageString: language)
     }
 
     /// ISO-639-2 languge code

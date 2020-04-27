@@ -1,10 +1,12 @@
 //
-//  CollectionExtension.swift
+//  Collection.swift
 //  SwiftTagger_MacOS
 //
-//  Created by Nolaine Crusher on 4/9/20.
+//  Created by Nolaine Crusher on 4/27/20.
 //  Copyright © 2020 Nolaine Crusher. All rights reserved.
 //
+
+import Foundation
 
 extension Collection {
     func pairs() -> [(Element, Element?)] {

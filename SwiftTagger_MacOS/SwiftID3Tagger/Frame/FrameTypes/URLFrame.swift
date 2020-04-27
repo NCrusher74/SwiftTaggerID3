@@ -23,18 +23,18 @@ public struct URLFrame: FrameProtocol {
         self.flags = URLFrame.defaultFlags
         self.layout = layout
         switch self.layout {
-            case .known(KnownFrameLayoutIdentifier.artistWebpage):
+            case .known(.artistWebpage):
                 self.frameKey = .artistWebpage
-            case .known(KnownFrameLayoutIdentifier.audioFileWebpage):
+            case .known(.audioFileWebpage):
                 self.frameKey = .audioFileWebpage
-            case .known(KnownFrameLayoutIdentifier.audioSourceWebpage):
+            case .known(.audioSourceWebpage):
                 self.frameKey = .audioSourceWebpage
-            case .known(KnownFrameLayoutIdentifier.copyrightWebpage):
+            case .known(.copyrightWebpage):
                 self.frameKey = .copyrightWebpage
-            case .known(KnownFrameLayoutIdentifier.paymentWebpage): self.frameKey = .paymentWebpage
-            case .known(KnownFrameLayoutIdentifier.publisherWebpage):
+            case .known(.paymentWebpage): self.frameKey = .paymentWebpage
+            case .known(.publisherWebpage):
                 self.frameKey = .publisherWebpage
-            case .known(KnownFrameLayoutIdentifier.radioStationWebpage):
+            case .known(.radioStationWebpage):
                 self.frameKey = .radioStationWebpage
             default: self.frameKey = .userDefinedWebpage(description: "")
         }
@@ -59,18 +59,18 @@ public struct URLFrame: FrameProtocol {
         self.flags = flags
         self.layout = layout
         switch self.layout {
-            case .known(KnownFrameLayoutIdentifier.artistWebpage):
+            case .known(.artistWebpage):
                 self.frameKey = .artistWebpage
-            case .known(KnownFrameLayoutIdentifier.audioFileWebpage):
+            case .known(.audioFileWebpage):
                 self.frameKey = .audioFileWebpage
-            case .known(KnownFrameLayoutIdentifier.audioSourceWebpage):
+            case .known(.audioSourceWebpage):
                 self.frameKey = .audioSourceWebpage
-            case .known(KnownFrameLayoutIdentifier.copyrightWebpage):
+            case .known(.copyrightWebpage):
                 self.frameKey = .copyrightWebpage
-            case .known(KnownFrameLayoutIdentifier.paymentWebpage): self.frameKey = .paymentWebpage
-            case .known(KnownFrameLayoutIdentifier.publisherWebpage):
+            case .known(.paymentWebpage): self.frameKey = .paymentWebpage
+            case .known(.publisherWebpage):
                 self.frameKey = .publisherWebpage
-            case .known(KnownFrameLayoutIdentifier.radioStationWebpage):
+            case .known(.radioStationWebpage):
                 self.frameKey = .radioStationWebpage
             default: self.frameKey = .userDefinedWebpage(description: "")
         }
@@ -79,31 +79,31 @@ public struct URLFrame: FrameProtocol {
     
     // MARK: Public initializers
     public init(artistWebsiteUrl: String) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.artistWebpage), urlString: artistWebsiteUrl)
+        self.init(layout: .known(.artistWebpage), urlString: artistWebsiteUrl)
     }
 
     public init(officialAudioFileWebsiteUrl: String) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.audioFileWebpage), urlString: officialAudioFileWebsiteUrl)
+        self.init(layout: .known(.audioFileWebpage), urlString: officialAudioFileWebsiteUrl)
     }
 
     public init(officialAudioSourceWebsiteUrl: String) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.audioSourceWebpage), urlString: officialAudioSourceWebsiteUrl)
+        self.init(layout: .known(.audioSourceWebpage), urlString: officialAudioSourceWebsiteUrl)
     }
 
     public init(copyrightWebsiteUrl: String) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.copyrightWebpage), urlString: copyrightWebsiteUrl)
+        self.init(layout: .known(.copyrightWebpage), urlString: copyrightWebsiteUrl)
     }
 
     public init(paymentWebsiteUrl: String) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.paymentWebpage), urlString: paymentWebsiteUrl)
+        self.init(layout: .known(.paymentWebpage), urlString: paymentWebsiteUrl)
     }
     
     public init(publisherWebsiteUrl: String) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.publisherWebpage), urlString: publisherWebsiteUrl)
+        self.init(layout: .known(.publisherWebpage), urlString: publisherWebsiteUrl)
     }
 
     public init(internetRadioStationWebsiteUrl: String) {
-        self.init(layout: .known(KnownFrameLayoutIdentifier.radioStationWebpage), urlString: internetRadioStationWebsiteUrl)
+        self.init(layout: .known(.radioStationWebpage), urlString: internetRadioStationWebsiteUrl)
     }
 
 }
