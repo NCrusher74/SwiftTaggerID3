@@ -57,12 +57,16 @@ extension FrameProtocol {
         }
         // parse content size second
         let frameSizeDataUnordered = [UInt8](data.extractFirst(version.sizeDeclarationLength))
-        let frameSizeOrdered = [
-            frameSizeDataUnordered[2],
-            frameSizeDataUnordered[3],
-            frameSizeDataUnordered[0],
-            frameSizeDataUnordered[1]
-        ]
+        var frameSizeOrdered: [UInt8] = []
+        if version == .v2_3 || version == .v2_4 {
+            frameSizeOrdered = [
+                frameSizeDataUnordered[2],
+                frameSizeDataUnordered[3],
+                frameSizeDataUnordered[0],
+                frameSizeDataUnordered[1]
+            ]} else {
+            frameSizeOrdered = frameSizeDataUnordered
+        }
         let frameSizeData = Data(frameSizeOrdered)
         var frameSize: Int = 0
         let raw = UInt32(parsing: frameSizeData, .bigEndian)
@@ -70,7 +74,7 @@ extension FrameProtocol {
             case .v2_2, .v2_3: frameSize = Int(raw)
             case .v2_4: frameSize = Int(raw.decodingSynchsafe())
         }
-
+        
         // parse content last
         let contentDataStart = data.startIndex
         let contentDataRange = contentDataStart ..< contentDataStart + frameSize
@@ -113,7 +117,7 @@ extension FrameProtocol {
     }
     
     static func extractEncoding(data: inout Data.SubSequence, version: Version) throws -> StringEncoding {
-//        let encodingByteOffset = version.encodingByteOffset
+        //        let encodingByteOffset = version.encodingByteOffset
         let encodingData = data.extractFirst(1)
         let encodingByteArray = [UInt8](encodingData)
         let encodingByte = encodingByteArray.first ?? 0x00

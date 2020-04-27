@@ -29,7 +29,7 @@ public struct Mp3File {
         }
     }
 
-    public func read() throws -> [FrameKey : Frame]{
+    public func read() throws -> [FrameKey : Frame] {
         let tag = try Tag(readFrom: self)
         return tag.frames
     }

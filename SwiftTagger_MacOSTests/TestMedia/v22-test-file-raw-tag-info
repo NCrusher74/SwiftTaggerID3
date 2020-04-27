@@ -3,16 +3,17 @@ File = /Users/nolainecrusher/Downloads/audiobook_tools/sampleaax/test/mp3-v22-wi
 
 Raw Data:
 
-File size: 475399
+File size: 84188
 Format: MPEG-1, Layer 3
+File contains Info header at offset 3105
 Channel mode: Stereo
 Sample rate: 44100 Hz
-Duration: 11807 ms
-Bit rate: 320 kbits/sec
+Duration: 5041 ms
+Bit rate: 129 kbits/sec
 ID3 Tag version 2.2.0
 Tag at offset: 0 size = 3105
 Padding: 2048 bytes
-Audio base: 3105 size = 472294
+Audio base: 3105 size = 81083
 
 00000010 00000031 00000021 (0000T1) TALB
 00000031 00000064 00000033 (0000T1) TPE2

@@ -40,11 +40,9 @@ struct Tag {
 
         var frames: [FrameKey : Frame] = [:]
         while !remainder.isEmpty  {
-            print(remainder.count)
             let identifierBytes = remainder.extractFirst(version.identifierLength)
             if identifierBytes.first == 0x00 { break } // Padding, not a frame.
             let identifier = try String(ascii: identifierBytes)
-            print(identifier)
             let frame = try Frame(
                 identifier: identifier,
                 data: &remainder,
