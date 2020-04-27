@@ -51,7 +51,7 @@ struct Tag {
                 version: version)
 
             let frameKey = frame.frameKey
-            frames = [frameKey : frame]
+            frames[frameKey] = frame
         }
         self.frames = frames
     }

@@ -19,7 +19,7 @@ class SwiftTagger_ID3_Read_Tests: XCTestCase {
     func testPrint() throws {
         let mp3File = try Bundle.mp3V23()
         let mp3Data = mp3File.data
-        let frameSizeRange = 1558..<3909
+        let frameSizeRange = 824..<839
         print(mp3Data.subdata(in: frameSizeRange).hexadecimal())
     }
     
