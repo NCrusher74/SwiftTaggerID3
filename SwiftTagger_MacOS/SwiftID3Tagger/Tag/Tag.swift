@@ -54,3 +54,1047 @@ public struct Tag {
         self.frames = frames
     }
 }
+
+public extension Tag {
+    
+    var album: String? {
+        get {
+            if let frame = self.frames[.album],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(album: newValue ?? "")
+            frames[.album] = .stringFrame(frame)
+        }
+    }
+    
+    var albumArtist: String? {
+        get {
+            if let frame = self.frames[.albumArtist],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(albumArtist: newValue ?? "")
+            frames[.albumArtist] = .stringFrame(frame)
+        }
+    }
+    
+    var albumSort: String? {
+        get {
+            if let frame = self.frames[.albumSort],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(albumSort: newValue ?? "")
+            frames[.albumSort] = .stringFrame(frame)
+        }
+    }
+
+    var albumArtistSort: String? {
+        get {
+            if let frame = self.frames[.albumArtistSort],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(albumArtistSort: newValue ?? "")
+            frames[.albumArtistSort] = .stringFrame(frame)
+        }
+    }
+
+    var arranger: String? {
+        get {
+            if let frame = self.frames[.arranger],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(arranger: newValue ?? "")
+            frames[.arranger] = .stringFrame(frame)
+        }
+    }
+
+    var remixer: String? {
+        get {
+            if let frame = self.frames[.remixer],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(remixer: newValue ?? "")
+            frames[.remixer] = .stringFrame(frame)
+        }
+    }
+
+    var interpretedBy: String? {
+        get {
+            if let frame = self.frames[.interpretedBy],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(interpretedBy: newValue ?? "")
+            frames[.interpretedBy] = .stringFrame(frame)
+        }
+    }
+
+    var artist: String? {
+        get {
+            if let frame = self.frames[.artist],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(artist: newValue ?? "")
+            frames[.artist] = .stringFrame(frame)
+        }
+    }
+    
+    var artistSort: String? {
+        get {
+            if let frame = self.frames[.artistSort],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(artistSort: newValue ?? "")
+            frames[.artistSort] = .stringFrame(frame)
+        }
+    }
+
+    var author: String? {
+        get {
+            if let frame = self.frames[.author],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(author: newValue ?? "")
+            frames[.author] = .stringFrame(frame)
+        }
+    }
+    
+    var authorSort: String? {
+        get {
+            if let frame = self.frames[.authorSort],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(authorSort: newValue ?? "")
+            frames[.authorSort] = .stringFrame(frame)
+        }
+    }
+    
+    var composer: String? {
+        get {
+            if let frame = self.frames[.composer],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(composer: newValue ?? "")
+            frames[.composer] = .stringFrame(frame)
+        }
+    }
+
+    var composerSort: String? {
+        get {
+            if let frame = self.frames[.composerSort],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(composerSort: newValue ?? "")
+            frames[.composerSort] = .stringFrame(frame)
+        }
+    }
+
+    var narrator: String? {
+        get {
+            if let frame = self.frames[.narrator],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(narrator: newValue ?? "")
+            frames[.narrator] = .stringFrame(frame)
+        }
+    }
+    
+    var narratorSort: String? {
+        get {
+            if let frame = self.frames[.narratorSort],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(narratorSort: newValue ?? "")
+            frames[.narratorSort] = .stringFrame(frame)
+        }
+    }
+
+    var conductor: String? {
+        get {
+            if let frame = self.frames[.conductor],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(conductor: newValue ?? "")
+            frames[.conductor] = .stringFrame(frame)
+        }
+    }
+    
+    var contentGroup: String? {
+        get {
+            if let frame = self.frames[.contentGroup],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(contentGroup: newValue ?? "")
+            frames[.contentGroup] = .stringFrame(frame)
+        }
+    }
+
+    var work: String? {
+        get {
+            if let frame = self.frames[.work],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(work: newValue ?? "")
+            frames[.work] = .stringFrame(frame)
+        }
+    }
+
+    var copyright: String? {
+        get {
+            if let frame = self.frames[.copyright],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(copyright: newValue ?? "")
+            frames[.copyright] = .stringFrame(frame)
+        }
+    }
+
+    var encodedBy: String? {
+        get {
+            if let frame = self.frames[.encodedBy],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(encodedBy: newValue ?? "")
+            frames[.encodedBy] = .stringFrame(frame)
+        }
+    }
+
+    var encodingSettings: String? {
+        get {
+            if let frame = self.frames[.encodingSettings],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(encodingSettings: newValue ?? "")
+            frames[.encodingSettings] = .stringFrame(frame)
+        }
+    }
+    
+    var fileOwner: String? {
+        get {
+            if let frame = self.frames[.fileOwner],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(fileOwner: newValue ?? "")
+            frames[.fileOwner] = .stringFrame(frame)
+        }
+    }
+
+    var grouping: String? {
+        get {
+            if let frame = self.frames[.grouping],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(grouping: newValue ?? "")
+            frames[.grouping] = .stringFrame(frame)
+        }
+    }
+
+    var initialKey: String? {
+        get {
+            if let frame = self.frames[.initialKey],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(initialKey: newValue ?? "")
+            frames[.initialKey] = .stringFrame(frame)
+        }
+    }
+
+    var lyricist: String? {
+        get {
+            if let frame = self.frames[.lyricist],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(lyricist: newValue ?? "")
+            frames[.lyricist] = .stringFrame(frame)
+        }
+    }
+
+    var mood: String? {
+        get {
+            if let frame = self.frames[.mood],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(mood: newValue ?? "")
+            frames[.mood] = .stringFrame(frame)
+        }
+    }
+
+    var movementName: String? {
+        get {
+            if let frame = self.frames[.movementName],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(movementName: newValue ?? "")
+            frames[.movementName] = .stringFrame(frame)
+        }
+    }
+
+    var originalAlbum: String? {
+        get {
+            if let frame = self.frames[.originalAlbum],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(originalAlbum: newValue ?? "")
+            frames[.originalAlbum] = .stringFrame(frame)
+        }
+    }
+
+    var originalArtist: String? {
+        get {
+            if let frame = self.frames[.originalArtist],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(originalArtist: newValue ?? "")
+            frames[.originalArtist] = .stringFrame(frame)
+        }
+    }
+
+    var originalFilename: String? {
+        get {
+            if let frame = self.frames[.originalFilename],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(originalFilename: newValue ?? "")
+            frames[.originalFilename] = .stringFrame(frame)
+        }
+    }
+
+    var originalLyricist: String? {
+        get {
+            if let frame = self.frames[.originalLyricist],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(originalLyricist: newValue ?? "")
+            frames[.originalLyricist] = .stringFrame(frame)
+        }
+    }
+
+    var podcastCategory: String? {
+        get {
+            if let frame = self.frames[.podcastCategory],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(podcastCategory: newValue ?? "")
+            frames[.podcastCategory] = .stringFrame(frame)
+        }
+    }
+
+    var podcastDescription: String? {
+        get {
+            if let frame = self.frames[.podcastDescription],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(podcastDescription: newValue ?? "")
+            frames[.podcastDescription] = .stringFrame(frame)
+        }
+    }
+
+    var podcastID: String? {
+        get {
+            if let frame = self.frames[.podcastID],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(podcastID: newValue ?? "")
+            frames[.podcastID] = .stringFrame(frame)
+        }
+    }
+
+    var podcastKeywords: String? {
+        get {
+            if let frame = self.frames[.podcastKeywords],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(podcastKeywords: newValue ?? "")
+            frames[.podcastKeywords] = .stringFrame(frame)
+        }
+    }
+
+    var podcastFeedLink: String? {
+        get {
+            if let frame = self.frames[.podcastFeedLink],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(podcastFeedLink: newValue ?? "")
+            frames[.podcastFeedLink] = .stringFrame(frame)
+        }
+    }
+
+    var publisher: String? {
+        get {
+            if let frame = self.frames[.publisher],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(publisher: newValue ?? "")
+            frames[.publisher] = .stringFrame(frame)
+        }
+    }
+
+    var label: String? {
+        get {
+            if let frame = self.frames[.label],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(label: newValue ?? "")
+            frames[.label] = .stringFrame(frame)
+        }
+    }
+
+    var recordCompany: String? {
+        get {
+            if let frame = self.frames[.recordCompany],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(recordCompany: newValue ?? "")
+            frames[.recordCompany] = .stringFrame(frame)
+        }
+    }
+
+    var studio: String? {
+        get {
+            if let frame = self.frames[.studio],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(studio: newValue ?? "")
+            frames[.studio] = .stringFrame(frame)
+        }
+    }
+
+    var radioStation: String? {
+        get {
+            if let frame = self.frames[.radioStation],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(radioStation: newValue ?? "")
+            frames[.radioStation] = .stringFrame(frame)
+        }
+    }
+
+    var radioStationOwner: String? {
+        get {
+            if let frame = self.frames[.radioStationOwner],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(radioStationOwner: newValue ?? "")
+            frames[.radioStationOwner] = .stringFrame(frame)
+        }
+    }
+
+    var setSubtitle: String? {
+        get {
+            if let frame = self.frames[.setSubtitle],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(setSubtitle: newValue ?? "")
+            frames[.setSubtitle] = .stringFrame(frame)
+        }
+    }
+
+    var subtitle: String? {
+        get {
+            if let frame = self.frames[.subtitle],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(subtitle: newValue ?? "")
+            frames[.subtitle] = .stringFrame(frame)
+        }
+    }
+
+    var title: String? {
+        get {
+            if let frame = self.frames[.title],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(title: newValue ?? "")
+            frames[.title] = .stringFrame(frame)
+        }
+    }
+
+    var titleSort: String? {
+        get {
+            if let frame = self.frames[.titleSort],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(titleSort: newValue ?? "")
+            frames[.titleSort] = .stringFrame(frame)
+        }
+    }
+
+    var artistWebpage: String? {
+        get {
+            if let frame = self.frames[.artistWebpage],
+                case .urlFrame(let urlFrame) = frame {
+                return urlFrame.urlString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = URLFrame(artistWebsiteUrl: newValue ?? "")
+            frames[.artistWebpage] = .urlFrame(frame)
+        }
+    }
+
+    var audioFileWebpage: String? {
+        get {
+            if let frame = self.frames[.audioFileWebpage],
+                case .urlFrame(let urlFrame) = frame {
+                return urlFrame.urlString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = URLFrame(officialAudioFileWebsiteUrl: newValue ?? "")
+            frames[.audioFileWebpage] = .urlFrame(frame)
+        }
+    }
+    
+    var audioSourceWebpage: String? {
+        get {
+            if let frame = self.frames[.audioSourceWebpage],
+                case .urlFrame(let urlFrame) = frame {
+                return urlFrame.urlString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = URLFrame(officialAudioSourceWebsiteUrl: newValue ?? "")
+            frames[.audioSourceWebpage] = .urlFrame(frame)
+        }
+    }
+    
+    var copyrightWebpage: String? {
+        get {
+            if let frame = self.frames[.copyrightWebpage],
+                case .urlFrame(let urlFrame) = frame {
+                return urlFrame.urlString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = URLFrame(copyrightWebsiteUrl: newValue ?? "")
+            frames[.copyrightWebpage] = .urlFrame(frame)
+        }
+    }
+
+    var paymentWebpage: String? {
+        get {
+            if let frame = self.frames[.paymentWebpage],
+                case .urlFrame(let urlFrame) = frame {
+                return urlFrame.urlString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = URLFrame(paymentWebsiteUrl: newValue ?? "")
+            frames[.paymentWebpage] = .urlFrame(frame)
+        }
+    }
+    
+    var publisherWebpage: String? {
+        get {
+            if let frame = self.frames[.publisherWebpage],
+                case .urlFrame(let urlFrame) = frame {
+                return urlFrame.urlString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = URLFrame(publisherWebsiteUrl: newValue ?? "")
+            frames[.publisherWebpage] = .urlFrame(frame)
+        }
+    }
+ 
+    var radioStationWebpage: String? {
+        get {
+            if let frame = self.frames[.radioStationWebpage],
+                case .urlFrame(let urlFrame) = frame {
+                return urlFrame.urlString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = URLFrame(internetRadioStationWebsiteUrl: newValue ?? "")
+            frames[.radioStationWebpage] = .urlFrame(frame)
+        }
+    }
+    
+    var bpm: Int? {
+        get {
+            if let frame = self.frames[.bpm],
+                case .integerFrame(let integerFrame) = frame {
+                return integerFrame.value
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = IntegerFrame(bpm: newValue ?? 0)
+            frames[.bpm] = .integerFrame(frame)
+        }
+    }
+    
+    var isrc: Int? {
+        get {
+            if let frame = self.frames[.isrc],
+                case .integerFrame(let integerFrame) = frame {
+                return integerFrame.value
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = IntegerFrame(isrc: newValue ?? 0)
+            frames[.isrc] = .integerFrame(frame)
+        }
+    }
+ 
+    var length: Int? {
+        get {
+            if let frame = self.frames[.length],
+                case .integerFrame(let integerFrame) = frame {
+                return integerFrame.value
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = IntegerFrame(length: newValue ?? 0)
+            frames[.length] = .integerFrame(frame)
+        }
+    }
+    
+    var movementCount: Int? {
+        get {
+            if let frame = self.frames[.movementCount],
+                case .integerFrame(let integerFrame) = frame {
+                return integerFrame.value
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = IntegerFrame(totalMovements: newValue ?? 0)
+            frames[.movementCount] = .integerFrame(frame)
+        }
+    }
+    
+    var movementNumber: Int? {
+        get {
+            if let frame = self.frames[.movementNumber],
+                case .integerFrame(let integerFrame) = frame {
+                return integerFrame.value
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = IntegerFrame(movementNumber: newValue ?? 0)
+            frames[.movementNumber] = .integerFrame(frame)
+        }
+    }
+    
+    var playlistDelay: Int? {
+        get {
+            if let frame = self.frames[.playlistDelay],
+                case .integerFrame(let integerFrame) = frame {
+                return integerFrame.value
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = IntegerFrame(playlistDelay: newValue ?? 0)
+            frames[.playlistDelay] = .integerFrame(frame)
+        }
+    }
+
+    var compliation: Bool? {
+        get {
+            if let frame = self.frames[.compilation],
+                case .booleanFrame(let booleanFrame) = frame {
+                return booleanFrame.value
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = BooleanFrame(value: newValue ?? false)
+            frames[.compilation] = .booleanFrame(frame)
+        }
+    }
+
+    var discNumber: (disc: Int, totalDiscs: Int?) {
+        get {
+            if let frame = self.frames[.discNumber],
+                case .partOfTotalFrame(let partOfTotalFrame) = frame {
+                return (partOfTotalFrame.part, partOfTotalFrame.total)
+            } else {
+                return (0,0)
+            }
+        }
+        set {
+            let frame = PartOfTotalFrame(disc: newValue.0, totalDiscs: newValue.1)
+            frames[.discNumber] = .partOfTotalFrame(frame)
+        }
+    }
+
+    var trackNumber: (track: Int, totalTracks: Int?) {
+        get {
+            if let frame = self.frames[.trackNumber],
+                case .partOfTotalFrame(let partOfTotalFrame) = frame {
+                return (partOfTotalFrame.part, partOfTotalFrame.total)
+            } else {
+                return (0,0)
+            }
+        }
+        set {
+            let frame = PartOfTotalFrame(track: newValue.0, totalTracks: newValue.1)
+            frames[.trackNumber] = .partOfTotalFrame(frame)
+        }
+    }
+
+//    var involvedPeopleList: [(role: String, person: String)] {
+//        get {
+//            if let frame = self.frames[.involvedPeopleList],
+//                case .creditsListFrame(let creditsListFrame) = frame {
+//                return creditsListFrame.entries
+//            } else {
+//                print("No author.")
+//            }
+//        }
+//        set {
+//            let frame = CreditsListFrame(role: newValue[0], creditedPerson: newValue[1])
+//            frames[.involvedPeopleList] = .creditsListFrame(frame)
+//        }
+//    }
+//
+//    var musicianCreditsList: [(role: String, person: String)] {
+//        get {
+//            if let frame = self.frames[.musicianCreditsList],
+//                case .creditsListFrame(let creditsListFrame) = frame {
+//                return creditsListFrame.entries
+//            } else {
+//                print("No author.")
+//            }
+//        }
+//        set {
+//            let frame = CreditsListFrame(role: newValue[0], creditedPerson: newValue[1])
+//            frames[.musicianCreditsList] = .creditsListFrame(frame)
+//        }
+//    }
+
+    var userDefinedText: (description: String?, content: String) {
+        get {
+            if let frame = self.frames[.userDefinedText(description: "")],
+                case .userTextFrame(let userTextFrame) = frame {
+                return (userTextFrame.descriptionString, userTextFrame.contentString)
+            } else {
+                return ("","")
+            }
+        }
+        set {
+            let frame = UserTextFrame(description: newValue.description ?? "", content: newValue.content)
+            frames[.userDefinedText(description: newValue.description ?? "")] = .userTextFrame(frame)
+        }
+    }
+    
+    var userDefinedWebpage: (description: String?, content: String) {
+        get {
+            if let frame = self.frames[.userDefinedWebpage(description: "")],
+                case .userTextFrame(let userTextFrame) = frame {
+                return (userTextFrame.descriptionString, userTextFrame.contentString)
+            } else {
+                return ("","")
+            }
+        }
+        set {
+            let frame = UserTextFrame(description: newValue.description ?? "", webpage: newValue.content)
+            frames[.userDefinedText(description: newValue.description ?? "")] = .userTextFrame(frame)
+        }
+    }
+
+    var acknowledgment: String? {
+        get {
+            if let frame = self.frames[.userDefinedText(description: "Acknowledgment")],
+                case .userTextFrame(let userTextFrame) = frame {
+                return userTextFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = UserTextFrame(description: "Acknowledgment", content: newValue ?? "")
+            frames[.userDefinedText(description: "Acknowledgment")] = .userTextFrame(frame)
+        }
+    }
+    
+    var thanks: String? {
+        get {
+            if let frame = self.frames[.userDefinedText(description: "Thanks")],
+                case .userTextFrame(let userTextFrame) = frame {
+                return userTextFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = UserTextFrame(description: "Thanks", content: newValue ?? "")
+            frames[.userDefinedText(description: "Thanks")] = .userTextFrame(frame)
+        }
+    }
+    
+    var sourceCredit: String? {
+        get {
+            if let frame = self.frames[.userDefinedText(description: "Source Credit")],
+                case .userTextFrame(let userTextFrame) = frame {
+                return userTextFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = UserTextFrame(description: "Source Credit", content: newValue ?? "")
+            frames[.userDefinedText(description: "Source Credit")] = .userTextFrame(frame)
+        }
+    }
+    
+
+    
+    
+    
+    
+}

@@ -49,32 +49,34 @@ extension FrameProtocol {
     init(decodingFromStartOf data: inout Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier) throws {
-        // parse flags first
-        var flagsData: Data
-        switch version {
-            case .v2_2: flagsData = Data()
-            case .v2_3, .v2_4: flagsData = data.extractFirst(version.flagsLength)
-        }
-        // parse content size second
-        let frameSizeDataUnordered = [UInt8](data.extractFirst(version.sizeDeclarationLength))
-        var frameSizeOrdered: [UInt8] = []
-        if version == .v2_3 || version == .v2_4 {
-            frameSizeOrdered = [
-                frameSizeDataUnordered[2],
-                frameSizeDataUnordered[3],
-                frameSizeDataUnordered[0],
-                frameSizeDataUnordered[1]
-            ]} else {
-            frameSizeOrdered = frameSizeDataUnordered
-        }
-        let frameSizeData = Data(frameSizeOrdered)
+        // parse size first
+//        let frameSizeDataUnordered = [UInt8](data.extractFirst(version.sizeDeclarationLength))
+//        var frameSizeOrdered: [UInt8] = []
+//        if version == .v2_3 || version == .v2_4 {
+//            frameSizeOrdered = [
+//                frameSizeDataUnordered[2],
+//                frameSizeDataUnordered[3],
+//                frameSizeDataUnordered[0],
+//                frameSizeDataUnordered[1]
+//            ]} else {
+//            frameSizeOrdered = frameSizeDataUnordered
+//        }
+//        let frameSizeData = Data(frameSizeOrdered)
+        let frameSizeData = data.extractFirst(version.sizeDeclarationLength)
         var frameSize: Int = 0
         let raw = UInt32(parsing: frameSizeData, .bigEndian)
         switch version {
             case .v2_2, .v2_3: frameSize = Int(raw)
             case .v2_4: frameSize = Int(raw.decodingSynchsafe())
         }
-        
+
+        // parse flags second
+        var flagsData: Data
+        switch version {
+            case .v2_2: flagsData = Data()
+            case .v2_3, .v2_4: flagsData = data.extractFirst(version.flagsLength)
+        }
+
         // parse content last
         let contentDataStart = data.startIndex
         let contentDataRange = contentDataStart ..< contentDataStart + frameSize

@@ -266,12 +266,12 @@ public struct StringFrame: FrameProtocol {
         self.init(layout: .known(.publisher), contentString: publisher)
     }
     
-    public init(internetRadioStation: String) {
-        self.init(layout: .known(.radioStation), contentString: internetRadioStation)
+    public init(radioStation: String) {
+        self.init(layout: .known(.radioStation), contentString: radioStation)
     }
     
-    public init(internetRadioStationOwner: String) {
-        self.init(layout: .known(.radioStationOwner), contentString: internetRadioStationOwner)
+    public init(radioStationOwner: String) {
+        self.init(layout: .known(.radioStationOwner), contentString: radioStationOwner)
     }
     
     public init(setSubtitle: String) {
@@ -283,9 +283,13 @@ public struct StringFrame: FrameProtocol {
     }
     
     public init(title: String) {
-        self.init(layout: .known(.titleSort), contentString: title)
+        self.init(layout: .known(.title), contentString: title)
     }
-    
+
+    public init(titleSort: String) {
+        self.init(layout: .known(.titleSort), contentString: titleSort)
+    }
+
     public init(remixer: String) {
         self.init(layout: .known(.arranger), contentString: remixer)
     }
