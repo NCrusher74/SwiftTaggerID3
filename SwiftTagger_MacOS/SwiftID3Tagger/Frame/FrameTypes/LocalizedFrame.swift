@@ -129,7 +129,7 @@ public struct LocalizedFrame: FrameProtocol {
         var parsing = contents
         let encoding = try LocalizedFrame.extractEncoding(data: &parsing, version: version)
 
-        let languageCode = parsing.extractFirst(3).stringASCII ?? "und"
+        let languageCode = try String(ascii: parsing.extractFirst(3))
         if ISO6392Codes.allCases.contains(where: { $0.iso6392TCode == languageCode }) {
             self.languageString = languageCode
         } else {

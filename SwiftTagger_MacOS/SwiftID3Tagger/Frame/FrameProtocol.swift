@@ -83,10 +83,10 @@ extension FrameProtocol {
         let contentSize = UInt32(encodedContent.count)
         switch version {
             case .v2_2:
-                let contentUInt8Array = [UInt8](contentSize.data)
+                let contentUInt8Array = [UInt8](contentSize.bigEndianData)
                 return Data(contentUInt8Array.dropFirst())
-            case .v2_3: return contentSize.data
-            case .v2_4: return contentSize.encodingSynchsafe().data
+            case .v2_3: return contentSize.bigEndianData
+            case .v2_4: return contentSize.encodingSynchsafe().bigEndianData
         }
     }
     
@@ -122,15 +122,4 @@ extension FrameProtocol {
         let content = frameData.extractPrefixAsStringUntilNullTermination(encoding) ?? ""
         return (description: description, content: content)
     }
-    
-    static var incrementalChapterID: String {
-        var chapterNumber: Int = 1
-        return "ch\(chapterNumber += 1)"
-    }
-
-    static var incrementalTocID: String {
-        var tocNumber: Int = 1
-        return "toc\(tocNumber += 1)"
-    }
-
 }

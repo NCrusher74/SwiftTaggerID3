@@ -69,7 +69,8 @@ public struct TableOfContentsFrame: FrameProtocol {
     
     func encodeContents(version: Version) throws -> Data {
         let encodedElementID = self.elementID.encoded(withNullTermination: true)
-        let encodedEntryCount = self.entryCount.data
+        let countedEntries = self.entryCount
+        let encodedEntryCount = Data([countedEntries])
         
         var idArray = Data()
         for id in self.childElementIDs {
@@ -89,20 +90,20 @@ public struct TableOfContentsFrame: FrameProtocol {
             case true:
                 switch self.orderedFlag {
                     case true:
-                        let flagByteAsUInt32: UInt32 = 0x00000011
-                        return flagByteAsUInt32.data
+                        let flagByteBinaryInt = 0b00000011
+                        return flagByteBinaryInt.truncatedUInt32.bigEndianData
                     case false:
-                        let flagByteAsUInt32: UInt32 = 0x00000010
-                        return flagByteAsUInt32.data
+                        let flagByteBinaryInt = 0b00000010
+                        return flagByteBinaryInt.truncatedUInt32.bigEndianData
             }
             case false:
                 switch self.orderedFlag {
                     case true:
-                        let flagByteAsUInt32: UInt32 = 0x00000001
-                        return flagByteAsUInt32.data
+                        let flagByteBinaryInt = 0b00000001
+                        return flagByteBinaryInt.truncatedUInt32.bigEndianData
                     case false:
-                        let flagByteAsUInt32: UInt32 = 0x00000000
-                        return flagByteAsUInt32.data
+                        let flagByteBinaryInt = 0b00000000
+                        return flagByteBinaryInt.truncatedUInt32.bigEndianData
             }
         }
     }
@@ -124,22 +125,20 @@ public struct TableOfContentsFrame: FrameProtocol {
         
         var parsing = contents
         let elementID = parsing.extractPrefixAsStringUntilNullTermination(.isoLatin1)
-        self.elementID = elementID ?? TableOfContentsFrame.incrementalTocID
-        self.frameKey = .tableOfContents(elementID: elementID ?? TableOfContentsFrame.incrementalTocID)
+        self.elementID = elementID ?? Tag.incrementalTocID
+        self.frameKey = .tableOfContents(elementID: elementID ?? Tag.incrementalTocID)
 
-        let flagsByte = parsing.extractFirst(1)
-        let flagsByteAsUint32 = flagsByte.uint32
-        let topLevelFlagBitMask: UInt32 = 0x000000F0
-        let orderedFlagBitMask: UInt32 = 0x0000000F
+        let flagsByteData = parsing.extractFirst(1)
+        let flagsByte = Int(UInt32(parsing: flagsByteData, .bigEndian))
+        let flagA = 0b00000010
+        let flagB = 0b00000001
 
-        let topLevelBit = flagsByteAsUint32 & topLevelFlagBitMask
-        if topLevelBit == 0x00000010 {
+        if flagsByte & flagA == flagA {
             self.topLevelFlag = true
         } else {
             self.topLevelFlag = false
         }
-        let orderedFlagBit = flagsByteAsUint32 & orderedFlagBitMask
-        if orderedFlagBit == 0x00000001 {
+        if flagsByte & flagB == flagB {
             self.orderedFlag = true
         } else {
             self.orderedFlag = false
@@ -148,7 +147,7 @@ public struct TableOfContentsFrame: FrameProtocol {
         let childIDByte = parsing.extractFirst(1)
         self.entryCount = childIDByte.uint8
 
-        let entryCountUInt32 = childIDByte.uint32
+        let entryCountUInt32 = UInt32(parsing: childIDByte, .bigEndian)
         var childIDCount = Int(entryCountUInt32)
         var childIDArray: [String] = []
         
@@ -179,7 +178,7 @@ public struct TableOfContentsFrame: FrameProtocol {
          childElementIDs: [String],
          embeddedSubframes: [FrameKey: Frame]) {
         self.init(layout: .known(.tableOfContents),
-                  elementID: TableOfContentsFrame.incrementalTocID,
+                  elementID: Tag.incrementalTocID,
                   topLevelFlag: isTopTOC,
                   orderedFlag: elementsAreOrdered,
                   entryCount: UInt8(childElementIDs.count),

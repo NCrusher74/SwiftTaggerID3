@@ -23,7 +23,7 @@ public enum Frame {
     case booleanFrame(BooleanFrame)
     case presetOptionsFrame(PresetOptionsFrame)
     case urlFrame(URLFrame)
-    //    case toc(TableOfContentsFrame)
+    case toc(TableOfContentsFrame)
     case chapter(ChapterFrame)
     case unknownFrame(UnknownFrame)
     
@@ -31,7 +31,6 @@ public enum Frame {
          data: inout Data.SubSequence,
          version: Version) throws {
         let layout = FrameLayoutIdentifier(identifier: identifier)
-        //        print(layout) - known(SwiftTagger_MacOS.title) (checks)
         switch layout {
             //            case .known(.attachedPicture):
             //                self = .image(try ImageFrame)
@@ -40,8 +39,8 @@ public enum Frame {
                     decodingFromStartOf: &data,
                     version: version,
                     layout: layout))
-            //            case .known(.tableOfContents):
-            //                self = .toc(try TableOfContentsFrame)
+            case .known(.tableOfContents):
+                self = .toc(try TableOfContentsFrame(decodingFromStartOf: &data, version: version, layout: layout))
             case .known(.compilation):
                 self = .booleanFrame(try BooleanFrame(
                     decodingFromStartOf: &data,
@@ -156,6 +155,43 @@ public enum Frame {
                 return dateFrame.frameKey
             case .chapter(let chapterFrame):
                 return chapterFrame.frameKey
+            case .toc(let tableOfContentsFrame):
+                return tableOfContentsFrame.frameKey
+        }
+    }
+}
+
+extension Frame {
+    var asFrameProtocol: FrameProtocol {
+        switch self {
+            case .stringFrame(let stringFrame):
+                return stringFrame
+            case .partOfTotalFrame(let partOfTotalFrame):
+                return partOfTotalFrame
+            case .localizedFrame(let localizedFrame):
+                return localizedFrame
+            case .userTextFrame(let userTextFrame):
+                return userTextFrame
+            case .languageFrame(let languageFrame):
+                return languageFrame
+            case .creditsListFrame(let creditsListFrame):
+                return creditsListFrame
+            case .integerFrame(let integerFrame):
+                return integerFrame
+            case .dateFrame(let dateFrame):
+                return dateFrame
+            case .booleanFrame(let booleanFrame):
+                return booleanFrame
+            case .presetOptionsFrame(let presetOptionsFrame):
+                return presetOptionsFrame
+            case .urlFrame(let urlFrame):
+                return urlFrame
+            case .toc(let tocFrame):
+                return tocFrame
+            case .chapter(let chapterFrame):
+                return chapterFrame
+            case .unknownFrame(let unknownFrame):
+                return unknownFrame
         }
     }
 }

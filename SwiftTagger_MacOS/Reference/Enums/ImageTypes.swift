@@ -59,4 +59,29 @@ public enum ImageType: UInt8 {
     /// Publisher logo image.
     case PublisherStudioLogotype = 0x14
 
+    var imageDescription: String {
+        switch self {
+            case .Other: return "Other Image"
+            case .fileIcon: return "File Icon"
+            case .OtherFileIcon: return "Other File Icon"
+            case .FrontCover: return "Front Cover"
+            case .BackCover: return "Back Cover"
+            case .LeafletPage: return "Leaflet Page"
+            case .Media: return "Media"
+            case .LeadArtistLeadPerformerSoloist: return "Lead Artist/Performer"
+            case .ArtistPerformer: return "Artist/Performer"
+            case .Conductor: return "Conductor"
+            case .BandOrchestra: return "Band/Orchestra"
+            case .Composer: return "Composer"
+            case .LyricistTextWriter: return "Lyricist/Writer"
+            case .RecordingLocation: return "Recording Location"
+            case .DuringRecording: return "Production Still"
+            case .DuringPerformance: return "Performance Still"
+            case .MovieVideoScreenCapture: return "Screen Capture"
+            case .ABrightColouredFish: return "A Brightly Colored Fish"
+            case .Illustration: return "Illustration"
+            case .BandArtistLogotype: return "Band/Artist Logo"
+            case .PublisherStudioLogotype: return "Publisher/Studio Logo"
+        }
+    }
 }

@@ -59,10 +59,11 @@ public struct ChapterFrame: FrameProtocol {
     
     func encodeContents(version: Version) throws -> Data {
         let encodedElementID = self.elementID.encoded(withNullTermination: true)
-        let encodedStartTime = self.startTime.data
-        let encodedEndTime = self.endTime.data
-        let encodedStartByteOffset = self.startByteOffset.data
-        let encodedEndByteOffset = self.endByteOffset.data
+        let encodedStartTime = self.startTime.truncatedUInt32.bigEndianData
+        let encodedEndTime = self.endTime.truncatedUInt32.bigEndianData
+        let encodedStartByteOffset = self.startByteOffset.truncatedUInt32.bigEndianData
+        let encodedEndByteOffset = self.endByteOffset.truncatedUInt32.bigEndianData
+
         var encodedSubframes = Data()
         for subframe in self.embeddedSubframes {
             encodedSubframes.append(try encodeSubframes(subframe: subframe as! FrameProtocol, version: version))
@@ -87,8 +88,8 @@ public struct ChapterFrame: FrameProtocol {
         
         var parsing = contents
         let elementID = parsing.extractPrefixAsStringUntilNullTermination(.isoLatin1)
-        self.elementID = elementID ?? ChapterFrame.incrementalChapterID
-        self.frameKey = .chapter(elementID: elementID ?? ChapterFrame.incrementalChapterID)
+        self.elementID = elementID ?? Tag.incrementalChapterID
+        self.frameKey = .chapter(elementID: elementID ?? Tag.incrementalChapterID)
         let startTimeData = parsing.extractFirst(4)
         let startTimeUInt32 = UInt32(parsing: startTimeData, .bigEndian)
         self.startTime = Int(startTimeUInt32)
@@ -126,16 +127,16 @@ public struct ChapterFrame: FrameProtocol {
                 endTime: Int,
                 embeddedSubframes: [FrameKey: Frame]) {
         self.init(layout: .known(.chapter),
-                  elementID: ChapterFrame.incrementalChapterID,
+                  elementID: Tag.incrementalChapterID,
                   startTime: startTime,
                   endTime: endTime,
                   startByteOffset: nil,
                   endByteOffset: nil,
                   embeddedSubframes: embeddedSubframes)
-        self.frameKey = .chapter(elementID: ChapterFrame.incrementalChapterID)
+        self.frameKey = .chapter(elementID: Tag.incrementalChapterID)
     }
 
-//    public init(startTime: Int,
+//    public convenience init(startTime: Int,
 //                endTime: Int,
 //                chapterTitle: String) {
 //        let subframeKey = FrameKey.title
@@ -152,7 +153,7 @@ public struct ChapterFrame: FrameProtocol {
 //    }
     
 //    repeat with attached image rather than chapter title when image is implemented
-//    public init(startTime: Int,
+//    public convenience init(startTime: Int,
 //                endTime: Int,
 //                chapterTitle: String) {
 //        let subframeKey = FrameKey.title

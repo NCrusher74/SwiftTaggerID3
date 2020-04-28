@@ -1,19 +1,16 @@
-
-File = /Users/nolainecrusher/Downloads/audiobook_tools/sampleaax/test/mp3-v22-with-meta.mp3
-
 Raw Data:
 
-File size: 84188
+File size: 92782
 Format: MPEG-1, Layer 3
-File contains Info header at offset 3105
+File contains Info header at offset 11699
 Channel mode: Stereo
 Sample rate: 44100 Hz
 Duration: 5041 ms
 Bit rate: 129 kbits/sec
 ID3 Tag version 2.2.0
-Tag at offset: 0 size = 3105
+Tag at offset: 0 size = 11699
 Padding: 2048 bytes
-Audio base: 3105 size = 81083
+Audio base: 11699 size = 81083
 
 00000010 00000031 00000021 (0000T1) TALB
 00000031 00000064 00000033 (0000T1) TPE2
@@ -24,73 +21,4 @@ Audio base: 3105 size = 81083
 00000132 00000144 00000012 (0000T0)     ( TIM) *** Ignored
 00000144 00000157 00000013 (0000T0) TCON
 00000157 00000168 00000011 (0000T0) TRCK
-00000168 00000195 00000027 (0000T1) TCOM
-00000195 00000224 00000029 (0000T1) TPE3
-00000224 00000243 00000019 (0000T1) TIT1
-00000243 00000272 00000029 (0000T1) TCOP
-00000272 00000301 00000029 (0000T1) TENC
-00000301 00000342 00000041 (0000T1) TSSE
-00000342 00000369 00000027 (0000T1) TFLT
-00000369 00000396 00000027 (0000T1) TEXT
-00000396 00000425 00000029 (0000T1) TMED
-00000425 00000452 00000027 (0000T1) TPE4
-00000452 00000481 00000029 (0000T1) TPUB
-00000481 00000524 00000043 (0000T0) USLT LyricsDesscription
-00000524 00000568 00000044 (0000T0) COMM CommentDescription
-00000568 00000579 00000011 (0000T0) TLAN
-00000579 00000590 00000011 (0000T0) TPOS
-00000590 00000631 00000041 (0000T0) TXXX UserText
-00000631 00000641 00000010 (0000T0) TBPM
-00000641 00000656 00000015 (0000T1) TKEY
-00000656 00000691 00000035 (0000T1) TSRC
-00000691 00000703 00000012 (0000T0) TLEN
-00000703 00000740 00000037 (0000T1) TOAL
-00000740 00000779 00000039 (0000T1) TOPE
-00000779 00000822 00000043 (0000T1) TOFN
-00000822 00000865 00000043 (0000T1) TOLY
-00000865 00000875 00000010 (0000T0) TDLY
-00000875 00000898 00000023 (0000T0) WOAR
-00000898 00000924 00000026 (0000T0) WOAF
-00000924 00000952 00000028 (0000T0) WOAS
-00000952 00000978 00000026 (0000T0) WCOP
-00000978 00001004 00000026 (0000T0) WPUB
-00001004 00001057 00000053 (0000T0) TIPL
-
-
-////////////////////////////////////////
-
-[SwiftTagger_MacOS.FrameKey.mediaType: SwiftTagger_MacOS.Frame.presetOptionsFrame(SwiftTagger_MacOS.PresetOptionsFrame(presetName: nil, presetRefinement: nil, refinementDescription: nil, flags: 0 bytes, layout: SwiftTagger_MacOS.FrameLayoutIdentifier.known(SwiftTagger_MacOS.KnownFrameLayoutIdentifier.mediaType), frameKey: SwiftTagger_MacOS.FrameKey.mediaType)),
-SwiftTagger_MacOS.FrameKey.artistWebpage: SwiftTagger_MacOS.Frame.urlFrame(SwiftTagger_MacOS.URLFrame(urlString: "http://artist.url", flags: 0 bytes, layout: SwiftTagger_MacOS.FrameLayoutIdentifier.known(SwiftTagger_MacOS.KnownFrameLayoutIdentifier.artistWebpage), frameKey: SwiftTagger_MacOS.FrameKey.artistWebpage)),
-SwiftTagger_MacOS.FrameKey.unsynchronizedLyrics(description: ""): SwiftTagger_MacOS.Frame.localizedFrame(SwiftTagger_MacOS.LocalizedFrame(languageString: Optional("eng"), descriptionString: Optional("LyricsDesscription"), contentString: "Lyrics Content", flags: 0 bytes, layout: SwiftTagger_MacOS.FrameLayoutIdentifier.known(SwiftTagger_MacOS.KnownFrameLayoutIdentifier.unsynchronizedLyrics), frameKey: SwiftTagger_MacOS.FrameKey.unsynchronizedLyrics(description: ""))),
-SwiftTagger_MacOS.FrameKey.arranger: SwiftTagger_MacOS.Frame.stringFrame(SwiftTagger_MacOS.StringFrame(flags: 0 bytes, layout: SwiftTagger_MacOS.FrameLayoutIdentifier.known(SwiftTagger_MacOS.KnownFrameLayoutIdentifier.arranger), frameKey: SwiftTagger_MacOS.FrameKey.arranger, contentString: "Arrange")),
-SwiftTagger_MacOS.FrameKey.comments(description: ""): SwiftTagger_MacOS.Frame.localizedFrame(SwiftTagger_MacOS.LocalizedFrame(languageString: Optional("eng"), descriptionString: Optional("CommentDescription"), contentString: "Comment Content", flags: 0 bytes, layout: SwiftTagger_MacOS.FrameLayoutIdentifier.known(SwiftTagger_MacOS.KnownFrameLayoutIdentifier.comments), frameKey: SwiftTagger_MacOS.FrameKey.comments(description: ""))),
-SwiftTagger_MacOS.FrameKey.audioFileWebpage: SwiftTagger_MacOS.Frame.urlFrame(SwiftTagger_MacOS.URLFrame(urlString: "http://audiofile.url", flags: 0 bytes, layout: SwiftTagger_MacOS.FrameLayoutIdentifier.known(SwiftTagger_MacOS.KnownFrameLayoutIdentifier.audioFileWebpage), frameKey: SwiftTagger_MacOS.FrameKey.audioFileWebpage)),
-SwiftTagger_MacOS.FrameKey.conductor: SwiftTagger_MacOS.Frame.stringFrame(SwiftTagger_MacOS.StringFrame(flags: 0 bytes, layout: SwiftTagger_MacOS.FrameLayoutIdentifier.known(SwiftTagger_MacOS.KnownFrameLayoutIdentifier.conductor), frameKey: SwiftTagger_MacOS.FrameKey.conductor, contentString: "Conducto")),
-SwiftTagger_MacOS.FrameKey.publisherWebpage: SwiftTagger_MacOS.Frame.urlFrame(SwiftTagger_MacOS.URLFrame(urlString: "http://publisher.url", flags: 0 bytes, layout: SwiftTagger_MacOS.FrameLayoutIdentifier.known(SwiftTagger_MacOS.KnownFrameLayoutIdentifier.publisherWebpage), frameKey: SwiftTagger_MacOS.FrameKey.publisherWebpage)),
-SwiftTagger_MacOS.FrameKey.originalLyricist: SwiftTagger_MacOS.Frame.stringFrame(SwiftTagger_MacOS.StringFrame(flags: 0 bytes, layout: SwiftTagger_MacOS.FrameLayoutIdentifier.known(SwiftTagger_MacOS.KnownFrameLayoutIdentifier.originalLyricist), frameKey: SwiftTagger_MacOS.FrameKey.originalLyricist, contentString: "OriginalLyricis")),
-SwiftTagger_MacOS.FrameKey.encodedBy: SwiftTagger_MacOS.Frame.stringFrame(SwiftTagger_MacOS.StringFrame(flags: 0 bytes, layout: SwiftTagger_MacOS.FrameLayoutIdentifier.known(SwiftTagger_MacOS.KnownFrameLayoutIdentifier.encodedBy), frameKey: SwiftTagger_MacOS.FrameKey.encodedBy, contentString: "EncodedB")),
-SwiftTagger_MacOS.FrameKey.originalFilename: SwiftTagger_MacOS.Frame.stringFrame(SwiftTagger_MacOS.StringFrame(flags: 0 bytes, layout: SwiftTagger_MacOS.FrameLayoutIdentifier.known(SwiftTagger_MacOS.KnownFrameLayoutIdentifier.originalFilename), frameKey: SwiftTagger_MacOS.FrameKey.originalFilename, contentString: "OriginalFilenam")),
-SwiftTagger_MacOS.FrameKey.composer: SwiftTagger_MacOS.Frame.stringFrame(SwiftTagger_MacOS.StringFrame(flags: 0 bytes, layout: SwiftTagger_MacOS.FrameLayoutIdentifier.known(SwiftTagger_MacOS.KnownFrameLayoutIdentifier.composer), frameKey: SwiftTagger_MacOS.FrameKey.composer, contentString: "Compose")),
-SwiftTagger_MacOS.FrameKey.discNumber: SwiftTagger_MacOS.Frame.partOfTotalFrame(SwiftTagger_MacOS.PartOfTotalFrame(part: 3, total: Optional(4), flags: 0 bytes, layout: SwiftTagger_MacOS.FrameLayoutIdentifier.known(SwiftTagger_MacOS.KnownFrameLayoutIdentifier.discNumber), frameKey: SwiftTagger_MacOS.FrameKey.discNumber)),
-SwiftTagger_MacOS.FrameKey.album: SwiftTagger_MacOS.Frame.stringFrame(SwiftTagger_MacOS.StringFrame(flags: 0 bytes, layout: SwiftTagger_MacOS.FrameLayoutIdentifier.known(SwiftTagger_MacOS.KnownFrameLayoutIdentifier.album), frameKey: SwiftTagger_MacOS.FrameKey.album, contentString: "Albu")),
-SwiftTagger_MacOS.FrameKey.involvedPeopleList: SwiftTagger_MacOS.Frame.creditsListFrame(SwiftTagger_MacOS.CreditsListFrame(entries: [(role: "Director", person: "Director Name"), (role: "Producer", person: "Producer Name")], flags: 0 bytes, layout: SwiftTagger_MacOS.FrameLayoutIdentifier.known(SwiftTagger_MacOS.KnownFrameLayoutIdentifier.involvedPeopleList), frameKey: SwiftTagger_MacOS.FrameKey.involvedPeopleList)),
-SwiftTagger_MacOS.FrameKey.originalAlbum: SwiftTagger_MacOS.Frame.stringFrame(SwiftTagger_MacOS.StringFrame(flags: 0 bytes, layout: SwiftTagger_MacOS.FrameLayoutIdentifier.known(SwiftTagger_MacOS.KnownFrameLayoutIdentifier.originalAlbum), frameKey: SwiftTagger_MacOS.FrameKey.originalAlbum, contentString: "OriginalAlbu")),
-SwiftTagger_MacOS.FrameKey.contentGroup: SwiftTagger_MacOS.Frame.stringFrame(SwiftTagger_MacOS.StringFrame(flags: 0 bytes, layout: SwiftTagger_MacOS.FrameLayoutIdentifier.known(SwiftTagger_MacOS.KnownFrameLayoutIdentifier.contentGroup), frameKey: SwiftTagger_MacOS.FrameKey.contentGroup, contentString: "Wor")),
-SwiftTagger_MacOS.FrameKey.lyricist: SwiftTagger_MacOS.Frame.stringFrame(SwiftTagger_MacOS.StringFrame(flags: 0 bytes, layout: SwiftTagger_MacOS.FrameLayoutIdentifier.known(SwiftTagger_MacOS.KnownFrameLayoutIdentifier.lyricist), frameKey: SwiftTagger_MacOS.FrameKey.lyricist, contentString: "Lyricis")),
-SwiftTagger_MacOS.FrameKey.albumArtist: SwiftTagger_MacOS.Frame.stringFrame(SwiftTagger_MacOS.StringFrame(flags: 0 bytes, layout: SwiftTagger_MacOS.FrameLayoutIdentifier.known(SwiftTagger_MacOS.KnownFrameLayoutIdentifier.albumArtist), frameKey: SwiftTagger_MacOS.FrameKey.albumArtist, contentString: "AlbumArtis")),
-SwiftTagger_MacOS.FrameKey.playlistDelay: SwiftTagger_MacOS.Frame.integerFrame(SwiftTagger_MacOS.IntegerFrame(value: 20, flags: 0 bytes, layout: SwiftTagger_MacOS.FrameLayoutIdentifier.known(SwiftTagger_MacOS.KnownFrameLayoutIdentifier.playlistDelay), frameKey: SwiftTagger_MacOS.FrameKey.playlistDelay)),
-SwiftTagger_MacOS.FrameKey.trackNumber: SwiftTagger_MacOS.Frame.partOfTotalFrame(SwiftTagger_MacOS.PartOfTotalFrame(part: 1, total: Optional(2), flags: 0 bytes, layout: SwiftTagger_MacOS.FrameLayoutIdentifier.known(SwiftTagger_MacOS.KnownFrameLayoutIdentifier.trackNumber), frameKey: SwiftTagger_MacOS.FrameKey.trackNumber)),
-SwiftTagger_MacOS.FrameKey.length: SwiftTagger_MacOS.Frame.integerFrame(SwiftTagger_MacOS.IntegerFrame(value: 5250, flags: 0 bytes, layout: SwiftTagger_MacOS.FrameLayoutIdentifier.known(SwiftTagger_MacOS.KnownFrameLayoutIdentifier.length), frameKey: SwiftTagger_MacOS.FrameKey.length)),
-SwiftTagger_MacOS.FrameKey.title: SwiftTagger_MacOS.Frame.stringFrame(SwiftTagger_MacOS.StringFrame(flags: 0 bytes, layout: SwiftTagger_MacOS.FrameLayoutIdentifier.known(SwiftTagger_MacOS.KnownFrameLayoutIdentifier.title), frameKey: SwiftTagger_MacOS.FrameKey.title, contentString: "Titl")),
-SwiftTagger_MacOS.FrameKey.copyrightWebpage: SwiftTagger_MacOS.Frame.urlFrame(SwiftTagger_MacOS.URLFrame(urlString: "http://copyright.url", flags: 0 bytes, layout: SwiftTagger_MacOS.FrameLayoutIdentifier.known(SwiftTagger_MacOS.KnownFrameLayoutIdentifier.copyrightWebpage), frameKey: SwiftTagger_MacOS.FrameKey.copyrightWebpage)),
-SwiftTagger_MacOS.FrameKey.genre: SwiftTagger_MacOS.Frame.presetOptionsFrame(SwiftTagger_MacOS.PresetOptionsFrame(presetName: nil, presetRefinement: nil, refinementDescription: nil, flags: 0 bytes, layout: SwiftTagger_MacOS.FrameLayoutIdentifier.known(SwiftTagger_MacOS.KnownFrameLayoutIdentifier.genre), frameKey: SwiftTagger_MacOS.FrameKey.genre)),
-SwiftTagger_MacOS.FrameKey.encodingSettings: SwiftTagger_MacOS.Frame.stringFrame(SwiftTagger_MacOS.StringFrame(flags: 0 bytes, layout: SwiftTagger_MacOS.FrameLayoutIdentifier.known(SwiftTagger_MacOS.KnownFrameLayoutIdentifier.encodingSettings), frameKey: SwiftTagger_MacOS.FrameKey.encodingSettings, contentString: "EncoderSetting")),
-SwiftTagger_MacOS.FrameKey.artist: SwiftTagger_MacOS.Frame.stringFrame(SwiftTagger_MacOS.StringFrame(flags: 0 bytes, layout: SwiftTagger_MacOS.FrameLayoutIdentifier.known(SwiftTagger_MacOS.KnownFrameLayoutIdentifier.artist), frameKey: SwiftTagger_MacOS.FrameKey.artist, contentString: "Artis")),
-SwiftTagger_MacOS.FrameKey.isrc: SwiftTagger_MacOS.Frame.integerFrame(SwiftTagger_MacOS.IntegerFrame(value: 12345678901, flags: 0 bytes, layout: SwiftTagger_MacOS.FrameLayoutIdentifier.known(SwiftTagger_MacOS.KnownFrameLayoutIdentifier.isrc), frameKey: SwiftTagger_MacOS.FrameKey.isrc)),
-SwiftTagger_MacOS.FrameKey.copyright: SwiftTagger_MacOS.Frame.stringFrame(SwiftTagger_MacOS.StringFrame(flags: 0 bytes, layout: SwiftTagger_MacOS.FrameLayoutIdentifier.known(SwiftTagger_MacOS.KnownFrameLayoutIdentifier.copyright), frameKey: SwiftTagger_MacOS.FrameKey.copyright, contentString: "Copyrigh")),
-SwiftTagger_MacOS.FrameKey.userDefinedText(description: ""): SwiftTagger_MacOS.Frame.userTextFrame(SwiftTagger_MacOS.UserTextFrame(descriptionString: "OriginalArtis", contentString: "", flags: 0 bytes, layout: SwiftTagger_MacOS.FrameLayoutIdentifier.known(SwiftTagger_MacOS.KnownFrameLayoutIdentifier.userDefinedText), frameKey: SwiftTagger_MacOS.FrameKey.userDefinedText(description: ""))),
-SwiftTagger_MacOS.FrameKey.languages(language: "und"): SwiftTagger_MacOS.Frame.languageFrame(SwiftTagger_MacOS.LanguageFrame(languageString: "und", flags: 0 bytes, layout: SwiftTagger_MacOS.FrameLayoutIdentifier.known(SwiftTagger_MacOS.KnownFrameLayoutIdentifier.languages), frameKey: SwiftTagger_MacOS.FrameKey.languages(language: "und"))),
-SwiftTagger_MacOS.FrameKey.initialKey: SwiftTagger_MacOS.Frame.stringFrame(SwiftTagger_MacOS.StringFrame(flags: 0 bytes, layout: SwiftTagger_MacOS.FrameLayoutIdentifier.known(SwiftTagger_MacOS.KnownFrameLayoutIdentifier.initialKey), frameKey: SwiftTagger_MacOS.FrameKey.initialKey, contentString: "b")),
-SwiftTagger_MacOS.FrameKey.publisher: SwiftTagger_MacOS.Frame.stringFrame(SwiftTagger_MacOS.StringFrame(flags: 0 bytes, layout: SwiftTagger_MacOS.FrameLayoutIdentifier.known(SwiftTagger_MacOS.KnownFrameLayoutIdentifier.publisher), frameKey: SwiftTagger_MacOS.FrameKey.publisher, contentString: "Publishe")),
-SwiftTagger_MacOS.FrameKey.audioSourceWebpage: SwiftTagger_MacOS.Frame.urlFrame(SwiftTagger_MacOS.URLFrame(urlString: "http://audiosource.url", flags: 0 bytes, layout: SwiftTagger_MacOS.FrameLayoutIdentifier.known(SwiftTagger_MacOS.KnownFrameLayoutIdentifier.audioSourceWebpage), frameKey: SwiftTagger_MacOS.FrameKey.audioSourceWebpage)),
-SwiftTagger_MacOS.FrameKey.bpm: SwiftTagger_MacOS.Frame.integerFrame(SwiftTagger_MacOS.IntegerFrame(value: 99, flags: 0 bytes, layout: SwiftTagger_MacOS.FrameLayoutIdentifier.known(SwiftTagger_MacOS.KnownFrameLayoutIdentifier.bpm), frameKey: SwiftTagger_MacOS.FrameKey.bpm))]
+00000168 00009651 00009483 (0000T0) APIC

@@ -74,7 +74,7 @@ public struct URLFrame: FrameProtocol {
                 self.frameKey = .radioStationWebpage
             default: self.frameKey = .userDefinedWebpage(description: "")
         }
-        self.urlString = contents.stringASCII ?? ""
+        self.urlString = try String(ascii: contents)
     }
     
     // MARK: Public initializers

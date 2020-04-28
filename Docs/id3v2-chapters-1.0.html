@@ -82,7 +82,9 @@ The purpose of this frame is to describe a single chapter within an audio file. 
                 Flag a - Top-level bit
                 This is set to 1 to identify the top-level "CTOC" frame. This frame is the root of the Table of Contents tree and is not a child of any other "CTOC" frame. Only one "CTOC" frame in an ID3v2 tag can have this bit set to 1. In all other "CTOC" frames this bit shall be set to 0.
                 Flag b - Ordered bit
-                This should be set to 1 if the entries in the Child Element ID list are ordered or set to 0 if they not are ordered. This provides a hint as to whether the elements should be played as a continuous ordered sequence or played individually. The Entry count is the number of entries in the Child Element ID list that follows and must be greater than zero. Each entry in the list consists of:
+                This should be set to 1 if the entries in the Child Element ID list are ordered or set to 0 if they not are ordered. This provides a hint as to whether the elements should be played as a continuous ordered sequence or played individually.
+                
+                The Entry count is the number of entries in the Child Element ID list that follows and must be greater than zero. Each entry in the list consists of:
                 
                 {{{Child Element ID <text string> $00}}}
                     

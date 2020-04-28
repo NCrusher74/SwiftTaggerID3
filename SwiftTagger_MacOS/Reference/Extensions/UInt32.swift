@@ -12,8 +12,8 @@ import Foundation
 //  Created by Boris Polania on 2/19/18.
 
 extension UInt32 {
-    var data: Data {
-        var int = self
+    var bigEndianData: Data {
+        var int = self.bigEndian
         return Data(bytes: &int, count: MemoryLayout<UInt32>.size)
     }
     

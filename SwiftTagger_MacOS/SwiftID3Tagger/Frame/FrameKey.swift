@@ -28,7 +28,7 @@ public enum FrameKey: Hashable {
     /** The 'Official artist/performer webpage' frame is a URL pointing at the artists official webpage. There may be more than one "WOAR" frame in a tag if the audio contains more than one performer, but not with the same content. */
     case artistWebpage
     /// embedded image frame
-    case attachedPicture
+    case attachedPicture(description: String)
     /** The 'Official audio file webpage' frame is a URL pointing at a file specific webpage. */
     case audioFileWebpage
     /** The 'Official audio source webpage' frame is a URL pointing at the

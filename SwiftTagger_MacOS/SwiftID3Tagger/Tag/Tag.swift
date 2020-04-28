@@ -34,10 +34,10 @@ public struct Tag {
             tagSize = try properties.size(data: tagSizeData)
             print(tagSize)
         }
-
+        
         let tagDataRange = remainder.startIndex ..< remainder.startIndex + tagSize
         remainder = remainder.subdata(in: tagDataRange)
-
+        
         var frames: [FrameKey : Frame] = [:]
         while !remainder.isEmpty  {
             let identifierBytes = remainder.extractFirst(version.identifierLength)
@@ -47,12 +47,23 @@ public struct Tag {
                 identifier: identifier,
                 data: &remainder,
                 version: version)
-
+            
             let frameKey = frame.frameKey
             frames[frameKey] = frame
         }
         self.frames = frames
     }
+    
+    var incrementalChapterID: String {
+        var chapterNumber: Int = 1
+        return "ch\(chapterNumber += 1)"
+    }
+    
+    var incrementalTocID: String {
+        var tocNumber: Int = 1
+        return "toc\(tocNumber += 1)"
+    }
+
 }
 
 public extension Tag {
@@ -101,7 +112,7 @@ public extension Tag {
             frames[.albumSort] = .stringFrame(frame)
         }
     }
-
+    
     var albumArtistSort: String? {
         get {
             if let frame = self.frames[.albumArtistSort],
@@ -116,7 +127,7 @@ public extension Tag {
             frames[.albumArtistSort] = .stringFrame(frame)
         }
     }
-
+    
     var arranger: String? {
         get {
             if let frame = self.frames[.arranger],
@@ -131,7 +142,7 @@ public extension Tag {
             frames[.arranger] = .stringFrame(frame)
         }
     }
-
+    
     var remixer: String? {
         get {
             if let frame = self.frames[.remixer],
@@ -146,7 +157,7 @@ public extension Tag {
             frames[.remixer] = .stringFrame(frame)
         }
     }
-
+    
     var interpretedBy: String? {
         get {
             if let frame = self.frames[.interpretedBy],
@@ -161,7 +172,7 @@ public extension Tag {
             frames[.interpretedBy] = .stringFrame(frame)
         }
     }
-
+    
     var artist: String? {
         get {
             if let frame = self.frames[.artist],
@@ -191,7 +202,7 @@ public extension Tag {
             frames[.artistSort] = .stringFrame(frame)
         }
     }
-
+    
     var author: String? {
         get {
             if let frame = self.frames[.author],
@@ -236,7 +247,7 @@ public extension Tag {
             frames[.composer] = .stringFrame(frame)
         }
     }
-
+    
     var composerSort: String? {
         get {
             if let frame = self.frames[.composerSort],
@@ -251,7 +262,7 @@ public extension Tag {
             frames[.composerSort] = .stringFrame(frame)
         }
     }
-
+    
     var narrator: String? {
         get {
             if let frame = self.frames[.narrator],
@@ -281,7 +292,7 @@ public extension Tag {
             frames[.narratorSort] = .stringFrame(frame)
         }
     }
-
+    
     var conductor: String? {
         get {
             if let frame = self.frames[.conductor],
@@ -311,7 +322,7 @@ public extension Tag {
             frames[.contentGroup] = .stringFrame(frame)
         }
     }
-
+    
     var work: String? {
         get {
             if let frame = self.frames[.work],
@@ -326,7 +337,7 @@ public extension Tag {
             frames[.work] = .stringFrame(frame)
         }
     }
-
+    
     var copyright: String? {
         get {
             if let frame = self.frames[.copyright],
@@ -341,7 +352,7 @@ public extension Tag {
             frames[.copyright] = .stringFrame(frame)
         }
     }
-
+    
     var encodedBy: String? {
         get {
             if let frame = self.frames[.encodedBy],
@@ -356,7 +367,7 @@ public extension Tag {
             frames[.encodedBy] = .stringFrame(frame)
         }
     }
-
+    
     var encodingSettings: String? {
         get {
             if let frame = self.frames[.encodingSettings],
@@ -386,7 +397,7 @@ public extension Tag {
             frames[.fileOwner] = .stringFrame(frame)
         }
     }
-
+    
     var grouping: String? {
         get {
             if let frame = self.frames[.grouping],
@@ -401,7 +412,7 @@ public extension Tag {
             frames[.grouping] = .stringFrame(frame)
         }
     }
-
+    
     var initialKey: String? {
         get {
             if let frame = self.frames[.initialKey],
@@ -416,7 +427,7 @@ public extension Tag {
             frames[.initialKey] = .stringFrame(frame)
         }
     }
-
+    
     var lyricist: String? {
         get {
             if let frame = self.frames[.lyricist],
@@ -431,7 +442,7 @@ public extension Tag {
             frames[.lyricist] = .stringFrame(frame)
         }
     }
-
+    
     var mood: String? {
         get {
             if let frame = self.frames[.mood],
@@ -446,7 +457,7 @@ public extension Tag {
             frames[.mood] = .stringFrame(frame)
         }
     }
-
+    
     var movementName: String? {
         get {
             if let frame = self.frames[.movementName],
@@ -461,7 +472,7 @@ public extension Tag {
             frames[.movementName] = .stringFrame(frame)
         }
     }
-
+    
     var originalAlbum: String? {
         get {
             if let frame = self.frames[.originalAlbum],
@@ -476,7 +487,7 @@ public extension Tag {
             frames[.originalAlbum] = .stringFrame(frame)
         }
     }
-
+    
     var originalArtist: String? {
         get {
             if let frame = self.frames[.originalArtist],
@@ -491,7 +502,7 @@ public extension Tag {
             frames[.originalArtist] = .stringFrame(frame)
         }
     }
-
+    
     var originalFilename: String? {
         get {
             if let frame = self.frames[.originalFilename],
@@ -506,7 +517,7 @@ public extension Tag {
             frames[.originalFilename] = .stringFrame(frame)
         }
     }
-
+    
     var originalLyricist: String? {
         get {
             if let frame = self.frames[.originalLyricist],
@@ -521,7 +532,7 @@ public extension Tag {
             frames[.originalLyricist] = .stringFrame(frame)
         }
     }
-
+    
     var podcastCategory: String? {
         get {
             if let frame = self.frames[.podcastCategory],
@@ -536,7 +547,7 @@ public extension Tag {
             frames[.podcastCategory] = .stringFrame(frame)
         }
     }
-
+    
     var podcastDescription: String? {
         get {
             if let frame = self.frames[.podcastDescription],
@@ -551,7 +562,7 @@ public extension Tag {
             frames[.podcastDescription] = .stringFrame(frame)
         }
     }
-
+    
     var podcastID: String? {
         get {
             if let frame = self.frames[.podcastID],
@@ -566,7 +577,7 @@ public extension Tag {
             frames[.podcastID] = .stringFrame(frame)
         }
     }
-
+    
     var podcastKeywords: String? {
         get {
             if let frame = self.frames[.podcastKeywords],
@@ -581,7 +592,7 @@ public extension Tag {
             frames[.podcastKeywords] = .stringFrame(frame)
         }
     }
-
+    
     var podcastFeedLink: String? {
         get {
             if let frame = self.frames[.podcastFeedLink],
@@ -596,7 +607,7 @@ public extension Tag {
             frames[.podcastFeedLink] = .stringFrame(frame)
         }
     }
-
+    
     var producedNotice: String? {
         get {
             if let frame = self.frames[.producedNotice],
@@ -611,7 +622,7 @@ public extension Tag {
             frames[.producedNotice] = .stringFrame(frame)
         }
     }
-
+    
     var publisher: String? {
         get {
             if let frame = self.frames[.publisher],
@@ -626,7 +637,7 @@ public extension Tag {
             frames[.publisher] = .stringFrame(frame)
         }
     }
-
+    
     var label: String? {
         get {
             if let frame = self.frames[.label],
@@ -641,7 +652,7 @@ public extension Tag {
             frames[.label] = .stringFrame(frame)
         }
     }
-
+    
     var recordCompany: String? {
         get {
             if let frame = self.frames[.recordCompany],
@@ -656,7 +667,7 @@ public extension Tag {
             frames[.recordCompany] = .stringFrame(frame)
         }
     }
-
+    
     var studio: String? {
         get {
             if let frame = self.frames[.studio],
@@ -671,7 +682,7 @@ public extension Tag {
             frames[.studio] = .stringFrame(frame)
         }
     }
-
+    
     var radioStation: String? {
         get {
             if let frame = self.frames[.radioStation],
@@ -686,7 +697,7 @@ public extension Tag {
             frames[.radioStation] = .stringFrame(frame)
         }
     }
-
+    
     var radioStationOwner: String? {
         get {
             if let frame = self.frames[.radioStationOwner],
@@ -701,7 +712,7 @@ public extension Tag {
             frames[.radioStationOwner] = .stringFrame(frame)
         }
     }
-
+    
     var setSubtitle: String? {
         get {
             if let frame = self.frames[.setSubtitle],
@@ -716,7 +727,7 @@ public extension Tag {
             frames[.setSubtitle] = .stringFrame(frame)
         }
     }
-
+    
     var subtitle: String? {
         get {
             if let frame = self.frames[.subtitle],
@@ -731,7 +742,7 @@ public extension Tag {
             frames[.subtitle] = .stringFrame(frame)
         }
     }
-
+    
     var title: String? {
         get {
             if let frame = self.frames[.title],
@@ -746,7 +757,7 @@ public extension Tag {
             frames[.title] = .stringFrame(frame)
         }
     }
-
+    
     var titleSort: String? {
         get {
             if let frame = self.frames[.titleSort],
@@ -761,7 +772,7 @@ public extension Tag {
             frames[.titleSort] = .stringFrame(frame)
         }
     }
-
+    
     var artistWebpage: String? {
         get {
             if let frame = self.frames[.artistWebpage],
@@ -776,7 +787,7 @@ public extension Tag {
             frames[.artistWebpage] = .urlFrame(frame)
         }
     }
-
+    
     var audioFileWebpage: String? {
         get {
             if let frame = self.frames[.audioFileWebpage],
@@ -821,7 +832,7 @@ public extension Tag {
             frames[.copyrightWebpage] = .urlFrame(frame)
         }
     }
-
+    
     var paymentWebpage: String? {
         get {
             if let frame = self.frames[.paymentWebpage],
@@ -851,7 +862,7 @@ public extension Tag {
             frames[.publisherWebpage] = .urlFrame(frame)
         }
     }
- 
+    
     var radioStationWebpage: String? {
         get {
             if let frame = self.frames[.radioStationWebpage],
@@ -896,7 +907,7 @@ public extension Tag {
             frames[.isrc] = .integerFrame(frame)
         }
     }
- 
+    
     var length: Int? {
         get {
             if let frame = self.frames[.length],
@@ -956,7 +967,7 @@ public extension Tag {
             frames[.playlistDelay] = .integerFrame(frame)
         }
     }
-
+    
     var compliation: Bool? {
         get {
             if let frame = self.frames[.compilation],
@@ -971,7 +982,7 @@ public extension Tag {
             frames[.compilation] = .booleanFrame(frame)
         }
     }
-
+    
     var discNumber: (disc: Int, totalDiscs: Int?) {
         get {
             if let frame = self.frames[.discNumber],
@@ -986,7 +997,7 @@ public extension Tag {
             frames[.discNumber] = .partOfTotalFrame(frame)
         }
     }
-
+    
     var trackNumber: (track: Int, totalTracks: Int?) {
         get {
             if let frame = self.frames[.trackNumber],
@@ -1001,14 +1012,14 @@ public extension Tag {
             frames[.trackNumber] = .partOfTotalFrame(frame)
         }
     }
-
+    
     var languages: [String] {
         get {
             if let frame = self.frames[.languages],
                 case .languageFrame(let languageFrame) = frame {
                 return languageFrame.languages
             } else {
-            return []
+                return []
             }
         }
         set {
@@ -1016,7 +1027,7 @@ public extension Tag {
             frames[.languages] = .languageFrame(frame)
         }
     }
-
+    
     var userDefinedText: (description: String?, content: String) {
         get {
             if let frame = self.frames[.userDefinedText(description: "")],
@@ -1046,7 +1057,7 @@ public extension Tag {
             frames[.userDefinedText(description: newValue.description ?? "")] = .userTextFrame(frame)
         }
     }
-
+    
     var acknowledgment: String? {
         get {
             if let frame = self.frames[.userDefinedText(description: "Acknowledgment")],
@@ -1106,7 +1117,7 @@ public extension Tag {
             frames[.genre] = .presetOptionsFrame(frame)
         }
     }
-
+    
     var mediaType: (mediaType: String?, additionalMediaInfo: String?, mediaTypeDescription: String?) {
         get {
             if let frame = self.frames[.mediaType],
@@ -1124,7 +1135,7 @@ public extension Tag {
             frames[.mediaType] = .presetOptionsFrame(frame)
         }
     }
-
+    
     var comments: (language: String?, description: String?, comment: String) {
         get {
             if let frame = self.frames[.comments(description: "")],
@@ -1162,7 +1173,7 @@ public extension Tag {
             frames[.unsynchronizedLyrics(description: newValue.description ?? "")] = .localizedFrame(frame)
         }
     }
-
+    
     var description: (language: String?, contentDescription: String) {
         get {
             if let frame = self.frames[.comments(description: "Description")],
@@ -1180,7 +1191,7 @@ public extension Tag {
             frames[.comments(description: "Description")] = .localizedFrame(frame)
         }
     }
-
+    
     var shortDescription: (language: String?, shortDescription: String) {
         get {
             if let frame = self.frames[.comments(description: "Short Description")],
@@ -1198,7 +1209,7 @@ public extension Tag {
             frames[.comments(description: "Short Description")] = .localizedFrame(frame)
         }
     }
-
+    
     var longDescription: (language: String?, longDescription: String) {
         get {
             if let frame = self.frames[.comments(description: "Long Description")],
@@ -1216,7 +1227,7 @@ public extension Tag {
             frames[.comments(description: "Long Description")] = .localizedFrame(frame)
         }
     }
-
+    
     var linerNotes: (language: String?, linerNotes: String) {
         get {
             if let frame = self.frames[.comments(description: "Liner Notes")],
@@ -1234,7 +1245,7 @@ public extension Tag {
             frames[.comments(description: "Liner Notes")] = .localizedFrame(frame)
         }
     }
-
+    
     var songDescription: (language: String?, songDescription: String) {
         get {
             if let frame = self.frames[.comments(description: "Song Description")],
@@ -1252,7 +1263,7 @@ public extension Tag {
             frames[.comments(description: "Song Description")] = .localizedFrame(frame)
         }
     }
-
+    
     var seriesDescription: (language: String?, seriesDescription: String) {
         get {
             if let frame = self.frames[.comments(description: "Series Description")],
@@ -1285,7 +1296,7 @@ public extension Tag {
             frames[.musicianCreditsList] = .creditsListFrame(frame)
         }
     }
- 
+    
     var involvedPeopleList: [(role: String, person: String)] {
         get {
             if let frame = self.frames[.involvedPeopleList],
@@ -1330,7 +1341,7 @@ public extension Tag {
             frames[.time] = .dateFrame(frame)
         }
     }
-
+    
     var year: String? {
         get {
             if let frame = self.frames[.year],
@@ -1345,7 +1356,7 @@ public extension Tag {
             frames[.year] = .dateFrame(frame)
         }
     }
-
+    
     var releaseDateTime: String? {
         get {
             if let frame = self.frames[.releaseTime],
@@ -1360,7 +1371,7 @@ public extension Tag {
             frames[.releaseTime] = .dateFrame(frame)
         }
     }
-
+    
     var encodingDateTime: String? {
         get {
             if let frame = self.frames[.encodingTime],
@@ -1375,7 +1386,7 @@ public extension Tag {
             frames[.encodingTime] = .dateFrame(frame)
         }
     }
-
+    
     var originalReleaseDate: String? {
         get {
             if let frame = self.frames[.originalReleaseTime],
@@ -1390,7 +1401,7 @@ public extension Tag {
             frames[.originalReleaseTime] = .dateFrame(frame)
         }
     }
-
+    
     var recordingDateTime: String? {
         get {
             if let frame = self.frames[.recordingDate],
@@ -1405,7 +1416,7 @@ public extension Tag {
             frames[.recordingDate] = .dateFrame(frame)
         }
     }
-
+    
     var taggingDateTime: String? {
         get {
             if let frame = self.frames[.taggingTime],
@@ -1420,5 +1431,6 @@ public extension Tag {
             frames[.taggingTime] = .dateFrame(frame)
         }
     }
-        
+    
+    
 }
