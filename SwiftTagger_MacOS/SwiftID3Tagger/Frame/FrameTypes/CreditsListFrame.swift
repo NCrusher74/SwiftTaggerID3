@@ -46,7 +46,7 @@ public struct CreditsListFrame: FrameProtocol {
      - parameter role: the role of the involved person.
      - parameter person: the name (or comma-delimited names) of the person fulfilling a given role.
      */
-    private init(layout: FrameLayoutIdentifier, entries: [(role: String, person: String)]) {
+    init(layout: FrameLayoutIdentifier, entries: [(role: String, person: String)]) {
         self.entries = entries
         self.flags = CreditsListFrame.defaultFlags
         self.layout = layout
@@ -57,7 +57,7 @@ public struct CreditsListFrame: FrameProtocol {
             default: self.frameKey = .userDefinedText(description: "")
         }
     }
-    
+        
     func encodeContents(version: Version) throws -> Data {
         var entriesAsData = Data()
         for entry in self.entries {

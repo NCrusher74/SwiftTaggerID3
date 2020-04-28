@@ -192,17 +192,6 @@ public enum FrameKey: Hashable {
     
     
     // MARK: Preset Frame Convenience Keys
-    // These should be pre-set options for involved people and/or musician credits
-    static var producer: FrameKey { return .involvedPeopleList }
-    static var executiveProducer: FrameKey { return .involvedPeopleList }
-    static var songProducer: FrameKey { return .involvedPeopleList }
-    static var engineer: FrameKey { return .involvedPeopleList }
-    static var director: FrameKey { return .involvedPeopleList }
-    static var performer: FrameKey { return .involvedPeopleList } // or Musician Credit List if version 2.4
-    static var soloist: FrameKey { return .involvedPeopleList } // or Musician Credit List if version 2.4
-    static var cast: FrameKey { return .involvedPeopleList }
-    
-    
     /// Maps to `Comment` frame with the description, "Description"
     static var description: FrameKey { return .comments(description: "Description") }
 

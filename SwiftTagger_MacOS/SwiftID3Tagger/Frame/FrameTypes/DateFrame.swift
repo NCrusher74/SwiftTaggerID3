@@ -18,54 +18,52 @@ import Foundation
 public struct DateFrame: FrameProtocol {
     
     /// TDAT Date Frame
-    public init(releaseDateMonth: Int?, releaseDateDay: Int?) {
+    public init(month: Int?, day: Int?) {
         self.init(layout: .known(.date),
-                  timeStampString: "\(releaseDateMonth ?? 00)-\(releaseDateDay ?? 00)")
+                  timeStampString: "\(month ?? 00)-\(day ?? 00)")
     }
     
     /// TIM/TIME Time Frame
-    public init(releaseTimeHour: Int?, releaseTimeMinute: Int?) {
+    public init(hour: Int?, minute: Int?) {
         self.init(layout: .known(.time),
-                  timeStampString: "\(releaseTimeHour ?? 00):\(releaseTimeMinute ?? 00)")
+                  timeStampString: "\(hour ?? 00):\(minute ?? 00)")
     }
     
     /// TYE/TYER Year Frame
-    public init(releaseYear: Int?) {
+    public init(year: Int?) {
         self.init(layout: .known(.year),
-                  timeStampString: "\(releaseYear ?? 00)")
+                  timeStampString: "\(year ?? 00)")
     }
     
     /// TDEN Encoding Time Frame
-    public init(encodingTimeYear: Int?, encodingTimeMonth: Int?, encodingTimeDay: Int?, encodingTimeHour: Int?, encodingTimeMinute: Int?) {
+    public init(encodingYear: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?) {
         self.init(layout: .known(.encodingTime),
-                  timeStampString: "\(encodingTimeYear ?? 0000)-\(encodingTimeMonth ?? 00)-\(encodingTimeDay ?? 00)T\(encodingTimeHour ?? 00):\(encodingTimeMinute ?? 00)")
+                  timeStampString: "\(encodingYear ?? 0000)-\(month ?? 00)-\(day ?? 00)T\(hour ?? 00):\(minute ?? 00)")
     }
     
     /// TOR/TORY/TDOR - Original Release Date/Year Frame
-    public init(originalReleaseYear: Int?, originalReleaseMonth: Int?, originalReleaseDay: Int?, originalReleaseHour: Int?, originalReleaseMinute: Int?) {
+    public init(originalReleaseYear: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?) {
         self.init(layout: .known(.originalReleaseTime),
-                  timeStampString: "\(originalReleaseYear ?? 0000)-\(originalReleaseMonth ?? 00)-\(originalReleaseDay ?? 00)T\(originalReleaseHour ?? 00):\(originalReleaseMinute ?? 00)")
+                  timeStampString: "\(originalReleaseYear ?? 0000)-\(month ?? 00)-\(day ?? 00)T\(hour ?? 00):\(minute ?? 00)")
     }
     
     /// TRD/TRDA/TDRC - Recording Date Frame
-    public init(recordingDateYear: Int?, recordingDateMonth: Int?, recordingDateDay: Int?, recordingDateHour: Int?, recordingDateMinute: Int?) {
+    public init(recordingYear: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?) {
         self.init(layout: .known(.recordingDate),
-                  timeStampString: "\(recordingDateYear ?? 0000)-\(recordingDateMonth ?? 00)-\(recordingDateDay ?? 00)T\(recordingDateHour ?? 00):\(recordingDateMinute ?? 00)")
+                  timeStampString: "\(recordingYear ?? 0000)-\(month ?? 00)-\(day ?? 00)T\(hour ?? 00):\(minute ?? 00)")
     }
     
     /// TDRL - Release Time Frame
-    public init(releaseTimeYear: Int?, releaseTimeMonth: Int?, releaseTimeDay: Int?, releaseTimeHour: Int?, releaseTimeMinute: Int?) {
+    public init(releaseYear: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?) {
         self.init(layout: .known(.releaseTime),
-                  timeStampString: "\(releaseTimeYear ?? 0000)-\(releaseTimeMonth ?? 00)-\(releaseTimeDay ?? 00)T\(releaseTimeHour ?? 00):\(releaseTimeMinute ?? 00)")
+                  timeStampString: "\(releaseYear ?? 0000)-\(month ?? 00)-\(day ?? 00)T\(hour ?? 00):\(minute ?? 00)")
     }
     
     /// TDTG - Tagging Time Frame
-    public init(taggingTimeYear: Int?, taggingTimeMonth: Int?, taggingTimeDay: Int?, taggingTimeHour: Int?, taggingTimeMinute: Int?) {
+    public init(taggingYear: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?) {
         self.init(layout: .known(.taggingTime),
-                  timeStampString: "\(taggingTimeYear ?? 0000)-\(taggingTimeMonth ?? 00)-\(taggingTimeDay ?? 00)T\(taggingTimeHour ?? 00):\(taggingTimeMinute ?? 00)")
+                  timeStampString: "\(taggingYear ?? 0000)-\(month ?? 00)-\(day ?? 00)T\(hour ?? 00):\(minute ?? 00)")
     }
-    
-    
     
     var flags: Data
     var layout: FrameLayoutIdentifier
@@ -82,7 +80,7 @@ public struct DateFrame: FrameProtocol {
     var minute: Int?
     var timeStampString: String
     
-    private init(layout: FrameLayoutIdentifier,
+    init(layout: FrameLayoutIdentifier,
                  timeStampString: String) {
         self.flags = DateFrame.defaultFlags
         self.layout = layout

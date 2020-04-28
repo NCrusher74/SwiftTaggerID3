@@ -597,6 +597,21 @@ public extension Tag {
         }
     }
 
+    var producedNotice: String? {
+        get {
+            if let frame = self.frames[.producedNotice],
+                case .stringFrame(let stringFrame) = frame {
+                return stringFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = StringFrame(producedNotice: newValue ?? "")
+            frames[.producedNotice] = .stringFrame(frame)
+        }
+    }
+
     var publisher: String? {
         get {
             if let frame = self.frames[.publisher],
@@ -987,35 +1002,6 @@ public extension Tag {
         }
     }
 
-    var involvedPeopleList: [(role: String, person: String)] {
-        get {
-            if let frame = self.frames[.involvedPeopleList],
-                case .creditsListFrame(let creditsListFrame) = frame {
-                return creditsListFrame.entries
-            } else {
-                return []
-            }
-        }
-        set {
-            let frame = CreditsListFrame(role: newValue., involvedPerson: newValue.)
-        }
-    }
-
-//    var musicianCreditsList: [(role: String, person: String)] {
-//        get {
-//            if let frame = self.frames[.musicianCreditsList],
-//                case .creditsListFrame(let creditsListFrame) = frame {
-//                return creditsListFrame.entries
-//            } else {
-//                return []
-//            }
-//        }
-//        set {
-//            let frame = CreditsListFrame(role: newValue[0], creditedPerson: newValue[1])
-//            frames[.musicianCreditsList] = .creditsListFrame(frame)
-//        }
-//    }
-
     var languages: [String] {
         get {
             if let frame = self.frames[.languages],
@@ -1285,5 +1271,155 @@ public extension Tag {
         }
     }
     
+    var musicianCreditList: [(role: String, person: String)] {
+        get {
+            if let frame = self.frames[.musicianCreditsList],
+                case .creditsListFrame(let creditsListFrame) = frame {
+                return creditsListFrame.entries
+            } else {
+                return []
+            }
+        }
+        set {
+            let frame = CreditsListFrame(layout: .known(.musicianCreditsList), entries: newValue)
+            frames[.musicianCreditsList] = .creditsListFrame(frame)
+        }
+    }
+ 
+    var involvedPeopleList: [(role: String, person: String)] {
+        get {
+            if let frame = self.frames[.involvedPeopleList],
+                case .creditsListFrame(let creditsListFrame) = frame {
+                return creditsListFrame.entries
+            } else {
+                return []
+            }
+        }
+        set {
+            let frame = CreditsListFrame(layout: .known(.involvedPeopleList), entries: newValue)
+            frames[.involvedPeopleList] = .creditsListFrame(frame)
+        }
+    }
+    
+    var date: String? {
+        get {
+            if let frame = self.frames[.date],
+                case .dateFrame(let dateFrame) = frame {
+                return dateFrame.timeStampString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = DateFrame(layout: .known(.date), timeStampString: newValue ?? "")
+            frames[.date] = .dateFrame(frame)
+        }
+    }
+    
+    var time: String? {
+        get {
+            if let frame = self.frames[.time],
+                case .dateFrame(let dateFrame) = frame {
+                return dateFrame.timeStampString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = DateFrame(layout: .known(.time), timeStampString: newValue ?? "")
+            frames[.time] = .dateFrame(frame)
+        }
+    }
+
+    var year: String? {
+        get {
+            if let frame = self.frames[.year],
+                case .dateFrame(let dateFrame) = frame {
+                return dateFrame.timeStampString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = DateFrame(layout: .known(.year), timeStampString: newValue ?? "")
+            frames[.year] = .dateFrame(frame)
+        }
+    }
+
+    var releaseDateTime: String? {
+        get {
+            if let frame = self.frames[.releaseTime],
+                case .dateFrame(let dateFrame) = frame {
+                return dateFrame.timeStampString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = DateFrame(layout: .known(.releaseTime), timeStampString: newValue ?? "")
+            frames[.releaseTime] = .dateFrame(frame)
+        }
+    }
+
+    var encodingDateTime: String? {
+        get {
+            if let frame = self.frames[.encodingTime],
+                case .dateFrame(let dateFrame) = frame {
+                return dateFrame.timeStampString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = DateFrame(layout: .known(.encodingTime), timeStampString: newValue ?? "")
+            frames[.encodingTime] = .dateFrame(frame)
+        }
+    }
+
+    var originalReleaseDate: String? {
+        get {
+            if let frame = self.frames[.originalReleaseTime],
+                case .dateFrame(let dateFrame) = frame {
+                return dateFrame.timeStampString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = DateFrame(layout: .known(.originalReleaseTime), timeStampString: newValue ?? "")
+            frames[.originalReleaseTime] = .dateFrame(frame)
+        }
+    }
+
+    var recordingDateTime: String? {
+        get {
+            if let frame = self.frames[.recordingDate],
+                case .dateFrame(let dateFrame) = frame {
+                return dateFrame.timeStampString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = DateFrame(layout: .known(.recordingDate), timeStampString: newValue ?? "")
+            frames[.recordingDate] = .dateFrame(frame)
+        }
+    }
+
+    var taggingDateTime: String? {
+        get {
+            if let frame = self.frames[.taggingTime],
+                case .dateFrame(let dateFrame) = frame {
+                return dateFrame.timeStampString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = DateFrame(layout: .known(.taggingTime), timeStampString: newValue ?? "")
+            frames[.taggingTime] = .dateFrame(frame)
+        }
+    }
+
     
 }
