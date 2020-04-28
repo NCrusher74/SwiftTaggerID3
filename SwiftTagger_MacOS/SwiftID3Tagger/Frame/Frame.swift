@@ -24,7 +24,7 @@ public enum Frame {
     case presetOptionsFrame(PresetOptionsFrame)
     case urlFrame(URLFrame)
     //    case toc(TableOfContentsFrame)
-    //    case chapter(ChapterFrame)
+    case chapter(ChapterFrame)
     case unknownFrame(UnknownFrame)
     
     init(identifier: String,
@@ -35,8 +35,11 @@ public enum Frame {
         switch layout {
             //            case .known(.attachedPicture):
             //                self = .image(try ImageFrame)
-            //            case .known(.chapter):
-            //                self = .chapter(try ChapterFrame)
+            case .known(.chapter):
+                self = .chapter(try ChapterFrame(
+                    decodingFromStartOf: &data,
+                    version: version,
+                    layout: layout))
             //            case .known(.tableOfContents):
             //                self = .toc(try TableOfContentsFrame)
             case .known(.compilation):
@@ -151,6 +154,8 @@ public enum Frame {
                 return unknownFrame.frameKey
             case .dateFrame(let dateFrame):
                 return dateFrame.frameKey
+            case .chapter(let chapterFrame):
+                return chapterFrame.frameKey
         }
     }
 }

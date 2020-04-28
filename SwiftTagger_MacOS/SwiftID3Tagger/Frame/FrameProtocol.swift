@@ -50,18 +50,6 @@ extension FrameProtocol {
          version: Version,
          layout: FrameLayoutIdentifier) throws {
         // parse size first
-//        let frameSizeDataUnordered = [UInt8](data.extractFirst(version.sizeDeclarationLength))
-//        var frameSizeOrdered: [UInt8] = []
-//        if version == .v2_3 || version == .v2_4 {
-//            frameSizeOrdered = [
-//                frameSizeDataUnordered[2],
-//                frameSizeDataUnordered[3],
-//                frameSizeDataUnordered[0],
-//                frameSizeDataUnordered[1]
-//            ]} else {
-//            frameSizeOrdered = frameSizeDataUnordered
-//        }
-//        let frameSizeData = Data(frameSizeOrdered)
         let frameSizeData = data.extractFirst(version.sizeDeclarationLength)
         var frameSize: Int = 0
         let raw = UInt32(parsing: frameSizeData, .bigEndian)
