@@ -135,21 +135,21 @@ public struct ChapterFrame: FrameProtocol {
         self.frameKey = .chapter(elementID: ChapterFrame.incrementalChapterID)
     }
 
-    public init(startTime: Int,
-                endTime: Int,
-                chapterTitle: String) {
-        let subframeKey = FrameKey.title
-        let subframeFrame: Frame = .stringFrame(let stringFrame)
-        let subframe = subframeFrame(stringContent: chapterTitle)
-        self.init(layout: .known(.chapter),
-                  elementID: ChapterFrame.incrementalChapterID,
-                  startTime: startTime,
-                  endTime: endTime,
-                  startByteOffset: nil,
-                  endByteOffset: nil,
-                  embeddedSubframes: embeddedSubframes[subframeKey] = subframeFrame)
-        self.frameKey = .chapter(elementID: ChapterFrame.incrementalChapterID)
-    }
+//    public init(startTime: Int,
+//                endTime: Int,
+//                chapterTitle: String) {
+//        let subframeKey = FrameKey.title
+//        let subframeFrame: Frame = .stringFrame(let stringFrame)
+//        let subframe = subframeFrame(stringContent: chapterTitle)
+//        self.init(layout: .known(.chapter),
+//                  elementID: ChapterFrame.incrementalChapterID,
+//                  startTime: startTime,
+//                  endTime: endTime,
+//                  startByteOffset: nil,
+//                  endByteOffset: nil,
+//                  embeddedSubframes: embeddedSubframes[subframeKey] = subframeFrame)
+//        self.frameKey = .chapter(elementID: ChapterFrame.incrementalChapterID)
+//    }
     
 //    repeat with attached image rather than chapter title when image is implemented
 //    public init(startTime: Int,

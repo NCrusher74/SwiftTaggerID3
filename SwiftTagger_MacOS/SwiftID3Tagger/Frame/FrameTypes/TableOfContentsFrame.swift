@@ -36,7 +36,7 @@ public struct TableOfContentsFrame: FrameProtocol {
     public var childElementIDs: [String]
     
     /** A sequence of optional frames that are embedded within the “CTOC” frame and which describe this element of the table of contents (e.g. a “TIT2” frame representing the name of the element) or provide related material such as URLs and images. These sub-frames are contained within the bounds of the “CTOC” frame as signalled by the size field in the “CTOC” frame header.*/
-    public var embeddedSubFrames: [FrameKey: Frame]
+    public var embeddedSubframes: [FrameKey: Frame]
     
     
     /**
@@ -54,22 +54,63 @@ public struct TableOfContentsFrame: FrameProtocol {
                  orderedFlag: Bool,
                  entryCount: UInt8,
                  childElementIDs: [String],
-                 embeddedSubFrames: [FrameKey: Frame]) {
+                 embeddedSubframes: [FrameKey: Frame]) {
         self.elementID = elementID
         self.topLevelFlag = topLevelFlag
         self.orderedFlag = orderedFlag
         self.entryCount = entryCount
         self.childElementIDs = childElementIDs
-        self.embeddedSubFrames = embeddedSubFrames
+        self.embeddedSubframes = embeddedSubframes
         self.flags = TableOfContentsFrame.defaultFlags
         self.layout = layout
+        self.frameKey = .tableOfContents(elementID: elementID)
     }
     
     
     func encodeContents(version: Version) throws -> Data {
+        let encodedElementID = self.elementID.encoded(withNullTermination: true)
+        let encodedEntryCount = self.entryCount.data
         
+        var idArray = Data()
+        for id in self.childElementIDs {
+            idArray.append(id.encoded(withNullTermination: true))
+        }
+
+        var encodedSubframes = Data()
+        for subframe in self.embeddedSubframes {
+            encodedSubframes.append(try encodeSubframes(subframe: subframe as! FrameProtocol, version: version))
+        }
+        
+        return encodedElementID + encodedFlagByte + encodedEntryCount + idArray + encodedSubframes
     }
     
+    var encodedFlagByte: Data {
+        switch self.topLevelFlag {
+            case true:
+                switch self.orderedFlag {
+                    case true:
+                        let flagByteAsUInt32: UInt32 = 0x00000011
+                        return flagByteAsUInt32.data
+                    case false:
+                        let flagByteAsUInt32: UInt32 = 0x00000010
+                        return flagByteAsUInt32.data
+            }
+            case false:
+                switch self.orderedFlag {
+                    case true:
+                        let flagByteAsUInt32: UInt32 = 0x00000001
+                        return flagByteAsUInt32.data
+                    case false:
+                        let flagByteAsUInt32: UInt32 = 0x00000000
+                        return flagByteAsUInt32.data
+            }
+        }
+    }
+ 
+    func encodeSubframes(subframe: FrameProtocol, version: Version) throws -> Data {
+        return try subframe.encodeContents(version: version)
+    }
+
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
@@ -84,45 +125,66 @@ public struct TableOfContentsFrame: FrameProtocol {
         var parsing = contents
         let elementID = parsing.extractPrefixAsStringUntilNullTermination(.isoLatin1)
         self.elementID = elementID ?? TableOfContentsFrame.incrementalTocID
-        self.frameKey = .chapter(elementID: elementID ?? TableOfContentsFrame.incrementalTocID)
+        self.frameKey = .tableOfContents(elementID: elementID ?? TableOfContentsFrame.incrementalTocID)
 
         let flagsByte = parsing.extractFirst(1)
         let flagsByteAsUint32 = flagsByte.uint32
-        
+        let topLevelFlagBitMask: UInt32 = 0x000000F0
+        let orderedFlagBitMask: UInt32 = 0x0000000F
 
-        if flagsByte.uint32.??("a" in %000000ab) == 1 {
+        let topLevelBit = flagsByteAsUint32 & topLevelFlagBitMask
+        if topLevelBit == 0x00000010 {
             self.topLevelFlag = true
         } else {
             self.topLevelFlag = false
         }
-        if flagsByte.uint32.??("b" in %000000ab) == 1 {
+        let orderedFlagBit = flagsByteAsUint32 & orderedFlagBitMask
+        if orderedFlagBit == 0x00000001 {
             self.orderedFlag = true
         } else {
             self.orderedFlag = false
         }
 
-        let childIDCount = parsing.extractFirst(1)
-        self.entryCount = childIDCount.uint8
+        let childIDByte = parsing.extractFirst(1)
+        self.entryCount = childIDByte.uint8
 
+        let entryCountUInt32 = childIDByte.uint32
+        var childIDCount = Int(entryCountUInt32)
+        var childIDArray: [String] = []
         
+        while childIDCount > 0 {
+            childIDArray.append(parsing.extractPrefixAsStringUntilNullTermination(.isoLatin1) ?? "")
+            childIDCount -= 1
+        }
+        self.childElementIDs = childIDArray
         
-        
-
+        var subframes: [FrameKey: Frame] = [:]
+        while !parsing.isEmpty {
+            let embeddedSubframeIdentifierData = parsing.extractFirst(version.identifierLength)
+            if embeddedSubframeIdentifierData.first == 0x00 { break } // Padding, not a frame.
+            let subframeIdentifier = try String(ascii: embeddedSubframeIdentifierData)
+            let subframe = try Frame(
+                identifier: subframeIdentifier,
+                data: &parsing,
+                version: version)
+            
+            let subframeFrameKey = subframe.frameKey
+            subframes[subframeFrameKey] = subframe
+        }
+        self.embeddedSubframes = subframes
     }
     
-    init(elementID: String,
-         topLevelFlag: Bool,
-         orderedFlag: Bool,
-         entryCount: UInt8,
+    public init(isTopTOC: Bool,
+         elementsAreOrdered: Bool,
          childElementIDs: [String],
-         embeddedSubFrames: [FrameKey: Frame]) {
+         embeddedSubframes: [FrameKey: Frame]) {
         self.init(layout: .known(.tableOfContents),
-                  elementID: elementID,
-                  topLevelFlag: topLevelFlag,
-                  orderedFlag: orderedFlag,
-                  entryCount: entryCount,
+                  elementID: TableOfContentsFrame.incrementalTocID,
+                  topLevelFlag: isTopTOC,
+                  orderedFlag: elementsAreOrdered,
+                  entryCount: UInt8(childElementIDs.count),
                   childElementIDs: childElementIDs,
-                  embeddedSubFrames: embeddedSubFrames)
+                  embeddedSubframes: embeddedSubframes)
     }
 }
 

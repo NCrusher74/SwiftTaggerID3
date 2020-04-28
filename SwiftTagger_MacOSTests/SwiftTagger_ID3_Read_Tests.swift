@@ -15,7 +15,7 @@ class SwiftTagger_ID3_Read_Tests: XCTestCase {
         let mp3File = try Bundle.mp3V22()
         let tag = try mp3File.read()
         
-        #warning("figure out why the last charcter is being dropped (probably because of weird encoding)")
+        #warning("figure out why the last charcter is being dropped (probably because of weird encoding on the writing side)")
         XCTAssertEqual(tag.album, "Album")
         XCTAssertEqual(tag.albumArtist, "AlbumArtist")
         XCTAssertEqual(tag.albumSort, "SortAlbum")
@@ -61,8 +61,8 @@ class SwiftTagger_ID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag.userDefinedText.content, "User Defined Text Content")
         XCTAssertEqual(tag.userDefinedWebpage.description, "UserDefinedURL")
         XCTAssertEqual(tag.userDefinedWebpage.content, "http://userdefined.url")
-        //        XCTAssertEqual(tag.genre.genreName, "Genre")
-        //        XCTAssertEqual(tag.genre.genreDescription, "Genre")
+        XCTAssertEqual(tag.genre.genreName, "Genre")
+        XCTAssertEqual(tag.genre.genreDescription, "Genre")
         XCTAssertEqual(tag.mediaType.mediaType, nil)
         XCTAssertEqual(tag.mediaType.additionalMediaInfo, nil)
         XCTAssertEqual(tag.mediaType.mediaTypeDescription, nil)
@@ -228,6 +228,7 @@ class SwiftTagger_ID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag.mood, "Mood")
         XCTAssertEqual(tag.setSubtitle, "SetSubtitle")
         XCTAssertEqual(tag.producedNotice, "2020 ProducedNotice")
+        print()
     }
 
     
