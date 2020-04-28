@@ -8,7 +8,7 @@
 
 import Foundation
 
-/*
+
 /**
  A type representing a Table Of Contents frame.
  
@@ -61,7 +61,7 @@ public struct TableOfContentsFrame: FrameProtocol {
         self.entryCount = entryCount
         self.childElementIDs = childElementIDs
         self.embeddedSubFrames = embeddedSubFrames
-        self.flags = TableOfContentsFrame.defaultFlags()
+        self.flags = TableOfContentsFrame.defaultFlags
         self.layout = layout
     }
     
@@ -72,6 +72,7 @@ public struct TableOfContentsFrame: FrameProtocol {
     
     var flags: Data
     var layout: FrameLayoutIdentifier
+    var frameKey: FrameKey
     
     init(decodingContents contents: Data.SubSequence,
                   version: Version,
@@ -79,6 +80,34 @@ public struct TableOfContentsFrame: FrameProtocol {
                   flags: Data) throws {
         self.flags = flags
         self.layout = layout
+        
+        var parsing = contents
+        let elementID = parsing.extractPrefixAsStringUntilNullTermination(.isoLatin1)
+        self.elementID = elementID ?? TableOfContentsFrame.incrementalTocID
+        self.frameKey = .chapter(elementID: elementID ?? TableOfContentsFrame.incrementalTocID)
+
+        let flagsByte = parsing.extractFirst(1)
+        let flagsByteAsUint32 = flagsByte.uint32
+        
+
+        if flagsByte.uint32.??("a" in %000000ab) == 1 {
+            self.topLevelFlag = true
+        } else {
+            self.topLevelFlag = false
+        }
+        if flagsByte.uint32.??("b" in %000000ab) == 1 {
+            self.orderedFlag = true
+        } else {
+            self.orderedFlag = false
+        }
+
+        let childIDCount = parsing.extractFirst(1)
+        self.entryCount = childIDCount.uint8
+
+        
+        
+        
+
     }
     
     init(elementID: String,
@@ -97,4 +126,4 @@ public struct TableOfContentsFrame: FrameProtocol {
     }
 }
 
-*/
+

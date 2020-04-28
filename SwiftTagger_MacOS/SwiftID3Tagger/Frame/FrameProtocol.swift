@@ -128,4 +128,9 @@ extension FrameProtocol {
         return "ch\(chapterNumber += 1)"
     }
 
+    static var incrementalTocID: String {
+        var tocNumber: Int = 1
+        return "toc\(tocNumber += 1)"
+    }
+
 }
