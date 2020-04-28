@@ -15,19 +15,27 @@ public struct CreditsListFrame: FrameProtocol {
  
     // public initializers
     public init(role: String, involvedPerson: String) {
-        self.init(layout: .known(.involvedPeopleList), entries: [(role: role, person: involvedPerson)])
+        var entryArray: [(String, String)] = []
+        entryArray.append((role, involvedPerson))
+        self.init(layout: .known(.involvedPeopleList), entries: entryArray)
     }
     
     public init(role: InvolvedPersonCredits.RawValue, creditedPerson: String) {
-        self.init(layout: .known(.involvedPeopleList), entries: [(role: role, person: creditedPerson)])
+        var entryArray: [(String, String)] = []
+        entryArray.append((role, creditedPerson))
+        self.init(layout: .known(.involvedPeopleList), entries: entryArray)
     }
 
     public init(role: String, creditedMusician: String) {
-        self.init(layout: .known(.musicianCreditsList), entries: [(role: role, person: creditedMusician)])
+        var entryArray: [(String, String)] = []
+        entryArray.append((role, creditedMusician))
+        self.init(layout: .known(.musicianCreditsList), entries: entryArray)
     }
     
     public init(role: MusicianAndPerformerCredits.RawValue, creditedPerformer: String) {
-        self.init(layout: .known(.musicianCreditsList), entries: [(role: role, person: creditedPerformer)])
+        var entryArray: [(String, String)] = []
+        entryArray.append((role, creditedPerformer))
+        self.init(layout: .known(.musicianCreditsList), entries: entryArray)
     }
 
     /// An array of the role:person tuples

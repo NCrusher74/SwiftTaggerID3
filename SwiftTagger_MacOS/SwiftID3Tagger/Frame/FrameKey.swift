@@ -82,7 +82,7 @@ public enum FrameKey: Hashable {
     /** The 'ISRC' frame should contain the International Standard Recording Code [ISRC] (12 characters). */
     case isrc
     /** The 'Language' frame should contain the languages of the text or lyrics spoken or sung in the audio. The language is represented with three characters according to ISO-639-2 [ISO-639-2]. If more than one language is used in the text their language codes should follow according to the amount of their usage, e.g. "eng" $00 "sve" $00. */
-    case languages(language: String)
+    case languages
     /** The 'Length' frame contains the length of the audio file in milliseconds, represented as a numeric string. */
     case length
     /** The 'Lyricist/Text writer' frame is intended for the writer of the text or lyrics in the recording. */

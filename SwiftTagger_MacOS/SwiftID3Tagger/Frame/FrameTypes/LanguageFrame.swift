@@ -15,25 +15,34 @@ import Foundation
  */
 public struct LanguageFrame: FrameProtocol {
     
-    public init(language: ISO6392Codes.RawValue) {
-        self.init(layout: .known(.languages), languageString: language)
+    public init(languages: [ISO6392Codes.RawValue]) {
+        self.init(layout: .known(.languages), languages: languages)
     }
-
+    
     /// ISO-639-2 languge code
-    var languageString: String
+    var languages: [String]
     
     /**
      - parameter language: the ISO-639-2 language code.
      */
-    private init(layout: FrameLayoutIdentifier, languageString: String) {
-        self.languageString = languageString
+    private init(layout: FrameLayoutIdentifier, languages: [String]) {
+        self.languages = languages
         self.flags = LanguageFrame.defaultFlags
         self.layout = layout
-        self.frameKey = .languages(language: languageString)
+        self.frameKey = .languages
     }
     
     func encodeContents(version: Version) throws -> Data {
-        return self.languageString.encoded(withNullTermination: false)
+        var languagesAsData = Data()
+        for language in self.languages {
+            switch version {
+                case .v2_2, .v2_3:
+                    languagesAsData.append(language.encoded(withNullTermination: false))
+                case .v2_4:
+                    languagesAsData.append(language.encoded(withNullTermination: true))
+            }
+        }
+        return languagesAsData
     }
     
     // MARK: Decoding
@@ -51,14 +60,20 @@ public struct LanguageFrame: FrameProtocol {
         self.layout = layout
         
         var parsing = contents
-        let languageCode = parsing.extractFirst(3).stringASCII ?? "und"
-        if ISO6392Codes.allCases.contains(where: { $0.iso6392TCode == languageCode }) {
-            self.languageString = languageCode
-        } else {
-            self.languageString = "und"
+        let encoding = try LanguageFrame.extractEncoding(data: &parsing, version: version)
+        let languageCodes = [parsing.extractPrefixAsStringUntilNullTermination(encoding)]
+        var languagesArray: [String] = []
+        for code in languageCodes {
+            if ISO6392Codes.allCases.contains(where:
+                { $0.iso6392TCode == code }) {
+                languagesArray.append(code ?? "und")
+            }
+            else {
+                languagesArray = ["und"]
+            }
         }
-        self.frameKey = .languages(language: languageString)
+        self.languages = languagesArray
+        self.frameKey = .languages
     }
-    
-
+        
 }

@@ -59,11 +59,22 @@ class SwiftTagger_ID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag.discNumber.totalDiscs, 4)
         XCTAssertEqual(tag.trackNumber.track, 1)
         XCTAssertEqual(tag.trackNumber.totalTracks, 2)
-        XCTAssertEqual(tag.language(),"eng")
+        XCTAssertEqual(tag.languages,["eng"])
         XCTAssertEqual(tag.userDefinedText.description, "UserText")
         XCTAssertEqual(tag.userDefinedText.content, "User Defined Text Content")
         XCTAssertEqual(tag.userDefinedWebpage.description, "UserDefinedURL")
         XCTAssertEqual(tag.userDefinedWebpage.content, "http://userdefined.url")
+//        XCTAssertEqual(tag.genre.genreName, "Genre")
+//        XCTAssertEqual(tag.genre.genreDescription, "Genre")
+        XCTAssertEqual(tag.mediaType.mediaType, nil)
+        XCTAssertEqual(tag.mediaType.additionalMediaInfo, nil)
+        XCTAssertEqual(tag.mediaType.mediaTypeDescription, nil)
+        XCTAssertEqual(tag.comments.language, "eng")
+        XCTAssertEqual(tag.comments.description, "CommentDescription")
+        XCTAssertEqual(tag.comments.comment, "Comment Content")
+        XCTAssertEqual(tag.lyrics.language, "eng")
+        XCTAssertEqual(tag.lyrics.description, "LyricsDesscription")
+        XCTAssertEqual(tag.lyrics.lyrics, "Lyrics Content")
     }
     
     

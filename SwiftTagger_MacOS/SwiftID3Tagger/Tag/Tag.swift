@@ -987,28 +987,27 @@ public extension Tag {
         }
     }
 
-//    var involvedPeopleList: [(role: String, person: String)] {
-//        get {
-//            if let frame = self.frames[.involvedPeopleList],
-//                case .creditsListFrame(let creditsListFrame) = frame {
-//                return creditsListFrame.entries
-//            } else {
-//                print("No author.")
-//            }
-//        }
-//        set {
-//            let frame = CreditsListFrame(role: newValue[0], creditedPerson: newValue[1])
-//            frames[.involvedPeopleList] = .creditsListFrame(frame)
-//        }
-//    }
-//
+    var involvedPeopleList: [(role: String, person: String)] {
+        get {
+            if let frame = self.frames[.involvedPeopleList],
+                case .creditsListFrame(let creditsListFrame) = frame {
+                return creditsListFrame.entries
+            } else {
+                return []
+            }
+        }
+        set {
+            let frame = CreditsListFrame(role: newValue., involvedPerson: newValue.)
+        }
+    }
+
 //    var musicianCreditsList: [(role: String, person: String)] {
 //        get {
 //            if let frame = self.frames[.musicianCreditsList],
 //                case .creditsListFrame(let creditsListFrame) = frame {
 //                return creditsListFrame.entries
 //            } else {
-//                print("No author.")
+//                return []
 //            }
 //        }
 //        set {
@@ -1016,6 +1015,21 @@ public extension Tag {
 //            frames[.musicianCreditsList] = .creditsListFrame(frame)
 //        }
 //    }
+
+    var languages: [String] {
+        get {
+            if let frame = self.frames[.languages],
+                case .languageFrame(let languageFrame) = frame {
+                return languageFrame.languages
+            } else {
+            return []
+            }
+        }
+        set {
+            let frame = LanguageFrame(languages: newValue )
+            frames[.languages] = .languageFrame(frame)
+        }
+    }
 
     var userDefinedText: (description: String?, content: String) {
         get {
@@ -1092,9 +1106,184 @@ public extension Tag {
         }
     }
     
+    var genre: (genreName: String?, genreDescription: String?) {
+        get {
+            if let frame = self.frames[.genre],
+                case .presetOptionsFrame(let presetOptionsFrame) = frame {
+                return (presetOptionsFrame.presetName, presetOptionsFrame.refinementDescription)
+            } else {
+                return ("","")
+            }
+        }
+        set {
+            let frame = PresetOptionsFrame(genreName: newValue.genreName ?? "", genreDescription: newValue.genreDescription ?? "")
+            frames[.genre] = .presetOptionsFrame(frame)
+        }
+    }
 
+    var mediaType: (mediaType: String?, additionalMediaInfo: String?, mediaTypeDescription: String?) {
+        get {
+            if let frame = self.frames[.mediaType],
+                case .presetOptionsFrame(let presetOptionsFrame) = frame {
+                return (presetOptionsFrame.presetName, presetOptionsFrame.presetRefinement, presetOptionsFrame.refinementDescription)
+            } else {
+                return ("","","")
+            }
+        }
+        set {
+            let frame = PresetOptionsFrame(
+                mediaType: newValue.mediaType ?? "",
+                additionalMediaInfo: newValue.additionalMediaInfo,
+                mediaTypeDescription: newValue.mediaTypeDescription ?? "")
+            frames[.mediaType] = .presetOptionsFrame(frame)
+        }
+    }
+
+    var comments: (language: String?, description: String?, comment: String) {
+        get {
+            if let frame = self.frames[.comments(description: "")],
+                case .localizedFrame(let localizedFrame) = frame {
+                return (language: localizedFrame.languageString,
+                        description: localizedFrame.descriptionString,
+                        comment: localizedFrame.contentString)
+            } else {
+                return (language: "und", description: "", comment: "")
+            }
+        }
+        set {
+            let frame = LocalizedFrame(language: newValue.language,
+                                       description: newValue.description,
+                                       comments: newValue.comment)
+            frames[.comments(description: newValue.description ?? "")] = .localizedFrame(frame)
+        }
+    }
     
-    
+    var lyrics: (language: String?, description: String?, lyrics: String) {
+        get {
+            if let frame = self.frames[.unsynchronizedLyrics(description: "")],
+                case .localizedFrame(let localizedFrame) = frame {
+                return (language: localizedFrame.languageString,
+                        description: localizedFrame.descriptionString,
+                        lyrics: localizedFrame.contentString)
+            } else {
+                return (language: "und", description: "", lyrics: "")
+            }
+        }
+        set {
+            let frame = LocalizedFrame(language: newValue.language,
+                                       description: newValue.description,
+                                       comments: newValue.lyrics)
+            frames[.unsynchronizedLyrics(description: newValue.description ?? "")] = .localizedFrame(frame)
+        }
+    }
+
+    var description: (language: String?, contentDescription: String) {
+        get {
+            if let frame = self.frames[.comments(description: "Description")],
+                case .localizedFrame(let localizedFrame) = frame {
+                return (language: localizedFrame.languageString,
+                        contentDescription: localizedFrame.contentString)
+            } else {
+                return (language: "und", contentDescription: "")
+            }
+        }
+        set {
+            let frame = LocalizedFrame(language: newValue.language,
+                                       description: "Description",
+                                       comments: newValue.contentDescription)
+            frames[.comments(description: "Description")] = .localizedFrame(frame)
+        }
+    }
+
+    var shortDescription: (language: String?, shortDescription: String) {
+        get {
+            if let frame = self.frames[.comments(description: "Short Description")],
+                case .localizedFrame(let localizedFrame) = frame {
+                return (language: localizedFrame.languageString,
+                        shortDescription: localizedFrame.contentString)
+            } else {
+                return (language: "und", shortDescription: "")
+            }
+        }
+        set {
+            let frame = LocalizedFrame(language: newValue.language,
+                                       description: "Short Description",
+                                       comments: newValue.shortDescription)
+            frames[.comments(description: "Short Description")] = .localizedFrame(frame)
+        }
+    }
+
+    var longDescription: (language: String?, longDescription: String) {
+        get {
+            if let frame = self.frames[.comments(description: "Long Description")],
+                case .localizedFrame(let localizedFrame) = frame {
+                return (language: localizedFrame.languageString,
+                        longDescription: localizedFrame.contentString)
+            } else {
+                return (language: "und", longDescription: "")
+            }
+        }
+        set {
+            let frame = LocalizedFrame(language: newValue.language,
+                                       description: "Long Description",
+                                       comments: newValue.longDescription)
+            frames[.comments(description: "Long Description")] = .localizedFrame(frame)
+        }
+    }
+
+    var linerNotes: (language: String?, linerNotes: String) {
+        get {
+            if let frame = self.frames[.comments(description: "Liner Notes")],
+                case .localizedFrame(let localizedFrame) = frame {
+                return (language: localizedFrame.languageString,
+                        linerNotes: localizedFrame.contentString)
+            } else {
+                return (language: "und", linerNotes: "")
+            }
+        }
+        set {
+            let frame = LocalizedFrame(language: newValue.language,
+                                       description: "Liner Notes",
+                                       comments: newValue.linerNotes)
+            frames[.comments(description: "Liner Notes")] = .localizedFrame(frame)
+        }
+    }
+
+    var songDescription: (language: String?, songDescription: String) {
+        get {
+            if let frame = self.frames[.comments(description: "Song Description")],
+                case .localizedFrame(let localizedFrame) = frame {
+                return (language: localizedFrame.languageString,
+                        songDescription: localizedFrame.contentString)
+            } else {
+                return (language: "und", songDescription: "")
+            }
+        }
+        set {
+            let frame = LocalizedFrame(language: newValue.language,
+                                       description: "Song Description",
+                                       comments: newValue.songDescription)
+            frames[.comments(description: "Song Description")] = .localizedFrame(frame)
+        }
+    }
+
+    var seriesDescription: (language: String?, seriesDescription: String) {
+        get {
+            if let frame = self.frames[.comments(description: "Series Description")],
+                case .localizedFrame(let localizedFrame) = frame {
+                return (language: localizedFrame.languageString,
+                        seriesDescription: localizedFrame.contentString)
+            } else {
+                return (language: "und", seriesDescription: "")
+            }
+        }
+        set {
+            let frame = LocalizedFrame(language: newValue.language,
+                                       description: "Series Description",
+                                       comments: newValue.seriesDescription)
+            frames[.comments(description: "Series Description")] = .localizedFrame(frame)
+        }
+    }
     
     
 }

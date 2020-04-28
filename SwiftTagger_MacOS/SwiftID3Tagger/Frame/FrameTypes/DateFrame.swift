@@ -18,51 +18,51 @@ import Foundation
 public struct DateFrame: FrameProtocol {
     
     /// TDAT Date Frame
-    public init(releaseDate month: Int?, day: Int?) {
+    public init(releaseDateMonth: Int?, releaseDateDay: Int?) {
         self.init(layout: .known(.date),
-                  timeStampString: "\(month ?? 00)-\(day ?? 00)")
+                  timeStampString: "\(releaseDateMonth ?? 00)-\(releaseDateDay ?? 00)")
     }
     
     /// TIM/TIME Time Frame
-    public init(releaseTime hour: Int?, minute: Int?) {
+    public init(releaseTimeHour: Int?, releaseTimeMinute: Int?) {
         self.init(layout: .known(.time),
-                  timeStampString: "\(hour ?? 00):\(minute ?? 00)")
+                  timeStampString: "\(releaseTimeHour ?? 00):\(releaseTimeMinute ?? 00)")
     }
     
     /// TYE/TYER Year Frame
-    public init(releaseYear year: Int?) {
+    public init(releaseYear: Int?) {
         self.init(layout: .known(.year),
-                  timeStampString: "\(year ?? 00)")
+                  timeStampString: "\(releaseYear ?? 00)")
     }
     
     /// TDEN Encoding Time Frame
-    public init(encodingTime year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?) {
+    public init(encodingTimeYear: Int?, encodingTimeMonth: Int?, encodingTimeDay: Int?, encodingTimeHour: Int?, encodingTimeMinute: Int?) {
         self.init(layout: .known(.encodingTime),
-                  timeStampString: "\(year ?? 0000)")
+                  timeStampString: "\(encodingTimeYear ?? 0000)-\(encodingTimeMonth ?? 00)-\(encodingTimeDay ?? 00)T\(encodingTimeHour ?? 00):\(encodingTimeMinute ?? 00)")
     }
     
     /// TOR/TORY/TDOR - Original Release Date/Year Frame
-    public init(originalRelease year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?) {
+    public init(originalReleaseYear: Int?, originalReleaseMonth: Int?, originalReleaseDay: Int?, originalReleaseHour: Int?, originalReleaseMinute: Int?) {
         self.init(layout: .known(.originalReleaseTime),
-                  timeStampString: "\(year ?? 0000)-\(month ?? 00)-\(day ?? 00)T\(hour ?? 00):\(minute ?? 00)")
+                  timeStampString: "\(originalReleaseYear ?? 0000)-\(originalReleaseMonth ?? 00)-\(originalReleaseDay ?? 00)T\(originalReleaseHour ?? 00):\(originalReleaseMinute ?? 00)")
     }
     
     /// TRD/TRDA/TDRC - Recording Date Frame
-    public init(recordingDate year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?) {
+    public init(recordingDateYear: Int?, recordingDateMonth: Int?, recordingDateDay: Int?, recordingDateHour: Int?, recordingDateMinute: Int?) {
         self.init(layout: .known(.recordingDate),
-                  timeStampString: "\(year ?? 0000)-\(month ?? 00)-\(day ?? 00)T\(hour ?? 00):\(minute ?? 00)")
+                  timeStampString: "\(recordingDateYear ?? 0000)-\(recordingDateMonth ?? 00)-\(recordingDateDay ?? 00)T\(recordingDateHour ?? 00):\(recordingDateMinute ?? 00)")
     }
     
     /// TDRL - Release Time Frame
-    public init(releaseTime year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?) {
+    public init(releaseTimeYear: Int?, releaseTimeMonth: Int?, releaseTimeDay: Int?, releaseTimeHour: Int?, releaseTimeMinute: Int?) {
         self.init(layout: .known(.releaseTime),
-                  timeStampString: "\(year ?? 0000)-\(month ?? 00)-\(day ?? 00)T\(hour ?? 00):\(minute ?? 00)")
+                  timeStampString: "\(releaseTimeYear ?? 0000)-\(releaseTimeMonth ?? 00)-\(releaseTimeDay ?? 00)T\(releaseTimeHour ?? 00):\(releaseTimeMinute ?? 00)")
     }
     
     /// TDTG - Tagging Time Frame
-    public init(taggingTime year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?) {
+    public init(taggingTimeYear: Int?, taggingTimeMonth: Int?, taggingTimeDay: Int?, taggingTimeHour: Int?, taggingTimeMinute: Int?) {
         self.init(layout: .known(.taggingTime),
-                  timeStampString: "\(year ?? 0000)-\(month ?? 00)-\(day ?? 00)T\(hour ?? 00):\(minute ?? 00)")
+                  timeStampString: "\(taggingTimeYear ?? 0000)-\(taggingTimeMonth ?? 00)-\(taggingTimeDay ?? 00)T\(taggingTimeHour ?? 00):\(taggingTimeMinute ?? 00)")
     }
     
     
