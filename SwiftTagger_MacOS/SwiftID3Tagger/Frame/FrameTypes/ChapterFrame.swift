@@ -57,21 +57,30 @@ public struct ChapterFrame: FrameProtocol {
         self.frameKey = .chapter(elementID: elementID)
     }
     
+    // encodes the contents of the frame and returns Data that can be added to the Tag instance to write to the file
     func encodeContents(version: Version) throws -> Data {
+        
+        // encode ElementID string
         let encodedElementID = self.elementID.encoded(withNullTermination: true)
+        
+        // convert integers to UInt32 and then to Data
         let encodedStartTime = self.startTime.truncatedUInt32.bigEndianData
         let encodedEndTime = self.endTime.truncatedUInt32.bigEndianData
         let encodedStartByteOffset = self.startByteOffset.truncatedUInt32.bigEndianData
         let encodedEndByteOffset = self.endByteOffset.truncatedUInt32.bigEndianData
 
+        // encoded the subframes
         var encodedSubframes = Data()
         for subframe in self.embeddedSubframes {
-            encodedSubframes.append(try encodeSubframes(subframe: subframe as! FrameProtocol, version: version))
+            encodedSubframes.append(try encodeSubframes(subframe: subframe.value.asFrameProtocol, version: version))
         }
+        
+        // return all the encoded Data
         return encodedElementID + encodedStartTime + encodedEndTime + encodedStartByteOffset + encodedEndByteOffset + encodedSubframes
     }
  
-    func encodeSubframes(subframe: FrameProtocol, version: Version) throws -> Data {
+    // encodes the subframes of the chapter frame
+    private func encodeSubframes(subframe: FrameProtocol, version: Version) throws -> Data {
         return try subframe.encodeContents(version: version)
     }
     
@@ -79,6 +88,7 @@ public struct ChapterFrame: FrameProtocol {
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
     
+    // parses the contents of a chapter frame when reading an ID3 tag
     init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,
@@ -87,9 +97,15 @@ public struct ChapterFrame: FrameProtocol {
         self.layout = layout
         
         var parsing = contents
+        
+        // extract the elementID string
         let elementID = parsing.extractPrefixAsStringUntilNullTermination(.isoLatin1)
-        self.elementID = elementID ?? Tag.incrementalChapterID
-        self.frameKey = .chapter(elementID: elementID ?? Tag.incrementalChapterID)
+        // initialize the elementID property from the string
+        self.elementID = elementID ?? incrementalChapterID
+        // initialize the frameKey property using the elementID
+        self.frameKey = .chapter(elementID: elementID ?? incrementalChapterID)
+        
+        // extract and convert integer properties to integers
         let startTimeData = parsing.extractFirst(4)
         let startTimeUInt32 = UInt32(parsing: startTimeData, .bigEndian)
         self.startTime = Int(startTimeUInt32)
@@ -106,6 +122,7 @@ public struct ChapterFrame: FrameProtocol {
         let endByteOffsetUInt32 = UInt32(parsing: endByteOffsetData, .bigEndian)
         self.endByteOffset = Int(endByteOffsetUInt32)
         
+        // extract and parse subframe data
         var subframes: [FrameKey: Frame] = [:]
         while !parsing.isEmpty {
             let embeddedSubframeIdentifierData = parsing.extractFirst(version.identifierLength)
@@ -122,40 +139,47 @@ public struct ChapterFrame: FrameProtocol {
         self.embeddedSubframes = subframes
     }
     
-    
+    /// initialize a new chapter, manually building the embedded subframes
     public init(startTime: Int,
                 endTime: Int,
                 embeddedSubframes: [FrameKey: Frame]) {
+        let chapterNumber = incrementalChapterID
         self.init(layout: .known(.chapter),
-                  elementID: Tag.incrementalChapterID,
+                  elementID: chapterNumber,
                   startTime: startTime,
                   endTime: endTime,
                   startByteOffset: nil,
                   endByteOffset: nil,
                   embeddedSubframes: embeddedSubframes)
-        self.frameKey = .chapter(elementID: Tag.incrementalChapterID)
+        self.frameKey = .chapter(elementID: chapterNumber)
     }
 
-//    public convenience init(startTime: Int,
-//                endTime: Int,
-//                chapterTitle: String) {
-//        let subframeKey = FrameKey.title
-//        let subframeFrame: Frame = .stringFrame(let stringFrame)
-//        let subframe = subframeFrame(stringContent: chapterTitle)
-//        self.init(layout: .known(.chapter),
-//                  elementID: ChapterFrame.incrementalChapterID,
-//                  startTime: startTime,
-//                  endTime: endTime,
-//                  startByteOffset: nil,
-//                  endByteOffset: nil,
-//                  embeddedSubframes: embeddedSubframes[subframeKey] = subframeFrame)
-//        self.frameKey = .chapter(elementID: ChapterFrame.incrementalChapterID)
-//    }
+    /// initialize a simple chapter frame with only chapter title, start and end times specified, creates the embedded subframe for the title automatically
+    public init(chapterTitle: String,
+                startTime: Int,
+                endTime: Int) {
+        // create title stringframe as subframe
+        let subframeKey = FrameKey.title
+        let subframeFrame: Frame = .stringFrame(.init(title: "\(chapterTitle)"))
+        let subframe = [subframeKey : subframeFrame]
+
+        let chapterNumber = incrementalChapterID
+        // initialize chapter frame with subframe in place
+        self.init(layout: .known(.chapter),
+                  elementID: chapterNumber,
+                  startTime: startTime,
+                  endTime: endTime,
+                  startByteOffset: nil,
+                  endByteOffset: nil,
+                  embeddedSubframes: subframe)
+        self.frameKey = .chapter(elementID: chapterNumber)
+    }
     
 //    repeat with attached image rather than chapter title when image is implemented
-//    public convenience init(startTime: Int,
-//                endTime: Int,
-//                chapterTitle: String) {
+    /// initialize a simple chapter frame with only embedded chapter image, start and end times specified, creates the embedded subframe for the image automatically
+//    public init(imageUrl: URL,
+//                startTime: Int,
+//                endTime: Int) {
 //        let subframeKey = FrameKey.title
 //        let subframeFrame: Frame = .stringFrame(let stringFrame)
 //        let subframe = subframeFrame(stringContent: chapterTitle)

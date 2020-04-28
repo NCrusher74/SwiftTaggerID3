@@ -53,17 +53,6 @@ public struct Tag {
         }
         self.frames = frames
     }
-    
-    var incrementalChapterID: String {
-        var chapterNumber: Int = 1
-        return "ch\(chapterNumber += 1)"
-    }
-    
-    var incrementalTocID: String {
-        var tocNumber: Int = 1
-        return "toc\(tocNumber += 1)"
-    }
-
 }
 
 public extension Tag {

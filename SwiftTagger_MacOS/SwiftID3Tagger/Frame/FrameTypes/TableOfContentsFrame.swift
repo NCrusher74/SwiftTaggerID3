@@ -125,8 +125,8 @@ public struct TableOfContentsFrame: FrameProtocol {
         
         var parsing = contents
         let elementID = parsing.extractPrefixAsStringUntilNullTermination(.isoLatin1)
-        self.elementID = elementID ?? Tag.incrementalTocID
-        self.frameKey = .tableOfContents(elementID: elementID ?? Tag.incrementalTocID)
+        self.elementID = elementID ?? incrementalTocID
+        self.frameKey = .tableOfContents(elementID: elementID ?? incrementalTocID)
 
         let flagsByteData = parsing.extractFirst(1)
         let flagsByte = Int(UInt32(parsing: flagsByteData, .bigEndian))
@@ -178,7 +178,7 @@ public struct TableOfContentsFrame: FrameProtocol {
          childElementIDs: [String],
          embeddedSubframes: [FrameKey: Frame]) {
         self.init(layout: .known(.tableOfContents),
-                  elementID: Tag.incrementalTocID,
+                  elementID: incrementalTocID,
                   topLevelFlag: isTopTOC,
                   orderedFlag: elementsAreOrdered,
                   entryCount: UInt8(childElementIDs.count),
