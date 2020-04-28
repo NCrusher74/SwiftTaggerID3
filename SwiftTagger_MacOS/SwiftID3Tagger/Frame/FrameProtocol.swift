@@ -134,4 +134,10 @@ extension FrameProtocol {
         let content = frameData.extractPrefixAsStringUntilNullTermination(encoding) ?? ""
         return (description: description, content: content)
     }
+    
+    static var incrementalChapterID: String {
+        var chapterNumber: Int = 1
+        return "ch\(chapterNumber += 1)"
+    }
+
 }

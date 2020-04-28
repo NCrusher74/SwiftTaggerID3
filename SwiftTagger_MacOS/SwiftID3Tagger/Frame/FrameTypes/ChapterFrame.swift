@@ -6,7 +6,7 @@
 //  Copyright © 2020 Nolaine Crusher. All rights reserved.
 //
 
-/*
+
 import Foundation
 
 /**
@@ -52,38 +52,88 @@ public struct ChapterFrame: FrameProtocol {
         self.startByteOffset = startByteOffset ?? 0
         self.endByteOffset = endByteOffset ?? 0
         self.embeddedSubframes = embeddedSubframes
-        self.flags = ChapterFrame.defaultFlags()
+        self.flags = ChapterFrame.defaultFlags
         self.layout = layout
+        self.frameKey = .chapter(elementID: elementID)
     }
     
     func encodeContents(version: Version) throws -> Data {
-        
+        let encodedElementID = self.elementID.encoded(withNullTermination: true)
+        let encodedStartTime = self.startTime.data
+        let encodedEndTime = self.endTime.data
+        let encodedStartByteOffset = self.startByteOffset.data
+        let encodedEndByteOffset = self.endByteOffset.data
+        var encodedSubframes = Data()
+        for subframe in self.embeddedSubframes {
+            encodedSubframes.append(try encodeSubframes(subframe: subframe as! FrameProtocol, version: version))
+        }
+        return encodedElementID + encodedStartTime + encodedEndTime + encodedStartByteOffset + encodedEndByteOffset + encodedSubframes
+    }
+ 
+    func encodeSubframes(subframe: FrameProtocol, version: Version) throws -> Data {
+        return try subframe.encodeContents(version: version)
     }
     
     var flags: Data
     var layout: FrameLayoutIdentifier
+    var frameKey: FrameKey
     
     init(decodingContents contents: Data.SubSequence,
-                  version: Version,
-                  layout: FrameLayoutIdentifier,
-                  flags: Data) throws {
+         version: Version,
+         layout: FrameLayoutIdentifier,
+         flags: Data) throws {
         self.flags = flags
         self.layout = layout
+        
+        var parsing = contents
+        let elementID = parsing.extractPrefixAsStringUntilNullTermination(.isoLatin1)
+        self.elementID = elementID ?? ChapterFrame.incrementalChapterID
+        self.frameKey = .chapter(elementID: elementID ?? ChapterFrame.incrementalChapterID)
+        let startTimeData = parsing.extractFirst(4)
+        let startTimeUInt32 = UInt32(parsing: startTimeData, .bigEndian)
+        self.startTime = Int(startTimeUInt32)
+        
+        let endTimeData = parsing.extractFirst(4)
+        let endTimeUInt32 = UInt32(parsing: endTimeData, .bigEndian)
+        self.endTime = Int(endTimeUInt32)
+        
+        let startByteOffsetData = parsing.extractFirst(4)
+        let startByteOffsetUInt32 = UInt32(parsing: startByteOffsetData, .bigEndian)
+        self.startByteOffset = Int(startByteOffsetUInt32)
+        
+        let endByteOffsetData = parsing.extractFirst(4)
+        let endByteOffsetUInt32 = UInt32(parsing: endByteOffsetData, .bigEndian)
+        self.endByteOffset = Int(endByteOffsetUInt32)
+        
+        var subframes: [FrameKey: Frame] = [:]
+        while !parsing.isEmpty {
+            let embeddedSubframeIdentifierData = parsing.extractFirst(version.identifierLength)
+            if embeddedSubframeIdentifierData.first == 0x00 { break } // Padding, not a frame.
+            let subframeIdentifier = try String(ascii: embeddedSubframeIdentifierData)
+            let subframe = try Frame(
+                identifier: subframeIdentifier,
+                data: &parsing,
+                version: version)
+            
+            let subframeFrameKey = subframe.frameKey
+            subframes[subframeFrameKey] = subframe
+        }
+        self.embeddedSubframes = subframes
     }
     
     
-    init(startTime: Int,
-         endTime: Int,
-         embeddedSubframes: [FrameKey: Frame]) {
+    public init(startTime: Int,
+                endTime: Int,
+                embeddedSubframes: [FrameKey: Frame]) {
         self.init(layout: .known(.chapter),
-                  elementID: elementID,
+                  elementID: ChapterFrame.incrementalChapterID,
                   startTime: startTime,
                   endTime: endTime,
                   startByteOffset: nil,
                   endByteOffset: nil,
                   embeddedSubframes: embeddedSubframes)
+        self.frameKey = .chapter(elementID: ChapterFrame.incrementalChapterID)
     }
-    
+ 
 }
 
- */
