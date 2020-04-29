@@ -128,8 +128,9 @@ public struct StringFrame: FrameProtocol {
     }
     
     func encodeContents(version: Version) throws -> Data {
+        let encodingByte = StringEncoding.preferred.rawValue.encoding(endianness: .bigEndian)
         let contents = self.contentString
-        return contents.encoded(withNullTermination: false)
+        return encodingByte + contents.encoded(withNullTermination: false)
     }
     
 

@@ -176,23 +176,24 @@ public struct ChapterFrame: FrameProtocol {
         self.frameKey = .chapter(elementID: uuid.uuidString)
     }
     
-//    repeat with attached image rather than chapter title when image is implemented
     /// initialize a simple chapter frame with only embedded chapter image, start and end times specified, creates the embedded subframe for the image automatically
-//    public init(imageUrl: URL,
-//                startTime: Int,
-//                endTime: Int) {
-//        let subframeKey = FrameKey.title
-//        let subframeFrame: Frame = .stringFrame(let stringFrame)
-//        let subframe = subframeFrame(stringContent: chapterTitle)
-//        self.init(layout: .known(.chapter),
-//                  elementID: ChapterFrame.incrementalChapterID,
-//                  startTime: startTime,
-//                  endTime: endTime,
-//                  startByteOffset: nil,
-//                  endByteOffset: nil,
-//                  embeddedSubframes: embeddedSubframes[subframeKey] = subframeFrame)
-//        self.frameKey = .chapter(elementID: ChapterFrame.incrementalChapterID)
-//    }
+    public init(imageUrl: URL,
+                startTime: Int,
+                endTime: Int) throws {
+
+        let uuid = UUID()
+        let subframeKey = FrameKey.attachedPicture(description: "chapter image \(uuid.uuidString)")
+        let subframeFrame: Frame = try .image(.init(imageLocation: imageUrl, imageType: .Other, imageDescription: "chapter image \(uuid.uuidString)"))
+        let subframe = [subframeKey : subframeFrame]
+        self.init(layout: .known(.chapter),
+                  elementID: uuid.uuidString,
+                  startTime: startTime,
+                  endTime: endTime,
+                  startByteOffset: nil,
+                  endByteOffset: nil,
+                  embeddedSubframes: subframe)
+        self.frameKey = .chapter(elementID: uuid.uuidString)
+    }
 
 }
 

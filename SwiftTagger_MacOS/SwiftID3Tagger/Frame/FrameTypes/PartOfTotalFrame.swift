@@ -43,12 +43,13 @@ public struct PartOfTotalFrame: FrameProtocol {
     }
     
     func encodeContents(version: Version) throws -> Data {
+        let encodingByte = StringEncoding.preferred.rawValue.encoding(endianness: .bigEndian)
         if self.total == nil {
             let partOfTotalString = String(self.part)
-            return partOfTotalString.encoded(withNullTermination: false)
+            return encodingByte + partOfTotalString.encoded(withNullTermination: false)
         } else {
             let partOfTotalString = "\(self.part)/\(self.total ?? 0)"
-            return partOfTotalString.encoded(withNullTermination: false)
+            return encodingByte + partOfTotalString.encoded(withNullTermination: false)
         }
     }
     

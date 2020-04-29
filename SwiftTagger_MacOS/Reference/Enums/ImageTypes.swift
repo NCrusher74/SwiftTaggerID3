@@ -13,6 +13,14 @@
 import Foundation
 
 /**
+ An enum that describes the format of a supported attached image.
+ */
+public enum ImageFormat: String {
+    case jpg
+    case png
+}
+
+/**
  An enum that describes the ID3 picture type supported.
  */
 public enum ImageType: UInt8 {
@@ -59,7 +67,7 @@ public enum ImageType: UInt8 {
     /// Publisher logo image.
     case PublisherStudioLogotype = 0x14
 
-    var imageDescription: String {
+    var pictureDescription: String {
         switch self {
             case .Other: return "Other Image"
             case .fileIcon: return "File Icon"

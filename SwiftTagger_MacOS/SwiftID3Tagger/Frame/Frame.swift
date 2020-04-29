@@ -19,7 +19,7 @@ public enum Frame {
     case creditsListFrame(CreditsListFrame)
     case integerFrame(IntegerFrame)
     case dateFrame(DateFrame)
-    //    case image(ImageFrame)
+    case image(ImageFrame)
     case booleanFrame(BooleanFrame)
     case presetOptionsFrame(PresetOptionsFrame)
     case urlFrame(URLFrame)
@@ -32,8 +32,11 @@ public enum Frame {
          version: Version) throws {
         let layout = FrameLayoutIdentifier(identifier: identifier)
         switch layout {
-            //            case .known(.attachedPicture):
-            //                self = .image(try ImageFrame)
+            case .known(.attachedPicture):
+                self = .image(try ImageFrame(
+                    decodingFromStartOf: &data,
+                    version: version,
+                    layout: layout))
             case .known(.chapter):
                 self = .chapter(try ChapterFrame(
                     decodingFromStartOf: &data,
@@ -157,6 +160,8 @@ public enum Frame {
                 return chapterFrame.frameKey
             case .toc(let tableOfContentsFrame):
                 return tableOfContentsFrame.frameKey
+            case .image(let imageFrame):
+                return imageFrame.frameKey
         }
     }
 }
@@ -192,6 +197,8 @@ extension Frame {
                 return chapterFrame
             case .unknownFrame(let unknownFrame):
                 return unknownFrame
+            case .image(let imageFrame):
+                return imageFrame
         }
     }
 }

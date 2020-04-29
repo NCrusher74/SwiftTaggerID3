@@ -70,7 +70,8 @@ public struct DateFrame: FrameProtocol {
     var frameKey: FrameKey
     
     func encodeContents(version: Version) throws -> Data {
-        return self.timeStampString.encoded(withNullTermination: false)
+        let encodingByte = StringEncoding.preferred.rawValue.encoding(endianness: .bigEndian)
+        return encodingByte + self.timeStampString.encoded(withNullTermination: false)
     }
     
     var year: Int?

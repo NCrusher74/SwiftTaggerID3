@@ -33,6 +33,7 @@ public struct LanguageFrame: FrameProtocol {
     }
     
     func encodeContents(version: Version) throws -> Data {
+        let encodingByte = StringEncoding.preferred.rawValue.encoding(endianness: .bigEndian)
         var languagesAsData = Data()
         for language in self.languages {
             switch version {
@@ -42,7 +43,7 @@ public struct LanguageFrame: FrameProtocol {
                     languagesAsData.append(language.encoded(withNullTermination: true))
             }
         }
-        return languagesAsData
+        return encodingByte + languagesAsData
     }
     
     // MARK: Decoding

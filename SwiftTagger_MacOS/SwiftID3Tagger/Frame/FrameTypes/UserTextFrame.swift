@@ -68,9 +68,10 @@ public struct UserTextFrame: FrameProtocol {
     var frameKey: FrameKey
 
     func encodeContents(version: Version) throws -> Data {
+        let encodingByte = StringEncoding.preferred.rawValue.encoding(endianness: .bigEndian)
         let encodedDescriptionString = self.descriptionString.encoded(withNullTermination: true)
         let encodedContentsString = self.contentString.encoded(withNullTermination: false)
-        return encodedDescriptionString + encodedContentsString
+        return encodingByte + encodedDescriptionString + encodedContentsString
 
     }
 

@@ -71,6 +71,8 @@ public struct PresetOptionsFrame: FrameProtocol {
     
     // MARK: Encode contents for writing
     func encodeContents(version: Version) throws -> Data {
+        let encodingByte = StringEncoding.preferred.rawValue.encoding(endianness: .bigEndian)
+
         var encodedName = Data()
         var encodedPresetRefinement = Data()
         var encodedRefinement = Data()
@@ -89,7 +91,7 @@ public struct PresetOptionsFrame: FrameProtocol {
         if let convertedRefinement = encodeRefinementString(version: version) {
             encodedRefinement = convertedRefinement
         }
-        return encodedName + encodedPresetRefinement + encodedRefinement
+        return encodingByte + encodedName + encodedPresetRefinement + encodedRefinement
     }
     
     // encode presetType

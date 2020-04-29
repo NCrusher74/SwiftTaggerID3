@@ -33,11 +33,12 @@ public struct BooleanFrame: FrameProtocol {
     }
     
     func encodeContents(version: Version) throws -> Data {
+        let encodingByte = StringEncoding.preferred.rawValue.encoding(endianness: .bigEndian)
         let contents = self.value
         if contents == true {
-            return "1".encoded(withNullTermination: false)
+            return encodingByte + "1".encoded(withNullTermination: false)
         } else {
-            return "0".encoded(withNullTermination: false)
+            return encodingByte + "0".encoded(withNullTermination: false)
         }
     }
     

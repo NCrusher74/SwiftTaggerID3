@@ -38,7 +38,8 @@ public struct IntegerFrame: FrameProtocol {
     }
     
     func encodeContents(version: Version) throws -> Data {
-        return String(self.value).encoded(withNullTermination: false)
+        let encodingByte = StringEncoding.preferred.rawValue.encoding(endianness: .bigEndian)
+        return encodingByte + String(self.value).encoded(withNullTermination: false)
     }
     
     // MARK: Decode

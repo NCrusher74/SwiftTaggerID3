@@ -59,12 +59,13 @@ public struct CreditsListFrame: FrameProtocol {
     }
         
     func encodeContents(version: Version) throws -> Data {
+        let encodingByte = StringEncoding.preferred.rawValue.encoding(endianness: .bigEndian)
         var entriesAsData = Data()
         for entry in self.entries {
             entriesAsData.append(contentsOf: entry.role.encoded(withNullTermination: true))
             entriesAsData.append(contentsOf: entry.person.encoded(withNullTermination: true))
         }
-        return entriesAsData
+        return encodingByte + entriesAsData
     }
     
     var flags: Data

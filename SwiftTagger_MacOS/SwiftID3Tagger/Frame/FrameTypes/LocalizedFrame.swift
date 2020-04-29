@@ -106,10 +106,11 @@ public struct LocalizedFrame: FrameProtocol {
     var frameKey: FrameKey
     
     func encodeContents(version: Version) throws -> Data {
+        let encodingByte = StringEncoding.preferred.rawValue.encoding(endianness: .bigEndian)
         let encodedLanguageString = self.languageString?.encoded(withNullTermination: false) ?? "und".encoded(withNullTermination: false)
         let encodedDescriptionString = self.descriptionString?.encoded(withNullTermination: true) ?? "".encoded(withNullTermination: true)
         let encodedContentsString = self.contentString.encoded(withNullTermination: false)
-        return encodedLanguageString + encodedDescriptionString + encodedContentsString
+        return encodingByte + encodedLanguageString + encodedDescriptionString + encodedContentsString
     }
 
     init(decodingContents contents: Data.SubSequence,
@@ -122,7 +123,7 @@ public struct LocalizedFrame: FrameProtocol {
         switch layout {
             case .known(.comments) : self.frameKey = .comments(description: descriptionString ?? "")
             case .known(.unsynchronizedLyrics) : self.frameKey = .unsynchronizedLyrics(description: descriptionString ?? "")
-            default: self.frameKey = .userDefinedText(description: descriptionString ?? "")
+            default: self.frameKey = .comments(description: descriptionString ?? "")
         }
 
         

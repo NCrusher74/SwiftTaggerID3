@@ -24,7 +24,7 @@
 		51490E5C243EF94E009D4BA4 /* id3v2.3.0.txt in Resources */ = {isa = PBXBuildFile; fileRef = 51490E57243EF94D009D4BA4 /* id3v2.3.0.txt */; };
 		51490E5D243EF94E009D4BA4 /* id3v2.4.0-structure.txt in Resources */ = {isa = PBXBuildFile; fileRef = 51490E58243EF94D009D4BA4 /* id3v2.4.0-structure.txt */; };
 		51490E5F243EF94E009D4BA4 /* id3v2.2.0.txt in Resources */ = {isa = PBXBuildFile; fileRef = 51490E5A243EF94E009D4BA4 /* id3v2.2.0.txt */; };
-		51490E60243EF94E009D4BA4 /* id3v2.4.0-frames.txt in Resources */ = {isa = PBXBuildFile; fileRef = 51490E5B243EF94E009D4BA4 /* id3v2.4.0-frames.txt */; };
+		51490E60243EF94E009D4BA4 /* id3v2.4.0.txt in Resources */ = {isa = PBXBuildFile; fileRef = 51490E5B243EF94E009D4BA4 /* id3v2.4.0.txt */; };
 		51490E62243EFA77009D4BA4 /* id3v2-chapters-1.0.html in Resources */ = {isa = PBXBuildFile; fileRef = 51490E61243EFA77009D4BA4 /* id3v2-chapters-1.0.html */; };
 		51490E6F243F3AA9009D4BA4 /* not-an-mp3.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 51490E6E243F3AA9009D4BA4 /* not-an-mp3.m4a */; };
 		51490E71243F3CE9009D4BA4 /* samplecover-green.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 51490E70243F3CE9009D4BA4 /* samplecover-green.jpg */; };
@@ -118,7 +118,7 @@
 		51490E57243EF94D009D4BA4 /* id3v2.3.0.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = id3v2.3.0.txt; sourceTree = "<group>"; };
 		51490E58243EF94D009D4BA4 /* id3v2.4.0-structure.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "id3v2.4.0-structure.txt"; sourceTree = "<group>"; };
 		51490E5A243EF94E009D4BA4 /* id3v2.2.0.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = id3v2.2.0.txt; sourceTree = "<group>"; };
-		51490E5B243EF94E009D4BA4 /* id3v2.4.0-frames.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "id3v2.4.0-frames.txt"; sourceTree = "<group>"; };
+		51490E5B243EF94E009D4BA4 /* id3v2.4.0.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = id3v2.4.0.txt; sourceTree = "<group>"; };
 		51490E61243EFA77009D4BA4 /* id3v2-chapters-1.0.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = "id3v2-chapters-1.0.html"; sourceTree = "<group>"; };
 		51490E6E243F3AA9009D4BA4 /* not-an-mp3.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = "not-an-mp3.m4a"; sourceTree = "<group>"; };
 		51490E70243F3CE9009D4BA4 /* samplecover-green.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "samplecover-green.jpg"; sourceTree = "<group>"; };
@@ -211,7 +211,7 @@
 			children = (
 				51490E5A243EF94E009D4BA4 /* id3v2.2.0.txt */,
 				51490E57243EF94D009D4BA4 /* id3v2.3.0.txt */,
-				51490E5B243EF94E009D4BA4 /* id3v2.4.0-frames.txt */,
+				51490E5B243EF94E009D4BA4 /* id3v2.4.0.txt */,
 				51490E58243EF94D009D4BA4 /* id3v2.4.0-structure.txt */,
 				51490E61243EFA77009D4BA4 /* id3v2-chapters-1.0.html */,
 				515CC10924491047005906D0 /* Processing Order */,
@@ -472,7 +472,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				51490E60243EF94E009D4BA4 /* id3v2.4.0-frames.txt in Resources */,
+				51490E60243EF94E009D4BA4 /* id3v2.4.0.txt in Resources */,
 				51490E5F243EF94E009D4BA4 /* id3v2.2.0.txt in Resources */,
 				51490E5C243EF94E009D4BA4 /* id3v2.3.0.txt in Resources */,
 				51490E5D243EF94E009D4BA4 /* id3v2.4.0-structure.txt in Resources */,
