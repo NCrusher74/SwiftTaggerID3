@@ -23,8 +23,8 @@ public enum Frame {
     case booleanFrame(BooleanFrame)
     case presetOptionsFrame(PresetOptionsFrame)
     case urlFrame(URLFrame)
-    case toc(TableOfContentsFrame)
-    case chapter(ChapterFrame)
+    case tocFrame(TableOfContentsFrame)
+    case chapterFrame(ChapterFrame)
     case unknownFrame(UnknownFrame)
     
     init(identifier: String,
@@ -38,12 +38,15 @@ public enum Frame {
                     version: version,
                     layout: layout))
             case .known(.chapter):
-                self = .chapter(try ChapterFrame(
+                self = .chapterFrame(try ChapterFrame(
                     decodingFromStartOf: &data,
                     version: version,
                     layout: layout))
             case .known(.tableOfContents):
-                self = .toc(try TableOfContentsFrame(decodingFromStartOf: &data, version: version, layout: layout))
+                self = .tocFrame(try TableOfContentsFrame(
+                    decodingFromStartOf: &data,
+                    version: version,
+                    layout: layout))
             case .known(.compilation):
                 self = .booleanFrame(try BooleanFrame(
                     decodingFromStartOf: &data,
@@ -156,9 +159,9 @@ public enum Frame {
                 return unknownFrame.frameKey
             case .dateFrame(let dateFrame):
                 return dateFrame.frameKey
-            case .chapter(let chapterFrame):
+            case .chapterFrame(let chapterFrame):
                 return chapterFrame.frameKey
-            case .toc(let tableOfContentsFrame):
+            case .tocFrame(let tableOfContentsFrame):
                 return tableOfContentsFrame.frameKey
             case .image(let imageFrame):
                 return imageFrame.frameKey
@@ -191,9 +194,9 @@ extension Frame {
                 return presetOptionsFrame
             case .urlFrame(let urlFrame):
                 return urlFrame
-            case .toc(let tocFrame):
+            case .tocFrame(let tocFrame):
                 return tocFrame
-            case .chapter(let chapterFrame):
+            case .chapterFrame(let chapterFrame):
                 return chapterFrame
             case .unknownFrame(let unknownFrame):
                 return unknownFrame

@@ -35,7 +35,7 @@ extension Bundle {
 
     // MARK: Other Files
     static let chapteredMp3: URL = {
-        guard let location = Bundle.testBundle.url(forResource: "mp3-chaptered", withExtension: "mp3") else {
+        guard let location = Bundle.testBundle.url(forResource: "mp3-chapterized", withExtension: "mp3") else {
             fatalError("The mp3 file cannot be found")
         }
         return location

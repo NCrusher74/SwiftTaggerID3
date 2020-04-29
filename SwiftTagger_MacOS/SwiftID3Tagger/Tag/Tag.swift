@@ -33,7 +33,6 @@ public struct Tag {
             // parse size from tag header
             let tagSizeData = remainder.extractFirst(properties.tagSizeDeclarationLength)
             tagSize = try properties.size(data: tagSizeData)
-            print(tagSize)
         }
         
         let tagDataRange = remainder.startIndex ..< remainder.startIndex + tagSize
@@ -1421,6 +1420,68 @@ public extension Tag {
             frames[.taggingTime] = .dateFrame(frame)
         }
     }
-    
+
+    var tableOfContents: (
+        elementID: String,
+        topLevelFlag: Bool,
+        orderedFlag: Bool,
+        entryCount: Int,
+        childElementIDList: [String],
+        subframes: [FrameKey: Frame])? {
+        get {
+            if let frame = self.frames[.tableOfContents(elementID: "")],
+                case .tocFrame(let tocFrame) = frame {
+                let countUInt8 = tocFrame.entryCount
+                let countInt = Int(countUInt8)
+                return (tocFrame.elementID,
+                        tocFrame.topLevelFlag,
+                        tocFrame.orderedFlag,
+                        countInt,
+                        tocFrame.childElementIDs,
+                        tocFrame.embeddedSubframes)
+            } else {
+                return nil
+            }
+        }
+        set {
+            let uuid = UUID()
+            let frame = TableOfContentsFrame(
+                isTopTOC: newValue?.topLevelFlag ?? true,
+                elementsAreOrdered: newValue?.orderedFlag ?? false,
+                childElementIDs: newValue?.childElementIDList ?? [],
+                embeddedSubframes: newValue?.subframes ?? [:])
+            frames[.tableOfContents(elementID: newValue?.elementID ?? uuid.uuidString)] = .tocFrame(frame)
+        }
+    }
+
+    var chapter : (
+        elementID: String,
+        startTime: Int,
+        endTime: Int,
+        startByteOffset: Int,
+        endByteOffset: Int,
+        embeddedSubframes: [FrameKey: Frame])? {
+        get {
+            if let frame = self.frames[.chapter(elementID: "")],
+                case .chapterFrame(let chapterFrame) = frame {
+                return (chapterFrame.elementID,
+                        chapterFrame.startTime,
+                        chapterFrame.endTime,
+                        chapterFrame.startByteOffset,
+                        chapterFrame.endByteOffset,
+                        chapterFrame.embeddedSubframes)
+            } else {
+                return nil
+            }
+        }
+        set {
+            let uuid = UUID()
+            let frame = ChapterFrame(startTime: newValue?.startTime ?? 0,
+                                     endTime: newValue?.endTime ?? 0,
+                                     embeddedSubframes: newValue?.embeddedSubframes ?? [:])
+            frames[.chapter(elementID: newValue?.elementID ?? uuid.uuidString)] = .chapterFrame(frame)
+        }
+
+    }
     
 }
