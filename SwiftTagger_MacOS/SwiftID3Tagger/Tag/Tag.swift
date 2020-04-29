@@ -1002,7 +1002,7 @@ public extension Tag {
         }
     }
     
-    var languages: [String] {
+    var languages: [String]? {
         get {
             if let frame = self.frames[.languages],
                 case .languageFrame(let languageFrame) = frame {
@@ -1012,41 +1012,11 @@ public extension Tag {
             }
         }
         set {
-            let frame = LanguageFrame(languages: newValue )
+            let frame = LanguageFrame(languages: newValue ?? ["und"] )
             frames[.languages] = .languageFrame(frame)
         }
     }
-    
-    var userDefinedText: (description: String?, content: String) {
-        get {
-            if let frame = self.frames[.userDefinedText(description: "")],
-                case .userTextFrame(let userTextFrame) = frame {
-                return (userTextFrame.descriptionString, userTextFrame.contentString)
-            } else {
-                return ("","")
-            }
-        }
-        set {
-            let frame = UserTextFrame(description: newValue.description ?? "", content: newValue.content)
-            frames[.userDefinedText(description: newValue.description ?? "")] = .userTextFrame(frame)
-        }
-    }
-    
-    var userDefinedWebpage: (description: String?, content: String) {
-        get {
-            if let frame = self.frames[.userDefinedWebpage(description: "")],
-                case .userTextFrame(let userTextFrame) = frame {
-                return (userTextFrame.descriptionString, userTextFrame.contentString)
-            } else {
-                return ("","")
-            }
-        }
-        set {
-            let frame = UserTextFrame(description: newValue.description ?? "", webpage: newValue.content)
-            frames[.userDefinedText(description: newValue.description ?? "")] = .userTextFrame(frame)
-        }
-    }
-    
+        
     var acknowledgment: String? {
         get {
             if let frame = self.frames[.userDefinedText(description: "Acknowledgment")],
@@ -1098,7 +1068,7 @@ public extension Tag {
                 case .presetOptionsFrame(let presetOptionsFrame) = frame {
                 return (presetOptionsFrame.presetName, presetOptionsFrame.refinementDescription)
             } else {
-                return ("","")
+                return (nil,nil)
             }
         }
         set {
@@ -1113,7 +1083,7 @@ public extension Tag {
                 case .presetOptionsFrame(let presetOptionsFrame) = frame {
                 return (presetOptionsFrame.presetName, presetOptionsFrame.presetRefinement, presetOptionsFrame.refinementDescription)
             } else {
-                return ("","","")
+                return (nil,nil,nil)
             }
         }
         set {
@@ -1124,45 +1094,7 @@ public extension Tag {
             frames[.mediaType] = .presetOptionsFrame(frame)
         }
     }
-    
-    var comments: (language: String?, description: String?, comment: String) {
-        get {
-            if let frame = self.frames[.comments(description: "")],
-                case .localizedFrame(let localizedFrame) = frame {
-                return (language: localizedFrame.languageString,
-                        description: localizedFrame.descriptionString,
-                        comment: localizedFrame.contentString)
-            } else {
-                return (language: "und", description: "", comment: "")
-            }
-        }
-        set {
-            let frame = LocalizedFrame(language: newValue.language,
-                                       description: newValue.description,
-                                       comments: newValue.comment)
-            frames[.comments(description: newValue.description ?? "")] = .localizedFrame(frame)
-        }
-    }
-    
-    var lyrics: (language: String?, description: String?, lyrics: String) {
-        get {
-            if let frame = self.frames[.unsynchronizedLyrics(description: "")],
-                case .localizedFrame(let localizedFrame) = frame {
-                return (language: localizedFrame.languageString,
-                        description: localizedFrame.descriptionString,
-                        lyrics: localizedFrame.contentString)
-            } else {
-                return (language: "und", description: "", lyrics: "")
-            }
-        }
-        set {
-            let frame = LocalizedFrame(language: newValue.language,
-                                       description: newValue.description,
-                                       comments: newValue.lyrics)
-            frames[.unsynchronizedLyrics(description: newValue.description ?? "")] = .localizedFrame(frame)
-        }
-    }
-    
+        
     var description: (language: String?, contentDescription: String) {
         get {
             if let frame = self.frames[.comments(description: "Description")],
@@ -1271,7 +1203,7 @@ public extension Tag {
         }
     }
     
-    var musicianCreditList: [(role: String, person: String)] {
+    var musicianCreditList: [(role: String, person: String)]? {
         get {
             if let frame = self.frames[.musicianCreditsList],
                 case .creditsListFrame(let creditsListFrame) = frame {
@@ -1281,12 +1213,12 @@ public extension Tag {
             }
         }
         set {
-            let frame = CreditsListFrame(layout: .known(.musicianCreditsList), entries: newValue)
+            let frame = CreditsListFrame(layout: .known(.musicianCreditsList), entries: newValue ?? [])
             frames[.musicianCreditsList] = .creditsListFrame(frame)
         }
     }
     
-    var involvedPeopleList: [(role: String, person: String)] {
+    var involvedPeopleList: [(role: String, person: String)]? {
         get {
             if let frame = self.frames[.involvedPeopleList],
                 case .creditsListFrame(let creditsListFrame) = frame {
@@ -1296,7 +1228,7 @@ public extension Tag {
             }
         }
         set {
-            let frame = CreditsListFrame(layout: .known(.involvedPeopleList), entries: newValue)
+            let frame = CreditsListFrame(layout: .known(.involvedPeopleList), entries: newValue ?? [])
             frames[.involvedPeopleList] = .creditsListFrame(frame)
         }
     }
@@ -1420,6 +1352,74 @@ public extension Tag {
             frames[.taggingTime] = .dateFrame(frame)
         }
     }
+ 
+    var comments: (language: String?, description: String?, comment: String)? {
+        get {
+            if let frame = self.frames[.comments(description: "")],
+                case .localizedFrame(let localizedFrame) = frame {
+                return (language: localizedFrame.languageString,
+                        description: localizedFrame.descriptionString,
+                        comment: localizedFrame.contentString)
+            } else {
+                return (language: "und", description: nil, comment: "")
+            }
+        }
+        set {
+            let frame = LocalizedFrame(language: newValue?.language,
+                                       description: newValue?.description,
+                                       comments: newValue?.comment ?? "")
+            frames[.comments(description: newValue?.description ?? "")] = .localizedFrame(frame)
+        }
+    }
+    
+    var lyrics: (language: String?, description: String?, lyrics: String)? {
+        get {
+            if let frame = self.frames[.unsynchronizedLyrics(description: "")],
+                case .localizedFrame(let localizedFrame) = frame {
+                return (language: localizedFrame.languageString,
+                        description: localizedFrame.descriptionString,
+                        lyrics: localizedFrame.contentString)
+            } else {
+                return (language: "und", description: nil, lyrics: "")
+            }
+        }
+        set {
+            let frame = LocalizedFrame(language: newValue?.language,
+                                       description: newValue?.description,
+                                       comments: newValue?.lyrics ?? "")
+            frames[.unsynchronizedLyrics(description: newValue?.description ?? "")] = .localizedFrame(frame)
+        }
+    }
+
+    var userDefinedText: (description: String?, content: String)? {
+        get {
+            if let frame = self.frames[.userDefinedText(description: "")],
+                case .userTextFrame(let userTextFrame) = frame {
+                return (userTextFrame.descriptionString, userTextFrame.contentString)
+            } else {
+                return (nil,"")
+            }
+        }
+        set {
+            let frame = UserTextFrame(description: newValue?.description ?? "", content: newValue?.content ?? "")
+            frames[.userDefinedText(description: newValue?.description ?? "")] = .userTextFrame(frame)
+        }
+    }
+    
+    var userDefinedWebpage: (description: String?, content: String)? {
+        get {
+            if let frame = self.frames[.userDefinedWebpage(description: "")],
+                case .userTextFrame(let userTextFrame) = frame {
+                return (userTextFrame.descriptionString, userTextFrame.contentString)
+            } else {
+                return (nil,"")
+            }
+        }
+        set {
+            let frame = UserTextFrame(description: newValue?.description ?? "", webpage: newValue?.content ?? "")
+            frames[.userDefinedText(description: newValue?.description ?? "")] = .userTextFrame(frame)
+        }
+    }
 
     var tableOfContents: (
         elementID: String,
@@ -1427,7 +1427,7 @@ public extension Tag {
         orderedFlag: Bool,
         entryCount: Int,
         childElementIDList: [String],
-        subframes: [FrameKey: Frame])? {
+        subframes: [FrameKey: Frame]) {
         get {
             if let frame = self.frames[.tableOfContents(elementID: "")],
                 case .tocFrame(let tocFrame) = frame {
@@ -1440,27 +1440,26 @@ public extension Tag {
                         tocFrame.childElementIDs,
                         tocFrame.embeddedSubframes)
             } else {
-                return nil
+                return ("",false,false,0,[],[:])
             }
         }
         set {
-            let uuid = UUID()
             let frame = TableOfContentsFrame(
-                isTopTOC: newValue?.topLevelFlag ?? true,
-                elementsAreOrdered: newValue?.orderedFlag ?? false,
-                childElementIDs: newValue?.childElementIDList ?? [],
-                embeddedSubframes: newValue?.subframes ?? [:])
-            frames[.tableOfContents(elementID: newValue?.elementID ?? uuid.uuidString)] = .tocFrame(frame)
+                isTopTOC: newValue.topLevelFlag,
+                elementsAreOrdered: newValue.orderedFlag,
+                childElementIDs: newValue.childElementIDList,
+                embeddedSubframes: newValue.subframes)
+            frames[.tableOfContents(elementID: newValue.elementID)] = .tocFrame(frame)
         }
     }
-
+    
     var chapter : (
         elementID: String,
         startTime: Int,
         endTime: Int,
         startByteOffset: Int,
         endByteOffset: Int,
-        embeddedSubframes: [FrameKey: Frame])? {
+        embeddedSubframes: [FrameKey: Frame]) {
         get {
             if let frame = self.frames[.chapter(elementID: "")],
                 case .chapterFrame(let chapterFrame) = frame {
@@ -1471,17 +1470,16 @@ public extension Tag {
                         chapterFrame.endByteOffset,
                         chapterFrame.embeddedSubframes)
             } else {
-                return nil
+                return ("",0,0,0,0,[:])
             }
         }
         set {
-            let uuid = UUID()
-            let frame = ChapterFrame(startTime: newValue?.startTime ?? 0,
-                                     endTime: newValue?.endTime ?? 0,
-                                     embeddedSubframes: newValue?.embeddedSubframes ?? [:])
-            frames[.chapter(elementID: newValue?.elementID ?? uuid.uuidString)] = .chapterFrame(frame)
+            let frame = ChapterFrame(startTime: newValue.startTime,
+                                     endTime: newValue.endTime,
+                                     embeddedSubframes: newValue.embeddedSubframes)
+            frames[.chapter(elementID: newValue.elementID)] = .chapterFrame(frame)
         }
-
+        
     }
-    
+
 }
