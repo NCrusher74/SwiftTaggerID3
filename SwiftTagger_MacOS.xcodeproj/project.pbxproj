@@ -19,7 +19,6 @@
 		5144EC832458C993001757DA /* mp3-v24-with-meta.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5144EC802458C993001757DA /* mp3-v24-with-meta.mp3 */; };
 		5144EC852458DB6F001757DA /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5144EC842458DB6F001757DA /* Int.swift */; };
 		5144EC872458DF67001757DA /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5144EC862458DF67001757DA /* Data.swift */; };
-		5144EC892458EA2B001757DA /* GlobalProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5144EC882458EA2B001757DA /* GlobalProperties.swift */; };
 		51490E49243EBB4A009D4BA4 /* Frame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51490E48243EBB4A009D4BA4 /* Frame.swift */; };
 		51490E51243EDB4F009D4BA4 /* FrameLayoutIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51490E50243EDB4F009D4BA4 /* FrameLayoutIdentifier.swift */; };
 		51490E5C243EF94E009D4BA4 /* id3v2.3.0.txt in Resources */ = {isa = PBXBuildFile; fileRef = 51490E57243EF94D009D4BA4 /* id3v2.3.0.txt */; };
@@ -114,7 +113,6 @@
 		5144EC802458C993001757DA /* mp3-v24-with-meta.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "mp3-v24-with-meta.mp3"; sourceTree = "<group>"; };
 		5144EC842458DB6F001757DA /* Int.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
 		5144EC862458DF67001757DA /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
-		5144EC882458EA2B001757DA /* GlobalProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalProperties.swift; sourceTree = "<group>"; };
 		51490E48243EBB4A009D4BA4 /* Frame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Frame.swift; sourceTree = "<group>"; };
 		51490E50243EDB4F009D4BA4 /* FrameLayoutIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameLayoutIdentifier.swift; sourceTree = "<group>"; };
 		51490E57243EF94D009D4BA4 /* id3v2.3.0.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = id3v2.3.0.txt; sourceTree = "<group>"; };
@@ -372,7 +370,6 @@
 			children = (
 				51775435244058DB005E43C5 /* Tag.swift */,
 				517794392452BE150022E02F /* TagProperties.swift */,
-				5144EC882458EA2B001757DA /* GlobalProperties.swift */,
 			);
 			path = Tag;
 			sourceTree = "<group>";
@@ -524,7 +521,6 @@
 				51E432CB243DA3F6006574A1 /* Mp3FileError.swift in Sources */,
 				517754542442E757005E43C5 /* LocalizedFrame.swift in Sources */,
 				5144EC7324577F05001757DA /* Data.Subsequence.swift in Sources */,
-				5144EC892458EA2B001757DA /* GlobalProperties.swift in Sources */,
 				51A3C6A22442FFB300909952 /* UserTextFrame.swift in Sources */,
 				5144EC872458DF67001757DA /* Data.swift in Sources */,
 				5177543B244136A3005E43C5 /* Endianess.swift in Sources */,

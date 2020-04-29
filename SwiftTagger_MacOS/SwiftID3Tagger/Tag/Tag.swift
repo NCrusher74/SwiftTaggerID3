@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// A type representing an ID3 tag read from or to be written to a file
 public struct Tag {
     
     public var frames: [FrameKey : Frame]

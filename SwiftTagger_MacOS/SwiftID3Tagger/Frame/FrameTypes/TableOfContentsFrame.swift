@@ -124,14 +124,17 @@ public struct TableOfContentsFrame: FrameProtocol {
         self.layout = layout
         
         var parsing = contents
+        let uuid = UUID()
         let elementID = parsing.extractPrefixAsStringUntilNullTermination(.isoLatin1)
-        self.elementID = elementID ?? incrementalTocID
-        self.frameKey = .tableOfContents(elementID: elementID ?? incrementalTocID)
+        self.elementID = elementID ?? uuid.uuidString
+        self.frameKey = .tableOfContents(elementID: elementID ?? uuid.uuidString)
 
         let flagsByteData = parsing.extractFirst(1)
-        let flagsByte = Int(UInt32(parsing: flagsByteData, .bigEndian))
-        let flagA = 0b00000010
-        let flagB = 0b00000001
+        guard let flagsByte = flagsByteData.first else {
+            throw Mp3File.Error.InvalidTagData
+        }
+        let flagA: UInt8 = 0b00000010
+        let flagB: UInt8 = 0b00000001
 
         if flagsByte & flagA == flagA {
             self.topLevelFlag = true
@@ -177,8 +180,10 @@ public struct TableOfContentsFrame: FrameProtocol {
          elementsAreOrdered: Bool,
          childElementIDs: [String],
          embeddedSubframes: [FrameKey: Frame]) {
+        let uuid = UUID()
+        let elementID = uuid.uuidString
         self.init(layout: .known(.tableOfContents),
-                  elementID: incrementalTocID,
+                  elementID: elementID,
                   topLevelFlag: isTopTOC,
                   orderedFlag: elementsAreOrdered,
                   entryCount: UInt8(childElementIDs.count),

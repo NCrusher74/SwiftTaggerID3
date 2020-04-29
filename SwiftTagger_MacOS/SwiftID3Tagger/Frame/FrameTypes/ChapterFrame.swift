@@ -99,11 +99,12 @@ public struct ChapterFrame: FrameProtocol {
         var parsing = contents
         
         // extract the elementID string
+        let uuid = UUID()
         let elementID = parsing.extractPrefixAsStringUntilNullTermination(.isoLatin1)
         // initialize the elementID property from the string
-        self.elementID = elementID ?? incrementalChapterID
+        self.elementID = elementID ?? uuid.uuidString
         // initialize the frameKey property using the elementID
-        self.frameKey = .chapter(elementID: elementID ?? incrementalChapterID)
+        self.frameKey = .chapter(elementID: elementID ?? uuid.uuidString)
         
         // extract and convert integer properties to integers
         let startTimeData = parsing.extractFirst(4)
@@ -143,15 +144,15 @@ public struct ChapterFrame: FrameProtocol {
     public init(startTime: Int,
                 endTime: Int,
                 embeddedSubframes: [FrameKey: Frame]) {
-        let chapterNumber = incrementalChapterID
+        let uuid = UUID()
         self.init(layout: .known(.chapter),
-                  elementID: chapterNumber,
+                  elementID: uuid.uuidString,
                   startTime: startTime,
                   endTime: endTime,
                   startByteOffset: nil,
                   endByteOffset: nil,
                   embeddedSubframes: embeddedSubframes)
-        self.frameKey = .chapter(elementID: chapterNumber)
+        self.frameKey = .chapter(elementID: elementID)
     }
 
     /// initialize a simple chapter frame with only chapter title, start and end times specified, creates the embedded subframe for the title automatically
@@ -163,16 +164,16 @@ public struct ChapterFrame: FrameProtocol {
         let subframeFrame: Frame = .stringFrame(.init(title: "\(chapterTitle)"))
         let subframe = [subframeKey : subframeFrame]
 
-        let chapterNumber = incrementalChapterID
+        let uuid = UUID()
         // initialize chapter frame with subframe in place
         self.init(layout: .known(.chapter),
-                  elementID: chapterNumber,
+                  elementID: uuid.uuidString,
                   startTime: startTime,
                   endTime: endTime,
                   startByteOffset: nil,
                   endByteOffset: nil,
                   embeddedSubframes: subframe)
-        self.frameKey = .chapter(elementID: chapterNumber)
+        self.frameKey = .chapter(elementID: uuid.uuidString)
     }
     
 //    repeat with attached image rather than chapter title when image is implemented
