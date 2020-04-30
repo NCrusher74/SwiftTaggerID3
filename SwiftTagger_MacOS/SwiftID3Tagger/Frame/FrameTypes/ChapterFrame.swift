@@ -183,7 +183,7 @@ public struct ChapterFrame: FrameProtocol {
 
         let uuid = UUID()
         let subframeKey = FrameKey.attachedPicture(description: "chapter image \(uuid.uuidString)")
-        let subframeFrame: Frame = try .image(.init(imageLocation: imageUrl, imageType: .Other, imageDescription: "chapter image \(uuid.uuidString)"))
+        let subframeFrame: Frame = try .imageFrame(.init(imageLocation: imageUrl, imageType: .Other, imageDescription: "chapter image \(uuid.uuidString)"))
         let subframe = [subframeKey : subframeFrame]
         self.init(layout: .known(.chapter),
                   elementID: uuid.uuidString,

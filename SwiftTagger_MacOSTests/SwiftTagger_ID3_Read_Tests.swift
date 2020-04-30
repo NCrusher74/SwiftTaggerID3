@@ -254,7 +254,15 @@ class SwiftTagger_ID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag[chapters: "ch1"]?.endTime, 5250)
         XCTAssertEqual(tag[chapters: "ch1"]?.startByteOffset,0)
         XCTAssertEqual(tag[chapters: "ch1"]?.endByteOffset,0)
-        let subframeChapter01 = tag[chapters: "ch0"]?.embeddedSubframes[.title]
-        let subframeChapter02 = tag[chapters: "ch1"]?.embeddedSubframes[.title]
+        
+        XCTAssertEqual(tag[embeddedSubframes: "ch0"]?.title, "Chapter 01")
+        XCTAssertEqual(tag[embeddedSubframes: "ch1"]?.title, "Chapter 02")
+
+        let outputURL = URL(fileURLWithPath: "/Users/nolainecrusher/Downloads/audiobook_tools/sampleaax/test/output.jpg")
+        let coverImageData = tag[attachedPicture: "SampleCover"]
+        try coverImageData?.write(to: outputURL)
     }
+
+
+
 }

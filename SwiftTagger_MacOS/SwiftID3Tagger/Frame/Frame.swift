@@ -28,7 +28,7 @@ public enum Frame {
     /// a frame type containing an date value that will be encoded and stored as a timestamp string
     case dateFrame(DateFrame)
     /// a frame type containing an attached image pertaining to the audio media
-    case image(ImageFrame)
+    case imageFrame(ImageFrame)
     /** a frame type containing a boolean value that will be interpreted as a 1 or 0 and written to the file as an integer string */
     case booleanFrame(BooleanFrame)
     /** a frame type consisting of optional strings from an enumeration of preset values, an optional string of preset refinement values, and an optional string of freeform refinements or information */
@@ -49,7 +49,7 @@ public enum Frame {
         let layout = FrameLayoutIdentifier(identifier: identifier)
         switch layout {
             case .known(.attachedPicture):
-                self = .image(try ImageFrame(
+                self = .imageFrame(try ImageFrame(
                     decodingFromStartOf: &data,
                     version: version,
                     layout: layout))
@@ -179,7 +179,7 @@ public enum Frame {
                 return chapterFrame.frameKey
             case .tocFrame(let tableOfContentsFrame):
                 return tableOfContentsFrame.frameKey
-            case .image(let imageFrame):
+            case .imageFrame(let imageFrame):
                 return imageFrame.frameKey
         }
     }
@@ -216,7 +216,7 @@ extension Frame {
                 return chapterFrame
             case .unknownFrame(let unknownFrame):
                 return unknownFrame
-            case .image(let imageFrame):
+            case .imageFrame(let imageFrame):
                 return imageFrame
         }
     }

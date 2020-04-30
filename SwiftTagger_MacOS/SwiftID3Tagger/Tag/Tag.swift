@@ -7,11 +7,16 @@
 //
 
 import Foundation
+import Cocoa
 
 /// A type representing an ID3 tag to be read from or written to a file
 public struct Tag {
     
     public var frames: [FrameKey : Frame]
+    
+    private init(readFromEmbeddedSubframes subframes: [FrameKey:Frame]) {
+        self.frames = subframes
+    }
     
     /// handles the parsing of an ID3 tag
     init(readFrom file: Mp3File) throws {
@@ -1656,7 +1661,38 @@ public extension Tag {
             }
         }
     }
-
     
+    /** creates a "subframe tag" instance to use when accessing data within the embedded subframes of a `CHAP` or `CTOC` frame */
+    subscript(embeddedSubframes forParentFrameElementID: String) -> Tag? {
+        get {
+            var frames: [FrameKey:Frame] = [:]
+            if let parentFrame = self[chapters: forParentFrameElementID] {
+                frames = parentFrame.embeddedSubframes
+            } else if let parentFrame = self[tableOfContents: forParentFrameElementID] {
+                frames = parentFrame.embeddedSubframes
+            } else {
+                return nil
+            }
+            let subframeTag = Tag(readFromEmbeddedSubframes: frames)
+            return subframeTag
+        }
+    }
+
+    /// AttachedPicture frame getter-setter. ID3 Identifier `PIC`/`APIC`
+    subscript(attachedPicture imageDescription: String) -> Data? {
+        get {
+            if let frame = self.frames[.attachedPicture(description: imageDescription)],
+                case .imageFrame(let imageFrame) = frame {
+                return imageFrame.image
+            } else {
+                return nil
+            }
+        }
+    }
+
+    func setAttachedPicture(imageType: ImageType?, imageDescription: String?, location: URL) throws -> ImageFrame? {
+        let frame = try ImageFrame(imageLocation: location, imageType: imageType ?? .Other, imageDescription: imageDescription)
+        return frame
+    }
     
 }
