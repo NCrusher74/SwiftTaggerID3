@@ -8,25 +8,41 @@
 
 import Foundation
 
-/** A type containing methods and variables for querying and handling information from a frame */
+/** An enum containing methods and variables for querying and handling information from a frame */
 public enum Frame {
     
+    /// a frame type containing a single, unterminated string of content
     case stringFrame(StringFrame)
+    /** a frame type containing the index of the track or disc in the collection, with an optional addition of the total number of tracks or discs */
     case partOfTotalFrame(PartOfTotalFrame)
+    /** a frame type containing contents for `Comment` or `UnsynchronizedLyrics`frames. Composed of a language code string, an optional terminated description string, and a single string of content that is permitted to contain new line characters */
     case localizedFrame(LocalizedFrame)
+    /** a frame type containing the user customized information or URLs */
     case userTextFrame(UserTextFrame)
+    /** a frame type containing an array of ISO-639-2 language codes */
     case languageFrame(LanguageFrame)
+    /** a frame type containing an array of `role:person` tuples */
     case creditsListFrame(CreditsListFrame)
+    /// a frame type containing an integer value that will be encoded and stored as an integer string
     case integerFrame(IntegerFrame)
+    /// a frame type containing an date value that will be encoded and stored as a timestamp string
     case dateFrame(DateFrame)
+    /// a frame type containing an attached image pertaining to the audio media
     case image(ImageFrame)
+    /** a frame type containing a boolean value that will be interpreted as a 1 or 0 and written to the file as an integer string */
     case booleanFrame(BooleanFrame)
+    /** a frame type consisting of optional strings from an enumeration of preset values, an optional string of preset refinement values, and an optional string of freeform refinements or information */
     case presetOptionsFrame(PresetOptionsFrame)
+    /// a frame type containing a single, unterminated string of content in the form of a URL
     case urlFrame(URLFrame)
+    /// a frame type containing a table of contents frame
     case tocFrame(TableOfContentsFrame)
+    /// a frame type containing a chapter frame
     case chapterFrame(ChapterFrame)
+    /// allows unsupported frames to pass through and be returned unpaarsed
     case unknownFrame(UnknownFrame)
     
+    /** instantiates a frame type based upon the `identifier` string */
     init(identifier: String,
          data: inout Data.SubSequence,
          version: Version) throws {

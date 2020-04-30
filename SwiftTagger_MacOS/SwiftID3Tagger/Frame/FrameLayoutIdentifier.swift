@@ -12,7 +12,9 @@ import Foundation
  All information for handling a frame are determined by its `FrameLayoutIdentifier` */
 
 public enum FrameLayoutIdentifier: Hashable {
+    /// a frame with an identifier recognized and handled by SwiftTagger
     case known(KnownFrameLayoutIdentifier)
+    /// a frame with an unknown or unhandled identifier
     case unknown(String)
     
     init(identifier: String) {
@@ -33,6 +35,7 @@ public enum FrameLayoutIdentifier: Hashable {
     }
 }
 
+/** an enumeration of ID3 standard, or iTunes compliant but non-standard, frames*/
 public enum KnownFrameLayoutIdentifier: CaseIterable {
     
     case album

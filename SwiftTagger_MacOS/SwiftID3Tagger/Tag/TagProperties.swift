@@ -8,8 +8,10 @@
 
 import Foundation
 
+/** a type containing properties and methods for relating to an ID3 Tag */
 struct TagProperties {
 
+    /// determines tag version by comparing version data to known version datat
     func version(data: Data) throws -> Version {
         if data == Data(v2_2Bytes) {
             return Version.v2_2
@@ -22,7 +24,7 @@ struct TagProperties {
         }
     }
     
-    /// the size of the ID3 tag
+    /// determines the size of the ID3 tag by parsing and decoding the size data
     func size(data: Data) throws -> Int {
         let tagSize = (data as NSData).bytes.assumingMemoryBound(to: UInt32.self).pointee.bigEndian
         let decodedTagSize = tagSize.decodingSynchsafe()

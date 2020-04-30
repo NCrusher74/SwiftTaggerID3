@@ -27,6 +27,7 @@ protocol FrameProtocol {
 
 extension FrameProtocol {
     
+    // encode the contents of the frames to data
     func encode(version: Version) throws -> Data {
         let contents = try self.encodeContents(version: version)
         
@@ -79,6 +80,7 @@ extension FrameProtocol {
         // This line leaves the slice ready for the next frame to read from the beginning.
     }
     
+    // calculates the size of the frame for encoding purposes
     static func calculateFrameContentSize(encodedContent: Data, version: Version) -> Data {
         let contentSize = UInt32(encodedContent.count)
         switch version {
@@ -90,6 +92,7 @@ extension FrameProtocol {
         }
     }
     
+    // calculates the ID3 Indentifier from the layout
     static func identifierData(layout: FrameLayoutIdentifier, version: Version) -> Data {
         guard let identifierString = layout.id3Identifier(version: version)?.encoded(withNullTermination: false) else {
             switch version {
@@ -101,19 +104,21 @@ extension FrameProtocol {
         return identifierString
     }
     
+    // flags are rarely used and are unhandled by SwiftTagger
     static var defaultFlags: Data {
         let flagBytes: [UInt8] = [0x00, 0x00]
         return Data(flagBytes)
     }
     
+    /* extracts and decodes the encoding byte, leaving the remaining data ready to be parsed and returning information on the encoding of the frame's contents */
     static func extractEncoding(data: inout Data.SubSequence, version: Version) throws -> StringEncoding {
-        //        let encodingByteOffset = version.encodingByteOffset
         let encodingData = data.extractFirst(1)
         let encodingByteArray = [UInt8](encodingData)
         let encodingByte = encodingByteArray.first ?? 0x00
         return StringEncoding(rawValue: encodingByte) ?? .utf8
     }
     
+    // extracts and decodes description and content strings for frame types that use them.
     static func extractDescriptionAndContent(
         from frameData: inout Data.SubSequence,
         encoding: StringEncoding

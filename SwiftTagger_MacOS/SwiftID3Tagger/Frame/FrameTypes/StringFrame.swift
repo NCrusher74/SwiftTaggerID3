@@ -19,6 +19,7 @@ public struct StringFrame: FrameProtocol {
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
     
+    // instantiates a string frame decoding operation
     init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,
@@ -68,7 +69,9 @@ public struct StringFrame: FrameProtocol {
             default: self.frameKey = .userDefinedText(description: "")
         }
         var parsing = contents
+        // extract and decode the encoding byte
         let encoding = try StringFrame.extractEncoding(data: &parsing, version: version)
+        // extract and decode the string content according to encoding as specified by encoding byte
         self.contentString = parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? ""
     }
 
@@ -127,6 +130,7 @@ public struct StringFrame: FrameProtocol {
 
     }
     
+    // encode the contents of the frame to be added to a tag instance
     func encodeContents(version: Version) throws -> Data {
         let encodingByte = StringEncoding.preferred.rawValue.encoding(endianness: .bigEndian)
         let contents = self.contentString
@@ -135,6 +139,7 @@ public struct StringFrame: FrameProtocol {
     
 
     // MARK: Public Initializers
+    // initializers for each specific type of string frame
     public init(artist: String) {
         self.init(layout: .known(.artist), contentString: artist)
     }
