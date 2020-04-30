@@ -9,13 +9,10 @@
 import Foundation
 
 /// An audio file represents an audio file somewhere on disk.
-///
-/// This wrapper houses methods for querying or modifying information about the file.
-
 public struct Mp3File {
  
     public let location: URL
-    internal var data: Data
+    public var data: Data
 
     /// - Parameters:
     ///     - location: The location of the audio file in the local file system.
@@ -29,9 +26,11 @@ public struct Mp3File {
         }
     }
 
-//    public func read(from sourceAudio: Mp3File) {
-//
-//    }
+    /// read the data from an MP3 File and return an ID3 Tag instance
+    public func read() throws -> Tag {
+       return try Tag(readFrom: self)
+    }
+    
     
 //    public func write(from sourceAudio: Mp3File, to outputLocation: URL) throws {
 //    }
