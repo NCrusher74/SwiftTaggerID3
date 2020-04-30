@@ -190,11 +190,7 @@ public struct StringFrame: FrameProtocol {
     public init(encodingSettings: String) {
         self.init(layout: .known(.encodingSettings), contentString: encodingSettings)
     }
-    
-    public init(fileType: String) {
-        self.init(layout: .known(.fileType), contentString: fileType)
-    }
-    
+        
     public init(fileOwner: String) {
         self.init(layout: .known(.fileOwner), contentString: fileOwner)
     }

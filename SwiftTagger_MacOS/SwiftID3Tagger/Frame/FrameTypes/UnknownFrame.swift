@@ -11,7 +11,7 @@ import Foundation
 public struct UnknownFrame: FrameProtocol {
     
  
-    public init(identifier: String, key: UUID = UUID(), contents: Data){
+    public init(identifier: String, key: UUID, contents: Data){
         self.flags = UnknownFrame.defaultFlags
         self.layout = .unknown(self.uuid.uuidString)
         self.contents = contents

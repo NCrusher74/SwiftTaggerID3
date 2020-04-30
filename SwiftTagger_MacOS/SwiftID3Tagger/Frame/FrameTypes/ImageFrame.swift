@@ -23,7 +23,7 @@
     /// The ID3 type of the image (see `ImageType`).
     public let imageType: ImageType
     /// an optional description of the image
-    public let imageDescription: String?
+    public var imageDescription: String? = ""
     
     
     /**
@@ -122,14 +122,14 @@
         
         var imageDescription: String = ""
         let pictureTypeByte = parsing.extractFirst(1)
-        self.imageType = ImageType(rawValue: pictureTypeByte.uint8) ?? .Other
-        
-//        switch version {
-//            case .v2_2:
-//                imageDescription = parsing.extractPrefixAsStringUntilNullTermination(.isoLatin1) ?? imageType.pictureDescription
-//            case .v2_3, .v2_4:
-//                imageDescription = parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? imageType.pictureDescription
-//        }
+        let imageType = ImageType(rawValue: pictureTypeByte.uint8) ?? .Other
+        self.imageType = imageType
+        switch version {
+            case .v2_2:
+                imageDescription = parsing.extractPrefixAsStringUntilNullTermination(.isoLatin1) ?? imageType.pictureDescription
+            case .v2_3, .v2_4:
+                imageDescription = parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? imageType.pictureDescription
+        }
         self.imageDescription = imageDescription
         self.frameKey = .attachedPicture(description: imageDescription)
         self.image = parsing

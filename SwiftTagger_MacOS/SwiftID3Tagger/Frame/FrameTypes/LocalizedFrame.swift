@@ -120,13 +120,7 @@ public struct LocalizedFrame: FrameProtocol {
     ) throws {
         self.flags = flags
         self.layout = layout
-        switch layout {
-            case .known(.comments) : self.frameKey = .comments(description: descriptionString ?? "")
-            case .known(.unsynchronizedLyrics) : self.frameKey = .unsynchronizedLyrics(description: descriptionString ?? "")
-            default: self.frameKey = .comments(description: descriptionString ?? "")
-        }
 
-        
         var parsing = contents
         let encoding = try LocalizedFrame.extractEncoding(data: &parsing, version: version)
 
@@ -141,5 +135,10 @@ public struct LocalizedFrame: FrameProtocol {
         self.descriptionString = parsed.description ?? ""
         self.contentString = parsed.content
 
+        switch layout {
+            case .known(.comments) : self.frameKey = .comments(description: parsed.description ?? "")
+            case .known(.unsynchronizedLyrics) : self.frameKey = .unsynchronizedLyrics(description: parsed.description ?? "")
+            default: self.frameKey = .comments(description: parsed.description ?? "")
+        }
     }
 }

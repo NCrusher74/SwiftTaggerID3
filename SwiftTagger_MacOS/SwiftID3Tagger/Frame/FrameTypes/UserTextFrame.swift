@@ -82,16 +82,17 @@ public struct UserTextFrame: FrameProtocol {
     ) throws {
         self.flags = flags
         self.layout = layout
-        switch layout {
-            case .known(.userDefinedText) : self.frameKey = .userDefinedText(description: descriptionString)
-            case .known(.userDefinedWebpage) : self.frameKey = .userDefinedWebpage(description: descriptionString)
-            default: self.frameKey = .userDefinedText(description: descriptionString)
-        }
         
         var parsing = contents
         let encoding = try UserTextFrame.extractEncoding(data: &parsing, version: version)
         let parsed = try UserTextFrame.extractDescriptionAndContent(from: &parsing, encoding: encoding)
         self.descriptionString = parsed.description ?? ""
         self.contentString = parsed.content
+
+        switch layout {
+            case .known(.userDefinedText) : self.frameKey = .userDefinedText(description: parsed.description ?? "")
+            case .known(.userDefinedWebpage) : self.frameKey = .userDefinedWebpage(description: parsed.description ?? "")
+            default: self.frameKey = .userDefinedText(description: parsed.description ?? "")
+        }
     }
 }

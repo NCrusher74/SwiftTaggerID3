@@ -11,10 +11,13 @@ import Foundation
 enum PresetOption {
     case mediaType(MediaType)
     case genreType(GenreType)
+    case fileType(FileType)
     
     init(presetName: String) {
         if let mediaType = MediaType(rawValue: presetName) {
             self = .mediaType(mediaType)
+        } else if let fileType = FileType(rawValue: presetName) {
+            self = .fileType(fileType)
         } else {
             self = .genreType(GenreType(rawValue: presetName) ?? .none)
         }
@@ -24,6 +27,7 @@ enum PresetOption {
         switch self {
             case .mediaType(let mediaType): return mediaType.rawValue
             case .genreType(let genreType): return genreType.rawValue
+            case .fileType(let fileType): return fileType.rawValue
         }
     }
     
@@ -31,6 +35,7 @@ enum PresetOption {
         switch self {
             case .mediaType(let mediaType): return mediaType.code
             case .genreType(let genreType): return String(genreType.code)
+            case .fileType(let fileType): return fileType.rawValue
         }
     }
 }

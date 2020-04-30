@@ -1353,133 +1353,125 @@ public extension Tag {
         }
     }
  
-    var comments: (language: String?, description: String?, comment: String)? {
+    subscript(comments language: ISO6392Codes.RawValue, commentsDescription: String) -> String? {
         get {
-            if let frame = self.frames[.comments(description: "")],
+            if let frame = self.frames[.comments(description: commentsDescription)],
                 case .localizedFrame(let localizedFrame) = frame {
-                return (language: localizedFrame.languageString,
-                        description: localizedFrame.descriptionString,
-                        comment: localizedFrame.contentString)
+                return localizedFrame.contentString
             } else {
-                return (language: "und", description: nil, comment: "")
+                return nil
             }
         }
         set {
-            let frame = LocalizedFrame(language: newValue?.language,
-                                       description: newValue?.description,
-                                       comments: newValue?.comment ?? "")
-            frames[.comments(description: newValue?.description ?? "")] = .localizedFrame(frame)
-        }
-    }
-    
-    var lyrics: (language: String?, description: String?, lyrics: String)? {
-        get {
-            if let frame = self.frames[.unsynchronizedLyrics(description: "")],
-                case .localizedFrame(let localizedFrame) = frame {
-                return (language: localizedFrame.languageString,
-                        description: localizedFrame.descriptionString,
-                        lyrics: localizedFrame.contentString)
+            let key = FrameKey.comments(description: commentsDescription)
+            if let new = newValue {
+                self.frames[key] = Frame.localizedFrame(.init(language: language, description: commentsDescription, comments: new))
             } else {
-                return (language: "und", description: nil, lyrics: "")
+                self.frames[key] = nil
             }
-        }
-        set {
-            let frame = LocalizedFrame(language: newValue?.language,
-                                       description: newValue?.description,
-                                       comments: newValue?.lyrics ?? "")
-            frames[.unsynchronizedLyrics(description: newValue?.description ?? "")] = .localizedFrame(frame)
         }
     }
 
-    var userDefinedText: (description: String?, content: String)? {
+    subscript(lyrics language: ISO6392Codes.RawValue, lyricsDescription: String) -> String? {
         get {
-            if let frame = self.frames[.userDefinedText(description: "")],
-                case .userTextFrame(let userTextFrame) = frame {
-                return (userTextFrame.descriptionString, userTextFrame.contentString)
+            if let frame = self.frames[.unsynchronizedLyrics(description: lyricsDescription)],
+                case .localizedFrame(let localizedFrame) = frame {
+                return localizedFrame.contentString
             } else {
-                return (nil,"")
+                return nil
             }
         }
         set {
-            let frame = UserTextFrame(description: newValue?.description ?? "", content: newValue?.content ?? "")
-            frames[.userDefinedText(description: newValue?.description ?? "")] = .userTextFrame(frame)
-        }
-    }
-    
-    var userDefinedWebpage: (description: String?, content: String)? {
-        get {
-            if let frame = self.frames[.userDefinedWebpage(description: "")],
-                case .userTextFrame(let userTextFrame) = frame {
-                return (userTextFrame.descriptionString, userTextFrame.contentString)
+            let key = FrameKey.unsynchronizedLyrics(description: lyricsDescription)
+            if let new = newValue {
+                self.frames[key] = Frame.localizedFrame(.init(language: language, description: lyricsDescription, lyrics: new))
             } else {
-                return (nil,"")
+                self.frames[key] = nil
             }
-        }
-        set {
-            let frame = UserTextFrame(description: newValue?.description ?? "", webpage: newValue?.content ?? "")
-            frames[.userDefinedText(description: newValue?.description ?? "")] = .userTextFrame(frame)
         }
     }
 
-    var tableOfContents: (
-        elementID: String,
-        topLevelFlag: Bool,
-        orderedFlag: Bool,
-        entryCount: Int,
-        childElementIDList: [String],
-        subframes: [FrameKey: Frame]) {
+    subscript(userDefinedText userTextDescription: String) -> String? {
         get {
-            if let frame = self.frames[.tableOfContents(elementID: "")],
+            if let frame = self.frames[.userDefinedText(description: userTextDescription)],
+                case .userTextFrame(let userTextFrame) = frame {
+                return userTextFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let key = FrameKey.userDefinedText(description: userTextDescription)
+            if let new = newValue {
+                self.frames[key] = Frame.userTextFrame(.init(description: userTextDescription, content: new))
+            } else {
+                self.frames[key] = nil
+            }
+        }
+    }
+    
+    subscript(userDefinedUrl userDefinedUrlDescription: String) -> String? {
+        get {
+            if let frame = self.frames[.userDefinedWebpage(description: userDefinedUrlDescription)],
+                case .userTextFrame(let userTextFrame) = frame {
+                return userTextFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let key = FrameKey.userDefinedWebpage(description: userDefinedUrlDescription)
+            if let new = newValue {
+                self.frames[key] = Frame.userTextFrame(.init(description: userDefinedUrlDescription, content: new))
+            } else {
+                self.frames[key] = nil
+            }
+        }
+    }
+    
+    subscript(tableOfContents tocElementID: String) -> TableOfContentsFrame? {
+        get {
+            if let frame = self.frames[.tableOfContents(elementID: tocElementID)],
                 case .tocFrame(let tocFrame) = frame {
-                let countUInt8 = tocFrame.entryCount
-                let countInt = Int(countUInt8)
-                return (tocFrame.elementID,
-                        tocFrame.topLevelFlag,
-                        tocFrame.orderedFlag,
-                        countInt,
-                        tocFrame.childElementIDs,
-                        tocFrame.embeddedSubframes)
+                return tocFrame
             } else {
-                return ("",false,false,0,[],[:])
+                return nil
             }
         }
         set {
-            let frame = TableOfContentsFrame(
-                isTopTOC: newValue.topLevelFlag,
-                elementsAreOrdered: newValue.orderedFlag,
-                childElementIDs: newValue.childElementIDList,
-                embeddedSubframes: newValue.subframes)
-            frames[.tableOfContents(elementID: newValue.elementID)] = .tocFrame(frame)
+            let key = FrameKey.tableOfContents(elementID: tocElementID)
+            if let new = newValue {
+                self.frames[key] = Frame.tocFrame(.init(
+                    isTopTOC: new.topLevelFlag,
+                    elementsAreOrdered: new.orderedFlag,
+                    childElementIDs: new.childElementIDs,
+                    embeddedSubframes: new.embeddedSubframes))
+            } else {
+                self.frames[key] = nil
+            }
         }
     }
-    
-    var chapter : (
-        elementID: String,
-        startTime: Int,
-        endTime: Int,
-        startByteOffset: Int,
-        endByteOffset: Int,
-        embeddedSubframes: [FrameKey: Frame]) {
+        
+    subscript(chapters chapterElementID: String) -> ChapterFrame? {
         get {
-            if let frame = self.frames[.chapter(elementID: "")],
+            if let frame = self.frames[.chapter(elementID: chapterElementID)],
                 case .chapterFrame(let chapterFrame) = frame {
-                return (chapterFrame.elementID,
-                        chapterFrame.startTime,
-                        chapterFrame.endTime,
-                        chapterFrame.startByteOffset,
-                        chapterFrame.endByteOffset,
-                        chapterFrame.embeddedSubframes)
+                return chapterFrame
             } else {
-                return ("",0,0,0,0,[:])
+                return nil
             }
         }
         set {
-            let frame = ChapterFrame(startTime: newValue.startTime,
-                                     endTime: newValue.endTime,
-                                     embeddedSubframes: newValue.embeddedSubframes)
-            frames[.chapter(elementID: newValue.elementID)] = .chapterFrame(frame)
+            let key = FrameKey.chapter(elementID: chapterElementID)
+            if let new = newValue {
+                self.frames[key] = Frame.chapterFrame(.init(
+                    startTime: new.startTime,
+                    endTime: new.endTime,
+                    embeddedSubframes: new.embeddedSubframes))
+            }
         }
-        
     }
 
+    
+    
 }

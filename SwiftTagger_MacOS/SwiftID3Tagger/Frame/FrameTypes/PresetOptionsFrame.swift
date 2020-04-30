@@ -21,7 +21,7 @@ public struct PresetOptionsFrame: FrameProtocol {
     public init(genreName: GenreType.RawValue?,
                 genreDescription: String?) {
         self.init(layout: .known(.genre),
-                  presetName: genreName ?? "",
+                  presetName: genreName,
                   presetRefinement: nil,
                   refinementDescription: genreDescription)
     }
@@ -34,7 +34,16 @@ public struct PresetOptionsFrame: FrameProtocol {
                   presetRefinement: additionalMediaInfo,
                   refinementDescription: mediaTypeDescription)
     }
-    
+
+    public init(fileType: FileType.RawValue?,
+                additionalFileTypeInfo: String?,
+                fileTypeDescription: String?) {
+        self.init(layout: .known(.fileType),
+                  presetName: fileType,
+                  presetRefinement: additionalFileTypeInfo,
+                  refinementDescription: fileTypeDescription)
+    }
+
     // MARK: Private Initializer
     
     var presetName: String?
@@ -60,7 +69,7 @@ public struct PresetOptionsFrame: FrameProtocol {
             case .known(.genre) : self.frameKey = .genre
             case .known(.mediaType) : self.frameKey = .mediaType
             case .known(.fileType) : self.frameKey = .fileType
-            default: self.frameKey = .userDefinedText(description: "")
+            default: self.frameKey = .userDefinedText(description: refinementDescription ?? "")
         }
     }
     
@@ -72,7 +81,7 @@ public struct PresetOptionsFrame: FrameProtocol {
     // MARK: Encode contents for writing
     func encodeContents(version: Version) throws -> Data {
         let encodingByte = StringEncoding.preferred.rawValue.encoding(endianness: .bigEndian)
-
+        
         var encodedName = Data()
         var encodedPresetRefinement = Data()
         var encodedRefinement = Data()
@@ -108,18 +117,27 @@ public struct PresetOptionsFrame: FrameProtocol {
     
     // encode presetRefinement
     private func convertAndEncodePresetRefinement(version: Version) -> Data? {
+        var refinementCode: String = ""
         switch version {
             case .v2_2, .v2_3 :
                 if let refinement = self.presetRefinement {
-                    let refinementCode = MediaTypeRefinements(rawValue: refinement)?.code ?? ""
-                    return refinementCode.encoded(withNullTermination: false)
-            }
+                    if self.layout == .known(.mediaType) {
+                        refinementCode = MediaTypeRefinements(rawValue: refinement)?.code ?? ""
+                    } else if self.layout == .known(.fileType) {
+                        refinementCode = FileTypeRefinements(rawValue: refinement)?.code ?? ""
+                    }
+                }
+                return refinementCode.encoded(withNullTermination: false)
             case .v2_4 :
                 if let refinement = self.presetRefinement {
-                    let refinementCode = MediaTypeRefinements(rawValue: refinement)?.code ?? ""
-                    return refinementCode.encoded(withNullTermination: true)
+                    if self.layout == .known(.mediaType) {
+                        refinementCode = MediaTypeRefinements(rawValue: refinement)?.code ?? ""
+                    } else if self.layout == .known(.fileType) {
+                        refinementCode = FileTypeRefinements(rawValue: refinement)?.code ?? ""
+                    }
             }
-        }; return nil
+                return refinementCode.encoded(withNullTermination: true)
+        }
     }
     
     // encode freeform refinement/description
@@ -138,9 +156,9 @@ public struct PresetOptionsFrame: FrameProtocol {
     
     // MARK: parse contents for reading
     init(decodingContents contents: Data.SubSequence,
-                  version: Version,
-                  layout: FrameLayoutIdentifier,
-                  flags: Data
+         version: Version,
+         layout: FrameLayoutIdentifier,
+         flags: Data
     ) throws {
         self.flags = flags // this is just here for protocol comformance
         self.layout = layout
@@ -149,7 +167,7 @@ public struct PresetOptionsFrame: FrameProtocol {
             case .known(.genre) : self.frameKey = .genre
             case .known(.mediaType) : self.frameKey = .mediaType
             case .known(.fileType) : self.frameKey = .fileType
-            default: self.frameKey = .userDefinedText(description: "")
+            default: self.frameKey = .userDefinedText(description: self.refinementDescription ?? "")
         }
         
         var parsing = contents
@@ -205,6 +223,12 @@ public struct PresetOptionsFrame: FrameProtocol {
                         // if neither of those is true, treat it as a freeform string
                     } else {
                         self.refinementDescription = parsedComponent
+                    }
+                } else if layout == .known(.fileType) {
+                    if parsedComponent.first == "/" {
+                        self.presetRefinement = FileTypeRefinements(rawValue: parsedComponent)!.rawValue
+                    } else {
+                        self.presetName = parsedComponent
                     }
                 }
             }
