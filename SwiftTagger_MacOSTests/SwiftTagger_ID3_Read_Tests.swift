@@ -71,7 +71,7 @@ class SwiftTagger_ID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag.bpm, 99)
         XCTAssertEqual(tag.isrc, 123456789012)
         XCTAssertEqual(tag.length, 5250)
-        XCTAssertEqual(tag.movementCount, 6)
+        XCTAssertEqual(tag.totalMovements, 6)
         XCTAssertEqual(tag.movementNumber, 0)
         XCTAssertEqual(tag.playlistDelay, 20)
         XCTAssertEqual(tag.compliation, true)

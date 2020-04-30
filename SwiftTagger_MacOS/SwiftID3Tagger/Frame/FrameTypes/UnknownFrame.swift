@@ -8,6 +8,7 @@
 
 import Foundation
 
+/** a type that passes through any unrecognized or unhandled frame content as-is */
 public struct UnknownFrame: FrameProtocol {
     
  

@@ -107,10 +107,10 @@ public struct PresetOptionsFrame: FrameProtocol {
     private func convertAndEncodePresetType(version: Version) -> Data? {
         switch version {
             case .v2_2, .v2_3 :
-                let presetCode = PresetOption(presetName: presetName ?? "").code
+                let presetCode = PresetOption(presetName: self.presetName ?? "").code
                 return (presetCode).encoded(withNullTermination: false)
             case .v2_4 :
-                let presetCode = PresetOption(presetName: presetName ?? "").code
+                let presetCode = PresetOption(presetName: self.presetName ?? "").code
                 return (presetCode).encoded(withNullTermination: true)
         }
     }

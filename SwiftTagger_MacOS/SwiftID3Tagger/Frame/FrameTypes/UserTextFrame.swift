@@ -8,6 +8,7 @@
 
 import Foundation
 
+/** a type representing an ID3 User Defined Text or User Defined Webpage frame, which consists of two strings: an optional, terminated `description` string, and a content string. A tag may have multiple frames of these types, but only one frame with the same `Description`. To preserve frame uniqueness while allowing multiple frames of these types, the `Description` field will be used as the `FrameKey` */
 public struct UserTextFrame: FrameProtocol {
    
     // public initializers
@@ -17,22 +18,25 @@ public struct UserTextFrame: FrameProtocol {
                   contentString: content)
     }
 
-    public init(acknowledgmentsContent: String) {
+    // convenience initializer, description pre-set to "Acknowledgments"
+    public init(acknowledgments: String) {
         self.init(layout: .known(.userDefinedText),
                   descriptionString: "Acknowledgments",
-                  contentString: acknowledgmentsContent)
+                  contentString: acknowledgments)
     }
 
-    public init(thanksContent: String) {
+    // convenience initializer, description pre-set to "Thanks"
+    public init(thanks: String) {
         self.init(layout: .known(.userDefinedText),
                   descriptionString: "Thanks",
-                  contentString: thanksContent)
+                  contentString: thanks)
     }
 
-    public init(sourceCreditContent: String) {
+    // convenience initializer, description pre-set to "Source Credit"
+    public init(sourceCredit: String) {
         self.init(layout: .known(.userDefinedText),
                   descriptionString: "Source Credit",
-                  contentString: sourceCreditContent)
+                  contentString: sourceCredit)
     }
 
     public init(description: String, webpage: String) {
@@ -67,6 +71,7 @@ public struct UserTextFrame: FrameProtocol {
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
 
+    // encode contents to add to an ID3 tag
     func encodeContents(version: Version) throws -> Data {
         let encodingByte = StringEncoding.preferred.rawValue.encoding(endianness: .bigEndian)
         let encodedDescriptionString = self.descriptionString.encoded(withNullTermination: true)
@@ -75,6 +80,7 @@ public struct UserTextFrame: FrameProtocol {
 
     }
 
+    // decode frame contents from an ID3 tag
     init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,

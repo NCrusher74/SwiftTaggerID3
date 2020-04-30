@@ -69,6 +69,7 @@ public struct DateFrame: FrameProtocol {
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
     
+    // encode contents of the frame to add to an ID3 tag
     func encodeContents(version: Version) throws -> Data {
         let encodingByte = StringEncoding.preferred.rawValue.encoding(endianness: .bigEndian)
         return encodingByte + self.timeStampString.encoded(withNullTermination: false)
@@ -108,6 +109,7 @@ public struct DateFrame: FrameProtocol {
     }
     
     // subset of ISO 8601; valid timestamps are yyyy, yyyy-MM, yyyy-MM-dd, yyyy-MM-ddTHH, yyyy-MM-ddTHH:mm and yyyy-MM-ddTHH:mm:ss.
+    // decode contents of a frame from an ID3 tag
     init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,

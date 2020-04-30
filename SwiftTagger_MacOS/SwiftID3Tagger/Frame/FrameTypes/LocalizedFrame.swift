@@ -11,11 +11,14 @@ import Foundation
 /**
  A type representing an ID3 frame that holds a three string fields: `Language` contains the 3-charcter string for the ISO-639-2 language code, `Description` contains a null-terminated string describing the frame content, and `Content`.
  
- This frame type will be used for both `Comment` and `UnsynchronizedLyrics` frames. A tag may have multiple frames of these types, but only one frame with the same `Description` and `Language`. To preserve frame uniqueness while allowing multiple frames of these types, the `Description` field will be used as the `FrameKey`
+ This frame type will be used for both `Comment` and `UnsynchronizedLyrics` frames. A tag may have multiple frames of these types, but only one frame with the same `Description` and `Language`. To preserve frame uniqueness while allowing multiple frames of these types, the `Description` field will be used as the `FrameKey`.
+ 
+ These frames are the only frames that allow the use of new-line characters. Therefore, they are ideally suited for long remarks and convenience initializers for the most common types have been added.
  */
 public struct LocalizedFrame: FrameProtocol {
     
     // public initializers
+    /// general lyrics frame initializer
     public init(language: String?, description: String?, lyrics: String) {
         self.init(layout: .known(.unsynchronizedLyrics),
                   languageString: language ?? "und",
@@ -23,6 +26,7 @@ public struct LocalizedFrame: FrameProtocol {
                   contentString: lyrics)
     }
 
+    /// general comments frame initializer
     public init(language: String?, description: String?, comments: String) {
         self.init(layout: .known(.comments),
                   languageString: language ?? "und",
@@ -30,6 +34,7 @@ public struct LocalizedFrame: FrameProtocol {
                   contentString: comments)
     }
 
+    /// convenience initializer for comments frame intended to hold a description of the audio file contents
     public init(language: String?, contentDescription: String) {
         self.init(layout: .known(.comments),
                   languageString: language ?? "und",
@@ -37,6 +42,7 @@ public struct LocalizedFrame: FrameProtocol {
                   contentString: contentDescription)
     }
 
+    /// convenience initializer for comments frame intended to hold the liner notes of the audio file contents
     public init(language: String?, linerNotes: String) {
         self.init(layout: .known(.comments),
                   languageString: language ?? "und",
@@ -44,6 +50,7 @@ public struct LocalizedFrame: FrameProtocol {
                   contentString: linerNotes)
     }
 
+    /// convenience initializer for comments frame intended to hold a short description of the audio file contents
     public init(language: String?, shortDescription: String) {
         self.init(layout: .known(.comments),
                   languageString: language ?? "und",
@@ -51,6 +58,7 @@ public struct LocalizedFrame: FrameProtocol {
                   contentString: shortDescription)
     }
 
+    /// convenience initializer for comments frame intended to hold a longer or extended description of the audio file contents
     public init(language: String?, longDescription: String) {
         self.init(layout: .known(.comments),
                   languageString: language ?? "und",
@@ -58,6 +66,7 @@ public struct LocalizedFrame: FrameProtocol {
                   contentString: longDescription)
     }
 
+    /// convenience initializer for comments frame intended to hold a description of a specific song
     public init(language: String?, songDescription: String) {
         self.init(layout: .known(.comments),
                   languageString: language ?? "und",
@@ -65,6 +74,7 @@ public struct LocalizedFrame: FrameProtocol {
                   contentString: songDescription)
     }
 
+    /// convenience initializer for comments frame intended to hold a description of a series or collection that the audio file is a part of (such as for audiobooks)
     public init(language: String?, seriesDescription: String) {
         self.init(layout: .known(.comments),
                   languageString: language ?? "und",
@@ -105,6 +115,7 @@ public struct LocalizedFrame: FrameProtocol {
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
     
+    // encode the contents of the frame to add to an ID3 tag
     func encodeContents(version: Version) throws -> Data {
         let encodingByte = StringEncoding.preferred.rawValue.encoding(endianness: .bigEndian)
         let encodedLanguageString = self.languageString?.encoded(withNullTermination: false) ?? "und".encoded(withNullTermination: false)
@@ -113,6 +124,7 @@ public struct LocalizedFrame: FrameProtocol {
         return encodingByte + encodedLanguageString + encodedDescriptionString + encodedContentsString
     }
 
+    // decode the contents of the frame from an ID3 tag
     init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,

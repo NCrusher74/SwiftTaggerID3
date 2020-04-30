@@ -36,7 +36,7 @@ public struct TableOfContentsFrame: FrameProtocol {
     public var childElementIDs: [String]
     
     /** A sequence of optional frames that are embedded within the “CTOC” frame and which describe this element of the table of contents (e.g. a “TIT2” frame representing the name of the element) or provide related material such as URLs and images. These sub-frames are contained within the bounds of the “CTOC” frame as signalled by the size field in the “CTOC” frame header.*/
-    public var embeddedSubframes: [FrameKey: Frame]
+    public var embeddedSubframes: [FrameKey: Frame] = [:]
     
     
     /**
@@ -44,9 +44,8 @@ public struct TableOfContentsFrame: FrameProtocol {
      - parameter topLevelFlag: boolean indicating if this CTOC frame has any children (or parent) CTOC frame(s)
      - parameter orderedFlag: boolean indicating whether any child elementIDs are ordered or not
      - parameter entryCount: the number of child ElementIDs.
-     - parameter childElementID: the array of child elementIDs. Must not be empty. Each entry is null terminated.
+     - parameter childElementIDs: the array of child elementIDs. Must not be empty. Each entry is null terminated.
      - parameter embeddedSubFrames: the (optional) frames containing title and descriptor text for the CTOC frame.
-     
      */
     private init(layout: FrameLayoutIdentifier,
                  elementID: String,
@@ -66,17 +65,21 @@ public struct TableOfContentsFrame: FrameProtocol {
         self.frameKey = .tableOfContents(elementID: elementID)
     }
     
-    
+    // encode the contents of the frame to add to an ID3 tag
     func encodeContents(version: Version) throws -> Data {
+        // encode the elementID
         let encodedElementID = self.elementID.encoded(withNullTermination: true)
+        // encode the entry count
         let countedEntries = self.entryCount
         let encodedEntryCount = Data([countedEntries])
         
+        // encode the array of child element IDs
         var idArray = Data()
         for id in self.childElementIDs {
             idArray.append(id.encoded(withNullTermination: true))
         }
 
+        // encode the subframes to data
         var encodedSubframes = Data()
         for subframe in self.embeddedSubframes {
             encodedSubframes.append(try encodeSubframes(subframe: subframe as! FrameProtocol, version: version))
@@ -85,6 +88,7 @@ public struct TableOfContentsFrame: FrameProtocol {
         return encodedElementID + encodedFlagByte + encodedEntryCount + idArray + encodedSubframes
     }
     
+    // convert the boolean flags to a single byte of data
     var encodedFlagByte: Data {
         switch self.topLevelFlag {
             case true:
@@ -108,6 +112,7 @@ public struct TableOfContentsFrame: FrameProtocol {
         }
     }
  
+    // use FrameProtocol `encodeContents` method to encode subframes
     func encodeSubframes(subframe: FrameProtocol, version: Version) throws -> Data {
         return try subframe.encodeContents(version: version)
     }
@@ -116,6 +121,7 @@ public struct TableOfContentsFrame: FrameProtocol {
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
     
+    // decode a frame from an ID3 tag
     init(decodingContents contents: Data.SubSequence,
                   version: Version,
                   layout: FrameLayoutIdentifier,
@@ -123,12 +129,14 @@ public struct TableOfContentsFrame: FrameProtocol {
         self.flags = flags
         self.layout = layout
         
+        // get the elementID from the frame, using a uuid as default if none exists
         var parsing = contents
         let uuid = UUID()
         let elementID = parsing.extractPrefixAsStringUntilNullTermination(.isoLatin1)
         self.elementID = elementID ?? uuid.uuidString
         self.frameKey = .tableOfContents(elementID: elementID ?? uuid.uuidString)
 
+        // parse the flags byte and interpret boolean values
         let flagsByteData = parsing.extractFirst(1)
         guard let flagsByte = flagsByteData.first else {
             throw Mp3File.Error.InvalidTagData
@@ -147,6 +155,7 @@ public struct TableOfContentsFrame: FrameProtocol {
             self.orderedFlag = false
         }
 
+        // parse the entry-count byte to derive integer value
         let childIDByte = parsing.extractFirst(1)
         self.entryCount = childIDByte.uint8
 
@@ -160,6 +169,7 @@ public struct TableOfContentsFrame: FrameProtocol {
         }
         self.childElementIDs = childIDArray
         
+        // parse the subframes and add them to the embedded subframes dictionary
         var subframes: [FrameKey: Frame] = [:]
         while !parsing.isEmpty {
             let embeddedSubframeIdentifierData = parsing.extractFirst(version.identifierLength)
@@ -176,10 +186,11 @@ public struct TableOfContentsFrame: FrameProtocol {
         self.embeddedSubframes = subframes
     }
     
+    // public initializer requiring only the boolean flags, the child element IDs, and the embedded subframes
     public init(isTopTOC: Bool,
          elementsAreOrdered: Bool,
          childElementIDs: [String],
-         embeddedSubframes: [FrameKey: Frame]) {
+         embeddedSubframes: [FrameKey: Frame]?) {
         let uuid = UUID()
         let elementID = uuid.uuidString
         self.init(layout: .known(.tableOfContents),
@@ -188,7 +199,7 @@ public struct TableOfContentsFrame: FrameProtocol {
                   orderedFlag: elementsAreOrdered,
                   entryCount: UInt8(childElementIDs.count),
                   childElementIDs: childElementIDs,
-                  embeddedSubframes: embeddedSubframes)
+                  embeddedSubframes: embeddedSubframes ?? [:])
     }
 }
 

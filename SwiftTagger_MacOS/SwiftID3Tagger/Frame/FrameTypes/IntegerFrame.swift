@@ -9,7 +9,7 @@
 import Foundation
 
 /**
- A type representing an ID3 frame that holds a single integer value
+ A type representing an ID3 frame that holds a single integer value, stored as an integer string
  */
 public struct IntegerFrame: FrameProtocol {
     
@@ -17,9 +17,6 @@ public struct IntegerFrame: FrameProtocol {
     
     /**
      A frame with only an integer string as content, presented as an integer
-     
-     Usually the tag stores these values as an integer string.
-     
      - parameter value: the content of the frame.
      */
     private init(layout: FrameLayoutIdentifier, value: Int) {
@@ -37,6 +34,7 @@ public struct IntegerFrame: FrameProtocol {
         }
     }
     
+    // encode the contents of the frame to add to an ID3 tag
     func encodeContents(version: Version) throws -> Data {
         let encodingByte = StringEncoding.preferred.rawValue.encoding(endianness: .bigEndian)
         return encodingByte + String(self.value).encoded(withNullTermination: false)

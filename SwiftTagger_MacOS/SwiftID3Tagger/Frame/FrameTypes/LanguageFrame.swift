@@ -32,6 +32,7 @@ public struct LanguageFrame: FrameProtocol {
         self.frameKey = .languages
     }
     
+    // encode the contents of the frame to add to an ID3 tag
     func encodeContents(version: Version) throws -> Data {
         let encodingByte = StringEncoding.preferred.rawValue.encoding(endianness: .bigEndian)
         var languagesAsData = Data()

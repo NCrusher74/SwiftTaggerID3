@@ -45,6 +45,7 @@
         self.frameKey = .attachedPicture(description: imageDescription ?? imageType.pictureDescription)
     }
     
+    // encode the contents of the frame to add to an ID3 tag
     func encodeContents(version: Version) throws -> Data {
         let encodingByte = StringEncoding.preferred.rawValue.encoding(endianness: .bigEndian)
         
@@ -76,6 +77,7 @@
         return encodingByte + encodedFormatOrMIMETypeString + encodedImageTypeByte + encodedImageDescription
     }
     
+    // the first four bytes of an image file contain a "magic number" that identifies the image format
     private var jpgMagicNumber: Data {
         return Data([0xFF, 0xD8, 0xFF, 0xE0])
     }
@@ -88,6 +90,7 @@
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
     
+    // decode the contents of an image frame from an ID3 tag
     init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,
@@ -136,6 +139,7 @@
     }
     
     
+    /// add an image to an ID3 tag using the `URL` of the image file
     public init(imageLocation: URL,
                 imageType: ImageType,
                 imageDescription: String?) throws {

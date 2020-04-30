@@ -42,7 +42,7 @@ public enum Frame {
     /// allows unsupported frames to pass through and be returned unpaarsed
     case unknownFrame(UnknownFrame)
     
-    /** instantiates a frame type based upon the `identifier` string */
+    // instantiates a frame handler based upon the `identifier` string
     init(identifier: String,
          data: inout Data.SubSequence,
          version: Version) throws {

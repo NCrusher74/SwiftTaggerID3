@@ -10,6 +10,7 @@ import Foundation
 
 /**
  A type used to represent an ID3 involved peeople list or musician credits frame.
+ handled as an array of `role, person` tuples
  */
 public struct CreditsListFrame: FrameProtocol {
  
@@ -38,7 +39,7 @@ public struct CreditsListFrame: FrameProtocol {
         self.init(layout: .known(.musicianCreditsList), entries: entryArray)
     }
 
-    /// An array of the role:person tuples
+    /// An array of the `role, person` tuples
     var entries: [(role: String, person: String)]
     
     /**
@@ -58,6 +59,7 @@ public struct CreditsListFrame: FrameProtocol {
         }
     }
         
+    // encode the contents of the frame to add to an ID3 tag
     func encodeContents(version: Version) throws -> Data {
         let encodingByte = StringEncoding.preferred.rawValue.encoding(endianness: .bigEndian)
         var entriesAsData = Data()
@@ -72,7 +74,7 @@ public struct CreditsListFrame: FrameProtocol {
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
     
-    // MARK: Decoding
+    // MARK: Decoding the contents of a frame from an ID3 tag
     init(decodingContents contents: Data.SubSequence,
                   version: Version,
                   layout: FrameLayoutIdentifier,

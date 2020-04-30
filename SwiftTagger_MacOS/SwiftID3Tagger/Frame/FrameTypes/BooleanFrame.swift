@@ -23,7 +23,7 @@ public struct BooleanFrame: FrameProtocol {
      A frame with a single-integer string, 1 or 0, presented as a boolean.
      - parameter value: the content of the frame.
      
-     This frame is stored in the tag as a string. For the sake of user-friendliness, this is converted to a boolean value as long as the stored value is recognizable as a boolean-like word.
+     This frame is stored in the tag as an integer string. For the sake of user-friendliness, this is converted to a boolean value as long as the stored value is recognizable as a boolean-like word.
      */
     private init(layout: FrameLayoutIdentifier, value: Bool) {
         self.value = value
@@ -32,6 +32,7 @@ public struct BooleanFrame: FrameProtocol {
         self.frameKey = .compilation
     }
     
+    // encode the contents of the frame for writing
     func encodeContents(version: Version) throws -> Data {
         let encodingByte = StringEncoding.preferred.rawValue.encoding(endianness: .bigEndian)
         let contents = self.value
@@ -46,6 +47,7 @@ public struct BooleanFrame: FrameProtocol {
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
     
+    // decode the contents of a frame from an ID3 tag
     init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,
@@ -61,6 +63,7 @@ public struct BooleanFrame: FrameProtocol {
         self.value = BooleanFrame.getBooleanFromString(boolString: contentString)
     }
     
+    // interpret some of the most common boolean-type strings
     private static func getBooleanFromString(boolString: String) -> Bool {
         switch boolString.lowercased() {
             case "true", "t", "yes", "y", "1":

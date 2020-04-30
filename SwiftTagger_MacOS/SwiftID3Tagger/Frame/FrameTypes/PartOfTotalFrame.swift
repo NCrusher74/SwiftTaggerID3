@@ -42,6 +42,7 @@ public struct PartOfTotalFrame: FrameProtocol {
         }
     }
     
+    // encode the contents of the frame to add to an ID3 tag
     func encodeContents(version: Version) throws -> Data {
         let encodingByte = StringEncoding.preferred.rawValue.encoding(endianness: .bigEndian)
         if self.total == nil {
@@ -57,6 +58,7 @@ public struct PartOfTotalFrame: FrameProtocol {
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
     
+    // decode the contents of a frame from an ID3 tag
     init(decodingContents contents: Data.SubSequence,
                   version: Version,
                   layout: FrameLayoutIdentifier,
