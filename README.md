@@ -56,77 +56,77 @@ Unknown or unhandled frames are assigned a `UUID` that may be used in a similar 
 
 Here's a complete list of the frames handled by `SwiftTaggerID3`:
 
-*`album`
-*`albumSort`
-*`albumArtist`
-*`albumArtistSort`
-*`arranger`
-*`artist`
-*`artistSort`
-*`artistWebpage`
-*`attachedPicture`
-*`audioFileWebpage`
-*`audioSourceWebpage`
-*`bpm`
-*`chapter`
-*`comments`
-*`compilation`
-*`composer`
-*`composerSort`
-*`conductor`
-*`contentGroup`
-*`copyright`
-*`copyrightWebpage`
-*`date`
-*`discNumber`
-*`encodingTime`
-*`encodedBy`
-*`encodingSettings`
-*`fileType`
-*`fileOwner`
-*`genre`
-*`grouping`
-*`initialKey`
-*`involvedPeopleList`
-*`isrc`
-*`languages`
-*`length`
-*`lyricist`
-*`mediaType`
-*`mood`
-*`movementCount`
-*`movementName`
-*`movementNumber`
-*`musicianCreditsList`
-*`originalAlbum`
-*`originalArtist`
-*`originalFilename`
-*`originalLyricist`
-*`originalReleaseTime`
-*`paymentWebpage`
-*`playlistDelay`
-*`podcastCategory`
-*`podcastDescription`
-*`podcastID`
-*`podcastKeywords`
-*`podcastFeedLink`
-*`producedNotice`
-*`publisher`
-*`publisherWebpage`
-*`radioStation`
-*`radioStationOwner`
-*`radioStationWebpage`
-*`recordingDate`
-*`releaseTime`
-*`setSubtitle`
-*`subtitle`
-*`tableOfContents`
-*`taggingTime`
-*`time`
-*`title`
-*`titleSort`
-*`trackNumber`
-*`unsynchronizedLyrics`
-*`userDefinedText`
-*`userDefinedWebpage`
-*`year`
+* `album`
+* `albumSort`
+* `albumArtist`
+* `albumArtistSort`
+* `arranger`
+* `artist`
+* `artistSort`
+* `artistWebpage`
+* `attachedPicture`
+* `audioFileWebpage`
+* `audioSourceWebpage`
+* `bpm`
+* `chapter`
+* `comments`
+* `compilation`
+* `composer`
+* `composerSort`
+* `conductor`
+* `contentGroup`
+* `copyright`
+* `copyrightWebpage`
+* `date`
+* `discNumber`
+* `encodingTime`
+* `encodedBy`
+* `encodingSettings`
+* `fileType`
+* `fileOwner`
+* `genre`
+* `grouping`
+* `initialKey`
+* `involvedPeopleList`
+* `isrc`
+* `languages`
+* `length`
+* `lyricist`
+* `mediaType`
+* `mood`
+* `movementCount`
+* `movementName`
+* `movementNumber`
+* `musicianCreditsList`
+* `originalAlbum`
+* `originalArtist`
+* `originalFilename`
+* `originalLyricist`
+* `originalReleaseTime`
+* `paymentWebpage`
+* `playlistDelay`
+* `podcastCategory`
+* `podcastDescription`
+* `podcastID`
+* `podcastKeywords`
+* `podcastFeedLink`
+* `producedNotice`
+* `publisher`
+* `publisherWebpage`
+* `radioStation`
+* `radioStationOwner`
+* `radioStationWebpage`
+* `recordingDate`
+* `releaseTime`
+* `setSubtitle`
+* `subtitle`
+* `tableOfContents`
+* `taggingTime`
+* `time`
+* `title`
+* `titleSort`
+* `trackNumber`
+* `unsynchronizedLyrics`
+* `userDefinedText`
+* `userDefinedWebpage`
+* `year`
