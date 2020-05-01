@@ -8,19 +8,6 @@
 
 public enum ISO6392Codes: String, CaseIterable {
     
-    public init?(nativeName: String) {
-        self = ISO6392Codes.nativeNameToIsoCode[nativeName] ?? .und
-    }
-
-    public static let nativeNameToIsoCode: [String: ISO6392Codes] = {
-        var mapping: [String: ISO6392Codes] = [:]
-        for code in ISO6392Codes.allCases {
-            let nativeName = code.nativeName
-            mapping[nativeName] = code
-        }
-        return mapping
-    }()
-    
     /// Afar
     case aar
     /// Abkhazian

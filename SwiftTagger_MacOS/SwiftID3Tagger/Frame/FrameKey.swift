@@ -9,7 +9,7 @@
 import Foundation
 
 /** the key used to refer to a particular frame. Usually this is the rawValue of the `FrameLayoutIdentifier`, but in cases where a frame may be duplicated, will derive from information contained in the frame, such as a description field */
-public enum FrameKey: Hashable {
+enum FrameKey: Hashable {
     
     /** The 'Album/Movie/Show title' frame is intended for the title of the recording (or source of sound) from which the audio in the file is taken. */
     case album

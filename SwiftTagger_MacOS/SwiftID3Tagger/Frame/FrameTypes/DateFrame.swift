@@ -15,52 +15,52 @@ import Foundation
 /**
  A type used to represent an ID3-formatted timestamp tag. The information delivered from this type will vary depending on the tag version and formatting.
  */
-public struct DateFrame: FrameProtocol {
+struct DateFrame: FrameProtocol {
     
     /// TDAT Date Frame
-    public init(month: Int?, day: Int?) {
+    init(month: Int?, day: Int?) {
         self.init(layout: .known(.date),
                   timeStampString: "\(month ?? 00)-\(day ?? 00)")
     }
     
     /// TIM/TIME Time Frame
-    public init(hour: Int?, minute: Int?) {
+    init(hour: Int?, minute: Int?) {
         self.init(layout: .known(.time),
                   timeStampString: "\(hour ?? 00):\(minute ?? 00)")
     }
     
     /// TYE/TYER Year Frame
-    public init(year: Int?) {
+    init(year: Int?) {
         self.init(layout: .known(.year),
                   timeStampString: "\(year ?? 00)")
     }
     
     /// TDEN Encoding Time Frame
-    public init(encodingYear: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?) {
+    init(encodingYear: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?) {
         self.init(layout: .known(.encodingTime),
                   timeStampString: "\(encodingYear ?? 0000)-\(month ?? 00)-\(day ?? 00)T\(hour ?? 00):\(minute ?? 00)")
     }
     
     /// TOR/TORY/TDOR - Original Release Date/Year Frame
-    public init(originalReleaseYear: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?) {
+    init(originalReleaseYear: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?) {
         self.init(layout: .known(.originalReleaseTime),
                   timeStampString: "\(originalReleaseYear ?? 0000)-\(month ?? 00)-\(day ?? 00)T\(hour ?? 00):\(minute ?? 00)")
     }
     
     /// TRD/TRDA/TDRC - Recording Date Frame
-    public init(recordingYear: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?) {
+    init(recordingYear: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?) {
         self.init(layout: .known(.recordingDate),
                   timeStampString: "\(recordingYear ?? 0000)-\(month ?? 00)-\(day ?? 00)T\(hour ?? 00):\(minute ?? 00)")
     }
     
     /// TDRL - Release Time Frame
-    public init(releaseYear: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?) {
+    init(releaseYear: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?) {
         self.init(layout: .known(.releaseTime),
                   timeStampString: "\(releaseYear ?? 0000)-\(month ?? 00)-\(day ?? 00)T\(hour ?? 00):\(minute ?? 00)")
     }
     
     /// TDTG - Tagging Time Frame
-    public init(taggingYear: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?) {
+    init(taggingYear: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?) {
         self.init(layout: .known(.taggingTime),
                   timeStampString: "\(taggingYear ?? 0000)-\(month ?? 00)-\(day ?? 00)T\(hour ?? 00):\(minute ?? 00)")
     }
@@ -143,3 +143,136 @@ public struct DateFrame: FrameProtocol {
     }
 }
 
+public extension Tag {
+    /// - (Release) Date frame getter-setter. Valid for versions 2.2 and 2.3 only.
+    /// ID3 Identifier: `TDA`/`TDAT`
+    var date: String? {
+        get {
+            if let frame = self.frames[.date],
+                case .dateFrame(let dateFrame) = frame {
+                return dateFrame.timeStampString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = DateFrame(layout: .known(.date), timeStampString: newValue ?? "")
+            frames[.date] = .dateFrame(frame)
+        }
+    }
+    
+    /// - (Release) Time frame getter-setter. Valid for versions 2.2 and 2.3 only.
+    /// ID3 Identifier: `TIM`/`TIME`
+    var time: String? {
+        get {
+            if let frame = self.frames[.time],
+                case .dateFrame(let dateFrame) = frame {
+                return dateFrame.timeStampString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = DateFrame(layout: .known(.time), timeStampString: newValue ?? "")
+            frames[.time] = .dateFrame(frame)
+        }
+    }
+    
+    /// - (Release) Year frame getter-setter. Valid for versions 2.2 and 2.3 only.
+    /// ID3 Identifier: `TYE`/`TYER`
+    var year: String? {
+        get {
+            if let frame = self.frames[.year],
+                case .dateFrame(let dateFrame) = frame {
+                return dateFrame.timeStampString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = DateFrame(layout: .known(.year), timeStampString: newValue ?? "")
+            frames[.year] = .dateFrame(frame)
+        }
+    }
+    
+    /// - (Release) DateTime frame getter-setter. ID3 Identifier: `TDRL` Valid for version 2.4 only
+    var releaseDateTime: String? {
+        get {
+            if let frame = self.frames[.releaseTime],
+                case .dateFrame(let dateFrame) = frame {
+                return dateFrame.timeStampString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = DateFrame(layout: .known(.releaseTime), timeStampString: newValue ?? "")
+            frames[.releaseTime] = .dateFrame(frame)
+        }
+    }
+    
+    /// - EncodingDateTime frame getter-setter. ID3 Identifier: `TDEN`. Valid for Tag Version 2.4 only
+    var encodingDateTime: String? {
+        get {
+            if let frame = self.frames[.encodingTime],
+                case .dateFrame(let dateFrame) = frame {
+                return dateFrame.timeStampString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = DateFrame(layout: .known(.encodingTime), timeStampString: newValue ?? "")
+            frames[.encodingTime] = .dateFrame(frame)
+        }
+    }
+    
+    /// - OriginalReleaseDateTime frame getter-setter. ID3 Identifier: `TOY`/`TORY`/`TDOR`
+    /// intended to be a year-only field for tag versions 2.2 and 2.3
+    var originalReleaseDate: String? {
+        get {
+            if let frame = self.frames[.originalReleaseTime],
+                case .dateFrame(let dateFrame) = frame {
+                return dateFrame.timeStampString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = DateFrame(layout: .known(.originalReleaseTime), timeStampString: newValue ?? "")
+            frames[.originalReleaseTime] = .dateFrame(frame)
+        }
+    }
+    
+    /// - RecordingDateTime frame getter-setter. ID3 Identifier: `TRD`/`TRDA`/`TDRC`
+    var recordingDateTime: String? {
+        get {
+            if let frame = self.frames[.recordingDate],
+                case .dateFrame(let dateFrame) = frame {
+                return dateFrame.timeStampString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = DateFrame(layout: .known(.recordingDate), timeStampString: newValue ?? "")
+            frames[.recordingDate] = .dateFrame(frame)
+        }
+    }
+    
+    /// - TaggingDateTime frame getter-setter. ID3 Identifier: `TDTG`. Valid for Tag Version 2.4 only
+    var taggingDateTime: String? {
+        get {
+            if let frame = self.frames[.taggingTime],
+                case .dateFrame(let dateFrame) = frame {
+                return dateFrame.timeStampString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = DateFrame(layout: .known(.taggingTime), timeStampString: newValue ?? "")
+            frames[.taggingTime] = .dateFrame(frame)
+        }
+    }
+}

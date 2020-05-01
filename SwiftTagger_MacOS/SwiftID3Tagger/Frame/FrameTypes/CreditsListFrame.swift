@@ -12,30 +12,29 @@ import Foundation
  A type used to represent an ID3 involved peeople list or musician credits frame.
  handled as an array of `role, person` tuples
  */
-public struct CreditsListFrame: FrameProtocol {
+struct CreditsListFrame: FrameProtocol {
  
-    // public initializers
-    public init(role: String, involvedPerson: String) {
+    init(role: String, involvedPerson: String) {
         var entryArray: [(String, String)] = []
         entryArray.append((role, involvedPerson))
         self.init(layout: .known(.involvedPeopleList), entries: entryArray)
     }
     
-    public init(role: InvolvedPersonCredits.RawValue, creditedPerson: String) {
+    init(role: InvolvedPersonCredits, creditedPerson: String) {
         var entryArray: [(String, String)] = []
-        entryArray.append((role, creditedPerson))
+        entryArray.append((role.rawValue, creditedPerson))
         self.init(layout: .known(.involvedPeopleList), entries: entryArray)
     }
 
-    public init(role: String, creditedMusician: String) {
+    init(role: String, creditedMusician: String) {
         var entryArray: [(String, String)] = []
         entryArray.append((role, creditedMusician))
         self.init(layout: .known(.musicianCreditsList), entries: entryArray)
     }
     
-    public init(role: MusicianAndPerformerCredits.RawValue, creditedPerformer: String) {
+    init(role: MusicianAndPerformerCredits, creditedPerformer: String) {
         var entryArray: [(String, String)] = []
-        entryArray.append((role, creditedPerformer))
+        entryArray.append((role.rawValue, creditedPerformer))
         self.init(layout: .known(.musicianCreditsList), entries: entryArray)
     }
 
@@ -112,5 +111,46 @@ public struct CreditsListFrame: FrameProtocol {
         }
         let rolePersonArray = strings.pairs()
         return rolePersonArray as! [(String, String)]
+    }
+}
+
+// MARK: Tag extension
+public extension Tag {
+    /// - MusicianCreditsList frame getter-setter. Valid only for tag version 2.4
+    /// ID3 Identifier: `TMCL`
+    /// the `role` parameter refers to an instrument, vocal part, or other performance-related task.
+    /// the `person` parameter is the name of the person or people performing the `role`
+    var musicianCreditList: [(role: String, person: String)]? {
+        get {
+            if let frame = self.frames[.musicianCreditsList],
+                case .creditsListFrame(let creditsListFrame) = frame {
+                return creditsListFrame.entries
+            } else {
+                return []
+            }
+        }
+        set {
+            let frame = CreditsListFrame(layout: .known(.musicianCreditsList), entries: newValue ?? [])
+            frames[.musicianCreditsList] = .creditsListFrame(frame)
+        }
+    }
+    
+    /// - InvolvedPeopleList frame getter-setter. ID3 Identifier: `IPL`/`IPLS`/`TIPL`
+    /// the `role` parameter refers to a production or support-oriented task (for tag version 2.4)
+    /// or to any performance or production related job (for tag versions 2.2 and 2.3)
+    /// the `person` parameter is the name of the person or people performing the `role`
+    var involvedPeopleList: [(role: String, person: String)]? {
+        get {
+            if let frame = self.frames[.involvedPeopleList],
+                case .creditsListFrame(let creditsListFrame) = frame {
+                return creditsListFrame.entries
+            } else {
+                return []
+            }
+        }
+        set {
+            let frame = CreditsListFrame(layout: .known(.involvedPeopleList), entries: newValue ?? [])
+            frames[.involvedPeopleList] = .creditsListFrame(frame)
+        }
     }
 }

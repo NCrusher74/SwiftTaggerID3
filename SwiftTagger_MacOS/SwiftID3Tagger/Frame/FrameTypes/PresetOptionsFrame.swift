@@ -15,10 +15,10 @@ import Foundation
 /**
  A type used to represent an ID3 genre frame
  */
-public struct PresetOptionsFrame: FrameProtocol {
+struct PresetOptionsFrame: FrameProtocol {
     
     // initializer for Genre Frame
-    public init(genreName: GenreType?,
+    init(genreName: GenreType?,
                 genreDescription: String?) {
         self.init(layout: .known(.genre),
                   presetName: String(genreName?.code ?? 255),
@@ -26,7 +26,7 @@ public struct PresetOptionsFrame: FrameProtocol {
                   refinementDescription: genreDescription)
     }
     
-    public init(mediaType: MediaType?,
+    init(mediaType: MediaType?,
                 additionalMediaInfo: MediaTypeRefinements?,
                 mediaTypeDescription: String?) {
         self.init(layout: .known(.mediaType),
@@ -35,7 +35,7 @@ public struct PresetOptionsFrame: FrameProtocol {
                   refinementDescription: mediaTypeDescription)
     }
 
-    public init(fileType: FileType?,
+    init(fileType: FileType?,
                 additionalFileTypeInfo: FileTypeRefinements?,
                 fileTypeDescription: String?) {
         self.init(layout: .known(.fileType),
@@ -270,3 +270,68 @@ public struct PresetOptionsFrame: FrameProtocol {
     }
 }
 
+// MARK: Tag Extension
+
+public extension Tag {
+    /// - Genre getter ID3 Identifier: `TCO`/`TCON`
+    var genre: (genreName: String?, genreDescription: String?) {
+        get {
+            if let frame = self.frames[.genre],
+                case .presetOptionsFrame(let presetOptionsFrame) = frame {
+                return (presetOptionsFrame.presetName, presetOptionsFrame.refinementDescription)
+            } else {
+                return (nil,nil)
+            }
+        }
+    }
+    
+    /// genre setter
+    /// The `genreName` parameter refers to specific genre or genres catalogued by numeric codes in the `GenreType` enum.
+    /// The `genreDescription` parameter is a freeform field that may be used to refine existing genres or create custom genres
+    mutating func setGenre(genreName: GenreType?, genreDescription: String?) throws {
+        let key = FrameKey.genre
+        self.frames[key] = Frame.presetOptionsFrame(.init(genreName: genreName, genreDescription: genreDescription))
+    }
+    
+    /// - MediaType getter-setter. ID3 Identifier: `TMT`/`TMED`
+    var mediaType: (mediaType: String?, additionalMediaInfo: String?, mediaTypeDescription: String?) {
+        get {
+            if let frame = self.frames[.mediaType],
+                case .presetOptionsFrame(let presetOptionsFrame) = frame {
+                return (presetOptionsFrame.presetName, presetOptionsFrame.presetRefinement, presetOptionsFrame.refinementDescription)
+            } else {
+                return (nil,nil,nil)
+            }
+        }
+    }
+    
+    /// mediaType setter
+    /// The `mediaType` parameter refers to specific type of media catalogued by codes in the `MediaType` enum.
+    /// The `additionalMediaInfo` parameter refers to specific type of refinement pertaining to the `MediaType`, catalogued by codes in the `MediaTypeRefinements` enum
+    /// The `mediaTypeDescription` parameter is a freeform field that may be used to refine existing information
+    mutating func setMediaType(mediaType: MediaType?, additionalMediaInfo: MediaTypeRefinements?, mediaTypeDescription: String?) throws {
+        let key = FrameKey.mediaType
+        self.frames[key] = Frame.presetOptionsFrame(.init(mediaType: mediaType, additionalMediaInfo: additionalMediaInfo, mediaTypeDescription: mediaTypeDescription))
+    }
+    
+    /// - FileType getter-setter. ID3 Identifier: `TFT`/`TFLT`
+    var fileType: (fileType: String?, additionalFileTypeInfo: String?, fileTypeDescription: String?) {
+        get {
+            if let frame = self.frames[.fileType],
+                case .presetOptionsFrame(let presetOptionsFrame) = frame {
+                return (presetOptionsFrame.presetName, presetOptionsFrame.presetRefinement, presetOptionsFrame.refinementDescription)
+            } else {
+                return (nil,nil,nil)
+            }
+        }
+    }
+    
+    /// file type setter
+    /// The `fileType` parameter refers to specific type of file catalogued by codes in the `FileType` enum.
+    /// The `additionalFileTypeInfo` parameter refers to specific type of refinement pertaining to the `FileType`, catalogued by codes in the `FileTypeRefinements` enum
+    /// The `fileTypeDescription` parameter is a freeform field that may be used to refine existing information
+    mutating func setFileType(fileType: FileType?, additionalFileTypeInfo: FileTypeRefinements?, fileTypeDescription: String?) throws {
+        let key = FrameKey.fileType
+        self.frames[key] = Frame.presetOptionsFrame(.init(fileType: fileType, additionalFileTypeInfo: additionalFileTypeInfo, fileTypeDescription: fileTypeDescription))
+    }
+}

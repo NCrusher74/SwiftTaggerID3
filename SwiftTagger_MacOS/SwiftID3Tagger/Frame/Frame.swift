@@ -9,7 +9,7 @@
 import Foundation
 
 /** An enum containing methods and variables for querying and handling information from a frame */
-public enum Frame {
+enum Frame {
     
     /// a frame type containing a single, unterminated string of content
     case stringFrame(StringFrame)

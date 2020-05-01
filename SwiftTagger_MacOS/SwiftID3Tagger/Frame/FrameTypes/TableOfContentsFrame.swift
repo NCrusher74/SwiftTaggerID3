@@ -17,7 +17,7 @@ import Foundation
 public struct TableOfContentsFrame: FrameProtocol {
     
     /** A null-terminated string with a unique ID. The Element ID uniquely identifies the frame. It is not intended to be human readable and should not be presented to the end-user. */
-    public var elementID: String
+    var elementID: String
     
     /** Flag a - Top-level bit
      This is set to 1 to identify the top-level “CTOC” frame. This frame is the root of the Table of Contents tree and is not a child of any other “CTOC” frame. Only one “CTOC” frame in an ID3v2 tag can have this bit set to 1. In all other “CTOC” frames this bit shall be set to 0.*/
@@ -36,7 +36,7 @@ public struct TableOfContentsFrame: FrameProtocol {
     public var childElementIDs: [String]
     
     /** A sequence of optional frames that are embedded within the “CTOC” frame and which describe this element of the table of contents (e.g. a “TIT2” frame representing the name of the element) or provide related material such as URLs and images. These sub-frames are contained within the bounds of the “CTOC” frame as signalled by the size field in the “CTOC” frame header.*/
-    public var embeddedSubframes: [FrameKey: Frame] = [:]
+    var embeddedSubframes: [FrameKey: Frame] = [:]
     
     
     /**
@@ -188,7 +188,7 @@ public struct TableOfContentsFrame: FrameProtocol {
     }
     
     // public initializer requiring only the boolean flags, the child element IDs, and the embedded subframes
-    public init(isTopTOC: Bool,
+    init(isTopTOC: Bool,
          elementsAreOrdered: Bool,
          childElementIDs: [String],
          embeddedSubframes: [FrameKey: Frame]?) {
@@ -204,4 +204,29 @@ public struct TableOfContentsFrame: FrameProtocol {
     }
 }
 
-
+public extension Tag {
+    /// - TableOfContents frame getter-setter. Valid for tag versions 2.3 and 2.4 only.
+    /// ID3 Identifier `CTOC`
+    subscript(tableOfContents tocElementID: String) -> TableOfContentsFrame? {
+        get {
+            if let frame = self.frames[.tableOfContents(elementID: tocElementID)],
+                case .tocFrame(let tocFrame) = frame {
+                return tocFrame
+            } else {
+                return nil
+            }
+        }
+        set {
+            let key = FrameKey.tableOfContents(elementID: tocElementID)
+            if let new = newValue {
+                self.frames[key] = Frame.tocFrame(.init(
+                    isTopTOC: new.topLevelFlag,
+                    elementsAreOrdered: new.orderedFlag,
+                    childElementIDs: new.childElementIDs,
+                    embeddedSubframes: new.embeddedSubframes))
+            } else {
+                self.frames[key] = nil
+            }
+        }
+    }
+}

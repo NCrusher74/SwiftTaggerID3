@@ -15,7 +15,7 @@ import Foundation
 /**
  An enum that describes the format of a supported attached image.
  */
-public enum ImageFormat: String {
+enum ImageFormat: String {
     case jpg
     case png
 }

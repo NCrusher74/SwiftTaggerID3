@@ -16,14 +16,14 @@
 /**
  A type representing an ID3 frame that contains an attached image
  */
- public struct ImageFrame: FrameProtocol {
+ struct ImageFrame: FrameProtocol {
     
     /// The image bytes as `Data`.
-    public let image: Data;
+    let image: Data;
     /// The ID3 type of the image (see `ImageType`).
-    public let imageType: ImageType
+    let imageType: ImageType
     /// an optional description of the image
-    public var imageDescription: String? = ""
+    var imageDescription: String? = ""
     
     
     /**
@@ -141,7 +141,7 @@
     
     
     /// add an image to an ID3 tag using the `URL` of the image file
-    public init(imageLocation: URL,
+    init(imageLocation: URL,
                 imageType: ImageType,
                 imageDescription: String?) throws {
         let imageData = try Data(contentsOf: imageLocation)
@@ -153,3 +153,21 @@
     }
 }
 
+public extension Tag {
+    /// - AttachedPicture frame getter-setter. ID3 Identifier `PIC`/`APIC`
+    subscript(attachedPicture imageDescription: String) -> Data? {
+        get {
+            if let frame = self.frames[.attachedPicture(description: imageDescription)],
+                case .imageFrame(let imageFrame) = frame {
+                return imageFrame.image
+            } else {
+                return nil
+            }
+        }
+    }
+    
+    mutating func setAttachedPicture(imageType: ImageType?, imageDescription: String?, location: URL) throws {
+        let key = FrameKey.attachedPicture(description: (imageDescription ?? imageType?.pictureDescription) ?? "")
+        self.frames[key] = Frame.imageFrame(try .init(imageLocation: location, imageType: imageType ?? .Other, imageDescription: imageDescription))
+    }
+}

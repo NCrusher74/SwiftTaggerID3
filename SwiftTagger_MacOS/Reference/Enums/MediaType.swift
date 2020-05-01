@@ -27,7 +27,7 @@ public enum MediaType: String, CaseIterable {
     case reel = "Reel"
     case none = ""
     
-    public var code: String {
+    var code: String {
         switch self {
             case .otherDigital: return "DIG"
             case .otherAnalog: return "ANA"
@@ -48,7 +48,7 @@ public enum MediaType: String, CaseIterable {
         }
     }
     
-    public static let codeToNameMapping: [String: String] = {
+    static let codeToNameMapping: [String: String] = {
         var mapping: [String: String] = [:]
         for mediaType in MediaType.allCases {
             let id = mediaType.code
@@ -100,7 +100,7 @@ public enum MediaTypeRefinements: String, CaseIterable {
     case typeIV = "Type IV cassette (metal)"
     case none = ""
     
-    public var code: String {
+    var code: String {
         switch self {
             case .analogTransfer: return "/A"
             case .waxCylinder: return "/WC"
@@ -144,7 +144,7 @@ public enum MediaTypeRefinements: String, CaseIterable {
         }
     }
     
-    public static let codeToTypeMapping: [String: String] = {
+    static let codeToTypeMapping: [String: String] = {
         var mapping: [String: String] = [:]
         for refinement in MediaTypeRefinements.allCases {
             let id = refinement.code

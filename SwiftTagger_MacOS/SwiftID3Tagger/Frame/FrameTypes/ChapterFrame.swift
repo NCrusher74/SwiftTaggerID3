@@ -15,20 +15,20 @@ import Foundation
 public struct ChapterFrame: FrameProtocol {
     
     /** The Element ID uniquely identifies the frame. It is not intended to be human readable and should not be presented to the end user. Null terminated */
-    public var elementID: String
+    var elementID: String
     
     /** The Start and End times are a count in milliseconds from the beginning of the file to the start and end of the chapter respectively. */
     public var startTime: Int
     public var endTime: Int
     
     /** The Start offset is a zero-based count of bytes from the beginning of the file to the first byte of the first audio frame in the chapter. If these bytes are all set to 0xFF then the value should be ignored and the start time value should be utilized.*/
-    public var startByteOffset: Int
+    var startByteOffset: Int
     
     /** The End offset is a zero-based count of bytes from the beginning of the file to the first byte of the audio frame following the end of the chapter. If these bytes are all set to 0xFF then the value should be ignored and the end time value should be utilized.*/
-    public var endByteOffset: Int
+    var endByteOffset: Int
     
     /** A sequence of optional frames that are embedded within the “CHAP” frame and which describe the content of the chapter (e.g. a “TIT2” frame representing the chapter name) or provide related material such as URLs and images. These sub-frames are contained within the bounds of the “CHAP” frame as signalled by the size field in the “CHAP” frame header. If a parser does not recognise “CHAP” frames it can skip them using the size field in the frame header. When it does this it will skip any embedded sub-frames carried within the frame. */
-    public var embeddedSubframes: [FrameKey: Frame]
+    var embeddedSubframes: [FrameKey: Frame]
     
     
     /**
@@ -142,7 +142,7 @@ public struct ChapterFrame: FrameProtocol {
     }
     
     /// initialize a new chapter, manually building the embedded subframes
-    public init(startTime: Int,
+    init(startTime: Int,
                 endTime: Int,
                 embeddedSubframes: [FrameKey: Frame]) {
         let uuid = UUID()
@@ -157,7 +157,7 @@ public struct ChapterFrame: FrameProtocol {
     }
 
     /// initialize a simple chapter frame with only chapter title, start and end times specified, creates the embedded subframe for the title automatically
-    public init(chapterTitle: String,
+    init(chapterTitle: String,
                 startTime: Int,
                 endTime: Int) {
         // create title stringframe as subframe
@@ -178,7 +178,7 @@ public struct ChapterFrame: FrameProtocol {
     }
     
     /// initialize a simple chapter frame with only embedded chapter image, start and end times specified, creates the embedded subframe for the image automatically
-    public init(imageUrl: URL,
+    init(imageUrl: URL,
                 startTime: Int,
                 endTime: Int) throws {
 
@@ -198,3 +198,43 @@ public struct ChapterFrame: FrameProtocol {
 
 }
 
+public extension Tag {
+    /// - Chapter frame getter-setter. Valid for tag versions 2.3 and 2.4 only.
+    /// ID3 Identifier `CHAP`
+    subscript(chapters chapterElementID: String) -> ChapterFrame? {
+        get {
+            if let frame = self.frames[.chapter(elementID: chapterElementID)],
+                case .chapterFrame(let chapterFrame) = frame {
+                return chapterFrame
+            } else {
+                return nil
+            }
+        }
+        set {
+            let key = FrameKey.chapter(elementID: chapterElementID)
+            if let new = newValue {
+                self.frames[key] = Frame.chapterFrame(.init(
+                    startTime: new.startTime,
+                    endTime: new.endTime,
+                    embeddedSubframes: new.embeddedSubframes))
+            }
+        }
+    }
+    
+    /** creates a "subframe tag" instance to use when accessing data within the embedded subframes of a `CHAP` or `CTOC` frame */
+    subscript(embeddedSubframes forParentFrameElementID: String) -> Tag? {
+        get {
+            var frames: [FrameKey:Frame] = [:]
+            if let parentFrame = self[chapters: forParentFrameElementID] {
+                frames = parentFrame.embeddedSubframes
+            } else if let parentFrame = self[tableOfContents: forParentFrameElementID] {
+                frames = parentFrame.embeddedSubframes
+            } else {
+                return nil
+            }
+            let subframeTag = Tag(readFromEmbeddedSubframes: frames)
+            return subframeTag
+        }
+    }
+
+}

@@ -11,9 +11,9 @@ import Foundation
 /**
  A type representing an ID3 frame that holds a single integer stored as an integer string, 1 for true and 0 for false.
  */
-public struct BooleanFrame: FrameProtocol {
+struct BooleanFrame: FrameProtocol {
     
-    public init(value: Bool) {
+    init(value: Bool) {
         self.init(layout: .known(.compilation), value: value)
     }
     
@@ -75,5 +75,23 @@ public struct BooleanFrame: FrameProtocol {
                 return false
         }
     }
+}
 
+public extension Tag {
+    /// - Compilation flag getter-setter. This is a non-standard, iTunes compliant frame
+    /// ID3 Identifier: `TCP`/`TCMP`.
+    var compilation: Bool? {
+        get {
+            if let frame = self.frames[.compilation],
+                case .booleanFrame(let booleanFrame) = frame {
+                return booleanFrame.value
+            } else {
+                return nil
+            }
+        }
+        set {
+            let frame = BooleanFrame(value: newValue ?? false)
+            frames[.compilation] = .booleanFrame(frame)
+        }
+    }
 }

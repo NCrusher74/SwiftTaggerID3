@@ -204,7 +204,7 @@ public enum GenreType: String, CaseIterable  {
     case Remix = "Remix"
     case Cover = "Cover"
     
-    public var code: Int {
+    var code: Int {
         switch self {
             case .Blues: return 0
             case .ClassicRock: return 1
@@ -404,7 +404,7 @@ public enum GenreType: String, CaseIterable  {
         }
     }
     
-    public static let codeToRawValueMapping: [Int: String] = {
+    static let codeToRawValueMapping: [Int: String] = {
         var mapping: [Int: String] = [:]
         for genre in GenreType.allCases {
             let id = genre.code

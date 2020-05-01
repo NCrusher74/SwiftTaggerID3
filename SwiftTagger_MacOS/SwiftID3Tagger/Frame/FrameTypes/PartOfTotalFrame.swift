@@ -11,13 +11,13 @@ import Foundation
 /**
  A type representing the track/disc index of the total tracks or discs.
  */
-public struct PartOfTotalFrame: FrameProtocol {
+struct PartOfTotalFrame: FrameProtocol {
     
-    public init(disc: Int, totalDiscs: Int?) {
+    init(disc: Int, totalDiscs: Int?) {
         self.init(layout: .known(.discNumber), part: disc, total: totalDiscs)
     }
     
-    public init(track: Int, totalTracks: Int?) {
+    init(track: Int, totalTracks: Int?) {
         self.init(layout: .known(.trackNumber), part: track, total: totalTracks)
     }
 
@@ -79,5 +79,40 @@ public struct PartOfTotalFrame: FrameProtocol {
         let contentComponents = contentString.components(separatedBy: "/")
         self.part = Int(contentComponents[0]) ?? 0
         self.total = Int(contentComponents[1])
+    }
+}
+
+// MARK: Tag Extension
+public extension Tag {
+    /// - DiscNumber(/TotalDiscs) getter-setter. ID3 Identifier: `TPA`/`TPOS`
+    var discNumber: (disc: Int, totalDiscs: Int?) {
+        get {
+            if let frame = self.frames[.discNumber],
+                case .partOfTotalFrame(let partOfTotalFrame) = frame {
+                return (partOfTotalFrame.part, partOfTotalFrame.total)
+            } else {
+                return (0,0)
+            }
+        }
+        set {
+            let frame = PartOfTotalFrame(disc: newValue.0, totalDiscs: newValue.1)
+            frames[.discNumber] = .partOfTotalFrame(frame)
+        }
+    }
+    
+    /// - TrackNumber(/TotalTracks) getter-setter. ID3 Identifier: `TRK`/`TRCK`
+    var trackNumber: (track: Int, totalTracks: Int?) {
+        get {
+            if let frame = self.frames[.trackNumber],
+                case .partOfTotalFrame(let partOfTotalFrame) = frame {
+                return (partOfTotalFrame.part, partOfTotalFrame.total)
+            } else {
+                return (0,0)
+            }
+        }
+        set {
+            let frame = PartOfTotalFrame(track: newValue.0, totalTracks: newValue.1)
+            frames[.trackNumber] = .partOfTotalFrame(frame)
+        }
     }
 }

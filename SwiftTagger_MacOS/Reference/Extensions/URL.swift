@@ -8,8 +8,8 @@
 import Foundation
 
 
-public extension URL {
-    var parentDirectory: URL {
+extension URL {
+    public var parentDirectory: URL {
         get {
             let parent = self.deletingLastPathComponent()
             return parent
@@ -24,7 +24,7 @@ public extension URL {
         }
     }
     
-    var fileName: String {
+    public var fileName: String {
         get {
             let filename = self.deletingPathExtension().lastPathComponent
             return filename

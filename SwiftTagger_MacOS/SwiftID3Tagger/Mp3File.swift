@@ -11,8 +11,8 @@ import Foundation
 /// An audio file represents an audio file somewhere on disk.
 public struct Mp3File {
  
-    public let location: URL
-    public var data: Data
+    let location: URL
+    var data: Data
 
     /// - Parameters:
     ///     - location: The location of the audio file in the local file system.

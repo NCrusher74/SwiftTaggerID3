@@ -12,7 +12,7 @@
 
 import Foundation
 
-public enum StringEncoding: UInt8 {
+enum StringEncoding: UInt8 {
     case isoLatin1 = 0x00
     case utf16WithBOM = 0x01
     case utf16BigEndian = 0x02
@@ -32,7 +32,7 @@ public enum StringEncoding: UInt8 {
     }
 }
 
-public extension StringEncoding {
+extension StringEncoding {
     var sizeOfTermination: Int {
         switch self {
             case .isoLatin1, .utf8:
