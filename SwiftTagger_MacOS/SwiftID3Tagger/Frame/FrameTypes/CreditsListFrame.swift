@@ -73,6 +73,7 @@ public struct CreditsListFrame: FrameProtocol {
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
+    var allowMultipleFrames: Bool = false
     
     // MARK: Decoding the contents of a frame from an ID3 tag
     init(decodingContents contents: Data.SubSequence,

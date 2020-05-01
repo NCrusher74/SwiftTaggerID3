@@ -68,6 +68,7 @@ public struct DateFrame: FrameProtocol {
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
+    var allowMultipleFrames: Bool = false
     
     // encode contents of the frame to add to an ID3 tag
     func encodeContents(version: Version) throws -> Data {

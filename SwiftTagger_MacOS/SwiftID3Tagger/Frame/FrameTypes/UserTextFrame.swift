@@ -70,6 +70,7 @@ public struct UserTextFrame: FrameProtocol {
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
+    var allowMultipleFrames: Bool = true
 
     // encode contents to add to an ID3 tag
     func encodeContents(version: Version) throws -> Data {

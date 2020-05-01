@@ -45,6 +45,7 @@ public struct IntegerFrame: FrameProtocol {
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
+    var allowMultipleFrames: Bool = false
     
     init(decodingContents contents: Data.SubSequence,
                   version: Version,

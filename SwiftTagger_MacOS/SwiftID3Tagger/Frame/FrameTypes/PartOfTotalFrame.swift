@@ -57,6 +57,7 @@ public struct PartOfTotalFrame: FrameProtocol {
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
+    var allowMultipleFrames: Bool = false
     
     // decode the contents of a frame from an ID3 tag
     init(decodingContents contents: Data.SubSequence,

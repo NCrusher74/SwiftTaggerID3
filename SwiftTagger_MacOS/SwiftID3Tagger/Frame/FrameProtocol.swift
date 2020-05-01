@@ -15,6 +15,7 @@ protocol FrameProtocol {
     var flags: Data { get set }
     var layout: FrameLayoutIdentifier { get }
     var frameKey: FrameKey { get set }
+    var allowMultipleFrames: Bool { get }
     
     func encodeContents(version: Version) throws -> Data
     
@@ -82,7 +83,7 @@ extension FrameProtocol {
     
     // calculates the size of the frame for encoding purposes
     static func calculateFrameContentSize(encodedContent: Data, version: Version) -> Data {
-        let contentSize = UInt32(encodedContent.count)
+        let contentSize = encodedContent.count.truncatedUInt32
         switch version {
             case .v2_2:
                 let contentUInt8Array = [UInt8](contentSize.bigEndianData)

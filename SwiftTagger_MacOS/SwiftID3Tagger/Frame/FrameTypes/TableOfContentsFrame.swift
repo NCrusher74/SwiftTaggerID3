@@ -120,6 +120,7 @@ public struct TableOfContentsFrame: FrameProtocol {
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
+    var allowMultipleFrames: Bool = true
     
     // decode a frame from an ID3 tag
     init(decodingContents contents: Data.SubSequence,

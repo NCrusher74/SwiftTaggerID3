@@ -30,6 +30,11 @@ struct TagProperties {
         let decodedTagSize = tagSize.decodingSynchsafe()
         return Int(decodedTagSize)
     }
+    
+//    func calculateNewSize(data: Data) throws -> Data {
+//        let countData = data.count.truncatedUInt32.bigEndianData
+//        
+//    }
 }
 
 extension TagProperties {

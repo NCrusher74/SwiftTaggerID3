@@ -74,6 +74,12 @@ public struct Tag {
         }
         self.frames = frames
     }
+    
+//    func buildTag(mp3File: Mp3File) -> Data {
+//        let mp3Data = mp3File.data
+//        
+//        
+//    }
 }
 
 public extension Tag {

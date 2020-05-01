@@ -87,6 +87,7 @@ public struct ChapterFrame: FrameProtocol {
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
+    var allowMultipleFrames: Bool = true
     
     // parses the contents of a chapter frame when reading an ID3 tag
     init(decodingContents contents: Data.SubSequence,

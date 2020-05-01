@@ -51,6 +51,7 @@ public struct LanguageFrame: FrameProtocol {
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
+    var allowMultipleFrames: Bool = false
     
     /// if desired, return may be changed from "isoName" to "nativeName"
     init(decodingContents contents: Data.SubSequence,

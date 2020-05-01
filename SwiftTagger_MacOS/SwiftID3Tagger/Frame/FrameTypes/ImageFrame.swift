@@ -89,6 +89,7 @@
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
+    var allowMultipleFrames: Bool = true
     
     // decode the contents of an image frame from an ID3 tag
     init(decodingContents contents: Data.SubSequence,

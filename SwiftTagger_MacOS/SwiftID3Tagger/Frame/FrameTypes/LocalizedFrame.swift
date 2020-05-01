@@ -114,6 +114,7 @@ public struct LocalizedFrame: FrameProtocol {
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
+    var allowMultipleFrames: Bool = true
     
     // encode the contents of the frame to add to an ID3 tag
     func encodeContents(version: Version) throws -> Data {

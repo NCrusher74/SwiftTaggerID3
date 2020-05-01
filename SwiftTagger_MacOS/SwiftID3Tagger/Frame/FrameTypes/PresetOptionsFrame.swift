@@ -76,7 +76,7 @@ public struct PresetOptionsFrame: FrameProtocol {
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
-    
+    var allowMultipleFrames: Bool = false
     
     // MARK: Encode contents for writing
     func encodeContents(version: Version) throws -> Data {

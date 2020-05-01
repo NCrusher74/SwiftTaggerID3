@@ -18,6 +18,7 @@ public struct StringFrame: FrameProtocol {
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
+    var allowMultipleFrames: Bool = false
     
     // instantiates a string frame decoding operation
     init(decodingContents contents: Data.SubSequence,
