@@ -26,6 +26,8 @@ To access information from the `InvolvedPeopleList` and `MusicianCreditsList` fr
 ```swift
 print(tag.involvedPeopleList?[0].role) // "Director"
 print(tag.involvedPeopleList?[0].person) // "Director Name"
+print(tag.involvedPeopleList?[1].role) // "Producer"
+print(tag.involvedPeopleList?[1].person) // "Producer Name"
 print(tag.musicianCreditsList?[0].role) // "Musician"
 print(tag.musicianCreditsList?[0].person) // "Musician Name"
 
