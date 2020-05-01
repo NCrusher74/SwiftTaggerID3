@@ -1207,7 +1207,7 @@ Abstract
 
 4.11.   Comments
 
-   This frame is indended for any kind of full text information that
+   This frame is intended for any kind of full text information that
    does not fit in any other frame. It consists of a frame header
    followed by encoding, language and content descriptors and is ended
    with the actual comment as a text string. Newline characters are
@@ -1350,10 +1350,14 @@ Abstract
    Image format is the MIME type and subtype [MIME] for the image. In
    the event that the MIME media type name is omitted, "image/" will be
    implied. The "image/png" [PNG] or "image/jpeg" [JFIF] picture format
-   should be used when interoperability is wanted. Description is a
+   should be used when interoperability is wanted.
+   
+   Description is a
    short description of the picture, represented as a terminated
    textstring. The description has a maximum length of 64 characters,
-   but may be empty. There may be several pictures attached to one file,
+   but may be empty.
+   
+   There may be several pictures attached to one file,
    each in their individual "APIC" frame, but only one with the same
    content descriptor. There may only be one picture with the picture
    type declared as picture type $01 and $02 respectively. There is the

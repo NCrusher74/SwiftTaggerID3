@@ -7,16 +7,31 @@
 //
 
 import Foundation
-import AVFoundation
 
-struct Mp3File {
-    
-    let location: URL
-    
-    init(location: URL) {
+/// An audio file represents an audio file somewhere on disk.
+public struct Mp3File {
+ 
+    public let location: URL
+    public var data: Data
+
+    /// - Parameters:
+    ///     - location: The location of the audio file in the local file system.
+    ///     - data: The content of the file presented as Data.
+    public init(location: URL) throws {
         self.location = location
+        do {
+            self.data = try Data(contentsOf: location)
+        } catch {
+            throw Mp3File.Error.CannotReadFile
+        }
     }
-                
-    public func write(from sourceAudio: Mp3File, to outputLocation: URL) throws {
+
+    /// read the data from an MP3 File and return an ID3 Tag instance
+    public func read() throws -> Tag {
+       return try Tag(readFrom: self)
     }
+    
+    
+//    public func write(from sourceAudio: Mp3File, to outputLocation: URL) throws {
+//    }
 }
