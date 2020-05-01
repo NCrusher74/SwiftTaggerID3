@@ -47,12 +47,14 @@
     
     // encode the contents of the frame to add to an ID3 tag
     func encodeContents(version: Version) throws -> Data {
-        let encodingByte = StringEncoding.preferred.rawValue.encoding(endianness: .bigEndian)
-        
+        var frameData = Data()
+        // append encoding byte
+        frameData.append(StringEncoding.preferred.rawValue.encoding(
+            endianness: .bigEndian))
+        // determine format based upon magic number
+        // encode and append a format or MIME-type string according to version requirements
         var formatOrMIMETypeString: String = ""
-        var encodedFormatOrMIMETypeString = Data()
         let magicNumberRange = 0 ..< 4
-        
         switch version {
             case .v2_2:
                 if self.image.subdata(in: magicNumberRange) == jpgMagicNumber {
@@ -60,24 +62,29 @@
                 } else if self.image.subdata(in: magicNumberRange) == pngMagicNumber {
                     formatOrMIMETypeString = "png"
                 }
-                encodedFormatOrMIMETypeString.append(formatOrMIMETypeString.encoded(withNullTermination: false))
+                frameData.append(formatOrMIMETypeString.encoded(withNullTermination: false))
             case .v2_3, .v2_4:
                 if self.image.subdata(in: magicNumberRange) == jpgMagicNumber {
                     formatOrMIMETypeString = "image/jpeg"
                 } else if self.image.subdata(in: magicNumberRange) == pngMagicNumber {
                     formatOrMIMETypeString = "image/png"
                 }
-                encodedFormatOrMIMETypeString.append(formatOrMIMETypeString.encoded(withNullTermination: true))
+                frameData.append(formatOrMIMETypeString.encoded(withNullTermination: true))
         }
-        
-        let encodedImageTypeByte = self.imageType.rawValue.encoding(endianness: .bigEndian)
-        
-        let encodedImageDescription = self.imageDescription?.encoded(withNullTermination: true) ?? self.imageType.pictureDescription.encoded(withNullTermination: true)
-        
-        return encodingByte + encodedFormatOrMIMETypeString + encodedImageTypeByte + encodedImageDescription
+        // append image type byte
+        frameData.append(self.imageType.rawValue.encoding(
+            endianness: .bigEndian))
+        // encode and append image Description
+        frameData.append(self.imageDescription?.encoded(
+            withNullTermination: true) ?? self.imageType.pictureDescription.encoded(
+                withNullTermination: true))
+        // append image data
+        frameData.append(self.image)
+        return frameData
     }
     
     // the first four bytes of an image file contain a "magic number" that identifies the image format
+    // use this to determine format of the image being encoded
     private var jpgMagicNumber: Data {
         return Data([0xFF, 0xD8, 0xFF, 0xE0])
     }
@@ -124,6 +131,8 @@
             }
         }
         
+        // parse out the image description string
+        // if no image description exists, use a string describing the image type
         var imageDescription: String = ""
         let pictureTypeByte = parsing.extractFirst(1)
         let imageType = ImageType(rawValue: pictureTypeByte.uint8) ?? .Other
@@ -154,6 +163,7 @@
 }
 
 public extension Tag {
+    #warning("to do: create accessors with preset descriptions for each image type")
     /// - AttachedPicture frame getter-setter. ID3 Identifier `PIC`/`APIC`
     subscript(attachedPicture imageDescription: String) -> Data? {
         get {

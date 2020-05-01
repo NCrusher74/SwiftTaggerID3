@@ -34,13 +34,18 @@ struct BooleanFrame: FrameProtocol {
     
     // encode the contents of the frame for writing
     func encodeContents(version: Version) throws -> Data {
-        let encodingByte = StringEncoding.preferred.rawValue.encoding(endianness: .bigEndian)
+        var frameData = Data()
+        // append encoding byte
+        frameData.append(StringEncoding.preferred.rawValue.encoding(endianness: .bigEndian))
+
+        // convert boolean to 1 or 0, encoded and append
         let contents = self.value
         if contents == true {
-            return encodingByte + "1".encoded(withNullTermination: false)
+            frameData.append("1".encoded(withNullTermination: false))
         } else {
-            return encodingByte + "0".encoded(withNullTermination: false)
+            frameData.append("0".encoded(withNullTermination: false))
         }
+        return frameData
     }
     
     var flags: Data

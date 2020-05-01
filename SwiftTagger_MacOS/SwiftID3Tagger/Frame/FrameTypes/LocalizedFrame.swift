@@ -117,11 +117,17 @@ struct LocalizedFrame: FrameProtocol {
     
     // encode the contents of the frame to add to an ID3 tag
     func encodeContents(version: Version) throws -> Data {
-        let encodingByte = StringEncoding.preferred.rawValue.encoding(endianness: .bigEndian)
-        let encodedLanguageString = self.languageString?.encoded(withNullTermination: false) ?? "und".encoded(withNullTermination: false)
-        let encodedDescriptionString = self.descriptionString?.encoded(withNullTermination: true) ?? "".encoded(withNullTermination: true)
-        let encodedContentsString = self.contentString.encoded(withNullTermination: false)
-        return encodingByte + encodedLanguageString + encodedDescriptionString + encodedContentsString
+        var frameData = Data()
+        // append encoding byte
+        frameData.append(StringEncoding.preferred.rawValue.encoding(
+            endianness: .bigEndian))
+        // encode and append language string
+        frameData.append(self.languageString?.encoded(withNullTermination: false) ?? "und".encoded(withNullTermination: false))
+        // encode and append description string
+        frameData.append(self.descriptionString?.encoded(withNullTermination: true) ?? "".encoded(withNullTermination: true))
+        // encode and append contents string
+        frameData.append(self.contentString.encoded(withNullTermination: false))
+        return frameData
     }
 
     // decode the contents of the frame from an ID3 tag

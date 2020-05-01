@@ -38,17 +38,19 @@ struct LanguageFrame: FrameProtocol {
     
     // encode the contents of the frame to add to an ID3 tag
     func encodeContents(version: Version) throws -> Data {
-        let encodingByte = StringEncoding.preferred.rawValue.encoding(endianness: .bigEndian)
-        var languagesAsData = Data()
+        var frameData = Data()
+        // append encoding byte
+        frameData.append(StringEncoding.preferred.rawValue.encoding(endianness: .bigEndian))
+        // append language array
         for language in self.languages {
             switch version {
                 case .v2_2, .v2_3:
-                    languagesAsData.append(language.encoded(withNullTermination: false))
+                    frameData.append(language.encoded(withNullTermination: false))
                 case .v2_4:
-                    languagesAsData.append(language.encoded(withNullTermination: true))
+                    frameData.append(language.encoded(withNullTermination: true))
             }
         }
-        return encodingByte + languagesAsData
+        return frameData
     }
     
     // MARK: Decoding

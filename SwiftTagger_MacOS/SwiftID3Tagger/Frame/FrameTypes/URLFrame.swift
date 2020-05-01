@@ -42,8 +42,8 @@ struct URLFrame: FrameProtocol {
 
     // encode the contents of the frame to add to an ID3 tag
     func encodeContents(version: Version) throws -> Data {
-        let contents = self.urlString
-        return contents.encoded(withNullTermination: false)
+        // encode and return urlString
+        return self.urlString.encoded(withNullTermination: false)
     }
     
     // MARK: Decode

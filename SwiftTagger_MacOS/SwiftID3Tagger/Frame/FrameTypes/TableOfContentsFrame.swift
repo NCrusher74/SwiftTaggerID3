@@ -67,25 +67,24 @@ public struct TableOfContentsFrame: FrameProtocol {
     
     // encode the contents of the frame to add to an ID3 tag
     func encodeContents(version: Version) throws -> Data {
-        // encode the elementID
-        let encodedElementID = self.elementID.encoded(withNullTermination: true)
-        // encode the entry count
-        let countedEntries = self.entryCount
-        let encodedEntryCount = Data([countedEntries])
-        
-        // encode the array of child element IDs
+        var frameData = Data()
+        // encode and append the elementID
+        frameData.append(self.elementID.encoded(withNullTermination: true))
+        // encode and append the entry count
+        frameData.append(contentsOf: [self.entryCount])
+        // encode and append the array of child element IDs
         var idArray = Data()
         for id in self.childElementIDs {
             idArray.append(id.encoded(withNullTermination: true))
         }
-
-        // encode the subframes to data
+        frameData.append(idArray)
+        // encode and append the subframes to data
         var encodedSubframes = Data()
         for subframe in self.embeddedSubframes {
-            encodedSubframes.append(try encodeSubframes(subframe: subframe as! FrameProtocol, version: version))
+            encodedSubframes.append(try encodeSubframes(subframe: subframe.value.asFrameProtocol, version: version))
         }
-        
-        return encodedElementID + encodedFlagByte + encodedEntryCount + idArray + encodedSubframes
+        frameData.append(encodedSubframes)
+        return frameData
     }
     
     // convert the boolean flags to a single byte of data

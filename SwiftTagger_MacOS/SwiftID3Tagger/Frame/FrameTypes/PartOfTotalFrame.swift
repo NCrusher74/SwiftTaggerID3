@@ -44,14 +44,18 @@ struct PartOfTotalFrame: FrameProtocol {
     
     // encode the contents of the frame to add to an ID3 tag
     func encodeContents(version: Version) throws -> Data {
-        let encodingByte = StringEncoding.preferred.rawValue.encoding(endianness: .bigEndian)
+        var frameData = Data()
+        frameData.append(StringEncoding.preferred.rawValue.encoding(endianness: .bigEndian))
         if self.total == nil {
             let partOfTotalString = String(self.part)
-            return encodingByte + partOfTotalString.encoded(withNullTermination: false)
+            frameData.append(
+                partOfTotalString.encoded(withNullTermination: false))
         } else {
             let partOfTotalString = "\(self.part)/\(self.total ?? 0)"
-            return encodingByte + partOfTotalString.encoded(withNullTermination: false)
+            frameData.append(
+                partOfTotalString.encoded(withNullTermination: false))
         }
+        return frameData
     }
     
     var flags: Data

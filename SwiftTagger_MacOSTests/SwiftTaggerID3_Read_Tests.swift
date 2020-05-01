@@ -84,10 +84,10 @@ class SwiftTagger_ID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag[userDefinedUrl: "UserDefinedURL"], "http://userdefined.url")
         #warning("now that I've changed the way the accessors work, these tests are broken again")
         XCTAssertEqual(tag.genre.genreName, nil)
-        XCTAssertEqual(tag.genre.genreDescription, nil)
+        XCTAssertEqual(tag.genre.genreDescription, nil) // shouldn't be nil
         XCTAssertEqual(tag.mediaType.mediaType, nil)
         XCTAssertEqual(tag.mediaType.additionalMediaInfo, nil)
-        XCTAssertEqual(tag.mediaType.mediaTypeDescription, nil)
+        XCTAssertEqual(tag.mediaType.mediaTypeDescription, nil) // shouldn't be nil
         XCTAssertEqual(tag[comments: .eng, "CommentDescription"], "Comment Content")
         XCTAssertEqual(tag[lyrics: .eng, "LyricsDesscription"], "Lyrics Content")
         XCTAssertEqual(tag.involvedPeopleList?[0].role, "Director")

@@ -80,11 +80,17 @@ struct UserTextFrame: FrameProtocol {
 
     // encode contents to add to an ID3 tag
     func encodeContents(version: Version) throws -> Data {
-        let encodingByte = StringEncoding.preferred.rawValue.encoding(endianness: .bigEndian)
-        let encodedDescriptionString = self.descriptionString.encoded(withNullTermination: true)
-        let encodedContentsString = self.contentString.encoded(withNullTermination: false)
-        return encodingByte + encodedDescriptionString + encodedContentsString
-
+        var frameData = Data()
+        // append encoding byte
+        frameData.append(StringEncoding.preferred.rawValue.encoding(
+            endianness: .bigEndian))
+        // encode and append Description String
+        frameData.append(self.descriptionString.encoded(
+            withNullTermination: true))
+        // encoded and append contents string
+        frameData.append(self.contentString.encoded(
+            withNullTermination: false))
+        return frameData
     }
 
     // decode frame contents from an ID3 tag

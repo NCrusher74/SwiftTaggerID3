@@ -32,19 +32,19 @@ extension FrameProtocol {
     func encode(version: Version) throws -> Data {
         let contents = try self.encodeContents(version: version)
         
-        // header data
-        let identifier = Self.identifierData(layout: layout, version: version)
-        let size = Self.calculateFrameContentSize(encodedContent: contents, version: version)
-        var flags = Data()
+        var framesData = Data()
+        // encode and append header data
+        framesData.append(Self.identifierData(layout: layout, version: version))
+        framesData.append(Self.calculateFrameContentSize(encodedContent: contents, version: version))
         switch version {
             case .v2_2:
                 break // Skip flags.
             case .v2_3, .v2_4:
-                flags = Self.defaultFlags
+                framesData.append(Self.defaultFlags)
         }
-        
-        let frameData = identifier + size + flags + contents
-        return frameData
+        // append encoded frame content data
+        framesData.append(contents)
+        return framesData
     }
     
     

@@ -80,27 +80,23 @@ struct PresetOptionsFrame: FrameProtocol {
     
     // MARK: Encode contents for writing
     func encodeContents(version: Version) throws -> Data {
-        let encodingByte = StringEncoding.preferred.rawValue.encoding(endianness: .bigEndian)
-        
-        var encodedName = Data()
-        var encodedPresetRefinement = Data()
-        var encodedRefinement = Data()
-        
-        // encode presetType
+        var frameData = Data()
+        // append encoding byte
+        frameData.append(StringEncoding.preferred.rawValue.encoding(
+            endianness: .bigEndian))
+        // encode and append presetType
         if let convertedType = convertAndEncodePresetType(version: version) {
-            encodedName = convertedType
+            frameData.append(convertedType)
         }
-        
-        // encode presetRefinement
+        // encode and append presetRefinement
         if let convertedPresetRefinement = convertAndEncodePresetRefinement(version: version) {
-            encodedPresetRefinement = convertedPresetRefinement
+            frameData.append(convertedPresetRefinement)
         }
-        
-        // encode freeform refinement/description
+        // encode and append freeform refinement/description
         if let convertedRefinement = encodeRefinementString(version: version) {
-            encodedRefinement = convertedRefinement
+            frameData.append(convertedRefinement)
         }
-        return encodingByte + encodedName + encodedPresetRefinement + encodedRefinement
+        return frameData
     }
     
     // encode presetType

@@ -60,13 +60,17 @@ struct CreditsListFrame: FrameProtocol {
         
     // encode the contents of the frame to add to an ID3 tag
     func encodeContents(version: Version) throws -> Data {
-        let encodingByte = StringEncoding.preferred.rawValue.encoding(endianness: .bigEndian)
-        var entriesAsData = Data()
+        var frameData = Data()
+        // append encoding Byte
+        frameData.append(StringEncoding.preferred.rawValue.encoding(
+            endianness: .bigEndian))
+        
+        // encod and append each entry
         for entry in self.entries {
-            entriesAsData.append(contentsOf: entry.role.encoded(withNullTermination: true))
-            entriesAsData.append(contentsOf: entry.person.encoded(withNullTermination: true))
+            frameData.append(contentsOf: entry.role.encoded(withNullTermination: true))
+            frameData.append(contentsOf: entry.person.encoded(withNullTermination: true))
         }
-        return encodingByte + entriesAsData
+        return frameData
     }
     
     var flags: Data

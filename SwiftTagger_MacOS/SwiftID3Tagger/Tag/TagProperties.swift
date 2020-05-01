@@ -31,10 +31,9 @@ struct TagProperties {
         return Int(decodedTagSize)
     }
     
-//    func calculateNewSize(data: Data) throws -> Data {
-//        let countData = data.count.truncatedUInt32.bigEndianData
-//        
-//    }
+    func calculateNewSize(data: Data) throws -> Data {
+        return data.count.truncatedUInt32.bigEndianData
+    }
 }
 
 extension TagProperties {
@@ -52,35 +51,6 @@ extension TagProperties {
     /// the byte-count of the ID3 version declaration
     var versionDeclarationLength: Int {
         return 5
-    }
-    
-    /// the byte-count of the tag's UInt32 flags
-    var tagFlagsLength: Int {
-        return 1
-    }
-    
-    /// the byte-count of the tag's UInt32 size declaration
-    var tagSizeDeclarationLength: Int {
-        return 4
-    }
-    
-    var tagHeaderLength: Int {
-        return 10
-    }
-    
-    /// the byte-offset of the tag's flag bytes
-    var tagFlagsOffset: Data.Index {
-        return versionDeclarationLength
-    }
-    
-    /// the byte-offset of the tag's size declaration
-    var tagSizeDeclarationOffset: Data.Index {
-        return tagFlagsOffset + tagFlagsLength
-    }
-    
-    /// the byte-count of the full tag header
-    var frameDataOffset: Data.Index {
-        return tagSizeDeclarationOffset + tagSizeDeclarationLength
     }
     
     /// the UInt8 byte array for version2.2 ("ID320")
@@ -111,4 +81,39 @@ extension TagProperties {
         
         return [v22Data, v23Data, v24Data]
     }
+
+    /// the byte-count of the tag's UInt32 flags
+    var tagFlagsLength: Int {
+        return 1
+    }
+
+    var defaultFlag: Data {
+        let defaultTagFlagByte: [UInt8] = [0x00]
+        return Data(defaultTagFlagByte)
+    }
+    
+    /// the byte-count of the tag's UInt32 size declaration
+    var tagSizeDeclarationLength: Int {
+        return 4
+    }
+    
+    var tagHeaderLength: Int {
+        return 10
+    }
+    
+    /// the byte-offset of the tag's flag bytes
+    var tagFlagsOffset: Data.Index {
+        return versionDeclarationLength
+    }
+    
+    /// the byte-offset of the tag's size declaration
+    var tagSizeDeclarationOffset: Data.Index {
+        return tagFlagsOffset + tagFlagsLength
+    }
+    
+    /// the byte-count of the full tag header
+    var frameDataOffset: Data.Index {
+        return tagSizeDeclarationOffset + tagSizeDeclarationLength
+    }
+    
 }

@@ -59,24 +59,21 @@ public struct ChapterFrame: FrameProtocol {
     
     // encodes the contents of the frame and returns Data that can be added to the Tag instance to write to the file
     func encodeContents(version: Version) throws -> Data {
-        
-        // encode ElementID string
-        let encodedElementID = self.elementID.encoded(withNullTermination: true)
-        
-        // convert integers to UInt32 and then to Data
-        let encodedStartTime = self.startTime.truncatedUInt32.bigEndianData
-        let encodedEndTime = self.endTime.truncatedUInt32.bigEndianData
-        let encodedStartByteOffset = self.startByteOffset.truncatedUInt32.bigEndianData
-        let encodedEndByteOffset = self.endByteOffset.truncatedUInt32.bigEndianData
-
-        // encoded the subframes
+        var frameData = Data()
+        // encode and append ElementID string
+        frameData.append(self.elementID.encoded(withNullTermination: true))
+        // convert integers to UInt32 and then to Data and append
+        frameData.append(self.startTime.truncatedUInt32.bigEndianData)
+        frameData.append(self.endTime.truncatedUInt32.bigEndianData)
+        frameData.append(self.startByteOffset.truncatedUInt32.bigEndianData)
+        frameData.append(self.endByteOffset.truncatedUInt32.bigEndianData)
+        // encoded and append the subframes
         var encodedSubframes = Data()
         for subframe in self.embeddedSubframes {
             encodedSubframes.append(try encodeSubframes(subframe: subframe.value.asFrameProtocol, version: version))
         }
-        
-        // return all the encoded Data
-        return encodedElementID + encodedStartTime + encodedEndTime + encodedStartByteOffset + encodedEndByteOffset + encodedSubframes
+        frameData.append(encodedSubframes)
+        return frameData
     }
  
     // encodes the subframes of the chapter frame

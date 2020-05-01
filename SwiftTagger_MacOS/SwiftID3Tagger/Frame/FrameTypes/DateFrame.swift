@@ -72,8 +72,14 @@ struct DateFrame: FrameProtocol {
     
     // encode contents of the frame to add to an ID3 tag
     func encodeContents(version: Version) throws -> Data {
-        let encodingByte = StringEncoding.preferred.rawValue.encoding(endianness: .bigEndian)
-        return encodingByte + self.timeStampString.encoded(withNullTermination: false)
+        var frameData = Data()
+        // append encoding byte
+        frameData.append(StringEncoding.preferred.rawValue.encoding(
+            endianness: .bigEndian))
+        // encode and append timestampstring
+        frameData.append(self.timeStampString.encoded(
+            withNullTermination: false))
+        return frameData
     }
     
     var year: Int?
