@@ -45,6 +45,13 @@ public struct UserTextFrame: FrameProtocol {
                   contentString: webpage)
     }
 
+    public init(contentRatings: ContentRatings) {
+        self.init(layout: .known(.userDefinedText),
+                  descriptionString: "Content Rating",
+                  contentString: contentRatings.ratings)
+    }
+    
+    
     /// A short description of the frame content.
     var descriptionString: String = ""
     /// the content of the frame

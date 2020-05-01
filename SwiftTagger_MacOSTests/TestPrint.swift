@@ -11,14 +11,7 @@ import XCTest
 class TestPrint: XCTestCase {
 
     func testExample() throws {
-        let mp3File = try Bundle.mp3V23()
-        let fileData = mp3File.data
-        let readIn: Int = 1320
-        let readOut: Int = 1350
-        let range = readIn ..< readOut
-        let subdata = fileData.subdata(in: range)
-        print(subdata.hexadecimal())
-        
+//        let rating: return Rating
     }
 
 }
@@ -54,3 +47,4 @@ class TestPrint: XCTestCase {
 // 3 - picture type
 // 0 - description
 // ff d8 ff e0 - magic number
+

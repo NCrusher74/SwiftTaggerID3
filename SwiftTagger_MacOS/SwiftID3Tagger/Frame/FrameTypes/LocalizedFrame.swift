@@ -19,69 +19,69 @@ public struct LocalizedFrame: FrameProtocol {
     
     // public initializers
     /// general lyrics frame initializer
-    public init(language: String?, description: String?, lyrics: String) {
+    public init(language: ISO6392Codes?, description: String?, lyrics: String) {
         self.init(layout: .known(.unsynchronizedLyrics),
-                  languageString: language ?? "und",
+                  languageString: language?.rawValue,
                   descriptionString: description ?? "",
                   contentString: lyrics)
     }
 
     /// general comments frame initializer
-    public init(language: String?, description: String?, comments: String) {
+    public init(language: ISO6392Codes?, description: String?, comments: String) {
         self.init(layout: .known(.comments),
-                  languageString: language ?? "und",
+                  languageString: language?.rawValue,
                   descriptionString: description ?? "",
                   contentString: comments)
     }
 
     /// convenience initializer for comments frame intended to hold a description of the audio file contents
-    public init(language: String?, contentDescription: String) {
+    public init(language: ISO6392Codes?, contentDescription: String) {
         self.init(layout: .known(.comments),
-                  languageString: language ?? "und",
+                  languageString: language?.rawValue,
                   descriptionString: "Description",
                   contentString: contentDescription)
     }
 
     /// convenience initializer for comments frame intended to hold the liner notes of the audio file contents
-    public init(language: String?, linerNotes: String) {
+    public init(language: ISO6392Codes?, linerNotes: String) {
         self.init(layout: .known(.comments),
-                  languageString: language ?? "und",
+                  languageString: language?.rawValue,
                   descriptionString: "Liner Notes",
                   contentString: linerNotes)
     }
 
     /// convenience initializer for comments frame intended to hold a short description of the audio file contents
-    public init(language: String?, shortDescription: String) {
+    public init(language: ISO6392Codes?, shortDescription: String) {
         self.init(layout: .known(.comments),
-                  languageString: language ?? "und",
+                  languageString: language?.rawValue,
                   descriptionString: "Short Description",
                   contentString: shortDescription)
     }
 
     /// convenience initializer for comments frame intended to hold a longer or extended description of the audio file contents
-    public init(language: String?, longDescription: String) {
+    public init(language: ISO6392Codes?, longDescription: String) {
         self.init(layout: .known(.comments),
-                  languageString: language ?? "und",
+                  languageString: language?.rawValue,
                   descriptionString: "Long Description",
                   contentString: longDescription)
     }
 
     /// convenience initializer for comments frame intended to hold a description of a specific song
-    public init(language: String?, songDescription: String) {
+    public init(language: ISO6392Codes?, songDescription: String) {
         self.init(layout: .known(.comments),
-                  languageString: language ?? "und",
+                  languageString: language?.rawValue,
                   descriptionString: "Song Description",
                   contentString: songDescription)
     }
 
     /// convenience initializer for comments frame intended to hold a description of a series or collection that the audio file is a part of (such as for audiobooks)
-    public init(language: String?, seriesDescription: String) {
+    public init(language: ISO6392Codes?, seriesDescription: String) {
         self.init(layout: .known(.comments),
-                  languageString: language ?? "und",
+                  languageString: language?.rawValue,
                   descriptionString: "Series Description",
                   contentString: seriesDescription)
     }
-
+    
     /// ISO-639-2 languge code
     var languageString: String? = "und"
     /// A short description of the frame content.
@@ -138,7 +138,7 @@ public struct LocalizedFrame: FrameProtocol {
         let encoding = try LocalizedFrame.extractEncoding(data: &parsing, version: version)
 
         let languageCode = try String(ascii: parsing.extractFirst(3))
-        if ISO6392Codes.allCases.contains(where: { $0.iso6392TCode == languageCode }) {
+        if ISO6392Codes.allCases.contains(where: { $0.rawValue == languageCode }) {
             self.languageString = languageCode
         } else {
             self.languageString = "und"

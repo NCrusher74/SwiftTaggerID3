@@ -77,13 +77,30 @@ public struct Tag {
     
 //    func buildTag(mp3File: Mp3File) -> Data {
 //        let mp3Data = mp3File.data
-//        
-//        
+//
+//
 //    }
 }
 
 public extension Tag {
     
+    /// - Language frame getter-setter. ID3 Identifier: `TLA`/`TLAN`
+    var languages: [String]? {
+        get {
+            if let frame = self.frames[.languages],
+                case .languageFrame(let languageFrame) = frame {
+                return languageFrame.languages
+            } else {
+                return nil
+            }
+        }
+    }
+    
+    func setLanguages(languages: [ISO6392Codes]) -> LanguageFrame? {
+        return LanguageFrame(languages: languages)
+    }
+    
+
     /// - Album frame getter-setter. ID3 Identifier: `TAL`/`TALB`
     var album: String? {
         get {
@@ -132,7 +149,7 @@ public extension Tag {
         }
     }
     
-    /// AlbumArtistSort frame getter-setter. ID3 Identifier: `TS2`/`TSO2`
+    /// - AlbumArtistSort frame getter-setter. ID3 Identifier: `TS2`/`TSO2`
     var albumArtistSort: String? {
         get {
             if let frame = self.frames[.albumArtistSort],
@@ -148,7 +165,7 @@ public extension Tag {
         }
     }
     
-    /// Arranger/Remixer/InterpretedBy getter-setter. ID3 Identifier: `TP4`/`TPE4`.
+    /// - Arranger/Remixer/InterpretedBy getter-setter. ID3 Identifier: `TP4`/`TPE4`.
     /// If another frame of this type already exists, this will write as a
     /// `TXX`/`TXXX` frame with a description of `Arranger`
     var arranger: String? {
@@ -166,7 +183,7 @@ public extension Tag {
         }
     }
     
-    /// Arranger/Remixer/InterpretedBy getter-setter. ID3 Identifier: `TP4`/`TPE4`
+    /// - Arranger/Remixer/InterpretedBy getter-setter. ID3 Identifier: `TP4`/`TPE4`
     /// If a `TP4`/`TPE4` frame already exists, this will write as a
     /// `TXX`/`TXXX` frame with a description of `Remixer`
     var remixer: String? {
@@ -184,7 +201,7 @@ public extension Tag {
         }
     }
 
-    /// Arranger/Remixer/InterpretedBy getter-setter. ID3 Identifier: `TP4`/`TPE4`
+    /// - Arranger/Remixer/InterpretedBy getter-setter. ID3 Identifier: `TP4`/`TPE4`
     /// If a `TP4`/`TPE4` frame already exists, this will write as a
     /// `TXX`/`TXXX` frame with a description of `InterpretedBy`
     var interpretedBy: String? {
@@ -202,7 +219,7 @@ public extension Tag {
         }
     }
 
-    /// Artist getter-setter. ID3 Identifier: `TP1`/`TPE1`
+    /// - Artist getter-setter. ID3 Identifier: `TP1`/`TPE1`
     var artist: String? {
         get {
             if let frame = self.frames[.artist],
@@ -218,7 +235,7 @@ public extension Tag {
         }
     }
     
-    /// ArtistSort getter-setter. ID3 Identifier: `TSP`/`TSOP`
+    /// - ArtistSort getter-setter. ID3 Identifier: `TSP`/`TSOP`
     var artistSort: String? {
         get {
             if let frame = self.frames[.artistSort],
@@ -234,7 +251,7 @@ public extension Tag {
         }
     }
     
-    /// Author getter-setter. Writes to `Artist` frame, ID3 Identifier: `TP1`/`TPE1`.
+    /// - Author getter-setter. Writes to `Artist` frame, ID3 Identifier: `TP1`/`TPE1`.
     /// If another frame of this type already exists, this will write as a
     /// `TXX`/`TXXX` frame with a description of `Author`
     var author: String? {
@@ -252,7 +269,7 @@ public extension Tag {
         }
     }
     
-    /// AuthorSort getter-setter. Writes to `ArtistSort` frame, ID3 Identifier: `TSP`/`TSOP`.
+    /// - AuthorSort getter-setter. Writes to `ArtistSort` frame, ID3 Identifier: `TSP`/`TSOP`.
     /// If another frame of this type already exists, this will write as a
     /// `TXX`/`TXXX` frame with a description of `AuthorSort`
     var authorSort: String? {
@@ -270,7 +287,7 @@ public extension Tag {
         }
     }
     
-    /// Composer getter-setter. ID3 Identifier: `TCM`/`TCOM`
+    /// - Composer getter-setter. ID3 Identifier: `TCM`/`TCOM`
     var composer: String? {
         get {
             if let frame = self.frames[.composer],
@@ -286,7 +303,7 @@ public extension Tag {
         }
     }
     
-    /// ComposerSort getter-setter. ID3 Identifier: `TSC`/`TSOC`
+    /// - ComposerSort getter-setter. ID3 Identifier: `TSC`/`TSOC`
     var composerSort: String? {
         get {
             if let frame = self.frames[.composerSort],
@@ -302,7 +319,7 @@ public extension Tag {
         }
     }
     
-    /// Narrator getter-setter. Writes to `Composer` frame, ID3 Identifier: `TCM`/`TCOM`.
+    /// - Narrator getter-setter. Writes to `Composer` frame, ID3 Identifier: `TCM`/`TCOM`.
     /// If another frame of this type already exists, this will write as a
     /// `TXX`/`TXXX` frame with a description of `Narrator`
     var narrator: String? {
@@ -320,7 +337,7 @@ public extension Tag {
         }
     }
     
-    /// NarratorSort getter-setter. Writes to `ComposerSort` frame,
+    /// - NarratorSort getter-setter. Writes to `ComposerSort` frame,
     /// ID3 Identifier: `TSC`/`TSOC`.
     /// If another frame of this type already exists, this will write as a
     /// `TXX`/`TXXX` frame with a description of `NarratorSort`
@@ -339,7 +356,7 @@ public extension Tag {
         }
     }
     
-    /// Conductor getter-setter. ID3 Identifier: `TP3`/`TPE3`
+    /// - Conductor getter-setter. ID3 Identifier: `TP3`/`TPE3`
     var conductor: String? {
         get {
             if let frame = self.frames[.conductor],
@@ -355,7 +372,7 @@ public extension Tag {
         }
     }
     
-    /// ContentGroup getter-setter. ID3 Identifier: `TT1`/`TIT1`
+    /// - ContentGroup getter-setter. ID3 Identifier: `TT1`/`TIT1`
     var contentGroup: String? {
         get {
             if let frame = self.frames[.contentGroup],
@@ -371,7 +388,7 @@ public extension Tag {
         }
     }
     
-    /// WorkName getter-setter. Writes to `ContentGroup` frame,
+    /// - WorkName getter-setter. Writes to `ContentGroup` frame,
     /// ID3 Identifier: `TT1`/`TIT1`.
     /// If another frame of this type already exists, this will write as a
     /// `TXX`/`TXXX` frame with a description of `Work`
@@ -390,7 +407,7 @@ public extension Tag {
         }
     }
     
-    /// Copyright getter-setter. ID3 Identifier: `TCR`/`TCOP`
+    /// - Copyright getter-setter. ID3 Identifier: `TCR`/`TCOP`
     var copyright: String? {
         get {
             if let frame = self.frames[.copyright],
@@ -406,7 +423,7 @@ public extension Tag {
         }
     }
     
-    /// EncodedBy getter-setter. ID3 Identifier: `TEN`/`TENC`
+    /// - EncodedBy getter-setter. ID3 Identifier: `TEN`/`TENC`
     var encodedBy: String? {
         get {
             if let frame = self.frames[.encodedBy],
@@ -422,7 +439,7 @@ public extension Tag {
         }
     }
     
-    /// EncodingSettings getter-setter. ID3 Identifier: `TSS`/`TSSE`
+    /// - EncodingSettings getter-setter. ID3 Identifier: `TSS`/`TSSE`
     var encodingSettings: String? {
         get {
             if let frame = self.frames[.encodingSettings],
@@ -438,7 +455,7 @@ public extension Tag {
         }
     }
     
-    /// FileOwner getter-setter. ID3 Identifier: `TOWN`. Valid only for tag versions 2.3/2.4
+    /// - FileOwner getter-setter. ID3 Identifier: `TOWN`. Valid only for tag versions 2.3/2.4
     var fileOwner: String? {
         get {
             if let frame = self.frames[.fileOwner],
@@ -454,7 +471,7 @@ public extension Tag {
         }
     }
     
-    /// Grouping getter-setter. This is a non-standard, iTunes compliant frame.
+    /// - Grouping getter-setter. This is a non-standard, iTunes compliant frame.
     /// ID3 Identifier: `GRP1`
     /// Valid only for tag versions 2.3/2.4
     var grouping: String? {
@@ -472,7 +489,7 @@ public extension Tag {
         }
     }
     
-    /// InitialKey getter-setter. ID3 Identifier: `TKE`/`TKEY`
+    /// - InitialKey getter-setter. ID3 Identifier: `TKE`/`TKEY`
     var initialKey: String? {
         get {
             if let frame = self.frames[.initialKey],
@@ -488,7 +505,7 @@ public extension Tag {
         }
     }
     
-    /// Lyricist getter-setter. ID3 Identifier: `TXT`/`TEXT`
+    /// - Lyricist getter-setter. ID3 Identifier: `TXT`/`TEXT`
     var lyricist: String? {
         get {
             if let frame = self.frames[.lyricist],
@@ -504,7 +521,7 @@ public extension Tag {
         }
     }
     
-    /// Mood getter-setter. ID3 Identifier: `TMOO`. Valid only for tag version 2.4
+    /// - Mood getter-setter. ID3 Identifier: `TMOO`. Valid only for tag version 2.4
     var mood: String? {
         get {
             if let frame = self.frames[.mood],
@@ -520,7 +537,7 @@ public extension Tag {
         }
     }
     
-    /// MovementName getter-setter. This is a non-standard, iTunes compliant frame
+    /// - MovementName getter-setter. This is a non-standard, iTunes compliant frame
     /// ID3 Identifier: `MVNM`. Valid only for tag versions 2.3/2.4
     var movementName: String? {
         get {
@@ -537,7 +554,7 @@ public extension Tag {
         }
     }
     
-    /// OriginalAlbum getter-setter. ID3 Identifier: `TOT`/`TOAL`.
+    /// - OriginalAlbum getter-setter. ID3 Identifier: `TOT`/`TOAL`.
     var originalAlbum: String? {
         get {
             if let frame = self.frames[.originalAlbum],
@@ -553,7 +570,7 @@ public extension Tag {
         }
     }
     
-    /// OriginalArtist getter-setter. ID3 Identifier: `TOP`/`TOPE`.
+    /// - OriginalArtist getter-setter. ID3 Identifier: `TOP`/`TOPE`.
     var originalArtist: String? {
         get {
             if let frame = self.frames[.originalArtist],
@@ -569,7 +586,7 @@ public extension Tag {
         }
     }
     
-    /// OriginalFilename getter-setter. ID3 Identifier: `TOF`/`TOFN`.
+    /// - OriginalFilename getter-setter. ID3 Identifier: `TOF`/`TOFN`.
     var originalFilename: String? {
         get {
             if let frame = self.frames[.originalFilename],
@@ -585,7 +602,7 @@ public extension Tag {
         }
     }
     
-    /// OriginalLyricist getter-setter. ID3 Identifier: `TOL`/`TOLY`.
+    /// - OriginalLyricist getter-setter. ID3 Identifier: `TOL`/`TOLY`.
     var originalLyricist: String? {
         get {
             if let frame = self.frames[.originalLyricist],
@@ -601,7 +618,7 @@ public extension Tag {
         }
     }
     
-    /// PodcastCategory getter-setter. This is a non-standard, iTunes compliant frame
+    /// - PodcastCategory getter-setter. This is a non-standard, iTunes compliant frame
     /// ID3 Identifier: `TCAT`. Valid only for tag versions 2.3/2.4
     var podcastCategory: String? {
         get {
@@ -618,7 +635,7 @@ public extension Tag {
         }
     }
     
-    /// PodcastDescription getter-setter. This is a non-standard, iTunes compliant frame
+    /// - PodcastDescription getter-setter. This is a non-standard, iTunes compliant frame
     /// ID3 Identifier: `TDES`. Valid only for tag versions 2.3/2.4
     var podcastDescription: String? {
         get {
@@ -635,7 +652,7 @@ public extension Tag {
         }
     }
     
-    /// PodcastID getter-setter. This is a non-standard, iTunes compliant frame
+    /// - PodcastID getter-setter. This is a non-standard, iTunes compliant frame
     /// ID3 Identifier: `TGID`. Valid only for tag versions 2.3/2.4
     var podcastID: String? {
         get {
@@ -652,7 +669,7 @@ public extension Tag {
         }
     }
     
-    /// PodcastKeywords getter-setter. This is a non-standard, iTunes compliant frame
+    /// - PodcastKeywords getter-setter. This is a non-standard, iTunes compliant frame
     /// ID3 Identifier: `TKWD`. Valid only for tag versions 2.3/2.4
     var podcastKeywords: String? {
         get {
@@ -669,7 +686,7 @@ public extension Tag {
         }
     }
     
-    /// PodcastFeedLink getter-setter. This is a non-standard, iTunes compliant frame
+    /// - PodcastFeedLink getter-setter. This is a non-standard, iTunes compliant frame
     /// ID3 Identifier: `WFED`. Valid only for tag versions 2.3/2.4
     var podcastFeedLink: String? {
         get {
@@ -686,7 +703,7 @@ public extension Tag {
         }
     }
     
-    /// ProducedNotice getter-setter. ID3 Identifier: `TPRO`. Valid for tag version 2.4 only
+    /// - ProducedNotice getter-setter. ID3 Identifier: `TPRO`. Valid for tag version 2.4 only
     var producedNotice: String? {
         get {
             if let frame = self.frames[.producedNotice],
@@ -702,7 +719,7 @@ public extension Tag {
         }
     }
     
-    /// Publisher getter-setter. ID3 Identifier: `TPB`/`TPUB`.
+    /// - Publisher getter-setter. ID3 Identifier: `TPB`/`TPUB`.
     var publisher: String? {
         get {
             if let frame = self.frames[.publisher],
@@ -718,7 +735,7 @@ public extension Tag {
         }
     }
     
-    /// Label getter-setter. Writes to `Publisher` frame,
+    /// - Label getter-setter. Writes to `Publisher` frame,
     /// ID3 Identifier: `TPB`/`TPUB`.
     /// If another frame of this type already exists, this will write as a
     /// `TXX`/`TXXX` frame with a description of `Label`
@@ -737,7 +754,7 @@ public extension Tag {
         }
     }
     
-    /// RecordCompany getter-setter. Writes to `Publisher` frame,
+    /// - RecordCompany getter-setter. Writes to `Publisher` frame,
     /// ID3 Identifier: `TPB`/`TPUB`.
     /// If another frame of this type already exists, this will write as a
     /// `TXX`/`TXXX` frame with a description of `RecordCompany`
@@ -756,7 +773,7 @@ public extension Tag {
         }
     }
     
-    /// Studio getter-setter. Writes to `Publisher` frame,
+    /// - Studio getter-setter. Writes to `Publisher` frame,
     /// ID3 Identifier: `TPB`/`TPUB`.
     /// If another frame of this type already exists, this will write as a
     /// `TXX`/`TXXX` frame with a description of `Studio`
@@ -775,7 +792,7 @@ public extension Tag {
         }
     }
     
-    /// (Internet)RadioStation getter-setter. ID3 Identifier: `TRS`/`TRSN`.
+    /// - (Internet)RadioStation getter-setter. ID3 Identifier: `TRS`/`TRSN`.
     var radioStation: String? {
         get {
             if let frame = self.frames[.radioStation],
@@ -791,7 +808,7 @@ public extension Tag {
         }
     }
     
-    /// (Internet)RadioStationOwner getter-setter. ID3 Identifier: `TRO`/`TRSO`.
+    /// - (Internet)RadioStationOwner getter-setter. ID3 Identifier: `TRO`/`TRSO`.
     var radioStationOwner: String? {
         get {
             if let frame = self.frames[.radioStationOwner],
@@ -807,7 +824,7 @@ public extension Tag {
         }
     }
     
-    /// SetSubtitle getter-setter. ID3 Identifier: `TSST`. Valid for tag version 2.4 only.
+    /// - SetSubtitle getter-setter. ID3 Identifier: `TSST`. Valid for tag version 2.4 only.
     var setSubtitle: String? {
         get {
             if let frame = self.frames[.setSubtitle],
@@ -823,7 +840,7 @@ public extension Tag {
         }
     }
     
-    /// Subtitle getter-setter. ID3 Identifier: `TT3`/`TIT3`
+    /// - Subtitle getter-setter. ID3 Identifier: `TT3`/`TIT3`
     var subtitle: String? {
         get {
             if let frame = self.frames[.subtitle],
@@ -839,7 +856,7 @@ public extension Tag {
         }
     }
     
-    /// Title getter-setter. ID3 Identifier: `TT2`/`TIT2`
+    /// - Title getter-setter. ID3 Identifier: `TT2`/`TIT2`
     var title: String? {
         get {
             if let frame = self.frames[.title],
@@ -855,7 +872,7 @@ public extension Tag {
         }
     }
     
-    /// TitleSort getter-setter. ID3 Identifier: `TST`/`TSOT`
+    /// - TitleSort getter-setter. ID3 Identifier: `TST`/`TSOT`
     var titleSort: String? {
         get {
             if let frame = self.frames[.titleSort],
@@ -871,7 +888,7 @@ public extension Tag {
         }
     }
     
-    /// ArtistWebpage getter-setter. ID3 Identifier: `WAR`/`WOAR`
+    /// - ArtistWebpage getter-setter. ID3 Identifier: `WAR`/`WOAR`
     var artistWebpage: String? {
         get {
             if let frame = self.frames[.artistWebpage],
@@ -887,7 +904,7 @@ public extension Tag {
         }
     }
     
-    /// (Official)AudioFileWebpage getter-setter. ID3 Identifier: `WAF`/`WOAF`
+    /// - (Official)AudioFileWebpage getter-setter. ID3 Identifier: `WAF`/`WOAF`
     var audioFileWebpage: String? {
         get {
             if let frame = self.frames[.audioFileWebpage],
@@ -903,7 +920,7 @@ public extension Tag {
         }
     }
     
-    /// (Official)AudioSourceWebpage getter-setter. ID3 Identifier: `WAS`/`WOAS`
+    /// - (Official)AudioSourceWebpage getter-setter. ID3 Identifier: `WAS`/`WOAS`
     var audioSourceWebpage: String? {
         get {
             if let frame = self.frames[.audioSourceWebpage],
@@ -919,7 +936,7 @@ public extension Tag {
         }
     }
     
-    /// Copyright/Legal Information Webpage getter-setter. ID3 Identifier: `WCP`/`WCOP`
+    /// - Copyright/Legal Information Webpage getter-setter. ID3 Identifier: `WCP`/`WCOP`
     var copyrightWebpage: String? {
         get {
             if let frame = self.frames[.copyrightWebpage],
@@ -935,7 +952,7 @@ public extension Tag {
         }
     }
     
-    /// PaymentWebpage getter-setter. ID3 Identifier: `WPAY`
+    /// - PaymentWebpage getter-setter. ID3 Identifier: `WPAY`
     /// Valid for tag versions 2.3/2.4 only
     var paymentWebpage: String? {
         get {
@@ -952,7 +969,7 @@ public extension Tag {
         }
     }
     
-    /// PublisherWebpage getter-setter. ID3 Identifier: `WPB`/`WPUB`
+    /// - PublisherWebpage getter-setter. ID3 Identifier: `WPB`/`WPUB`
     var publisherWebpage: String? {
         get {
             if let frame = self.frames[.publisherWebpage],
@@ -968,7 +985,7 @@ public extension Tag {
         }
     }
     
-    /// (Official Internet)RadioStationWebpage getter-setter. ID3 Identifier: `WRS`/`WORS`
+    /// - (Official Internet)RadioStationWebpage getter-setter. ID3 Identifier: `WRS`/`WORS`
     var radioStationWebpage: String? {
         get {
             if let frame = self.frames[.radioStationWebpage],
@@ -984,7 +1001,7 @@ public extension Tag {
         }
     }
     
-    /// BeatsPerMinute getter-setter. ID3 Identifier: `TBP`/`TBPM`
+    /// - BeatsPerMinute getter-setter. ID3 Identifier: `TBP`/`TBPM`
     var bpm: Int? {
         get {
             if let frame = self.frames[.bpm],
@@ -1000,7 +1017,7 @@ public extension Tag {
         }
     }
     
-    /// IRSC getter-setter. ID3 Identifier: `TRC`/`TSRC`
+    /// - IRSC getter-setter. ID3 Identifier: `TRC`/`TSRC`
     var isrc: Int? {
         get {
             if let frame = self.frames[.isrc],
@@ -1016,7 +1033,7 @@ public extension Tag {
         }
     }
     
-    /// Length getter-setter. ID3 Identifier: `TLE`/`TLEN`
+    /// - Length getter-setter. ID3 Identifier: `TLE`/`TLEN`
     var length: Int? {
         get {
             if let frame = self.frames[.length],
@@ -1032,7 +1049,7 @@ public extension Tag {
         }
     }
     
-    /// TotalMovements getter-setter. This is a non-standard, iTunes compliant frame
+    /// - TotalMovements getter-setter. This is a non-standard, iTunes compliant frame
     /// ID3 Identifier: `MVCN`. Valid only for tag versions 2.3/2.4
     var totalMovements: Int? {
         get {
@@ -1049,7 +1066,7 @@ public extension Tag {
         }
     }
     
-    /// MovementNumber getter-setter. This is a non-standard, iTunes compliant frame
+    /// - MovementNumber getter-setter. This is a non-standard, iTunes compliant frame
     /// ID3 Identifier: `MVIN`. Valid only for tag versions 2.3/2.4
     var movementNumber: Int? {
         get {
@@ -1066,7 +1083,7 @@ public extension Tag {
         }
     }
     
-    /// PlaylistDelay getter-setter. ID3 Identifier: `TDY`/`TDLY`
+    /// - PlaylistDelay getter-setter. ID3 Identifier: `TDY`/`TDLY`
     var playlistDelay: Int? {
         get {
             if let frame = self.frames[.playlistDelay],
@@ -1082,7 +1099,7 @@ public extension Tag {
         }
     }
     
-    /// Compilation flag getter-setter. This is a non-standard, iTunes compliant frame
+    /// - Compilation flag getter-setter. This is a non-standard, iTunes compliant frame
     /// ID3 Identifier: `TCP`/`TCMP`.
     var compilation: Bool? {
         get {
@@ -1099,7 +1116,7 @@ public extension Tag {
         }
     }
     
-    /// DiscNumber(/TotalDiscs) getter-setter. ID3 Identifier: `TPA`/`TPOS`
+    /// - DiscNumber(/TotalDiscs) getter-setter. ID3 Identifier: `TPA`/`TPOS`
     var discNumber: (disc: Int, totalDiscs: Int?) {
         get {
             if let frame = self.frames[.discNumber],
@@ -1115,7 +1132,7 @@ public extension Tag {
         }
     }
     
-    /// TrackNumber(/TotalTracks) getter-setter. ID3 Identifier: `TRK`/`TRCK`
+    /// - TrackNumber(/TotalTracks) getter-setter. ID3 Identifier: `TRK`/`TRCK`
     var trackNumber: (track: Int, totalTracks: Int?) {
         get {
             if let frame = self.frames[.trackNumber],
@@ -1131,23 +1148,7 @@ public extension Tag {
         }
     }
     
-    /// Languages getter-setter. ID3 Identifier: `TLA`/`TLAN`
-    var languages: [String]? {
-        get {
-            if let frame = self.frames[.languages],
-                case .languageFrame(let languageFrame) = frame {
-                return languageFrame.languages
-            } else {
-                return []
-            }
-        }
-        set {
-            let frame = LanguageFrame(languages: newValue ?? ["und"] )
-            frames[.languages] = .languageFrame(frame)
-        }
-    }
-        
-    /// Acknowledgment getter-setter. This is a convenience for a custom `TXX`/`TXXX` frame with a description of `Acknowledgment`
+    /// - Acknowledgment getter-setter. This is a convenience for a custom `TXX`/`TXXX` frame with a description of `Acknowledgment`
     var acknowledgment: String? {
         get {
             if let frame = self.frames[.userDefinedText(description: "Acknowledgment")],
@@ -1162,8 +1163,8 @@ public extension Tag {
             frames[.userDefinedText(description: "Acknowledgment")] = .userTextFrame(frame)
         }
     }
-    
-    /// Thanks getter-setter. This is a convenience for a custom `TXX`/`TXXX` frame with a description of `Thanks`
+
+    /// - Thanks getter-setter. This is a convenience for a custom `TXX`/`TXXX` frame with a description of `Thanks`
     var thanks: String? {
         get {
             if let frame = self.frames[.userDefinedText(description: "Thanks")],
@@ -1179,7 +1180,7 @@ public extension Tag {
         }
     }
     
-    /// SourceCredit getter-setter. This is a convenience for a custom `TXX`/`TXXX` frame with a description of `Source Credit`
+    /// - SourceCredit getter-setter. This is a convenience for a custom `TXX`/`TXXX` frame with a description of `Source Credit`
     var sourceCredit: String? {
         get {
             if let frame = self.frames[.userDefinedText(description: "Source Credit")],
@@ -1195,7 +1196,7 @@ public extension Tag {
         }
     }
     
-    /// Genre getter-setter. ID3 Identifier: `TCO`/`TCON`
+    /// - Genre getter-setter. ID3 Identifier: `TCO`/`TCON`
     /// The `genreName` parameter refers to specific genre or genres catalogued by numeric codes in the `GenreType` enum.
     /// The `genreDescription` parameter is a freeform field that may be used to refine existing genres or create custom genres
     var genre: (genreName: String?, genreDescription: String?) {
@@ -1213,7 +1214,7 @@ public extension Tag {
         }
     }
     
-    /// MediaType getter-setter. ID3 Identifier: `TMT`/`TMED`
+    /// - MediaType getter-setter. ID3 Identifier: `TMT`/`TMED`
     /// The `mediaType` parameter refers to specific type of media catalogued by codes in the `MediaType` enum.
     /// The `additionalMediaInfo` parameter refers to specific type of refinement pertaining to the `MediaType`, catalogued by codes in the `MediaTypeRefinements` enum
     /// The `mediaTypeDescription` parameter is a freeform field that may be used to refine existing information
@@ -1235,7 +1236,7 @@ public extension Tag {
         }
     }
 
-    /// FileType getter-setter. ID3 Identifier: `TFT`/`TFLT`
+    /// - FileType getter-setter. ID3 Identifier: `TFT`/`TFLT`
     /// The `fileType` parameter refers to specific type of file catalogued by codes in the `FileType` enum.
     /// The `additionalFileTypeInfo` parameter refers to specific type of refinement pertaining to the `FileType`, catalogued by codes in the `FileTypeRefinements` enum
     /// The `fileTypeDescription` parameter is a freeform field that may be used to refine existing information
@@ -1257,121 +1258,7 @@ public extension Tag {
         }
     }
 
-    /// Description getter-setter. This is a convenience for a custom `COM`/`COMM` frame with a description of `Description`
-    var description: (language: String?, contentDescription: String) {
-        get {
-            if let frame = self.frames[.comments(description: "Description")],
-                case .localizedFrame(let localizedFrame) = frame {
-                return (language: localizedFrame.languageString,
-                        contentDescription: localizedFrame.contentString)
-            } else {
-                return (language: "und", contentDescription: "")
-            }
-        }
-        set {
-            let frame = LocalizedFrame(language: newValue.language,
-                                       description: "Description",
-                                       comments: newValue.contentDescription)
-            frames[.comments(description: "Description")] = .localizedFrame(frame)
-        }
-    }
-    
-    /// ShortDescription getter-setter. This is a convenience for a custom `COM`/`COMM` frame with a description of `Short Description`
-    var shortDescription: (language: String?, shortDescription: String) {
-        get {
-            if let frame = self.frames[.comments(description: "Short Description")],
-                case .localizedFrame(let localizedFrame) = frame {
-                return (language: localizedFrame.languageString,
-                        shortDescription: localizedFrame.contentString)
-            } else {
-                return (language: "und", shortDescription: "")
-            }
-        }
-        set {
-            let frame = LocalizedFrame(language: newValue.language,
-                                       description: "Short Description",
-                                       comments: newValue.shortDescription)
-            frames[.comments(description: "Short Description")] = .localizedFrame(frame)
-        }
-    }
-    
-    /// LongDescription getter-setter. This is a convenience for a custom `COM`/`COMM` frame with a description of `Long Description`
-    var longDescription: (language: String?, longDescription: String) {
-        get {
-            if let frame = self.frames[.comments(description: "Long Description")],
-                case .localizedFrame(let localizedFrame) = frame {
-                return (language: localizedFrame.languageString,
-                        longDescription: localizedFrame.contentString)
-            } else {
-                return (language: "und", longDescription: "")
-            }
-        }
-        set {
-            let frame = LocalizedFrame(language: newValue.language,
-                                       description: "Long Description",
-                                       comments: newValue.longDescription)
-            frames[.comments(description: "Long Description")] = .localizedFrame(frame)
-        }
-    }
-    
-    /// LinerNotes getter-setter. This is a convenience for a custom `COM`/`COMM` frame with a description of `Liner Notes`
-    var linerNotes: (language: String?, linerNotes: String) {
-        get {
-            if let frame = self.frames[.comments(description: "Liner Notes")],
-                case .localizedFrame(let localizedFrame) = frame {
-                return (language: localizedFrame.languageString,
-                        linerNotes: localizedFrame.contentString)
-            } else {
-                return (language: "und", linerNotes: "")
-            }
-        }
-        set {
-            let frame = LocalizedFrame(language: newValue.language,
-                                       description: "Liner Notes",
-                                       comments: newValue.linerNotes)
-            frames[.comments(description: "Liner Notes")] = .localizedFrame(frame)
-        }
-    }
-    
-    /// SongDescription getter-setter. This is a convenience for a custom `COM`/`COMM` frame with a description of `Song Description`
-    var songDescription: (language: String?, songDescription: String) {
-        get {
-            if let frame = self.frames[.comments(description: "Song Description")],
-                case .localizedFrame(let localizedFrame) = frame {
-                return (language: localizedFrame.languageString,
-                        songDescription: localizedFrame.contentString)
-            } else {
-                return (language: "und", songDescription: "")
-            }
-        }
-        set {
-            let frame = LocalizedFrame(language: newValue.language,
-                                       description: "Song Description",
-                                       comments: newValue.songDescription)
-            frames[.comments(description: "Song Description")] = .localizedFrame(frame)
-        }
-    }
-    
-    /// SeriesDescription getter-setter. This is a convenience for a custom `COM`/`COMM` frame with a description of `Series Description`
-    var seriesDescription: (language: String?, seriesDescription: String) {
-        get {
-            if let frame = self.frames[.comments(description: "Series Description")],
-                case .localizedFrame(let localizedFrame) = frame {
-                return (language: localizedFrame.languageString,
-                        seriesDescription: localizedFrame.contentString)
-            } else {
-                return (language: "und", seriesDescription: "")
-            }
-        }
-        set {
-            let frame = LocalizedFrame(language: newValue.language,
-                                       description: "Series Description",
-                                       comments: newValue.seriesDescription)
-            frames[.comments(description: "Series Description")] = .localizedFrame(frame)
-        }
-    }
-    
-    /// MusicianCreditsList frame getter-setter. Valid only for tag version 2.4
+    /// - MusicianCreditsList frame getter-setter. Valid only for tag version 2.4
     /// ID3 Identifier: `TMCL`
     /// the `role` parameter refers to an instrument, vocal part, or other performance-related task.
     /// the `person` parameter is the name of the person or people performing the `role`
@@ -1390,7 +1277,7 @@ public extension Tag {
         }
     }
     
-    /// InvolvedPeopleList frame getter-setter. ID3 Identifier: `IPL`/`IPLS`/`TIPL`
+    /// - InvolvedPeopleList frame getter-setter. ID3 Identifier: `IPL`/`IPLS`/`TIPL`
     /// the `role` parameter refers to a production or support-oriented task (for tag version 2.4)
     /// or to any performance or production related job (for tag versions 2.2 and 2.3)
     /// the `person` parameter is the name of the person or people performing the `role`
@@ -1409,7 +1296,7 @@ public extension Tag {
         }
     }
     
-    /// (Release) Date frame getter-setter. Valid for versions 2.2 and 2.3 only.
+    /// - (Release) Date frame getter-setter. Valid for versions 2.2 and 2.3 only.
     /// ID3 Identifier: `TDA`/`TDAT`
     var date: String? {
         get {
@@ -1426,7 +1313,7 @@ public extension Tag {
         }
     }
     
-    /// (Release) Time frame getter-setter. Valid for versions 2.2 and 2.3 only.
+    /// - (Release) Time frame getter-setter. Valid for versions 2.2 and 2.3 only.
     /// ID3 Identifier: `TIM`/`TIME`
     var time: String? {
         get {
@@ -1443,7 +1330,7 @@ public extension Tag {
         }
     }
     
-    /// (Release) Year frame getter-setter. Valid for versions 2.2 and 2.3 only.
+    /// - (Release) Year frame getter-setter. Valid for versions 2.2 and 2.3 only.
     /// ID3 Identifier: `TYE`/`TYER`
     var year: String? {
         get {
@@ -1460,7 +1347,7 @@ public extension Tag {
         }
     }
     
-    /// (Release) DateTime frame getter-setter. ID3 Identifier: `TDRL` Valid for version 2.4 only
+    /// - (Release) DateTime frame getter-setter. ID3 Identifier: `TDRL` Valid for version 2.4 only
     var releaseDateTime: String? {
         get {
             if let frame = self.frames[.releaseTime],
@@ -1476,7 +1363,7 @@ public extension Tag {
         }
     }
     
-    /// EncodingDateTime frame getter-setter. ID3 Identifier: `TDEN`. Valid for Tag Version 2.4 only
+    /// - EncodingDateTime frame getter-setter. ID3 Identifier: `TDEN`. Valid for Tag Version 2.4 only
     var encodingDateTime: String? {
         get {
             if let frame = self.frames[.encodingTime],
@@ -1492,7 +1379,7 @@ public extension Tag {
         }
     }
     
-    /// OriginalReleaseDateTime frame getter-setter. ID3 Identifier: `TOY`/`TORY`/`TDOR`
+    /// - OriginalReleaseDateTime frame getter-setter. ID3 Identifier: `TOY`/`TORY`/`TDOR`
     /// intended to be a year-only field for tag versions 2.2 and 2.3
     var originalReleaseDate: String? {
         get {
@@ -1509,7 +1396,7 @@ public extension Tag {
         }
     }
     
-    /// RecordingDateTime frame getter-setter. ID3 Identifier: `TRD`/`TRDA`/`TDRC`
+    /// - RecordingDateTime frame getter-setter. ID3 Identifier: `TRD`/`TRDA`/`TDRC`
     var recordingDateTime: String? {
         get {
             if let frame = self.frames[.recordingDate],
@@ -1525,7 +1412,7 @@ public extension Tag {
         }
     }
     
-    /// TaggingDateTime frame getter-setter. ID3 Identifier: `TDTG`. Valid for Tag Version 2.4 only
+    /// - TaggingDateTime frame getter-setter. ID3 Identifier: `TDTG`. Valid for Tag Version 2.4 only
     var taggingDateTime: String? {
         get {
             if let frame = self.frames[.taggingTime],
@@ -1541,8 +1428,8 @@ public extension Tag {
         }
     }
  
-    /// Comments frame getter-setter. ID3 Identifier `COM`/`COMM`
-    subscript(comments language: ISO6392Codes.RawValue, commentsDescription: String) -> String? {
+    /// - Comments frame getter-setter. ID3 Identifier `COM`/`COMM`
+    subscript(comments language: ISO6392Codes, commentsDescription: String) -> String? {
         get {
             if let frame = self.frames[.comments(description: commentsDescription)],
                 case .localizedFrame(let localizedFrame) = frame {
@@ -1561,8 +1448,128 @@ public extension Tag {
         }
     }
 
-    /// (Unsynchronized) lyrics frame getter-setter. ID3 Identifier `ULT`/`USLT`
-    subscript(lyrics language: ISO6392Codes.RawValue, lyricsDescription: String) -> String? {
+    /// - Description getter-setter. This is a convenience for a custom `COM`/`COMM` frame with a description of `Description`
+    subscript(description language: ISO6392Codes) -> String? {
+        get {
+            if let frame = self.frames[.comments(description: "Description")],
+                case .localizedFrame(let localizedFrame) = frame {
+                return localizedFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let key = FrameKey.comments(description: "Description")
+            if let new = newValue {
+                self.frames[key] = Frame.localizedFrame(.init(language: language, description: "Description", comments: new))
+            } else {
+                self.frames[key] = nil
+            }
+        }
+    }
+
+    /// - ShortDescription getter-setter. This is a convenience for a custom `COM`/`COMM` frame with a description of `Short Description`
+    subscript(shortDescription language: ISO6392Codes) -> String? {
+        get {
+            if let frame = self.frames[.comments(description: "Short Description")],
+                case .localizedFrame(let localizedFrame) = frame {
+                return localizedFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let key = FrameKey.comments(description: "Short Description")
+            if let new = newValue {
+                self.frames[key] = Frame.localizedFrame(.init(language: language, description: "Short Description", comments: new))
+            } else {
+                self.frames[key] = nil
+            }
+        }
+    }
+
+    /// - LongDescription getter-setter. This is a convenience for a custom `COM`/`COMM` frame with a description of `Long Description`
+    subscript(longDescription language: ISO6392Codes) -> String? {
+        get {
+            if let frame = self.frames[.comments(description: "Long Description")],
+                case .localizedFrame(let localizedFrame) = frame {
+                return localizedFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let key = FrameKey.comments(description: "Long Description")
+            if let new = newValue {
+                self.frames[key] = Frame.localizedFrame(.init(language: language, description: "Long Description", comments: new))
+            } else {
+                self.frames[key] = nil
+            }
+        }
+    }
+
+    /// - LinerNotes getter-setter. This is a convenience for a custom `COM`/`COMM` frame with a description of `Liner Notes`
+    subscript(linerNotes language: ISO6392Codes) -> String? {
+        get {
+            if let frame = self.frames[.comments(description: "Liner Notes")],
+                case .localizedFrame(let localizedFrame) = frame {
+                return localizedFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let key = FrameKey.comments(description: "Liner Notes")
+            if let new = newValue {
+                self.frames[key] = Frame.localizedFrame(.init(language: language, description: "Liner Notes", comments: new))
+            } else {
+                self.frames[key] = nil
+            }
+        }
+    }
+
+    /// - SongDescription getter-setter. This is a convenience for a custom `COM`/`COMM` frame with a description of `Song Description`
+    subscript(songDescription language: ISO6392Codes) -> String? {
+        get {
+            if let frame = self.frames[.comments(description: "Song Description")],
+                case .localizedFrame(let localizedFrame) = frame {
+                return localizedFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let key = FrameKey.comments(description: "Song Description")
+            if let new = newValue {
+                self.frames[key] = Frame.localizedFrame(.init(language: language, description: "Song Description", comments: new))
+            } else {
+                self.frames[key] = nil
+            }
+        }
+    }
+
+    /// - SeriesDescription getter-setter. This is a convenience for a custom `COM`/`COMM` frame with a description of `Series Description`
+    subscript(seriesDescription language: ISO6392Codes) -> String? {
+        get {
+            if let frame = self.frames[.comments(description: "Series Description")],
+                case .localizedFrame(let localizedFrame) = frame {
+                return localizedFrame.contentString
+            } else {
+                return nil
+            }
+        }
+        set {
+            let key = FrameKey.comments(description: "Series Description")
+            if let new = newValue {
+                self.frames[key] = Frame.localizedFrame(.init(language: language, description: "Series Description", comments: new))
+            } else {
+                self.frames[key] = nil
+            }
+        }
+    }
+
+    /// - (Unsynchronized) lyrics frame getter-setter. ID3 Identifier `ULT`/`USLT`
+    subscript(lyrics language: ISO6392Codes, lyricsDescription: String) -> String? {
         get {
             if let frame = self.frames[.unsynchronizedLyrics(description: lyricsDescription)],
                 case .localizedFrame(let localizedFrame) = frame {
@@ -1581,7 +1588,7 @@ public extension Tag {
         }
     }
 
-    /// UserDefinedText frame getter-setter. ID3 Identifier `TXX`/`TXXX`
+    /// - UserDefinedText frame getter-setter. ID3 Identifier `TXX`/`TXXX`
     subscript(userDefinedText userTextDescription: String) -> String? {
         get {
             if let frame = self.frames[.userDefinedText(description: userTextDescription)],
@@ -1601,7 +1608,7 @@ public extension Tag {
         }
     }
     
-    /// UserDefinedWebpage frame getter-setter. ID3 Identifier `WXX`/`WXXX`
+    /// - UserDefinedWebpage frame getter-setter. ID3 Identifier `WXX`/`WXXX`
     subscript(userDefinedUrl userDefinedUrlDescription: String) -> String? {
         get {
             if let frame = self.frames[.userDefinedWebpage(description: userDefinedUrlDescription)],
@@ -1621,7 +1628,7 @@ public extension Tag {
         }
     }
     
-    /// TableOfContents frame getter-setter. Valid for tag versions 2.3 and 2.4 only.
+    /// - TableOfContents frame getter-setter. Valid for tag versions 2.3 and 2.4 only.
     /// ID3 Identifier `CTOC`
     subscript(tableOfContents tocElementID: String) -> TableOfContentsFrame? {
         get {
@@ -1646,7 +1653,7 @@ public extension Tag {
         }
     }
         
-    /// Chapter frame getter-setter. Valid for tag versions 2.3 and 2.4 only.
+    /// - Chapter frame getter-setter. Valid for tag versions 2.3 and 2.4 only.
     /// ID3 Identifier `CHAP`
     subscript(chapters chapterElementID: String) -> ChapterFrame? {
         get {
@@ -1684,7 +1691,7 @@ public extension Tag {
         }
     }
 
-    /// AttachedPicture frame getter-setter. ID3 Identifier `PIC`/`APIC`
+    /// - AttachedPicture frame getter-setter. ID3 Identifier `PIC`/`APIC`
     subscript(attachedPicture imageDescription: String) -> Data? {
         get {
             if let frame = self.frames[.attachedPicture(description: imageDescription)],
@@ -1697,8 +1704,7 @@ public extension Tag {
     }
 
     func setAttachedPicture(imageType: ImageType?, imageDescription: String?, location: URL) throws -> ImageFrame? {
-        let frame = try ImageFrame(imageLocation: location, imageType: imageType ?? .Other, imageDescription: imageDescription)
-        return frame
+        return try ImageFrame(imageLocation: location, imageType: imageType ?? .Other, imageDescription: imageDescription)
     }
-    
+ 
 }

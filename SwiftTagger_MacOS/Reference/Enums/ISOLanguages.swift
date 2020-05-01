@@ -11,1958 +11,989 @@ public enum ISO6392Codes: String, CaseIterable {
     public init?(nativeName: String) {
         self = ISO6392Codes.nativeNameToIsoCode[nativeName] ?? .und
     }
+
+    public static let nativeNameToIsoCode: [String: ISO6392Codes] = {
+        var mapping: [String: ISO6392Codes] = [:]
+        for code in ISO6392Codes.allCases {
+            let nativeName = code.nativeName
+            mapping[nativeName] = code
+        }
+        return mapping
+    }()
     
     /// Afar
-    case aar = "Afar"
+    case aar
     /// Abkhazian
-    case abk = "Abkhazian"
+    case abk
     /// Achinese
-    case ace = "Achinese"
+    case ace
     /// Acoli
-    case ach = "Acoli"
+    case ach
     /// Adangme
-    case ada = "Adangme"
+    case ada
     /// Adyghe; Adygei
-    case ady = "Adyghe; Adygei"
+    case ady
     /// Afro-Asiatic languages
-    case afa = "Afro-Asiatic languages"
+    case afa
     /// Afrihili
-    case afh = "Afrihili"
+    case afh
     /// Afrikaans
-    case afr = "Afrikaans"
+    case afr
     /// Ainu
-    case ain = "Ainu"
+    case ain
     /// Akan
-    case aka = "Akan"
+    case aka
     /// Akkadian
-    case akk = "Akkadian"
+    case akk
     /// Albanian
-    case sqi = "Albanian"
+    case sqi
     /// Aleut
-    case ale = "Aleut"
+    case ale
     /// Algonquian languages
-    case alg = "Algonquian languages"
+    case alg
     /// Southern Altai
-    case alt = "Southern Altai"
+    case alt
     /// Amharic
-    case amh = "Amharic"
+    case amh
     /// English, Old (ca.450–1100)
-    case ang = "English, Old (ca.450–1100)"
+    case ang
     /// Angika
-    case anp = "Angika"
+    case anp
     /// Apache languages
-    case apa = "Apache languages"
+    case apa
     /// Arabic
-    case ara = "Arabic"
+    case ara
     /// Official Aramaic, (700–300 BCE); Imperial Aramaic, (700–300 BCE)
-    case arc = "Official Aramaic, (700–300 BCE); Imperial Aramaic, (700–300 BCE)"
+    case arc
     /// Aragonese
-    case arg = "Aragonese"
+    case arg
     /// Armenian
-    case hye = "Armenian"
+    case hye
     /// Mapudungun; Mapuche
-    case arn = "Mapudungun; Mapuche"
+    case arn
     /// Arapaho
-    case arp = "Arapaho"
+    case arp
     /// Artificial languages
-    case art = "Artificial languages"
+    case art
     /// Arawak
-    case arw = "Arawak"
+    case arw
     /// Assamese
-    case asm = "Assamese"
+    case asm
     /// Asturian; Bable; Leonese; Asturleonese
-    case ast = "Asturian; Bable; Leonese; Asturleonese"
+    case ast
     /// Athapascan languages
-    case ath = "Athapascan languages"
+    case ath
     /// Australian languages
-    case aus = "Australian languages"
+    case aus
     /// Avaric
-    case ava = "Avaric"
+    case ava
     /// Avestan
-    case ave = "Avestan"
+    case ave
     /// Awadhi
-    case awa = "Awadhi"
+    case awa
     /// Aymara
-    case aym = "Aymara"
+    case aym
     /// Azerbaijani
-    case aze = "Azerbaijani"
+    case aze
     /// Banda languages
-    case bad = "Banda languages"
+    case bad
     /// Bamileke languages
-    case bai = "Bamileke languages"
+    case bai
     /// Bashkir
-    case bak = "Bashkir"
+    case bak
     /// Baluchi
-    case bal = "Baluchi"
+    case bal
     /// Bambara
-    case bam = "Bambara"
+    case bam
     /// Balinese
-    case ban = "Balinese"
+    case ban
     /// Basque
-    case eus = "Basque"
+    case eus
     /// Basa
-    case bas = "Basa"
+    case bas
     /// Baltic languages
-    case bat = "Baltic languages"
+    case bat
     /// Beja; Bedawiyet
-    case bej = "Beja; Bedawiyet"
+    case bej
     /// Belarusian
-    case bel = "Belarusian"
+    case bel
     /// Bemba
-    case bem = "Bemba"
+    case bem
     /// Bengali
-    case ben = "Bengali"
+    case ben
     /// Berber languages
-    case ber = "Berber languages"
+    case ber
     /// Bhojpuri
-    case bho = "Bhojpuri"
+    case bho
     /// Bihari languages
-    case bih = "Bihari languages"
+    case bih
     /// Bikol
-    case bik = "Bikol"
+    case bik
     /// Bini; Edo
-    case bin = "Bini; Edo"
+    case bin
     /// Bislama
-    case bis = "Bislama"
+    case bis
     /// Siksika
-    case bla = "Siksika"
+    case bla
     /// Bantu (Other)
-    case bnt = "Bantu (Other)"
+    case bnt
     /// Tibetan
-    case bod = "Tibetan"
+    case bod
     /// Bosnian
-    case bos = "Bosnian"
+    case bos
     /// Braj
-    case bra = "Braj"
+    case bra
     /// Breton
-    case bre = "Breton"
+    case bre
     /// Batak languages
-    case btk = "Batak languages"
+    case btk
     /// Buriat
-    case bua = "Buriat"
+    case bua
     /// Buginese
-    case bug = "Buginese"
+    case bug
     /// Bulgarian
-    case bul = "Bulgarian"
+    case bul
     /// Burmese
-    case mya = "Burmese"
+    case mya
     /// Blin; Bilin
-    case byn = "Blin; Bilin"
+    case byn
     /// Caddo
-    case cad = "Caddo"
+    case cad
     /// Central American Indian languages
-    case cai = "Central American Indian languages"
+    case cai
     /// Galibi Carib
-    case car = "Galibi Carib"
+    case car
     /// Catalan; Valencian
-    case cat = "Catalan; Valencian"
+    case cat
     /// Caucasian languages
-    case cau = "Caucasian languages"
+    case cau
     /// Cebuano
-    case ceb = "Cebuano"
+    case ceb
     /// Celtic languages
-    case cel = "Celtic languages"
+    case cel
     /// Czech
-    case ces = "Czech"
+    case ces
     /// Chamorro
-    case cha = "Chamorro"
+    case cha
     /// Chibcha
-    case chb = "Chibcha"
+    case chb
     /// Chechen
-    case che = "Chechen"
+    case che
     /// Chagatai
-    case chg = "Chagatai"
+    case chg
     /// Chinese
-    case zho = "Chinese"
+    case zho
     /// Chuukese
-    case chk = "Chuukese"
+    case chk
     /// Mari
-    case chm = "Mari"
+    case chm
     /// Chinook jargon
-    case chn = "Chinook jargon"
+    case chn
     /// Choctaw
-    case cho = "Choctaw"
+    case cho
     /// Chipewyan; Dene Suline
-    case chp = "Chipewyan; Dene Suline"
+    case chp
     /// Cherokee
-    case chr = "Cherokee"
+    case chr
     /// Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church Slavonic
-    case chu = "Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church Slavonic"
+    case chu
     /// Chuvash
-    case chv = "Chuvash"
+    case chv
     /// Cheyenne
-    case chy = "Cheyenne"
+    case chy
     /// Chamic languages
-    case cmc = "Chamic languages"
+    case cmc
     /// Montenegrin
-    case cnr = "Montenegrin"
+    case cnr
     /// Coptic
-    case cop = "Coptic"
+    case cop
     /// Cornish
-    case cor = "Cornish"
+    case cor
     /// Corsican
-    case cos = "Corsican"
+    case cos
     /// Creoles and pidgins, English based
-    case cpe = "Creoles and pidgins, English based"
+    case cpe
     /// Creoles and pidgins, French-based
-    case cpf = "Creoles and pidgins, French-based"
+    case cpf
     /// Creoles and pidgins, Portuguese-based
-    case cpp = "Creoles and pidgins, Portuguese-based"
+    case cpp
     /// Cree
-    case cre = "Cree"
+    case cre
     /// Crimean Tatar; Crimean Turkish
-    case crh = "Crimean Tatar; Crimean Turkish"
+    case crh
     /// Creoles and pidgins
-    case crp = "Creoles and pidgins"
+    case crp
     /// Kashubian
-    case csb = "Kashubian"
+    case csb
     /// Cushitic languages
-    case cus = "Cushitic languages"
+    case cus
     /// Welsh
-    case cym = "Welsh"
+    case cym
     /// Dakota
-    case dak = "Dakota"
+    case dak
     /// Danish
-    case dan = "Danish"
+    case dan
     /// Dargwa
-    case dar = "Dargwa"
+    case dar
     /// Land Dayak languages
-    case day = "Land Dayak languages"
+    case day
     /// Delaware
-    case del = "Delaware"
+    case del
     /// Slave (isoName: Athapascan)
-    case den = "Slave (isoName: Athapascan)"
+    case den
     /// German
-    case deu = "German"
+    case deu
     /// Dogrib
-    case dgr = "Dogrib"
+    case dgr
     /// Dinka
-    case din = "Dinka"
+    case din
     /// Divehi; Dhivehi; Maldivian
-    case div = "Divehi; Dhivehi; Maldivian"
+    case div
     /// Dogri
-    case doi = "Dogri"
+    case doi
     /// Dravidian languages
-    case dra = "Dravidian languages"
+    case dra
     /// Lower Sorbian
-    case dsb = "Lower Sorbian"
+    case dsb
     /// Duala
-    case dua = "Duala"
+    case dua
     /// Dutch, Middle (ca. 1050–1350)
-    case dum = "Dutch, Middle (ca. 1050–1350)"
+    case dum
     /// Dutch; Flemish
-    case nld = "Dutch; Flemish"
+    case nld
     /// Dyula
-    case dyu = "Dyula"
+    case dyu
     /// Dzongkha
-    case dzo = "Dzongkha"
+    case dzo
     /// Efik
-    case efi = "Efik"
+    case efi
     /// Egyptian (Ancient)
-    case egy = "Egyptian (Ancient)"
+    case egy
     /// Ekajuk
-    case eka = "Ekajuk"
+    case eka
     /// Greek, Modern (1453–)
-    case ell = "Greek, Modern (1453–)"
+    case ell
     /// Elamite
-    case elx = "Elamite"
+    case elx
     /// English
-    case eng = "English"
+    case eng
     /// English, Middle (1100–1500)
-    case enm = "English, Middle (1100–1500)"
+    case enm
     /// Esperanto
-    case epo = "Esperanto"
+    case epo
     /// Estonian
-    case est = "Estonian"
+    case est
     /// Ewe
-    case ewe = "Ewe"
+    case ewe
     /// Ewondo
-    case ewo = "Ewondo"
+    case ewo
     /// Fang
-    case fan = "Fang"
+    case fan
     /// Faroese
-    case fao = "Faroese"
+    case fao
     /// Persian
-    case fas = "Persian"
+    case fas
     /// Fanti
-    case fat = "Fanti"
+    case fat
     /// Fijian
-    case fij = "Fijian"
+    case fij
     /// Filipino; Pilipino
-    case fil = "Filipino; Pilipino"
+    case fil
     /// Finnish
-    case fin = "Finnish"
+    case fin
     /// Finno-Ugrian languages
-    case fiu = "Finno-Ugrian languages"
+    case fiu
     /// Fon
-    case fon = "Fon"
+    case fon
     /// French
-    case fra = "French"
+    case fra
     /// French, Middle (ca. 1400–1600)
-    case frm = "French, Middle (ca. 1400–1600)"
+    case frm
     /// French, Old (842–ca. 1400)
-    case fro = "French, Old (842–ca. 1400)"
+    case fro
     /// Northern Frisian
-    case frr = "Northern Frisian"
+    case frr
     /// Eastern Frisian
-    case frs = "Eastern Frisian"
+    case frs
     /// Western Frisian
-    case fry = "Western Frisian"
+    case fry
     /// Fulah
-    case ful = "Fulah"
+    case ful
     /// Friulian
-    case fur = "Friulian"
+    case fur
     /// Ga
-    case gaa = "Ga"
+    case gaa
     /// Gayo
-    case gay = "Gayo"
+    case gay
     /// Gbaya
-    case gba = "Gbaya"
+    case gba
     /// Germanic languages
-    case gem = "Germanic languages"
+    case gem
     /// Georgian
-    case kat = "Georgian"
+    case kat
     /// Geez
-    case gez = "Geez"
+    case gez
     /// Gilbertese
-    case gil = "Gilbertese"
+    case gil
     /// Gaelic; Scottish Gaelic
-    case gla = "Gaelic; Scottish Gaelic"
+    case gla
     /// Irish
-    case gle = "Irish"
+    case gle
     /// Galician
-    case glg = "Galician"
+    case glg
     /// Manx
-    case glv = "Manx"
+    case glv
     /// German, Middle High (ca. 1050–1500)
-    case gmh = "German, Middle High (ca. 1050–1500)"
+    case gmh
     /// German, Old High (ca. 750–1050)
-    case goh = "German, Old High (ca. 750–1050)"
+    case goh
     /// Gondi
-    case gon = "Gondi"
+    case gon
     /// Gorontalo
-    case gor = "Gorontalo"
+    case gor
     /// Gothic
-    case got = "Gothic"
+    case got
     /// Grebo
-    case grb = "Grebo"
+    case grb
     /// Greek, Ancient (to 1453)
-    case grc = "Greek, Ancient (to 1453)"
+    case grc
     /// Guarani
-    case grn = "Guarani"
+    case grn
     /// Swiss German; Alemannic; Alsatian
-    case gsw = "Swiss German; Alemannic; Alsatian"
+    case gsw
     /// Gujarati
-    case guj = "Gujarati"
+    case guj
     /// Gwich'in
-    case gwi = "Gwich'in"
+    case gwi
     /// Haida
-    case hai = "Haida"
+    case hai
     /// Haitian; Haitian Creole
-    case hat = "Haitian; Haitian Creole"
+    case hat
     /// Hausa
-    case hau = "Hausa"
+    case hau
     /// Hawaiian
-    case haw = "Hawaiian"
+    case haw
     /// Hebrew
-    case heb = "Hebrew"
+    case heb
     /// Herero
-    case her = "Herero"
+    case her
     /// Hiligaynon
-    case hil = "Hiligaynon"
+    case hil
     /// Himachali languages; Pahari languages
-    case him = "Himachali languages; Pahari languages"
+    case him
     /// Hindi
-    case hin = "Hindi"
+    case hin
     /// Hittite
-    case hit = "Hittite"
+    case hit
     /// Hmong; Mong
-    case hmn = "Hmong; Mong"
+    case hmn
     /// Hiri Motu
-    case hmo = "Hiri Motu"
+    case hmo
     /// Croatian
-    case hrv = "Croatian"
+    case hrv
     /// Upper Sorbian
-    case hsb = "Upper Sorbian"
+    case hsb
     /// Hungarian
-    case hun = "Hungarian"
+    case hun
     /// Hupa
-    case hup = "Hupa"
+    case hup
     /// Iban
-    case iba = "Iban"
+    case iba
     /// Igbo
-    case ibo = "Igbo"
+    case ibo
     /// Icelandic
-    case isl = "Icelandic"
+    case isl
     /// Ido
-    case ido = "Ido"
+    case ido
     /// Sichuan Yi; Nuosu
-    case iii = "Sichuan Yi; Nuosu"
+    case iii
     /// Ijo languages
-    case ijo = "Ijo languages"
+    case ijo
     /// Inuktitut
-    case iku = "Inuktitut"
+    case iku
     /// Interlingue; Occidental
-    case ile = "Interlingue; Occidental"
+    case ile
     /// Iloko
-    case ilo = "Iloko"
+    case ilo
     /// Interlingua (International Auxiliary Language Association)
-    case ina = "Interlingua (International Auxiliary Language Association)"
+    case ina
     /// Indic languages
-    case inc = "Indic languages"
+    case inc
     /// Indonesian
-    case ind = "Indonesian"
+    case ind
     /// Indo-European languages
-    case ine = "Indo-European languages"
+    case ine
     /// Ingush
-    case inh = "Ingush"
+    case inh
     /// Inupiaq
-    case ipk = "Inupiaq"
+    case ipk
     /// Iranian languages
-    case ira = "Iranian languages"
+    case ira
     /// Iroquoian languages
-    case iro = "Iroquoian languages"
+    case iro
     /// Italian
-    case ita = "Italian"
+    case ita
     /// Javanese
-    case jav = "Javanese"
+    case jav
     /// Lojban
-    case jbo = "Lojban"
+    case jbo
     /// Japanese
-    case jpn = "Japanese"
+    case jpn
     /// Judeo-Persian
-    case jpr = "Judeo-Persian"
+    case jpr
     /// Judeo-Arabic
-    case jrb = "Judeo-Arabic"
+    case jrb
     /// Kara-Kalpak
-    case kaa = "Kara-Kalpak"
+    case kaa
     /// Kabyle
-    case kab = "Kabyle"
+    case kab
     /// Kachin; Jingpho
-    case kac = "Kachin; Jingpho"
+    case kac
     /// Kalaallisut; Greenlandic
-    case kal = "Kalaallisut; Greenlandic"
+    case kal
     /// Kamba
-    case kam = "Kamba"
+    case kam
     /// Kannada
-    case kan = "Kannada"
+    case kan
     /// Karen languages
-    case kar = "Karen languages"
+    case kar
     /// Kashmiri
-    case kas = "Kashmiri"
+    case kas
     /// Kanuri
-    case kau = "Kanuri"
+    case kau
     /// Kawi
-    case kaw = "Kawi"
+    case kaw
     /// Kazakh
-    case kaz = "Kazakh"
+    case kaz
     /// Kabardian
-    case kbd = "Kabardian"
+    case kbd
     /// Khasi
-    case kha = "Khasi"
+    case kha
     /// Khoisan languages
-    case khi = "Khoisan languages"
+    case khi
     /// Central Khmer
-    case khm = "Central Khmer"
+    case khm
     /// Khotanese; Sakan
-    case kho = "Khotanese; Sakan"
+    case kho
     /// Kikuyu; Gikuyu
-    case kik = "Kikuyu; Gikuyu"
+    case kik
     /// Kinyarwanda
-    case kin = "Kinyarwanda"
+    case kin
     /// Kirghiz; Kyrgyz
-    case kir = "Kirghiz; Kyrgyz"
+    case kir
     /// Kimbundu
-    case kmb = "Kimbundu"
+    case kmb
     /// Konkani
-    case kok = "Konkani"
+    case kok
     /// Komi
-    case kom = "Komi"
+    case kom
     /// Kongo
-    case kon = "Kongo"
+    case kon
     /// Korean
-    case kor = "Korean"
+    case kor
     /// Kosraean
-    case kos = "Kosraean"
+    case kos
     /// Kpelle
-    case kpe = "Kpelle"
+    case kpe
     /// Karachay-Balkar
-    case krc = "Karachay-Balkar"
+    case krc
     /// Karelian
-    case krl = "Karelian"
+    case krl
     /// Kru languages
-    case kro = "Kru languages"
+    case kro
     /// Kurukh
-    case kru = "Kurukh"
+    case kru
     /// Kuanyama; Kwanyama
-    case kua = "Kuanyama; Kwanyama"
+    case kua
     /// Kumyk
-    case kum = "Kumyk"
+    case kum
     /// Kurdish
-    case kur = "Kurdish"
+    case kur
     /// Kutenai
-    case kut = "Kutenai"
+    case kut
     /// Ladino
-    case lad = "Ladino"
+    case lad
     /// Lahnda
-    case lah = "Lahnda"
+    case lah
     /// Lamba
-    case lam = "Lamba"
+    case lam
     /// Lao
-    case lao = "Lao"
+    case lao
     /// Latin
-    case lat = "Latin"
+    case lat
     /// Latvian
-    case lav = "Latvian"
+    case lav
     /// Lezghian
-    case lez = "Lezghian"
+    case lez
     /// Limburgan; Limburger; Limburgish
-    case lim = "Limburgan; Limburger; Limburgish"
+    case lim
     /// Lingala
-    case lin = "Lingala"
+    case lin
     /// Lithuanian
-    case lit = "Lithuanian"
+    case lit
     /// Mongo
-    case lol = "Mongo"
+    case lol
     /// Lozi
-    case loz = "Lozi"
+    case loz
     /// Luxembourgish; Letzeburgesch
-    case ltz = "Luxembourgish; Letzeburgesch"
+    case ltz
     /// Luba-Lulua
-    case lua = "Luba-Lulua"
+    case lua
     /// Luba-Katanga
-    case lub = "Luba-Katanga"
+    case lub
     /// Ganda
-    case lug = "Ganda"
+    case lug
     /// Luiseno
-    case lui = "Luiseno"
+    case lui
     /// Lunda
-    case lun = "Lunda"
+    case lun
     /// Luo (Kenya and Tanzania)
-    case luo = "Luo (Kenya and Tanzania)"
+    case luo
     /// Lushai
-    case lus = "Lushai"
+    case lus
     /// Macedonian
-    case mkd = "Macedonian"
+    case mkd
     /// Madurese
-    case mad = "Madurese"
+    case mad
     /// Magahi
-    case mag = "Magahi"
+    case mag
     /// Marshallese
-    case mah = "Marshallese"
+    case mah
     /// Maithili
-    case mai = "Maithili"
+    case mai
     /// Makasar
-    case mak = "Makasar"
+    case mak
     /// Malayalam
-    case mal = "Malayalam"
+    case mal
     /// Mandingo
-    case man = "Mandingo"
+    case man
     /// Maori
-    case mri = "Maori"
+    case mri
     /// Austronesian languages
-    case map = "Austronesian languages"
+    case map
     /// Marathi
-    case mar = "Marathi"
+    case mar
     /// Masai
-    case mas = "Masai"
+    case mas
     /// Malay
-    case msa = "Malay"
+    case msa
     /// Moksha
-    case mdf = "Moksha"
+    case mdf
     /// Mandar
-    case mdr = "Mandar"
+    case mdr
     /// Mende
-    case men = "Mende"
+    case men
     /// Irish, Middle (900–1200)
-    case mga = "Irish, Middle (900–1200)"
+    case mga
     /// Mi'kmaq; Micmac
-    case mic = "Mi'kmaq; Micmac"
+    case mic
     /// Minangkabau
-    case min = "Minangkabau"
+    case min
     /// Uncoded languages
-    case mis = "Uncoded languages"
+    case mis
     /// Mon-Khmer languages
-    case mkh = "Mon-Khmer languages"
+    case mkh
     /// Malagasy
-    case mlg = "Malagasy"
+    case mlg
     /// Maltese
-    case mlt = "Maltese"
+    case mlt
     /// Manchu
-    case mnc = "Manchu"
+    case mnc
     /// Manipuri
-    case mni = "Manipuri"
+    case mni
     /// Manobo languages
-    case mno = "Manobo languages"
+    case mno
     /// Mohawk
-    case moh = "Mohawk"
+    case moh
     /// Mongolian
-    case mon = "Mongolian"
+    case mon
     /// Mossi
-    case mos = "Mossi"
+    case mos
     /// Multiple languages
-    case mul = "Multiple languages"
+    case mul
     /// Munda languages
-    case mun = "Munda languages"
+    case mun
     /// Creek
-    case mus = "Creek"
+    case mus
     /// Mirandese
-    case mwl = "Mirandese"
+    case mwl
     /// Marwari
-    case mwr = "Marwari"
+    case mwr
     /// Mayan languages
-    case myn = "Mayan languages"
+    case myn
     /// Erzya
-    case myv = "Erzya"
+    case myv
     /// Nahuatl languages
-    case nah = "Nahuatl languages"
+    case nah
     /// North American Indian languages
-    case nai = "North American Indian languages"
+    case nai
     /// Neapolitan
-    case nap = "Neapolitan"
+    case nap
     /// Nauru
-    case nau = "Nauru"
+    case nau
     /// Navajo; Navaho
-    case nav = "Navajo; Navaho"
+    case nav
     /// Ndebele, South; South Ndebele
-    case nbl = "Ndebele, South; South Ndebele"
+    case nbl
     /// Ndebele, North; North Ndebele
-    case nde = "Ndebele, North; North Ndebele"
+    case nde
     /// Ndonga
-    case ndo = "Ndonga"
+    case ndo
     /// Low German; Low Saxon; German, Low; Saxon, Low
-    case nds = "Low German; Low Saxon; German, Low; Saxon, Low"
+    case nds
     /// Nepali
-    case nep = "Nepali"
+    case nep
     /// Nepal Bhasa; Newari
-    case new = "Nepal Bhasa; Newari"
+    case new
     /// Nias
-    case nia = "Nias"
+    case nia
     /// Niger-Kordofanian languages
-    case nic = "Niger-Kordofanian languages"
+    case nic
     /// Niuean
-    case niu = "Niuean"
+    case niu
     /// Norwegian Nynorsk; Nynorsk, Norwegian
-    case nno = "Norwegian Nynorsk; Nynorsk, Norwegian"
+    case nno
     /// Bokmål, Norwegian; Norwegian Bokmål
-    case nob = "Bokmål, Norwegian; Norwegian Bokmål"
+    case nob
     /// Nogai
-    case nog = "Nogai"
+    case nog
     /// Norse, Old
-    case non = "Norse, Old"
+    case non
     /// Norwegian
-    case nor = "Norwegian"
+    case nor
     /// N'Ko
-    case nqo = "N'Ko"
+    case nqo
     /// Pedi; Sepedi; Northern Sotho
-    case nso = "Pedi; Sepedi; Northern Sotho"
+    case nso
     /// Nubian languages
-    case nub = "Nubian languages"
+    case nub
     /// Classical Newari; Old Newari; Classical Nepal Bhasa
-    case nwc = "Classical Newari; Old Newari; Classical Nepal Bhasa"
+    case nwc
     /// Chichewa; Chewa; Nyanja
-    case nya = "Chichewa; Chewa; Nyanja"
+    case nya
     /// Nyamwezi
-    case nym = "Nyamwezi"
+    case nym
     /// Nyankole
-    case nyn = "Nyankole"
+    case nyn
     /// Nyoro
-    case nyo = "Nyoro"
+    case nyo
     /// Nzima
-    case nzi = "Nzima"
+    case nzi
     /// Occitan (post 1500); Provençal
-    case oci = "Occitan (post 1500); Provençal"
+    case oci
     /// Ojibwa
-    case oji = "Ojibwa"
+    case oji
     /// Oriya
-    case ori = "Oriya"
+    case ori
     /// Oromo
-    case orm = "Oromo"
+    case orm
     /// Osage
-    case osa = "Osage"
+    case osa
     /// Ossetian; Ossetic
-    case oss = "Ossetian; Ossetic"
+    case oss
     /// Turkish, Ottoman (1500–1928)
-    case ota = "Turkish, Ottoman (1500–1928)"
+    case ota
     /// Otomian languages
-    case oto = "Otomian languages"
+    case oto
     /// Papuan languages
-    case paa = "Papuan languages"
+    case paa
     /// Pangasinan
-    case pag = "Pangasinan"
+    case pag
     /// Pahlavi
-    case pal = "Pahlavi"
+    case pal
     /// Pampanga; Kapampangan
-    case pam = "Pampanga; Kapampangan"
+    case pam
     /// Panjabi; Punjabi
-    case pan = "Panjabi; Punjabi"
+    case pan
     /// Papiamento
-    case pap = "Papiamento"
+    case pap
     /// Palauan
-    case pau = "Palauan"
+    case pau
     /// Persian, Old (ca. 600–400 B.C.)
-    case peo = "Persian, Old (ca. 600–400 B.C.)"
+    case peo
     /// Philippine languages
-    case phi = "Philippine languages"
+    case phi
     /// Phoenician
-    case phn = "Phoenician"
+    case phn
     /// Pali
-    case pli = "Pali"
+    case pli
     /// Polish
-    case pol = "Polish"
+    case pol
     /// Pohnpeian
-    case pon = "Pohnpeian"
+    case pon
     /// Portuguese
-    case por = "Portuguese"
+    case por
     /// Prakrit languages
-    case pra = "Prakrit languages"
+    case pra
     /// Provençal, Old (to 1500); Old Occitan (to 1500)
-    case pro = "Provençal, Old (to 1500); Old Occitan (to 1500)"
+    case pro
     /// Pushto; Pashto
-    case pus = "Pushto; Pashto"
+    case pus
     /// Quechua
-    case que = "Quechua"
+    case que
     /// Rajasthani
-    case raj = "Rajasthani"
+    case raj
     /// Rapanui
-    case rap = "Rapanui"
+    case rap
     /// Rarotongan; Cook Islands Maori
-    case rar = "Rarotongan; Cook Islands Maori"
+    case rar
     /// Romance languages
-    case roa = "Romance languages"
+    case roa
     /// Romansh
-    case roh = "Romansh"
+    case roh
     /// Romany
-    case rom = "Romany"
+    case rom
     /// Romanian; Moldavian; Moldovan
-    case ron = "Romanian; Moldavian; Moldovan"
+    case ron
     /// Rundi
-    case run = "Rundi"
+    case run
     /// Aromanian; Arumanian; Macedo-Romanian
-    case rup = "Aromanian; Arumanian; Macedo-Romanian"
+    case rup
     /// Russian
-    case rus = "Russian"
+    case rus
     /// Sandawe
-    case sad = "Sandawe"
+    case sad
     /// Sango
-    case sag = "Sango"
+    case sag
     /// Yakut
-    case sah = "Yakut"
+    case sah
     /// South American Indian (Other)
-    case sai = "South American Indian (Other)"
+    case sai
     /// Salishan languages
-    case sal = "Salishan languages"
+    case sal
     /// Samaritan Aramaic
-    case sam = "Samaritan Aramaic"
+    case sam
     /// Sanskrit
-    case san = "Sanskrit"
+    case san
     /// Sasak
-    case sas = "Sasak"
+    case sas
     /// Santali
-    case sat = "Santali"
+    case sat
     /// Sicilian
-    case scn = "Sicilian"
+    case scn
     /// Scots
-    case sco = "Scots"
+    case sco
     /// Selkup
-    case sel = "Selkup"
+    case sel
     /// Semitic languages
-    case sem = "Semitic languages"
+    case sem
     /// Irish, Old (to 900)
-    case sga = "Irish, Old (to 900)"
+    case sga
     /// Sign Languages
-    case sgn = "Sign Languages"
+    case sgn
     /// Shan
-    case shn = "Shan"
+    case shn
     /// Sidamo
-    case sid = "Sidamo"
+    case sid
     /// Sinhala; Sinhalese
-    case sin = "Sinhala; Sinhalese"
+    case sin
     /// Siouan languages
-    case sio = "Siouan languages"
+    case sio
     /// Sino-Tibetan languages
-    case sit = "Sino-Tibetan languages"
+    case sit
     /// Slavic languages
-    case sla = "Slavic languages"
+    case sla
     /// Slovak
-    case slk = "Slovak"
+    case slk
     /// Slovenian
-    case slv = "Slovenian"
+    case slv
     /// Southern Sami
-    case sma = "Southern Sami"
+    case sma
     /// Northern Sami
-    case sme = "Northern Sami"
+    case sme
     /// Sami languages
-    case smi = "Sami languages"
+    case smi
     /// Lule Sami
-    case smj = "Lule Sami"
+    case smj
     /// Inari Sami
-    case smn = "Inari Sami"
+    case smn
     /// Samoan
-    case smo = "Samoan"
+    case smo
     /// Skolt Sami
-    case sms = "Skolt Sami"
+    case sms
     /// Shona
-    case sna = "Shona"
+    case sna
     /// Sindhi
-    case snd = "Sindhi"
+    case snd
     /// Soninke
-    case snk = "Soninke"
+    case snk
     /// Sogdian
-    case sog = "Sogdian"
+    case sog
     /// Somali
-    case som = "Somali"
+    case som
     /// Songhai languages
-    case son = "Songhai languages"
+    case son
     /// Sotho, Southern
-    case sot = "Sotho, Southern"
+    case sot
     /// Spanish; Castilian
-    case spa = "Spanish; Castilian"
+    case spa
     /// Sardinian
-    case srd = "Sardinian"
+    case srd
     /// Sranan Tongo
-    case srn = "Sranan Tongo"
+    case srn
     /// Serbian
-    case srp = "Serbian"
+    case srp
     /// Serer
-    case srr = "Serer"
+    case srr
     /// Nilo-Saharan languages
-    case ssa = "Nilo-Saharan languages"
+    case ssa
     /// Swati
-    case ssw = "Swati"
+    case ssw
     /// Sukuma
-    case suk = "Sukuma"
+    case suk
     /// Sundanese
-    case sun = "Sundanese"
+    case sun
     /// Susu
-    case sus = "Susu"
+    case sus
     /// Sumerian
-    case sux = "Sumerian"
+    case sux
     /// Swahili
-    case swa = "Swahili"
+    case swa
     /// Swedish
-    case swe = "Swedish"
+    case swe
     /// Classical Syriac
-    case syc = "Classical Syriac"
+    case syc
     /// Syriac
-    case syr = "Syriac"
+    case syr
     /// Tahitian
-    case tah = "Tahitian"
+    case tah
     /// Tai languages
-    case tai = "Tai languages"
+    case tai
     /// Tamil
-    case tam = "Tamil"
+    case tam
     /// Tatar
-    case tat = "Tatar"
+    case tat
     /// Telugu
-    case tel = "Telugu"
+    case tel
     /// Timne
-    case tem = "Timne"
+    case tem
     /// Tereno
-    case ter = "Tereno"
+    case ter
     /// Tetum
-    case tet = "Tetum"
+    case tet
     /// Tajik
-    case tgk = "Tajik"
+    case tgk
     /// Tagalog
-    case tgl = "Tagalog"
+    case tgl
     /// Thai
-    case tha = "Thai"
+    case tha
     /// Tigre
-    case tig = "Tigre"
+    case tig
     /// Tigrinya
-    case tir = "Tigrinya"
+    case tir
     /// Tiv
-    case tiv = "Tiv"
+    case tiv
     /// Tokelau
-    case tkl = "Tokelau"
+    case tkl
     /// Klingon; tlhIngan-Hol
-    case tlh = "Klingon; tlhIngan-Hol"
+    case tlh
     /// Tlingit
-    case tli = "Tlingit"
+    case tli
     /// Tamashek
-    case tmh = "Tamashek"
+    case tmh
     /// Tonga, Nyasa
-    case tog = "Tonga, Nyasa"
+    case tog
     /// Tonga (Tonga Islands)
-    case ton = "Tonga (Tonga Islands)"
+    case ton
     /// Tok Pisin
-    case tpi = "Tok Pisin"
+    case tpi
     /// Tsimshian
-    case tsi = "Tsimshian"
+    case tsi
     /// Tswana
-    case tsn = "Tswana"
+    case tsn
     /// Tsonga
-    case tso = "Tsonga"
+    case tso
     /// Turkmen
-    case tuk = "Turkmen"
+    case tuk
     /// Tumbuka
-    case tum = "Tumbuka"
+    case tum
     /// Tupi languages
-    case tup = "Tupi languages"
+    case tup
     /// Turkish
-    case tur = "Turkish"
+    case tur
     /// Altaic languages
-    case tut = "Altaic languages"
+    case tut
     /// Tuvalu
-    case tvl = "Tuvalu"
+    case tvl
     /// Twi
-    case twi = "Twi"
+    case twi
     /// Tuvinian
-    case tyv = "Tuvinian"
+    case tyv
     /// Udmurt
-    case udm = "Udmurt"
+    case udm
     /// Ugaritic
-    case uga = "Ugaritic"
+    case uga
     /// Uighur; Uyghur
-    case uig = "Uighur; Uyghur"
+    case uig
     /// Ukrainian
-    case ukr = "Ukrainian"
+    case ukr
     /// Umbundu
-    case umb = "Umbundu"
+    case umb
     /// Undetermined
-    case und = "Undetermined"
+    case und
     /// Urdu
-    case urd = "Urdu"
+    case urd
     /// Uzbek
-    case uzb = "Uzbek"
+    case uzb
     /// Vai
-    case vai = "Vai"
+    case vai
     /// Venda
-    case ven = "Venda"
+    case ven
     /// Vietnamese
-    case vie = "Vietnamese"
+    case vie
     /// Volapük
-    case vol = "Volapük"
+    case vol
     /// Votic
-    case vot = "Votic"
+    case vot
     /// Wakashan languages
-    case wak = "Wakashan languages"
+    case wak
     /// Wolaitta; Wolaytta
-    case wal = "Wolaitta; Wolaytta"
+    case wal
     /// Waray
-    case war = "Waray"
+    case war
     /// Washo
-    case was = "Washo"
+    case was
     /// Sorbian languages
-    case wen = "Sorbian languages"
+    case wen
     /// Walloon
-    case wln = "Walloon"
+    case wln
     /// Wolof
-    case wol = "Wolof"
+    case wol
     /// Kalmyk; Oirat
-    case xal = "Kalmyk; Oirat"
+    case xal
     /// Xhosa
-    case xho = "Xhosa"
+    case xho
     /// Yao
-    case yao = "Yao"
+    case yao
     /// Yapese
-    case yap = "Yapese"
+    case yap
     /// Yiddish
-    case yid = "Yiddish"
+    case yid
     /// Yoruba
-    case yor = "Yoruba"
+    case yor
     /// Yupik languages
-    case ypk = "Yupik languages"
+    case ypk
     /// Zapotec
-    case zap = "Zapotec"
+    case zap
     /// Blissymbols; Blissymbolics; Bliss
-    case zbl = "Blissymbols; Blissymbolics; Bliss"
+    case zbl
     /// Zenaga
-    case zen = "Zenaga"
+    case zen
     /// Standard Moroccan Tamazight
-    case zgh = "Standard Moroccan Tamazight"
+    case zgh
     /// Zhuang; Chuang
-    case zha = "Zhuang; Chuang"
+    case zha
     /// Zande languages
-    case znd = "Zande languages"
+    case znd
     /// Zulu
-    case zul = "Zulu"
+    case zul
     /// Zuni
-    case zun = "Zuni"
+    case zun
     /// No linguistic content; Not applicable
-    case zxx = "No linguistic content; Not applicable"
+    case zxx
     /// Zaza; Dimili; Dimli; Kirdki; Kirmanjki; Zazaki
-    case zza = "Zaza; Dimili; Dimli; Kirdki; Kirmanjki; Zazaki"
-    
-    // MARK: ISO-639-2-T Code
-    public var iso6392TCode: String {
-        switch self {
-            /// Afar
-            case .aar: return "aar"
-            /// Abkhazian
-            case .abk: return "abk"
-            /// Achinese
-            case .ace: return "ace"
-            /// Acoli
-            case .ach: return "ach"
-            /// Adangme
-            case .ada: return "ada"
-            /// Adyghe; Adygei
-            case .ady: return "ady"
-            /// Afro-Asiatic languages
-            case .afa: return "afa"
-            /// Afrihili
-            case .afh: return "afh"
-            /// Afrikaans
-            case .afr: return "afr"
-            /// Ainu
-            case .ain: return "ain"
-            /// Akan
-            case .aka: return "aka"
-            /// Akkadian
-            case .akk: return "akk"
-            /// Albanian
-            case .sqi: return "sqi"
-            /// Aleut
-            case .ale: return "ale"
-            /// Algonquian languages
-            case .alg: return "alg"
-            /// Southern Altai
-            case .alt: return "alt"
-            /// Amharic
-            case .amh: return "amh"
-            /// English, Old (ca.450–1100)
-            case .ang: return "ang"
-            /// Angika
-            case .anp: return "anp"
-            /// Apache languages
-            case .apa: return "apa"
-            /// Arabic
-            case .ara: return "ara"
-            /// Official Aramaic, (700–300 BCE); Imperial Aramaic, (700–300 BCE)
-            case .arc: return "arc"
-            /// Aragonese
-            case .arg: return "arg"
-            /// Armenian
-            case .hye: return "hye"
-            /// Mapudungun; Mapuche
-            case .arn: return "arn"
-            /// Arapaho
-            case .arp: return "arp"
-            /// Artificial languages
-            case .art: return "art"
-            /// Arawak
-            case .arw: return "arw"
-            /// Assamese
-            case .asm: return "asm"
-            /// Asturian; Bable; Leonese; Asturleonese
-            case .ast: return "ast"
-            /// Athapascan languages
-            case .ath: return "ath"
-            /// Australian languages
-            case .aus: return "aus"
-            /// Avaric
-            case .ava: return "ava"
-            /// Avestan
-            case .ave: return "ave"
-            /// Awadhi
-            case .awa: return "awa"
-            /// Aymara
-            case .aym: return "aym"
-            /// Azerbaijani
-            case .aze: return "aze"
-            /// Banda languages
-            case .bad: return "bad"
-            /// Bamileke languages
-            case .bai: return "bai"
-            /// Bashkir
-            case .bak: return "bak"
-            /// Baluchi
-            case .bal: return "bal"
-            /// Bambara
-            case .bam: return "bam"
-            /// Balinese
-            case .ban: return "ban"
-            /// Basque
-            case .eus: return "eus"
-            /// Basa
-            case .bas: return "bas"
-            /// Baltic languages
-            case .bat: return "bat"
-            /// Beja; Bedawiyet
-            case .bej: return "bej"
-            /// Belarusian
-            case .bel: return "bel"
-            /// Bemba
-            case .bem: return "bem"
-            /// Bengali
-            case .ben: return "ben"
-            /// Berber languages
-            case .ber: return "ber"
-            /// Bhojpuri
-            case .bho: return "bho"
-            /// Bihari languages
-            case .bih: return "bih"
-            /// Bikol
-            case .bik: return "bik"
-            /// Bini; Edo
-            case .bin: return "bin"
-            /// Bislama
-            case .bis: return "bis"
-            /// Siksika
-            case .bla: return "bla"
-            /// Bantu (Other)
-            case .bnt: return "bnt"
-            /// Tibetan
-            case .bod: return "bod"
-            /// Bosnian
-            case .bos: return "bos"
-            /// Braj
-            case .bra: return "bra"
-            /// Breton
-            case .bre: return "bre"
-            /// Batak languages
-            case .btk: return "btk"
-            /// Buriat
-            case .bua: return "bua"
-            /// Buginese
-            case .bug: return "bug"
-            /// Bulgarian
-            case .bul: return "bul"
-            /// Burmese
-            case .mya: return "mya"
-            /// Blin; Bilin
-            case .byn: return "byn"
-            /// Caddo
-            case .cad: return "cad"
-            /// Central American Indian languages
-            case .cai: return "cai"
-            /// Galibi Carib
-            case .car: return "car"
-            /// Catalan; Valencian
-            case .cat: return "cat"
-            /// Caucasian languages
-            case .cau: return "cau"
-            /// Cebuano
-            case .ceb: return "ceb"
-            /// Celtic languages
-            case .cel: return "cel"
-            /// Czech
-            case .ces: return "ces"
-            /// Chamorro
-            case .cha: return "cha"
-            /// Chibcha
-            case .chb: return "chb"
-            /// Chechen
-            case .che: return "che"
-            /// Chagatai
-            case .chg: return "chg"
-            /// Chinese
-            case .zho: return "zho"
-            /// Chuukese
-            case .chk: return "chk"
-            /// Mari
-            case .chm: return "chm"
-            /// Chinook jargon
-            case .chn: return "chn"
-            /// Choctaw
-            case .cho: return "cho"
-            /// Chipewyan; Dene Suline
-            case .chp: return "chp"
-            /// Cherokee
-            case .chr: return "chr"
-            /// Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church Slavonic
-            case .chu: return "chu"
-            /// Chuvash
-            case .chv: return "chv"
-            /// Cheyenne
-            case .chy: return "chy"
-            /// Chamic languages
-            case .cmc: return "cmc"
-            /// Montenegrin
-            case .cnr: return "cnr"
-            /// Coptic
-            case .cop: return "cop"
-            /// Cornish
-            case .cor: return "cor"
-            /// Corsican
-            case .cos: return "cos"
-            /// Creoles and pidgins, English based
-            case .cpe: return "cpe"
-            /// Creoles and pidgins, French-based
-            case .cpf: return "cpf"
-            /// Creoles and pidgins, Portuguese-based
-            case .cpp: return "cpp"
-            /// Cree
-            case .cre: return "cre"
-            /// Crimean Tatar; Crimean Turkish
-            case .crh: return "crh"
-            /// Creoles and pidgins
-            case .crp: return "crp"
-            /// Kashubian
-            case .csb: return "csb"
-            /// Cushitic languages
-            case .cus: return "cus"
-            /// Welsh
-            case .cym: return "cym"
-            /// Dakota
-            case .dak: return "dak"
-            /// Danish
-            case .dan: return "dan"
-            /// Dargwa
-            case .dar: return "dar"
-            /// Land Dayak languages
-            case .day: return "day"
-            /// Delaware
-            case .del: return "del"
-            /// Slave (isoName: Athapascan)
-            case .den: return "den"
-            /// German
-            case .deu: return "deu"
-            /// Dogrib
-            case .dgr: return "dgr"
-            /// Dinka
-            case .din: return "din"
-            /// Divehi; Dhivehi; Maldivian
-            case .div: return "div"
-            /// Dogri
-            case .doi: return "doi"
-            /// Dravidian languages
-            case .dra: return "dra"
-            /// Lower Sorbian
-            case .dsb: return "dsb"
-            /// Duala
-            case .dua: return "dua"
-            /// Dutch, Middle (ca. 1050–1350)
-            case .dum: return "dum"
-            /// Dutch; Flemish
-            case .nld: return "nld"
-            /// Dyula
-            case .dyu: return "dyu"
-            /// Dzongkha
-            case .dzo: return "dzo"
-            /// Efik
-            case .efi: return "efi"
-            /// Egyptian (Ancient)
-            case .egy: return "egy"
-            /// Ekajuk
-            case .eka: return "eka"
-            /// Greek, Modern (1453–)
-            case .ell: return "ell"
-            /// Elamite
-            case .elx: return "elx"
-            /// English
-            case .eng: return "eng"
-            /// English, Middle (1100–1500)
-            case .enm: return "enm"
-            /// Esperanto
-            case .epo: return "epo"
-            /// Estonian
-            case .est: return "est"
-            /// Ewe
-            case .ewe: return "ewe"
-            /// Ewondo
-            case .ewo: return "ewo"
-            /// Fang
-            case .fan: return "fan"
-            /// Faroese
-            case .fao: return "fao"
-            /// Persian
-            case .fas: return "fas"
-            /// Fanti
-            case .fat: return "fat"
-            /// Fijian
-            case .fij: return "fij"
-            /// Filipino; Pilipino
-            case .fil: return "fil"
-            /// Finnish
-            case .fin: return "fin"
-            /// Finno-Ugrian languages
-            case .fiu: return "fiu"
-            /// Fon
-            case .fon: return "fon"
-            /// French
-            case .fra: return "fra"
-            /// French, Middle (ca. 1400–1600)
-            case .frm: return "frm"
-            /// French, Old (842–ca. 1400)
-            case .fro: return "fro"
-            /// Northern Frisian
-            case .frr: return "frr"
-            /// Eastern Frisian
-            case .frs: return "frs"
-            /// Western Frisian
-            case .fry: return "fry"
-            /// Fulah
-            case .ful: return "ful"
-            /// Friulian
-            case .fur: return "fur"
-            /// Ga
-            case .gaa: return "gaa"
-            /// Gayo
-            case .gay: return "gay"
-            /// Gbaya
-            case .gba: return "gba"
-            /// Germanic languages
-            case .gem: return "gem"
-            /// Georgian
-            case .kat: return "kat"
-            /// Geez
-            case .gez: return "gez"
-            /// Gilbertese
-            case .gil: return "gil"
-            /// Gaelic; Scottish Gaelic
-            case .gla: return "gla"
-            /// Irish
-            case .gle: return "gle"
-            /// Galician
-            case .glg: return "glg"
-            /// Manx
-            case .glv: return "glv"
-            /// German, Middle High (ca. 1050–1500)
-            case .gmh: return "gmh"
-            /// German, Old High (ca. 750–1050)
-            case .goh: return "goh"
-            /// Gondi
-            case .gon: return "gon"
-            /// Gorontalo
-            case .gor: return "gor"
-            /// Gothic
-            case .got: return "got"
-            /// Grebo
-            case .grb: return "grb"
-            /// Greek, Ancient (to 1453)
-            case .grc: return "grc"
-            /// Guarani
-            case .grn: return "grn"
-            /// Swiss German; Alemannic; Alsatian
-            case .gsw: return "gsw"
-            /// Gujarati
-            case .guj: return "guj"
-            /// Gwich'in
-            case .gwi: return "gwi"
-            /// Haida
-            case .hai: return "hai"
-            /// Haitian; Haitian Creole
-            case .hat: return "hat"
-            /// Hausa
-            case .hau: return "hau"
-            /// Hawaiian
-            case .haw: return "haw"
-            /// Hebrew
-            case .heb: return "heb"
-            /// Herero
-            case .her: return "her"
-            /// Hiligaynon
-            case .hil: return "hil"
-            /// Himachali languages; Pahari languages
-            case .him: return "him"
-            /// Hindi
-            case .hin: return "hin"
-            /// Hittite
-            case .hit: return "hit"
-            /// Hmong; Mong
-            case .hmn: return "hmn"
-            /// Hiri Motu
-            case .hmo: return "hmo"
-            /// Croatian
-            case .hrv: return "hrv"
-            /// Upper Sorbian
-            case .hsb: return "hsb"
-            /// Hungarian
-            case .hun: return "hun"
-            /// Hupa
-            case .hup: return "hup"
-            /// Iban
-            case .iba: return "iba"
-            /// Igbo
-            case .ibo: return "ibo"
-            /// Icelandic
-            case .isl: return "isl"
-            /// Ido
-            case .ido: return "ido"
-            /// Sichuan Yi; Nuosu
-            case .iii: return "iii"
-            /// Ijo languages
-            case .ijo: return "ijo"
-            /// Inuktitut
-            case .iku: return "iku"
-            /// Interlingue; Occidental
-            case .ile: return "ile"
-            /// Iloko
-            case .ilo: return "ilo"
-            /// Interlingua (International Auxiliary Language Association)
-            case .ina: return "ina"
-            /// Indic languages
-            case .inc: return "inc"
-            /// Indonesian
-            case .ind: return "ind"
-            /// Indo-European languages
-            case .ine: return "ine"
-            /// Ingush
-            case .inh: return "inh"
-            /// Inupiaq
-            case .ipk: return "ipk"
-            /// Iranian languages
-            case .ira: return "ira"
-            /// Iroquoian languages
-            case .iro: return "iro"
-            /// Italian
-            case .ita: return "ita"
-            /// Javanese
-            case .jav: return "jav"
-            /// Lojban
-            case .jbo: return "jbo"
-            /// Japanese
-            case .jpn: return "jpn"
-            /// Judeo-Persian
-            case .jpr: return "jpr"
-            /// Judeo-Arabic
-            case .jrb: return "jrb"
-            /// Kara-Kalpak
-            case .kaa: return "kaa"
-            /// Kabyle
-            case .kab: return "kab"
-            /// Kachin; Jingpho
-            case .kac: return "kac"
-            /// Kalaallisut; Greenlandic
-            case .kal: return "kal"
-            /// Kamba
-            case .kam: return "kam"
-            /// Kannada
-            case .kan: return "kan"
-            /// Karen languages
-            case .kar: return "kar"
-            /// Kashmiri
-            case .kas: return "kas"
-            /// Kanuri
-            case .kau: return "kau"
-            /// Kawi
-            case .kaw: return "kaw"
-            /// Kazakh
-            case .kaz: return "kaz"
-            /// Kabardian
-            case .kbd: return "kbd"
-            /// Khasi
-            case .kha: return "kha"
-            /// Khoisan languages
-            case .khi: return "khi"
-            /// Central Khmer
-            case .khm: return "khm"
-            /// Khotanese; Sakan
-            case .kho: return "kho"
-            /// Kikuyu; Gikuyu
-            case .kik: return "kik"
-            /// Kinyarwanda
-            case .kin: return "kin"
-            /// Kirghiz; Kyrgyz
-            case .kir: return "kir"
-            /// Kimbundu
-            case .kmb: return "kmb"
-            /// Konkani
-            case .kok: return "kok"
-            /// Komi
-            case .kom: return "kom"
-            /// Kongo
-            case .kon: return "kon"
-            /// Korean
-            case .kor: return "kor"
-            /// Kosraean
-            case .kos: return "kos"
-            /// Kpelle
-            case .kpe: return "kpe"
-            /// Karachay-Balkar
-            case .krc: return "krc"
-            /// Karelian
-            case .krl: return "krl"
-            /// Kru languages
-            case .kro: return "kro"
-            /// Kurukh
-            case .kru: return "kru"
-            /// Kuanyama; Kwanyama
-            case .kua: return "kua"
-            /// Kumyk
-            case .kum: return "kum"
-            /// Kurdish
-            case .kur: return "kur"
-            /// Kutenai
-            case .kut: return "kut"
-            /// Ladino
-            case .lad: return "lad"
-            /// Lahnda
-            case .lah: return "lah"
-            /// Lamba
-            case .lam: return "lam"
-            /// Lao
-            case .lao: return "lao"
-            /// Latin
-            case .lat: return "lat"
-            /// Latvian
-            case .lav: return "lav"
-            /// Lezghian
-            case .lez: return "lez"
-            /// Limburgan; Limburger; Limburgish
-            case .lim: return "lim"
-            /// Lingala
-            case .lin: return "lin"
-            /// Lithuanian
-            case .lit: return "lit"
-            /// Mongo
-            case .lol: return "lol"
-            /// Lozi
-            case .loz: return "loz"
-            /// Luxembourgish; Letzeburgesch
-            case .ltz: return "ltz"
-            /// Luba-Lulua
-            case .lua: return "lua"
-            /// Luba-Katanga
-            case .lub: return "lub"
-            /// Ganda
-            case .lug: return "lug"
-            /// Luiseno
-            case .lui: return "lui"
-            /// Lunda
-            case .lun: return "lun"
-            /// Luo (Kenya and Tanzania)
-            case .luo: return "luo"
-            /// Lushai
-            case .lus: return "lus"
-            /// Macedonian
-            case .mkd: return "mkd"
-            /// Madurese
-            case .mad: return "mad"
-            /// Magahi
-            case .mag: return "mag"
-            /// Marshallese
-            case .mah: return "mah"
-            /// Maithili
-            case .mai: return "mai"
-            /// Makasar
-            case .mak: return "mak"
-            /// Malayalam
-            case .mal: return "mal"
-            /// Mandingo
-            case .man: return "man"
-            /// Maori
-            case .mri: return "mri"
-            /// Austronesian languages
-            case .map: return "map"
-            /// Marathi
-            case .mar: return "mar"
-            /// Masai
-            case .mas: return "mas"
-            /// Malay
-            case .msa: return "msa"
-            /// Moksha
-            case .mdf: return "mdf"
-            /// Mandar
-            case .mdr: return "mdr"
-            /// Mende
-            case .men: return "men"
-            /// Irish, Middle (900–1200)
-            case .mga: return "mga"
-            /// Mi'kmaq; Micmac
-            case .mic: return "mic"
-            /// Minangkabau
-            case .min: return "min"
-            /// Uncoded languages
-            case .mis: return "mis"
-            /// Mon-Khmer languages
-            case .mkh: return "mkh"
-            /// Malagasy
-            case .mlg: return "mlg"
-            /// Maltese
-            case .mlt: return "mlt"
-            /// Manchu
-            case .mnc: return "mnc"
-            /// Manipuri
-            case .mni: return "mni"
-            /// Manobo languages
-            case .mno: return "mno"
-            /// Mohawk
-            case .moh: return "moh"
-            /// Mongolian
-            case .mon: return "mon"
-            /// Mossi
-            case .mos: return "mos"
-            /// Multiple languages
-            case .mul: return "mul"
-            /// Munda languages
-            case .mun: return "mun"
-            /// Creek
-            case .mus: return "mus"
-            /// Mirandese
-            case .mwl: return "mwl"
-            /// Marwari
-            case .mwr: return "mwr"
-            /// Mayan languages
-            case .myn: return "myn"
-            /// Erzya
-            case .myv: return "myv"
-            /// Nahuatl languages
-            case .nah: return "nah"
-            /// North American Indian languages
-            case .nai: return "nai"
-            /// Neapolitan
-            case .nap: return "nap"
-            /// Nauru
-            case .nau: return "nau"
-            /// Navajo; Navaho
-            case .nav: return "nav"
-            /// Ndebele, South; South Ndebele
-            case .nbl: return "nbl"
-            /// Ndebele, North; North Ndebele
-            case .nde: return "nde"
-            /// Ndonga
-            case .ndo: return "ndo"
-            /// Low German; Low Saxon; German, Low; Saxon, Low
-            case .nds: return "nds"
-            /// Nepali
-            case .nep: return "nep"
-            /// Nepal Bhasa; Newari
-            case .new: return "new"
-            /// Nias
-            case .nia: return "nia"
-            /// Niger-Kordofanian languages
-            case .nic: return "nic"
-            /// Niuean
-            case .niu: return "niu"
-            /// Norwegian Nynorsk; Nynorsk, Norwegian
-            case .nno: return "nno"
-            /// Bokmål, Norwegian; Norwegian Bokmål
-            case .nob: return "nob"
-            /// Nogai
-            case .nog: return "nog"
-            /// Norse, Old
-            case .non: return "non"
-            /// Norwegian
-            case .nor: return "nor"
-            /// N'Ko
-            case .nqo: return "nqo"
-            /// Pedi; Sepedi; Northern Sotho
-            case .nso: return "nso"
-            /// Nubian languages
-            case .nub: return "nub"
-            /// Classical Newari; Old Newari; Classical Nepal Bhasa
-            case .nwc: return "nwc"
-            /// Chichewa; Chewa; Nyanja
-            case .nya: return "nya"
-            /// Nyamwezi
-            case .nym: return "nym"
-            /// Nyankole
-            case .nyn: return "nyn"
-            /// Nyoro
-            case .nyo: return "nyo"
-            /// Nzima
-            case .nzi: return "nzi"
-            /// Occitan (post 1500); Provençal
-            case .oci: return "oci"
-            /// Ojibwa
-            case .oji: return "oji"
-            /// Oriya
-            case .ori: return "ori"
-            /// Oromo
-            case .orm: return "orm"
-            /// Osage
-            case .osa: return "osa"
-            /// Ossetian; Ossetic
-            case .oss: return "oss"
-            /// Turkish, Ottoman (1500–1928)
-            case .ota: return "ota"
-            /// Otomian languages
-            case .oto: return "oto"
-            /// Papuan languages
-            case .paa: return "paa"
-            /// Pangasinan
-            case .pag: return "pag"
-            /// Pahlavi
-            case .pal: return "pal"
-            /// Pampanga; Kapampangan
-            case .pam: return "pam"
-            /// Panjabi; Punjabi
-            case .pan: return "pan"
-            /// Papiamento
-            case .pap: return "pap"
-            /// Palauan
-            case .pau: return "pau"
-            /// Persian, Old (ca. 600–400 B.C.)
-            case .peo: return "peo"
-            /// Philippine languages
-            case .phi: return "phi"
-            /// Phoenician
-            case .phn: return "phn"
-            /// Pali
-            case .pli: return "pli"
-            /// Polish
-            case .pol: return "pol"
-            /// Pohnpeian
-            case .pon: return "pon"
-            /// Portuguese
-            case .por: return "por"
-            /// Prakrit languages
-            case .pra: return "pra"
-            /// Provençal, Old (to 1500); Old Occitan (to 1500)
-            case .pro: return "pro"
-            /// Pushto; Pashto
-            case .pus: return "pus"
-            /// Quechua
-            case .que: return "que"
-            /// Rajasthani
-            case .raj: return "raj"
-            /// Rapanui
-            case .rap: return "rap"
-            /// Rarotongan; Cook Islands Maori
-            case .rar: return "rar"
-            /// Romance languages
-            case .roa: return "roa"
-            /// Romansh
-            case .roh: return "roh"
-            /// Romany
-            case .rom: return "rom"
-            /// Romanian; Moldavian; Moldovan
-            case .ron: return "ron"
-            /// Rundi
-            case .run: return "run"
-            /// Aromanian; Arumanian; Macedo-Romanian
-            case .rup: return "rup"
-            /// Russian
-            case .rus: return "rus"
-            /// Sandawe
-            case .sad: return "sad"
-            /// Sango
-            case .sag: return "sag"
-            /// Yakut
-            case .sah: return "sah"
-            /// South American Indian (Other)
-            case .sai: return "sai"
-            /// Salishan languages
-            case .sal: return "sal"
-            /// Samaritan Aramaic
-            case .sam: return "sam"
-            /// Sanskrit
-            case .san: return "san"
-            /// Sasak
-            case .sas: return "sas"
-            /// Santali
-            case .sat: return "sat"
-            /// Sicilian
-            case .scn: return "scn"
-            /// Scots
-            case .sco: return "sco"
-            /// Selkup
-            case .sel: return "sel"
-            /// Semitic languages
-            case .sem: return "sem"
-            /// Irish, Old (to 900)
-            case .sga: return "sga"
-            /// Sign Languages
-            case .sgn: return "sgn"
-            /// Shan
-            case .shn: return "shn"
-            /// Sidamo
-            case .sid: return "sid"
-            /// Sinhala; Sinhalese
-            case .sin: return "sin"
-            /// Siouan languages
-            case .sio: return "sio"
-            /// Sino-Tibetan languages
-            case .sit: return "sit"
-            /// Slavic languages
-            case .sla: return "sla"
-            /// Slovak
-            case .slk: return "slk"
-            /// Slovenian
-            case .slv: return "slv"
-            /// Southern Sami
-            case .sma: return "sma"
-            /// Northern Sami
-            case .sme: return "sme"
-            /// Sami languages
-            case .smi: return "smi"
-            /// Lule Sami
-            case .smj: return "smj"
-            /// Inari Sami
-            case .smn: return "smn"
-            /// Samoan
-            case .smo: return "smo"
-            /// Skolt Sami
-            case .sms: return "sms"
-            /// Shona
-            case .sna: return "sna"
-            /// Sindhi
-            case .snd: return "snd"
-            /// Soninke
-            case .snk: return "snk"
-            /// Sogdian
-            case .sog: return "sog"
-            /// Somali
-            case .som: return "som"
-            /// Songhai languages
-            case .son: return "son"
-            /// Sotho, Southern
-            case .sot: return "sot"
-            /// Spanish; Castilian
-            case .spa: return "spa"
-            /// Sardinian
-            case .srd: return "srd"
-            /// Sranan Tongo
-            case .srn: return "srn"
-            /// Serbian
-            case .srp: return "srp"
-            /// Serer
-            case .srr: return "srr"
-            /// Nilo-Saharan languages
-            case .ssa: return "ssa"
-            /// Swati
-            case .ssw: return "ssw"
-            /// Sukuma
-            case .suk: return "suk"
-            /// Sundanese
-            case .sun: return "sun"
-            /// Susu
-            case .sus: return "sus"
-            /// Sumerian
-            case .sux: return "sux"
-            /// Swahili
-            case .swa: return "swa"
-            /// Swedish
-            case .swe: return "swe"
-            /// Classical Syriac
-            case .syc: return "syc"
-            /// Syriac
-            case .syr: return "syr"
-            /// Tahitian
-            case .tah: return "tah"
-            /// Tai languages
-            case .tai: return "tai"
-            /// Tamil
-            case .tam: return "tam"
-            /// Tatar
-            case .tat: return "tat"
-            /// Telugu
-            case .tel: return "tel"
-            /// Timne
-            case .tem: return "tem"
-            /// Tereno
-            case .ter: return "ter"
-            /// Tetum
-            case .tet: return "tet"
-            /// Tajik
-            case .tgk: return "tgk"
-            /// Tagalog
-            case .tgl: return "tgl"
-            /// Thai
-            case .tha: return "tha"
-            /// Tigre
-            case .tig: return "tig"
-            /// Tigrinya
-            case .tir: return "tir"
-            /// Tiv
-            case .tiv: return "tiv"
-            /// Tokelau
-            case .tkl: return "tkl"
-            /// Klingon; tlhIngan-Hol
-            case .tlh: return "tlh"
-            /// Tlingit
-            case .tli: return "tli"
-            /// Tamashek
-            case .tmh: return "tmh"
-            /// Tonga, Nyasa
-            case .tog: return "tog"
-            /// Tonga (Tonga Islands)
-            case .ton: return "ton"
-            /// Tok Pisin
-            case .tpi: return "tpi"
-            /// Tsimshian
-            case .tsi: return "tsi"
-            /// Tswana
-            case .tsn: return "tsn"
-            /// Tsonga
-            case .tso: return "tso"
-            /// Turkmen
-            case .tuk: return "tuk"
-            /// Tumbuka
-            case .tum: return "tum"
-            /// Tupi languages
-            case .tup: return "tup"
-            /// Turkish
-            case .tur: return "tur"
-            /// Altaic languages
-            case .tut: return "tut"
-            /// Tuvalu
-            case .tvl: return "tvl"
-            /// Twi
-            case .twi: return "twi"
-            /// Tuvinian
-            case .tyv: return "tyv"
-            /// Udmurt
-            case .udm: return "udm"
-            /// Ugaritic
-            case .uga: return "uga"
-            /// Uighur; Uyghur
-            case .uig: return "uig"
-            /// Ukrainian
-            case .ukr: return "ukr"
-            /// Umbundu
-            case .umb: return "umb"
-            /// Undetermined
-            case .und: return "und"
-            /// Urdu
-            case .urd: return "urd"
-            /// Uzbek
-            case .uzb: return "uzb"
-            /// Vai
-            case .vai: return "vai"
-            /// Venda
-            case .ven: return "ven"
-            /// Vietnamese
-            case .vie: return "vie"
-            /// Volapük
-            case .vol: return "vol"
-            /// Votic
-            case .vot: return "vot"
-            /// Wakashan languages
-            case .wak: return "wak"
-            /// Wolaitta; Wolaytta
-            case .wal: return "wal"
-            /// Waray
-            case .war: return "war"
-            /// Washo
-            case .was: return "was"
-            /// Sorbian languages
-            case .wen: return "wen"
-            /// Walloon
-            case .wln: return "wln"
-            /// Wolof
-            case .wol: return "wol"
-            /// Kalmyk; Oirat
-            case .xal: return "xal"
-            /// Xhosa
-            case .xho: return "xho"
-            /// Yao
-            case .yao: return "yao"
-            /// Yapese
-            case .yap: return "yap"
-            /// Yiddish
-            case .yid: return "yid"
-            /// Yoruba
-            case .yor: return "yor"
-            /// Yupik languages
-            case .ypk: return "ypk"
-            /// Zapotec
-            case .zap: return "zap"
-            /// Blissymbols; Blissymbolics; Bliss
-            case .zbl: return "zbl"
-            /// Zenaga
-            case .zen: return "zen"
-            /// Standard Moroccan Tamazight
-            case .zgh: return "zgh"
-            /// Zhuang; Chuang
-            case .zha: return "zha"
-            /// Zande languages
-            case .znd: return "znd"
-            /// Zulu
-            case .zul: return "zul"
-            /// Zuni
-            case .zun: return "zun"
-            /// No linguistic content; Not applicable
-            case .zxx: return "zxx"
-            /// Zaza; Dimili; Dimli; Kirdki; Kirmanjki; Zazaki
-            case .zza: return "zza"
-        }
-    }
-    
+    case zza
+
     // MARK: Native Name
     public var nativeName: String {
         switch self {
@@ -2711,31 +1742,981 @@ public enum ISO6392Codes: String, CaseIterable {
         }; return self.rawValue
     }
     
-    // MARK: Mappings
-    public static let isoNameToNativeNameMapping: [String: String] = {
-        var mapping: [String: String] = [:]
-        for name in ISO6392Codes.allCases {
-            let isoName = name.rawValue
-            mapping[isoName] = name.nativeName
+    // MARK: ISO Names
+    var isoName: String {
+        switch self {
+            /// Afar
+            case .aar: return "Afar"
+            /// Abkhazian
+            case .abk: return "Abkhazian"
+            /// Achinese
+            case .ace: return "Achinese"
+            /// Acoli
+            case .ach: return "Acoli"
+            /// Adangme
+            case .ada: return "Adangme"
+            /// Adyghe; Adygei
+            case .ady: return "Adyghe; Adygei"
+            /// Afro-Asiatic languages
+            case .afa: return "Afro-Asiatic languages"
+            /// Afrihili
+            case .afh: return "Afrihili"
+            /// Afrikaans
+            case .afr: return "Afrikaans"
+            /// Ainu
+            case .ain: return "Ainu"
+            /// Akan
+            case .aka: return "Akan"
+            /// Akkadian
+            case .akk: return "Akkadian"
+            /// Albanian
+            case .sqi: return "Albanian"
+            /// Aleut
+            case .ale: return "Aleut"
+            /// Algonquian languages
+            case .alg: return "Algonquian languages"
+            /// Southern Altai
+            case .alt: return "Southern Altai"
+            /// Amharic
+            case .amh: return "Amharic"
+            /// English, Old (ca.450–1100)
+            case .ang: return "English, Old (ca.450–1100)"
+            /// Angika
+            case .anp: return "Angika"
+            /// Apache languages
+            case .apa: return "Apache languages"
+            /// Arabic
+            case .ara: return "Arabic"
+            /// Official Aramaic, (700–300 BCE); Imperial Aramaic, (700–300 BCE)
+            case .arc: return "Official Aramaic, (700–300 BCE); Imperial Aramaic, (700–300 BCE)"
+            /// Aragonese
+            case .arg: return "Aragonese"
+            /// Armenian
+            case .hye: return "Armenian"
+            /// Mapudungun; Mapuche
+            case .arn: return "Mapudungun; Mapuche"
+            /// Arapaho
+            case .arp: return "Arapaho"
+            /// Artificial languages
+            case .art: return "Artificial languages"
+            /// Arawak
+            case .arw: return "Arawak"
+            /// Assamese
+            case .asm: return "Assamese"
+            /// Asturian; Bable; Leonese; Asturleonese
+            case .ast: return "Asturian; Bable; Leonese; Asturleonese"
+            /// Athapascan languages
+            case .ath: return "Athapascan languages"
+            /// Australian languages
+            case .aus: return "Australian languages"
+            /// Avaric
+            case .ava: return "Avaric"
+            /// Avestan
+            case .ave: return "Avestan"
+            /// Awadhi
+            case .awa: return "Awadhi"
+            /// Aymara
+            case .aym: return "Aymara"
+            /// Azerbaijani
+            case .aze: return "Azerbaijani"
+            /// Banda languages
+            case .bad: return "Banda languages"
+            /// Bamileke languages
+            case .bai: return "Bamileke languages"
+            /// Bashkir
+            case .bak: return "Bashkir"
+            /// Baluchi
+            case .bal: return "Baluchi"
+            /// Bambara
+            case .bam: return "Bambara"
+            /// Balinese
+            case .ban: return "Balinese"
+            /// Basque
+            case .eus: return "Basque"
+            /// Basa
+            case .bas: return "Basa"
+            /// Baltic languages
+            case .bat: return "Baltic languages"
+            /// Beja; Bedawiyet
+            case .bej: return "Beja; Bedawiyet"
+            /// Belarusian
+            case .bel: return "Belarusian"
+            /// Bemba
+            case .bem: return "Bemba"
+            /// Bengali
+            case .ben: return "Bengali"
+            /// Berber languages
+            case .ber: return "Berber languages"
+            /// Bhojpuri
+            case .bho: return "Bhojpuri"
+            /// Bihari languages
+            case .bih: return "Bihari languages"
+            /// Bikol
+            case .bik: return "Bikol"
+            /// Bini; Edo
+            case .bin: return "Bini; Edo"
+            /// Bislama
+            case .bis: return "Bislama"
+            /// Siksika
+            case .bla: return "Siksika"
+            /// Bantu (Other)
+            case .bnt: return "Bantu (Other)"
+            /// Tibetan
+            case .bod: return "Tibetan"
+            /// Bosnian
+            case .bos: return "Bosnian"
+            /// Braj
+            case .bra: return "Braj"
+            /// Breton
+            case .bre: return "Breton"
+            /// Batak languages
+            case .btk: return "Batak languages"
+            /// Buriat
+            case .bua: return "Buriat"
+            /// Buginese
+            case .bug: return "Buginese"
+            /// Bulgarian
+            case .bul: return "Bulgarian"
+            /// Burmese
+            case .mya: return "Burmese"
+            /// Blin; Bilin
+            case .byn: return "Blin; Bilin"
+            /// Caddo
+            case .cad: return "Caddo"
+            /// Central American Indian languages
+            case .cai: return "Central American Indian languages"
+            /// Galibi Carib
+            case .car: return "Galibi Carib"
+            /// Catalan; Valencian
+            case .cat: return "Catalan; Valencian"
+            /// Caucasian languages
+            case .cau: return "Caucasian languages"
+            /// Cebuano
+            case .ceb: return "Cebuano"
+            /// Celtic languages
+            case .cel: return "Celtic languages"
+            /// Czech
+            case .ces: return "Czech"
+            /// Chamorro
+            case .cha: return "Chamorro"
+            /// Chibcha
+            case .chb: return "Chibcha"
+            /// Chechen
+            case .che: return "Chechen"
+            /// Chagatai
+            case .chg: return "Chagatai"
+            /// Chinese
+            case .zho: return "Chinese"
+            /// Chuukese
+            case .chk: return "Chuukese"
+            /// Mari
+            case .chm: return "Mari"
+            /// Chinook jargon
+            case .chn: return "Chinook jargon"
+            /// Choctaw
+            case .cho: return "Choctaw"
+            /// Chipewyan; Dene Suline
+            case .chp: return "Chipewyan; Dene Suline"
+            /// Cherokee
+            case .chr: return "Cherokee"
+            /// Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church Slavonic
+            case .chu: return "Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church Slavonic"
+            /// Chuvash
+            case .chv: return "Chuvash"
+            /// Cheyenne
+            case .chy: return "Cheyenne"
+            /// Chamic languages
+            case .cmc: return "Chamic languages"
+            /// Montenegrin
+            case .cnr: return "Montenegrin"
+            /// Coptic
+            case .cop: return "Coptic"
+            /// Cornish
+            case .cor: return "Cornish"
+            /// Corsican
+            case .cos: return "Corsican"
+            /// Creoles and pidgins, English based
+            case .cpe: return "Creoles and pidgins, English based"
+            /// Creoles and pidgins, French-based
+            case .cpf: return "Creoles and pidgins, French-based"
+            /// Creoles and pidgins, Portuguese-based
+            case .cpp: return "Creoles and pidgins, Portuguese-based"
+            /// Cree
+            case .cre: return "Cree"
+            /// Crimean Tatar; Crimean Turkish
+            case .crh: return "Crimean Tatar; Crimean Turkish"
+            /// Creoles and pidgins
+            case .crp: return "Creoles and pidgins"
+            /// Kashubian
+            case .csb: return "Kashubian"
+            /// Cushitic languages
+            case .cus: return "Cushitic languages"
+            /// Welsh
+            case .cym: return "Welsh"
+            /// Dakota
+            case .dak: return "Dakota"
+            /// Danish
+            case .dan: return "Danish"
+            /// Dargwa
+            case .dar: return "Dargwa"
+            /// Land Dayak languages
+            case .day: return "Land Dayak languages"
+            /// Delaware
+            case .del: return "Delaware"
+            /// Slave (isoName: Athapascan)
+            case .den: return "Slave (isoName: Athapascan)"
+            /// German
+            case .deu: return "German"
+            /// Dogrib
+            case .dgr: return "Dogrib"
+            /// Dinka
+            case .din: return "Dinka"
+            /// Divehi; Dhivehi; Maldivian
+            case .div: return "Divehi; Dhivehi; Maldivian"
+            /// Dogri
+            case .doi: return "Dogri"
+            /// Dravidian languages
+            case .dra: return "Dravidian languages"
+            /// Lower Sorbian
+            case .dsb: return "Lower Sorbian"
+            /// Duala
+            case .dua: return "Duala"
+            /// Dutch, Middle (ca. 1050–1350)
+            case .dum: return "Dutch, Middle (ca. 1050–1350)"
+            /// Dutch; Flemish
+            case .nld: return "Dutch; Flemish"
+            /// Dyula
+            case .dyu: return "Dyula"
+            /// Dzongkha
+            case .dzo: return "Dzongkha"
+            /// Efik
+            case .efi: return "Efik"
+            /// Egyptian (Ancient)
+            case .egy: return "Egyptian (Ancient)"
+            /// Ekajuk
+            case .eka: return "Ekajuk"
+            /// Greek, Modern (1453–)
+            case .ell: return "Greek, Modern (1453–)"
+            /// Elamite
+            case .elx: return "Elamite"
+            /// English
+            case .eng: return "English"
+            /// English, Middle (1100–1500)
+            case .enm: return "English, Middle (1100–1500)"
+            /// Esperanto
+            case .epo: return "Esperanto"
+            /// Estonian
+            case .est: return "Estonian"
+            /// Ewe
+            case .ewe: return "Ewe"
+            /// Ewondo
+            case .ewo: return "Ewondo"
+            /// Fang
+            case .fan: return "Fang"
+            /// Faroese
+            case .fao: return "Faroese"
+            /// Persian
+            case .fas: return "Persian"
+            /// Fanti
+            case .fat: return "Fanti"
+            /// Fijian
+            case .fij: return "Fijian"
+            /// Filipino; Pilipino
+            case .fil: return "Filipino; Pilipino"
+            /// Finnish
+            case .fin: return "Finnish"
+            /// Finno-Ugrian languages
+            case .fiu: return "Finno-Ugrian languages"
+            /// Fon
+            case .fon: return "Fon"
+            /// French
+            case .fra: return "French"
+            /// French, Middle (ca. 1400–1600)
+            case .frm: return "French, Middle (ca. 1400–1600)"
+            /// French, Old (842–ca. 1400)
+            case .fro: return "French, Old (842–ca. 1400)"
+            /// Northern Frisian
+            case .frr: return "Northern Frisian"
+            /// Eastern Frisian
+            case .frs: return "Eastern Frisian"
+            /// Western Frisian
+            case .fry: return "Western Frisian"
+            /// Fulah
+            case .ful: return "Fulah"
+            /// Friulian
+            case .fur: return "Friulian"
+            /// Ga
+            case .gaa: return "Ga"
+            /// Gayo
+            case .gay: return "Gayo"
+            /// Gbaya
+            case .gba: return "Gbaya"
+            /// Germanic languages
+            case .gem: return "Germanic languages"
+            /// Georgian
+            case .kat: return "Georgian"
+            /// Geez
+            case .gez: return "Geez"
+            /// Gilbertese
+            case .gil: return "Gilbertese"
+            /// Gaelic; Scottish Gaelic
+            case .gla: return "Gaelic; Scottish Gaelic"
+            /// Irish
+            case .gle: return "Irish"
+            /// Galician
+            case .glg: return "Galician"
+            /// Manx
+            case .glv: return "Manx"
+            /// German, Middle High (ca. 1050–1500)
+            case .gmh: return "German, Middle High (ca. 1050–1500)"
+            /// German, Old High (ca. 750–1050)
+            case .goh: return "German, Old High (ca. 750–1050)"
+            /// Gondi
+            case .gon: return "Gondi"
+            /// Gorontalo
+            case .gor: return "Gorontalo"
+            /// Gothic
+            case .got: return "Gothic"
+            /// Grebo
+            case .grb: return "Grebo"
+            /// Greek, Ancient (to 1453)
+            case .grc: return "Greek, Ancient (to 1453)"
+            /// Guarani
+            case .grn: return "Guarani"
+            /// Swiss German; Alemannic; Alsatian
+            case .gsw: return "Swiss German; Alemannic; Alsatian"
+            /// Gujarati
+            case .guj: return "Gujarati"
+            /// Gwich'in
+            case .gwi: return "Gwich'in"
+            /// Haida
+            case .hai: return "Haida"
+            /// Haitian; Haitian Creole
+            case .hat: return "Haitian; Haitian Creole"
+            /// Hausa
+            case .hau: return "Hausa"
+            /// Hawaiian
+            case .haw: return "Hawaiian"
+            /// Hebrew
+            case .heb: return "Hebrew"
+            /// Herero
+            case .her: return "Herero"
+            /// Hiligaynon
+            case .hil: return "Hiligaynon"
+            /// Himachali languages; Pahari languages
+            case .him: return "Himachali languages; Pahari languages"
+            /// Hindi
+            case .hin: return "Hindi"
+            /// Hittite
+            case .hit: return "Hittite"
+            /// Hmong; Mong
+            case .hmn: return "Hmong; Mong"
+            /// Hiri Motu
+            case .hmo: return "Hiri Motu"
+            /// Croatian
+            case .hrv: return "Croatian"
+            /// Upper Sorbian
+            case .hsb: return "Upper Sorbian"
+            /// Hungarian
+            case .hun: return "Hungarian"
+            /// Hupa
+            case .hup: return "Hupa"
+            /// Iban
+            case .iba: return "Iban"
+            /// Igbo
+            case .ibo: return "Igbo"
+            /// Icelandic
+            case .isl: return "Icelandic"
+            /// Ido
+            case .ido: return "Ido"
+            /// Sichuan Yi; Nuosu
+            case .iii: return "Sichuan Yi; Nuosu"
+            /// Ijo languages
+            case .ijo: return "Ijo languages"
+            /// Inuktitut
+            case .iku: return "Inuktitut"
+            /// Interlingue; Occidental
+            case .ile: return "Interlingue; Occidental"
+            /// Iloko
+            case .ilo: return "Iloko"
+            /// Interlingua (International Auxiliary Language Association)
+            case .ina: return "Interlingua (International Auxiliary Language Association)"
+            /// Indic languages
+            case .inc: return "Indic languages"
+            /// Indonesian
+            case .ind: return "Indonesian"
+            /// Indo-European languages
+            case .ine: return "Indo-European languages"
+            /// Ingush
+            case .inh: return "Ingush"
+            /// Inupiaq
+            case .ipk: return "Inupiaq"
+            /// Iranian languages
+            case .ira: return "Iranian languages"
+            /// Iroquoian languages
+            case .iro: return "Iroquoian languages"
+            /// Italian
+            case .ita: return "Italian"
+            /// Javanese
+            case .jav: return "Javanese"
+            /// Lojban
+            case .jbo: return "Lojban"
+            /// Japanese
+            case .jpn: return "Japanese"
+            /// Judeo-Persian
+            case .jpr: return "Judeo-Persian"
+            /// Judeo-Arabic
+            case .jrb: return "Judeo-Arabic"
+            /// Kara-Kalpak
+            case .kaa: return "Kara-Kalpak"
+            /// Kabyle
+            case .kab: return "Kabyle"
+            /// Kachin; Jingpho
+            case .kac: return "Kachin; Jingpho"
+            /// Kalaallisut; Greenlandic
+            case .kal: return "Kalaallisut; Greenlandic"
+            /// Kamba
+            case .kam: return "Kamba"
+            /// Kannada
+            case .kan: return "Kannada"
+            /// Karen languages
+            case .kar: return "Karen languages"
+            /// Kashmiri
+            case .kas: return "Kashmiri"
+            /// Kanuri
+            case .kau: return "Kanuri"
+            /// Kawi
+            case .kaw: return "Kawi"
+            /// Kazakh
+            case .kaz: return "Kazakh"
+            /// Kabardian
+            case .kbd: return "Kabardian"
+            /// Khasi
+            case .kha: return "Khasi"
+            /// Khoisan languages
+            case .khi: return "Khoisan languages"
+            /// Central Khmer
+            case .khm: return "Central Khmer"
+            /// Khotanese; Sakan
+            case .kho: return "Khotanese; Sakan"
+            /// Kikuyu; Gikuyu
+            case .kik: return "Kikuyu; Gikuyu"
+            /// Kinyarwanda
+            case .kin: return "Kinyarwanda"
+            /// Kirghiz; Kyrgyz
+            case .kir: return "Kirghiz; Kyrgyz"
+            /// Kimbundu
+            case .kmb: return "Kimbundu"
+            /// Konkani
+            case .kok: return "Konkani"
+            /// Komi
+            case .kom: return "Komi"
+            /// Kongo
+            case .kon: return "Kongo"
+            /// Korean
+            case .kor: return "Korean"
+            /// Kosraean
+            case .kos: return "Kosraean"
+            /// Kpelle
+            case .kpe: return "Kpelle"
+            /// Karachay-Balkar
+            case .krc: return "Karachay-Balkar"
+            /// Karelian
+            case .krl: return "Karelian"
+            /// Kru languages
+            case .kro: return "Kru languages"
+            /// Kurukh
+            case .kru: return "Kurukh"
+            /// Kuanyama; Kwanyama
+            case .kua: return "Kuanyama; Kwanyama"
+            /// Kumyk
+            case .kum: return "Kumyk"
+            /// Kurdish
+            case .kur: return "Kurdish"
+            /// Kutenai
+            case .kut: return "Kutenai"
+            /// Ladino
+            case .lad: return "Ladino"
+            /// Lahnda
+            case .lah: return "Lahnda"
+            /// Lamba
+            case .lam: return "Lamba"
+            /// Lao
+            case .lao: return "Lao"
+            /// Latin
+            case .lat: return "Latin"
+            /// Latvian
+            case .lav: return "Latvian"
+            /// Lezghian
+            case .lez: return "Lezghian"
+            /// Limburgan; Limburger; Limburgish
+            case .lim: return "Limburgan; Limburger; Limburgish"
+            /// Lingala
+            case .lin: return "Lingala"
+            /// Lithuanian
+            case .lit: return "Lithuanian"
+            /// Mongo
+            case .lol: return "Mongo"
+            /// Lozi
+            case .loz: return "Lozi"
+            /// Luxembourgish; Letzeburgesch
+            case .ltz: return "Luxembourgish; Letzeburgesch"
+            /// Luba-Lulua
+            case .lua: return "Luba-Lulua"
+            /// Luba-Katanga
+            case .lub: return "Luba-Katanga"
+            /// Ganda
+            case .lug: return "Ganda"
+            /// Luiseno
+            case .lui: return "Luiseno"
+            /// Lunda
+            case .lun: return "Lunda"
+            /// Luo (Kenya and Tanzania)
+            case .luo: return "Luo (Kenya and Tanzania)"
+            /// Lushai
+            case .lus: return "Lushai"
+            /// Macedonian
+            case .mkd: return "Macedonian"
+            /// Madurese
+            case .mad: return "Madurese"
+            /// Magahi
+            case .mag: return "Magahi"
+            /// Marshallese
+            case .mah: return "Marshallese"
+            /// Maithili
+            case .mai: return "Maithili"
+            /// Makasar
+            case .mak: return "Makasar"
+            /// Malayalam
+            case .mal: return "Malayalam"
+            /// Mandingo
+            case .man: return "Mandingo"
+            /// Maori
+            case .mri: return "Maori"
+            /// Austronesian languages
+            case .map: return "Austronesian languages"
+            /// Marathi
+            case .mar: return "Marathi"
+            /// Masai
+            case .mas: return "Masai"
+            /// Malay
+            case .msa: return "Malay"
+            /// Moksha
+            case .mdf: return "Moksha"
+            /// Mandar
+            case .mdr: return "Mandar"
+            /// Mende
+            case .men: return "Mende"
+            /// Irish, Middle (900–1200)
+            case .mga: return "Irish, Middle (900–1200)"
+            /// Mi'kmaq; Micmac
+            case .mic: return "Mi'kmaq; Micmac"
+            /// Minangkabau
+            case .min: return "Minangkabau"
+            /// Uncoded languages
+            case .mis: return "Uncoded languages"
+            /// Mon-Khmer languages
+            case .mkh: return "Mon-Khmer languages"
+            /// Malagasy
+            case .mlg: return "Malagasy"
+            /// Maltese
+            case .mlt: return "Maltese"
+            /// Manchu
+            case .mnc: return "Manchu"
+            /// Manipuri
+            case .mni: return "Manipuri"
+            /// Manobo languages
+            case .mno: return "Manobo languages"
+            /// Mohawk
+            case .moh: return "Mohawk"
+            /// Mongolian
+            case .mon: return "Mongolian"
+            /// Mossi
+            case .mos: return "Mossi"
+            /// Multiple languages
+            case .mul: return "Multiple languages"
+            /// Munda languages
+            case .mun: return "Munda languages"
+            /// Creek
+            case .mus: return "Creek"
+            /// Mirandese
+            case .mwl: return "Mirandese"
+            /// Marwari
+            case .mwr: return "Marwari"
+            /// Mayan languages
+            case .myn: return "Mayan languages"
+            /// Erzya
+            case .myv: return "Erzya"
+            /// Nahuatl languages
+            case .nah: return "Nahuatl languages"
+            /// North American Indian languages
+            case .nai: return "North American Indian languages"
+            /// Neapolitan
+            case .nap: return "Neapolitan"
+            /// Nauru
+            case .nau: return "Nauru"
+            /// Navajo; Navaho
+            case .nav: return "Navajo; Navaho"
+            /// Ndebele, South; South Ndebele
+            case .nbl: return "Ndebele, South; South Ndebele"
+            /// Ndebele, North; North Ndebele
+            case .nde: return "Ndebele, North; North Ndebele"
+            /// Ndonga
+            case .ndo: return "Ndonga"
+            /// Low German; Low Saxon; German, Low; Saxon, Low
+            case .nds: return "Low German; Low Saxon; German, Low; Saxon, Low"
+            /// Nepali
+            case .nep: return "Nepali"
+            /// Nepal Bhasa; Newari
+            case .new: return "Nepal Bhasa; Newari"
+            /// Nias
+            case .nia: return "Nias"
+            /// Niger-Kordofanian languages
+            case .nic: return "Niger-Kordofanian languages"
+            /// Niuean
+            case .niu: return "Niuean"
+            /// Norwegian Nynorsk; Nynorsk, Norwegian
+            case .nno: return "Norwegian Nynorsk; Nynorsk, Norwegian"
+            /// Bokmål, Norwegian; Norwegian Bokmål
+            case .nob: return "Bokmål, Norwegian; Norwegian Bokmål"
+            /// Nogai
+            case .nog: return "Nogai"
+            /// Norse, Old
+            case .non: return "Norse, Old"
+            /// Norwegian
+            case .nor: return "Norwegian"
+            /// N'Ko
+            case .nqo: return "N'Ko"
+            /// Pedi; Sepedi; Northern Sotho
+            case .nso: return "Pedi; Sepedi; Northern Sotho"
+            /// Nubian languages
+            case .nub: return "Nubian languages"
+            /// Classical Newari; Old Newari; Classical Nepal Bhasa
+            case .nwc: return "Classical Newari; Old Newari; Classical Nepal Bhasa"
+            /// Chichewa; Chewa; Nyanja
+            case .nya: return "Chichewa; Chewa; Nyanja"
+            /// Nyamwezi
+            case .nym: return "Nyamwezi"
+            /// Nyankole
+            case .nyn: return "Nyankole"
+            /// Nyoro
+            case .nyo: return "Nyoro"
+            /// Nzima
+            case .nzi: return "Nzima"
+            /// Occitan (post 1500); Provençal
+            case .oci: return "Occitan (post 1500); Provençal"
+            /// Ojibwa
+            case .oji: return "Ojibwa"
+            /// Oriya
+            case .ori: return "Oriya"
+            /// Oromo
+            case .orm: return "Oromo"
+            /// Osage
+            case .osa: return "Osage"
+            /// Ossetian; Ossetic
+            case .oss: return "Ossetian; Ossetic"
+            /// Turkish, Ottoman (1500–1928)
+            case .ota: return "Turkish, Ottoman (1500–1928)"
+            /// Otomian languages
+            case .oto: return "Otomian languages"
+            /// Papuan languages
+            case .paa: return "Papuan languages"
+            /// Pangasinan
+            case .pag: return "Pangasinan"
+            /// Pahlavi
+            case .pal: return "Pahlavi"
+            /// Pampanga; Kapampangan
+            case .pam: return "Pampanga; Kapampangan"
+            /// Panjabi; Punjabi
+            case .pan: return "Panjabi; Punjabi"
+            /// Papiamento
+            case .pap: return "Papiamento"
+            /// Palauan
+            case .pau: return "Palauan"
+            /// Persian, Old (ca. 600–400 B.C.)
+            case .peo: return "Persian, Old (ca. 600–400 B.C.)"
+            /// Philippine languages
+            case .phi: return "Philippine languages"
+            /// Phoenician
+            case .phn: return "Phoenician"
+            /// Pali
+            case .pli: return "Pali"
+            /// Polish
+            case .pol: return "Polish"
+            /// Pohnpeian
+            case .pon: return "Pohnpeian"
+            /// Portuguese
+            case .por: return "Portuguese"
+            /// Prakrit languages
+            case .pra: return "Prakrit languages"
+            /// Provençal, Old (to 1500); Old Occitan (to 1500)
+            case .pro: return "Provençal, Old (to 1500); Old Occitan (to 1500)"
+            /// Pushto; Pashto
+            case .pus: return "Pushto; Pashto"
+            /// Quechua
+            case .que: return "Quechua"
+            /// Rajasthani
+            case .raj: return "Rajasthani"
+            /// Rapanui
+            case .rap: return "Rapanui"
+            /// Rarotongan; Cook Islands Maori
+            case .rar: return "Rarotongan; Cook Islands Maori"
+            /// Romance languages
+            case .roa: return "Romance languages"
+            /// Romansh
+            case .roh: return "Romansh"
+            /// Romany
+            case .rom: return "Romany"
+            /// Romanian; Moldavian; Moldovan
+            case .ron: return "Romanian; Moldavian; Moldovan"
+            /// Rundi
+            case .run: return "Rundi"
+            /// Aromanian; Arumanian; Macedo-Romanian
+            case .rup: return "Aromanian; Arumanian; Macedo-Romanian"
+            /// Russian
+            case .rus: return "Russian"
+            /// Sandawe
+            case .sad: return "Sandawe"
+            /// Sango
+            case .sag: return "Sango"
+            /// Yakut
+            case .sah: return "Yakut"
+            /// South American Indian (Other)
+            case .sai: return "South American Indian (Other)"
+            /// Salishan languages
+            case .sal: return "Salishan languages"
+            /// Samaritan Aramaic
+            case .sam: return "Samaritan Aramaic"
+            /// Sanskrit
+            case .san: return "Sanskrit"
+            /// Sasak
+            case .sas: return "Sasak"
+            /// Santali
+            case .sat: return "Santali"
+            /// Sicilian
+            case .scn: return "Sicilian"
+            /// Scots
+            case .sco: return "Scots"
+            /// Selkup
+            case .sel: return "Selkup"
+            /// Semitic languages
+            case .sem: return "Semitic languages"
+            /// Irish, Old (to 900)
+            case .sga: return "Irish, Old (to 900)"
+            /// Sign Languages
+            case .sgn: return "Sign Languages"
+            /// Shan
+            case .shn: return "Shan"
+            /// Sidamo
+            case .sid: return "Sidamo"
+            /// Sinhala; Sinhalese
+            case .sin: return "Sinhala; Sinhalese"
+            /// Siouan languages
+            case .sio: return "Siouan languages"
+            /// Sino-Tibetan languages
+            case .sit: return "Sino-Tibetan languages"
+            /// Slavic languages
+            case .sla: return "Slavic languages"
+            /// Slovak
+            case .slk: return "Slovak"
+            /// Slovenian
+            case .slv: return "Slovenian"
+            /// Southern Sami
+            case .sma: return "Southern Sami"
+            /// Northern Sami
+            case .sme: return "Northern Sami"
+            /// Sami languages
+            case .smi: return "Sami languages"
+            /// Lule Sami
+            case .smj: return "Lule Sami"
+            /// Inari Sami
+            case .smn: return "Inari Sami"
+            /// Samoan
+            case .smo: return "Samoan"
+            /// Skolt Sami
+            case .sms: return "Skolt Sami"
+            /// Shona
+            case .sna: return "Shona"
+            /// Sindhi
+            case .snd: return "Sindhi"
+            /// Soninke
+            case .snk: return "Soninke"
+            /// Sogdian
+            case .sog: return "Sogdian"
+            /// Somali
+            case .som: return "Somali"
+            /// Songhai languages
+            case .son: return "Songhai languages"
+            /// Sotho, Southern
+            case .sot: return "Sotho, Southern"
+            /// Spanish; Castilian
+            case .spa: return "Spanish; Castilian"
+            /// Sardinian
+            case .srd: return "Sardinian"
+            /// Sranan Tongo
+            case .srn: return "Sranan Tongo"
+            /// Serbian
+            case .srp: return "Serbian"
+            /// Serer
+            case .srr: return "Serer"
+            /// Nilo-Saharan languages
+            case .ssa: return "Nilo-Saharan languages"
+            /// Swati
+            case .ssw: return "Swati"
+            /// Sukuma
+            case .suk: return "Sukuma"
+            /// Sundanese
+            case .sun: return "Sundanese"
+            /// Susu
+            case .sus: return "Susu"
+            /// Sumerian
+            case .sux: return "Sumerian"
+            /// Swahili
+            case .swa: return "Swahili"
+            /// Swedish
+            case .swe: return "Swedish"
+            /// Classical Syriac
+            case .syc: return "Classical Syriac"
+            /// Syriac
+            case .syr: return "Syriac"
+            /// Tahitian
+            case .tah: return "Tahitian"
+            /// Tai languages
+            case .tai: return "Tai languages"
+            /// Tamil
+            case .tam: return "Tamil"
+            /// Tatar
+            case .tat: return "Tatar"
+            /// Telugu
+            case .tel: return "Telugu"
+            /// Timne
+            case .tem: return "Timne"
+            /// Tereno
+            case .ter: return "Tereno"
+            /// Tetum
+            case .tet: return "Tetum"
+            /// Tajik
+            case .tgk: return "Tajik"
+            /// Tagalog
+            case .tgl: return "Tagalog"
+            /// Thai
+            case .tha: return "Thai"
+            /// Tigre
+            case .tig: return "Tigre"
+            /// Tigrinya
+            case .tir: return "Tigrinya"
+            /// Tiv
+            case .tiv: return "Tiv"
+            /// Tokelau
+            case .tkl: return "Tokelau"
+            /// Klingon; tlhIngan-Hol
+            case .tlh: return "Klingon; tlhIngan-Hol"
+            /// Tlingit
+            case .tli: return "Tlingit"
+            /// Tamashek
+            case .tmh: return "Tamashek"
+            /// Tonga, Nyasa
+            case .tog: return "Tonga, Nyasa"
+            /// Tonga (Tonga Islands)
+            case .ton: return "Tonga (Tonga Islands)"
+            /// Tok Pisin
+            case .tpi: return "Tok Pisin"
+            /// Tsimshian
+            case .tsi: return "Tsimshian"
+            /// Tswana
+            case .tsn: return "Tswana"
+            /// Tsonga
+            case .tso: return "Tsonga"
+            /// Turkmen
+            case .tuk: return "Turkmen"
+            /// Tumbuka
+            case .tum: return "Tumbuka"
+            /// Tupi languages
+            case .tup: return "Tupi languages"
+            /// Turkish
+            case .tur: return "Turkish"
+            /// Altaic languages
+            case .tut: return "Altaic languages"
+            /// Tuvalu
+            case .tvl: return "Tuvalu"
+            /// Twi
+            case .twi: return "Twi"
+            /// Tuvinian
+            case .tyv: return "Tuvinian"
+            /// Udmurt
+            case .udm: return "Udmurt"
+            /// Ugaritic
+            case .uga: return "Ugaritic"
+            /// Uighur; Uyghur
+            case .uig: return "Uighur; Uyghur"
+            /// Ukrainian
+            case .ukr: return "Ukrainian"
+            /// Umbundu
+            case .umb: return "Umbundu"
+            /// Undetermined
+            case .und: return "Undetermined"
+            /// Urdu
+            case .urd: return "Urdu"
+            /// Uzbek
+            case .uzb: return "Uzbek"
+            /// Vai
+            case .vai: return "Vai"
+            /// Venda
+            case .ven: return "Venda"
+            /// Vietnamese
+            case .vie: return "Vietnamese"
+            /// Volapük
+            case .vol: return "Volapük"
+            /// Votic
+            case .vot: return "Votic"
+            /// Wakashan languages
+            case .wak: return "Wakashan languages"
+            /// Wolaitta; Wolaytta
+            case .wal: return "Wolaitta; Wolaytta"
+            /// Waray
+            case .war: return "Waray"
+            /// Washo
+            case .was: return "Washo"
+            /// Sorbian languages
+            case .wen: return "Sorbian languages"
+            /// Walloon
+            case .wln: return "Walloon"
+            /// Wolof
+            case .wol: return "Wolof"
+            /// Kalmyk; Oirat
+            case .xal: return "Kalmyk; Oirat"
+            /// Xhosa
+            case .xho: return "Xhosa"
+            /// Yao
+            case .yao: return "Yao"
+            /// Yapese
+            case .yap: return "Yapese"
+            /// Yiddish
+            case .yid: return "Yiddish"
+            /// Yoruba
+            case .yor: return "Yoruba"
+            /// Yupik languages
+            case .ypk: return "Yupik languages"
+            /// Zapotec
+            case .zap: return "Zapotec"
+            /// Blissymbols; Blissymbolics; Bliss
+            case .zbl: return "Blissymbols; Blissymbolics; Bliss"
+            /// Zenaga
+            case .zen: return "Zenaga"
+            /// Standard Moroccan Tamazight
+            case .zgh: return "Standard Moroccan Tamazight"
+            /// Zhuang; Chuang
+            case .zha: return "Zhuang; Chuang"
+            /// Zande languages
+            case .znd: return "Zande languages"
+            /// Zulu
+            case .zul: return "Zulu"
+            /// Zuni
+            case .zun: return "Zuni"
+            /// No linguistic content; Not applicable
+            case .zxx: return "No linguistic content; Not applicable"
+            /// Zaza; Dimili; Dimli; Kirdki; Kirmanjki; Zazaki
+            case .zza: return "Zaza; Dimili; Dimli; Kirdki; Kirmanjki; Zazaki"
         }
-        return mapping
-    }()
-    
-    public static let nativeNameToIsoNameMapping: [String: String] = {
-        var mapping: [String: String] = [:]
-        for name in ISO6392Codes.allCases {
-            let nativeName = name.nativeName
-            mapping[nativeName] = name.rawValue
-        }
-        return mapping
-    }()
-    
-    public static let nativeNameToIsoCode: [String: ISO6392Codes] = {
-        var mapping: [String: ISO6392Codes] = [:]
-        for code in ISO6392Codes.allCases {
-            let nativeName = code.nativeName
-            mapping[nativeName] = code
-        }
-        return mapping
-    }()
+    }
 }

@@ -11,6 +11,13 @@ extension Bundle {
     /// The bundle which houses the tests.
     static let testBundle = Bundle(for: BundleMarker.self)
 
+    static let testImage: URL = {
+        guard let location = Bundle.testBundle.url(forResource: "samplecover-green", withExtension: "jpg") else {
+            fatalError("the image file cannot be found")
+        }
+        return location
+    }()
+    
     // MARK: versioned mp3 files
     static let writtenV22: URL = {
         guard let location = Bundle.testBundle.url(forResource: "mp3-v22-with-meta", withExtension: "mp3") else {

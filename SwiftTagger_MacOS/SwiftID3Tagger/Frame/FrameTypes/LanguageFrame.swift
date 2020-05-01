@@ -15,8 +15,12 @@ import Foundation
  */
 public struct LanguageFrame: FrameProtocol {
     
-    public init(languages: [ISO6392Codes.RawValue]) {
-        self.init(layout: .known(.languages), languages: languages)
+    public init(languages: [ISO6392Codes]) {
+        var languageCodes: [String] = []
+        for language in languages {
+            languageCodes.append(language.rawValue)
+        }
+        self.init(layout: .known(.languages), languages: languageCodes)
     }
     
     /// ISO-639-2 languge code
@@ -68,7 +72,7 @@ public struct LanguageFrame: FrameProtocol {
         var languagesArray: [String] = []
         for code in languageCodes {
             if ISO6392Codes.allCases.contains(where:
-                { $0.iso6392TCode == code }) {
+                { $0.rawValue == code }) {
                 languagesArray.append(code ?? "und")
             }
             else {

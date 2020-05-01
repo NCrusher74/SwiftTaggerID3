@@ -37,6 +37,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
 //        tag.fileOwner = "FileOwner"
 //        tag.grouping = "Grouping"
         tag.initialKey = "b#"
+        _ = tag.setLanguages(languages: [.eng])
         tag.lyricist = "Lyricist"
 //        tag.movementName = "MovementName"
         tag.originalAlbum = "OriginalAlbum"
@@ -68,7 +69,6 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.discNumber.totalDiscs = 4
         tag.trackNumber.track = 1
         tag.trackNumber.totalTracks = 2
-        tag.languages = ["eng"]
         tag[userDefinedText: "UserDefinedText"] = "User Defined Text Content"
         tag[userDefinedUrl: "UserDefinedUrl"] = "http://userdefined.url"
         tag.genre.genreName = nil
@@ -76,12 +76,24 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.mediaType.mediaType = nil
         tag.mediaType.additionalMediaInfo = nil
         tag.mediaType.mediaTypeDescription = "MediaType"
-        tag[comments: "eng", "CommentDescription"] = "Comment Content"
-        tag[lyrics: "eng", "LyricsDescription"] = "Lyrics Content"
+        tag[comments: .eng, "CommentDescription"] = "Comment Content"
+        tag[lyrics: .eng, "LyricsDescription"] = "Lyrics Content"
+        tag[description: .eng] = "Description"
+        tag[shortDescription: .eng] = "ShortDescription"
+        tag[longDescription: .eng] = "LongDescription"
+        tag[seriesDescription: .eng] = "SeriesDescription"
+        tag[songDescription: .eng] = "SongDescription"
+        tag[linerNotes: .eng] = "LinerNotes"
+        tag.acknowledgment = "Acknowledgments"
+        tag.thanks = "Thanks"
+        tag.sourceCredit = "SourceCredit"
         tag.involvedPeopleList?[0].role = "Director"
         tag.involvedPeopleList?[0].person = "Director Name"
         tag.involvedPeopleList?[1].role = "Producer"
         tag.involvedPeopleList?[1].person = "Producer Name"
+        
+        let imageURL = Bundle.testImage
+        _ = try tag.setAttachedPicture(imageType: .Other, imageDescription: "SamplePicture", location: imageURL)
 //        tag.musicianCreditList?[0].role = "Musician"
 //        tag.musicianCreditList?[0].person = "Musician Name"
 //        tag.musicianCreditList?[1].role = "Singer"
@@ -104,8 +116,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
 //        tag[chapters: "ch1"]?.startTime = 2795
 //        tag[chapters: "ch1"]?.endTime = 5250
 //        tag[chapters: "ch1"]?.startByteOffset = 0
-//        tag[chapters: "ch1"]?.endByteOffset = 0
-        
+//        tag[chapters: "ch1"]?.endByteOffset = 0        
 //        tag[embeddedSubframes: "ch0"]?.title = "Chapter 01"
 //        tag[embeddedSubframes: "ch1"]?.title = "Chapter 02"
         
