@@ -51,7 +51,7 @@
 		517754562442E8E1005E43C5 /* ImageFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517754552442E8E1005E43C5 /* ImageFrame.swift */; };
 		517754582442EB67005E43C5 /* CreditsListFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517754572442EB67005E43C5 /* CreditsListFrame.swift */; };
 		5177545A2442EBE8005E43C5 /* PresetOptionsFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517754592442EBE8005E43C5 /* PresetOptionsFrame.swift */; };
-		51779431245016AF0022E02F /* SwiftTagger_ID3_Read_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51779430245016AF0022E02F /* SwiftTagger_ID3_Read_Tests.swift */; };
+		51779431245016AF0022E02F /* SwiftTaggerID3_Read_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51779430245016AF0022E02F /* SwiftTaggerID3_Read_Tests.swift */; };
 		5177943A2452BE150022E02F /* TagProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 517794392452BE150022E02F /* TagProperties.swift */; };
 		518807212442ED4D008D488B /* LanguageFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518807202442ED4D008D488B /* LanguageFrame.swift */; };
 		518807232442EE58008D488B /* PartOfTotalFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518807222442EE58008D488B /* PartOfTotalFrame.swift */; };
@@ -77,6 +77,8 @@
 		51FE588D244F6F3C0042570F /* v22-test-file-raw-tag-info in Resources */ = {isa = PBXBuildFile; fileRef = 51FE588C244F6F3C0042570F /* v22-test-file-raw-tag-info */; };
 		51FF4947245BA84F0006F8F8 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 51FF4946245BA84F0006F8F8 /* README.md */; };
 		51FF4949245BBAC10006F8F8 /* mp3-v23-with-meta.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 51FF4948245BBAC10006F8F8 /* mp3-v23-with-meta.mp3 */; };
+		51FF494B245BBBB00006F8F8 /* SwiftTaggerID3_Write_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FF494A245BBBB00006F8F8 /* SwiftTaggerID3_Write_Tests.swift */; };
+		51FF494D245BC4870006F8F8 /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FF494C245BC4870006F8F8 /* URL.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -147,7 +149,7 @@
 		517754552442E8E1005E43C5 /* ImageFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFrame.swift; sourceTree = "<group>"; };
 		517754572442EB67005E43C5 /* CreditsListFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditsListFrame.swift; sourceTree = "<group>"; };
 		517754592442EBE8005E43C5 /* PresetOptionsFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetOptionsFrame.swift; sourceTree = "<group>"; };
-		51779430245016AF0022E02F /* SwiftTagger_ID3_Read_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftTagger_ID3_Read_Tests.swift; sourceTree = "<group>"; };
+		51779430245016AF0022E02F /* SwiftTaggerID3_Read_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftTaggerID3_Read_Tests.swift; sourceTree = "<group>"; };
 		517794392452BE150022E02F /* TagProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagProperties.swift; sourceTree = "<group>"; };
 		518807202442ED4D008D488B /* LanguageFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageFrame.swift; sourceTree = "<group>"; };
 		518807222442EE58008D488B /* PartOfTotalFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartOfTotalFrame.swift; sourceTree = "<group>"; };
@@ -176,6 +178,8 @@
 		51FE588C244F6F3C0042570F /* v22-test-file-raw-tag-info */ = {isa = PBXFileReference; lastKnownFileType = text; path = "v22-test-file-raw-tag-info"; sourceTree = "<group>"; };
 		51FF4946245BA84F0006F8F8 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		51FF4948245BBAC10006F8F8 /* mp3-v23-with-meta.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "mp3-v23-with-meta.mp3"; sourceTree = "<group>"; };
+		51FF494A245BBBB00006F8F8 /* SwiftTaggerID3_Write_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftTaggerID3_Write_Tests.swift; sourceTree = "<group>"; };
+		51FF494C245BC4870006F8F8 /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -305,7 +309,8 @@
 			isa = PBXGroup;
 			children = (
 				5144EC7C2458C43C001757DA /* TestPrint.swift */,
-				51779430245016AF0022E02F /* SwiftTagger_ID3_Read_Tests.swift */,
+				51779430245016AF0022E02F /* SwiftTaggerID3_Read_Tests.swift */,
+				51FF494A245BBBB00006F8F8 /* SwiftTaggerID3_Write_Tests.swift */,
 				51E432BC243DA257006574A1 /* SwiftTagger_MacOSTests.plist */,
 				51E432CC243DA5B4006574A1 /* TestMedia */,
 			);
@@ -349,6 +354,7 @@
 				5175303E244DF1B20005B2AB /* StringEncoding.swift */,
 				51FA350D244034B2000997EC /* UInt32.swift */,
 				5177543D24413768005E43C5 /* UnsignedInteger.swift */,
+				51FF494C245BC4870006F8F8 /* URL.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -548,6 +554,7 @@
 				51490E51243EDB4F009D4BA4 /* FrameLayoutIdentifier.swift in Sources */,
 				518807232442EE58008D488B /* PartOfTotalFrame.swift in Sources */,
 				5177544824423D46005E43C5 /* StringFrame.swift in Sources */,
+				51FF494D245BC4870006F8F8 /* URL.swift in Sources */,
 				51A3C6A724464FDC00909952 /* URLFrame.swift in Sources */,
 				515AF6592449A099005C29FA /* InvolvedPersonCredits.swift in Sources */,
 				5144EC7B2457800A001757DA /* CaseIterable.swift in Sources */,
@@ -567,7 +574,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				51779431245016AF0022E02F /* SwiftTagger_ID3_Read_Tests.swift in Sources */,
+				51FF494B245BBBB00006F8F8 /* SwiftTaggerID3_Write_Tests.swift in Sources */,
+				51779431245016AF0022E02F /* SwiftTaggerID3_Read_Tests.swift in Sources */,
 				51E432D2243DA64B006574A1 /* Bundle.swift in Sources */,
 				5144EC7D2458C43C001757DA /* TestPrint.swift in Sources */,
 			);

@@ -56,7 +56,7 @@ try coverImageData?.write(to: outputURL)
 Unknown or unhandled frames are assigned a `UUID` that may be used in a similar fashion to a `descriptionString`.
 
 
-Here's a complete list of the frames handled by `SwiftTaggerID3`:
+Here's a complete list of the frames handled by SwiftTaggerID3:
 
 * `album`
 * `albumSort`

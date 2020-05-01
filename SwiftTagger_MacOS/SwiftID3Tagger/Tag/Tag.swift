@@ -1078,7 +1078,7 @@ public extension Tag {
     
     /// Compilation flag getter-setter. This is a non-standard, iTunes compliant frame
     /// ID3 Identifier: `TCP`/`TCMP`.
-    var compliation: Bool? {
+    var compilation: Bool? {
         get {
             if let frame = self.frames[.compilation],
                 case .booleanFrame(let booleanFrame) = frame {

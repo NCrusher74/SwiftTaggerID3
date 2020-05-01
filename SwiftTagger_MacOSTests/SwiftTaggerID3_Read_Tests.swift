@@ -74,7 +74,7 @@ class SwiftTagger_ID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag.totalMovements, 6)
         XCTAssertEqual(tag.movementNumber, 0)
         XCTAssertEqual(tag.playlistDelay, 20)
-        XCTAssertEqual(tag.compliation, true)
+        XCTAssertEqual(tag.compilation, true)
         XCTAssertEqual(tag.discNumber.disc, 3)
         XCTAssertEqual(tag.discNumber.totalDiscs, 4)
         XCTAssertEqual(tag.trackNumber.track, 1)
@@ -93,7 +93,7 @@ class SwiftTagger_ID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag.involvedPeopleList?[0].person, "Director Name")
         XCTAssertEqual(tag.involvedPeopleList?[1].role, "Producer")
         XCTAssertEqual(tag.involvedPeopleList?[1].person, "Producer Name")
-//        XCTAssertEqual(tag.year,"2019")
+        XCTAssertEqual(tag.year,"2019")
 
     }
 
@@ -138,7 +138,7 @@ class SwiftTagger_ID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag.isrc, 123456789012)
         XCTAssertEqual(tag.length, 5250)
         XCTAssertEqual(tag.playlistDelay, 20)
-        XCTAssertEqual(tag.compliation, true)
+        XCTAssertEqual(tag.compilation, true)
         XCTAssertEqual(tag.discNumber.disc, 3)
         XCTAssertEqual(tag.discNumber.totalDiscs, 4)
         XCTAssertEqual(tag.trackNumber.track, 1)
@@ -170,9 +170,7 @@ class SwiftTagger_ID3_Read_Tests: XCTestCase {
     }
 
     func testChapterReading() throws {
-        let url = URL(fileURLWithPath: "/Users/nolainecrusher/Downloads/audiobook_tools/sampleaax/test/mp3-v23-with-meta.mp3")
-        let mp3File = try Mp3File(location: url)
-//        let mp3File = try Bundle.mp3Chaptered()
+        let mp3File = try Bundle.mp3Chaptered()
         let tag = try mp3File.read()
 
         XCTAssertEqual(tag.album, "Album")
@@ -212,7 +210,7 @@ class SwiftTagger_ID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag.isrc, 123456789012)
         XCTAssertEqual(tag.length, 5250)
         XCTAssertEqual(tag.playlistDelay, 20)
-        XCTAssertEqual(tag.compliation, true)
+        XCTAssertEqual(tag.compilation, true)
         XCTAssertEqual(tag.discNumber.disc, 3)
         XCTAssertEqual(tag.discNumber.totalDiscs, 4)
         XCTAssertEqual(tag.trackNumber.track, 1)

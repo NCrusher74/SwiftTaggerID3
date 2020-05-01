@@ -32,6 +32,10 @@ public struct Mp3File {
     }
     
     
-//    public func write(from sourceAudio: Mp3File, to outputLocation: URL) throws {
-//    }
+    public func write(using tag: Tag, writingTo url: URL) throws {
+        try FileManager.default.createDirectory(
+            at: url.parentDirectory,
+            withIntermediateDirectories: true)
+
+    }
 }
