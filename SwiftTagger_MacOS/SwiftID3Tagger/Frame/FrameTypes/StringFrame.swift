@@ -205,8 +205,9 @@ public struct StringFrame: FrameProtocol {
         self.init(layout: .known(.grouping), contentString: grouping)
     }
     
-    public init(initialKey: KeySignature.RawValue) {
-        self.init(layout: .known(.initialKey), contentString: initialKey)
+    public init(initialKey: KeySignature) {
+        let keyString = initialKey.rawValue
+        self.init(layout: .known(.initialKey), contentString: keyString)
     }
     
     public init(lyricist: String) {

@@ -83,23 +83,6 @@ public struct Tag {
 }
 
 public extension Tag {
-    
-    /// - Language frame getter-setter. ID3 Identifier: `TLA`/`TLAN`
-    var languages: [String]? {
-        get {
-            if let frame = self.frames[.languages],
-                case .languageFrame(let languageFrame) = frame {
-                return languageFrame.languages
-            } else {
-                return nil
-            }
-        }
-    }
-    
-    func setLanguages(languages: [ISO6392Codes]) -> LanguageFrame? {
-        return LanguageFrame(languages: languages)
-    }
-    
 
     /// - Album frame getter-setter. ID3 Identifier: `TAL`/`TALB`
     var album: String? {
@@ -499,12 +482,13 @@ public extension Tag {
                 return nil
             }
         }
-        set {
-            let frame = StringFrame(initialKey: newValue ?? "")
-            frames[.initialKey] = .stringFrame(frame)
-        }
     }
-    
+ 
+    mutating func setInitialKey(initialKey: KeySignature) throws {
+        let key = FrameKey.initialKey
+        self.frames[key] = Frame.stringFrame(.init(initialKey: initialKey))
+    }
+
     /// - Lyricist getter-setter. ID3 Identifier: `TXT`/`TEXT`
     var lyricist: String? {
         get {
@@ -1195,8 +1179,25 @@ public extension Tag {
             frames[.userDefinedText(description: "Source Credit")] = .userTextFrame(frame)
         }
     }
-    
-    /// - Genre getter-setter. ID3 Identifier: `TCO`/`TCON`
+
+    /// - Language frame getter-setter. ID3 Identifier: `TLA`/`TLAN`
+    var languages: [String]? {
+        get {
+            if let frame = self.frames[.languages],
+                case .languageFrame(let languageFrame) = frame {
+                return languageFrame.languages
+            } else {
+                return nil
+            }
+        }
+    }
+
+    mutating func setLanguages(languages: [ISO6392Codes]) throws {
+        let key = FrameKey.languages
+        self.frames[key] = Frame.languageFrame(.init(languages: languages))
+    }
+
+    /// - Genre getter ID3 Identifier: `TCO`/`TCON`
     /// The `genreName` parameter refers to specific genre or genres catalogued by numeric codes in the `GenreType` enum.
     /// The `genreDescription` parameter is a freeform field that may be used to refine existing genres or create custom genres
     var genre: (genreName: String?, genreDescription: String?) {
@@ -1208,12 +1209,14 @@ public extension Tag {
                 return (nil,nil)
             }
         }
-        set {
-            let frame = PresetOptionsFrame(genreName: newValue.genreName ?? "", genreDescription: newValue.genreDescription ?? "")
-            frames[.genre] = .presetOptionsFrame(frame)
-        }
     }
     
+    /// genre setter
+    mutating func setGenre(genreName: GenreType?, genreDescription: String?) throws {
+        let key = FrameKey.genre
+        self.frames[key] = Frame.presetOptionsFrame(.init(genreName: genreName, genreDescription: genreDescription))
+    }
+ 
     /// - MediaType getter-setter. ID3 Identifier: `TMT`/`TMED`
     /// The `mediaType` parameter refers to specific type of media catalogued by codes in the `MediaType` enum.
     /// The `additionalMediaInfo` parameter refers to specific type of refinement pertaining to the `MediaType`, catalogued by codes in the `MediaTypeRefinements` enum
@@ -1227,13 +1230,12 @@ public extension Tag {
                 return (nil,nil,nil)
             }
         }
-        set {
-            let frame = PresetOptionsFrame(
-                mediaType: newValue.mediaType ?? "",
-                additionalMediaInfo: newValue.additionalMediaInfo,
-                mediaTypeDescription: newValue.mediaTypeDescription ?? "")
-            frames[.mediaType] = .presetOptionsFrame(frame)
-        }
+    }
+
+    /// mediaType setter
+    mutating func setMediaType(mediaType: MediaType?, additionalMediaInfo: MediaTypeRefinements?, mediaTypeDescription: String?) throws {
+        let key = FrameKey.mediaType
+        self.frames[key] = Frame.presetOptionsFrame(.init(mediaType: mediaType, additionalMediaInfo: additionalMediaInfo, mediaTypeDescription: mediaTypeDescription))
     }
 
     /// - FileType getter-setter. ID3 Identifier: `TFT`/`TFLT`
@@ -1249,13 +1251,12 @@ public extension Tag {
                 return (nil,nil,nil)
             }
         }
-        set {
-            let frame = PresetOptionsFrame(
-                fileType: newValue.fileType ?? "",
-                additionalFileTypeInfo: newValue.additionalFileTypeInfo,
-                fileTypeDescription: newValue.fileTypeDescription ?? "")
-            frames[.fileType] = .presetOptionsFrame(frame)
-        }
+    }
+
+    /// file type setter
+    mutating func setFileType(fileType: FileType?, additionalFileTypeInfo: FileTypeRefinements?, fileTypeDescription: String?) throws {
+        let key = FrameKey.fileType
+        self.frames[key] = Frame.presetOptionsFrame(.init(fileType: fileType, additionalFileTypeInfo: additionalFileTypeInfo, fileTypeDescription: fileTypeDescription))
     }
 
     /// - MusicianCreditsList frame getter-setter. Valid only for tag version 2.4
@@ -1703,8 +1704,9 @@ public extension Tag {
         }
     }
 
-    func setAttachedPicture(imageType: ImageType?, imageDescription: String?, location: URL) throws -> ImageFrame? {
-        return try ImageFrame(imageLocation: location, imageType: imageType ?? .Other, imageDescription: imageDescription)
+    mutating func setAttachedPicture(imageType: ImageType?, imageDescription: String?, location: URL) throws {
+        let key = FrameKey.attachedPicture(description: (imageDescription ?? imageType?.pictureDescription) ?? "")
+        self.frames[key] = Frame.imageFrame(try .init(imageLocation: location, imageType: imageType ?? .Other, imageDescription: imageDescription))
     }
  
 }

@@ -18,29 +18,29 @@ import Foundation
 public struct PresetOptionsFrame: FrameProtocol {
     
     // initializer for Genre Frame
-    public init(genreName: GenreType.RawValue?,
+    public init(genreName: GenreType?,
                 genreDescription: String?) {
         self.init(layout: .known(.genre),
-                  presetName: genreName,
+                  presetName: String(genreName?.code ?? 255),
                   presetRefinement: nil,
                   refinementDescription: genreDescription)
     }
     
-    public init(mediaType: MediaType.RawValue?,
-                additionalMediaInfo: String?,
+    public init(mediaType: MediaType?,
+                additionalMediaInfo: MediaTypeRefinements?,
                 mediaTypeDescription: String?) {
         self.init(layout: .known(.mediaType),
-                  presetName: mediaType,
-                  presetRefinement: additionalMediaInfo,
+                  presetName: mediaType?.code,
+                  presetRefinement: additionalMediaInfo?.code,
                   refinementDescription: mediaTypeDescription)
     }
 
-    public init(fileType: FileType.RawValue?,
-                additionalFileTypeInfo: String?,
+    public init(fileType: FileType?,
+                additionalFileTypeInfo: FileTypeRefinements?,
                 fileTypeDescription: String?) {
         self.init(layout: .known(.fileType),
-                  presetName: fileType,
-                  presetRefinement: additionalFileTypeInfo,
+                  presetName: fileType?.rawValue,
+                  presetRefinement: additionalFileTypeInfo?.code,
                   refinementDescription: fileTypeDescription)
     }
 

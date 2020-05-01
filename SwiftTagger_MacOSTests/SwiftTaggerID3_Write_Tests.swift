@@ -36,8 +36,8 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.encodingSettings = "EncoderSettings"
 //        tag.fileOwner = "FileOwner"
 //        tag.grouping = "Grouping"
-        tag.initialKey = "b#"
-        _ = tag.setLanguages(languages: [.eng])
+        try tag.setInitialKey(initialKey: .cMajor)
+        try tag.setLanguages(languages: [.eng])
         tag.lyricist = "Lyricist"
 //        tag.movementName = "MovementName"
         tag.originalAlbum = "OriginalAlbum"
@@ -71,11 +71,9 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.trackNumber.totalTracks = 2
         tag[userDefinedText: "UserDefinedText"] = "User Defined Text Content"
         tag[userDefinedUrl: "UserDefinedUrl"] = "http://userdefined.url"
-        tag.genre.genreName = nil
-        tag.genre.genreDescription = "Genre"
-        tag.mediaType.mediaType = nil
-        tag.mediaType.additionalMediaInfo = nil
-        tag.mediaType.mediaTypeDescription = "MediaType"
+        try tag.setGenre(genreName: Optional.none, genreDescription: "Genre")
+        try tag.setMediaType(mediaType: Optional.none, additionalMediaInfo: Optional.none, mediaTypeDescription: "MediaType")
+        try tag.setFileType(fileType: .MPG, additionalFileTypeInfo: .mpegLayerIII, fileTypeDescription: "FileType")
         tag[comments: .eng, "CommentDescription"] = "Comment Content"
         tag[lyrics: .eng, "LyricsDescription"] = "Lyrics Content"
         tag[description: .eng] = "Description"
@@ -93,7 +91,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.involvedPeopleList?[1].person = "Producer Name"
         
         let imageURL = Bundle.testImage
-        _ = try tag.setAttachedPicture(imageType: .Other, imageDescription: "SamplePicture", location: imageURL)
+        try tag.setAttachedPicture(imageType: .Other, imageDescription: "SamplePicture", location: imageURL)
 //        tag.musicianCreditList?[0].role = "Musician"
 //        tag.musicianCreditList?[0].person = "Musician Name"
 //        tag.musicianCreditList?[1].role = "Singer"
