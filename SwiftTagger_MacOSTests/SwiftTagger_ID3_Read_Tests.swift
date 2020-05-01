@@ -170,7 +170,9 @@ class SwiftTagger_ID3_Read_Tests: XCTestCase {
     }
 
     func testChapterReading() throws {
-        let mp3File = try Bundle.mp3Chaptered()
+        let url = URL(fileURLWithPath: "/Users/nolainecrusher/Downloads/audiobook_tools/sampleaax/test/mp3-v23-with-meta.mp3")
+        let mp3File = try Mp3File(location: url)
+//        let mp3File = try Bundle.mp3Chaptered()
         let tag = try mp3File.read()
 
         XCTAssertEqual(tag.album, "Album")
@@ -262,7 +264,6 @@ class SwiftTagger_ID3_Read_Tests: XCTestCase {
         let coverImageData = tag[attachedPicture: "SampleCover"]
         try coverImageData?.write(to: outputURL)
     }
-
-
-
+    
+    
 }
