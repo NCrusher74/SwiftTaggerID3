@@ -8,201 +8,180 @@
 
 import Foundation
 
-public struct ContentRatings {
-    public let country: String
-    public let media: String
-    public let prefix: String
-    public let iTunesCode: String
-    public let iTunesValue: String
-    public let description: String
-    
-    var ratings: String {
-        for rating in RatingsInfo.ratings {
-            return "\(rating.prefix)|\(rating.iTunesCode)|\(rating.iTunesValue)|"
-        }; return ""
-    }
+public enum ContentAdvisory: String {
+    case clean = "Clean"
+    case explicit = "Explicit"
 }
 
-struct RatingsInfo {
-    static let ratings: [ContentRatings] = [
-        ContentRatings(country: "USA", media: "Movie", prefix: "mpaa", iTunesCode: "NR", iTunesValue: "000", description: "NR"),
-        ContentRatings(country: "USA", media: "Movie", prefix: "mpaa", iTunesCode: "G", iTunesValue: "100", description: "G"),
-        ContentRatings(country: "USA", media: "Movie", prefix: "mpaa", iTunesCode: "PG", iTunesValue: "200", description: "PG"),
-        ContentRatings(country: "USA", media: "Movie", prefix: "mpaa", iTunesCode: "PG-13", iTunesValue: "300", description: "PG-13"),
-        ContentRatings(country: "USA", media: "Movie", prefix: "mpaa", iTunesCode: "R", iTunesValue: "400", description: "R"),
-        ContentRatings(country: "USA", media: "Movie", prefix: "mpaa", iTunesCode: "NC-17", iTunesValue: "500", description: "NC-17"),
-        ContentRatings(country: "USA", media: "Movie", prefix: "mpaa", iTunesCode: "unrated", iTunesValue: "???", description: "unrated"),
-        ContentRatings(country: "USA", media: "TV", prefix: "us-tv", iTunesCode: "TV-Y", iTunesValue: "100", description: "TV-Y"),
-        ContentRatings(country: "USA", media: "TV", prefix: "us-tv", iTunesCode: "TV-Y7", iTunesValue: "200", description: "TV-Y7"),
-        ContentRatings(country: "USA", media: "TV", prefix: "us-tv", iTunesCode: "TV-G", iTunesValue: "300", description: "TV-G"),
-        ContentRatings(country: "USA", media: "TV", prefix: "us-tv", iTunesCode: "TV-PG", iTunesValue: "400", description: "TV-PG"),
-        ContentRatings(country: "USA", media: "TV", prefix: "us-tv", iTunesCode: "TV-14", iTunesValue: "500", description: "TV-14"),
-        ContentRatings(country: "USA", media: "TV", prefix: "us-tv", iTunesCode: "TV-MA", iTunesValue: "600", description: "TV-MA"),
-        ContentRatings(country: "USA", media: "TV", prefix: "us-tv", iTunesCode: "Unrated", iTunesValue: "???", description: "Unrated"),
-        ContentRatings(country: "Australia", media: "Movie", prefix: "au-movie", iTunesCode: "G", iTunesValue: "100", description: "G"),
-        ContentRatings(country: "Australia", media: "Movie", prefix: "au-movie", iTunesCode: "PG", iTunesValue: "200", description: "PG"),
-        ContentRatings(country: "Australia", media: "Movie", prefix: "au-movie", iTunesCode: "M", iTunesValue: "350", description: "M"),
-        ContentRatings(country: "Australia", media: "Movie", prefix: "au-movie", iTunesCode: "MA15+", iTunesValue: "375", description: "MA15+"),
-        ContentRatings(country: "Australia", media: "Movie", prefix: "au-movie", iTunesCode: "R18+", iTunesValue: "400", description: "R18+"),
-        ContentRatings(country: "Australia", media: "Movie", prefix: "au-movie", iTunesCode: "Not Rated", iTunesValue: "???", description: "Not Rated"),
-        ContentRatings(country: "Australia", media: "TV", prefix: "au-tv", iTunesCode: "P", iTunesValue: "100", description: "P"),
-        ContentRatings(country: "Australia", media: "TV", prefix: "au-tv", iTunesCode: "C", iTunesValue: "200", description: "C"),
-        ContentRatings(country: "Australia", media: "TV", prefix: "au-tv", iTunesCode: "G", iTunesValue: "300", description: "G"),
-        ContentRatings(country: "Australia", media: "TV", prefix: "au-tv", iTunesCode: "PG", iTunesValue: "400", description: "PG"),
-        ContentRatings(country: "Australia", media: "TV", prefix: "au-tv", iTunesCode: "M", iTunesValue: "500", description: "M"),
-        ContentRatings(country: "Australia", media: "TV", prefix: "au-tv", iTunesCode: "MA15+", iTunesValue: "550", description: "MA15+"),
-        ContentRatings(country: "Australia", media: "TV", prefix: "au-tv", iTunesCode: "AV15+", iTunesValue: "575", description: "AV15+"),
-        ContentRatings(country: "Australia", media: "TV", prefix: "au-tv", iTunesCode: "R18+", iTunesValue: "160", description: "R18+"),
-        ContentRatings(country: "Brasil", media: "Movie", prefix: "br-movie", iTunesCode: "L", iTunesValue: "000", description: "L"),
-        ContentRatings(country: "Brasil", media: "Movie", prefix: "br-movie", iTunesCode: "12", iTunesValue: "100", description: "12"),
-        ContentRatings(country: "Brasil", media: "Movie", prefix: "br-movie", iTunesCode: "14", iTunesValue: "300", description: "14"),
-        ContentRatings(country: "Brasil", media: "Movie", prefix: "br-movie", iTunesCode: "16", iTunesValue: "350", description: "16"),
-        ContentRatings(country: "Brasil", media: "Movie", prefix: "br-movie", iTunesCode: "18", iTunesValue: "400", description: "18"),
-        ContentRatings(country: "Canada", media: "Movie", prefix: "ca-movie", iTunesCode: "G", iTunesValue: "100", description: "G"),
-        ContentRatings(country: "Canada", media: "Movie", prefix: "ca-movie", iTunesCode: "PG", iTunesValue: "200", description: "PG"),
-        ContentRatings(country: "Canada", media: "Movie", prefix: "ca-movie", iTunesCode: "14A", iTunesValue: "300", description: "14A"),
-        ContentRatings(country: "Canada", media: "Movie", prefix: "ca-movie", iTunesCode: "18A", iTunesValue: "350", description: "18A"),
-        ContentRatings(country: "Canada", media: "Movie", prefix: "ca-movie", iTunesCode: "R", iTunesValue: "400", description: "R"),
-        ContentRatings(country: "Canada", media: "Movie", prefix: "ca-movie", iTunesCode: "A", iTunesValue: "500", description: "A"),
-        ContentRatings(country: "Canada", media: "Movie", prefix: "ca-movie", iTunesCode: "Unrated", iTunesValue: "???", description: "Unrated"),
-        ContentRatings(country: "Canada", media: "Movie", prefix: "ca-movie", iTunesCode: "Not Rated", iTunesValue: "???", description: "Not Rated"),
-        ContentRatings(country: "Canada", media: "TV", prefix: "ca-tv", iTunesCode: "E", iTunesValue: "000", description: "E"),
-        ContentRatings(country: "Canada", media: "TV", prefix: "ca-tv", iTunesCode: "C", iTunesValue: "050", description: "C"),
-        ContentRatings(country: "Canada", media: "TV", prefix: "ca-tv", iTunesCode: "C8", iTunesValue: "075", description: "C8"),
-        ContentRatings(country: "Canada", media: "TV", prefix: "ca-tv", iTunesCode: "G", iTunesValue: "100", description: "G"),
-        ContentRatings(country: "Canada", media: "TV", prefix: "ca-tv", iTunesCode: "PG", iTunesValue: "200", description: "PG"),
-        ContentRatings(country: "Canada", media: "TV", prefix: "ca-tv", iTunesCode: "14+", iTunesValue: "300", description: "14+"),
-        ContentRatings(country: "Canada", media: "TV", prefix: "ca-tv", iTunesCode: "18+", iTunesValue: "350", description: "18+"),
-        ContentRatings(country: "Canada", media: "TV", prefix: "ca-tv", iTunesCode: "21+", iTunesValue: "500", description: "21+"),
-        ContentRatings(country: "Deutschland", media: "Movie", prefix: "de-movie", iTunesCode: "Ab 0 Jahren", iTunesValue: "075", description: "Ab 0 Jahren"),
-        ContentRatings(country: "Deutschland", media: "Movie", prefix: "de-movie", iTunesCode: "Ab 6 Jahren", iTunesValue: "100", description: "Ab 6 Jahren"),
-        ContentRatings(country: "Deutschland", media: "Movie", prefix: "de-movie", iTunesCode: "Ab 12 Jahren", iTunesValue: "200", description: "Ab 12 Jahren"),
-        ContentRatings(country: "Deutschland", media: "Movie", prefix: "de-movie", iTunesCode: "Ab 16 Jahren", iTunesValue: "500", description: "Ab 16 Jahren"),
-        ContentRatings(country: "Deutschland", media: "Movie", prefix: "de-movie", iTunesCode: "Ab 18 Jahren", iTunesValue: "600", description: "Ab 18 Jahren"),
-        ContentRatings(country: "Deutschland", media: "TV", prefix: "de-tv", iTunesCode: "Ab 0 Jahren", iTunesValue: "075", description: "Ab 0 Jahren"),
-        ContentRatings(country: "Deutschland", media: "TV", prefix: "de-tv", iTunesCode: "Ab 6 Jahren", iTunesValue: "100", description: "Ab 6 Jahren"),
-        ContentRatings(country: "Deutschland", media: "TV", prefix: "de-tv", iTunesCode: "Ab 12 Jahren", iTunesValue: "200", description: "Ab 12 Jahren"),
-        ContentRatings(country: "Deutschland", media: "TV", prefix: "de-tv", iTunesCode: "Ab 16 Jahren", iTunesValue: "500", description: "Ab 16 Jahren"),
-        ContentRatings(country: "Deutschland", media: "TV", prefix: "de-tv", iTunesCode: "Ab 18 Jahren", iTunesValue: "600", description: "Ab 18 Jahren"),
-        ContentRatings(country: "France", media: "Movie & TV", prefix: "fr-movie", iTunesCode: "Tout public", iTunesValue: "000", description: "Tout public"),
-        ContentRatings(country: "France", media: "Movie & TV", prefix: "fr-movie", iTunesCode: "-10", iTunesValue: "100", description: "-10"),
-        ContentRatings(country: "France", media: "Movie & TV", prefix: "fr-movie", iTunesCode: "-12", iTunesValue: "300", description: "-12"),
-        ContentRatings(country: "France", media: "Movie & TV", prefix: "fr-movie", iTunesCode: "-16", iTunesValue: "375", description: "-16"),
-        ContentRatings(country: "France", media: "Movie & TV", prefix: "fr-movie", iTunesCode: "-18", iTunesValue: "400", description: "-18"),
-        ContentRatings(country: "France", media: "Movie & TV", prefix: "fr-movie", iTunesCode: "Unrated", iTunesValue: "???", description: "Unrated"),
-        ContentRatings(country: "Italia", media: "Movie", prefix: "it-movie", iTunesCode: "T", iTunesValue: "100", description: "T"),
-        ContentRatings(country: "Italia", media: "Movie", prefix: "it-movie", iTunesCode: "VPA", iTunesValue: "125", description: "VPA"),
-        ContentRatings(country: "Italia", media: "Movie", prefix: "it-movie", iTunesCode: "VM10", iTunesValue: "150", description: "VM10"),
-        ContentRatings(country: "Italia", media: "Movie", prefix: "it-movie", iTunesCode: "VM12", iTunesValue: "200", description: "VM12"),
-        ContentRatings(country: "Italia", media: "Movie", prefix: "it-movie", iTunesCode: "VM14", iTunesValue: "325", description: "VM14"),
-        ContentRatings(country: "Italia", media: "Movie", prefix: "it-movie", iTunesCode: "VM18", iTunesValue: "400", description: "VM18"),
-        ContentRatings(country: "Ireland", media: "Movie", prefix: "ie-movie", iTunesCode: "Not Rated", iTunesValue: "000", description: "Not Rated"),
-        ContentRatings(country: "Ireland", media: "Movie", prefix: "ie-movie", iTunesCode: "G", iTunesValue: "100", description: "G"),
-        ContentRatings(country: "Ireland", media: "Movie", prefix: "ie-movie", iTunesCode: "PG", iTunesValue: "200", description: "PG"),
-        ContentRatings(country: "Ireland", media: "Movie", prefix: "ie-movie", iTunesCode: "12", iTunesValue: "300", description: "12"),
-        ContentRatings(country: "Ireland", media: "Movie", prefix: "ie-movie", iTunesCode: "15", iTunesValue: "350", description: "15"),
-        ContentRatings(country: "Ireland", media: "Movie", prefix: "ie-movie", iTunesCode: "16", iTunesValue: "375", description: "16"),
-        ContentRatings(country: "Ireland", media: "Movie", prefix: "ie-movie", iTunesCode: "18", iTunesValue: "400", description: "18"),
-        ContentRatings(country: "Ireland", media: "Movie", prefix: "ie-movie", iTunesCode: "Unrated", iTunesValue: "???", description: "Unrated"),
-        ContentRatings(country: "Ireland", media: "TV", prefix: "ie-tv", iTunesCode: "G", iTunesValue: "100", description: "G"),
-        ContentRatings(country: "Ireland", media: "TV", prefix: "ie-tv", iTunesCode: "PG", iTunesValue: "350", description: "PG"),
-        ContentRatings(country: "Ireland", media: "TV", prefix: "ie-tv", iTunesCode: "12", iTunesValue: "400", description: "12"),
-        ContentRatings(country: "Ireland", media: "TV", prefix: "ie-tv", iTunesCode: "15", iTunesValue: "500", description: "15"),
-        ContentRatings(country: "Ireland", media: "TV", prefix: "ie-tv", iTunesCode: "18", iTunesValue: "600", description: "18"),
-        ContentRatings(country: "日本", media: "Movie", prefix: "jp-movie", iTunesCode: "G", iTunesValue: "100", description: "G"),
-        ContentRatings(country: "日本", media: "Movie", prefix: "jp-movie", iTunesCode: "PG12", iTunesValue: "200", description: "PG12"),
-        ContentRatings(country: "日本", media: "Movie", prefix: "jp-movie", iTunesCode: "R15+", iTunesValue: "300", description: "R15+"),
-        ContentRatings(country: "日本", media: "Movie", prefix: "jp-movie", iTunesCode: "R18+", iTunesValue: "400", description: "R18+"),
-        ContentRatings(country: "日本", media: "Movie", prefix: "jp-movie", iTunesCode: "Unrated", iTunesValue: "???", description: "未審査"),
-        ContentRatings(country: "Mexico", media: "Movie", prefix: "mx-movie", iTunesCode: "AA", iTunesValue: "000", description: "AA"),
-        ContentRatings(country: "Mexico", media: "Movie", prefix: "mx-movie", iTunesCode: "A", iTunesValue: "100", description: "A"),
-        ContentRatings(country: "Mexico", media: "Movie", prefix: "mx-movie", iTunesCode: "B", iTunesValue: "300", description: "B"),
-        ContentRatings(country: "Mexico", media: "Movie", prefix: "mx-movie", iTunesCode: "B-15", iTunesValue: "500", description: "B-15"),
-        ContentRatings(country: "Mexico", media: "Movie", prefix: "mx-movie", iTunesCode: "C", iTunesValue: "600", description: "C"),
-        ContentRatings(country: "Nederland", media: "Movie & TV", prefix: "nl-movie", iTunesCode: "AL/G", iTunesValue: "000", description: "AL/G"),
-        ContentRatings(country: "Nederland", media: "Movie & TV", prefix: "nl-movie", iTunesCode: "6", iTunesValue: "100", description: "6"),
-        ContentRatings(country: "Nederland", media: "Movie & TV", prefix: "nl-movie", iTunesCode: "9", iTunesValue: "200", description: "9"),
-        ContentRatings(country: "Nederland", media: "Movie & TV", prefix: "nl-movie", iTunesCode: "12", iTunesValue: "300", description: "12"),
-        ContentRatings(country: "Nederland", media: "Movie & TV", prefix: "nl-movie", iTunesCode: "16", iTunesValue: "500", description: "16"),
-        ContentRatings(country: "Nederland", media: "Movie & TV", prefix: "nl-movie", iTunesCode: "18", iTunesValue: "600", description: "18"),
-        ContentRatings(country: "New Zealand", media: "Movie & TV", prefix: "nz-movie", iTunesCode: "G", iTunesValue: "100", description: "G"),
-        ContentRatings(country: "New Zealand", media: "Movie & TV", prefix: "nz-movie", iTunesCode: "PG", iTunesValue: "200", description: "PG"),
-        ContentRatings(country: "New Zealand", media: "Movie & TV", prefix: "nz-movie", iTunesCode: "M", iTunesValue: "300", description: "M"),
-        ContentRatings(country: "New Zealand", media: "Movie & TV", prefix: "nz-movie", iTunesCode: "R13", iTunesValue: "325", description: "R13"),
-        ContentRatings(country: "New Zealand", media: "Movie & TV", prefix: "nz-movie", iTunesCode: "RP13", iTunesValue: "325", description: "RP13"),
-        ContentRatings(country: "New Zealand", media: "Movie & TV", prefix: "nz-movie", iTunesCode: "R15", iTunesValue: "350", description: "R15"),
-        ContentRatings(country: "New Zealand", media: "Movie & TV", prefix: "nz-movie", iTunesCode: "R16", iTunesValue: "375", description: "R16"),
-        ContentRatings(country: "New Zealand", media: "Movie & TV", prefix: "nz-movie", iTunesCode: "RP16", iTunesValue: "375", description: "RP16"),
-        ContentRatings(country: "New Zealand", media: "Movie & TV", prefix: "nz-movie", iTunesCode: "R18", iTunesValue: "400", description: "R18"),
-        ContentRatings(country: "New Zealand", media: "Movie & TV", prefix: "nz-movie", iTunesCode: "R", iTunesValue: "500", description: "R"),
-        ContentRatings(country: "New Zealand", media: "Movie & TV", prefix: "nz-movie", iTunesCode: "U", iTunesValue: "900", description: "U"),
-        ContentRatings(country: "New Zealand", media: "Movie & TV", prefix: "nz-movie", iTunesCode: "Not Rated", iTunesValue: "???", description: "Not Rated"),
-        ContentRatings(country: "Sverige", media: "Movie & TV", prefix: "se-movie", iTunesCode: "A", iTunesValue: "000", description: "Barntillåten"),
-        ContentRatings(country: "Sverige", media: "Movie & TV", prefix: "se-movie", iTunesCode: "7", iTunesValue: "125", description: "Från 7 år"),
-        ContentRatings(country: "Sverige", media: "Movie & TV", prefix: "se-movie", iTunesCode: "11", iTunesValue: "225", description: "Från 11 år"),
-        ContentRatings(country: "Sverige", media: "Movie & TV", prefix: "se-movie", iTunesCode: "15", iTunesValue: "400", description: "Från 15 år"),
-        ContentRatings(country: "Sverige", media: "Movie & TV", prefix: "se-movie", iTunesCode: "Unrated", iTunesValue: "???", description: "Ocensurerad"),
-        ContentRatings(country: "Sverige", media: "Movie & TV", prefix: "se-movie", iTunesCode: "Unrated", iTunesValue: "???", description: "Inte klassificerad"),
-        ContentRatings(country: "Schweiz", media: "Movie", prefix: "ch-movie", iTunesCode: "0", iTunesValue: "050", description: "0"),
-        ContentRatings(country: "Schweiz", media: "Movie", prefix: "ch-movie", iTunesCode: "6", iTunesValue: "075", description: "6"),
-        ContentRatings(country: "Schweiz", media: "Movie", prefix: "ch-movie", iTunesCode: "7", iTunesValue: "125", description: "7"),
-        ContentRatings(country: "Schweiz", media: "Movie", prefix: "ch-movie", iTunesCode: "10", iTunesValue: "150", description: "10"),
-        ContentRatings(country: "Schweiz", media: "Movie", prefix: "ch-movie", iTunesCode: "12", iTunesValue: "200", description: "12"),
-        ContentRatings(country: "Schweiz", media: "Movie", prefix: "ch-movie", iTunesCode: "14", iTunesValue: "325", description: "14"),
-        ContentRatings(country: "Schweiz", media: "Movie", prefix: "ch-movie", iTunesCode: "16", iTunesValue: "375", description: "16"),
-        ContentRatings(country: "Schweiz", media: "Movie", prefix: "ch-movie", iTunesCode: "18", iTunesValue: "400", description: "18"),
-        ContentRatings(country: "Schweiz", media: "Movie", prefix: "ch-movie", iTunesCode: "Unrated", iTunesValue: "???", description: "keine alterseinstufung"),
-        ContentRatings(country: "Suisse", media: "Movie", prefix: "ch-movie", iTunesCode: "0", iTunesValue: "050", description: "0"),
-        ContentRatings(country: "Suisse", media: "Movie", prefix: "ch-movie", iTunesCode: "6", iTunesValue: "075", description: "6"),
-        ContentRatings(country: "Suisse", media: "Movie", prefix: "ch-movie", iTunesCode: "7", iTunesValue: "125", description: "7"),
-        ContentRatings(country: "Suisse", media: "Movie", prefix: "ch-movie", iTunesCode: "10", iTunesValue: "150", description: "10"),
-        ContentRatings(country: "Suisse", media: "Movie", prefix: "ch-movie", iTunesCode: "12", iTunesValue: "200", description: "12"),
-        ContentRatings(country: "Suisse", media: "Movie", prefix: "ch-movie", iTunesCode: "14", iTunesValue: "325", description: "14"),
-        ContentRatings(country: "Suisse", media: "Movie", prefix: "ch-movie", iTunesCode: "16", iTunesValue: "375", description: "16"),
-        ContentRatings(country: "Suisse", media: "Movie", prefix: "ch-movie", iTunesCode: "18", iTunesValue: "400", description: "18"),
-        ContentRatings(country: "Suisse", media: "Movie", prefix: "ch-movie", iTunesCode: "Unrated", iTunesValue: "???", description: "keine alterseinstufung"),
-        ContentRatings(country: "UK", media: "Movie & TV", prefix: "uk-movie", iTunesCode: "NR", iTunesValue: "000", description: "Not Rated"),
-        ContentRatings(country: "UK", media: "Movie & TV", prefix: "uk-movie", iTunesCode: "U", iTunesValue: "100", description: "U"),
-        ContentRatings(country: "UK", media: "Movie & TV", prefix: "uk-movie", iTunesCode: "Uc", iTunesValue: "150", description: "Uc"),
-        ContentRatings(country: "UK", media: "Movie & TV", prefix: "uk-movie", iTunesCode: "PG", iTunesValue: "200", description: "PG"),
-        ContentRatings(country: "UK", media: "Movie & TV", prefix: "uk-movie", iTunesCode: "12", iTunesValue: "300", description: "12"),
-        ContentRatings(country: "UK", media: "Movie & TV", prefix: "uk-movie", iTunesCode: "12A", iTunesValue: "325", description: "12A"),
-        ContentRatings(country: "UK", media: "Movie & TV", prefix: "uk-movie", iTunesCode: "15", iTunesValue: "350", description: "15"),
-        ContentRatings(country: "UK", media: "Movie & TV", prefix: "uk-movie", iTunesCode: "18", iTunesValue: "400", description: "18"),
-        ContentRatings(country: "UK", media: "TV", prefix: "uk-tv", iTunesCode: "Caution", iTunesValue: "500", description: "Caution"),
-        ContentRatings(country: "UK", media: "Movie & TV", prefix: "uk-movie", iTunesCode: "R18", iTunesValue: "600", description: "R18"),
-        ContentRatings(country: "UK", media: "Movie & TV", prefix: "uk-movie", iTunesCode: "E", iTunesValue: "0", description: "Exempt"),
-        ContentRatings(country: "UK", media: "Movie & TV", prefix: "uk-movie", iTunesCode: "Unrated", iTunesValue: "???", description: "Unrated"),
-        ContentRatings(country: "UK", media: "Movie & TV", prefix: "uk-movie", iTunesCode: "Unrated", iTunesValue: "???", description: "TBC"),
-        ContentRatings(country: "Россия", media: "Movie & TV", prefix: "ru-movie", iTunesCode: "0+", iTunesValue: "000", description: "0+"),
-        ContentRatings(country: "Россия", media: "Movie & TV", prefix: "ru-movie", iTunesCode: "6+", iTunesValue: "150", description: "6+"),
-        ContentRatings(country: "Россия", media: "Movie & TV", prefix: "ru-movie", iTunesCode: "12+", iTunesValue: "200", description: "12+"),
-        ContentRatings(country: "Россия", media: "Movie & TV", prefix: "ru-movie", iTunesCode: "16+", iTunesValue: "375", description: "16+"),
-        ContentRatings(country: "Россия", media: "Movie & TV", prefix: "ru-movie", iTunesCode: "18+", iTunesValue: "400", description: "18+"),
-        ContentRatings(country: "Россия", media: "Movie & TV", prefix: "ru-movie", iTunesCode: "Unrated", iTunesValue: "???", description: "Unrated"),
-        ContentRatings(country: "Pilipinas", media: "Movie & TV", prefix: "ph-movie", iTunesCode: "G", iTunesValue: "100", description: "G"),
-        ContentRatings(country: "Pilipinas", media: "Movie & TV", prefix: "ph-movie", iTunesCode: "PG", iTunesValue: "300", description: "PG"),
-        ContentRatings(country: "Pilipinas", media: "Movie & TV", prefix: "ph-movie", iTunesCode: "R-13", iTunesValue: "325", description: "R-13"),
-        ContentRatings(country: "Pilipinas", media: "Movie & TV", prefix: "ph-movie", iTunesCode: "R-16", iTunesValue: "375", description: "R-16"),
-        ContentRatings(country: "Pilipinas", media: "Movie & TV", prefix: "ph-movie", iTunesCode: "R-18", iTunesValue: "400", description: "R-18"),
-        ContentRatings(country: "Pilipinas", media: "Movie & TV", prefix: "ph-movie", iTunesCode: "Unrated", iTunesValue: "???", description: "Unrated"),
-        ContentRatings(country: "Hong Kong", media: "Movie & TV", prefix: "hk-movie", iTunesCode: "第i類", iTunesValue: "100", description: "第i類"),
-        ContentRatings(country: "Hong Kong", media: "Movie & TV", prefix: "hk-movie", iTunesCode: "第ii類", iTunesValue: "400", description: "第ii類"),
-        ContentRatings(country: "Hong Kong", media: "Movie & TV", prefix: "hk-movie", iTunesCode: "未作評級", iTunesValue: "???", description: "未作評級"),
-        ContentRatings(country: "Česká Republika", media: "Movie & TV", prefix: "cz-movies", iTunesCode: "U", iTunesValue: "100", description: "U"),
-        ContentRatings(country: "Česká Republika", media: "Movie & TV", prefix: "cz-movies", iTunesCode: "12+", iTunesValue: "200", description: "12+"),
-        ContentRatings(country: "Česká Republika", media: "Movie & TV", prefix: "cz-movies", iTunesCode: "15+", iTunesValue: "350", description: "15+"),
-        ContentRatings(country: "Česká Republika", media: "Movie & TV", prefix: "cz-movies", iTunesCode: "18+", iTunesValue: "400", description: "18+"),
-        ContentRatings(country: "Česká Republika", media: "Movie & TV", prefix: "cz-movies", iTunesCode: "neklasifikováno", iTunesValue: "???", description: "neklasifikováno"),
-        ContentRatings(country: "India", media: "Movie", prefix: "in-movies", iTunesCode: "U", iTunesValue: "000", description: "U"),
-        ContentRatings(country: "India", media: "Movie", prefix: "in-movies", iTunesCode: "UA", iTunesValue: "200", description: "UA"),
-        ContentRatings(country: "India", media: "Movie", prefix: "in-movies", iTunesCode: "A", iTunesValue: "500", description: "A"),
-        ContentRatings(country: "India", media: "Movie", prefix: "in-movies", iTunesCode: "S", iTunesValue: "600", description: "S"),
-        ContentRatings(country: "India", media: "Movie", prefix: "in-movies", iTunesCode: "रेट नहीं की गई", iTunesValue: "???", description: "रेट नहीं की गई"),
-        ContentRatings(country: "India", media: "TV", prefix: "in-tv", iTunesCode: "U", iTunesValue: "100", description: "U"),
-        ContentRatings(country: "India", media: "TV", prefix: "in-tv", iTunesCode: "UA", iTunesValue: "200", description: "UA"),
-        ContentRatings(country: "India", media: "TV", prefix: "in-tv", iTunesCode: "A", iTunesValue: "600", description: "A"),
-        ContentRatings(country: "India", media: "TV", prefix: "in-tv", iTunesCode: "S", iTunesValue: "600", description: "S"),
-        ContentRatings(country: "All Countries", media: "Movie", prefix: "mpaa", iTunesCode: "Unrated", iTunesValue: "???", description: "Unrated")
-    ]
+public enum ContentRatings: String {
+    
+    case usMovieNR = "mpaa|NR|000|"
+    case usMovieG = "mpaa|G|100"
+    case usMoviePG = "mpaa|PG|200"
+    case usMoviePG13 = "mpaa|PG-13|300"
+    case usMovieR = "mpaa|R|400"
+    case usMovieNC = "mpaa|NC-17|500"
+    case usMovieUnrated = "mpaa|Unrated|???|"
+    case ustvY = "us-tv|TV-Y|100"
+    case ustvY7 = "us-tv|TV-Y7|200"
+    case ustvG = "us-tv|TV-G|300"
+    case ustvPG = "us-tv|TV-PG|400"
+    case ustv14 = "us-tv|TV-14|500"
+    case ustvM = "us-tv|M|600"
+    case ustvUnrated = "us-tv|Unrated|???"
+    case auMovieG = "au-movie|G|100"
+    case auMoviePG = "au-movie|PG|200"
+    case auMovieM = "au-movie|M|350"
+    case auMovieMA15 = "au-movie|MA15+|375"
+    case auMovieR18 = "au-movie|R18+|400"
+    case auMovieUnrated = "au-movie|Not Rated|???"
+    case autvP = "au-tv|P|100"
+    case autvC = "au-tv|C|200"
+    case autvG = "au-tv|G|300"
+    case autvPG = "au-tv|PG|400"
+    case autvM = "au-tv|M|500"
+    case autvMA15 = "au-tv|MA15+|550"
+    case autvAV15 = "au-tv|AV15+|575"
+    case autvR18 = "au-tv|R18+|600"
+    case brMovieL = "br-movie|L|000"
+    case brMovie12 = "br-movie|12|100"
+    case brMovie14 = "br-movie|14|300"
+    case brMovie16 = "br-movie|16|350"
+    case brMovie18 = "br-movie|18|400"
+    case caMovieG = "ca-movie|G|100"
+    case caMoviePG = "ca-movie|PG|200"
+    case caMovide14A = "ca-movie|14A|300"
+    case caMovide18A = "ca-movie|18A|350"
+    case caMovieR = "ca-movie|R|400"
+    case caMovieA = "ca-movie|A|500"
+    case caMovieUnrated = "ca-movie|Unrated|???"
+    case caMovieNR = "ca-movie|Not Rated|???"
+    case catvE = "ca-tv|E|000"
+    case catvC = "ca-tv|C|050"
+    case catvC8 = "ca-tv|C8|075"
+    case catvG = "ca-tv|G|100"
+    case catvPG = "ca-tv|PG|200"
+    case catv14 = "ca-tv|14+|300"
+    case catv18 = "ca-tv|18+|350"
+    case catv21 = "ca-tv|21+|500"
+    case deMovieAB0 = "de-movie|Ab 0 Jahren|075"
+    case deMovieAB6 = "de-movie|Ab 6 Jahren|100"
+    case deMovieAB12 = "de-movie|Ab 12 Jahren|200"
+    case deMovieAB16 = "de-movie|Ab 16 Jahren|500"
+    case deMovieAB18 = "de-movie|Ab 18 Jahren|600"
+    case detvAB0 = "de-tv|Ab 0 Jahren|075"
+    case detvAB6 = "de-tv|Ab 6 Jahren|100"
+    case detvAB12 = "de-tv|Ab 12 Jahren|200"
+    case detvAB16 = "de-tv|Ab 16 Jahren|500"
+    case detvAB18 = "de-tv|Ab 18 Jahren|600"
+    case frMovieTP = "fr-movie|Tout public|000"
+    case frMovie10 = "fr-movie|-10|100"
+    case frMovie12 = "fr-movie|-12|300"
+    case frMovie16 = "fr-movie|-16|375"
+    case frMovie18 = "fr-movie|-18|400"
+    case frMovieUnrated = "fr-movie|Unrated|???"
+    case itMovieT = "it-movie|T|100"
+    case itMovieVPA = "it-movie|VPA|125"
+    case itMovieVM10 = "it-movie|VM10|150"
+    case itMovieVM12 = "it-movie|VM12|200"
+    case itMovieVM14 = "it-movie|VM14|325"
+    case itMovieVM18 = "it-movie|VM18|400"
+    case ieMovieNR = "ie-movie|Not Rated|000"
+    case ieMovieG = "ie-movie|G|100"
+    case ieMoviePG = "ie-movie|PG|200"
+    case ieMovie12 = "ie-movie|12|300"
+    case ieMovie15 = "ie-movie|15|350"
+    case ieMovie16 = "ie-movie|16|375"
+    case ieMovie18 = "ie-movie|18|400"
+    case ieMovieUnrated = "ie-movie|Unrated|???"
+    case ietvG = "ie-tv|G|100"
+    case ietvPG = "ie-tv|PG|350"
+    case ietv12 = "ie-tv|12|400"
+    case ietv15 = "ie-tv|15|500"
+    case ietv18 = "ie-tv|18|600"
+    case jpMovieG = "jp-movie|G|100"
+    case jpMoviePG12 = "jp-movie|PG12|200"
+    case jpMovieR15 = "jp-movie|R15+|300"
+    case jpMovieR18 = "jp-movie|R18+|400"
+    case jpMovieUnrated = "jp-movie|Unrated|???"
+    case mxMovieAA = "mx-movie|AA|000"
+    case mxMovieA = "mx-movie|A|100"
+    case mxMovieB = "mx-movie|B|300"
+    case mxMovieB15 = "mx-movie|B-15|500"
+    case mxMovieC = "mx-movie|C|600"
+    case nlMovieAL = "nl-movie|AL/G|000"
+    case nlMovie6 = "nl-movie|6|100"
+    case nlMovie9 = "nl-movie|9|200"
+    case nlMovie12 = "nl-movie|12|300"
+    case nlMovie16 = "nl-movie|16|500"
+    case nlMovie18 = "nl-movie|18|600"
+    case nzMovieG = "nz-movie|G|100"
+    case nzMoviePG = "nz-movie|PG|200"
+    case nzMovieM = "nz-movie|M|300"
+    case nzMovieR13 = "nz-movie|R13|325"
+    case nzMovieRP13 = "nz-movie|RP13|325"
+    case nzMovieR15 = "nz-movie|R15|350"
+    case nzMovieR16 = "nz-movie|R16|375"
+    case nzMovieRP16 = "nz-movie|RP16|375"
+    case nzMovieR18 = "nz-movie|R18|400"
+    case nzMovieR = "nz-movie|R|500"
+    case nzMovieU = "nz-movie|U|900"
+    case nzMovieNR = "nz-movie|Not Rated|???"
+    case seMovieA = " se-movie|A|000"
+    case seMovie7 = " se-movie|7|125"
+    case seMovie11 = " se-movie|11|225"
+    case seMovie15 = " se-movie|15|400"
+    case seMovieUnrated = " se-movie|Unrated|???"
+    case chMovie0 = "ch-movie|0|050"
+    case chMovie6 = "ch-movie|6|075"
+    case chMovie7 = "ch-movie|7|125"
+    case chMovie10 = "ch-movie|10|150"
+    case chMovie12 = "ch-movie|12|200"
+    case chMovie14 = "ch-movie|14|325"
+    case chMovie16 = "ch-movie|16|375"
+    case chMovie18 = "ch-movie|18|400"
+    case chMovieUnrated = "ch-movie|Unrated|???"
+    case ukMovieNR = "uk-movie|NR|000"
+    case ukMovieU = "uk-movie|U|100"
+    case ukMovieUc = "uk-movie|Uc|150"
+    case ukMoviePG = "uk-movie|PG|200"
+    case ukMovie12 = "uk-movie|12|300"
+    case ukMovie12A = "uk-movie|12A|325"
+    case ukMovie15 = "uk-movie|15|350"
+    case ukMovie18 = "uk-movie|18|400"
+    case uktvCaution = "uk-tv|Caution|500"
+    case ukMovieR18 = "uk-movie|R18|600"
+    case ukMovieE = "uk-movie|E|0"
+    case ukMovieUnrated = "uk-movie|Unrated|???"
+    case ruMovie0 = "ru-movie|0+|000"
+    case ruMovie6 = "ru-movie|6+|150"
+    case ruMovie12 = "ru-movie|12+|200"
+    case ruMovie16 = "ru-movie|16+|375"
+    case ruMovie18 = "ru-movie|18+|400"
+    case ruMovieUnrated = "ru-movie|Unrated|???"
+    case phMovieG = "ph-movie|G|100"
+    case phMoviePG = "ph-movie|PG|300"
+    case phMovieR13 = "ph-movie|R-13|325"
+    case phMovieR16 = "ph-movie|R-16|375"
+    case phMovieR18 = "ph-movie|R-18|400"
+    case phMovieUnrated = "ph-movie|Unrated|???"
+    case hkMovie100 = "hk-movie|第i類|100"
+    case hkMovie400 = "hk-movie|第ii類|400"
+    case hkMovieUnrated = "hk-movie|未作評級|???"
+    case czMovieU = "cz-movies|U|100"
+    case czMovie12 = "cz-movies|12+|200"
+    case czMovie15 = "cz-movies|15+|350"
+    case czMovie18 = "cz-movies|18+|400"
+    case czMovieUnrated = "cz-movies|neklasifikováno|???"
+    case inMovieU = "in-movies|U|000"
+    case inMovieUA = "in-movies|UA|200"
+    case inMovieA = "in-movies|A|500"
+    case inMovieS = "in-movies|S|600"
+    case inMovieUnrated = "in-movies|रेट नहीं की गई|???"
+    case intvU = "in-tv|U|100"
+    case intvUA = "in-tv|UA|200"
+    case intvA = "in-tv|A|600"
+    case intvS = "in-tv|S|600"
+    case allCountries = "mpaa|Unrated|???"
 }
+

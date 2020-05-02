@@ -20,16 +20,16 @@ public enum FileTypeRefinements: String {
     case mpegLayerI = "MPEG 1/2 layer I"
     case mpegLayerII = "MPEG 1/2 layer II"
     case mpegLayerIII = "MPEG 1/2 layer III"
-    case mpegTwoPointFive = "MPEG 2.5"
-    case advancedAudioCompression = "Advanced Audio Compression"
+    case mpeg25 = "MPEG 2.5"
+    case AAC = "Advanced Audio Compression"
     
     var code: String {
         switch self {
             case .mpegLayerI: return "/1"
             case .mpegLayerII: return "/2"
             case .mpegLayerIII: return "/3"
-            case .mpegTwoPointFive: return "/2.5"
-            case .advancedAudioCompression: return "/AAC"
+            case .mpeg25: return "/2.5"
+            case .AAC: return "/AAC"
         }
     }
 }
