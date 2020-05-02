@@ -75,7 +75,7 @@ public struct Tag {
         self.frames = frames
     }
     
-    func buildTagHeader(frameContentData: Data, version: Version) throws -> Data {
+    func buildTagHeader(version: Version) throws -> Data {
         var headerData = Data()
         switch version {
             case .v2_2:
@@ -86,7 +86,22 @@ public struct Tag {
                 headerData.append(contentsOf: TagProperties().v2_4Bytes)
         }
         headerData.append(contentsOf: TagProperties().defaultFlag)
-        headerData.append(contentsOf: (try TagProperties().calculateNewSize(data: frameContentData)))
+        headerData.append(contentsOf: (try TagProperties().calculateNewTagSize(data: self.framesData(version: version))))
         return headerData
+    }
+    
+    func framesData(version: Version) throws -> Data {
+        var framesData = Data()
+        for frame in self.frames.values {
+            framesData.append(try frame.getFramesData(version: version))
+        }
+        return framesData
+    }
+    
+    func buildTag(version: Version) throws -> Data {
+        var tagData = Data()
+        tagData.append(try buildTagHeader(version: version))
+        tagData.append(try self.framesData(version: version))
+        return tagData
     }
 }

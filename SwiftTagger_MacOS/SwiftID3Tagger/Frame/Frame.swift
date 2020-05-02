@@ -183,6 +183,41 @@ enum Frame {
                 return imageFrame.frameKey
         }
     }
+    
+    func getFramesData(version: Version) throws -> Data {
+        switch self {
+            case .stringFrame(let stringFrame):
+                return try stringFrame.encode(version: version)
+            case .partOfTotalFrame(let partOfTotalFrame):
+                return try partOfTotalFrame.encode(version: version)
+            case .localizedFrame(let localizedFrame):
+                return try localizedFrame.encode(version: version)
+            case .userTextFrame(let userTextFrame):
+                return try userTextFrame.encode(version: version)
+            case .languageFrame(let languageFrame):
+                return try languageFrame.encode(version: version)
+            case .creditsListFrame(let creditsListFrame):
+                return try creditsListFrame.encode(version: version)
+            case .integerFrame(let integerFrame):
+                return try integerFrame.encode(version: version)
+            case .dateFrame(let dateFrame):
+                return try dateFrame.encode(version: version)
+            case .imageFrame(let imageFrame):
+                return try imageFrame.encode(version: version)
+            case .booleanFrame(let booleanFrame):
+                return try booleanFrame.encode(version: version)
+            case .presetOptionsFrame(let presetOptionsFrame):
+                return try presetOptionsFrame.encode(version: version)
+            case .urlFrame(let urlFrame):
+                return try urlFrame.encode(version: version)
+            case .tocFrame(let tocFrame):
+                return try tocFrame.encode(version: version)
+            case .chapterFrame(let chapterFrame):
+                return try chapterFrame.encode(version: version)
+            case .unknownFrame(let unknownFrame):
+                return try unknownFrame.encode(version: version)
+        }
+    }
 }
 
 extension Frame {

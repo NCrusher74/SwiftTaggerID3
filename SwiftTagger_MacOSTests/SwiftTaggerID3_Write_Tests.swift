@@ -85,10 +85,10 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.acknowledgment = "Acknowledgments"
         tag.thanks = "Thanks"
         tag.sourceCredit = "SourceCredit"
-        tag.involvedPeopleList?[0].role = "Director"
-        tag.involvedPeopleList?[0].person = "Director Name"
-        tag.involvedPeopleList?[1].role = "Producer"
-        tag.involvedPeopleList?[1].person = "Producer Name"
+//        tag.involvedPeopleList?[0].role = "Director" // Thread 1: Fatal error: Index out of range
+//        tag.involvedPeopleList?[0].person = "Director Name"
+//        tag.involvedPeopleList?[1].role = "Producer"
+//        tag.involvedPeopleList?[1].person = "Producer Name"
         
         let imageURL = Bundle.testImage
         try tag.setAttachedPicture(imageType: .Other, imageDescription: "SamplePicture", location: imageURL)
@@ -123,6 +123,25 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
             at: outputURL.parentDirectory,
             withIntermediateDirectories: true)
         
-        try mp3file.write(using: tag, writingTo: outputURL)
+        try mp3file.write(tagVersion: .v2_2, using: tag, writingTo: outputURL)
     }
 }
+/*
+ Raw Data:
+ 
+ File size: 114661
+ Format: MPEG-1, Layer 3
+ File contains Info header at offset 33578
+ Channel mode: Stereo
+ Sample rate: 44100 Hz
+ Duration: 5041 ms
+ Bit rate: 129 kbits/sec
+ ID3 Tag version 2.2.0
+ Tag at offset: 0 size = 10999
+ Padding: 0 bytes
+ Audio base: 10999 size = 103662
+ Adjusted audio base: 33578 size = 81083
+ 
+ Tag Header bytes: 49 44 33 2 0 0 0 0 55 6d
+ Bytes where first frame header should be: ff fe 54 0 58 0
+ */

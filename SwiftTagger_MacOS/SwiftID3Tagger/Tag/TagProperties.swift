@@ -31,7 +31,7 @@ struct TagProperties {
         return Int(decodedTagSize)
     }
     
-    func calculateNewSize(data: Data) throws -> Data {
+    func calculateNewTagSize(data: Data) throws -> Data {
         return data.count.truncatedUInt32.bigEndianData
     }
 }

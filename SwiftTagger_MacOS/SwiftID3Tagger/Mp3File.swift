@@ -12,7 +12,7 @@ import Foundation
 public struct Mp3File {
  
     let location: URL
-    var data: Data
+    public var data: Data
 
     /// - Parameters:
     ///     - location: The location of the audio file in the local file system.
@@ -31,10 +31,20 @@ public struct Mp3File {
        return try Tag(readFrom: self)
     }
     
+    private func buildNewFile(using tag: Tag, version: Version) throws -> Data {
+        var fileData = Data()
+        fileData.append(try tag.buildTag(version: version))
+        fileData.append(self.data)
+        return fileData
+    }
     
-    public func write(using tag: Tag, writingTo url: URL) throws {
+    public func write(tagVersion: Version,
+                      using tag: Tag,
+                      writingTo url: URL) throws {
+        let fileData = try buildNewFile(using: tag, version: tagVersion)
         try FileManager.default.createDirectory(
             at: url.parentDirectory,
             withIntermediateDirectories: true)
+        try fileData.write(to: url)
     }
 }

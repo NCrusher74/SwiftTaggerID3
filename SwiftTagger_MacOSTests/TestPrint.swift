@@ -7,11 +7,21 @@
 //
 
 import XCTest
+import SwiftTagger_MacOS
 
 class TestPrint: XCTestCase {
 
     func testExample() throws {
-//        let rating: return Rating
+        let url = URL(fileURLWithPath: "/Users/nolainecrusher/Downloads/audiobook_tools/sampleaax/test/failed-testV22.mp3")
+
+        let mp3File = try Mp3File(location: url)
+        let mp3Data = mp3File.data
+        let startIndex = 10
+        let endIndex = 16
+        let range = startIndex ..< endIndex
+        
+        let slice = mp3Data.subdata(in: range)
+        print(slice.hexadecimal())
     }
 
 }

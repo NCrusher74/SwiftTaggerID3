@@ -2,10 +2,6 @@
 //  ImageFrame.swift
 //  SwiftTagger_MacOS
 //
-//  Some of this code is adapted from ID3TagEditor
-//  Created by Fabrizio Duroni on 27/02/2018.
-//  2018 Fabrizio Duroni. https://github.com/chicio/ID3TagEditor
-//
 //  Created by Nolaine Crusher on 4/11/20.
 //  Copyright © 2020 Nolaine Crusher. All rights reserved.
 //
@@ -24,6 +20,8 @@
     let imageType: ImageType
     /// an optional description of the image
     var imageDescription: String? = ""
+    /// the format of the image (`jpg` and `png` are the only supported image formats)
+    var imageFormat: ImageFormat
     
     
     /**
@@ -35,9 +33,11 @@
      */
     private init(layout: FrameLayoutIdentifier,
                  imageType: ImageType,
+                 imageFormat: ImageFormat,
                  imageDescription: String?,
                  image: Data) {
         self.imageType = imageType
+        self.imageFormat = imageFormat
         self.imageDescription = imageDescription
         self.image = image
         self.flags = ImageFrame.defaultFlags
@@ -53,23 +53,22 @@
             endianness: .bigEndian))
         // determine format based upon magic number
         // encode and append a format or MIME-type string according to version requirements
-        var formatOrMIMETypeString: String = ""
-        let magicNumberRange = 0 ..< 4
+        var formatString: String = ""
         switch version {
             case .v2_2:
-                if self.image.subdata(in: magicNumberRange) == jpgMagicNumber {
-                    formatOrMIMETypeString = "jpg"
-                } else if self.image.subdata(in: magicNumberRange) == pngMagicNumber {
-                    formatOrMIMETypeString = "png"
+                if self.imageFormat == .jpg {
+                    formatString = "jpg"
+                } else if self.imageFormat == .png {
+                    formatString = "png"
                 }
-                frameData.append(formatOrMIMETypeString.encoded(withNullTermination: false))
+                frameData.append(formatString.encoded(withNullTermination: false))
             case .v2_3, .v2_4:
-                if self.image.subdata(in: magicNumberRange) == jpgMagicNumber {
-                    formatOrMIMETypeString = "image/jpeg"
-                } else if self.image.subdata(in: magicNumberRange) == pngMagicNumber {
-                    formatOrMIMETypeString = "image/png"
+                if self.imageFormat == .jpg {
+                    formatString = "image/jpeg"
+                } else if self.imageFormat == .png {
+                    formatString = "image/png"
                 }
-                frameData.append(formatOrMIMETypeString.encoded(withNullTermination: true))
+                frameData.append(formatString.encoded(withNullTermination: true))
         }
         // append image type byte
         frameData.append(self.imageType.rawValue.encoding(
@@ -81,16 +80,6 @@
         // append image data
         frameData.append(self.image)
         return frameData
-    }
-    
-    // the first four bytes of an image file contain a "magic number" that identifies the image format
-    // use this to determine format of the image being encoded
-    private var jpgMagicNumber: Data {
-        return Data([0xFF, 0xD8, 0xFF, 0xE0])
-    }
-    
-    private var pngMagicNumber: Data {
-        return Data([0x89, 0x50, 0x4E, 0x47])
     }
     
     var flags: Data
@@ -123,13 +112,13 @@
             case .v2_2:
                 let formatString = try String(ascii: parsing.extractFirst(3))
                 if formatString.lowercased() == "jpg" {
-                    _ = ImageFormat(rawValue: "jpg")
+                    self.imageFormat = ImageFormat(rawValue: "jpg") ?? .jpg
                 } else if formatString.lowercased() == "png" {
-                    _ = ImageFormat(rawValue: "png")
+                    self.imageFormat = ImageFormat(rawValue: "png") ?? .png
                 } else {
                     throw Mp3File.Error.UnhandledImageFormat
-            }
-        }
+                }
+        }; self.imageFormat = .jpg
         
         // parse out the image description string
         // if no image description exists, use a string describing the image type
@@ -153,10 +142,19 @@
     init(imageLocation: URL,
                 imageType: ImageType,
                 imageDescription: String?) throws {
+        var imageFormat: ImageFormat
+        if imageLocation.pathExtension.lowercased() == "jpg" || imageLocation.pathExtension.lowercased() == "jpeg" {
+            imageFormat = ImageFormat.jpg
+        } else if imageLocation.pathExtension.lowercased() == "png" {
+            imageFormat = ImageFormat.png
+        } else {
+            throw Mp3File.Error.UnhandledImageFormat
+        }
         let imageData = try Data(contentsOf: imageLocation)
         
         self.init(layout: .known(.attachedPicture),
                   imageType: imageType,
+                  imageFormat: imageFormat,
                   imageDescription: imageDescription,
                   image: imageData)
     }
