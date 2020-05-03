@@ -17,70 +17,6 @@ import Foundation
  */
 struct LocalizedFrame: FrameProtocol {
     
-    // general lyrics frame initializer
-    init(language: ISO6392Codes?, description: String?, lyrics: String) {
-        self.init(layout: .known(.unsynchronizedLyrics),
-                  languageString: language?.rawValue,
-                  descriptionString: description ?? "",
-                  contentString: lyrics)
-    }
-
-    // general comments frame initializer
-    init(language: ISO6392Codes?, description: String?, comments: String) {
-        self.init(layout: .known(.comments),
-                  languageString: language?.rawValue,
-                  descriptionString: description ?? "",
-                  contentString: comments)
-    }
-
-    // convenience initializer for comments frame intended to hold a description of the audio file contents
-    init(language: ISO6392Codes?, contentDescription: String) {
-        self.init(layout: .known(.comments),
-                  languageString: language?.rawValue,
-                  descriptionString: "Description",
-                  contentString: contentDescription)
-    }
-
-    // convenience initializer for comments frame intended to hold the liner notes of the audio file contents
-    init(language: ISO6392Codes?, linerNotes: String) {
-        self.init(layout: .known(.comments),
-                  languageString: language?.rawValue,
-                  descriptionString: "Liner Notes",
-                  contentString: linerNotes)
-    }
-
-    // convenience initializer for comments frame intended to hold a short description of the audio file contents
-    init(language: ISO6392Codes?, shortDescription: String) {
-        self.init(layout: .known(.comments),
-                  languageString: language?.rawValue,
-                  descriptionString: "Short Description",
-                  contentString: shortDescription)
-    }
-
-    // convenience initializer for comments frame intended to hold a longer or extended description of the audio file contents
-    init(language: ISO6392Codes?, longDescription: String) {
-        self.init(layout: .known(.comments),
-                  languageString: language?.rawValue,
-                  descriptionString: "Long Description",
-                  contentString: longDescription)
-    }
-
-    // convenience initializer for comments frame intended to hold a description of a specific song
-    init(language: ISO6392Codes?, songDescription: String) {
-        self.init(layout: .known(.comments),
-                  languageString: language?.rawValue,
-                  descriptionString: "Song Description",
-                  contentString: songDescription)
-    }
-
-    // convenience initializer for comments frame intended to hold a description of a series or collection that the audio file is a part of (such as for audiobooks)
-    init(language: ISO6392Codes?, seriesDescription: String) {
-        self.init(layout: .known(.comments),
-                  languageString: language?.rawValue,
-                  descriptionString: "Series Description",
-                  contentString: seriesDescription)
-    }
-    
     /// ISO-639-2 languge code
     var languageString: String? = "und"
     /// A short description of the frame content.
@@ -93,7 +29,7 @@ struct LocalizedFrame: FrameProtocol {
      - parameter descriptionString: a terminated text string describing the frame content
      - parameter contentString: the full text of the comment or lyric frame.
      */
-    private init(layout: FrameLayoutIdentifier,
+    init(layout: FrameLayoutIdentifier,
                 languageString: String?,
                 descriptionString: String?,
                 contentString: String) {
@@ -164,162 +100,93 @@ struct LocalizedFrame: FrameProtocol {
 // MARK: Tag Extension
 public extension Tag {
     /// - Comments frame getter-setter. ID3 Identifier `COM`/`COMM`
-    subscript(comments language: ISO6392Codes, commentsDescription: String) -> String? {
+    subscript(comments language: ISO6392Codes, commentsDescription: String) -> String {
         get {
-            if let frame = self.frames[.comments(description: commentsDescription)],
-                case .localizedFrame(let localizedFrame) = frame {
-                return localizedFrame.contentString
-            } else {
-                return nil
-            }
+            localizedGetter(for: .comments(
+                description: commentsDescription),
+                            in: language,
+                            with: commentsDescription) ?? ""
         }
         set {
-            let key = FrameKey.comments(description: commentsDescription)
-            if let new = newValue {
-                self.frames[key] = Frame.localizedFrame(.init(language: language, description: commentsDescription, comments: new))
-            } else {
-                self.frames[key] = nil
-            }
+            set(.known(.comments), .comments(description: commentsDescription), language: language.rawValue, description: commentsDescription, content: newValue)
         }
     }
     
     /// - Description getter-setter. This is a convenience for a custom `COM`/`COMM` frame with a description of `Description`
-    subscript(description language: ISO6392Codes) -> String? {
+    subscript(description language: ISO6392Codes) -> String {
         get {
-            if let frame = self.frames[.comments(description: "Description")],
-                case .localizedFrame(let localizedFrame) = frame {
-                return localizedFrame.contentString
-            } else {
-                return nil
-            }
+            localizedGetter(for: .comments(
+                description: "Description"),
+                            in: language,
+                            with: "Description") ?? ""
         }
         set {
-            let key = FrameKey.comments(description: "Description")
-            if let new = newValue {
-                self.frames[key] = Frame.localizedFrame(.init(language: language, description: "Description", comments: new))
-            } else {
-                self.frames[key] = nil
-            }
-        }
-    }
-    
-    /// - ShortDescription getter-setter. This is a convenience for a custom `COM`/`COMM` frame with a description of `Short Description`
-    subscript(shortDescription language: ISO6392Codes) -> String? {
-        get {
-            if let frame = self.frames[.comments(description: "Short Description")],
-                case .localizedFrame(let localizedFrame) = frame {
-                return localizedFrame.contentString
-            } else {
-                return nil
-            }
-        }
-        set {
-            let key = FrameKey.comments(description: "Short Description")
-            if let new = newValue {
-                self.frames[key] = Frame.localizedFrame(.init(language: language, description: "Short Description", comments: new))
-            } else {
-                self.frames[key] = nil
-            }
+            set(.known(.comments), .comments(description: "Description"), language: language.rawValue, description: "Description", content: newValue)
         }
     }
     
     /// - LongDescription getter-setter. This is a convenience for a custom `COM`/`COMM` frame with a description of `Long Description`
-    subscript(longDescription language: ISO6392Codes) -> String? {
+    subscript(longDescription language: ISO6392Codes) -> String {
         get {
-            if let frame = self.frames[.comments(description: "Long Description")],
-                case .localizedFrame(let localizedFrame) = frame {
-                return localizedFrame.contentString
-            } else {
-                return nil
-            }
+            localizedGetter(for: .comments(
+                description: "Long Description"),
+                            in: language,
+                            with: "Long Description") ?? ""
         }
         set {
-            let key = FrameKey.comments(description: "Long Description")
-            if let new = newValue {
-                self.frames[key] = Frame.localizedFrame(.init(language: language, description: "Long Description", comments: new))
-            } else {
-                self.frames[key] = nil
-            }
+            set(.known(.comments), .comments(description: "Long Description"), language: language.rawValue, description: "Long Description", content: newValue)
         }
     }
     
     /// - LinerNotes getter-setter. This is a convenience for a custom `COM`/`COMM` frame with a description of `Liner Notes`
-    subscript(linerNotes language: ISO6392Codes) -> String? {
+    subscript(linerNotes language: ISO6392Codes) -> String {
         get {
-            if let frame = self.frames[.comments(description: "Liner Notes")],
-                case .localizedFrame(let localizedFrame) = frame {
-                return localizedFrame.contentString
-            } else {
-                return nil
-            }
+            localizedGetter(for: .comments(
+                description: "Liner Notes"),
+                            in: language,
+                            with: "Liner Notes") ?? ""
         }
         set {
-            let key = FrameKey.comments(description: "Liner Notes")
-            if let new = newValue {
-                self.frames[key] = Frame.localizedFrame(.init(language: language, description: "Liner Notes", comments: new))
-            } else {
-                self.frames[key] = nil
-            }
+            set(.known(.comments), .comments(description: "Liner Notes"), language: language.rawValue, description: "Liner Notes", content: newValue)
         }
     }
     
     /// - SongDescription getter-setter. This is a convenience for a custom `COM`/`COMM` frame with a description of `Song Description`
-    subscript(songDescription language: ISO6392Codes) -> String? {
+    subscript(songDescription language: ISO6392Codes) -> String {
         get {
-            if let frame = self.frames[.comments(description: "Song Description")],
-                case .localizedFrame(let localizedFrame) = frame {
-                return localizedFrame.contentString
-            } else {
-                return nil
-            }
+            localizedGetter(for: .comments(
+                description: "Song Description"),
+                            in: language,
+                            with: "Song Description") ?? ""
         }
         set {
-            let key = FrameKey.comments(description: "Song Description")
-            if let new = newValue {
-                self.frames[key] = Frame.localizedFrame(.init(language: language, description: "Song Description", comments: new))
-            } else {
-                self.frames[key] = nil
-            }
+            set(.known(.comments), .comments(description: "Song Description"), language: language.rawValue, description: "Song Description", content: newValue)
         }
     }
     
     /// - SeriesDescription getter-setter. This is a convenience for a custom `COM`/`COMM` frame with a description of `Series Description`
-    subscript(seriesDescription language: ISO6392Codes) -> String? {
+    subscript(seriesDescription language: ISO6392Codes) -> String {
         get {
-            if let frame = self.frames[.comments(description: "Series Description")],
-                case .localizedFrame(let localizedFrame) = frame {
-                return localizedFrame.contentString
-            } else {
-                return nil
-            }
+            localizedGetter(for: .comments(
+                description: "Series Description"),
+                            in: language,
+                            with: "Series Description") ?? ""
         }
         set {
-            let key = FrameKey.comments(description: "Series Description")
-            if let new = newValue {
-                self.frames[key] = Frame.localizedFrame(.init(language: language, description: "Series Description", comments: new))
-            } else {
-                self.frames[key] = nil
-            }
+            set(.known(.comments), .comments(description: "Series Description"), language: language.rawValue, description: "Series Description", content: newValue)
         }
     }
     
     /// - (Unsynchronized) lyrics frame getter-setter. ID3 Identifier `ULT`/`USLT`
-    subscript(lyrics language: ISO6392Codes, lyricsDescription: String) -> String? {
+    subscript(lyrics language: ISO6392Codes, lyricsDescription: String) -> String {
         get {
-            if let frame = self.frames[.unsynchronizedLyrics(description: lyricsDescription)],
-                case .localizedFrame(let localizedFrame) = frame {
-                return localizedFrame.contentString
-            } else {
-                return nil
-            }
+            localizedGetter(for: .unsynchronizedLyrics(
+                description: lyricsDescription),
+                            in: language,
+                            with: lyricsDescription) ?? ""
         }
         set {
-            let key = FrameKey.unsynchronizedLyrics(description: lyricsDescription)
-            if let new = newValue {
-                self.frames[key] = Frame.localizedFrame(.init(language: language, description: lyricsDescription, lyrics: new))
-            } else {
-                self.frames[key] = nil
-            }
+            set(.known(.unsynchronizedLyrics), .unsynchronizedLyrics(description: lyricsDescription), language: language.rawValue, description: lyricsDescription, content: newValue)
         }
     }
 }

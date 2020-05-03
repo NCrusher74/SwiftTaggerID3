@@ -159,7 +159,7 @@ public struct ChapterFrame: FrameProtocol {
                 endTime: Int) {
         // create title stringframe as subframe
         let subframeKey = FrameKey.title
-        let subframeFrame: Frame = .stringFrame(.init(title: "\(chapterTitle)"))
+        let subframeFrame: Frame = .stringFrame(.init(layout: .known(.title), contentString: chapterTitle))
         let subframe = [subframeKey : subframeFrame]
 
         let uuid = UUID()

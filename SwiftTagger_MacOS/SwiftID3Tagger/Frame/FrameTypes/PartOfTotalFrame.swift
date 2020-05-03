@@ -13,14 +13,6 @@ import Foundation
  */
 struct PartOfTotalFrame: FrameProtocol {
     
-    init(disc: Int, totalDiscs: Int?) {
-        self.init(layout: .known(.discNumber), part: disc, total: totalDiscs)
-    }
-    
-    init(track: Int, totalTracks: Int?) {
-        self.init(layout: .known(.trackNumber), part: track, total: totalTracks)
-    }
-
     /// The index of the track/disc.
     var part: Int
     /// The total number of tracks/discs.
@@ -30,7 +22,7 @@ struct PartOfTotalFrame: FrameProtocol {
      - parameter part: the index of the track/disc.
      - parameter total: the total tracks/discs of the recordings.
      */
-    private init(layout: FrameLayoutIdentifier, part: Int, total: Int?) {
+    init(layout: FrameLayoutIdentifier, part: Int, total: Int?) {
         self.part = part
         self.total = total
         self.flags = PartOfTotalFrame.defaultFlags
@@ -91,32 +83,24 @@ public extension Tag {
     /// - DiscNumber(/TotalDiscs) getter-setter. ID3 Identifier: `TPA`/`TPOS`
     var discNumber: (disc: Int, totalDiscs: Int?) {
         get {
-            if let frame = self.frames[.discNumber],
-                case .partOfTotalFrame(let partOfTotalFrame) = frame {
-                return (partOfTotalFrame.part, partOfTotalFrame.total)
-            } else {
-                return (0,0)
-            }
+            let tuple = intTuple(for: .discNumber)
+            return (disc: tuple?.part ?? 0, totalDiscs: tuple?.total)
         }
         set {
-            let frame = PartOfTotalFrame(disc: newValue.0, totalDiscs: newValue.1)
-            frames[.discNumber] = .partOfTotalFrame(frame)
+            set(.known(.discNumber), .discNumber,
+                to: newValue.disc, and: newValue.totalDiscs)
         }
     }
     
     /// - TrackNumber(/TotalTracks) getter-setter. ID3 Identifier: `TRK`/`TRCK`
     var trackNumber: (track: Int, totalTracks: Int?) {
         get {
-            if let frame = self.frames[.trackNumber],
-                case .partOfTotalFrame(let partOfTotalFrame) = frame {
-                return (partOfTotalFrame.part, partOfTotalFrame.total)
-            } else {
-                return (0,0)
-            }
+            let tuple = intTuple(for: .trackNumber)
+            return (track: tuple?.part ?? 0, totalTracks: tuple?.total)
         }
         set {
-            let frame = PartOfTotalFrame(track: newValue.0, totalTracks: newValue.1)
-            frames[.trackNumber] = .partOfTotalFrame(frame)
+            set(.known(.trackNumber), .trackNumber,
+                to: newValue.track, and: newValue.totalTracks)
         }
     }
 }

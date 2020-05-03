@@ -105,3 +105,117 @@ public struct Tag {
         return tagData
     }
 }
+
+extension Tag {
+    
+    func string(for frameKey: FrameKey) -> String? {
+        if let frame = self.frames[frameKey],
+            case .stringFrame(let stringFrame) = frame {
+            return stringFrame.contentString
+        } else {
+            return nil
+        }
+    }
+    
+    mutating func set(_ layout: FrameLayoutIdentifier,_ frameKey: FrameKey,to string: String) {
+        let frame = StringFrame(layout: layout, contentString: string)
+        self.frames[frameKey] = .stringFrame(frame)
+    }
+    
+    func url(for frameKey: FrameKey) -> String? {
+        if let frame = self.frames[frameKey],
+            case .urlFrame(let urlFrame) = frame {
+            return urlFrame.urlString
+        } else {
+            return nil
+        }
+    }
+    
+    mutating func set(_ layout: FrameLayoutIdentifier,_ frameKey: FrameKey,to url: URL) {
+        let frame = URLFrame(layout: layout, urlString: url.path)
+        self.frames[frameKey] = .urlFrame(frame)
+    }
+    
+    func integer(for frameKey: FrameKey) -> Int? {
+        if let frame = self.frames[frameKey],
+            case .integerFrame(let integerFrame) = frame {
+            return integerFrame.value
+        } else {
+            return nil
+        }
+    }
+    
+    mutating func set(_ layout: FrameLayoutIdentifier,_ frameKey: FrameKey, to value: Int) {
+        let frame = IntegerFrame(layout: layout, value: value)
+        self.frames[frameKey] = .integerFrame(frame)
+    }
+    
+    func intTuple(for frameKey: FrameKey) -> (part: Int, total: Int?)? {
+        if let frame = self.frames[frameKey],
+            case .partOfTotalFrame(let partOfTotalFrame) = frame {
+            return (partOfTotalFrame.part, partOfTotalFrame.total)
+        } else {
+            return nil
+        }
+    }
+    
+    mutating func set(_ layout: FrameLayoutIdentifier,_ frameKey: FrameKey, to part: Int, and total: Int?) {
+        let frame = PartOfTotalFrame(layout: layout, part: part, total: total)
+        self.frames[frameKey] = .partOfTotalFrame(frame)
+    }
+    
+    func tupleArray(for frameKey: FrameKey) -> [(role: String, person: String)]? {
+        if let frame = self.frames[frameKey],
+            case .creditsListFrame(let creditsListFrame) = frame {
+            return creditsListFrame.entries
+        } else {
+            return nil
+        }
+    }
+    
+    mutating func set(_ layout: FrameLayoutIdentifier, _ frameKey: FrameKey, to entries: [(role: String, person: String)]?) {
+        let frame = CreditsListFrame(layout: layout, entries: entries ?? [])
+        self.frames[frameKey] = .creditsListFrame(frame)
+    }
+    
+    func userTextGetter(for frameKey: FrameKey, with description: String?) -> String? {
+        if frameKey == .userDefinedWebpage(description: description ?? "") {
+            if let frame = self.frames[.userDefinedWebpage(description: description ?? "")],
+                case .userTextFrame(let userTextFrame) = frame {
+                return userTextFrame.contentString
+            } else {
+                if let frame = self.frames[.userDefinedText(description: description ?? "")],
+                    case .userTextFrame(let userTextFrame) = frame {
+                    return userTextFrame.contentString
+                }
+            }
+        }; return nil
+    }
+    
+    mutating func set(_ layout: FrameLayoutIdentifier,_ frameKey: FrameKey, description: String?, content: String) {
+        let frame = UserTextFrame(layout: layout, descriptionString: description ?? "", contentString: content)
+        self.frames[frameKey] = .userTextFrame(frame)
+    }
+    
+    func localizedGetter(
+        for frameKey: FrameKey,
+        in language: ISO6392Codes?,
+        with description: String?) -> String? {
+        if frameKey == .unsynchronizedLyrics(description: description ?? "") {
+            if let frame = self.frames[.unsynchronizedLyrics(description: description ?? "")],
+                case .localizedFrame(let localizedFrame) = frame {
+                return localizedFrame.contentString
+            }
+        } else {
+            if let frame = self.frames[.comments(description: description ?? "")],
+                case .localizedFrame(let localizedFrame) = frame {
+                return localizedFrame.contentString
+            }
+        }; return nil
+    }
+    
+    mutating func set(_ layout: FrameLayoutIdentifier,_ frameKey: FrameKey, language: String, description: String?, content: String) {
+        let frame = LocalizedFrame(layout: layout, languageString: language, descriptionString: description, contentString: content)
+        self.frames[frameKey] = .localizedFrame(frame)
+    }
+}

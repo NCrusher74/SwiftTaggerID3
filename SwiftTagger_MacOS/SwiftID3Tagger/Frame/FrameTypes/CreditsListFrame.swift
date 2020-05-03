@@ -14,30 +14,6 @@ import Foundation
  */
 struct CreditsListFrame: FrameProtocol {
  
-    init(role: String, involvedPerson: String) {
-        var entryArray: [(String, String)] = []
-        entryArray.append((role, involvedPerson))
-        self.init(layout: .known(.involvedPeopleList), entries: entryArray)
-    }
-    
-    init(role: InvolvedPersonCredits, creditedPerson: String) {
-        var entryArray: [(String, String)] = []
-        entryArray.append((role.rawValue, creditedPerson))
-        self.init(layout: .known(.involvedPeopleList), entries: entryArray)
-    }
-
-    init(role: String, creditedMusician: String) {
-        var entryArray: [(String, String)] = []
-        entryArray.append((role, creditedMusician))
-        self.init(layout: .known(.musicianCreditsList), entries: entryArray)
-    }
-    
-    init(role: MusicianAndPerformerCredits, creditedPerformer: String) {
-        var entryArray: [(String, String)] = []
-        entryArray.append((role.rawValue, creditedPerformer))
-        self.init(layout: .known(.musicianCreditsList), entries: entryArray)
-    }
-
     /// An array of the `role, person` tuples
     var entries: [(role: String, person: String)]
     
@@ -120,41 +96,66 @@ struct CreditsListFrame: FrameProtocol {
 
 // MARK: Tag extension
 public extension Tag {
+    
     /// - MusicianCreditsList frame getter-setter. Valid only for tag version 2.4
     /// ID3 Identifier: `TMCL`
     /// the `role` parameter refers to an instrument, vocal part, or other performance-related task.
     /// the `person` parameter is the name of the person or people performing the `role`
-    var musicianCreditList: [(role: String, person: String)]? {
+    var musicianCreditList: [(role: MusicianAndPerformerCredits, person: String)] {
         get {
-            if let frame = self.frames[.musicianCreditsList],
-                case .creditsListFrame(let creditsListFrame) = frame {
-                return creditsListFrame.entries
-            } else {
-                return []
+            var reconstructedEntries: [(role: MusicianAndPerformerCredits, person: String)] = []
+            var role: MusicianAndPerformerCredits = .none
+            var person: String = ""
+            let entries = tupleArray(for: .musicianCreditsList) ?? []
+            for entry in entries {
+                role = MusicianAndPerformerCredits(rawValue: entry.role) ?? .none
+                person = entry.person
+                reconstructedEntries.append((role, person))
             }
+            return reconstructedEntries
         }
-        set {
-            let frame = CreditsListFrame(layout: .known(.musicianCreditsList), entries: newValue ?? [])
-            frames[.musicianCreditsList] = .creditsListFrame(frame)
-        }
+    }
+    
+    mutating func addMusicianCredit(role: MusicianAndPerformerCredits, person: String) {
+        var musicianCreditArray: [(role: String, person: String)] = []
+        var roleString: String = ""
+        var personString: String = ""
+        
+        let creditTuple = (role, person)
+        roleString = creditTuple.0.rawValue
+        personString = creditTuple.1
+        musicianCreditArray.append((roleString, personString))
+        set(.known(.musicianCreditsList), .musicianCreditsList, to: musicianCreditArray)
     }
     
     /// - InvolvedPeopleList frame getter-setter. ID3 Identifier: `IPL`/`IPLS`/`TIPL`
     /// the `role` parameter refers to a production or support-oriented task (for tag version 2.4)
     /// or to any performance or production related job (for tag versions 2.2 and 2.3)
     /// the `person` parameter is the name of the person or people performing the `role`
-    var involvedPeopleList: [(role: String, person: String)]? {
+    var involvedPeopleList: [(role: InvolvedPersonCredits, person: String)] {
         get {
-            if let frame = self.frames[.involvedPeopleList],
-                case .creditsListFrame(let creditsListFrame) = frame {
-                return creditsListFrame.entries
-            } else {
-                return []
+            var reconstructedEntries: [(role: InvolvedPersonCredits, person: String)] = []
+            var role: InvolvedPersonCredits = .none
+            var person: String = ""
+            let entries = tupleArray(for: .musicianCreditsList) ?? []
+            for entry in entries {
+                role = InvolvedPersonCredits(rawValue: entry.role) ?? .none
+                person = entry.person
+                reconstructedEntries.append((role, person))
             }
+            return reconstructedEntries
         }
-        set {
-            let frame = CreditsListFrame(layout: .known(.involvedPeopleList), entries: newValue ?? [])
-            frames[.involvedPeopleList] = .creditsListFrame(frame)
-        }
+    }
+    
+    mutating func addInvolvedPerson(role: InvolvedPersonCredits, person: String) {
+        var involvedPersonArray: [(role: String, person: String)] = []
+        var roleString: String = ""
+        var personString: String = ""
+        
+        let creditTuple = (role, person)
+        roleString = creditTuple.0.rawValue
+        personString = creditTuple.1
+        involvedPersonArray.append((roleString, personString))
+        set(.known(.involvedPeopleList), .involvedPeopleList, to: involvedPersonArray)
     }
 }

@@ -9,6 +9,7 @@
 import Foundation
 
 public enum MusicianAndPerformerCredits: String {
+    case none = ""
     case performer = "Performer"
     case cast = "Cast"
     case musician = "Musician"

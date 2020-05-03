@@ -83,7 +83,7 @@ struct StringFrame: FrameProtocol {
      A frame with only string content, presented as a single string without`(/n)` newline characters.
      - parameter contentString: the content of the frame.
      */
-    private init(layout: FrameLayoutIdentifier, contentString: String) {
+    init(layout: FrameLayoutIdentifier, contentString: String) {
         self.contentString = contentString
         self.flags = StringFrame.defaultFlags
         self.layout = layout
@@ -140,442 +140,172 @@ struct StringFrame: FrameProtocol {
         frameData.append(self.contentString.encoded(withNullTermination: false))
         return frameData
     }
-    
-
-    // MARK: Initializers
-    // initializers for each specific type of string frame
-    init(artist: String) {
-        self.init(layout: .known(.artist), contentString: artist)
-    }
-    
-    init(album: String) {
-        self.init(layout: .known(.album), contentString: album)
-    }
-    
-    init(albumSort: String) {
-        self.init(layout: .known(.albumSort), contentString: albumSort)
-    }
-    
-    init(albumArtist: String) {
-        self.init(layout: .known(.albumArtist), contentString: albumArtist)
-    }
-    
-    init(albumArtistSort: String) {
-        self.init(layout: .known(.albumArtistSort), contentString: albumArtistSort)
-    }
-    
-    init(artistSort: String) {
-        self.init(layout: .known(.artistSort), contentString: artistSort)
-    }
-    
-    init(arranger: String) {
-        self.init(layout: .known(.arranger), contentString: arranger)
-    }
-    
-    init(composer: String) {
-        self.init(layout: .known(.composer), contentString: composer)
-    }
-    
-    init(composerSort: String) {
-        self.init(layout: .known(.composerSort), contentString: composerSort)
-    }
-    
-    init(conductor: String) {
-        self.init(layout: .known(.conductor), contentString: conductor)
-    }
-    
-    init(contentGroup: String) {
-        self.init(layout: .known(.contentGroup), contentString: contentGroup)
-    }
-    
-    init(copyright: String) {
-        self.init(layout: .known(.copyright), contentString: copyright)
-    }
-    
-    init(encodedBy: String) {
-        self.init(layout: .known(.encodedBy), contentString: encodedBy)
-    }
-    
-    init(encodingSettings: String) {
-        self.init(layout: .known(.encodingSettings), contentString: encodingSettings)
-    }
-        
-    init(fileOwner: String) {
-        self.init(layout: .known(.fileOwner), contentString: fileOwner)
-    }
-    
-    init(grouping: String) {
-        self.init(layout: .known(.grouping), contentString: grouping)
-    }
-    
-    init(initialKey: KeySignature) {
-        let keyString = initialKey.rawValue
-        self.init(layout: .known(.initialKey), contentString: keyString)
-    }
-    
-    init(lyricist: String) {
-        self.init(layout: .known(.lyricist), contentString: lyricist)
-    }
-    
-    init(mediaType: String) {
-        self.init(layout: .known(.mediaType), contentString: mediaType)
-    }
-    
-    init(mood: String) {
-        self.init(layout: .known(.mood), contentString: mood)
-    }
-    
-    init(movementName: String) {
-        self.init(layout: .known(.movementName), contentString: movementName)
-    }
-    
-    init(originalAlbum: String) {
-        self.init(layout: .known(.originalAlbum), contentString: originalAlbum)
-    }
-    
-    init(originalArtist: String) {
-        self.init(layout: .known(.originalArtist), contentString: originalArtist)
-    }
-    
-    init(originalFilename: String) {
-        self.init(layout: .known(.originalFilename), contentString: originalFilename)
-    }
-    
-    init(originalLyricist: String) {
-        self.init(layout: .known(.originalLyricist), contentString: originalLyricist)
-    }
-    
-    init(podcastCategory: String) {
-        self.init(layout: .known(.podcastCategory), contentString: podcastCategory)
-    }
-    
-    init(podcastDescription: String) {
-        self.init(layout: .known(.podcastDescription), contentString: podcastDescription)
-    }
-    
-    init(podcastID: String) {
-        self.init(layout: .known(.podcastID), contentString: podcastID)
-    }
-    
-    init(podcastKeywords: String) {
-        self.init(layout: .known(.podcastKeywords), contentString: podcastKeywords)
-    }
-    
-    init(podcastFeedLink: String) {
-        self.init(layout: .known(.podcastFeedLink), contentString: podcastFeedLink)
-    }
-    
-    init(producedNotice: String) {
-        self.init(layout: .known(.producedNotice), contentString: producedNotice)
-    }
-    
-    init(publisher: String) {
-        self.init(layout: .known(.publisher), contentString: publisher)
-    }
-    
-    init(radioStation: String) {
-        self.init(layout: .known(.radioStation), contentString: radioStation)
-    }
-    
-    init(radioStationOwner: String) {
-        self.init(layout: .known(.radioStationOwner), contentString: radioStationOwner)
-    }
-    
-    init(setSubtitle: String) {
-        self.init(layout: .known(.setSubtitle), contentString: setSubtitle)
-    }
-    
-    init(subtitle: String) {
-        self.init(layout: .known(.subtitle), contentString: subtitle)
-    }
-    
-    init(title: String) {
-        self.init(layout: .known(.title), contentString: title)
-    }
-
-    init(titleSort: String) {
-        self.init(layout: .known(.titleSort), contentString: titleSort)
-    }
-
-    init(remixer: String) {
-        self.init(layout: .known(.arranger), contentString: remixer)
-    }
-    
-    init(interpretedBy: String) {
-        self.init(layout: .known(.arranger), contentString: interpretedBy)
-    }
-    
-    init(work: String) {
-        self.init(layout: .known(.contentGroup), contentString: work)
-    }
-    
-    init(author: String) {
-        self.init(layout: .known(.artist), contentString: author)
-    }
-    
-    init(authorSort: String) {
-        self.init(layout: .known(.artistSort), contentString: authorSort)
-    }
-    
-    init(narrator: String) {
-        self.init(layout: .known(.composer), contentString: narrator)
-    }
-    
-    init(narratorSort: String) {
-        self.init(layout: .known(.composerSort), contentString: narratorSort)
-    }
-    
-    init(recordCompany: String) {
-        self.init(layout: .known(.publisher), contentString: recordCompany)
-    }
-    
-    init(studio: String) {
-        self.init(layout: .known(.publisher), contentString: studio)
-    }
-    
-    init(label: String) {
-        self.init(layout: .known(.publisher), contentString: label)
-    }
-    
-    init(series: String) {
-        self.init(layout: .known(.contentGroup), contentString: series)
-    }
 }
 
 public extension Tag {
-    /// - Album frame getter-setter. ID3 Identifier: `TAL`/`TALB`
-    var album: String? {
+    /// - Series title getter-setter. Writes to `ContentGroup` frame,
+    /// ID3 Identifier: `TT1`/`TIT1`.
+    /// If another frame of this type already exists, this will write as a
+    /// `TXX`/`TXXX` frame with a description of `Work`
+    var series: String {
         get {
-            if let frame = self.frames[.album],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .series) ?? ""
         }
         set {
-            let frame = StringFrame(album: newValue ?? "")
-            frames[.album] = .stringFrame(frame)
+            let frame = StringFrame(layout: .known(.contentGroup), contentString: newValue)
+            frames[.series] = .stringFrame(frame)
+        }
+    }
+    
+    /// - Album frame getter-setter. ID3 Identifier: `TAL`/`TALB`
+    var album: String {
+        get {
+            string(for: .album) ?? ""
+        }
+        set {
+            set(.known(.album), .album, to: newValue)
         }
     }
     
     /// - AlbumArtist frame getter-setter. ID3 Identifier: `TP2`/`TPE2`
-    var albumArtist: String? {
+    var albumArtist: String {
         get {
-            if let frame = self.frames[.albumArtist],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .albumArtist) ?? ""
         }
         set {
-            let frame = StringFrame(albumArtist: newValue ?? "")
-            frames[.albumArtist] = .stringFrame(frame)
+            set(.known(.albumArtist), .albumArtist, to: newValue)
         }
     }
     
     /// - AlbumSort frame getter-setter. ID3 Identifier: `TSA`/`TSOA`
-    var albumSort: String? {
+    var albumSort: String {
         get {
-            if let frame = self.frames[.albumSort],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .albumSort) ?? ""
         }
         set {
-            let frame = StringFrame(albumSort: newValue ?? "")
-            frames[.albumSort] = .stringFrame(frame)
+            set(.known(.albumSort), .albumSort, to: newValue)
         }
     }
     
     /// - AlbumArtistSort frame getter-setter. ID3 Identifier: `TS2`/`TSO2`
-    var albumArtistSort: String? {
+    var albumArtistSort: String {
         get {
-            if let frame = self.frames[.albumArtistSort],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .albumArtistSort) ?? ""
         }
         set {
-            let frame = StringFrame(albumArtistSort: newValue ?? "")
-            frames[.albumArtistSort] = .stringFrame(frame)
+            set(.known(.albumArtistSort), .albumArtistSort, to: newValue)
         }
     }
     
     /// - Arranger/Remixer/InterpretedBy getter-setter. ID3 Identifier: `TP4`/`TPE4`.
     /// If another frame of this type already exists, this will write as a
     /// `TXX`/`TXXX` frame with a description of `Arranger`
-    var arranger: String? {
+    var arranger: String {
         get {
-            if let frame = self.frames[.arranger],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .arranger) ?? ""
         }
         set {
-            let frame = StringFrame(arranger: newValue ?? "")
-            frames[.arranger] = .stringFrame(frame)
+            set(.known(.arranger), .arranger, to: newValue)
         }
     }
     
     /// - Arranger/Remixer/InterpretedBy getter-setter. ID3 Identifier: `TP4`/`TPE4`
     /// If a `TP4`/`TPE4` frame already exists, this will write as a
     /// `TXX`/`TXXX` frame with a description of `Remixer`
-    var remixer: String? {
+    var remixer: String {
         get {
-            if let frame = self.frames[.remixer],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .remixer) ?? ""
         }
         set {
-            let frame = StringFrame(remixer: newValue ?? "")
-            frames[.remixer] = .stringFrame(frame)
+            set(.known(.arranger), .remixer, to: newValue)
         }
     }
     
     /// - Arranger/Remixer/InterpretedBy getter-setter. ID3 Identifier: `TP4`/`TPE4`
     /// If a `TP4`/`TPE4` frame already exists, this will write as a
     /// `TXX`/`TXXX` frame with a description of `InterpretedBy`
-    var interpretedBy: String? {
+    var interpretedBy: String {
         get {
-            if let frame = self.frames[.interpretedBy],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .interpretedBy) ?? ""
         }
         set {
-            let frame = StringFrame(interpretedBy: newValue ?? "")
-            frames[.interpretedBy] = .stringFrame(frame)
+            set(.known(.arranger), .interpretedBy, to: newValue)
         }
     }
     
     /// - Artist getter-setter. ID3 Identifier: `TP1`/`TPE1`
-    var artist: String? {
+    var artist: String {
         get {
-            if let frame = self.frames[.artist],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .artist) ?? ""
         }
         set {
-            let frame = StringFrame(artist: newValue ?? "")
-            frames[.artist] = .stringFrame(frame)
+            set(.known(.artist), .artist, to: newValue)
         }
     }
     
     /// - ArtistSort getter-setter. ID3 Identifier: `TSP`/`TSOP`
-    var artistSort: String? {
+    var artistSort: String {
         get {
-            if let frame = self.frames[.artistSort],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .artistSort) ?? ""
         }
         set {
-            let frame = StringFrame(artistSort: newValue ?? "")
-            frames[.artistSort] = .stringFrame(frame)
+            set(.known(.artistSort), .artistSort, to: newValue)
         }
     }
     
     /// - Author getter-setter. Writes to `Artist` frame, ID3 Identifier: `TP1`/`TPE1`.
     /// If another frame of this type already exists, this will write as a
     /// `TXX`/`TXXX` frame with a description of `Author`
-    var author: String? {
+    var author: String {
         get {
-            if let frame = self.frames[.author],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .author) ?? ""
         }
         set {
-            let frame = StringFrame(author: newValue ?? "")
-            frames[.author] = .stringFrame(frame)
+            set(.known(.artist), .author, to: newValue)
         }
     }
     
     /// - AuthorSort getter-setter. Writes to `ArtistSort` frame, ID3 Identifier: `TSP`/`TSOP`.
     /// If another frame of this type already exists, this will write as a
     /// `TXX`/`TXXX` frame with a description of `AuthorSort`
-    var authorSort: String? {
+    var authorSort: String {
         get {
-            if let frame = self.frames[.authorSort],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .authorSort) ?? ""
         }
         set {
-            let frame = StringFrame(authorSort: newValue ?? "")
-            frames[.authorSort] = .stringFrame(frame)
+            set(.known(.artistSort), .authorSort, to: newValue)
         }
     }
     
     /// - Composer getter-setter. ID3 Identifier: `TCM`/`TCOM`
-    var composer: String? {
+    var composer: String {
         get {
-            if let frame = self.frames[.composer],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .composer) ?? ""
         }
         set {
-            let frame = StringFrame(composer: newValue ?? "")
-            frames[.composer] = .stringFrame(frame)
+            set(.known(.composer), .composer, to: newValue)
         }
     }
     
     /// - ComposerSort getter-setter. ID3 Identifier: `TSC`/`TSOC`
-    var composerSort: String? {
+    var composerSort: String {
         get {
-            if let frame = self.frames[.composerSort],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .composerSort) ?? ""
         }
         set {
-            let frame = StringFrame(composerSort: newValue ?? "")
-            frames[.composerSort] = .stringFrame(frame)
+            set(.known(.composerSort), .composerSort, to: newValue)
         }
     }
     
     /// - Narrator getter-setter. Writes to `Composer` frame, ID3 Identifier: `TCM`/`TCOM`.
     /// If another frame of this type already exists, this will write as a
     /// `TXX`/`TXXX` frame with a description of `Narrator`
-    var narrator: String? {
+    var narrator: String {
         get {
-            if let frame = self.frames[.narrator],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .narrator) ?? ""
         }
         set {
-            let frame = StringFrame(narrator: newValue ?? "")
-            frames[.narrator] = .stringFrame(frame)
+            set(.known(.composer), .narrator, to: newValue)
         }
     }
     
@@ -583,50 +313,32 @@ public extension Tag {
     /// ID3 Identifier: `TSC`/`TSOC`.
     /// If another frame of this type already exists, this will write as a
     /// `TXX`/`TXXX` frame with a description of `NarratorSort`
-    var narratorSort: String? {
+    var narratorSort: String {
         get {
-            if let frame = self.frames[.narratorSort],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .narratorSort) ?? ""
         }
         set {
-            let frame = StringFrame(narratorSort: newValue ?? "")
-            frames[.narratorSort] = .stringFrame(frame)
+            set(.known(.composerSort), .narrator, to: newValue)
         }
     }
     
     /// - Conductor getter-setter. ID3 Identifier: `TP3`/`TPE3`
-    var conductor: String? {
+    var conductor: String {
         get {
-            if let frame = self.frames[.conductor],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .conductor) ?? ""
         }
         set {
-            let frame = StringFrame(conductor: newValue ?? "")
-            frames[.conductor] = .stringFrame(frame)
+            set(.known(.conductor), .conductor, to: newValue)
         }
     }
     
     /// - ContentGroup getter-setter. ID3 Identifier: `TT1`/`TIT1`
-    var contentGroup: String? {
+    var contentGroup: String {
         get {
-            if let frame = self.frames[.contentGroup],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .contentGroup) ?? ""
         }
         set {
-            let frame = StringFrame(contentGroup: newValue ?? "")
-            frames[.contentGroup] = .stringFrame(frame)
+            set(.known(.contentGroup), .contentGroup, to: newValue)
         }
     }
     
@@ -634,347 +346,220 @@ public extension Tag {
     /// ID3 Identifier: `TT1`/`TIT1`.
     /// If another frame of this type already exists, this will write as a
     /// `TXX`/`TXXX` frame with a description of `Work`
-    var work: String? {
+    var work: String {
         get {
-            if let frame = self.frames[.work],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .work) ?? ""
         }
         set {
-            let frame = StringFrame(work: newValue ?? "")
-            frames[.work] = .stringFrame(frame)
+            set(.known(.contentGroup), .work, to: newValue)
         }
     }
     
     /// - Copyright getter-setter. ID3 Identifier: `TCR`/`TCOP`
-    var copyright: String? {
+    var copyright: String {
         get {
-            if let frame = self.frames[.copyright],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .copyright) ?? ""
         }
         set {
-            let frame = StringFrame(copyright: newValue ?? "")
-            frames[.copyright] = .stringFrame(frame)
+            set(.known(.copyright), .copyright, to: newValue)
         }
     }
     
     /// - EncodedBy getter-setter. ID3 Identifier: `TEN`/`TENC`
-    var encodedBy: String? {
+    var encodedBy: String {
         get {
-            if let frame = self.frames[.encodedBy],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .encodedBy) ?? ""
         }
         set {
-            let frame = StringFrame(encodedBy: newValue ?? "")
-            frames[.encodedBy] = .stringFrame(frame)
+            set(.known(.encodedBy), .encodedBy, to: newValue)
         }
     }
     
     /// - EncodingSettings getter-setter. ID3 Identifier: `TSS`/`TSSE`
-    var encodingSettings: String? {
+    var encodingSettings: String {
         get {
-            if let frame = self.frames[.encodingSettings],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .encodingSettings) ?? ""
         }
         set {
-            let frame = StringFrame(encodingSettings: newValue ?? "")
-            frames[.encodingSettings] = .stringFrame(frame)
+            set(.known(.encodingSettings), .encodingSettings, to: newValue)
         }
     }
     
     /// - FileOwner getter-setter. ID3 Identifier: `TOWN`. Valid only for tag versions 2.3/2.4
-    var fileOwner: String? {
+    var fileOwner: String {
         get {
-            if let frame = self.frames[.fileOwner],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .fileOwner) ?? ""
         }
         set {
-            let frame = StringFrame(fileOwner: newValue ?? "")
-            frames[.fileOwner] = .stringFrame(frame)
+            set(.known(.fileOwner), .fileOwner, to: newValue)
         }
     }
     
     /// - Grouping getter-setter. This is a non-standard, iTunes compliant frame.
     /// ID3 Identifier: `GRP1`
     /// Valid only for tag versions 2.3/2.4
-    var grouping: String? {
+    var grouping: String {
         get {
-            if let frame = self.frames[.grouping],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .grouping) ?? ""
         }
         set {
-            let frame = StringFrame(grouping: newValue ?? "")
-            frames[.grouping] = .stringFrame(frame)
+            set(.known(.grouping), .grouping, to: newValue)
         }
     }
     
     /// - InitialKey getter-setter. ID3 Identifier: `TKE`/`TKEY`
-    var initialKey: String? {
+    var initialKey: KeySignature {
         get {
-            if let frame = self.frames[.initialKey],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            return KeySignature(rawValue: string(for: .initialKey) ?? "") ?? .unknown
         }
-    }
-    
-    mutating func setInitialKey(initialKey: KeySignature) throws {
-        let key = FrameKey.initialKey
-        self.frames[key] = Frame.stringFrame(.init(initialKey: initialKey))
+        set {
+            set(.known(.initialKey), .initialKey, to: newValue.rawValue)
+        }
     }
     
     /// - Lyricist getter-setter. ID3 Identifier: `TXT`/`TEXT`
-    var lyricist: String? {
+    var lyricist: String {
         get {
-            if let frame = self.frames[.lyricist],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .lyricist) ?? ""
         }
         set {
-            let frame = StringFrame(lyricist: newValue ?? "")
-            frames[.lyricist] = .stringFrame(frame)
+            set(.known(.lyricist), .lyricist, to: newValue)
         }
     }
     
     /// - Mood getter-setter. ID3 Identifier: `TMOO`. Valid only for tag version 2.4
-    var mood: String? {
+    var mood: String {
         get {
-            if let frame = self.frames[.mood],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .mood) ?? ""
         }
         set {
-            let frame = StringFrame(mood: newValue ?? "")
-            frames[.mood] = .stringFrame(frame)
+            set(.known(.mood), .mood, to: newValue)
         }
     }
     
     /// - MovementName getter-setter. This is a non-standard, iTunes compliant frame
     /// ID3 Identifier: `MVNM`. Valid only for tag versions 2.3/2.4
-    var movementName: String? {
+    var movementName: String {
         get {
-            if let frame = self.frames[.movementName],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .movementName) ?? ""
         }
         set {
-            let frame = StringFrame(movementName: newValue ?? "")
-            frames[.movementName] = .stringFrame(frame)
+            set(.known(.movementName), .movementName, to: newValue)
         }
     }
     
     /// - OriginalAlbum getter-setter. ID3 Identifier: `TOT`/`TOAL`.
-    var originalAlbum: String? {
+    var originalAlbum: String {
         get {
-            if let frame = self.frames[.originalAlbum],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .originalAlbum) ?? ""
         }
         set {
-            let frame = StringFrame(originalAlbum: newValue ?? "")
-            frames[.originalAlbum] = .stringFrame(frame)
+            set(.known(.originalAlbum), .originalAlbum, to: newValue)
         }
     }
     
     /// - OriginalArtist getter-setter. ID3 Identifier: `TOP`/`TOPE`.
-    var originalArtist: String? {
+    var originalArtist: String {
         get {
-            if let frame = self.frames[.originalArtist],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .originalArtist) ?? ""
         }
         set {
-            let frame = StringFrame(originalArtist: newValue ?? "")
-            frames[.originalArtist] = .stringFrame(frame)
+            set(.known(.originalArtist), .originalArtist, to: newValue)
         }
     }
     
     /// - OriginalFilename getter-setter. ID3 Identifier: `TOF`/`TOFN`.
-    var originalFilename: String? {
+    var originalFilename: String {
         get {
-            if let frame = self.frames[.originalFilename],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .originalFilename) ?? ""
         }
         set {
-            let frame = StringFrame(originalFilename: newValue ?? "")
-            frames[.originalFilename] = .stringFrame(frame)
+            set(.known(.originalFilename), .originalFilename, to: newValue)
         }
     }
     
     /// - OriginalLyricist getter-setter. ID3 Identifier: `TOL`/`TOLY`.
-    var originalLyricist: String? {
+    var originalLyricist: String {
         get {
-            if let frame = self.frames[.originalLyricist],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .originalLyricist) ?? ""
         }
         set {
-            let frame = StringFrame(originalLyricist: newValue ?? "")
-            frames[.originalLyricist] = .stringFrame(frame)
+            set(.known(.originalLyricist), .originalLyricist, to: newValue)
         }
     }
     
     /// - PodcastCategory getter-setter. This is a non-standard, iTunes compliant frame
     /// ID3 Identifier: `TCAT`. Valid only for tag versions 2.3/2.4
-    var podcastCategory: String? {
+    var podcastCategory: String {
         get {
-            if let frame = self.frames[.podcastCategory],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .podcastCategory) ?? ""
         }
         set {
-            let frame = StringFrame(podcastCategory: newValue ?? "")
-            frames[.podcastCategory] = .stringFrame(frame)
+            set(.known(.podcastCategory), .podcastCategory, to: newValue)
         }
     }
     
     /// - PodcastDescription getter-setter. This is a non-standard, iTunes compliant frame
     /// ID3 Identifier: `TDES`. Valid only for tag versions 2.3/2.4
-    var podcastDescription: String? {
+    var podcastDescription: String {
         get {
-            if let frame = self.frames[.podcastDescription],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .podcastDescription) ?? ""
         }
         set {
-            let frame = StringFrame(podcastDescription: newValue ?? "")
-            frames[.podcastDescription] = .stringFrame(frame)
+            set(.known(.podcastDescription), .podcastDescription, to: newValue)
         }
     }
     
     /// - PodcastID getter-setter. This is a non-standard, iTunes compliant frame
     /// ID3 Identifier: `TGID`. Valid only for tag versions 2.3/2.4
-    var podcastID: String? {
+    var podcastID: String {
         get {
-            if let frame = self.frames[.podcastID],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .podcastID) ?? ""
         }
         set {
-            let frame = StringFrame(podcastID: newValue ?? "")
-            frames[.podcastID] = .stringFrame(frame)
+            set(.known(.podcastID), .podcastID, to: newValue)
         }
     }
     
     /// - PodcastKeywords getter-setter. This is a non-standard, iTunes compliant frame
     /// ID3 Identifier: `TKWD`. Valid only for tag versions 2.3/2.4
-    var podcastKeywords: String? {
+    var podcastKeywords: String {
         get {
-            if let frame = self.frames[.podcastKeywords],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .podcastKeywords) ?? ""
         }
         set {
-            let frame = StringFrame(podcastKeywords: newValue ?? "")
-            frames[.podcastKeywords] = .stringFrame(frame)
+            set(.known(.podcastKeywords), .podcastKeywords, to: newValue)
         }
     }
     
     /// - PodcastFeedLink getter-setter. This is a non-standard, iTunes compliant frame
     /// ID3 Identifier: `WFED`. Valid only for tag versions 2.3/2.4
-    var podcastFeedLink: String? {
+    var podcastFeedLink: String {
         get {
-            if let frame = self.frames[.podcastFeedLink],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .podcastFeedLink) ?? ""
         }
         set {
-            let frame = StringFrame(podcastFeedLink: newValue ?? "")
-            frames[.podcastFeedLink] = .stringFrame(frame)
+            set(.known(.podcastFeedLink), .podcastFeedLink, to: newValue)
         }
     }
     
     /// - ProducedNotice getter-setter. ID3 Identifier: `TPRO`. Valid for tag version 2.4 only
-    var producedNotice: String? {
+    var producedNotice: String {
         get {
-            if let frame = self.frames[.producedNotice],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .producedNotice) ?? ""
         }
         set {
-            let frame = StringFrame(producedNotice: newValue ?? "")
-            frames[.producedNotice] = .stringFrame(frame)
+            set(.known(.producedNotice), .producedNotice, to: newValue)
         }
     }
     
     /// - Publisher getter-setter. ID3 Identifier: `TPB`/`TPUB`.
-    var publisher: String? {
+    var publisher: String {
         get {
-            if let frame = self.frames[.publisher],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .publisher) ?? ""
         }
         set {
-            let frame = StringFrame(publisher: newValue ?? "")
-            frames[.publisher] = .stringFrame(frame)
+            set(.known(.publisher), .publisher, to: newValue)
         }
     }
     
@@ -982,18 +567,12 @@ public extension Tag {
     /// ID3 Identifier: `TPB`/`TPUB`.
     /// If another frame of this type already exists, this will write as a
     /// `TXX`/`TXXX` frame with a description of `Label`
-    var label: String? {
+    var label: String {
         get {
-            if let frame = self.frames[.label],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .label) ?? ""
         }
         set {
-            let frame = StringFrame(label: newValue ?? "")
-            frames[.label] = .stringFrame(frame)
+            set(.known(.publisher), .label, to: newValue)
         }
     }
     
@@ -1001,18 +580,12 @@ public extension Tag {
     /// ID3 Identifier: `TPB`/`TPUB`.
     /// If another frame of this type already exists, this will write as a
     /// `TXX`/`TXXX` frame with a description of `RecordCompany`
-    var recordCompany: String? {
+    var recordCompany: String {
         get {
-            if let frame = self.frames[.recordCompany],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .recordCompany) ?? ""
         }
         set {
-            let frame = StringFrame(recordCompany: newValue ?? "")
-            frames[.recordCompany] = .stringFrame(frame)
+            set(.known(.publisher), .recordCompany, to: newValue)
         }
     }
     
@@ -1020,114 +593,72 @@ public extension Tag {
     /// ID3 Identifier: `TPB`/`TPUB`.
     /// If another frame of this type already exists, this will write as a
     /// `TXX`/`TXXX` frame with a description of `Studio`
-    var studio: String? {
+    var studio: String {
         get {
-            if let frame = self.frames[.studio],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .studio) ?? ""
         }
         set {
-            let frame = StringFrame(studio: newValue ?? "")
-            frames[.studio] = .stringFrame(frame)
+            set(.known(.publisher), .studio, to: newValue)
         }
     }
     
     /// - (Internet)RadioStation getter-setter. ID3 Identifier: `TRS`/`TRSN`.
-    var radioStation: String? {
+    var radioStation: String {
         get {
-            if let frame = self.frames[.radioStation],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .radioStation) ?? ""
         }
         set {
-            let frame = StringFrame(radioStation: newValue ?? "")
-            frames[.radioStation] = .stringFrame(frame)
+            set(.known(.radioStation), .radioStation, to: newValue)
         }
     }
     
     /// - (Internet)RadioStationOwner getter-setter. ID3 Identifier: `TRO`/`TRSO`.
-    var radioStationOwner: String? {
+    var radioStationOwner: String {
         get {
-            if let frame = self.frames[.radioStationOwner],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .radioStationOwner) ?? ""
         }
         set {
-            let frame = StringFrame(radioStationOwner: newValue ?? "")
-            frames[.radioStationOwner] = .stringFrame(frame)
+            set(.known(.radioStationOwner), .radioStationOwner, to: newValue)
         }
     }
     
     /// - SetSubtitle getter-setter. ID3 Identifier: `TSST`. Valid for tag version 2.4 only.
-    var setSubtitle: String? {
+    var setSubtitle: String {
         get {
-            if let frame = self.frames[.setSubtitle],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .setSubtitle) ?? ""
         }
         set {
-            let frame = StringFrame(setSubtitle: newValue ?? "")
-            frames[.setSubtitle] = .stringFrame(frame)
+            set(.known(.setSubtitle), .setSubtitle, to: newValue)
         }
     }
     
     /// - Subtitle getter-setter. ID3 Identifier: `TT3`/`TIT3`
-    var subtitle: String? {
+    var subtitle: String {
         get {
-            if let frame = self.frames[.subtitle],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .subtitle) ?? ""
         }
         set {
-            let frame = StringFrame(subtitle: newValue ?? "")
-            frames[.subtitle] = .stringFrame(frame)
+            set(.known(.subtitle), .subtitle, to: newValue)
         }
     }
     
     /// - Title getter-setter. ID3 Identifier: `TT2`/`TIT2`
-    var title: String? {
+    var title: String {
         get {
-            if let frame = self.frames[.title],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .title) ?? ""
         }
         set {
-            let frame = StringFrame(title: newValue ?? "")
-            frames[.title] = .stringFrame(frame)
+            set(.known(.title), .title, to: newValue)
         }
     }
     
     /// - TitleSort getter-setter. ID3 Identifier: `TST`/`TSOT`
-    var titleSort: String? {
+    var titleSort: String {
         get {
-            if let frame = self.frames[.titleSort],
-                case .stringFrame(let stringFrame) = frame {
-                return stringFrame.contentString
-            } else {
-                return nil
-            }
+            string(for: .titleSort) ?? ""
         }
         set {
-            let frame = StringFrame(titleSort: newValue ?? "")
-            frames[.titleSort] = .stringFrame(frame)
+            set(.known(.titleSort), .titleSort, to: newValue)
         }
     }
 }

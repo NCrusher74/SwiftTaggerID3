@@ -18,7 +18,7 @@ struct URLFrame: FrameProtocol {
      A frame with only string content, presented as a single string without `(/n)`.
      - parameter urlString: the url of a webpage.
      */
-    private init(layout: FrameLayoutIdentifier, urlString: String) {
+    init(layout: FrameLayoutIdentifier, urlString: String) {
         self.urlString = urlString
         self.flags = URLFrame.defaultFlags
         self.layout = layout
@@ -78,150 +78,78 @@ struct URLFrame: FrameProtocol {
         }
         self.urlString = try String(ascii: contents)
     }
-    
-    // MARK: Initializers
-    init(artistWebsiteUrl: String) {
-        self.init(layout: .known(.artistWebpage), urlString: artistWebsiteUrl)
-    }
-
-    init(officialAudioFileWebsiteUrl: String) {
-        self.init(layout: .known(.audioFileWebpage), urlString: officialAudioFileWebsiteUrl)
-    }
-
-    init(officialAudioSourceWebsiteUrl: String) {
-        self.init(layout: .known(.audioSourceWebpage), urlString: officialAudioSourceWebsiteUrl)
-    }
-
-    init(copyrightWebsiteUrl: String) {
-        self.init(layout: .known(.copyrightWebpage), urlString: copyrightWebsiteUrl)
-    }
-
-    init(paymentWebsiteUrl: String) {
-        self.init(layout: .known(.paymentWebpage), urlString: paymentWebsiteUrl)
-    }
-    
-    init(publisherWebsiteUrl: String) {
-        self.init(layout: .known(.publisherWebpage), urlString: publisherWebsiteUrl)
-    }
-
-    init(internetRadioStationWebsiteUrl: String) {
-        self.init(layout: .known(.radioStationWebpage), urlString: internetRadioStationWebsiteUrl)
-    }
-
 }
 
 // MARK: Tag Extension
 public extension Tag {
     /// - ArtistWebpage getter-setter. ID3 Identifier: `WAR`/`WOAR`
-    var artistWebpage: String? {
+    var artistWebpage: String {
         get {
-            if let frame = self.frames[.artistWebpage],
-                case .urlFrame(let urlFrame) = frame {
-                return urlFrame.urlString
-            } else {
-                return nil
-            }
+            url(for: .artistWebpage) ?? ""
         }
         set {
-            let frame = URLFrame(artistWebsiteUrl: newValue ?? "")
-            frames[.artistWebpage] = .urlFrame(frame)
+            set(.known(.artistWebpage), .artistWebpage, to: URL(fileURLWithPath: newValue))
         }
     }
     
     /// - (Official)AudioFileWebpage getter-setter. ID3 Identifier: `WAF`/`WOAF`
-    var audioFileWebpage: String? {
+    var audioFileWebpage: String {
         get {
-            if let frame = self.frames[.audioFileWebpage],
-                case .urlFrame(let urlFrame) = frame {
-                return urlFrame.urlString
-            } else {
-                return nil
-            }
+            url(for: .audioFileWebpage) ?? ""
         }
         set {
-            let frame = URLFrame(officialAudioFileWebsiteUrl: newValue ?? "")
-            frames[.audioFileWebpage] = .urlFrame(frame)
+            set(.known(.audioFileWebpage), .audioFileWebpage, to: URL(fileURLWithPath: newValue))
         }
     }
     
     /// - (Official)AudioSourceWebpage getter-setter. ID3 Identifier: `WAS`/`WOAS`
-    var audioSourceWebpage: String? {
+    var audioSourceWebpage: String {
         get {
-            if let frame = self.frames[.audioSourceWebpage],
-                case .urlFrame(let urlFrame) = frame {
-                return urlFrame.urlString
-            } else {
-                return nil
-            }
+            url(for: .audioSourceWebpage) ?? ""
         }
         set {
-            let frame = URLFrame(officialAudioSourceWebsiteUrl: newValue ?? "")
-            frames[.audioSourceWebpage] = .urlFrame(frame)
+            set(.known(.audioSourceWebpage), .audioSourceWebpage, to: URL(fileURLWithPath: newValue))
         }
     }
     
     /// - Copyright/Legal Information Webpage getter-setter. ID3 Identifier: `WCP`/`WCOP`
-    var copyrightWebpage: String? {
+    var copyrightWebpage: String {
         get {
-            if let frame = self.frames[.copyrightWebpage],
-                case .urlFrame(let urlFrame) = frame {
-                return urlFrame.urlString
-            } else {
-                return nil
-            }
+            url(for: .copyrightWebpage) ?? ""
         }
         set {
-            let frame = URLFrame(copyrightWebsiteUrl: newValue ?? "")
-            frames[.copyrightWebpage] = .urlFrame(frame)
+            set(.known(.copyrightWebpage), .copyrightWebpage, to: URL(fileURLWithPath: newValue))
         }
     }
     
     /// - PaymentWebpage getter-setter. ID3 Identifier: `WPAY`
     /// Valid for tag versions 2.3/2.4 only
-    var paymentWebpage: String? {
+    var paymentWebpage: String {
         get {
-            if let frame = self.frames[.paymentWebpage],
-                case .urlFrame(let urlFrame) = frame {
-                return urlFrame.urlString
-            } else {
-                return nil
-            }
+            url(for: .paymentWebpage) ?? ""
         }
         set {
-            let frame = URLFrame(paymentWebsiteUrl: newValue ?? "")
-            frames[.paymentWebpage] = .urlFrame(frame)
+            set(.known(.paymentWebpage), .paymentWebpage, to: URL(fileURLWithPath: newValue))
         }
     }
     
     /// - PublisherWebpage getter-setter. ID3 Identifier: `WPB`/`WPUB`
-    var publisherWebpage: String? {
+    var publisherWebpage: String {
         get {
-            if let frame = self.frames[.publisherWebpage],
-                case .urlFrame(let urlFrame) = frame {
-                return urlFrame.urlString
-            } else {
-                return nil
-            }
+            url(for: .publisherWebpage) ?? ""
         }
         set {
-            let frame = URLFrame(publisherWebsiteUrl: newValue ?? "")
-            frames[.publisherWebpage] = .urlFrame(frame)
+            set(.known(.publisherWebpage), .publisherWebpage, to: URL(fileURLWithPath: newValue))
         }
     }
     
     /// - (Official Internet)RadioStationWebpage getter-setter. ID3 Identifier: `WRS`/`WORS`
-    var radioStationWebpage: String? {
+    var radioStationWebpage: String {
         get {
-            if let frame = self.frames[.radioStationWebpage],
-                case .urlFrame(let urlFrame) = frame {
-                return urlFrame.urlString
-            } else {
-                return nil
-            }
+            url(for: .radioStationWebpage) ?? ""
         }
         set {
-            let frame = URLFrame(internetRadioStationWebsiteUrl: newValue ?? "")
-            frames[.radioStationWebpage] = .urlFrame(frame)
+            set(.known(.radioStationWebpage), .radioStationWebpage, to: URL(fileURLWithPath: newValue))
         }
     }
 }

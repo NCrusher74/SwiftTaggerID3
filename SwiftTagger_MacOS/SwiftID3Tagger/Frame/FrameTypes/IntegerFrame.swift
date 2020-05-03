@@ -19,7 +19,7 @@ struct IntegerFrame: FrameProtocol {
      A frame with only an integer string as content, presented as an integer
      - parameter value: the content of the frame.
      */
-    private init(layout: FrameLayoutIdentifier, value: Int) {
+    init(layout: FrameLayoutIdentifier, value: Int) {
         self.value = value
         self.flags = IntegerFrame.defaultFlags
         self.layout = layout
@@ -74,131 +74,70 @@ struct IntegerFrame: FrameProtocol {
         self.value = Int(
             parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? "") ?? 0
     }
-        
-    // MARK: Initializers
-    init(bpm: Int) {
-        self.init(layout: .known(.bpm), value: bpm)
-    }
-
-    init(isrc: Int) {
-        self.init(layout: .known(.isrc), value: isrc)
-    }
-    
-    init(length: Int) {
-        self.init(layout: .known(.length), value: length)
-    }
-    
-    init(movementNumber: Int) {
-        self.init(layout: .known(.movementNumber), value: movementNumber)
-    }
-    
-    init(totalMovements: Int) {
-        self.init(layout: .known(.movementCount), value: totalMovements)
-    }
-    
-    init(playlistDelay: Int) {
-        self.init(layout: .known(.playlistDelay), value: playlistDelay)
-    }
 }
 
 // MARK: Tag Extension
 
 public extension Tag {
     /// - BeatsPerMinute getter-setter. ID3 Identifier: `TBP`/`TBPM`
-    var bpm: Int? {
+    var bpm: Int {
         get {
-            if let frame = self.frames[.bpm],
-                case .integerFrame(let integerFrame) = frame {
-                return integerFrame.value
-            } else {
-                return nil
-            }
+            integer(for: .bpm) ?? 0
         }
         set {
-            let frame = IntegerFrame(bpm: newValue ?? 0)
-            frames[.bpm] = .integerFrame(frame)
+            set(.known(.bpm), .bpm, to: newValue)
         }
     }
     
     /// - IRSC getter-setter. ID3 Identifier: `TRC`/`TSRC`
-    var isrc: Int? {
+    var isrc: Int {
         get {
-            if let frame = self.frames[.isrc],
-                case .integerFrame(let integerFrame) = frame {
-                return integerFrame.value
-            } else {
-                return nil
-            }
+            integer(for: .isrc) ?? 0
         }
         set {
-            let frame = IntegerFrame(isrc: newValue ?? 0)
-            frames[.isrc] = .integerFrame(frame)
+            set(.known(.isrc), .isrc, to: newValue)
         }
     }
     
     /// - Length getter-setter. ID3 Identifier: `TLE`/`TLEN`
-    var length: Int? {
+    var length: Int {
         get {
-            if let frame = self.frames[.length],
-                case .integerFrame(let integerFrame) = frame {
-                return integerFrame.value
-            } else {
-                return nil
-            }
+            integer(for: .length) ?? 0
         }
         set {
-            let frame = IntegerFrame(length: newValue ?? 0)
-            frames[.length] = .integerFrame(frame)
+            set(.known(.length), .length, to: newValue)
         }
     }
     
     /// - TotalMovements getter-setter. This is a non-standard, iTunes compliant frame
     /// ID3 Identifier: `MVCN`. Valid only for tag versions 2.3/2.4
-    var totalMovements: Int? {
+    var totalMovements: Int {
         get {
-            if let frame = self.frames[.movementCount],
-                case .integerFrame(let integerFrame) = frame {
-                return integerFrame.value
-            } else {
-                return nil
-            }
+            integer(for: .movementCount) ?? 0
         }
         set {
-            let frame = IntegerFrame(totalMovements: newValue ?? 0)
-            frames[.movementCount] = .integerFrame(frame)
+            set(.known(.movementCount), .movementCount, to: newValue)
         }
     }
     
     /// - MovementNumber getter-setter. This is a non-standard, iTunes compliant frame
     /// ID3 Identifier: `MVIN`. Valid only for tag versions 2.3/2.4
-    var movementNumber: Int? {
+    var movementNumber: Int {
         get {
-            if let frame = self.frames[.movementNumber],
-                case .integerFrame(let integerFrame) = frame {
-                return integerFrame.value
-            } else {
-                return nil
-            }
+            integer(for: .movementNumber) ?? 0
         }
         set {
-            let frame = IntegerFrame(movementNumber: newValue ?? 0)
-            frames[.movementNumber] = .integerFrame(frame)
+            set(.known(.movementNumber), .movementNumber, to: newValue)
         }
     }
     
     /// - PlaylistDelay getter-setter. ID3 Identifier: `TDY`/`TDLY`
-    var playlistDelay: Int? {
+    var playlistDelay: Int {
         get {
-            if let frame = self.frames[.playlistDelay],
-                case .integerFrame(let integerFrame) = frame {
-                return integerFrame.value
-            } else {
-                return nil
-            }
+            integer(for: .playlistDelay) ?? 0
         }
         set {
-            let frame = IntegerFrame(playlistDelay: newValue ?? 0)
-            frames[.playlistDelay] = .integerFrame(frame)
+            set(.known(.playlistDelay), .playlistDelay, to: newValue)
         }
     }
 }

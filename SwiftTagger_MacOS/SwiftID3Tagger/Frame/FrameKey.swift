@@ -174,7 +174,8 @@ enum FrameKey: Hashable {
     
     /// also known as `contentGroup`. Maps to the `contentGroup` frame. If another `contentGroup` frame is already present, the frame will be created as a `grouping` frame. If another `grouping` frame is present, the frame will be created as a `UserDefinedText` frame with the description, "Work"
     static var work: FrameKey { return .contentGroup }
-        
+    static var series: FrameKey { return .contentGroup }
+
     /// For audiobook use. Maps to the `artist` frame, which is usually used for authors of audiobooks.
     static var author: FrameKey { return .artist }
     static var authorSort: FrameKey { return .artistSort }
@@ -188,7 +189,6 @@ enum FrameKey: Hashable {
     static var label: FrameKey { return .publisher }
     static var studio: FrameKey { return .publisher }
         
-    static var series: FrameKey { return .contentGroup }
     
     
     // MARK: Preset Frame Convenience Keys

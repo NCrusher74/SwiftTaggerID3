@@ -40,4 +40,5 @@ public enum KeySignature: String {
     case eFlatMinor = "Ebm"
     case cFlatMajor = "Cb"
     case aFlatMinor = "Abm"
+    case unknown = ""
 }

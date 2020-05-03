@@ -9,6 +9,7 @@
 import Foundation
 
 public enum InvolvedPersonCredits: String {
+    case none = ""
     case producer = "Producer"
     case executiveProducer = "Executive Producer"
     case songProducer = "Song Producer"
