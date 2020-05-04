@@ -1,7 +1,7 @@
 
 import Foundation
 
-@testable import SwiftTagger_MacOS
+@testable import SwiftTaggerID3
 
 extension Bundle {
     

@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import SwiftTagger_MacOS
+import SwiftTaggerID3
 
 class SwiftTaggerID3_Write_Tests: XCTestCase {
     
@@ -27,7 +27,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.composerSort = "SortComposer"
         tag.conductor = "Conductor"
         tag.contentGroup = "Content Group"
-        try tag.setContentRating(contentRating: .usMovieUnrated)
+        tag.contentRating = .clean
         tag.copyright = "2020 Copyright"
         tag.date = "05-08"
         tag.time = "12:12"
@@ -35,7 +35,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.recordingDateTime = "1999-05-08"
         tag.encodedBy = "EncodedBy"
         tag.encodingSettings = "EncoderSettings"
-        try tag.setInitialKey(initialKey: .cMajor)
+        tag.initialKey = .cMajor
         try tag.setLanguages(languages: [.eng])
         tag.lyricist = "Lyricist"
         tag.originalAlbum = "OriginalAlbum"
@@ -62,13 +62,18 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.trackNumber.totalTracks = 2
         tag[userDefinedText: "UserDefinedText"] = "User Defined Text Content"
         tag[userDefinedUrl: "UserDefinedUrl"] = "http://userdefined.url"
-        try tag.setGenre(genreName: Optional.none, genreDescription: "Genre")
-        try tag.setMediaType(mediaType: Optional.none, additionalMediaInfo: Optional.none, mediaTypeDescription: "MediaType")
-        try tag.setFileType(fileType: .MPG, additionalFileTypeInfo: .mpegLayerIII, fileTypeDescription: "FileType")
+        #warning("fix this. The int needs to be a string. I think.")
+        //        tag.genre.genreName = GenreType.Audiobook.code
+        tag.genre.genreDescription = "Freeform description"
+        tag.mediaType.mediaType = MediaType.otherDigital.code
+        tag.mediaType.additionalMediaInfo = MediaTypeRefinements.none.rawValue
+        tag.mediaType.mediaTypeDescription = "Freeform Desscription"
+        tag.fileType.fileType = FileType.MPG.rawValue
+        tag.fileType.additionalFileTypeInfo = FileTypeRefinements.mpegLayerIII.code
+        tag.fileType.fileTypeDescription = "Freeform Description"
         tag[comments: .eng, "CommentDescription"] = "Comment Content"
         tag[lyrics: .eng, "LyricsDescription"] = "Lyrics Content"
         tag[description: .eng] = "Description"
-        tag[shortDescription: .eng] = "ShortDescription"
         tag[longDescription: .eng] = "LongDescription"
         tag[seriesDescription: .eng] = "SeriesDescription"
         tag[songDescription: .eng] = "SongDescription"
@@ -76,11 +81,9 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.acknowledgment = "Acknowledgments"
         tag.thanks = "Thanks"
         tag.sourceCredit = "SourceCredit"
-        //        tag.involvedPeopleList?[0].role = "Director" // Thread 1: Fatal error: Index out of range
-        //        tag.involvedPeopleList?[0].person = "Director Name"
-        //        tag.involvedPeopleList?[1].role = "Producer"
-        //        tag.involvedPeopleList?[1].person = "Producer Name"
-        
+        tag.addInvolvedPerson(role: .director, person: "Director Name")
+        tag.addInvolvedPerson(role: .producer, person: "Producer Name")
+
         let imageURL = Bundle.testImage
         try tag.setAttachedPicture(imageType: .Other, imageDescription: "SamplePicture", location: imageURL)
 
@@ -143,14 +146,19 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.encodedBy = "EncodedBy"
         tag.encodingSettings = "EncoderSettings"
         tag.fileOwner = "FileOwner"
-        try tag.setFileType(fileType: .MPG, additionalFileTypeInfo: .mpegLayerIII, fileTypeDescription: "FileType")
-        try tag.setGenre(genreName: Optional.none, genreDescription: "Genre")
+
+        tag.genre.genreDescription = "Freeform description"
+        tag.mediaType.mediaType = MediaType.otherDigital.code
+        tag.mediaType.additionalMediaInfo = MediaTypeRefinements.none.rawValue
+        tag.mediaType.mediaTypeDescription = "Freeform Desscription"
+        tag.fileType.fileType = FileType.MPG.rawValue
+        tag.fileType.additionalFileTypeInfo = FileTypeRefinements.mpegLayerIII.code
+        tag.fileType.fileTypeDescription = "Freeform Description"
+
         tag.grouping = "Grouping"
-        try tag.setInitialKey(initialKey: .cMajor)
-        tag.involvedPeopleList?[0].role = "Director" // Thread 1: Fatal error: Index out of range
-        tag.involvedPeopleList?[0].person = "Director Name"
-        tag.involvedPeopleList?[1].role = "Producer"
-        tag.involvedPeopleList?[1].person = "Producer Name"
+        tag.initialKey = .cMajor
+        tag.addInvolvedPerson(role: .director, person: "Director Name")
+        tag.addInvolvedPerson(role: .producer, person: "Producer Name")
         tag.isrc = 123456789012
         try tag.setLanguages(languages: [.eng])
         tag.length = 5250
@@ -158,7 +166,6 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag[longDescription: .eng] = "LongDescription"
         tag.lyricist = "Lyricist"
         tag[lyrics: .eng, "LyricsDescription"] = "Lyrics Content"
-        try tag.setMediaType(mediaType: Optional.none, additionalMediaInfo: Optional.none, mediaTypeDescription: "MediaType")
         tag.movementName = "MovementName"
         tag.movementNumber = 7
         tag.totalMovements = 8
@@ -182,7 +189,6 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.paymentWebpage = "http://payment.url"
         tag.publisherWebpage = "http://publisher.url"
         tag[seriesDescription: .eng] = "SeriesDescription"
-        tag[shortDescription: .eng] = "ShortDescription"
         tag[songDescription: .eng] = "SongDescription"
         tag.sourceCredit = "SourceCredit"
         tag[tableOfContents: "CTOC"]?.topLevelFlag = true
@@ -246,14 +252,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.encodedBy = "EncodedBy"
         tag.encodingSettings = "EncoderSettings"
         tag.fileOwner = "FileOwner"
-        try tag.setFileType(fileType: .MPG, additionalFileTypeInfo: .mpegLayerIII, fileTypeDescription: "FileType")
-        try tag.setGenre(genreName: Optional.none, genreDescription: "Genre")
         tag.grouping = "Grouping"
-        try tag.setInitialKey(initialKey: .cMajor)
-        tag.involvedPeopleList?[0].role = "Director"
-        tag.involvedPeopleList?[0].person = "Director Name"
-        tag.involvedPeopleList?[1].role = "Producer"
-        tag.involvedPeopleList?[1].person = "Producer Name"
         tag.isrc = 123456789012
         try tag.setLanguages(languages: [.eng])
         tag.length = 5250
@@ -261,15 +260,10 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag[longDescription: .eng] = "LongDescription"
         tag.lyricist = "Lyricist"
         tag[lyrics: .eng, "LyricsDescription"] = "Lyrics Content"
-        try tag.setMediaType(mediaType: Optional.none, additionalMediaInfo: Optional.none, mediaTypeDescription: "MediaType")
             tag.mood = "Mood"
         tag.movementName = "MovementName"
         tag.movementNumber = 7
         tag.totalMovements = 8
-        tag.musicianCreditList?[0].role = "Musician"
-        tag.musicianCreditList?[0].person = "Musician Name"
-        tag.musicianCreditList?[1].role = "Singer"
-        tag.musicianCreditList?[1].person = "Singer Name"
         tag.originalAlbum = "OriginalAlbum"
         tag.originalArtist = "OriginalArtist"
         tag.originalFilename = "OriginalFilename"
@@ -290,7 +284,6 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.paymentWebpage = "http://payment.url"
         tag.publisherWebpage = "http://publisher.url"
         tag[seriesDescription: .eng] = "SeriesDescription"
-        tag[shortDescription: .eng] = "ShortDescription"
         tag[songDescription: .eng] = "SongDescription"
         tag.sourceCredit = "SourceCredit"
         tag[tableOfContents: "CTOC"]?.topLevelFlag = true
@@ -318,7 +311,19 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.encodingDateTime = "1996-08-09"
         tag.setSubtitle = "SetSubtitle"
         tag.producedNotice = "2020 ProducedNotice"
-        
+        tag.genre.genreDescription = "Freeform description"
+        tag.mediaType.mediaType = MediaType.otherDigital.code
+        tag.mediaType.additionalMediaInfo = MediaTypeRefinements.none.rawValue
+        tag.mediaType.mediaTypeDescription = "Freeform Desscription"
+        tag.fileType.fileType = FileType.MPG.rawValue
+        tag.fileType.additionalFileTypeInfo = FileTypeRefinements.mpegLayerIII.code
+        tag.fileType.fileTypeDescription = "Freeform Description"
+        tag.addInvolvedPerson(role: .director, person: "Director Name")
+        tag.addInvolvedPerson(role: .producer, person: "Producer Name")
+        tag.addMusicianCredit(role: .musician, person: "Musician Name")
+        tag.addMusicianCredit(role: .singing, person: "Singer Name")
+
+
         let outputURL = URL(fileURLWithPath: "/Users/nolainecrusher/Downloads/audiobook_tools/sampleaax/test/testV24.mp3")
         try FileManager.default.createDirectory(
             at: outputURL.parentDirectory,

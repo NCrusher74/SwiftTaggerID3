@@ -27,7 +27,7 @@ public enum MediaType: String, CaseIterable {
     case reel = "Reel"
     case none = ""
     
-    var code: String {
+    public var code: String {
         switch self {
             case .otherDigital: return "DIG"
             case .otherAnalog: return "ANA"

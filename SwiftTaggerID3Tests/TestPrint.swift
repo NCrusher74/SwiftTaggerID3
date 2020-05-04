@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import SwiftTagger_MacOS
+import SwiftTaggerID3
 
 class TestPrint: XCTestCase {
 

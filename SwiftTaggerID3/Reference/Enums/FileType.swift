@@ -23,7 +23,7 @@ public enum FileTypeRefinements: String {
     case mpeg25 = "MPEG 2.5"
     case AAC = "Advanced Audio Compression"
     
-    var code: String {
+    public var code: String {
         switch self {
             case .mpegLayerI: return "/1"
             case .mpegLayerII: return "/2"

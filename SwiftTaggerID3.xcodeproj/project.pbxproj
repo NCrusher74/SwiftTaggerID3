@@ -64,8 +64,8 @@
 		51A3C6A22442FFB300909952 /* UserTextFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A3C6A12442FFB300909952 /* UserTextFrame.swift */; };
 		51A3C6A724464FDC00909952 /* URLFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A3C6A624464FDC00909952 /* URLFrame.swift */; };
 		51D58B39244D497000DBA9FB /* ISOLanguages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D58B38244D497000DBA9FB /* ISOLanguages.swift */; };
-		51E432B6243DA257006574A1 /* SwiftTagger_MacOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51E432AC243DA257006574A1 /* SwiftTagger_MacOS.framework */; };
-		51E432BD243DA257006574A1 /* SwiftTagger_MacOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 51E432AF243DA257006574A1 /* SwiftTagger_MacOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		51E432B6243DA257006574A1 /* SwiftTaggerID3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51E432AC243DA257006574A1 /* SwiftTaggerID3.framework */; };
+		51E432BD243DA257006574A1 /* SwiftTaggerID3.h in Headers */ = {isa = PBXBuildFile; fileRef = 51E432AF243DA257006574A1 /* SwiftTaggerID3.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		51E432C7243DA2E0006574A1 /* Mp3File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E432C6243DA2E0006574A1 /* Mp3File.swift */; };
 		51E432CB243DA3F6006574A1 /* Mp3FileError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E432CA243DA3F6006574A1 /* Mp3FileError.swift */; };
 		51E432D2243DA64B006574A1 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E432D1243DA64B006574A1 /* Bundle.swift */; };
@@ -163,11 +163,11 @@
 		51A3C6A12442FFB300909952 /* UserTextFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTextFrame.swift; sourceTree = "<group>"; };
 		51A3C6A624464FDC00909952 /* URLFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLFrame.swift; sourceTree = "<group>"; };
 		51D58B38244D497000DBA9FB /* ISOLanguages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISOLanguages.swift; sourceTree = "<group>"; };
-		51E432AC243DA257006574A1 /* SwiftTagger_MacOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftTagger_MacOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		51E432AF243DA257006574A1 /* SwiftTagger_MacOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftTagger_MacOS.h; sourceTree = "<group>"; };
-		51E432B0243DA257006574A1 /* SwiftTagger_MacOS.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = SwiftTagger_MacOS.plist; sourceTree = "<group>"; };
-		51E432B5243DA257006574A1 /* SwiftTagger_MacOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftTagger_MacOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		51E432BC243DA257006574A1 /* SwiftTagger_MacOSTests.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = SwiftTagger_MacOSTests.plist; sourceTree = "<group>"; };
+		51E432AC243DA257006574A1 /* SwiftTaggerID3.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftTaggerID3.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		51E432AF243DA257006574A1 /* SwiftTaggerID3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftTaggerID3.h; sourceTree = "<group>"; };
+		51E432B0243DA257006574A1 /* SwiftTaggerID3.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = SwiftTaggerID3.plist; sourceTree = "<group>"; };
+		51E432B5243DA257006574A1 /* SwiftTaggerID3Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftTaggerID3Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		51E432BC243DA257006574A1 /* SwiftTaggerID3Tests.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = SwiftTaggerID3Tests.plist; sourceTree = "<group>"; };
 		51E432C6243DA2E0006574A1 /* Mp3File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mp3File.swift; sourceTree = "<group>"; };
 		51E432CA243DA3F6006574A1 /* Mp3FileError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mp3FileError.swift; sourceTree = "<group>"; };
 		51E432D1243DA64B006574A1 /* Bundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bundle.swift; sourceTree = "<group>"; };
@@ -196,7 +196,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				51E432B6243DA257006574A1 /* SwiftTagger_MacOS.framework in Frameworks */,
+				51E432B6243DA257006574A1 /* SwiftTaggerID3.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -281,8 +281,8 @@
 			children = (
 				51FF4946245BA84F0006F8F8 /* README.md */,
 				51490E56243EF92F009D4BA4 /* Docs */,
-				51E432AE243DA257006574A1 /* SwiftTagger_MacOS */,
-				51E432B9243DA257006574A1 /* SwiftTagger_MacOSTests */,
+				51E432AE243DA257006574A1 /* SwiftTaggerID3 */,
+				51E432B9243DA257006574A1 /* SwiftTaggerID3Tests */,
 				51E432AD243DA257006574A1 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -290,33 +290,33 @@
 		51E432AD243DA257006574A1 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				51E432AC243DA257006574A1 /* SwiftTagger_MacOS.framework */,
-				51E432B5243DA257006574A1 /* SwiftTagger_MacOSTests.xctest */,
+				51E432AC243DA257006574A1 /* SwiftTaggerID3.framework */,
+				51E432B5243DA257006574A1 /* SwiftTaggerID3Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		51E432AE243DA257006574A1 /* SwiftTagger_MacOS */ = {
+		51E432AE243DA257006574A1 /* SwiftTaggerID3 */ = {
 			isa = PBXGroup;
 			children = (
-				51E432AF243DA257006574A1 /* SwiftTagger_MacOS.h */,
-				51E432B0243DA257006574A1 /* SwiftTagger_MacOS.plist */,
+				51E432AF243DA257006574A1 /* SwiftTaggerID3.h */,
+				51E432B0243DA257006574A1 /* SwiftTaggerID3.plist */,
 				51E432D0243DA61B006574A1 /* SwiftID3Tagger */,
 				51490E6B243F314D009D4BA4 /* Reference */,
 			);
-			path = SwiftTagger_MacOS;
+			path = SwiftTaggerID3;
 			sourceTree = "<group>";
 		};
-		51E432B9243DA257006574A1 /* SwiftTagger_MacOSTests */ = {
+		51E432B9243DA257006574A1 /* SwiftTaggerID3Tests */ = {
 			isa = PBXGroup;
 			children = (
 				5144EC7C2458C43C001757DA /* TestPrint.swift */,
 				51779430245016AF0022E02F /* SwiftTaggerID3_Read_Tests.swift */,
 				51FF494A245BBBB00006F8F8 /* SwiftTaggerID3_Write_Tests.swift */,
-				51E432BC243DA257006574A1 /* SwiftTagger_MacOSTests.plist */,
+				51E432BC243DA257006574A1 /* SwiftTaggerID3Tests.plist */,
 				51E432CC243DA5B4006574A1 /* TestMedia */,
 			);
-			path = SwiftTagger_MacOSTests;
+			path = SwiftTaggerID3Tests;
 			sourceTree = "<group>";
 		};
 		51E432CC243DA5B4006574A1 /* TestMedia */ = {
@@ -396,16 +396,16 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				51E432BD243DA257006574A1 /* SwiftTagger_MacOS.h in Headers */,
+				51E432BD243DA257006574A1 /* SwiftTaggerID3.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		51E432AB243DA257006574A1 /* SwiftTagger_MacOS */ = {
+		51E432AB243DA257006574A1 /* SwiftTaggerID3 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 51E432C0243DA257006574A1 /* Build configuration list for PBXNativeTarget "SwiftTagger_MacOS" */;
+			buildConfigurationList = 51E432C0243DA257006574A1 /* Build configuration list for PBXNativeTarget "SwiftTaggerID3" */;
 			buildPhases = (
 				51E432A7243DA257006574A1 /* Headers */,
 				51E432A8243DA257006574A1 /* Sources */,
@@ -417,16 +417,16 @@
 			);
 			dependencies = (
 			);
-			name = SwiftTagger_MacOS;
+			name = SwiftTaggerID3;
 			packageProductDependencies = (
 			);
 			productName = SwiftTagger_MacOS;
-			productReference = 51E432AC243DA257006574A1 /* SwiftTagger_MacOS.framework */;
+			productReference = 51E432AC243DA257006574A1 /* SwiftTaggerID3.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		51E432B4243DA257006574A1 /* SwiftTagger_MacOSTests */ = {
+		51E432B4243DA257006574A1 /* SwiftTaggerID3Tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 51E432C3243DA257006574A1 /* Build configuration list for PBXNativeTarget "SwiftTagger_MacOSTests" */;
+			buildConfigurationList = 51E432C3243DA257006574A1 /* Build configuration list for PBXNativeTarget "SwiftTaggerID3Tests" */;
 			buildPhases = (
 				51E432B1243DA257006574A1 /* Sources */,
 				51E432B2243DA257006574A1 /* Frameworks */,
@@ -437,9 +437,9 @@
 			dependencies = (
 				51E432B8243DA257006574A1 /* PBXTargetDependency */,
 			);
-			name = SwiftTagger_MacOSTests;
+			name = SwiftTaggerID3Tests;
 			productName = SwiftTagger_MacOSTests;
-			productReference = 51E432B5243DA257006574A1 /* SwiftTagger_MacOSTests.xctest */;
+			productReference = 51E432B5243DA257006574A1 /* SwiftTaggerID3Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -461,7 +461,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 51E432A6243DA257006574A1 /* Build configuration list for PBXProject "SwiftTagger_MacOS" */;
+			buildConfigurationList = 51E432A6243DA257006574A1 /* Build configuration list for PBXProject "SwiftTaggerID3" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -476,8 +476,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				51E432AB243DA257006574A1 /* SwiftTagger_MacOS */,
-				51E432B4243DA257006574A1 /* SwiftTagger_MacOSTests */,
+				51E432AB243DA257006574A1 /* SwiftTaggerID3 */,
+				51E432B4243DA257006574A1 /* SwiftTaggerID3Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -590,7 +590,7 @@
 /* Begin PBXTargetDependency section */
 		51E432B8243DA257006574A1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 51E432AB243DA257006574A1 /* SwiftTagger_MacOS */;
+			target = 51E432AB243DA257006574A1 /* SwiftTaggerID3 */;
 			targetProxy = 51E432B7243DA257006574A1 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -725,14 +725,14 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = SwiftTagger_MacOS/SwiftTagger_MacOS.plist;
+				INFOPLIST_FILE = SwiftTaggerID3/SwiftTaggerID3.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.NCrusher.SwiftTagger-MacOS";
+				PRODUCT_BUNDLE_IDENTIFIER = com.NCrusher.SwiftTaggerID3;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -750,14 +750,14 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = SwiftTagger_MacOS/SwiftTagger_MacOS.plist;
+				INFOPLIST_FILE = SwiftTaggerID3/SwiftTaggerID3.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.NCrusher.SwiftTagger-MacOS";
+				PRODUCT_BUNDLE_IDENTIFIER = com.NCrusher.SwiftTaggerID3;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -770,13 +770,13 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = SwiftTagger_MacOSTests/SwiftTagger_MacOSTests.plist;
+				INFOPLIST_FILE = SwiftTaggerID3Tests/SwiftTaggerID3Tests.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.NCrusher.SwiftTagger-MacOSTests";
+				PRODUCT_BUNDLE_IDENTIFIER = com.NCrusher.SwiftTaggerID3Tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
@@ -788,13 +788,13 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = SwiftTagger_MacOSTests/SwiftTagger_MacOSTests.plist;
+				INFOPLIST_FILE = SwiftTaggerID3Tests/SwiftTaggerID3Tests.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.NCrusher.SwiftTagger-MacOSTests";
+				PRODUCT_BUNDLE_IDENTIFIER = com.NCrusher.SwiftTaggerID3Tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
@@ -803,7 +803,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		51E432A6243DA257006574A1 /* Build configuration list for PBXProject "SwiftTagger_MacOS" */ = {
+		51E432A6243DA257006574A1 /* Build configuration list for PBXProject "SwiftTaggerID3" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				51E432BE243DA257006574A1 /* Debug */,
@@ -812,7 +812,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		51E432C0243DA257006574A1 /* Build configuration list for PBXNativeTarget "SwiftTagger_MacOS" */ = {
+		51E432C0243DA257006574A1 /* Build configuration list for PBXNativeTarget "SwiftTaggerID3" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				51E432C1243DA257006574A1 /* Debug */,
@@ -821,7 +821,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		51E432C3243DA257006574A1 /* Build configuration list for PBXNativeTarget "SwiftTagger_MacOSTests" */ = {
+		51E432C3243DA257006574A1 /* Build configuration list for PBXNativeTarget "SwiftTaggerID3Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				51E432C4243DA257006574A1 /* Debug */,

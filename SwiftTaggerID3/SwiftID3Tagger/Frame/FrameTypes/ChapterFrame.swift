@@ -179,9 +179,23 @@ public struct ChapterFrame: FrameProtocol {
                 startTime: Int,
                 endTime: Int) throws {
 
+        var imageFormat: ImageFormat = .jpg
+        if imageUrl.pathExtension.lowercased() == "jpeg" || imageUrl.pathExtension.lowercased() == "jpg" {
+            imageFormat = .jpg
+        } else if imageUrl.pathExtension.lowercased() == "png" {
+            imageFormat = .png
+        }
+        let imageData = try Data(contentsOf: imageUrl)
         let uuid = UUID()
-        let subframeKey = FrameKey.attachedPicture(description: "chapter image \(uuid.uuidString)")
-        let subframeFrame: Frame = try .imageFrame(.init(imageLocation: imageUrl, imageType: .Other, imageDescription: "chapter image \(uuid.uuidString)"))
+        let imageDescription = "Chapter Image \(uuid.uuidString)"
+        let subframeKey = FrameKey.attachedPicture(
+            description: imageDescription)
+        let subframeFrame: Frame = .imageFrame(.init(
+            layout: .known(.attachedPicture),
+            imageType: .Illustration,
+            imageFormat: imageFormat,
+            imageDescription: imageDescription,
+            image: imageData))
         let subframe = [subframeKey : subframeFrame]
         self.init(layout: .known(.chapter),
                   elementID: uuid.uuidString,
