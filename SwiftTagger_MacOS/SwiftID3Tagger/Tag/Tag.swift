@@ -218,4 +218,25 @@ extension Tag {
         let frame = LocalizedFrame(layout: layout, languageString: language, descriptionString: description, contentString: content)
         self.frames[frameKey] = .localizedFrame(frame)
     }
+    
+    func presetOptionsGetter(for frameKey: FrameKey) -> (presetName: String?, presetRefinement: String?, description: String?)? {
+        if let frame = self.frames[.genre],
+            case .presetOptionsFrame(let presetOptionsFrame) = frame {
+            return (presetName: presetOptionsFrame.presetName, presetRefinement: nil,
+                    description: presetOptionsFrame.refinementDescription)
+        } else if let frame = self.frames[.mediaType],
+            case .presetOptionsFrame(let presetOptionsFrame) = frame {
+            return (presetName: presetOptionsFrame.presetName, presetRefinement: presetOptionsFrame.presetRefinement,
+                    description: presetOptionsFrame.refinementDescription)
+        } else if let frame = self.frames[.fileType],
+            case .presetOptionsFrame(let presetOptionsFrame) = frame {
+            return (presetName: presetOptionsFrame.presetName, presetRefinement: presetOptionsFrame.presetRefinement,
+                    description: presetOptionsFrame.refinementDescription)
+        }; return nil
+    }
+    
+    mutating func set(_ layout: FrameLayoutIdentifier,_ frameKey: FrameKey, presetName: String?, presetRefinement: String?, description: String?) {
+        let frame = PresetOptionsFrame(layout: layout, presetName: presetName, presetRefinement: presetRefinement, refinementDescription: description)
+        self.frames[frameKey] = .presetOptionsFrame(frame)
+    }
 }

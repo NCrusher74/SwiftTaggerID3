@@ -31,7 +31,7 @@
      - parameter imageDescription?: an optional description of the image content.
      - parameter image: the image bytes as `Data`.
      */
-    private init(layout: FrameLayoutIdentifier,
+    init(layout: FrameLayoutIdentifier,
                  imageType: ImageType,
                  imageFormat: ImageFormat,
                  imageDescription: String?,
@@ -136,32 +136,9 @@
         self.frameKey = .attachedPicture(description: imageDescription)
         self.image = parsing
     }
-    
-    
-    /// add an image to an ID3 tag using the `URL` of the image file
-    init(imageLocation: URL,
-                imageType: ImageType,
-                imageDescription: String?) throws {
-        var imageFormat: ImageFormat
-        if imageLocation.pathExtension.lowercased() == "jpg" || imageLocation.pathExtension.lowercased() == "jpeg" {
-            imageFormat = ImageFormat.jpg
-        } else if imageLocation.pathExtension.lowercased() == "png" {
-            imageFormat = ImageFormat.png
-        } else {
-            throw Mp3File.Error.UnhandledImageFormat
-        }
-        let imageData = try Data(contentsOf: imageLocation)
-        
-        self.init(layout: .known(.attachedPicture),
-                  imageType: imageType,
-                  imageFormat: imageFormat,
-                  imageDescription: imageDescription,
-                  image: imageData)
-    }
 }
 
 public extension Tag {
-    #warning("to do: create accessors with preset descriptions for each image type")
     /// - AttachedPicture frame getter-setter. ID3 Identifier `PIC`/`APIC`
     subscript(attachedPicture imageDescription: String) -> Data? {
         get {
@@ -175,7 +152,21 @@ public extension Tag {
     }
     
     mutating func setAttachedPicture(imageType: ImageType?, imageDescription: String?, location: URL) throws {
-        let key = FrameKey.attachedPicture(description: (imageDescription ?? imageType?.pictureDescription) ?? "")
-        self.frames[key] = Frame.imageFrame(try .init(imageLocation: location, imageType: imageType ?? .Other, imageDescription: imageDescription))
+        var imageFormat: ImageFormat
+        if location.pathExtension.lowercased() == "jpg" || location.pathExtension.lowercased() == "jpeg" {
+            imageFormat = .jpg
+        } else if location.pathExtension.lowercased() == "png" {
+            imageFormat = .png
+        } else {
+            throw Mp3File.Error.UnhandledImageFormat
+        }
+        let imageData = try Data(contentsOf: location)
+        let key: FrameKey = .attachedPicture(description: (imageDescription ?? imageType?.pictureDescription) ?? "Other")
+        self.frames[key] = Frame.imageFrame(.init(
+            layout: .known(.attachedPicture),
+            imageType: imageType ?? .Other,
+            imageFormat: imageFormat,
+            imageDescription: imageDescription,
+            image: imageData))
     }
 }
