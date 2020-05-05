@@ -19,16 +19,12 @@ enum Frame {
      
         Frames of this type MAY NOT be duplicated within a valid ID3 tag*/
     case partOfTotalFrame(PartOfTotalFrame)
-    /** A frame type containing contents for `Comment` or `UnsynchronizedLyrics`frames.
+    /** A frame type containing contents for `Comment`,`UnsynchronizedLyrics`, `UserDefinedText`, and `UserDefinedWebpage` frames.
      
-        Composed of a language code string, an optional terminated description string, and a single string of content that is permitted to contain new line characters
+        Composed of an (optional) language code string, an optional terminated description string, and a single string of content that is permitted to contain new line characters (only for `Comment` and `Lyrics` frames. `UserDefinedText` may not contain new lines)
      
         Frames of this type MAY be duplicated within a valid ID3 tag, but each is required to have a unique description unless the language is different. */
     case localizedFrame(LocalizedFrame)
-    /** A frame type containing the user customized information or URLs
-     
-        Frames of this type MAY be duplicated within a valid ID3 tag, but each is required to have a unique description. */
-    case userTextFrame(UserTextFrame)
     /** A frame type containing an array of ISO-639-2 language codes
      
         Frames of this type MAY NOT be duplicated within a valid ID3 tag*/
@@ -49,10 +45,6 @@ enum Frame {
         
         Frames of this type MAY be duplicated within a valid ID3 tag, but each must have a unique description string, except for the first and second `ImageType` options, which MAY NOT be duplicated. */
     case imageFrame(ImageFrame)
-    /** A frame type containing a boolean value that will be interpreted as a 1 or 0 and written to the file as an integer string.
-     
-        Frames of this type MAY NOT be duplicated within a valid ID3 tag */
-    case booleanFrame(BooleanFrame)
     /** A frame type consisting of optional strings from an enumeration of preset values, an optional string (terminated) of preset refinement values, and an optional string of freeform refinements or information.
      
         Frames of this type MAY NOT be duplicated within a valid ID3 tag*/
@@ -95,11 +87,6 @@ enum Frame {
                     decodingFromStartOf: &data,
                     version: version,
                     layout: layout))
-            case .known(.compilation):
-                self = .booleanFrame(try BooleanFrame(
-                    decodingFromStartOf: &data,
-                    version: version,
-                    layout: layout))
             case .known(.genre),
                  .known(.mediaType):
                 self = .presetOptionsFrame(try PresetOptionsFrame(
@@ -112,7 +99,9 @@ enum Frame {
                     version: version,
                     layout: layout))
             case .known(.comments),
-                 .known(.unsynchronizedLyrics):
+                 .known(.unsynchronizedLyrics),
+                 .known(.userDefinedText),
+                 .known(.userDefinedWebpage):
                 self = .localizedFrame(try LocalizedFrame(
                     decodingFromStartOf: &data,
                     version: version,
@@ -129,18 +118,13 @@ enum Frame {
                     decodingFromStartOf: &data,
                     version: version,
                     layout: layout))
-            case .known(.userDefinedText),
-                 .known(.userDefinedWebpage):
-                self = .userTextFrame(try UserTextFrame(
-                    decodingFromStartOf: &data,
-                    version: version,
-                    layout: layout))
             case .known(.bpm),
                  .known(.isrc),
                  .known(.length),
                  .known(.movementCount),
                  .known(.movementNumber),
-                 .known(.playlistDelay):
+                 .known(.playlistDelay),
+                 .known(.compilation):
                 self = .integerFrame(try IntegerFrame(
                     decodingFromStartOf: &data,
                     version: version,
@@ -187,12 +171,8 @@ enum Frame {
                 return stringFrame.frameKey
             case .integerFrame(let integerFrame):
                 return integerFrame.frameKey
-            case .booleanFrame(let booleanFrame):
-                return booleanFrame.frameKey
             case .partOfTotalFrame(let partOfTotalFrame):
                 return partOfTotalFrame.frameKey
-            case .userTextFrame(let userTextFrame):
-                return userTextFrame.frameKey
             case .unknownFrame(let unknownFrame):
                 return unknownFrame.frameKey
             case .dateFrame(let dateFrame):
@@ -218,8 +198,6 @@ enum Frame {
                 return try partOfTotalFrame.encode(version: version)
             case .localizedFrame(let localizedFrame):
                 return try localizedFrame.encode(version: version)
-            case .userTextFrame(let userTextFrame):
-                return try userTextFrame.encode(version: version)
             case .languageFrame(let languageFrame):
                 return try languageFrame.encode(version: version)
             case .creditsListFrame(let creditsListFrame):
@@ -230,8 +208,6 @@ enum Frame {
                 return try dateFrame.encode(version: version)
             case .imageFrame(let imageFrame):
                 return try imageFrame.encode(version: version)
-            case .booleanFrame(let booleanFrame):
-                return try booleanFrame.encode(version: version)
             case .presetOptionsFrame(let presetOptionsFrame):
                 return try presetOptionsFrame.encode(version: version)
             case .tocFrame(let tocFrame):
@@ -254,8 +230,6 @@ extension Frame {
                 return partOfTotalFrame
             case .localizedFrame(let localizedFrame):
                 return localizedFrame
-            case .userTextFrame(let userTextFrame):
-                return userTextFrame
             case .languageFrame(let languageFrame):
                 return languageFrame
             case .creditsListFrame(let creditsListFrame):
@@ -264,8 +238,6 @@ extension Frame {
                 return integerFrame
             case .dateFrame(let dateFrame):
                 return dateFrame
-            case .booleanFrame(let booleanFrame):
-                return booleanFrame
             case .presetOptionsFrame(let presetOptionsFrame):
                 return presetOptionsFrame
             case .tocFrame(let tocFrame):
