@@ -1,6 +1,6 @@
 //
 //  UInt32.swift
-//  SwiftTagger_MacOS
+//  SwiftTaggerID3
 //
 //  Created by Nolaine Crusher on 4/9/20.
 //  Copyright © 2020 Nolaine Crusher. All rights reserved.

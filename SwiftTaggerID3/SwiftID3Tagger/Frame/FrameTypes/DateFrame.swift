@@ -1,6 +1,6 @@
 //
 //  DateFrame.swift
-//  SwiftTagger_MacOS
+//  SwiftTaggerID3
 //
 //  Some of this code is adapted from ID3TagEditor
 //  Created by Fabrizio Duroni on 27/02/2018.
@@ -65,11 +65,20 @@ struct DateFrame: FrameProtocol {
                   timeStampString: "\(taggingYear ?? 0000)-\(month ?? 00)-\(day ?? 00)T\(hour ?? 00):\(minute ?? 00)")
     }
     
+    /// The frame flags property.
+    ///
+    /// Typically this is two bytes `[0x00, 0x00]`
+    /// SwiftTagger does not support altering these flags.
     var flags: Data
+    /// The layout property describes the unique structure of a given frame
     var layout: FrameLayoutIdentifier
+    /** The frameKey property
+     
+     Provides a unique identifier to permits duplication of frame types that the ID3 spec allows to be duplicated within a tag. */
     var frameKey: FrameKey
+    /** A boolean value indicating whether or not frames of a particular type are permitted to be duplicated in a valid ID3 tag */
     var allowMultipleFrames: Bool = false
-    
+
     // encode contents of the frame to add to an ID3 tag
     func encodeContents(version: Version) throws -> Data {
         var frameData = Data()
@@ -115,8 +124,14 @@ struct DateFrame: FrameProtocol {
         self.timeStampString = timeStampString
     }
     
+    // MARK: Frame parsing
     // subset of ISO 8601; valid timestamps are yyyy, yyyy-MM, yyyy-MM-dd, yyyy-MM-ddTHH, yyyy-MM-ddTHH:mm and yyyy-MM-ddTHH:mm:ss.
-    // decode contents of a frame from an ID3 tag
+    /// Initialize a frame parsing operation
+    /// - Parameters:
+    ///   - contents: the slice of data containing the frame
+    ///   - version: the ID3 version of the tag
+    ///   - layout: the frame's FrameLayoutIdentifier
+    ///   - flags: (current unsupported by SwiftTagger) [0x00, 0x00]
     init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,

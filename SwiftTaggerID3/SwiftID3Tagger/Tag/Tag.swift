@@ -1,6 +1,6 @@
 //
 //  Tag.swift
-//  SwiftTagger_MacOS
+//  SwiftTaggerID3
 //
 //  Created by Nolaine Crusher on 4/10/20.
 //  Copyright © 2020 Nolaine Crusher. All rights reserved.
@@ -9,27 +9,38 @@
 import Foundation
 import Cocoa
 
-/// A type representing an ID3 tag to be read from or written to a file
+/// A type representing an ID3 tag contained in, or to be written to, an `Mp3File`
+///
+/// This wrapper houses methods and properties for parsing and constructing an ID3 tag
 public struct Tag {
     
+    /// The ID3 frames contained within the `Tag`
     var frames: [FrameKey : Frame]
     
+    /** An internal intializer used by certain frame types.
+     
+        `TableOfContentsFrame` and `ChapterFrame` types may contain optional embedded subframes, such as a `TitleFrame` or `ImageFrame`.
+     
+        This initializer allows those subframes to be handled as a `Tag` instance so that they may be parsed and constructed using the same methods and properties as top-level frames.
+     */
     init(readFromEmbeddedSubframes subframes: [FrameKey:Frame]) {
         self.frames = subframes
     }
     
-    /// handles the parsing of an ID3 tag
+    /** Initializes an ID3 tag, derives required data from the tag header, and instantiates the parsing of the frames within the tag. */
+    /// - Parameter file: The `Mp3File` containing the tag data.
+    /// - Throws: `InvalidFileFormat` if the `Mp3File` does not have a valid Mp3 file extension.
     init(readFrom file: Mp3File) throws {
         // a type containing tag-level properties and methods for querying tag-level information
         let properties = TagProperties()
         
-        // the data derived from the input file
+        // the data derived from the Mp3File
         let fileData: Data = file.data
         
         // the file data as a data subsequence
         var remainder: Data.SubSequence = fileData[fileData.startIndex..<fileData.endIndex]
         
-        // initialized variables for tagSize and Version
+        // pre-initialized variables for tagSize and Version
         var tagSize: Data.Index = 0
         var version: Version = .v2_4
         
@@ -41,9 +52,9 @@ public struct Tag {
             // the first five bytes of a valid ID3 Tag are "ID3"+ the version number in UInt8
             let versionData = remainder.extractFirst(properties.versionDeclarationLength)
             version = try properties.version(data: versionData)
-            // parse flags from tag header. This data is generally unused and use of this data is not supported by SwiftTagger
+            // parse flag from tag header. This data is generally unused and use of this data is not supported by SwiftTagger. We're just getting it out of the way here.
             _ = remainder.extractFirst(properties.tagFlagsLength)
-            // parse size from tag header
+            // parse tag size information from tag header to create an upper bound for frames parsing
             let tagSizeData = remainder.extractFirst(properties.tagSizeDeclarationLength)
             tagSize = try properties.size(data: tagSizeData)
         }
@@ -59,15 +70,15 @@ public struct Tag {
             let identifierBytes = remainder.extractFirst(version.identifierLength)
             // check to be sure the data is a frame
             if identifierBytes.first == 0x00 { break } // Padding, not a frame.
-            // convert data to string
+            // convert identifier data to string
             let identifier = try String(ascii: identifierBytes)
-            // hand the data over to `Frame` to decide which frame handler it goes to
+            // hand the data over to `Frame` to decide which frame handler it should go to
             let frame = try Frame(
                 identifier: identifier,
                 data: &remainder,
                 version: version)
             
-            // used parsed frame data to get frame key
+            // used parsed frame data to get the frame key
             let frameKey = frame.frameKey
             // add frame and framekey to frames dictionary
             frames[frameKey] = frame
@@ -75,8 +86,13 @@ public struct Tag {
         self.frames = frames
     }
     
+    /// Constructs the 10-byte tag header consisting of 5 bytes of ID3 identifier data, 1 byte of flag data, and 4 bytes of size data.
+    /// - Parameter version: The `Version` of the ID3 tag being created
+    /// - Throws: Caller will determine how to handle any errors
+    /// - Returns: The tag header as 10 bytes of `data`
     func buildTagHeader(version: Version) throws -> Data {
         var headerData = Data()
+        // determine which version bytes to use
         switch version {
             case .v2_2:
                 headerData.append(contentsOf: TagProperties().v2_2Bytes)
@@ -85,11 +101,17 @@ public struct Tag {
             case .v2_4:
                 headerData.append(contentsOf: TagProperties().v2_4Bytes)
         }
+        // append the flag byte, which for our purposes will always be `0x00`
         headerData.append(contentsOf: TagProperties().defaultFlag)
+        // append the calculated size of the new tag's data
         headerData.append(contentsOf: (try TagProperties().calculateNewTagSize(data: self.framesData(version: version))))
         return headerData
     }
     
+    /// Pulls all the data from all the frames together into the tag's contents data
+    /// - Parameter version: The `Version` of the ID3 tag being created
+    /// - Throws: Caller will determine how to handle any errors
+    /// - Returns: `data` containing all the frames of the tag
     func framesData(version: Version) throws -> Data {
         var framesData = Data()
         for frame in self.frames.values {
@@ -98,145 +120,14 @@ public struct Tag {
         return framesData
     }
     
+    /// Construct a tag from the header data and the frames data
+    /// - Parameter version: The `Version` of the ID3 tag being created
+    /// - Throws: Caller will determine how to handle any errors
+    /// - Returns: `data` containing the tag's header and contents
     func buildTag(version: Version) throws -> Data {
         var tagData = Data()
         tagData.append(try buildTagHeader(version: version))
         tagData.append(try self.framesData(version: version))
         return tagData
-    }
-}
-
-extension Tag {
-    
-    func string(for frameKey: FrameKey) -> String? {
-        if let frame = self.frames[frameKey],
-            case .stringFrame(let stringFrame) = frame {
-            return stringFrame.contentString
-        } else {
-            return nil
-        }
-    }
-    
-    mutating func set(_ layout: FrameLayoutIdentifier,_ frameKey: FrameKey,to string: String) {
-        let frame = StringFrame(layout: layout, contentString: string)
-        self.frames[frameKey] = .stringFrame(frame)
-    }
-    
-    func url(for frameKey: FrameKey) -> String? {
-        if let frame = self.frames[frameKey],
-            case .urlFrame(let urlFrame) = frame {
-            return urlFrame.urlString
-        } else {
-            return nil
-        }
-    }
-    
-    mutating func set(_ layout: FrameLayoutIdentifier,_ frameKey: FrameKey,to url: URL) {
-        let frame = URLFrame(layout: layout, urlString: url.path)
-        self.frames[frameKey] = .urlFrame(frame)
-    }
-    
-    func integer(for frameKey: FrameKey) -> Int? {
-        if let frame = self.frames[frameKey],
-            case .integerFrame(let integerFrame) = frame {
-            return integerFrame.value
-        } else {
-            return nil
-        }
-    }
-    
-    mutating func set(_ layout: FrameLayoutIdentifier,_ frameKey: FrameKey, to value: Int) {
-        let frame = IntegerFrame(layout: layout, value: value)
-        self.frames[frameKey] = .integerFrame(frame)
-    }
-    
-    func intTuple(for frameKey: FrameKey) -> (part: Int, total: Int?)? {
-        if let frame = self.frames[frameKey],
-            case .partOfTotalFrame(let partOfTotalFrame) = frame {
-            return (partOfTotalFrame.part, partOfTotalFrame.total)
-        } else {
-            return nil
-        }
-    }
-    
-    mutating func set(_ layout: FrameLayoutIdentifier,_ frameKey: FrameKey, to part: Int, and total: Int?) {
-        let frame = PartOfTotalFrame(layout: layout, part: part, total: total)
-        self.frames[frameKey] = .partOfTotalFrame(frame)
-    }
-    
-    func tupleArray(for frameKey: FrameKey) -> [(role: String, person: String)]? {
-        if let frame = self.frames[frameKey],
-            case .creditsListFrame(let creditsListFrame) = frame {
-            return creditsListFrame.entries
-        } else {
-            return nil
-        }
-    }
-    
-    mutating func set(_ layout: FrameLayoutIdentifier, _ frameKey: FrameKey, to entries: [(role: String, person: String)]?) {
-        let frame = CreditsListFrame(layout: layout, entries: entries ?? [])
-        self.frames[frameKey] = .creditsListFrame(frame)
-    }
-    
-    func userTextGetter(for frameKey: FrameKey, with description: String?) -> String? {
-        if frameKey == .userDefinedWebpage(description: description ?? "") {
-            if let frame = self.frames[.userDefinedWebpage(description: description ?? "")],
-                case .userTextFrame(let userTextFrame) = frame {
-                return userTextFrame.contentString
-            } else {
-                if let frame = self.frames[.userDefinedText(description: description ?? "")],
-                    case .userTextFrame(let userTextFrame) = frame {
-                    return userTextFrame.contentString
-                }
-            }
-        }; return nil
-    }
-    
-    mutating func set(_ layout: FrameLayoutIdentifier,_ frameKey: FrameKey, description: String?, content: String) {
-        let frame = UserTextFrame(layout: layout, descriptionString: description ?? "", contentString: content)
-        self.frames[frameKey] = .userTextFrame(frame)
-    }
-    
-    func localizedGetter(
-        for frameKey: FrameKey,
-        in language: ISO6392Codes?,
-        with description: String?) -> String? {
-        if frameKey == .unsynchronizedLyrics(description: description ?? "") {
-            if let frame = self.frames[.unsynchronizedLyrics(description: description ?? "")],
-                case .localizedFrame(let localizedFrame) = frame {
-                return localizedFrame.contentString
-            }
-        } else {
-            if let frame = self.frames[.comments(description: description ?? "")],
-                case .localizedFrame(let localizedFrame) = frame {
-                return localizedFrame.contentString
-            }
-        }; return nil
-    }
-    
-    mutating func set(_ layout: FrameLayoutIdentifier,_ frameKey: FrameKey, language: String, description: String?, content: String) {
-        let frame = LocalizedFrame(layout: layout, languageString: language, descriptionString: description, contentString: content)
-        self.frames[frameKey] = .localizedFrame(frame)
-    }
-    
-    func presetOptionsGetter(for frameKey: FrameKey) -> (presetName: String?, presetRefinement: String?, description: String?)? {
-        if let frame = self.frames[.genre],
-            case .presetOptionsFrame(let presetOptionsFrame) = frame {
-            return (presetName: presetOptionsFrame.presetName, presetRefinement: nil,
-                    description: presetOptionsFrame.refinementDescription)
-        } else if let frame = self.frames[.mediaType],
-            case .presetOptionsFrame(let presetOptionsFrame) = frame {
-            return (presetName: presetOptionsFrame.presetName, presetRefinement: presetOptionsFrame.presetRefinement,
-                    description: presetOptionsFrame.refinementDescription)
-        } else if let frame = self.frames[.fileType],
-            case .presetOptionsFrame(let presetOptionsFrame) = frame {
-            return (presetName: presetOptionsFrame.presetName, presetRefinement: presetOptionsFrame.presetRefinement,
-                    description: presetOptionsFrame.refinementDescription)
-        }; return nil
-    }
-    
-    mutating func set(_ layout: FrameLayoutIdentifier,_ frameKey: FrameKey, presetName: String?, presetRefinement: String?, description: String?) {
-        let frame = PresetOptionsFrame(layout: layout, presetName: presetName, presetRefinement: presetRefinement, refinementDescription: description)
-        self.frames[frameKey] = .presetOptionsFrame(frame)
     }
 }

@@ -1,6 +1,6 @@
 //
 //  KeySignatures.swift
-//  SwiftTagger_MacOS
+//  SwiftTaggerID3
 //
 //  Created by Nolaine Crusher on 4/17/20.
 //  Copyright © 2020 Nolaine Crusher. All rights reserved.
@@ -40,5 +40,6 @@ public enum KeySignature: String {
     case eFlatMinor = "Ebm"
     case cFlatMajor = "Cb"
     case aFlatMinor = "Abm"
+    case offkey = "o"
     case unknown = ""
 }

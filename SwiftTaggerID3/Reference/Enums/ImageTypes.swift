@@ -1,6 +1,6 @@
 //
 //  ImageType.swift
-//  SwiftTagger_MacOS
+//  SwiftTaggerID3
 //
 //  Some of this code is adapted from ID3TagEditor
 //  Created by Fabrizio Duroni on 27/02/2018.

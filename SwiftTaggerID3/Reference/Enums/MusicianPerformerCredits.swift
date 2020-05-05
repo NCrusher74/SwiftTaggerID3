@@ -1,6 +1,6 @@
 //
 //  MusicianPerformerCredits.swift
-//  SwiftTagger_MacOS
+//  SwiftTaggerID3
 //
 //  Created by Nolaine Crusher on 4/20/20.
 //  Copyright © 2020 Nolaine Crusher. All rights reserved.
@@ -3260,6 +3260,7 @@ public enum MusicianAndPerformerCredits: String {
     case sinden = "Sinden"
     case sindhiSarangi = "Sindhi Sarangi"
     case sinding = "Sinding"
+    case singer = "Singer"
     case singing = "Singing"
     case singingBowl = "Singing Bowl"
     case singingBowls = "Singing Bowls"

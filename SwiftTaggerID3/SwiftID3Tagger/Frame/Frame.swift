@@ -1,6 +1,6 @@
 //
 //  Frame.swift
-//  SwiftTagger_MacOS
+//  SwiftTaggerID3
 //
 //  Created by Nolaine Crusher on 4/8/20.
 //  Copyright © 2020 Nolaine Crusher. All rights reserved.
@@ -8,44 +8,78 @@
 
 import Foundation
 
-/** An enum containing methods and variables for querying and handling information from a frame */
+/** An enum containing methods and variables for querying and building frames with a particular structure */
 enum Frame {
     
-    /// a frame type containing a single, unterminated string of content
+    /** A frame type containing a single, unterminated string of content
+     
+        Frames of this type MAY NOT be duplicated within a valid ID3 tag */
     case stringFrame(StringFrame)
-    /** a frame type containing the index of the track or disc in the collection, with an optional addition of the total number of tracks or discs */
+    /** A frame type containing the index of the track or disc in the collection, with an optional addition of the total number of tracks or discs
+     
+        Frames of this type MAY NOT be duplicated within a valid ID3 tag*/
     case partOfTotalFrame(PartOfTotalFrame)
-    /** a frame type containing contents for `Comment` or `UnsynchronizedLyrics`frames. Composed of a language code string, an optional terminated description string, and a single string of content that is permitted to contain new line characters */
+    /** A frame type containing contents for `Comment` or `UnsynchronizedLyrics`frames.
+     
+        Composed of a language code string, an optional terminated description string, and a single string of content that is permitted to contain new line characters
+     
+        Frames of this type MAY be duplicated within a valid ID3 tag, but each is required to have a unique description unless the language is different. */
     case localizedFrame(LocalizedFrame)
-    /** a frame type containing the user customized information or URLs */
+    /** A frame type containing the user customized information or URLs
+     
+        Frames of this type MAY be duplicated within a valid ID3 tag, but each is required to have a unique description. */
     case userTextFrame(UserTextFrame)
-    /** a frame type containing an array of ISO-639-2 language codes */
+    /** A frame type containing an array of ISO-639-2 language codes
+     
+        Frames of this type MAY NOT be duplicated within a valid ID3 tag*/
     case languageFrame(LanguageFrame)
-    /** a frame type containing an array of `role:person` tuples */
+    /** A frame type containing an array of `role:person` tuples
+     
+        Frames of this type MAY NOT be duplicated within a valid ID3 tag */
     case creditsListFrame(CreditsListFrame)
-    /// a frame type containing an integer value that will be encoded and stored as an integer string
+    /** A frame type containing an integer value that will be encoded and stored as an integer string
+     
+        Frames of this type MAY NOT be duplicated within a valid ID3 tag*/
     case integerFrame(IntegerFrame)
-    /// a frame type containing an date value that will be encoded and stored as a timestamp string
+    /** A frame type containing an date value that will be encoded and stored as a timestamp string.
+     
+        Frames of this type MAY NOT be duplicated within a valid ID3 tag*/
     case dateFrame(DateFrame)
-    /// a frame type containing an attached image pertaining to the audio media
+    /** A frame type containing an attached image pertaining to the audio media.
+        
+        Frames of this type MAY be duplicated within a valid ID3 tag, but each must have a unique description string, except for the first and second `ImageType` options, which MAY NOT be duplicated. */
     case imageFrame(ImageFrame)
-    /** a frame type containing a boolean value that will be interpreted as a 1 or 0 and written to the file as an integer string */
+    /** A frame type containing a boolean value that will be interpreted as a 1 or 0 and written to the file as an integer string.
+     
+        Frames of this type MAY NOT be duplicated within a valid ID3 tag */
     case booleanFrame(BooleanFrame)
-    /** a frame type consisting of optional strings from an enumeration of preset values, an optional string of preset refinement values, and an optional string of freeform refinements or information */
+    /** A frame type consisting of optional strings from an enumeration of preset values, an optional string (terminated) of preset refinement values, and an optional string of freeform refinements or information.
+     
+        Frames of this type MAY NOT be duplicated within a valid ID3 tag*/
     case presetOptionsFrame(PresetOptionsFrame)
-    /// a frame type containing a single, unterminated string of content in the form of a URL
+    /// a frame type containing a single, unterminated string of content in the form of a web URL
     case urlFrame(URLFrame)
-    /// a frame type containing a table of contents frame
+    /** a frame type containing a table of contents frame.
+     
+        Frames of this type MAY be duplicated within a valid ID3 tag, providing only one has the top-level flag set, and each has a unique `ElementID`*/
     case tocFrame(TableOfContentsFrame)
-    /// a frame type containing a chapter frame
+    /** a frame type containing a chapter frame.
+     
+        Frames of this type MAY be duplicated within a valid ID3 tag, but each one must have a unique `ElementID`*/
     case chapterFrame(ChapterFrame)
-    /// allows unsupported frames to pass through and be returned unpaarsed
+    /// allows unsupported frames to pass through and be returned unparsed
     case unknownFrame(UnknownFrame)
     
-    // instantiates a frame handler based upon the `identifier` string
+    /// Instantiates the frame handler appropriate for a particular frame
+    /// - Parameters:
+    ///   - identifier: The identifier string parsed out of the frame header
+    ///   - data: The slice of data containing the frame as declared in the frame header
+    ///   - version: The `Version` of the ID3 tag
+    /// - Throws: Caller will determine how to handle any errors
     init(identifier: String,
          data: inout Data.SubSequence,
          version: Version) throws {
+        // use the identifier string to determine frame layout
         let layout = FrameLayoutIdentifier(identifier: identifier)
         switch layout {
             case .known(.attachedPicture):
@@ -149,6 +183,9 @@ enum Frame {
         }
     }
     
+    /** A unique identifier for a particular frame
+     
+        For frames that may not be duplicated within a valid `Tag`, this is usually the ID3 frame identifier string. For frames that may be duplicated within a valid `Tag`, other identifying information, such as a description string or `UUID` may be used */
     var frameKey: FrameKey {
         switch self {
             case .localizedFrame(let localizedFrame):
@@ -184,6 +221,10 @@ enum Frame {
         }
     }
     
+    /// Retrieves the data for a frame using the `FrameProtocol` `encode` function
+    /// - Parameter version: The `Version` of the ID3 tag
+    /// - Throws: Caller will determine how errors will be handled
+    /// - Returns: `data` containing the encoded frame
     func getFramesData(version: Version) throws -> Data {
         switch self {
             case .stringFrame(let stringFrame):
@@ -221,6 +262,7 @@ enum Frame {
 }
 
 extension Frame {
+    /// A property that permits a subframe to be encoded as a frame
     var asFrameProtocol: FrameProtocol {
         switch self {
             case .stringFrame(let stringFrame):

@@ -1,6 +1,6 @@
 //
 //  LocalizedFrame.swift
-//  SwiftTagger_MacOS
+//  SwiftTaggerID3
 //
 //  Created by Nolaine Crusher on 4/11/20.
 //  Copyright © 2020 Nolaine Crusher. All rights reserved.
@@ -46,11 +46,20 @@ struct LocalizedFrame: FrameProtocol {
         self.contentString = contentString
     }
 
+    /// The frame flags property.
+    ///
+    /// Typically this is two bytes `[0x00, 0x00]`
+    /// SwiftTagger does not support altering these flags.
     var flags: Data
+    /// The layout property describes the unique structure of a given frame
     var layout: FrameLayoutIdentifier
+    /** The frameKey property
+     
+     Provides a unique identifier to permits duplication of frame types that the ID3 spec allows to be duplicated within a tag. */
     var frameKey: FrameKey
-    var allowMultipleFrames: Bool = true
-    
+    /** A boolean value indicating whether or not frames of a particular type are permitted to be duplicated in a valid ID3 tag */
+    var allowMultipleFrames: Bool = false
+
     // encode the contents of the frame to add to an ID3 tag
     func encodeContents(version: Version) throws -> Data {
         var frameData = Data()
@@ -66,7 +75,12 @@ struct LocalizedFrame: FrameProtocol {
         return frameData
     }
 
-    // decode the contents of the frame from an ID3 tag
+    /// Initialize a frame parsing operation
+    /// - Parameters:
+    ///   - contents: the slice of data containing the frame
+    ///   - version: the ID3 version of the tag
+    ///   - layout: the frame's FrameLayoutIdentifier
+    ///   - flags: (current unsupported by SwiftTagger) [0x00, 0x00]
     init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,
@@ -97,6 +111,41 @@ struct LocalizedFrame: FrameProtocol {
     }
 }
 
+internal extension Tag {
+    // get and set functions for `LocalizedFrame` frame types, which retrieves or sets three strings, one of which is a language code, and one of which is optional. Each individual frame of this type will call these functions in a get-set property of function, where appropriate.
+    func localizedGetter(for frameKey: FrameKey,
+                         language: ISO6392Codes?,
+                         description: String?) -> String? {
+        if frameKey == .unsynchronizedLyrics(description: description ?? "") {
+            if let frame = self.frames[.unsynchronizedLyrics(
+                description: description ?? "")],
+                case .localizedFrame(let localizedFrame) = frame {
+                return localizedFrame.contentString
+            }
+        } else {
+            if let frame = self.frames[.comments(
+                description: description ?? "")],
+                case .localizedFrame(let localizedFrame) = frame {
+                return localizedFrame.contentString
+            }
+        }; return nil
+    }
+    
+    mutating func set(_ layout: FrameLayoutIdentifier,
+                      _ frameKey: FrameKey,
+                      in language: String,
+                      to description: String?,
+                      with content: String) {
+        let frame = LocalizedFrame(layout: layout,
+                                   languageString: language,
+                                   descriptionString: description,
+                                   contentString: content)
+        self.frames[frameKey] = .localizedFrame(frame)
+    }
+    
+
+}
+
 // MARK: Tag Extension
 public extension Tag {
     /// - Comments frame getter-setter. ID3 Identifier `COM`/`COMM`
@@ -104,11 +153,11 @@ public extension Tag {
         get {
             localizedGetter(for: .comments(
                 description: commentsDescription),
-                            in: language,
-                            with: commentsDescription) ?? ""
+                            language: language,
+                            description: commentsDescription) ?? ""
         }
         set {
-            set(.known(.comments), .comments(description: commentsDescription), language: language.rawValue, description: commentsDescription, content: newValue)
+            set(.known(.comments), .comments(description: commentsDescription), in: language.rawValue, to: commentsDescription, with: newValue)
         }
     }
     
@@ -117,11 +166,11 @@ public extension Tag {
         get {
             localizedGetter(for: .comments(
                 description: "Description"),
-                            in: language,
-                            with: "Description") ?? ""
+                            language: language,
+                            description: "Description") ?? ""
         }
         set {
-            set(.known(.comments), .comments(description: "Description"), language: language.rawValue, description: "Description", content: newValue)
+            set(.known(.comments), .comments(description: "Description"), in: language.rawValue, to: "Description", with: newValue)
         }
     }
     
@@ -130,11 +179,11 @@ public extension Tag {
         get {
             localizedGetter(for: .comments(
                 description: "Long Description"),
-                            in: language,
-                            with: "Long Description") ?? ""
+                            language: language,
+                            description: "Long Description") ?? ""
         }
         set {
-            set(.known(.comments), .comments(description: "Long Description"), language: language.rawValue, description: "Long Description", content: newValue)
+            set(.known(.comments), .comments(description: "Long Description"), in: language.rawValue, to: "Long Description", with: newValue)
         }
     }
     
@@ -143,11 +192,11 @@ public extension Tag {
         get {
             localizedGetter(for: .comments(
                 description: "Liner Notes"),
-                            in: language,
-                            with: "Liner Notes") ?? ""
+                            language: language,
+                            description: "Liner Notes") ?? ""
         }
         set {
-            set(.known(.comments), .comments(description: "Liner Notes"), language: language.rawValue, description: "Liner Notes", content: newValue)
+            set(.known(.comments), .comments(description: "Liner Notes"), in: language.rawValue, to: "Liner Notes", with: newValue)
         }
     }
     
@@ -156,11 +205,11 @@ public extension Tag {
         get {
             localizedGetter(for: .comments(
                 description: "Song Description"),
-                            in: language,
-                            with: "Song Description") ?? ""
+                            language: language,
+                            description: "Song Description") ?? ""
         }
         set {
-            set(.known(.comments), .comments(description: "Song Description"), language: language.rawValue, description: "Song Description", content: newValue)
+            set(.known(.comments), .comments(description: "Song Description"), in: language.rawValue, to: "Song Description", with: newValue)
         }
     }
     
@@ -169,11 +218,11 @@ public extension Tag {
         get {
             localizedGetter(for: .comments(
                 description: "Series Description"),
-                            in: language,
-                            with: "Series Description") ?? ""
+                            language: language,
+                            description: "Series Description") ?? ""
         }
         set {
-            set(.known(.comments), .comments(description: "Series Description"), language: language.rawValue, description: "Series Description", content: newValue)
+            set(.known(.comments), .comments(description: "Series Description"), in: language.rawValue, to: "Series Description", with: newValue)
         }
     }
     
@@ -182,11 +231,11 @@ public extension Tag {
         get {
             localizedGetter(for: .unsynchronizedLyrics(
                 description: lyricsDescription),
-                            in: language,
-                            with: lyricsDescription) ?? ""
+                            language: language,
+                            description: lyricsDescription) ?? ""
         }
         set {
-            set(.known(.unsynchronizedLyrics), .unsynchronizedLyrics(description: lyricsDescription), language: language.rawValue, description: lyricsDescription, content: newValue)
+            set(.known(.unsynchronizedLyrics), .unsynchronizedLyrics(description: lyricsDescription), in: language.rawValue, to: lyricsDescription, with: newValue)
         }
     }
 }

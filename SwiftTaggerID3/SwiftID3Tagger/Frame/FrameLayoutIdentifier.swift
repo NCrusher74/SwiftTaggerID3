@@ -1,6 +1,6 @@
 //
 //  FrameLayoutIdentifier.swift
-//  SwiftTagger_MacOS
+//  SwiftTaggerID3
 //
 //  Created by Nolaine Crusher on 4/8/20.
 //  Copyright © 2020 Nolaine Crusher. All rights reserved.
@@ -10,13 +10,14 @@ import Foundation
 
 /** `FrameLayoutIdentifier` describes how SwiftTagger refers to the frame type internally.
  All information for handling a frame are determined by its `FrameLayoutIdentifier` */
-
 enum FrameLayoutIdentifier: Hashable {
     /// a frame with an identifier recognized and handled by SwiftTagger
     case known(KnownFrameLayoutIdentifier)
     /// a frame with an unknown or unhandled identifier
     case unknown(String)
     
+    /// Initialize the `FrameLayoutIdentifier`
+    /// - Parameter identifier: the unique ID3 identifier string
     init(identifier: String) {
         if let known = KnownFrameLayoutIdentifier(identifier: identifier) {
             self = .known(known)
@@ -25,6 +26,9 @@ enum FrameLayoutIdentifier: Hashable {
         }
     }
     
+    /// Retrieve a frame's ID3 identifier string
+    /// - Parameter version: The tag's ID3 `Version`. Different versions may have different identifiers
+    /// - Returns: The ID3 identifier string appropriate for the version
     func id3Identifier(version: Version) -> String? {
         switch self {
             case .known(let known):
@@ -35,7 +39,7 @@ enum FrameLayoutIdentifier: Hashable {
     }
 }
 
-/** an enumeration of ID3 standard, or iTunes compliant but non-standard, frames*/
+/** An enumeration of ID3 standard--or iTunes compliant but non-standard--frames*/
 enum KnownFrameLayoutIdentifier: CaseIterable {
     
     case album
@@ -118,11 +122,20 @@ enum KnownFrameLayoutIdentifier: CaseIterable {
         self = KnownFrameLayoutIdentifier.stringToLayoutMapping[identifier] ?? .userDefinedText
     }
          
+    /*
+     
+
+     */
     // MARK: ID3Identifier
-    // The ID3 code for the frame
-    // 3 bytes for ID3v2.2
-    // 4 bytes for ID3v2.3 and ID3v2.4
-    /* If ID3 identfier is `nil` the frame will be handled as a TXX/TXXX frame, unless it's a frame associated with date handling, in which case it will be handled depending on version. Musician Credits for ID3v2.2 and ID3v2.3 will be handled as InvolvedPeople */
+    /** The ID3 code for the frame
+
+        3 bytes for ID3v2.2
+        4 bytes for ID3v2.3 and ID3v2.4
+     
+        If ID3 identfier is `nil` the frame will be handled as a TXX/TXXX frame, unless it's a frame associated with date handling, in which case it will be handled depending on version. Musician Credits for ID3v2.2 and ID3v2.3 will be handled as InvolvedPeople
+     */
+    /// - Parameter version: The ID3 `Version` of the tag
+    /// - Returns: A string of the ID3 identifier appropriate for the version
     func id3Identifier(version: Version) -> String? {
         switch self {
             

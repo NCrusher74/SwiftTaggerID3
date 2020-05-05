@@ -1,6 +1,6 @@
 //
 //  UserTextFrame.swift
-//  SwiftTagger_MacOS
+//  SwiftTaggerID3
 //
 //  Created by Nolaine Crusher on 4/12/20.
 //  Copyright © 2020 Nolaine Crusher. All rights reserved.
@@ -33,10 +33,19 @@ struct UserTextFrame: FrameProtocol {
         }
     }
     
+    /// The frame flags property.
+    ///
+    /// Typically this is two bytes `[0x00, 0x00]`
+    /// SwiftTagger does not support altering these flags.
     var flags: Data
+    /// The layout property describes the unique structure of a given frame
     var layout: FrameLayoutIdentifier
+    /** The frameKey property
+     
+     Provides a unique identifier to permits duplication of frame types that the ID3 spec allows to be duplicated within a tag. */
     var frameKey: FrameKey
-    var allowMultipleFrames: Bool = true
+    /** A boolean value indicating whether or not frames of a particular type are permitted to be duplicated in a valid ID3 tag */
+    var allowMultipleFrames: Bool = false
 
     // encode contents to add to an ID3 tag
     func encodeContents(version: Version) throws -> Data {
@@ -53,7 +62,12 @@ struct UserTextFrame: FrameProtocol {
         return frameData
     }
 
-    // decode frame contents from an ID3 tag
+    /// Initialize a frame parsing operation
+    /// - Parameters:
+    ///   - contents: the slice of data containing the frame
+    ///   - version: the ID3 version of the tag
+    ///   - layout: the frame's FrameLayoutIdentifier
+    ///   - flags: (current unsupported by SwiftTagger) [0x00, 0x00]
     init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,
@@ -76,150 +90,187 @@ struct UserTextFrame: FrameProtocol {
     }
 }
 
+internal extension Tag {
+    /* get and set functions for `UserTextFrame` frame types. Each individual frame of this type will call these functions in a get-set property of function, where appropriate.
+     
+     This type returns a tuple of two strings, one of which is optional. The get function is called by a subscript that searches through (potentially) multiple UserTextFrames to find one with a unique description */
+    func userTextGetter(for frameKey: FrameKey, description: String?)
+        -> String? {
+            // check that the frame is a UserDefinedWebpage frame or a UserText frame
+            if frameKey == .userDefinedWebpage(description: description ?? "") {
+                if let frame = self.frames[.userDefinedWebpage(
+                    description: description ?? "")],
+                    case .userTextFrame(let userTextFrame) = frame {
+                    // return the content string of a specific frame by searching using the description string
+                    return userTextFrame.contentString
+                } else {
+                    if let frame = self.frames[.userDefinedText(
+                        description: description ?? "")],
+                        case .userTextFrame(let userTextFrame) = frame {
+                        return userTextFrame.contentString
+                    }
+                }
+            }; return nil
+    }
+    
+    mutating func set(_ layout: FrameLayoutIdentifier,
+                      _ frameKey: FrameKey,
+                      to description: String?,
+                      with content: String) {
+        let frame = UserTextFrame(
+            layout: layout,
+            descriptionString: description ?? "",
+            contentString: content)
+        self.frames[frameKey] = .userTextFrame(frame)
+    }
+    
+
+}
+
 // MARK: Tag Extension
 public extension Tag {
     /// - UserDefinedText frame getter-setter. ID3 Identifier `TXX`/`TXXX`
     subscript(userDefinedText userTextDescription: String) -> String {
         get {
-            userTextGetter(for: .userDefinedText(description: userTextDescription), with: userTextDescription) ?? ""
+            userTextGetter(for: .userDefinedText(description: userTextDescription), description: userTextDescription) ?? ""
         }
         set {
-            set(.known(.userDefinedText), .userDefinedText(description: userTextDescription), description: userTextDescription, content: newValue)
+            set(.known(.userDefinedText), .userDefinedText(description: userTextDescription), to: userTextDescription, with: newValue)
         }
     }
     
     /// - UserDefinedWebpage frame getter-setter. ID3 Identifier `WXX`/`WXXX`
     subscript(userDefinedUrl userDefinedUrlDescription: String) -> String {
         get {
-            userTextGetter(for: .userDefinedWebpage(description: userDefinedUrlDescription), with: userDefinedUrlDescription) ?? ""
+            userTextGetter(for: .userDefinedWebpage(description: userDefinedUrlDescription), description: userDefinedUrlDescription) ?? ""
         }
         set {
-            set(.known(.userDefinedText), .userDefinedText(description: userDefinedUrlDescription), description: userDefinedUrlDescription, content: newValue)
+            set(.known(.userDefinedText), .userDefinedText(description: userDefinedUrlDescription), to: userDefinedUrlDescription, with: newValue)
         }
     }
 
     /// - OnlineExtras getter-setter. This is a convenience for a custom `WXX`/`WXXX` frame with a description of `Online Extras`. Mainly present to create an MP3 counterpart to the MP4 online extras atom
     var onlineExtras: String {
         get {
-            userTextGetter(for: .userDefinedText(description: "Online Extras"), with: "Online Extras") ?? ""
+            userTextGetter(for: .userDefinedText(description: "Online Extras"), description: "Online Extras") ?? ""
         }
         set {
-            set(.known(.userDefinedText), .userDefinedText(description: "Online Extras"), description: "Online Extras", content: newValue)
+            set(.known(.userDefinedText), .userDefinedText(description: "Online Extras"), to: "Online Extras", with: newValue)
         }
     }
 
     /// - Acknowledgment getter-setter. This is a convenience for a custom `TXX`/`TXXX` frame with a description of `Acknowledgment`
     var acknowledgment: String {
         get {
-            userTextGetter(for: .userDefinedText(description: "Acknowledgment"), with: "Acknowledgment") ?? ""
+            userTextGetter(for: .userDefinedText(description: "Acknowledgment"), description: "Acknowledgment") ?? ""
         }
         set {
-            set(.known(.userDefinedText), .userDefinedText(description: "Acknowledgment"), description: "Acknowledgment", content: newValue)
+            set(.known(.userDefinedText), .userDefinedText(description: "Acknowledgment"), to: "Acknowledgment", with: newValue)
         }
     }
     
     /// - Thanks getter-setter. This is a convenience for a custom `TXX`/`TXXX` frame with a description of `Thanks`
     var thanks: String {
         get {
-            userTextGetter(for: .userDefinedText(description: "Thanks"), with: "Thanks") ?? ""
+            userTextGetter(for: .userDefinedText(description: "Thanks"), description: "Thanks") ?? ""
         }
         set {
-            set(.known(.userDefinedText), .userDefinedText(description: "Thanks"), description: "Thanks", content: newValue)
+            set(.known(.userDefinedText), .userDefinedText(description: "Thanks"), to: "Thanks", with: newValue)
         }
     }
     
     /// - SourceCredit getter-setter. This is a convenience for a custom `TXX`/`TXXX` frame with a description of `Source Credit`
     var sourceCredit: String {
         get {
-            userTextGetter(for: .userDefinedText(description: "Source Credit"), with: "Source Credit") ?? ""
+            userTextGetter(for: .userDefinedText(description: "Source Credit"), description: "Source Credit") ?? ""
         }
         set {
-            set(.known(.userDefinedText), .userDefinedText(description: "Source Credit"), description: "Source Credit", content: newValue)
+            set(.known(.userDefinedText), .userDefinedText(description: "Source Credit"), to: "Source Credit", with: newValue)
         }
     }
 
     /// - SeriesName getter-setter. This is a convenience for a custom `TXX`/`TXXX` frame with a description of `Series NAme`
     var seriesName: String {
         get {
-            userTextGetter(for: .userDefinedText(description: "Series Name"), with: "Series Name") ?? ""
+            userTextGetter(for: .userDefinedText(description: "Series Name"), description: "Series Name") ?? ""
         }
         set {
-            set(.known(.userDefinedText), .userDefinedText(description: "Series Name"), description: "Series Name", content: newValue)
+            set(.known(.userDefinedText), .userDefinedText(description: "Series Name"), to: "Series Name", with: newValue)
         }
     }
 
     /// - Episode Name getter-setter. This is a convenience for a custom `TXX`/`TXXX` frame with a description of `Episode Name`
     var episodeName: String {
         get {
-            userTextGetter(for: .userDefinedText(description: "Episode Name"), with: "Episode Name") ?? ""
+            userTextGetter(for: .userDefinedText(description: "Episode Name"), description: "Episode Name") ?? ""
         }
         set {
-            set(.known(.userDefinedText), .userDefinedText(description: "Episode Name"), description: "Episode Name", content: newValue)
+            set(.known(.userDefinedText), .userDefinedText(description: "Episode Name"), to: "Episode Name", with: newValue)
         }
     }
 
     /// - Network getter-setter. This is a convenience for a custom `TXX`/`TXXX` frame with a description of `Network`
     var network: String {
         get {
-            userTextGetter(for: .userDefinedText(description: "Network"), with: "Network") ?? ""
+            userTextGetter(for: .userDefinedText(description: "Network"), description: "Network") ?? ""
         }
         set {
-            set(.known(.userDefinedText), .userDefinedText(description: "Network"), description: "Network", content: newValue)
+            set(.known(.userDefinedText), .userDefinedText(description: "Network"), to: "Network", with: newValue)
         }
     }
 
     /// - EpisodeNumber getter-setter. This is a convenience for a custom `TXX`/`TXXX` frame with a description of `Episode Number`
     var episodeNumber: Int {
         get {
-            let intString = userTextGetter(for: .userDefinedText(description: "Episode Number"), with: "Episode Number") ?? ""
+            let intString = userTextGetter(for: .userDefinedText(description: "Episode Number"), description: "Episode Number") ?? ""
             return Int(intString) ?? 0
         }
         set {
-            set(.known(.userDefinedText), .userDefinedText(description: "Episode Number"), description: "Episode Number", content: String(newValue))
+            set(.known(.userDefinedText), .userDefinedText(description: "Episode Number"), to: "Episode Number", with: String(newValue))
         }
     }
 
     /// - Season (number) getter-setter. This is a convenience for a custom `TXX`/`TXXX` frame with a description of `Episode Number`
     var season: Int {
         get {
-            let intString = userTextGetter(for: .userDefinedText(description: "Season"), with: "Season") ?? ""
+            let intString = userTextGetter(for: .userDefinedText(description: "Season"), description: "Season") ?? ""
             return Int(intString) ?? 0
         }
         set {
-            set(.known(.userDefinedText), .userDefinedText(description: "Season"), description: "Season", content: String(newValue))
+            set(.known(.userDefinedText), .userDefinedText(description: "Season"), to: "Season", with: String(newValue))
         }
     }
 
     /// - Keywords getter-setter. This is a convenience for a custom `TXX`/`TXXX` frame with a description of `Keywords`. Use semi-colon to separate keywords.
     var keywords: [String] {
         get {
-            let keywordString = userTextGetter(for: .userDefinedText(description: "Keywords"), with: "Keywords")
+            let keywordString = userTextGetter(for: .userDefinedText(description: "Keywords"), description: "Keywords")
             return keywordString?.components(separatedBy: ";") ?? []
         }
         set {
-            set(.known(.userDefinedText), .userDefinedText(description: "Keywords"), description: "Keywords", content: newValue.joined(separator: ";"))
+            set(.known(.userDefinedText), .userDefinedText(description: "Keywords"), to: "Keywords", with: newValue.joined(separator: ";"))
         }
     }
 
     /// - Content Rating getter-setter. This is a convenience for a custom `TXX`/`TXXX` frame with a description of `Content Advisory`
     var contentAdvisory: ContentAdvisory {
         get {
-            let string = userTextGetter(for: .userDefinedText(description: "Content Advisory"), with: "Content Advisory") ?? "mpaa|Unrated|???"
+            let string = userTextGetter(for: .userDefinedText(description: "Content Advisory"), description: "Content Advisory") ?? "mpaa|Unrated|???"
             return ContentAdvisory(rawValue: string) ?? .usMovieUnrated
         }
         set {
-            set(.known(.userDefinedText), .userDefinedText(description: "Content Advisory"), description: "Content Advisory", content: newValue.rawValue)
+            set(.known(.userDefinedText), .userDefinedText(description: "Content Advisory"), to: "Content Advisory", with: newValue.rawValue)
         }
     }
     
     /// - Content Advisory getter-setter. This is a convenience for a custom `TXX`/`TXXX` frame with a description of `Content Rating`
     var contentRating: ContentRating {
         get {
-            let string = userTextGetter(for: .userDefinedText(description: "Content Rating"), with: "Content Rating") ?? ""
+            let string = userTextGetter(for: .userDefinedText(description: "Content Rating"), description: "Content Rating") ?? ""
             return ContentRating(rawValue: string) ?? .none
         }
         set {
-            set(.known(.userDefinedText), .userDefinedText(description: "Content Rating"), description: "Content Rating", content: newValue.rawValue)
+            set(.known(.userDefinedText), .userDefinedText(description: "Content Rating"), to: "Content Rating", with: newValue.rawValue)
         }
     }
 }

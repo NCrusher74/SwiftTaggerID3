@@ -1,6 +1,6 @@
 //
 //  StringEncoding.swift
-//  SwiftTagger_MacOS
+//  SwiftTaggerID3
 //
 //  This code is adapted from ID3TagEditor
 //  Created by Fabrizio Duroni on 27/02/2018.

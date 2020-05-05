@@ -1,6 +1,6 @@
 //
 //  GenreFrame.swift
-//  SwiftTagger_MacOS
+//  SwiftTaggerID3
 //
 //  Some of this code is adapted from ID3TagEditor
 //  Created by Fabrizio Duroni on 27/02/2018.
@@ -45,11 +45,20 @@ struct PresetOptionsFrame: FrameProtocol {
         }
     }
     
+    /// The frame flags property.
+    ///
+    /// Typically this is two bytes `[0x00, 0x00]`
+    /// SwiftTagger does not support altering these flags.
     var flags: Data
+    /// The layout property describes the unique structure of a given frame
     var layout: FrameLayoutIdentifier
+    /** The frameKey property
+     
+     Provides a unique identifier to permits duplication of frame types that the ID3 spec allows to be duplicated within a tag. */
     var frameKey: FrameKey
+    /** A boolean value indicating whether or not frames of a particular type are permitted to be duplicated in a valid ID3 tag */
     var allowMultipleFrames: Bool = false
-    
+
     // MARK: Encode contents for writing
     func encodeContents(version: Version) throws -> Data {
         var frameData = Data()
@@ -122,7 +131,12 @@ struct PresetOptionsFrame: FrameProtocol {
         }; return nil
     }
     
-    // MARK: parse contents for reading
+    /// Initialize a frame parsing operation
+    /// - Parameters:
+    ///   - contents: the slice of data containing the frame
+    ///   - version: the ID3 version of the tag
+    ///   - layout: the frame's FrameLayoutIdentifier
+    ///   - flags: (current unsupported by SwiftTagger) [0x00, 0x00]
     init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,
@@ -238,6 +252,44 @@ struct PresetOptionsFrame: FrameProtocol {
     }
 }
 
+internal extension Tag {
+    // get and set functions for `PresetOptionsFrame` frame types, which retrieves or sets three strings, all of which are optional (genre only uses two of these.) Each individual frame of this type will call these functions in a get-set property of function, where appropriate.
+    func presetOptionsGetter(for frameKey: FrameKey)
+        -> (presetName: String?, presetRefinement: String?, description: String?)? {
+            // each preset option frame type is handled a little differently
+            if let frame = self.frames[.genre],
+                case .presetOptionsFrame(let presetOptionsFrame) = frame {
+                return (presetName: presetOptionsFrame.presetName,
+                        presetRefinement: nil,
+                        description: presetOptionsFrame.refinementDescription)
+                
+            } else if let frame = self.frames[.mediaType],
+                case .presetOptionsFrame(let presetOptionsFrame) = frame {
+                return (presetName: presetOptionsFrame.presetName,
+                        presetRefinement: presetOptionsFrame.presetRefinement,
+                        description: presetOptionsFrame.refinementDescription)
+                
+            } else if let frame = self.frames[.fileType],
+                case .presetOptionsFrame(let presetOptionsFrame) = frame {
+                return (presetName: presetOptionsFrame.presetName,
+                        presetRefinement: presetOptionsFrame.presetRefinement,
+                        description: presetOptionsFrame.refinementDescription)
+            }; return nil
+    }
+    
+    mutating func set(_ layout: FrameLayoutIdentifier,
+                      _ frameKey: FrameKey,
+                      to presetName: String?,
+                      and presetRefinement: String?,
+                      with description: String?) {
+        let frame = PresetOptionsFrame(layout: layout,
+                                       presetName: presetName,
+                                       presetRefinement: presetRefinement,
+                                       refinementDescription: description)
+        self.frames[frameKey] = .presetOptionsFrame(frame)
+    }
+
+}
 // MARK: Tag Extension
 
 public extension Tag {
@@ -251,7 +303,10 @@ public extension Tag {
             return (name, description)
         }
         set {
-            set(.known(.genre), .genre, presetName: newValue.genreName, presetRefinement: nil, description: newValue.genreDescription)
+            set(.known(.genre), .genre,
+                to: newValue.genreName,
+                and: nil,
+                with: newValue.genreDescription)
         }
     }
     
@@ -267,7 +322,10 @@ public extension Tag {
             return (presetName, presetRefinement, description)
         }
         set {
-            set(.known(.mediaType), .mediaType, presetName: newValue.mediaType, presetRefinement: newValue.additionalMediaInfo, description: newValue.mediaTypeDescription)
+            set(.known(.mediaType), .mediaType,
+                to: newValue.mediaType,
+                and: newValue.additionalMediaInfo,
+                with: newValue.mediaTypeDescription)
         }
     }
     
@@ -283,7 +341,10 @@ public extension Tag {
             return (presetName, presetRefinement, description)
         }
         set {
-            set(.known(.fileType), .fileType, presetName: newValue.fileType, presetRefinement: newValue.additionalFileTypeInfo, description: newValue.fileTypeDescription)
+            set(.known(.fileType), .fileType,
+                to: newValue.fileType,
+                and: newValue.additionalFileTypeInfo,
+                with: newValue.fileTypeDescription)
         }
     }
 }

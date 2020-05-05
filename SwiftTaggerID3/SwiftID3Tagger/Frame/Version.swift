@@ -1,6 +1,6 @@
 //
 //  Version.swift
-//  SwiftTagger_MacOS
+//  SwiftTaggerID3
 //
 //  Created by Nolaine Crusher on 4/8/20.
 //  Copyright © 2020 Nolaine Crusher. All rights reserved.
@@ -21,7 +21,7 @@ public enum Version: CaseIterable {
 
 extension Version {
     // MARK: Frame component sizes.
-    /// the version-dependent byte-count of the id3identifier
+    /// The known version-dependent byte-count of the ID3 identifier string
     var identifierLength: Int {
         switch self {
             case .v2_2:
@@ -31,7 +31,7 @@ extension Version {
         }
     }
     
-    /// the version-dependent byte-count of the frame size declaration
+    /// The known version-dependent byte-count of the frame size declaration
     var sizeDeclarationLength: Int {
         switch self {
             case .v2_2:
@@ -41,7 +41,7 @@ extension Version {
         }
     }
     
-    /// the version-dependent byte-count of the frame flags
+    /// The known version-dependent byte-count of the frame flags
     var flagsLength: Int {
         switch self {
             case .v2_2:
@@ -51,28 +51,28 @@ extension Version {
         }
     }
     
-    /// the version-dependent size of the frame header, in bytes
+    /// The version-dependent size of the frame header, in bytes
     var frameHeaderLength: Int {
         return identifierLength + sizeDeclarationLength + flagsLength
     }
     
     // MARK: Frame component offsets:
-    ///the byte offset of the frame identifier from start of frame data
+    /// The known byte offset of the frame identifier from start of frame data
     var identifierOffset: Data.Index {
         return 0
     }
     
-    /// the byte offset of the frame size declaration
+    /// The byte offset of the frame size declaration
     var sizeDeclarationOffset: Data.Index {
         return identifierOffset  + identifierLength
     }
     
-    /// the byte offset of the frame flags
+    /// The byte offset of the frame flags
     var flagsOffset: Data.Index {
         return sizeDeclarationOffset + sizeDeclarationLength
     }
     
-    /// the version-dependent position of the encoding byte
+    /// The version-dependent position of the encoding byte
     var encodingByteOffset: Data.Index {
         return frameHeaderLength
     }

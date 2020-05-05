@@ -1,6 +1,6 @@
 //
 //  CreditsListFrame.swift
-//  SwiftTagger_MacOS
+//  SwiftTaggerID3
 //
 //  Created by Nolaine Crusher on 4/11/20.
 //  Copyright © 2020 Nolaine Crusher. All rights reserved.
@@ -49,12 +49,26 @@ struct CreditsListFrame: FrameProtocol {
         return frameData
     }
     
+    /// The frame flags property.
+    ///
+    /// Typically this is two bytes `[0x00, 0x00]`
+    /// SwiftTagger does not support altering these flags.
     var flags: Data
+    /// The layout property describes the unique structure of a given frame
     var layout: FrameLayoutIdentifier
+    /** The frameKey property
+     
+     Provides a unique identifier to permits duplication of frame types that the ID3 spec allows to be duplicated within a tag. */
     var frameKey: FrameKey
+    /** A boolean value indicating whether or not frames of a particular type are permitted to be duplicated in a valid ID3 tag */
     var allowMultipleFrames: Bool = false
-    
-    // MARK: Decoding the contents of a frame from an ID3 tag
+
+    /// Initialize a frame parsing operation
+    /// - Parameters:
+    ///   - contents: the slice of data containing the frame
+    ///   - version: the ID3 version of the tag
+    ///   - layout: the frame's FrameLayoutIdentifier
+    ///   - flags: (current unsupported by SwiftTagger) [0x00, 0x00]
     init(decodingContents contents: Data.SubSequence,
                   version: Version,
                   layout: FrameLayoutIdentifier,
@@ -94,6 +108,31 @@ struct CreditsListFrame: FrameProtocol {
     }
 }
 
+internal extension Tag {
+    // get and set functions for `CreditsListFrame` frame types. Each individual frame of this type will have its own get-set property that will call these functions
+    func tupleArray(for frameKey: FrameKey)
+        -> [(role: String, person: String)]? {
+            if let frame = self.frames[frameKey],
+                case .creditsListFrame(let creditsListFrame) = frame {
+                return creditsListFrame.entries
+            } else {
+                return nil
+            }
+    }
+    
+    // each individual CreditsListFrame type has a function that will retrieve a tuple and append append it to the credits list `entries` array
+    mutating func set(_ layout: FrameLayoutIdentifier,
+                      _ frameKey: FrameKey,
+                      to entries: [(role: String, person: String)]?) {
+        let frame = CreditsListFrame(
+            layout: layout,
+            entries: entries ?? [])
+        self.frames[frameKey] = .creditsListFrame(frame)
+    }
+    
+
+}
+
 // MARK: Tag extension
 public extension Tag {
     
@@ -125,7 +164,9 @@ public extension Tag {
         roleString = creditTuple.0.rawValue
         personString = creditTuple.1
         musicianCreditArray.append((roleString, personString))
-        set(.known(.musicianCreditsList), .musicianCreditsList, to: musicianCreditArray)
+        set(.known(.musicianCreditsList),
+            .musicianCreditsList,
+            to: musicianCreditArray)
     }
     
     /// - InvolvedPeopleList frame getter-setter. ID3 Identifier: `IPL`/`IPLS`/`TIPL`
@@ -156,6 +197,9 @@ public extension Tag {
         roleString = creditTuple.0.rawValue
         personString = creditTuple.1
         involvedPersonArray.append((roleString, personString))
-        set(.known(.involvedPeopleList), .involvedPeopleList, to: involvedPersonArray)
+        set(.known(.involvedPeopleList),
+            .involvedPeopleList,
+            to: involvedPersonArray)
+
     }
 }

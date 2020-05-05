@@ -1,6 +1,6 @@
 //
 //  SwiftTaggerID3_Write_Tests.swift
-//  SwiftTagger_MacOSTests
+//  SwiftTaggerID3Tests
 //
 //  Created by Nolaine Crusher on 4/30/20.
 //  Copyright © 2020 Nolaine Crusher. All rights reserved.
