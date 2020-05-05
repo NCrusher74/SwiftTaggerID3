@@ -57,8 +57,6 @@ enum Frame {
      
         Frames of this type MAY NOT be duplicated within a valid ID3 tag*/
     case presetOptionsFrame(PresetOptionsFrame)
-    /// a frame type containing a single, unterminated string of content in the form of a web URL
-    case urlFrame(URLFrame)
     /** a frame type containing a table of contents frame.
      
         Frames of this type MAY be duplicated within a valid ID3 tag, providing only one has the top-level flag set, and each has a unique `ElementID`*/
@@ -147,17 +145,6 @@ enum Frame {
                     decodingFromStartOf: &data,
                     version: version,
                     layout: layout))
-            case .known(.artistWebpage),
-                 .known(.audioFileWebpage),
-                 .known(.audioSourceWebpage),
-                 .known(.copyrightWebpage),
-                 .known(.paymentWebpage),
-                 .known(.publisherWebpage),
-                 .known(.radioStationWebpage):
-                self = .urlFrame(try URLFrame(
-                    decodingFromStartOf: &data,
-                    version: version,
-                    layout: layout))
             case .known(.date),
                  .known(.encodingTime),
                  .known(.originalReleaseTime),
@@ -206,8 +193,6 @@ enum Frame {
                 return partOfTotalFrame.frameKey
             case .userTextFrame(let userTextFrame):
                 return userTextFrame.frameKey
-            case .urlFrame(let urlFrame):
-                return urlFrame.frameKey
             case .unknownFrame(let unknownFrame):
                 return unknownFrame.frameKey
             case .dateFrame(let dateFrame):
@@ -249,8 +234,6 @@ enum Frame {
                 return try booleanFrame.encode(version: version)
             case .presetOptionsFrame(let presetOptionsFrame):
                 return try presetOptionsFrame.encode(version: version)
-            case .urlFrame(let urlFrame):
-                return try urlFrame.encode(version: version)
             case .tocFrame(let tocFrame):
                 return try tocFrame.encode(version: version)
             case .chapterFrame(let chapterFrame):
@@ -285,8 +268,6 @@ extension Frame {
                 return booleanFrame
             case .presetOptionsFrame(let presetOptionsFrame):
                 return presetOptionsFrame
-            case .urlFrame(let urlFrame):
-                return urlFrame
             case .tocFrame(let tocFrame):
                 return tocFrame
             case .chapterFrame(let chapterFrame):

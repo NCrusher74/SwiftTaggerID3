@@ -20,8 +20,13 @@ struct StringFrame: FrameProtocol {
     var allowMultipleFrames: Bool = false
     
     /// The contents of the frame, consisting of a single, unterminated string without new lines
+    /// This sting may be a URL for an external webpage
     var contentString: String
-    
+  
+    let urlFrameKeys: [FrameKey] = [
+        .artistWebpage, .audioFileWebpage, .audioSourceWebpage, .copyrightWebpage, .paymentWebpage, .radioStationWebpage]
+
+    // MARK: Frame Parsing
     init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,
@@ -71,23 +76,30 @@ struct StringFrame: FrameProtocol {
             case .known(.subtitle): self.frameKey = .subtitle
             case .known(.title): self.frameKey = .title
             case .known(.titleSort): self.frameKey = .titleSort
+            case .known(.artistWebpage): self.frameKey = .artistWebpage
+            case .known(.audioFileWebpage): self.frameKey = .audioFileWebpage
+            case .known(.audioSourceWebpage): self.frameKey = .audioSourceWebpage
+            case .known(.copyrightWebpage): self.frameKey = .copyrightWebpage
+            case .known(.paymentWebpage): self.frameKey = .paymentWebpage
+            case .known(.publisherWebpage): self.frameKey = .publisherWebpage
+            case .known(.radioStationWebpage): self.frameKey = .radioStationWebpage
             default: self.frameKey = .userDefinedText(description: "")
         }
         // parse contents
-        var parsing = contents
-        // extract and decode the encoding byte
-        let encoding = try StringFrame.extractEncoding(data: &parsing, version: version)
-        // extract and initialize the contentString property
-        // decode the string content according to encoding as specified by encoding byte
-        self.contentString = parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? ""
+        let parsing = contents
+        if urlFrameKeys.contains(self.frameKey) {
+            self.contentString = try StringFrame.parseUrlString(data: parsing, version: version)
+        } else {
+            self.contentString = try StringFrame.parseString(data: parsing, version: version)
+        }
     }
     
     // MARK: Frame creation
     /**
      Initialize a frame with only string content, presented as a single string WITHOUT new line characters.
      - Parameters:
-       - layout: the frame's layout according to its identifier
-       - contentString: the content of the frame.
+     - layout: the frame's layout according to its identifier
+     - contentString: the content of the frame.
      */
     init(layout: FrameLayoutIdentifier, contentString: String) {
         // initialize the contentString property
@@ -136,6 +148,13 @@ struct StringFrame: FrameProtocol {
             case .known(.subtitle): self.frameKey = .subtitle
             case .known(.title): self.frameKey = .title
             case .known(.titleSort): self.frameKey = .titleSort
+            case .known(.artistWebpage): self.frameKey = .artistWebpage
+            case .known(.audioFileWebpage): self.frameKey = .audioFileWebpage
+            case .known(.audioSourceWebpage): self.frameKey = .audioSourceWebpage
+            case .known(.copyrightWebpage): self.frameKey = .copyrightWebpage
+            case .known(.paymentWebpage): self.frameKey = .paymentWebpage
+            case .known(.publisherWebpage): self.frameKey = .publisherWebpage
+            case .known(.radioStationWebpage): self.frameKey = .radioStationWebpage
             default: self.frameKey = .userDefinedText(description: "")
         }
     }
@@ -147,10 +166,12 @@ struct StringFrame: FrameProtocol {
     func encodeContents(version: Version) throws -> Data {
         // initialize an empty data array
         var frameData = Data()
-        // append encoding byte to frameData
-        frameData.append(
-            StringEncoding.preferred.rawValue.encoding(
-                endianness: .bigEndian))
+        if !urlFrameKeys.contains(self.frameKey) {
+            // append encoding byte to frameData
+            frameData.append(
+                StringEncoding.preferred.rawValue.encoding(
+                    endianness: .bigEndian))
+        }
         // convert and append contentString to frameData
         frameData.append(self.contentString.encoded(
             withNullTermination: false))
@@ -158,10 +179,10 @@ struct StringFrame: FrameProtocol {
     }
 }
 
-// MARK: Tag extension - Internal
+// MARK: Tag extension
 /* get and set functions for `StringFrame` frame types. Each individual frame of this type will have its own get-set property that will call these functions using its `FrameKey` property and relevant data */
 extension Tag {
-
+    
     /// Instantiates parsing operation to retrieve a frame's contents from a `Tag`
     /// - Parameter frameKey: The unique identifier of the frame
     /// - Returns: The frame's contents as a human-readable, unterminated string
@@ -182,16 +203,15 @@ extension Tag {
     ///   - frameKey: The frame's unique identifier
     ///   - string: The string content input by the user
     internal mutating func set(_ layout: FrameLayoutIdentifier,
-                      _ frameKey: FrameKey,
-                      to string: String) {
+                               _ frameKey: FrameKey,
+                               to string: String) {
         // call the StringFrame initializer
         let frame = StringFrame(
             layout: layout,
             contentString: string)
         self.frames[frameKey] = .stringFrame(frame)
     }
-
-    // MARK: Tag extension - Public
+    
     /// Series title getter-setter. Writes to `ContentGroup` frame,
     /// ID3 Identifier: `TT1`/`TIT1`.
     ///
@@ -545,5 +565,47 @@ extension Tag {
     public var titleSort: String {
         get { string(for: .titleSort) ?? "" }
         set { set(.known(.titleSort), .titleSort, to: newValue) }
+    }
+    /// - ArtistWebpage getter-setter. ID3 Identifier: `WAR`/`WOAR`
+    var artistWebpage: String {
+        get { string(for: .artistWebpage) ?? "" }
+        set { set(.known(.artistWebpage), .artistWebpage, to: newValue) }
+    }
+    
+    /// - (Official)AudioFileWebpage getter-setter. ID3 Identifier: `WAF`/`WOAF`
+    var audioFileWebpage: String {
+        get { string(for: .audioFileWebpage) ?? "" }
+        set { set(.known(.audioFileWebpage), .audioFileWebpage, to: newValue) }
+    }
+    
+    /// - (Official)AudioSourceWebpage getter-setter. ID3 Identifier: `WAS`/`WOAS`
+    var audioSourceWebpage: String {
+        get { string(for: .audioSourceWebpage) ?? "" }
+        set { set(.known(.audioSourceWebpage), .audioSourceWebpage, to: newValue) }
+    }
+    
+    /// - Copyright/Legal Information Webpage getter-setter. ID3 Identifier: `WCP`/`WCOP`
+    var copyrightWebpage: String {
+        get { string(for: .copyrightWebpage) ?? "" }
+        set { set(.known(.copyrightWebpage), .copyrightWebpage, to: newValue) }
+    }
+    
+    /// - PaymentWebpage getter-setter. ID3 Identifier: `WPAY`
+    /// Valid for tag versions 2.3/2.4 only
+    var paymentWebpage: String {
+        get { string(for: .paymentWebpage) ?? "" }
+        set { set(.known(.paymentWebpage), .paymentWebpage, to: newValue) }
+    }
+    
+    /// - PublisherWebpage getter-setter. ID3 Identifier: `WPB`/`WPUB`
+    var publisherWebpage: String {
+        get { string(for: .publisherWebpage) ?? "" }
+        set { set(.known(.publisherWebpage), .publisherWebpage, to: newValue) }
+    }
+    
+    /// - (Official Internet)RadioStationWebpage getter-setter. ID3 Identifier: `WRS`/`WORS`
+    var radioStationWebpage: String {
+        get { string(for: .radioStationWebpage) ?? "" }
+        set { set(.known(.radioStationWebpage), .radioStationWebpage, to: newValue) }
     }
 }

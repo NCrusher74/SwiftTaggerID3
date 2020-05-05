@@ -62,7 +62,6 @@
 		51A3C69E2442FB1A00909952 /* BooleanFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A3C69D2442FB1A00909952 /* BooleanFrame.swift */; };
 		51A3C6A02442FEF000909952 /* DateFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A3C69F2442FEF000909952 /* DateFrame.swift */; };
 		51A3C6A22442FFB300909952 /* UserTextFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A3C6A12442FFB300909952 /* UserTextFrame.swift */; };
-		51A3C6A724464FDC00909952 /* URLFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A3C6A624464FDC00909952 /* URLFrame.swift */; };
 		51D58B39244D497000DBA9FB /* ISOLanguages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D58B38244D497000DBA9FB /* ISOLanguages.swift */; };
 		51E432B6243DA257006574A1 /* SwiftTaggerID3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51E432AC243DA257006574A1 /* SwiftTaggerID3.framework */; };
 		51E432BD243DA257006574A1 /* SwiftTaggerID3.h in Headers */ = {isa = PBXBuildFile; fileRef = 51E432AF243DA257006574A1 /* SwiftTaggerID3.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -161,7 +160,6 @@
 		51A3C69D2442FB1A00909952 /* BooleanFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooleanFrame.swift; sourceTree = "<group>"; };
 		51A3C69F2442FEF000909952 /* DateFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFrame.swift; sourceTree = "<group>"; };
 		51A3C6A12442FFB300909952 /* UserTextFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTextFrame.swift; sourceTree = "<group>"; };
-		51A3C6A624464FDC00909952 /* URLFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLFrame.swift; sourceTree = "<group>"; };
 		51D58B38244D497000DBA9FB /* ISOLanguages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISOLanguages.swift; sourceTree = "<group>"; };
 		51E432AC243DA257006574A1 /* SwiftTaggerID3.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftTaggerID3.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		51E432AF243DA257006574A1 /* SwiftTaggerID3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftTaggerID3.h; sourceTree = "<group>"; };
@@ -241,9 +239,8 @@
 			isa = PBXGroup;
 			children = (
 				5177544724423D46005E43C5 /* StringFrame.swift */,
-				51A3C69D2442FB1A00909952 /* BooleanFrame.swift */,
-				51A3C6A624464FDC00909952 /* URLFrame.swift */,
 				51A3C69B2442F9E800909952 /* IntegerFrame.swift */,
+				51A3C69D2442FB1A00909952 /* BooleanFrame.swift */,
 				51A3C69F2442FEF000909952 /* DateFrame.swift */,
 				518807222442EE58008D488B /* PartOfTotalFrame.swift */,
 				518807202442ED4D008D488B /* LanguageFrame.swift */,
@@ -559,7 +556,6 @@
 				518807232442EE58008D488B /* PartOfTotalFrame.swift in Sources */,
 				5177544824423D46005E43C5 /* StringFrame.swift in Sources */,
 				51FF494D245BC4870006F8F8 /* URL.swift in Sources */,
-				51A3C6A724464FDC00909952 /* URLFrame.swift in Sources */,
 				515AF6592449A099005C29FA /* InvolvedPersonCredits.swift in Sources */,
 				5144EC7B2457800A001757DA /* CaseIterable.swift in Sources */,
 				51D58B39244D497000DBA9FB /* ISOLanguages.swift in Sources */,

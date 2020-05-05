@@ -175,4 +175,33 @@ extension FrameProtocol {
         let content = frameData.extractPrefixAsStringUntilNullTermination(encoding) ?? ""
         return (description: description, content: content)
     }
+    
+    // to be used with basic string frames that need no special handling
+    static func parseString(data: Data, version: Version) throws -> String {
+        var parsing = data
+        // extract and decode the encoding byte
+        let encoding = try StringFrame.extractEncoding(data: &parsing, version: version)
+        // extract and initialize the contentString property
+        // decode the string content according to encoding as specified by encoding byte
+        return parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? ""
+    }
+    
+    // to be used with url frames, which do not have an encoding byte
+    static func parseUrlString(data: Data, version: Version) throws -> String {
+        let parsing = data
+        return try String(ascii: parsing)
+    }
+    
+    // to be used with frames in which the single content string is an integer
+
+    // to be used with basic string frames that need no special handling
+    static func parseInteger(data: Data, version: Version) throws -> Int {
+        var parsing = data
+        // extract and decode the encoding byte
+        let encoding = try StringFrame.extractEncoding(data: &parsing, version: version)
+        // extract and initialize the contentString property
+        // decode the string content according to encoding as specified by encoding byte
+        return Int(parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? "") ?? 0
+    }
+
 }
