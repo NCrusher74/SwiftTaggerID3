@@ -13,7 +13,58 @@ import Foundation
  */
 struct IntegerFrame: FrameProtocol {
     
+    // MARK: Properties
+    // inherited from FrameProtocol
+    var flags: Data
+    var layout: FrameLayoutIdentifier
+    var frameKey: FrameKey
+    var allowMultipleFrames: Bool = false
+    
+    // frame's unique property
     var value: Int
+    
+    init(decodingContents contents: Data.SubSequence,
+         version: Version,
+         layout: FrameLayoutIdentifier,
+         flags: Data
+    ) throws {
+        self.flags = flags
+        self.layout = layout
+        switch layout {
+            case .known(.bpm): self.frameKey = .bpm
+            case .known(.isrc): self.frameKey = .isrc
+            case .known(.length): self.frameKey = .length
+            case .known(.movementCount): self.frameKey = .movementCount
+            case .known(.movementNumber): self.frameKey = .movementNumber
+            case .known(.playlistDelay): self.frameKey = .playlistDelay
+            case .known(.compilation): self.frameKey = .compilation
+            default: self.frameKey = .userDefinedText(description: "\(layout.id3Identifier(version: version) ?? "")")
+        }
+        var parsing = contents
+        let encoding = try IntegerFrame.extractEncoding(data: &parsing, version: version)
+        if self.frameKey == .compilation {
+            let contentString = parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? ""
+            // initialize the frame's value property by converting the string content to a boolean
+            self.value = IntegerFrame.getBooleanIntFromString(boolString: contentString)
+        } else {
+            self.value = Int(
+                parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? "") ?? 0
+        }
+    }
+    
+    /// Interpret the most common "quasi-boolean" strings as boolean values
+    /// - Parameter boolString: The string parsed from the frame's contents
+    /// - Returns: 1 or 0, if a value can be determined
+    private static func getBooleanIntFromString(boolString: String) -> Int {
+        switch boolString.lowercased() {
+            case "true", "t", "yes", "y", "1":
+                return 1
+            case "false", "f", "no", "n", "0":
+                return 0
+            default:
+                return 0
+        }
+    }
     
     /**
      A frame with only an integer string as content, presented as an integer
@@ -23,13 +74,16 @@ struct IntegerFrame: FrameProtocol {
         self.value = value
         self.flags = IntegerFrame.defaultFlags
         self.layout = layout
-        switch layout { case .known(.bpm): self.frameKey = .bpm
+        switch layout {
+            case .known(.bpm): self.frameKey = .bpm
             case .known(.isrc): self.frameKey = .isrc
             case .known(.length): self.frameKey = .length
             case .known(.movementCount): self.frameKey = .movementCount
             case .known(.movementNumber): self.frameKey = .movementNumber
             case .known(.playlistDelay): self.frameKey = .playlistDelay
-            default: self.frameKey = .userDefinedText(description: "") }
+            case .known(.compilation): self.frameKey = .compilation
+            default: self.frameKey = .userDefinedText(description: "")
+        }
     }
     
     // encode the contents of the frame to add to an ID3 tag
@@ -44,91 +98,82 @@ struct IntegerFrame: FrameProtocol {
         return frameData
     }
     
-    // MARK: Properties
-    var flags: Data
-    var layout: FrameLayoutIdentifier
-    var frameKey: FrameKey
-    var allowMultipleFrames: Bool = false
-
-    init(decodingContents contents: Data.SubSequence,
-                  version: Version,
-                  layout: FrameLayoutIdentifier,
-                  flags: Data
-    ) throws {
-        self.flags = flags
-        self.layout = layout
-        switch layout { case .known(.bpm): self.frameKey = .bpm
-            case .known(.isrc): self.frameKey = .isrc
-            case .known(.length): self.frameKey = .length
-            case .known(.movementCount): self.frameKey = .movementCount
-            case .known(.movementNumber): self.frameKey = .movementNumber
-            case .known(.playlistDelay): self.frameKey = .playlistDelay
-            default: self.frameKey = .userDefinedText(description: "") }
-        var parsing = contents
-        let encoding = try IntegerFrame.extractEncoding(data: &parsing, version: version)
-        self.value = Int(
-            parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? "") ?? 0
-    }
 }
 
 // MARK: Internal TAG Extension
 /* get and set functions for `IntegerFrame` frame types. Each individual frame of this type will have its own get-set property that will call these functions using its `FrameKey` property and relevant data */
-internal extension Tag {
-
-    func integer(for frameKey: FrameKey) -> Int? {
+extension Tag {
+    
+    internal func integer(for frameKey: FrameKey) -> Int? {
         //check that the frame is an IntegerFrame
         if let frame = self.frames[frameKey],
             case .integerFrame(let integerFrame) = frame { // get the integer from the frame data
             return integerFrame.value } else { return nil }
     }
     
-    mutating func set(_ layout: FrameLayoutIdentifier,
-                      _ frameKey: FrameKey,
-                      to value: Int) {
+    internal mutating func set(_ layout: FrameLayoutIdentifier,
+                               _ frameKey: FrameKey,
+                               to value: Int) {
         let frame = IntegerFrame(
             layout: layout,
             value: value)
         self.frames[frameKey] = .integerFrame(frame)
     }
-}
-
-// MARK: Public Tag Extension
-public extension Tag {
-    /// - BeatsPerMinute getter-setter. ID3 Identifier: `TBP`/`TBPM`
-    var bpm: Int {
+    
+    /// BeatsPerMinute getter-setter. ID3 Identifier: `TBP`/`TBPM`
+    public var bpm: Int {
         get { integer(for: .bpm) ?? 0 }
         set { set(.known(.bpm), .bpm, to: newValue) }
     }
     
-    /// - IRSC getter-setter. ID3 Identifier: `TRC`/`TSRC`
-    var isrc: Int {
+    /// IRSC getter-setter. ID3 Identifier: `TRC`/`TSRC`
+    public var isrc: Int {
         get { integer(for: .isrc) ?? 0 }
         set { set(.known(.isrc), .isrc, to: newValue) }
     }
     
-    /// - Length getter-setter. ID3 Identifier: `TLE`/`TLEN`
-    var length: Int {
+    /// Length getter-setter. ID3 Identifier: `TLE`/`TLEN`
+    public var length: Int {
         get { integer(for: .length) ?? 0 }
         set { set(.known(.length), .length, to: newValue) }
     }
     
-    /// - TotalMovements getter-setter. This is a non-standard, iTunes compliant frame
+    /// TotalMovements getter-setter. This is a non-standard, iTunes non-standard frame
     /// ID3 Identifier: `MVCN`. Valid only for tag versions 2.3/2.4
-    var totalMovements: Int {
+    public var totalMovements: Int {
         get { integer(for: .movementCount) ?? 0 }
         set { set(.known(.movementCount), .movementCount, to: newValue) }
     }
     
-    /// - MovementNumber getter-setter. This is a non-standard, iTunes compliant frame
+    /// MovementNumber getter-setter. This is a non-standard, iTunes non-standard frame
     /// ID3 Identifier: `MVIN`. Valid only for tag versions 2.3/2.4
-    var movementNumber: Int {
+    public var movementNumber: Int {
         get { integer(for: .movementNumber) ?? 0 }
         set { set(.known(.movementNumber), .movementNumber, to: newValue) }
     }
     
-    /// - PlaylistDelay getter-setter. ID3 Identifier: `TDY`/`TDLY`
-    var playlistDelay: Int {
+    /// PlaylistDelay getter-setter. ID3 Identifier: `TDY`/`TDLY`
+    public var playlistDelay: Int {
         get { integer(for: .playlistDelay) ?? 0 }
         set { set(.known(.playlistDelay), .playlistDelay, to: newValue) }
+    }
+    
+    /// Compilation (flag) getter-setter. ID3 identifier: `TCP`/`TCMP`. iTunes non-standard frame
+    public var compilation: Bool {
+        get {
+            let intValue = integer(for: .compilation) ?? 0
+            if intValue == 1 {
+                return true
+            } else {
+                return false
+            }
+        }
+        set {
+            if newValue == true {
+                set(.known(.compilation), .compilation, to: 1)
+            } else {
+                set(.known(.compilation), .compilation, to: 0)
+            }
+        }
     }
 }
