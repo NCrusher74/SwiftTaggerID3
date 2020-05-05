@@ -14,6 +14,12 @@
  */
  struct ImageFrame: FrameProtocol {
     
+    // MARK: Properties
+    var flags: Data
+    var layout: FrameLayoutIdentifier
+    var frameKey: FrameKey
+    var allowMultipleFrames: Bool = false
+    
     /// The image bytes as `Data`.
     let image: Data;
     /// The ID3 type of the image (see `ImageType`).
@@ -24,9 +30,59 @@
     var imageFormat: ImageFormat
     
     
+    // MARK: Frame parsing
+    init(decodingContents contents: Data.SubSequence,
+         version: Version,
+         layout: FrameLayoutIdentifier,
+         flags: Data) throws {
+        self.flags = flags
+        self.layout = layout
+        
+        var parsing = contents
+        let encoding = try ImageFrame.extractEncoding(data: &parsing, version: version)
+        
+        switch version {
+            // get MIME or format-type string to determine format
+            case .v2_3, .v2_4 :
+                let formatString = parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? "image/"
+                if formatString.contains("jpeg") {
+                    _ = ImageFormat(rawValue: "jpg")
+                } else if formatString.contains("png") {
+                    _ = ImageFormat(rawValue: "png")
+                } else {
+                    throw Mp3File.Error.UnhandledImageFormat
+            }
+            case .v2_2:
+                let formatString = try String(ascii: parsing.extractFirst(3))
+                if formatString.lowercased() == "jpg" {
+                    self.imageFormat = ImageFormat(rawValue: "jpg") ?? .jpg
+                } else if formatString.lowercased() == "png" {
+                    self.imageFormat = ImageFormat(rawValue: "png") ?? .png
+                } else {
+                    throw Mp3File.Error.UnhandledImageFormat
+            }
+        }; self.imageFormat = .jpg
+        
+        // parse out the image description string
+        // if no image description exists, use a string describing the image type
+        var imageDescription: String = ""
+        let pictureTypeByte = parsing.extractFirst(1)
+        let imageType = ImageType(rawValue: pictureTypeByte.uint8) ?? .Other
+        self.imageType = imageType
+        switch version {
+            case .v2_2:
+                imageDescription = parsing.extractPrefixAsStringUntilNullTermination(.isoLatin1) ?? imageType.pictureDescription
+            case .v2_3, .v2_4:
+                imageDescription = parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? imageType.pictureDescription
+        }
+        self.imageDescription = imageDescription
+        self.frameKey = .attachedPicture(description: imageDescription)
+        self.image = parsing
+    }
+
+    // MARK: Frame building
     /**
-     An ID attached picture frame.
-     
+     Initialize an ID attached picture frame.
      - parameter type: the ID3 type of the attached picture. See `ImageType` for a complete list of the available types.
      - parameter imageDescription?: an optional description of the image content.
      - parameter image: the image bytes as `Data`.
@@ -82,64 +138,10 @@
         return frameData
     }
     
-    // MARK: Properties
-    var flags: Data
-    var layout: FrameLayoutIdentifier
-    var frameKey: FrameKey
-    var allowMultipleFrames: Bool = false
-
-    init(decodingContents contents: Data.SubSequence,
-         version: Version,
-         layout: FrameLayoutIdentifier,
-         flags: Data) throws {
-        self.flags = flags
-        self.layout = layout
-        
-        var parsing = contents
-        let encoding = try ImageFrame.extractEncoding(data: &parsing, version: version)
-        
-        switch version {
-            // get MIME type string, unused
-            case .v2_3, .v2_4 :
-                let formatString = parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? "image/"
-                if formatString.contains("jpeg") {
-                    _ = ImageFormat(rawValue: "jpg")
-                } else if formatString.contains("png") {
-                    _ = ImageFormat(rawValue: "png")
-                } else {
-                    throw Mp3File.Error.UnhandledImageFormat
-            }
-            case .v2_2:
-                let formatString = try String(ascii: parsing.extractFirst(3))
-                if formatString.lowercased() == "jpg" {
-                    self.imageFormat = ImageFormat(rawValue: "jpg") ?? .jpg
-                } else if formatString.lowercased() == "png" {
-                    self.imageFormat = ImageFormat(rawValue: "png") ?? .png
-                } else {
-                    throw Mp3File.Error.UnhandledImageFormat
-                }
-        }; self.imageFormat = .jpg
-        
-        // parse out the image description string
-        // if no image description exists, use a string describing the image type
-        var imageDescription: String = ""
-        let pictureTypeByte = parsing.extractFirst(1)
-        let imageType = ImageType(rawValue: pictureTypeByte.uint8) ?? .Other
-        self.imageType = imageType
-        switch version {
-            case .v2_2:
-                imageDescription = parsing.extractPrefixAsStringUntilNullTermination(.isoLatin1) ?? imageType.pictureDescription
-            case .v2_3, .v2_4:
-                imageDescription = parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? imageType.pictureDescription
-        }
-        self.imageDescription = imageDescription
-        self.frameKey = .attachedPicture(description: imageDescription)
-        self.image = parsing
-    }
 }
 
-public extension Tag {
-    /// - AttachedPicture frame getter-setter. ID3 Identifier `PIC`/`APIC`
+extension Tag {
+    /// AttachedPicture frame getter-setter. ID3 Identifier `PIC`/`APIC`
     subscript(attachedPicture imageDescription: String) -> Data? {
         get {
             if let frame = self.frames[.attachedPicture(description: imageDescription)],

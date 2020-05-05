@@ -33,10 +33,20 @@ enum PresetOption {
     
     var code: String {
         switch self {
-            case .mediaType(let mediaType): return mediaType.code
+            case .mediaType(let mediaType): return mediaType.rawValue
             case .genreType(let genreType): return String(genreType.code)
             case .fileType(let fileType): return fileType.rawValue
         }
     }
+    
+    static let codeToGenreTypeMapping: [Int: GenreType] = {
+        var mapping: [Int: GenreType] = [:]
+        for genre in GenreType.allCases {
+            let id = genre.code
+            mapping[id] = genre
+        }
+        return mapping
+    }()
+    
 }
 

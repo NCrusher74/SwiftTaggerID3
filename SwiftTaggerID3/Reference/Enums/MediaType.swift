@@ -10,95 +10,119 @@ import Foundation
 
 public enum MediaType: String, CaseIterable {
     
-    case otherDigital = "Other digital media"
-    case otherAnalog = "Other analogue media"
-    case compactDisc = "Compact Disc"
-    case laserdisc = "Laserdisc"
-    case minidisc = "Minidisc"
+    /// Other digital media
+    case otherDigital = "DIG"
+    /// Other analogue media
+    case otherAnalog = "ANA"
+    /// Compact Disc
+    case compactDisc = "CD"
+    /// Laserdisc
+    case laserdisc = "LD"
+    /// Minidisc
+    case minidisc = "MD"
+    /// DCC
     case dcc = "DCC"
+    /// DAT
     case dat = "DAT"
-    case turntableRecord = "Turntable records"
+    /// Turntable records
+    case turntableRecord = "TT"
+    /// DVD
     case dvd = "DVD"
-    case television = "Television"
-    case video = "Video"
-    case radio = "Radio"
-    case telephone = "Telephone"
-    case normalCassette = "Normal Cassette"
-    case reel = "Reel"
+    /// Television
+    case television = "TV"
+    /// Video
+    case video = "VID"
+    /// Radio
+    case radio = "RAD"
+    /// Telephone
+    case telephone = "TEL"
+    /// Normal Cassette
+    case normalCassette = "MC"
+    /// Reel
+    case reel = "REE"
     case none = ""
     
-    public var code: String {
-        switch self {
-            case .otherDigital: return "DIG"
-            case .otherAnalog: return "ANA"
-            case .compactDisc: return "CD"
-            case .laserdisc: return "LD"
-            case .minidisc: return "MD"
-            case .dcc: return "DCC"
-            case .dat: return "DAT"
-            case .turntableRecord: return "TT"
-            case .dvd: return "DVD"
-            case .television: return "TV"
-            case .video: return "VID"
-            case .radio: return "RAD"
-            case .telephone: return "TEL"
-            case .normalCassette: return "MC"
-            case .reel: return "REE"
-            case .none: return ""
-        }
-    }
-    
-    static let codeToNameMapping: [String: String] = {
-        var mapping: [String: String] = [:]
-        for mediaType in MediaType.allCases {
-            let id = mediaType.code
-            mapping[id] = mediaType.rawValue
-        }
-        return mapping
-    }()
 }
 
 public enum MediaTypeRefinements: String, CaseIterable {
     
-    case analogTransfer = "Analog transfer from media"
-    case waxCylinder = "Wax cylinder"
-    case eightTrack = "8-track tape cassette"
-    case ddd = "DDD"
-    case add = "ADD"
-    case aad = "AAD"
-    case rpm33 = "33.33 rpm"
-    case rpm45 = "45 rpm"
-    case rpm71 = "71.29 rpm"
-    case rpm76 = "76.59 rpm"
-    case rpm78 = "78.26 rpm"
-    case rpm80 = "80 RPM"
-    case DATstandard = "standard, 48 kHz/16 bits, linear"
-    case DATmode2 = "mode 2, 32 kHz/16 bits, linear"
-    case DATmode3 = "mode 3, 32 kHz/12 bits, non-linear, low speed"
-    case DATmode4 = "mode 4, 32 kHz/12 bits, 4 channels"
-    case DATmode5 = "mode 5, 44.1 kHz/16 bits, linear"
-    case DATmode6 = "mode 6, 44.1 kHz/16 bits, 'wide track' play"
-    case pal = "PAL"
-    case ntsc = "NTSC"
-    case secam = "SECAM"
-    case vhs = "VHS"
-    case svhs = "S-VHS"
-    case betamax = "Betamax"
-    case am = "AM"
-    case fm = "FM"
-    case lw = "LW"
-    case mw = "MW"
-    case isdn = "ISDN"
-    case normalSpeed = "4.75 cm/s (normal speed for a two sided cassette)"
-    case CMS9 = "9.5 cm/s"
-    case CMS19 = "19 cm/s"
-    case CMS38 = "38 cm/s"
-    case CMS76 = "76 cm/s"
-    case typeI = "Type I cassette (ferric/normal)"
-    case typeII = "Type II cassette (chrome)"
-    case typeIII = "Type III cassette (ferric chrome)"
-    case typeIV = "Type IV cassette (metal)"
-    case none = ""
+    /// Analog transfer from media
+    case analogTransfer
+    /// Other Analog Media/Wax cylinder
+    case waxCylinder
+    /// Other Analog Media/8-track tape cassette
+    case eightTrack
+    /// CD/DDD
+    case ddd
+    /// CD/DDD
+    case add
+    /// CD/AAD
+    case aad
+    /// Turntable Records/33.33 rpm
+    case rpm33
+    /// Turntable Records/45 rpm
+    case rpm45
+    /// Turntable Records/71.29 rpm
+    case rpm71
+    /// Turntable Records/76.59 rpm
+    case rpm76
+    /// Turntable Records/78.26 rpm
+    case rpm78
+    /// Turntable Records/80 rpm
+    case rpm80
+    /// DAT/standard, 48 kHz/16 bits, linear
+    case DATstandard
+    /// DAT/mode 2, 32 kHz/16 bits, linear
+    case DATmode2
+    /// DAT/mode 3, 32 kHz/12 bits, non-linear, low speed
+    case DATmode3
+    /// DAT/mode 4, 32 kHz/12 bits, 4 channels
+    case DATmode4
+    /// DAT/mode 5, 44.1 kHz/16 bits, linear
+    case DATmode5
+    /// DAT/mode 6, 44.1 kHz/16 bits, 'wide track' play
+    case DATmode6
+    /// TV or Video/PAL
+    case pal
+    /// TV or Video/NTSC
+    case ntsc
+    /// TV or Video/SECAM
+    case secam
+    /// Video/VHS
+    case vhs
+    /// Video/S-VHS
+    case svhs
+    /// Video/Betamax
+    case betamax
+    /// Radio/AM
+    case am
+    /// Radio/FM
+    case fm
+    /// Radio/LW
+    case lw
+    /// Radio/MW
+    case mw
+    /// Telephone/ISDN
+    case isdn
+    /// Normal Cassette/4.75 cm/s (normal speed for a two sided cassette)
+    case normalSpeed
+    /// Normal Cassette or Reel/9.5 cm/s
+    case CMS9
+    /// Reel/19 cm/s
+    case CMS19
+    /// Reel/38 cm/s
+    case CMS38
+    /// Reel/76 cm/s
+    case CMS76
+    /// Normal Cassette or Reel / Type I cassette (ferric/normal)
+    case typeI
+    /// Normal Cassette or Reel / Type II cassette (chrome)
+    case typeII
+    /// Normal Cassette or Reel / Type III cassette (ferric chrome)
+    case typeIII
+    /// Normal Cassette or Reel / Type IV cassette (metal)
+    case typeIV
+    case none
     
     var code: String {
         switch self {
@@ -144,12 +168,16 @@ public enum MediaTypeRefinements: String, CaseIterable {
         }
     }
     
-    static let codeToTypeMapping: [String: String] = {
-        var mapping: [String: String] = [:]
+    static let codeMapping: [String: MediaTypeRefinements] = {
+        var mapping: [String: MediaTypeRefinements] = [:]
         for refinement in MediaTypeRefinements.allCases {
             let id = refinement.code
-            mapping[id] = refinement.rawValue
+            mapping[id] = refinement
         }
         return mapping
     }()
+    
+    init(code: String) {
+        self = MediaTypeRefinements.codeMapping[code] ?? .none
+    }
 }

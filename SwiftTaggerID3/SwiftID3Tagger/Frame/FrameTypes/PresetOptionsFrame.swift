@@ -12,117 +12,22 @@
 
 import Foundation
 
-/**
- A type used to represent an ID3 genre frame
- */
+/// A type representing a frame with up to three optional strings as content, at least one of which is required to be pre-set content.
+
 struct PresetOptionsFrame: FrameProtocol {
-    
-    // MARK: Private Initializer
-    var presetName: String?
-    var presetRefinement: String?
-    var refinementDescription: String?
-    
-    /**
-     - parameter presetName: the list of names of the genres or media types.
-     - parameter presetRefinement: a list of preset refinements for media types.
-     - parameter refinementDescription: a freeform string for customized descriptions.
-     */
-    init(layout: FrameLayoutIdentifier,
-         presetName: String?,
-         presetRefinement: String?,
-         refinementDescription: String?) {
-        self.presetName = presetName
-        self.presetRefinement = presetRefinement
-        self.refinementDescription = refinementDescription
-        self.flags = PresetOptionsFrame.defaultFlags
-        self.layout = layout
-        
-        switch layout {
-            case .known(.genre) : self.frameKey = .genre
-            case .known(.mediaType) : self.frameKey = .mediaType
-            case .known(.fileType) : self.frameKey = .fileType
-            default: self.frameKey = .userDefinedText(description: refinementDescription ?? "")
-        }
-    }
     
     // MARK: Properties
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
     var allowMultipleFrames: Bool = false
-
-    // MARK: Encode contents for writing
-    func encodeContents(version: Version) throws -> Data {
-        var frameData = Data()
-        // append encoding byte
-        frameData.append(StringEncoding.preferred.rawValue.encoding(
-            endianness: .bigEndian))
-        // encode and append presetType
-        if let convertedType = convertAndEncodePresetType(version: version) {
-            frameData.append(convertedType)
-        }
-        // encode and append presetRefinement
-        if let convertedPresetRefinement = convertAndEncodePresetRefinement(version: version) {
-            frameData.append(convertedPresetRefinement)
-        }
-        // encode and append freeform refinement/description
-        if let convertedRefinement = encodeRefinementString(version: version) {
-            frameData.append(convertedRefinement)
-        }
-        return frameData
-    }
     
-    // encode presetType
-    private func convertAndEncodePresetType(version: Version) -> Data? {
-        switch version {
-            case .v2_2, .v2_3 :
-                let presetCode = PresetOption(presetName: self.presetName ?? "").code
-                return (presetCode).encoded(withNullTermination: false)
-            case .v2_4 :
-                let presetCode = PresetOption(presetName: self.presetName ?? "").code
-                return (presetCode).encoded(withNullTermination: true)
-        }
-    }
+    // frame-specific properties
+    var presetName: String?
+    var presetRefinement: String?
+    var refinementDescription: String?
     
-    // encode presetRefinement
-    private func convertAndEncodePresetRefinement(version: Version) -> Data? {
-        var refinementCode: String = ""
-        switch version {
-            case .v2_2, .v2_3 :
-                if let refinement = self.presetRefinement {
-                    if self.layout == .known(.mediaType) {
-                        refinementCode = MediaTypeRefinements(rawValue: refinement)?.code ?? ""
-                    } else if self.layout == .known(.fileType) {
-                        refinementCode = FileTypeRefinements(rawValue: refinement)?.code ?? ""
-                    }
-                }
-                return refinementCode.encoded(withNullTermination: false)
-            case .v2_4 :
-                if let refinement = self.presetRefinement {
-                    if self.layout == .known(.mediaType) {
-                        refinementCode = MediaTypeRefinements(rawValue: refinement)?.code ?? ""
-                    } else if self.layout == .known(.fileType) {
-                        refinementCode = FileTypeRefinements(rawValue: refinement)?.code ?? ""
-                    }
-                }
-                return refinementCode.encoded(withNullTermination: true)
-        }
-    }
-    
-    // encode freeform refinement/description
-    private func encodeRefinementString(version: Version) -> Data? {
-        switch version {
-            case .v2_2, .v2_3 :
-                if let refinement = self.refinementDescription {
-                    return refinement.encoded(withNullTermination: false)
-            }
-            case .v2_4 :
-                if let refinement = self.refinementDescription {
-                    return refinement.encoded(withNullTermination: true)
-            }
-        }; return nil
-    }
-    
+    // MARK: Frame parsing
     init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,
@@ -164,17 +69,17 @@ struct PresetOptionsFrame: FrameProtocol {
                     } else if parsedComponent == "RX" {
                         genreType = .Remix
                         
-                        // if not, check to make sure it's a valid genre "code"
+                    // if not, check to make sure it's a valid genre "code"
                     } else if let genreInt = Int(parsedComponent) {
-                        let parsedName = (GenreType.codeToRawValueMapping[genreInt]) ?? ""
-                        let validGenre = GenreType(rawValue: parsedName)
-                        genreType = validGenre ?? .none
+                        let validGenre = GenreType(code: genreInt)
+                        genreType = validGenre
                         
-                        // if it's not a special case or valid genre code, handle it as a freeform string
+                    // if it's not a special case or valid genre code, handle it as a freeform string
                     } else {
                         self.refinementDescription = parsedComponent
                     }
-                    self.presetName = genreType.rawValue
+                    // initialize presetName to the raw value of the genre type
+                    self.presetName = String(genreType.code)
                     
                 } else if layout == .known(.mediaType) {
                     
@@ -183,18 +88,17 @@ struct PresetOptionsFrame: FrameProtocol {
                     if parsedComponent.first == "/" {
                         self.presetRefinement = MediaTypeRefinements(rawValue: parsedComponent)!.rawValue
                         
-                        // if it's not a preset refinement string
-                        // check to see if it's a known media type code
-                    } else if let parsedName = MediaType.codeToNameMapping[parsedComponent] {
-                        self.presetName = MediaType(rawValue: parsedName)!.rawValue
-                        
-                        // if neither of those is true, treat it as a freeform string
+                    // if it's not a preset refinement string
+                    // check to see if it's a known media type code
+                    } else if MediaType.allCases.contains(MediaType(rawValue: parsedComponent) ?? .none) {
+                        self.presetName = parsedComponent
+                    // if neither of those is true, handle it as a freeform string
                     } else {
                         self.refinementDescription = parsedComponent
                     }
                 } else if layout == .known(.fileType) {
                     if parsedComponent.first == "/" {
-                        self.presetRefinement = FileTypeRefinements(rawValue: parsedComponent)!.rawValue
+                        self.presetRefinement = parsedComponent
                     } else {
                         self.presetName = parsedComponent
                     }
@@ -236,9 +140,108 @@ struct PresetOptionsFrame: FrameProtocol {
         }
         return refinedComponents
     }
+    
+    // MARK: Frame building
+    /**
+     Initialize a frame-building operation
+     Parameters:
+       - layout: the frame's layout
+       - presetName: the list of names of the genres or media types.
+       - presetRefinement: a list of preset refinements for media types.
+       - refinementDescription: a freeform string for customized descriptions.
+     */
+    init(layout: FrameLayoutIdentifier,
+         presetName: String?,
+         presetRefinement: String?,
+         refinementDescription: String?) {
+        self.presetName = presetName
+        self.presetRefinement = presetRefinement
+        self.refinementDescription = refinementDescription
+        self.flags = PresetOptionsFrame.defaultFlags
+        self.layout = layout
+        
+        switch layout {
+            case .known(.genre) : self.frameKey = .genre
+            case .known(.mediaType) : self.frameKey = .mediaType
+            case .known(.fileType) : self.frameKey = .fileType
+            default: self.frameKey = .userDefinedText(description: refinementDescription ?? "")
+        }
+    }
+    
+    func encodeContents(version: Version) throws -> Data {
+        var frameData = Data()
+        // append encoding byte
+        frameData.append(StringEncoding.preferred.rawValue.encoding(
+            endianness: .bigEndian))
+        // encode and append presetType
+        if let convertedType = convertAndEncodePresetType(version: version) {
+            frameData.append(convertedType)
+        }
+        // encode and append presetRefinement
+        if let convertedPresetRefinement = convertAndEncodePresetRefinement(version: version) {
+            frameData.append(convertedPresetRefinement)
+        }
+        // encode and append freeform refinement/description
+        if let convertedRefinement = encodeRefinementString(version: version) {
+            frameData.append(convertedRefinement)
+        }
+        return frameData
+    }
+    
+    // encode presetType
+    private func convertAndEncodePresetType(version: Version) -> Data? {
+        switch version {
+            case .v2_2, .v2_3 :
+                let presetCode = PresetOption(presetName: self.presetName ?? "").code
+                return (presetCode).encoded(withNullTermination: false)
+            case .v2_4 :
+                let presetCode = PresetOption(presetName: self.presetName ?? "").code
+                return (presetCode).encoded(withNullTermination: true)
+        }
+    }
+    
+    // encode presetRefinement
+    private func convertAndEncodePresetRefinement(version: Version) -> Data? {
+        var refinementCode: String = ""
+        switch version {
+            case .v2_2, .v2_3 :
+                if let refinement = self.presetRefinement {
+                    if self.layout == .known(.mediaType) {
+                        refinementCode = MediaTypeRefinements(rawValue: refinement)?.code ?? ""
+                    } else if self.layout == .known(.fileType) {
+                        refinementCode = FileTypeRefinements(rawValue: refinement)?.rawValue ?? ""
+                    }
+                }
+                return refinementCode.encoded(withNullTermination: false)
+            case .v2_4 :
+                if let refinement = self.presetRefinement {
+                    if self.layout == .known(.mediaType) {
+                        refinementCode = MediaTypeRefinements(rawValue: refinement)?.code ?? ""
+                    } else if self.layout == .known(.fileType) {
+                        refinementCode = FileTypeRefinements(rawValue: refinement)?.rawValue ?? ""
+                    }
+                }
+                return refinementCode.encoded(withNullTermination: true)
+        }
+    }
+    
+    // encode freeform refinement/description
+    private func encodeRefinementString(version: Version) -> Data? {
+        switch version {
+            case .v2_2, .v2_3 :
+                if let refinement = self.refinementDescription {
+                    return refinement.encoded(withNullTermination: false)
+            }
+            case .v2_4 :
+                if let refinement = self.refinementDescription {
+                    return refinement.encoded(withNullTermination: true)
+            }
+        }; return nil
+    }
 }
 
-internal extension Tag {
+// MARK: Tag extensions
+extension Tag {
     // get and set functions for `PresetOptionsFrame` frame types, which retrieves or sets three strings, all of which are optional (genre only uses two of these.) Each individual frame of this type will call these functions in a get-set property of function, where appropriate.
     func presetOptionsGetter(for frameKey: FrameKey)
         -> (presetName: String?, presetRefinement: String?, description: String?)? {
@@ -274,62 +277,64 @@ internal extension Tag {
                                        refinementDescription: description)
         self.frames[frameKey] = .presetOptionsFrame(frame)
     }
-
-}
-// MARK: Tag Extension
-
-public extension Tag {
+    
     /// - Genre getter ID3 Identifier: `TCO`/`TCON`
-    /// The `genreName` parameter refers to specific genre or genres catalogued by numeric codes in the `GenreType` enum.
-    /// The `genreDescription` parameter is a freeform field that may be used to refine existing genres or create custom genres
-    var genre: (genreName: String?, genreDescription: String?) {
+    /// `genreName`: refers to specific genre or genres catalogued by numeric codes in the `GenreType` enum.
+    /// `genreDescription`: a freeform string for custom genre
+    var genre: (genreName: GenreType?, genreDescription: String?) {
         get {
-            let name = presetOptionsGetter(for: .genre)?.presetName
+            // the genre should be stored as an integer string of the code. We will fetch is as an integer
+            let nameAsInt: Int = Int(presetOptionsGetter(for: .genre)?.presetName ?? "") ?? 0
+            // initialize the genre type using the code
+            let name = GenreType(code: nameAsInt)
             let description = presetOptionsGetter(for: .genre)?.description
             return (name, description)
         }
         set {
             set(.known(.genre), .genre,
-                to: newValue.genreName,
+                to: String(newValue.genreName?.code ?? 0),
                 and: nil,
                 with: newValue.genreDescription)
         }
     }
     
-    /// - MediaType getter-setter. ID3 Identifier: `TMT`/`TMED`
-    /// The `mediaType` parameter refers to specific type of media catalogued by codes in the `MediaType` enum.
-    /// The `additionalMediaInfo` parameter refers to specific type of refinement pertaining to the `MediaType`, catalogued by codes in the `MediaTypeRefinements` enum
-    /// The `mediaTypeDescription` parameter is a freeform field that may be used to refine existing information
-    var mediaType: (mediaType: String?, additionalMediaInfo: String?, mediaTypeDescription: String?) {
+    //    / The `mediaTypeDescription` parameter is a freeform field that may be used to refine existing information
+    /// MediaType getter-setter. ID3 identifier `TMT`/`TMED`
+    /// `mediaType`: refers to specific type of media catalogued by codes in the `MediaType` enum.
+    /// `additionalMediaInfo`: refers to a specific type of refinement pertaining to the `MediaType`, catalogued by codes in the `MediaTypeRefinements` enum
+    /// `mediaTypeDescription`: a freeform string
+    var mediaType: (mediaType: MediaType?, additionalMediaInfo: MediaTypeRefinements?, mediaTypeDescription: String?) {
         get {
-            let presetName = presetOptionsGetter(for: .mediaType)?.presetName
-            let presetRefinement = presetOptionsGetter(for: .mediaType)?.presetRefinement
+            // the media type and preset refinements should be stored as a string of the code.
+            let presetName = MediaType(rawValue: presetOptionsGetter(for: .mediaType)?.presetName ?? "")
+            let presetRefinement = MediaTypeRefinements(code: presetOptionsGetter(for: .mediaType)?.presetRefinement ?? "")
             let description = presetOptionsGetter(for: .mediaType)?.description
             return (presetName, presetRefinement, description)
         }
         set {
             set(.known(.mediaType), .mediaType,
-                to: newValue.mediaType,
-                and: newValue.additionalMediaInfo,
+                to: newValue.mediaType?.rawValue,
+                and: newValue.additionalMediaInfo?.code,
                 with: newValue.mediaTypeDescription)
         }
     }
     
     /// - FileType getter-setter. ID3 Identifier: `TFT`/`TFLT`
-    /// The `fileType` parameter refers to specific type of file catalogued by codes in the `FileType` enum.
-    /// The `additionalFileTypeInfo` parameter refers to specific type of refinement pertaining to the `FileType`, catalogued by codes in the `FileTypeRefinements` enum
-    /// The `fileTypeDescription` parameter is a freeform field that may be used to refine existing information
-    var fileType: (fileType: String?, additionalFileTypeInfo: String?, fileTypeDescription: String?) {
+    /// `fileType`: refers to specific type of file catalogued by codes in the `FileType` enum.
+    /// `additionalFileTypeInfo`: refers to specific type of refinement pertaining to the `FileType`, catalogued by codes in the `FileTypeRefinements` enum
+    /// `fileTypeDescription`: is a freeform string
+    var fileType: (fileType: FileType?, additionalFileTypeInfo: FileTypeRefinements?, fileTypeDescription: String?) {
         get {
-            let presetName = presetOptionsGetter(for: .fileType)?.presetName
-            let presetRefinement = presetOptionsGetter(for: .fileType)?.presetRefinement
+            let presetName = FileType(rawValue: presetOptionsGetter(for: .fileType)?.presetName ?? "")
+            // the preset refinement should be stored as a string of the code.
+            let presetRefinement = FileTypeRefinements(rawValue: presetOptionsGetter(for: .fileType)?.presetRefinement ?? "")
             let description = presetOptionsGetter(for: .fileType)?.description
             return (presetName, presetRefinement, description)
         }
         set {
             set(.known(.fileType), .fileType,
-                to: newValue.fileType,
-                and: newValue.additionalFileTypeInfo,
+                to: newValue.fileType?.rawValue,
+                and: newValue.additionalFileTypeInfo?.rawValue,
                 with: newValue.fileTypeDescription)
         }
     }

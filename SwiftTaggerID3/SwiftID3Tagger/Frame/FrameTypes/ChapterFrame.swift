@@ -14,6 +14,12 @@ import Foundation
  */
 public struct ChapterFrame: FrameProtocol {
     
+    // MARK: Properties
+    var flags: Data
+    var layout: FrameLayoutIdentifier
+    var frameKey: FrameKey
+    var allowMultipleFrames: Bool = false
+
     /** The Element ID uniquely identifies the frame. It is not intended to be human readable and should not be presented to the end user. Null terminated */
     var elementID: String
     
@@ -30,63 +36,7 @@ public struct ChapterFrame: FrameProtocol {
     /** A sequence of optional frames that are embedded within the “CHAP” frame and which describe the content of the chapter (e.g. a “TIT2” frame representing the chapter name) or provide related material such as URLs and images. These sub-frames are contained within the bounds of the “CHAP” frame as signalled by the size field in the “CHAP” frame header. If a parser does not recognise “CHAP” frames it can skip them using the size field in the frame header. When it does this it will skip any embedded sub-frames carried within the frame. */
     var embeddedSubframes: [FrameKey: Frame]
     
-    
-    /**
-     - parameter elementID: the elementID of the frame. Null terminated.
-     - parameter startTime: integer indicating the beginning of the chapter, in milliseconds
-     - parameter endTime: integer indicating the end of the chapter, in milliseconds
-     - parameter startByteOffset: integer indicating the byte offset for the start of the chapter.
-     - parameter endByteOffset: integer indicating the byte offset for the end of the chapter
-     - parameter embeddedSubFrames: the (optional) frames containing title and descriptor text for the CHAP frame. A title is recommended at the least.
-     */
-    private init(layout: FrameLayoutIdentifier,
-                 elementID: String,
-                 startTime: Int,
-                 endTime: Int,
-                 startByteOffset: Int?,
-                 endByteOffset: Int?,
-                 embeddedSubframes: [FrameKey: Frame]) {
-        self.elementID = elementID
-        self.startTime = startTime
-        self.endTime = endTime
-        self.startByteOffset = startByteOffset ?? 0
-        self.endByteOffset = endByteOffset ?? 0
-        self.embeddedSubframes = embeddedSubframes
-        self.flags = ChapterFrame.defaultFlags
-        self.layout = layout
-        self.frameKey = .chapter(elementID: elementID)
-    }
-    
-    // encodes the contents of the frame and returns Data that can be added to the Tag instance to write to the file
-    func encodeContents(version: Version) throws -> Data {
-        var frameData = Data()
-        // encode and append ElementID string
-        frameData.append(self.elementID.encoded(withNullTermination: true))
-        // convert integers to UInt32 and then to Data and append
-        frameData.append(self.startTime.truncatedUInt32.bigEndianData)
-        frameData.append(self.endTime.truncatedUInt32.bigEndianData)
-        frameData.append(self.startByteOffset.truncatedUInt32.bigEndianData)
-        frameData.append(self.endByteOffset.truncatedUInt32.bigEndianData)
-        // encoded and append the subframes
-        var encodedSubframes = Data()
-        for subframe in self.embeddedSubframes {
-            encodedSubframes.append(try encodeSubframes(subframe: subframe.value.asFrameProtocol, version: version))
-        }
-        frameData.append(encodedSubframes)
-        return frameData
-    }
- 
-    // encodes the subframes of the chapter frame
-    private func encodeSubframes(subframe: FrameProtocol, version: Version) throws -> Data {
-        return try subframe.encodeContents(version: version)
-    }
-    
-    // MARK: Properties
-    var flags: Data
-    var layout: FrameLayoutIdentifier
-    var frameKey: FrameKey
-    var allowMultipleFrames: Bool = false
-
+    // MARK: Frame parsing
     init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,
@@ -137,7 +87,58 @@ public struct ChapterFrame: FrameProtocol {
         }
         self.embeddedSubframes = subframes
     }
+
+    // MARK: Frame building
+    /**
+     - parameter elementID: the elementID of the frame. Null terminated.
+     - parameter startTime: integer indicating the beginning of the chapter, in milliseconds
+     - parameter endTime: integer indicating the end of the chapter, in milliseconds
+     - parameter startByteOffset: integer indicating the byte offset for the start of the chapter.
+     - parameter endByteOffset: integer indicating the byte offset for the end of the chapter
+     - parameter embeddedSubFrames: the (optional) frames containing title and descriptor text for the CHAP frame. A title is recommended at the least.
+     */
+    private init(layout: FrameLayoutIdentifier,
+                 elementID: String,
+                 startTime: Int,
+                 endTime: Int,
+                 startByteOffset: Int?,
+                 endByteOffset: Int?,
+                 embeddedSubframes: [FrameKey: Frame]) {
+        self.elementID = elementID
+        self.startTime = startTime
+        self.endTime = endTime
+        self.startByteOffset = startByteOffset ?? 0
+        self.endByteOffset = endByteOffset ?? 0
+        self.embeddedSubframes = embeddedSubframes
+        self.flags = ChapterFrame.defaultFlags
+        self.layout = layout
+        self.frameKey = .chapter(elementID: elementID)
+    }
     
+    // encodes the contents of the frame and returns Data that can be added to the Tag instance to write to the file
+    func encodeContents(version: Version) throws -> Data {
+        var frameData = Data()
+        // encode and append ElementID string
+        frameData.append(self.elementID.encoded(withNullTermination: true))
+        // convert integers to UInt32 and then to Data and append
+        frameData.append(self.startTime.truncatedUInt32.bigEndianData)
+        frameData.append(self.endTime.truncatedUInt32.bigEndianData)
+        frameData.append(self.startByteOffset.truncatedUInt32.bigEndianData)
+        frameData.append(self.endByteOffset.truncatedUInt32.bigEndianData)
+        // encoded and append the subframes
+        var encodedSubframes = Data()
+        for subframe in self.embeddedSubframes {
+            encodedSubframes.append(try encodeSubframes(subframe: subframe.value.asFrameProtocol, version: version))
+        }
+        frameData.append(encodedSubframes)
+        return frameData
+    }
+ 
+    // encodes the subframes of the chapter frame
+    private func encodeSubframes(subframe: FrameProtocol, version: Version) throws -> Data {
+        return try subframe.encodeContents(version: version)
+    }
+
     /// initialize a new chapter, manually building the embedded subframes
     init(startTime: Int,
                 endTime: Int,
@@ -174,11 +175,10 @@ public struct ChapterFrame: FrameProtocol {
         self.frameKey = .chapter(elementID: uuid.uuidString)
     }
     
-    /// initialize a simple chapter frame with only embedded chapter image, start and end times specified, creates the embedded subframe for the image automatically
+    /// initialize a simple chapter frame with embedded chapter image, start and end times specified, creates the embedded subframe for the image automatically
     init(imageUrl: URL,
                 startTime: Int,
                 endTime: Int) throws {
-
         var imageFormat: ImageFormat = .jpg
         if imageUrl.pathExtension.lowercased() == "jpeg" || imageUrl.pathExtension.lowercased() == "jpg" {
             imageFormat = .jpg
@@ -206,9 +206,9 @@ public struct ChapterFrame: FrameProtocol {
                   embeddedSubframes: subframe)
         self.frameKey = .chapter(elementID: uuid.uuidString)
     }
-
 }
 
+// MARK: Tag Extension
 public extension Tag {
     /// - Chapter frame getter-setter. Valid for tag versions 2.3 and 2.4 only.
     /// ID3 Identifier `CHAP`

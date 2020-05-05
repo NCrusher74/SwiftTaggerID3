@@ -404,12 +404,16 @@ public enum GenreType: String, CaseIterable  {
         }
     }
     
-    static let codeToRawValueMapping: [Int: String] = {
-        var mapping: [Int: String] = [:]
+    static let codeMapping: [Int: GenreType] = {
+        var mapping: [Int: GenreType] = [:]
         for genre in GenreType.allCases {
             let id = genre.code
-            mapping[id] = genre.rawValue
+            mapping[id] = genre
         }
         return mapping
     }()
+    
+    init(code: Int) {
+        self = GenreType.codeMapping[code] ?? .none
+    }
 }

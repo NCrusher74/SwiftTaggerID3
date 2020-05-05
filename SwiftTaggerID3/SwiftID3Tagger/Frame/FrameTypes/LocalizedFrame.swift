@@ -126,8 +126,8 @@ struct LocalizedFrame: FrameProtocol {
     
 }
 
+// get and set functions for `LocalizedFrame` frame types, which retrieves or sets up to three strings, one of which may be a language code, and one of which is an optional description string. Each individual frame of this type will call these functions in a get-set property or function, where appropriate.
 internal extension Tag {
-    // get and set functions for `LocalizedFrame` frame types, which retrieves or sets three strings, one of which is a language code, and one of which is optional. Each individual frame of this type will call these functions in a get-set property of function, where appropriate.
     func localizedGetter(for frameKey: FrameKey,
                          language: ISO6392Codes?,
                          description: String?) -> String? {

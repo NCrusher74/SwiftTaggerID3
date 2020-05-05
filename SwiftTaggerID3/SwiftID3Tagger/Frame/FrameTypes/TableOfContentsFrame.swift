@@ -7,14 +7,18 @@
 //
 
 import Foundation
-
-
 /**
  A type representing a Table Of Contents frame.
  
  There may be more than one Table of Contents frame per tag, but only one may have the top-level flag set, and each one must have a unique `elementID`. Therefore, the `elementID` will serve as the `FrameKey`
  */
 public struct TableOfContentsFrame: FrameProtocol {
+    
+    // MARK: Properties
+    var flags: Data
+    var layout: FrameLayoutIdentifier
+    var frameKey: FrameKey
+    var allowMultipleFrames: Bool = false
     
     /** A null-terminated string with a unique ID. The Element ID uniquely identifies the frame. It is not intended to be human readable and should not be presented to the end-user. */
     var elementID: String
@@ -38,14 +42,80 @@ public struct TableOfContentsFrame: FrameProtocol {
     /** A sequence of optional frames that are embedded within the “CTOC” frame and which describe this element of the table of contents (e.g. a “TIT2” frame representing the name of the element) or provide related material such as URLs and images. These sub-frames are contained within the bounds of the “CTOC” frame as signalled by the size field in the “CTOC” frame header.*/
     var embeddedSubframes: [FrameKey: Frame] = [:]
     
-    
+    // MARK: Frame parsing initializer
+    init(decodingContents contents: Data.SubSequence,
+         version: Version,
+         layout: FrameLayoutIdentifier,
+         flags: Data) throws {
+        self.flags = flags
+        self.layout = layout
+        
+        // get the elementID from the frame, using a uuid as default if none exists
+        var parsing = contents
+        let uuid = UUID()
+        let elementID = parsing.extractPrefixAsStringUntilNullTermination(.isoLatin1)
+        self.elementID = elementID ?? uuid.uuidString
+        self.frameKey = .tableOfContents(elementID: elementID ?? uuid.uuidString)
+        
+        // parse the flags byte and interpret boolean values
+        let flagsByteData = parsing.extractFirst(1)
+        guard let flagsByte = flagsByteData.first else {
+            throw Mp3File.Error.InvalidTagData
+        }
+        let flagA: UInt8 = 0b00000010
+        let flagB: UInt8 = 0b00000001
+        
+        if flagsByte & flagA == flagA {
+            self.topLevelFlag = true
+        } else {
+            self.topLevelFlag = false
+        }
+        if flagsByte & flagB == flagB {
+            self.orderedFlag = true
+        } else {
+            self.orderedFlag = false
+        }
+        
+        // parse the entry-count byte to derive integer value
+        let childIDByte = parsing.extractFirst(1)
+        self.entryCount = childIDByte.uint8
+        
+        let entryCountUInt32 = UInt32(parsing: childIDByte, .bigEndian)
+        var childIDCount = Int(entryCountUInt32)
+        var childIDArray: [String] = []
+        
+        while childIDCount > 0 {
+            childIDArray.append(parsing.extractPrefixAsStringUntilNullTermination(.isoLatin1) ?? "")
+            childIDCount -= 1
+        }
+        self.childElementIDs = childIDArray
+        
+        // parse the subframes and add them to the embedded subframes dictionary
+        var subframes: [FrameKey: Frame] = [:]
+        while !parsing.isEmpty {
+            let embeddedSubframeIdentifierData = parsing.extractFirst(version.identifierLength)
+            if embeddedSubframeIdentifierData.first == 0x00 { break } // Padding, not a frame.
+            let subframeIdentifier = try String(ascii: embeddedSubframeIdentifierData)
+            let subframe = try Frame(
+                identifier: subframeIdentifier,
+                data: &parsing,
+                version: version)
+            
+            let subframeFrameKey = subframe.frameKey
+            subframes[subframeFrameKey] = subframe
+        }
+        self.embeddedSubframes = subframes
+    }
+
+    // MARK: Frame building initializer
     /**
-     - parameter elementID: the elementID of the frame. Null terminated.
-     - parameter topLevelFlag: boolean indicating if this CTOC frame has any children (or parent) CTOC frame(s)
-     - parameter orderedFlag: boolean indicating whether any child elementIDs are ordered or not
-     - parameter entryCount: the number of child ElementIDs.
-     - parameter childElementIDs: the array of child elementIDs. Must not be empty. Each entry is null terminated.
-     - parameter embeddedSubFrames: the (optional) frames containing title and descriptor text for the CTOC frame.
+     Parameters:
+       - elementID: the elementID of the frame. Null terminated.
+       - topLevelFlag: boolean indicating if this CTOC frame has any children (or parent) CTOC frame(s)
+       - orderedFlag: boolean indicating whether any child elementIDs are ordered or not
+       - entryCount: the number of child ElementIDs.
+       - childElementIDs: the array of child elementIDs. Must not be empty. Each entry is null terminated.
+       - embeddedSubFrames: the (optional) frames containing title and descriptor text for the CTOC frame.
      */
     private init(layout: FrameLayoutIdentifier,
                  elementID: String,
@@ -116,75 +186,6 @@ public struct TableOfContentsFrame: FrameProtocol {
         return try subframe.encodeContents(version: version)
     }
 
-    // MARK: Properties
-    var flags: Data
-    var layout: FrameLayoutIdentifier
-    var frameKey: FrameKey
-    var allowMultipleFrames: Bool = false
-
-    init(decodingContents contents: Data.SubSequence,
-                  version: Version,
-                  layout: FrameLayoutIdentifier,
-                  flags: Data) throws {
-        self.flags = flags
-        self.layout = layout
-        
-        // get the elementID from the frame, using a uuid as default if none exists
-        var parsing = contents
-        let uuid = UUID()
-        let elementID = parsing.extractPrefixAsStringUntilNullTermination(.isoLatin1)
-        self.elementID = elementID ?? uuid.uuidString
-        self.frameKey = .tableOfContents(elementID: elementID ?? uuid.uuidString)
-
-        // parse the flags byte and interpret boolean values
-        let flagsByteData = parsing.extractFirst(1)
-        guard let flagsByte = flagsByteData.first else {
-            throw Mp3File.Error.InvalidTagData
-        }
-        let flagA: UInt8 = 0b00000010
-        let flagB: UInt8 = 0b00000001
-
-        if flagsByte & flagA == flagA {
-            self.topLevelFlag = true
-        } else {
-            self.topLevelFlag = false
-        }
-        if flagsByte & flagB == flagB {
-            self.orderedFlag = true
-        } else {
-            self.orderedFlag = false
-        }
-
-        // parse the entry-count byte to derive integer value
-        let childIDByte = parsing.extractFirst(1)
-        self.entryCount = childIDByte.uint8
-
-        let entryCountUInt32 = UInt32(parsing: childIDByte, .bigEndian)
-        var childIDCount = Int(entryCountUInt32)
-        var childIDArray: [String] = []
-        
-        while childIDCount > 0 {
-            childIDArray.append(parsing.extractPrefixAsStringUntilNullTermination(.isoLatin1) ?? "")
-            childIDCount -= 1
-        }
-        self.childElementIDs = childIDArray
-        
-        // parse the subframes and add them to the embedded subframes dictionary
-        var subframes: [FrameKey: Frame] = [:]
-        while !parsing.isEmpty {
-            let embeddedSubframeIdentifierData = parsing.extractFirst(version.identifierLength)
-            if embeddedSubframeIdentifierData.first == 0x00 { break } // Padding, not a frame.
-            let subframeIdentifier = try String(ascii: embeddedSubframeIdentifierData)
-            let subframe = try Frame(
-                identifier: subframeIdentifier,
-                data: &parsing,
-                version: version)
-            
-            let subframeFrameKey = subframe.frameKey
-            subframes[subframeFrameKey] = subframe
-        }
-        self.embeddedSubframes = subframes
-    }
     
     // public initializer requiring only the boolean flags, the child element IDs, and the embedded subframes
     init(isTopTOC: Bool,

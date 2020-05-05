@@ -256,12 +256,12 @@
 				518807282442F1CB008D488B /* ImageTypes.swift */,
 				5188072A2442F3DE008D488B /* GenreType.swift */,
 				5168949A244C112E008F6124 /* MediaType.swift */,
+				51F31CA3245A940000E97444 /* FileType.swift */,
 				515AF6582449A098005C29FA /* InvolvedPersonCredits.swift */,
 				51753025244DC5700005B2AB /* MusicianPerformerCredits.swift */,
 				515AF65A2449A8E2005C29FA /* KeySignatures.swift */,
 				51689498244C10E1008F6124 /* PresetOptions.swift */,
 				51D58B38244D497000DBA9FB /* ISOLanguages.swift */,
-				51F31CA3245A940000E97444 /* FileType.swift */,
 				51FF4954245BEE4C0006F8F8 /* ContentRatings.swift */,
 			);
 			path = Enums;
