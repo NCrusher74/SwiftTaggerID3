@@ -14,51 +14,19 @@ import Foundation
  */
 struct CreditsListFrame: FrameProtocol {
  
-    /// An array of the `role, person` tuples
-    var entries: [(role: String, person: String)]
-    
-    /**
-     - parameter entries: the array of `role`:`person` tuples
-     - parameter role: the role of the involved person.
-     - parameter person: the name (or comma-delimited names) of the person fulfilling a given role.
-     */
-    init(layout: FrameLayoutIdentifier, entries: [(role: String, person: String)]) {
-        self.entries = entries
-        self.flags = CreditsListFrame.defaultFlags
-        self.layout = layout
-        
-        switch layout {
-            case .known(.involvedPeopleList) : self.frameKey = .involvedPeopleList
-            case .known(.musicianCreditsList) : self.frameKey = .musicianCreditsList
-            default: self.frameKey = .userDefinedText(description: "")
-        }
-    }
-        
-    // encode the contents of the frame to add to an ID3 tag
-    func encodeContents(version: Version) throws -> Data {
-        var frameData = Data()
-        // append encoding Byte
-        frameData.append(StringEncoding.preferred.rawValue.encoding(
-            endianness: .bigEndian))
-        
-        // encod and append each entry
-        for entry in self.entries {
-            frameData.append(contentsOf: entry.role.encoded(withNullTermination: true))
-            frameData.append(contentsOf: entry.person.encoded(withNullTermination: true))
-        }
-        return frameData
-    }
-    
     // MARK: Properties
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
     var allowMultipleFrames: Bool = false
+    
+    /// An array of the `role, person` tuples
+    var entries: [(role: String, person: String)]
 
     init(decodingContents contents: Data.SubSequence,
-                  version: Version,
-                  layout: FrameLayoutIdentifier,
-                  flags: Data
+         version: Version,
+         layout: FrameLayoutIdentifier,
+         flags: Data
     ) throws {
         self.flags = flags
         self.layout = layout
@@ -92,11 +60,45 @@ struct CreditsListFrame: FrameProtocol {
         let rolePersonArray = strings.pairs()
         return rolePersonArray as! [(String, String)]
     }
+    
+    /**
+     - Parameters:
+       - entries: the array of `role`:`person` tuples
+       - role: the role of the involved person.
+       - person: the name (or comma-delimited names) of the person fulfilling a given role.
+     */
+    init(layout: FrameLayoutIdentifier,
+         entries: [(role: String, person: String)]) {
+        self.entries = entries
+        self.flags = CreditsListFrame.defaultFlags
+        self.layout = layout
+        
+        switch layout {
+            case .known(.involvedPeopleList) : self.frameKey = .involvedPeopleList
+            case .known(.musicianCreditsList) : self.frameKey = .musicianCreditsList
+            default: self.frameKey = .userDefinedText(description: "")
+        }
+    }
+        
+    func encodeContents(version: Version) throws -> Data {
+        var frameData = Data()
+        // append encoding Byte
+        frameData.append(StringEncoding.preferred.rawValue.encoding(
+            endianness: .bigEndian))
+        
+        // encod and append each entry
+        for entry in self.entries {
+            frameData.append(contentsOf: entry.role.encoded(withNullTermination: true))
+            frameData.append(contentsOf: entry.person.encoded(withNullTermination: true))
+        }
+        return frameData
+    }
+    
 }
 
-internal extension Tag {
+extension Tag {
     // get and set functions for `CreditsListFrame` frame types. Each individual frame of this type will have its own get-set property that will call these functions
-    func tupleArray(for frameKey: FrameKey)
+    internal func tupleArray(for frameKey: FrameKey)
         -> [(role: String, person: String)]? {
             if let frame = self.frames[frameKey],
                 case .creditsListFrame(let creditsListFrame) = frame {
@@ -107,7 +109,7 @@ internal extension Tag {
     }
     
     // each individual CreditsListFrame type has a function that will retrieve a tuple and append append it to the credits list `entries` array
-    mutating func set(_ layout: FrameLayoutIdentifier,
+    internal mutating func set(_ layout: FrameLayoutIdentifier,
                       _ frameKey: FrameKey,
                       to entries: [(role: String, person: String)]?) {
         let frame = CreditsListFrame(
@@ -116,17 +118,11 @@ internal extension Tag {
         self.frames[frameKey] = .creditsListFrame(frame)
     }
     
-
-}
-
-// MARK: Tag extension
-public extension Tag {
-    
     /// - MusicianCreditsList frame getter-setter. Valid only for tag version 2.4
     /// ID3 Identifier: `TMCL`
     /// the `role` parameter refers to an instrument, vocal part, or other performance-related task.
     /// the `person` parameter is the name of the person or people performing the `role`
-    var musicianCreditList: [(role: MusicianAndPerformerCredits, person: String)] {
+    public var musicianCreditList: [(role: MusicianAndPerformerCredits, person: String)] {
         get {
             var reconstructedEntries: [(role: MusicianAndPerformerCredits, person: String)] = []
             var role: MusicianAndPerformerCredits = .none
@@ -141,7 +137,7 @@ public extension Tag {
         }
     }
     
-    mutating func addMusicianCredit(role: MusicianAndPerformerCredits, person: String) {
+    public mutating func addMusicianCredit(role: MusicianAndPerformerCredits, person: String) {
         var musicianCreditArray: [(role: String, person: String)] = []
         var roleString: String = ""
         var personString: String = ""

@@ -15,28 +15,59 @@ import Foundation
  */
 struct LanguageFrame: FrameProtocol {
     
-    init(languages: [ISO6392Codes]) {
-        var languageCodes: [String] = []
-        for language in languages {
-            languageCodes.append(language.rawValue)
-        }
-        self.init(layout: .known(.languages), languages: languageCodes)
-    }
+    // MARK: Properties
+    var flags: Data
+    var layout: FrameLayoutIdentifier
+    var frameKey: FrameKey
+    var allowMultipleFrames: Bool = false
     
     /// ISO-639-2 languge code
     var languages: [String]
     
-    /**
-     - parameter language: the ISO-639-2 language code.
-     */
-    private init(layout: FrameLayoutIdentifier, languages: [String]) {
+    
+    // MARK: Frame parsing
+    init(decodingContents contents: Data.SubSequence,
+         version: Version,
+         layout: FrameLayoutIdentifier,
+         flags: Data
+    ) throws {
+        self.flags = flags
+        self.layout = layout
+        
+        var parsing = contents
+        // extract and interpret the encoding byte
+        let encoding = try LanguageFrame.extractEncoding(data: &parsing, version: version)
+        
+        // extract each language code as a string
+        var languagesArray: [String] = []
+        while !parsing.isEmpty {
+            let languageCodes = [parsing.extractPrefixAsStringUntilNullTermination(encoding)]
+            for code in languageCodes {
+                if ISO6392Codes.allCases.contains(where:
+                    { $0.rawValue == code }) {
+                    languagesArray.append(code ?? "und")
+                }
+                else {
+                    languagesArray = ["und"]
+                }
+            }
+        }
+        self.languages = languagesArray
+        self.frameKey = .languages
+    }
+    
+    // MARK: Frame building
+    /// Initialize a frame-building instance
+    /// - Parameters:
+    ///   - layout: the frame layout
+    ///   - languages: the ISO-639-2 language codes as a string array
+    init(layout: FrameLayoutIdentifier, languages: [String]) {
         self.languages = languages
         self.flags = LanguageFrame.defaultFlags
         self.layout = layout
         self.frameKey = .languages
     }
     
-    // encode the contents of the frame to add to an ID3 tag
     func encodeContents(version: Version) throws -> Data {
         var frameData = Data()
         // append encoding byte
@@ -53,53 +84,31 @@ struct LanguageFrame: FrameProtocol {
         return frameData
     }
     
-    // MARK: Properties
-    var flags: Data
-    var layout: FrameLayoutIdentifier
-    var frameKey: FrameKey
-    var allowMultipleFrames: Bool = false
-
-    init(decodingContents contents: Data.SubSequence,
-         version: Version,
-         layout: FrameLayoutIdentifier,
-         flags: Data
-    ) throws {
-        self.flags = flags
-        self.layout = layout
-        
-        var parsing = contents
-        let encoding = try LanguageFrame.extractEncoding(data: &parsing, version: version)
-        let languageCodes = [parsing.extractPrefixAsStringUntilNullTermination(encoding)]
-        var languagesArray: [String] = []
-        for code in languageCodes {
-            if ISO6392Codes.allCases.contains(where:
-                { $0.rawValue == code }) {
-                languagesArray.append(code ?? "und")
-            }
-            else {
-                languagesArray = ["und"]
-            }
-        }
-        self.languages = languagesArray
-        self.frameKey = .languages
-    }
 }
 
-public extension Tag {
+extension Tag {
     /// - Language frame getter-setter. ID3 Identifier: `TLA`/`TLAN`
-    var languages: [String]? {
+    public var languages: [ISO6392Codes]? {
         get {
             if let frame = self.frames[.languages],
                 case .languageFrame(let languageFrame) = frame {
-                return languageFrame.languages
-            } else {
-                return nil
-            }
+                var languageArray: [ISO6392Codes] = []
+                for language in languageFrame.languages {
+                    let languageCode = ISO6392Codes(rawValue: language) ?? .und
+                    languageArray.append(languageCode)
+                    return languageArray
+                }
+            }; return nil
         }
-    }
-    
-    mutating func setLanguages(languages: [ISO6392Codes]) throws {
-        let key = FrameKey.languages
-        self.frames[key] = Frame.languageFrame(.init(languages: languages))
+        set {
+            var languageStrings: [String] = []
+            for code in newValue ?? [.und] {
+                languageStrings.append(code.rawValue)
+            }
+            let frame = LanguageFrame(
+                layout: .known(.languages),
+                languages: languageStrings)
+            self.frames[.languages] = .languageFrame(frame)
+        }
     }
 }

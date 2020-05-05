@@ -23,6 +23,7 @@ struct IntegerFrame: FrameProtocol {
     // frame's unique property
     var value: Int
     
+    // MARK: Frame parsing
     init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,
@@ -31,20 +32,30 @@ struct IntegerFrame: FrameProtocol {
         self.flags = flags
         self.layout = layout
         switch layout {
-            case .known(.bpm): self.frameKey = .bpm
-            case .known(.isrc): self.frameKey = .isrc
-            case .known(.length): self.frameKey = .length
-            case .known(.movementCount): self.frameKey = .movementCount
-            case .known(.movementNumber): self.frameKey = .movementNumber
-            case .known(.playlistDelay): self.frameKey = .playlistDelay
-            case .known(.compilation): self.frameKey = .compilation
-            default: self.frameKey = .userDefinedText(description: "\(layout.id3Identifier(version: version) ?? "")")
+            case .known(.bpm):
+                self.frameKey = .bpm
+            case .known(.isrc):
+                self.frameKey = .isrc
+            case .known(.length):
+                self.frameKey = .length
+            case .known(.movementCount):
+                self.frameKey = .movementCount
+            case .known(.movementNumber):
+                self.frameKey = .movementNumber
+            case .known(.playlistDelay):
+                self.frameKey = .playlistDelay
+            case .known(.compilation):
+                self.frameKey = .compilation
+            default: self.frameKey = .userDefinedText(
+                description: "\(layout.id3Identifier(version: version) ?? "")")
         }
         var parsing = contents
+        // extract and interpret the encoding byte
         let encoding = try IntegerFrame.extractEncoding(data: &parsing, version: version)
+        // hand the frame content as a boolean value of 1 or 0
         if self.frameKey == .compilation {
             let contentString = parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? ""
-            // initialize the frame's value property by converting the string content to a boolean
+            // initialize the frame's value property by converting the string content to an integer
             self.value = IntegerFrame.getBooleanIntFromString(boolString: contentString)
         } else {
             self.value = Int(
@@ -67,8 +78,9 @@ struct IntegerFrame: FrameProtocol {
     }
     
     /**
-     A frame with only an integer string as content, presented as an integer
+     Initialize a frame-building instance for a frame with only an integer string as content, presented as an integer
      - parameter value: the content of the frame.
+     - parameter layout: the frame layout identifier, used to determine the `frameKey`
      */
     init(layout: FrameLayoutIdentifier, value: Int) {
         self.value = value
@@ -100,20 +112,30 @@ struct IntegerFrame: FrameProtocol {
     
 }
 
-// MARK: Internal TAG Extension
+// MARK: Internal TagG Extension
 /* get and set functions for `IntegerFrame` frame types. Each individual frame of this type will have its own get-set property that will call these functions using its `FrameKey` property and relevant data */
 extension Tag {
     
+    /// get the integer value from the frame
+    /// - Parameter frameKey: the frame's unique identifier
+    /// - Returns: an integer representation of the integer string within the frame
     internal func integer(for frameKey: FrameKey) -> Int? {
         //check that the frame is an IntegerFrame
         if let frame = self.frames[frameKey],
-            case .integerFrame(let integerFrame) = frame { // get the integer from the frame data
+            case .integerFrame(let integerFrame) = frame {
+            // get the integer from the frame data
             return integerFrame.value } else { return nil }
     }
     
+    /// Add a frame to the `Tag` instance
+    /// - Parameters:
+    ///   - layout: the frame's layout identifier
+    ///   - frameKey: the frame's unique identifier
+    ///   - value: the integer value of the frame
     internal mutating func set(_ layout: FrameLayoutIdentifier,
                                _ frameKey: FrameKey,
                                to value: Int) {
+        // call the frame-building initializer
         let frame = IntegerFrame(
             layout: layout,
             value: value)
