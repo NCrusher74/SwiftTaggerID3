@@ -142,7 +142,7 @@
 
 extension Tag {
     /// AttachedPicture frame getter-setter. ID3 Identifier `PIC`/`APIC`
-    subscript(attachedPicture imageDescription: String) -> Data? {
+    public subscript(attachedPicture imageDescription: String) -> Data? {
         get {
             if let frame = self.frames[.attachedPicture(description: imageDescription)],
                 case .imageFrame(let imageFrame) = frame {
@@ -153,7 +153,7 @@ extension Tag {
         }
     }
     
-    mutating func setAttachedPicture(imageType: ImageType?, imageDescription: String?, location: URL) throws {
+    public mutating func setAttachedPicture(imageType: ImageType?, imageDescription: String?, location: URL) throws {
         var imageFormat: ImageFormat
         if location.pathExtension.lowercased() == "jpg" || location.pathExtension.lowercased() == "jpeg" {
             imageFormat = .jpg
