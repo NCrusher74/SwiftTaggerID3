@@ -24,7 +24,7 @@ struct StringFrame: FrameProtocol {
     var contentString: String
   
     let urlFrameKeys: [FrameKey] = [
-        .artistWebpage, .audioFileWebpage, .audioSourceWebpage, .copyrightWebpage, .paymentWebpage, .radioStationWebpage]
+        .artistWebpage, .audioFileWebpage, .audioSourceWebpage, .copyrightWebpage, .paymentWebpage, .publisherWebpage, .radioStationWebpage]
 
     // MARK: Frame Parsing
     init(decodingContents contents: Data.SubSequence,
