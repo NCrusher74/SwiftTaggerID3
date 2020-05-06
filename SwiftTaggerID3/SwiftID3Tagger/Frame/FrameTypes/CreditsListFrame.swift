@@ -139,6 +139,8 @@ extension Tag {
         }
     }
     
+    #warning("Should probably also add an option to empty the value array and start over instead of append?")
+    
     /// Getter-setter property for the dictionary of `[role: [person]]` pairs
     public var musicianCreditsList: [MusicianAndPerformerCredits:[String]]? {
         get {

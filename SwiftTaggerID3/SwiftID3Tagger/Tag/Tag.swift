@@ -30,7 +30,7 @@ public struct Tag {
     /** Initializes an ID3 tag, derives required data from the tag header, and instantiates the parsing of the frames within the tag. */
     /// - Parameter file: The `Mp3File` containing the tag data.
     /// - Throws: `InvalidFileFormat` if the `Mp3File` does not have a valid Mp3 file extension.
-    init(readFrom file: Mp3File) throws {
+    public init(readFrom file: Mp3File) throws {
         // a type containing tag-level properties and methods for querying tag-level information
         let properties = TagProperties()
         

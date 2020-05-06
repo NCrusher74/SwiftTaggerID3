@@ -567,44 +567,44 @@ extension Tag {
         set { set(.known(.titleSort), .titleSort, to: newValue) }
     }
     /// - ArtistWebpage getter-setter. ID3 Identifier: `WAR`/`WOAR`
-    var artistWebpage: String {
+    public var artistWebpage: String {
         get { string(for: .artistWebpage) ?? "" }
         set { set(.known(.artistWebpage), .artistWebpage, to: newValue) }
     }
     
     /// - (Official)AudioFileWebpage getter-setter. ID3 Identifier: `WAF`/`WOAF`
-    var audioFileWebpage: String {
+    public var audioFileWebpage: String {
         get { string(for: .audioFileWebpage) ?? "" }
         set { set(.known(.audioFileWebpage), .audioFileWebpage, to: newValue) }
     }
     
     /// - (Official)AudioSourceWebpage getter-setter. ID3 Identifier: `WAS`/`WOAS`
-    var audioSourceWebpage: String {
+    public var audioSourceWebpage: String {
         get { string(for: .audioSourceWebpage) ?? "" }
         set { set(.known(.audioSourceWebpage), .audioSourceWebpage, to: newValue) }
     }
     
     /// - Copyright/Legal Information Webpage getter-setter. ID3 Identifier: `WCP`/`WCOP`
-    var copyrightWebpage: String {
+    public var copyrightWebpage: String {
         get { string(for: .copyrightWebpage) ?? "" }
         set { set(.known(.copyrightWebpage), .copyrightWebpage, to: newValue) }
     }
     
     /// - PaymentWebpage getter-setter. ID3 Identifier: `WPAY`
     /// Valid for tag versions 2.3/2.4 only
-    var paymentWebpage: String {
+    public var paymentWebpage: String {
         get { string(for: .paymentWebpage) ?? "" }
         set { set(.known(.paymentWebpage), .paymentWebpage, to: newValue) }
     }
     
     /// - PublisherWebpage getter-setter. ID3 Identifier: `WPB`/`WPUB`
-    var publisherWebpage: String {
+    public var publisherWebpage: String {
         get { string(for: .publisherWebpage) ?? "" }
         set { set(.known(.publisherWebpage), .publisherWebpage, to: newValue) }
     }
     
     /// - (Official Internet)RadioStationWebpage getter-setter. ID3 Identifier: `WRS`/`WORS`
-    var radioStationWebpage: String {
+    public var radioStationWebpage: String {
         get { string(for: .radioStationWebpage) ?? "" }
         set { set(.known(.radioStationWebpage), .radioStationWebpage, to: newValue) }
     }

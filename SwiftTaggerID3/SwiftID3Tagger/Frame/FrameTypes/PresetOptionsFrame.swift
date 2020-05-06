@@ -281,7 +281,7 @@ extension Tag {
     /// - Genre getter ID3 Identifier: `TCO`/`TCON`
     /// `genreName`: refers to specific genre or genres catalogued by numeric codes in the `GenreType` enum.
     /// `genreDescription`: a freeform string for custom genre
-    var genre: (genreName: GenreType?, genreDescription: String?) {
+    public var genre: (genreName: GenreType?, genreDescription: String?) {
         get {
             // the genre should be stored as an integer string of the code. We will fetch is as an integer
             let nameAsInt: Int = Int(presetOptionsGetter(for: .genre)?.presetName ?? "") ?? 0
@@ -303,7 +303,7 @@ extension Tag {
     /// `mediaType`: refers to specific type of media catalogued by codes in the `MediaType` enum.
     /// `additionalMediaInfo`: refers to a specific type of refinement pertaining to the `MediaType`, catalogued by codes in the `MediaTypeRefinements` enum
     /// `mediaTypeDescription`: a freeform string
-    var mediaType: (mediaType: MediaType?, additionalMediaInfo: MediaTypeRefinements?, mediaTypeDescription: String?) {
+    public var mediaType: (mediaType: MediaType?, additionalMediaInfo: MediaTypeRefinements?, mediaTypeDescription: String?) {
         get {
             // the media type and preset refinements should be stored as a string of the code.
             let presetName = MediaType(rawValue: presetOptionsGetter(for: .mediaType)?.presetName ?? "")
@@ -323,7 +323,7 @@ extension Tag {
     /// `fileType`: refers to specific type of file catalogued by codes in the `FileType` enum.
     /// `additionalFileTypeInfo`: refers to specific type of refinement pertaining to the `FileType`, catalogued by codes in the `FileTypeRefinements` enum
     /// `fileTypeDescription`: is a freeform string
-    var fileType: (fileType: FileType?, additionalFileTypeInfo: FileTypeRefinements?, fileTypeDescription: String?) {
+    public var fileType: (fileType: FileType?, additionalFileTypeInfo: FileTypeRefinements?, fileTypeDescription: String?) {
         get {
             let presetName = FileType(rawValue: presetOptionsGetter(for: .fileType)?.presetName ?? "")
             // the preset refinement should be stored as a string of the code.

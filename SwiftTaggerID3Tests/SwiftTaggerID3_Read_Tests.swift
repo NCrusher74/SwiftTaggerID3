@@ -11,5 +11,175 @@ import SwiftTaggerID3
 
 class SwiftTaggerID3_Read_Tests: XCTestCase {
 
+    func testV22Reading() throws {
+        let mp3Url = Bundle.writtenV22
+        let mp3File = try Mp3File(location: mp3Url)
+        let tag = try Tag(readFrom: mp3File)
+        
+        #warning("There's no sense running these V22 tests until I figure out the encoding issue with the written file")
+//        XCTAssertEqual(tag.album, "Album")
+    }
+    
+    func testV23Reading() throws {
+        let mp3Url = Bundle.writtenV23
+        let mp3File = try Mp3File(location: mp3Url)
+        let tag = try Tag(readFrom: mp3File)
+
+        XCTAssertEqual(tag.album, "Album")
+        XCTAssertEqual(tag.albumArtist, "AlbumArtist")
+        XCTAssertEqual(tag.albumArtistSort, "SortAlbumArtist")
+        XCTAssertEqual(tag.albumSort, "SortAlbum")
+        XCTAssertEqual(tag.arranger, "Arranger")
+        XCTAssertEqual(tag.artist, "Artist")
+        XCTAssertEqual(tag.artistSort, "SortArtist")
+        XCTAssertEqual(tag.audioFileWebpage, "http://audiofile.url")
+        XCTAssertEqual(tag.audioSourceWebpage, "http://audiosource.url")
+        XCTAssertEqual(tag.author, "Artist")
+        XCTAssertEqual(tag.authorSort, "SortArtist")
+        XCTAssertEqual(tag.bpm, 99)
+        XCTAssertEqual(tag.compilation, true)
+        XCTAssertEqual(tag.composer, "Composer")
+        XCTAssertEqual(tag.composerSort, "SortComposer")
+        XCTAssertEqual(tag.conductor, "Conductor")
+        XCTAssertEqual(tag.contentGroup, "Work")
+        XCTAssertEqual(tag.copyright, "Copyright")
+        XCTAssertEqual(tag.copyrightWebpage, "http://copyright.url")
+        XCTAssertEqual(tag.discNumber.disc, 3)
+        XCTAssertEqual(tag.discNumber.totalDiscs, 4)
+        XCTAssertEqual(tag.encodedBy, "EncodedBy")
+        XCTAssertEqual(tag.encodingSettings, "EncoderSettings")
+        XCTAssertEqual(tag.fileOwner, "FileOwner")
+        XCTAssertEqual(tag.grouping, "Grouping")
+        XCTAssertEqual(tag.initialKey, .unknown )
+        XCTAssertEqual(tag.interpretedBy, "Arranger")
+        #warning("These aren't showing up, probably because the functions aren't complete yet")
+//        XCTAssertEqual(tag.involvedPeopleList?[.director], ["Director Name"])
+//        XCTAssertEqual(tag.involvedPeopleList?[.producer], ["Producer Name"])
+        XCTAssertEqual(tag.isrc, 123456789012)
+        XCTAssertEqual(tag.label, "Publisher")
+        XCTAssertEqual(tag.languages, [.eng])
+        XCTAssertEqual(tag.length, 5250)
+        XCTAssertEqual(tag.lyricist, "Lyricist")
+        XCTAssertEqual(tag.movementName, "MovementName")
+//        XCTAssertEqual(tag.movementNumber, 5) // wasn't written by Yate
+        XCTAssertEqual(tag.totalMovements, 6)
+        XCTAssertEqual(tag.narrator, "Composer")
+        XCTAssertEqual(tag.narratorSort, "SortComposer")
+        XCTAssertEqual(tag.originalAlbum, "OriginalAlbum")
+        XCTAssertEqual(tag.originalArtist, "OriginalArtist")
+        XCTAssertEqual(tag.originalFilename, "OriginalFilename")
+        XCTAssertEqual(tag.originalLyricist, "OriginalLyricist")
+//        XCTAssertEqual(tag.podcastCategory, "PodcastCategory") // podcast stuff not written by Yate
+//        XCTAssertEqual(tag.podcastDescription, "PodcastDescription")
+//        XCTAssertEqual(tag.podcastID, "PodcastID")
+//        XCTAssertEqual(tag.podcastKeywords, "PodcastKeywords")
+//        XCTAssertEqual(tag.podcastFeedLink, "http://podcast.url")
+        XCTAssertEqual(tag.publisher, "Publisher")
+        XCTAssertEqual(tag.publisherWebpage, "http://publisher.url") // first letter is missing?
+        XCTAssertEqual(tag.radioStation, "RadioStation")
+        XCTAssertEqual(tag.radioStationOwner, "RadioStationOwner")
+        XCTAssertEqual(tag.radioStationWebpage, "http://radiostation.url")
+        XCTAssertEqual(tag.recordCompany, "Publisher")
+        XCTAssertEqual(tag.remixer, "Arranger")
+        XCTAssertEqual(tag.studio, "Publisher")
+        XCTAssertEqual(tag.subtitle, "Subtitle")
+        XCTAssertEqual(tag.series, "Work")
+        XCTAssertEqual(tag.title, "Title")
+        XCTAssertEqual(tag.titleSort, "SortTitle")
+        XCTAssertEqual(tag.trackNumber.track, 1)
+        XCTAssertEqual(tag.trackNumber.totalTracks, 2)
+        XCTAssertEqual(tag.work, "Work")
+
+        // MARK: Problem Children
+        XCTAssertNil(tag.genre.genreName) // Blues? Huh?
+        XCTAssertEqual(tag.genre.genreDescription, "Genre") // should not be nil
+        XCTAssertEqual(tag.mediaType.mediaType, MediaType.none)
+        XCTAssertEqual(tag.mediaType.additionalMediaInfo, MediaTypeRefinements.none)
+        XCTAssertEqual(tag.mediaType.mediaTypeDescription, "MediaType") // should not be nil
+    }
+    
+    func testV24Reading() throws {
+        let mp3Url = Bundle.writtenV24
+        let mp3File = try Mp3File(location: mp3Url)
+        let tag = try Tag(readFrom: mp3File)
+        
+        XCTAssertEqual(tag.album, "Album")
+        XCTAssertEqual(tag.albumArtist, "AlbumArtist")
+        XCTAssertEqual(tag.albumArtistSort, "SortAlbumArtist")
+        XCTAssertEqual(tag.albumSort, "SortAlbum")
+        XCTAssertEqual(tag.arranger, "Arranger")
+        XCTAssertEqual(tag.artist, "Artist")
+        XCTAssertEqual(tag.artistSort, "SortArtist")
+        XCTAssertEqual(tag.audioFileWebpage, "http://audiofile.url")
+        XCTAssertEqual(tag.audioSourceWebpage, "http://audiosource.url")
+        XCTAssertEqual(tag.author, "Artist")
+        XCTAssertEqual(tag.authorSort, "SortArtist")
+        XCTAssertEqual(tag.bpm, 99)
+        XCTAssertEqual(tag.compilation, true)
+        XCTAssertEqual(tag.composer, "Composer")
+        XCTAssertEqual(tag.composerSort, "SortComposer")
+        XCTAssertEqual(tag.conductor, "Conductor")
+        XCTAssertEqual(tag.contentGroup, "Grouping")
+        XCTAssertEqual(tag.copyright, "Copyright")
+        XCTAssertEqual(tag.copyrightWebpage, "http://copyright.url")
+        XCTAssertEqual(tag.discNumber.disc, 3)
+        XCTAssertEqual(tag.discNumber.totalDiscs, 4)
+        XCTAssertEqual(tag.encodedBy, "EncodedBy")
+        XCTAssertEqual(tag.encodingSettings, "EncoderSettings")
+        XCTAssertEqual(tag.fileOwner, "FileOwner")
+        XCTAssertEqual(tag.grouping, "")
+        XCTAssertEqual(tag.initialKey, .unknown )
+        XCTAssertEqual(tag.interpretedBy, "Arranger")
+        #warning("These aren't showing up, probably because the functions aren't complete yet")
+        //        XCTAssertEqual(tag.involvedPeopleList?[.director], ["Director Name"])
+        //        XCTAssertEqual(tag.involvedPeopleList?[.producer], ["Producer Name"])
+        XCTAssertEqual(tag.isrc, 123456789012)
+        XCTAssertEqual(tag.label, "Publisher")
+        XCTAssertEqual(tag.languages, [.eng])
+        XCTAssertEqual(tag.length, 5250)
+        XCTAssertEqual(tag.lyricist, "Lyricist")
+        XCTAssertEqual(tag.mood, "Mood")
+        XCTAssertEqual(tag.movementName, "MovementName")
+        XCTAssertEqual(tag.movementNumber, 5) // these are both zero?
+        XCTAssertEqual(tag.totalMovements, 6) // 0? huh?
+        //        XCTAssertEqual(tag.musicianCreditList?[.musician], ["Musician Name"])
+        //        XCTAssertEqual(tag.musicianCreditList?[.singer], ["Singer Name"])
+        XCTAssertEqual(tag.narrator, "Composer")
+        XCTAssertEqual(tag.narratorSort, "SortComposer")
+        XCTAssertEqual(tag.originalAlbum, "OriginalAlbum")
+        XCTAssertEqual(tag.originalArtist, "OriginalArtist")
+        XCTAssertEqual(tag.originalFilename, "OriginalFilename")
+        XCTAssertEqual(tag.originalLyricist, "OriginalLyricist")
+        XCTAssertEqual(tag.paymentWebpage, "http://payment.url")
+        //        XCTAssertEqual(tag.podcastCategory, "PodcastCategory") // podcast stuff not written by Yate
+        //        XCTAssertEqual(tag.podcastDescription, "PodcastDescription")
+        //        XCTAssertEqual(tag.podcastID, "PodcastID")
+        //        XCTAssertEqual(tag.podcastKeywords, "PodcastKeywords")
+        //        XCTAssertEqual(tag.podcastFeedLink, "http://podcast.url")
+        XCTAssertEqual(tag.producedNotice, "2020 ProducedNotice")
+        XCTAssertEqual(tag.publisher, "Publisher")
+        XCTAssertEqual(tag.publisherWebpage, "http://publisher.url") // first letter is missing?
+        XCTAssertEqual(tag.radioStation, "RadioStation")
+        XCTAssertEqual(tag.radioStationOwner, "RadioStationOwner")
+        XCTAssertEqual(tag.radioStationWebpage, "http://radiostation.url")
+        XCTAssertEqual(tag.recordCompany, "Publisher")
+        XCTAssertEqual(tag.remixer, "Arranger")
+        XCTAssertEqual(tag.studio, "Publisher")
+        XCTAssertEqual(tag.subtitle, "Subtitle")
+        XCTAssertEqual(tag.series, "Grouping")
+        XCTAssertEqual(tag.title, "Title")
+        XCTAssertEqual(tag.titleSort, "SortTitle")
+        XCTAssertEqual(tag.trackNumber.track, 1)
+        XCTAssertEqual(tag.trackNumber.totalTracks, 2)
+        XCTAssertEqual(tag.work, "Grouping")
+
+
+        // MARK: Problem Children
+        XCTAssertEqual(tag.genre.genreName, GenreType.none)
+        XCTAssertEqual(tag.genre.genreDescription, "Test Genre")
+        XCTAssertNil(tag.mediaType.mediaType) // Why is this nil here but not for version 2.3?
+        XCTAssertEqual(tag.mediaType.additionalMediaInfo, MediaTypeRefinements.none)
+        XCTAssertEqual(tag.mediaType.mediaTypeDescription, "MediaType") // why is it reading Genre for this?
+    }
     
 }

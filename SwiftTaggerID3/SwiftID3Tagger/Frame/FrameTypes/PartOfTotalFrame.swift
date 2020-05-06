@@ -95,7 +95,7 @@ extension Tag {
     /// Retrieve an integer tuple from the frame data
     /// - Parameter frameKey: the unique identifier of the frame
     /// - Returns: the frame's contents as an integer tuple
-    func intTuple(for frameKey: FrameKey)
+    internal func intTuple(for frameKey: FrameKey)
         -> (part: Int, total: Int?)? {
             // check that the frame is a PartOfTotalFrame
             if let frame = self.frames[frameKey],
@@ -113,7 +113,7 @@ extension Tag {
     ///   - frameKey: the frame's unique identifier, used to ensure frame uniqueness
     ///   - part: the position of a track or disc within a set
     ///   - total: the total number of tracks or discs in the set
-    mutating func set(_ layout: FrameLayoutIdentifier,
+    internal mutating func set(_ layout: FrameLayoutIdentifier,
                       _ frameKey: FrameKey,
                       to part: Int,
                       and total: Int?) {
@@ -126,7 +126,7 @@ extension Tag {
     }
 
     /// - DiscNumber(/TotalDiscs) getter-setter. ID3 Identifier: `TPA`/`TPOS`
-    var discNumber: (disc: Int, totalDiscs: Int?) {
+    public var discNumber: (disc: Int, totalDiscs: Int?) {
         get {
             let tuple = intTuple(for: .discNumber)
             return (disc: tuple?.part ?? 0, totalDiscs: tuple?.total)
@@ -138,7 +138,7 @@ extension Tag {
     }
     
     /// - TrackNumber(/TotalTracks) getter-setter. ID3 Identifier: `TRK`/`TRCK`
-    var trackNumber: (track: Int, totalTracks: Int?) {
+    public var trackNumber: (track: Int, totalTracks: Int?) {
         get {
             let tuple = intTuple(for: .trackNumber)
             return (track: tuple?.part ?? 0, totalTracks: tuple?.total)
