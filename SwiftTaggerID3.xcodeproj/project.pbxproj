@@ -201,8 +201,8 @@
 			isa = PBXGroup;
 			children = (
 				5177544624423D2E005E43C5 /* FrameTypes */,
-				51490E48243EBB4A009D4BA4 /* Frame.swift */,
 				51490E50243EDB4F009D4BA4 /* FrameLayoutIdentifier.swift */,
+				51490E48243EBB4A009D4BA4 /* Frame.swift */,
 				51E432D9243DB096006574A1 /* Version.swift */,
 				517754492442743F005E43C5 /* FrameKey.swift */,
 				51FA350F244038D0000997EC /* FrameProtocol.swift */,

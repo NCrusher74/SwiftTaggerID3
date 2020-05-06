@@ -80,7 +80,6 @@ struct PresetOptionsFrame: FrameProtocol {
                     }
                     // initialize presetName to the raw value of the genre type
                     self.presetName = String(genreType.code)
-                    
                 } else if layout == .known(.mediaType) {
                     
                     // check to see if it's a preset refinement string
@@ -258,12 +257,14 @@ extension Tag {
     /// - Genre getter ID3 Identifier: `TCO`/`TCON`
     /// `genreName`: refers to specific genre or genres catalogued by numeric codes in the `GenreType` enum.
     /// `genreDescription`: a freeform string for custom genre
-    public var genre: (genreName: GenreType?, genreDescription: String?)? {
+    public var genre: (
+        genreName: GenreType?,
+        genreDescription: String?)? {
         get {
             if let frame = self.frames[.genre],
                 case .presetOptionsFrame(let presetOptionsFrame) = frame {
                 // the genre should be stored as an integer string of the code. We will fetch is as an integer
-                let nameAsInt: Int = Int(presetOptionsFrame.presetName ?? "") ?? 0
+                let nameAsInt: Int = Int(presetOptionsFrame.presetName ?? "") ?? 255
                 // initialize the genre type using the code
                 let name = GenreType(code: nameAsInt)
                 let description = presetOptionsFrame.refinementDescription
@@ -272,7 +273,7 @@ extension Tag {
         }
         set {
             set(.known(.genre), .genre,
-                to: String(newValue?.genreName?.code ?? 0),
+                to: String(newValue?.genreName?.code ?? 255),
                 and: nil,
                 with: newValue?.genreDescription)
         }
@@ -283,7 +284,10 @@ extension Tag {
     /// `mediaType`: refers to specific type of media catalogued by codes in the `MediaType` enum.
     /// `additionalMediaInfo`: refers to a specific type of refinement pertaining to the `MediaType`, catalogued by codes in the `MediaTypeRefinements` enum
     /// `mediaTypeDescription`: a freeform string
-    public var mediaType: (mediaType: MediaType?, additionalMediaInfo: MediaTypeRefinements?, mediaTypeDescription: String?)? {
+    public var mediaType: (
+        mediaType: MediaType?,
+        additionalMediaInfo: MediaTypeRefinements?,
+        mediaTypeDescription: String?)? {
         get {
             if let frame = self.frames[.mediaType],
                 case .presetOptionsFrame(let presetOptionsFrame) = frame {
@@ -306,7 +310,10 @@ extension Tag {
     /// `fileType`: refers to specific type of file catalogued by codes in the `FileType` enum.
     /// `additionalFileTypeInfo`: refers to specific type of refinement pertaining to the `FileType`, catalogued by codes in the `FileTypeRefinements` enum
     /// `fileTypeDescription`: is a freeform string
-    public var fileType: (fileType: FileType?, additionalFileTypeInfo: FileTypeRefinements?, fileTypeDescription: String?)? {
+    public var fileType: (
+        fileType: FileType?,
+        additionalFileTypeInfo: FileTypeRefinements?,
+        fileTypeDescription: String?)? {
         get {
             if let frame = self.frames[.fileType],
                 case .presetOptionsFrame(let presetOptionsFrame) = frame {

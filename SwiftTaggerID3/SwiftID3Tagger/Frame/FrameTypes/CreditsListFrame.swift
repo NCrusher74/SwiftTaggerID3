@@ -130,7 +130,6 @@ extension Tag {
         var creditsList = musicianCreditsList
         let keys = creditsList?.keys
         
-        #warning("why does this want a bool default?")
         if keys?.contains(role) ?? true {
             var arrayValue = creditsList?[role]
             arrayValue?.append(person)
@@ -171,7 +170,6 @@ extension Tag {
         var creditsList = involvedPeopleList
         let keys = creditsList?.keys
         
-        #warning("why does this want a bool default?")
         if keys?.contains(role) ?? true {
             var arrayValue = creditsList?[role]
             arrayValue?.append(person)

@@ -88,7 +88,7 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         let mp3File = try Mp3File(location: mp3Url)
         let tag = try Tag(readFrom: mp3File)
         
-        XCTAssertNil(tag.genre?.genreName) // Blues? Huh? Should be nil, or at least "GenreType.none"
+        XCTAssertEqual(tag.genre?.genreName, GenreType.none)
         XCTAssertEqual(tag.genre?.genreDescription, "Test Genre")
         // should not be nil, should be "Test Genre"
         // index 205-226
