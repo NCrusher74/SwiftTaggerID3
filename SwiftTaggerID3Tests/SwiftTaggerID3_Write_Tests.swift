@@ -101,14 +101,14 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.addMusicianCredit(role: .soprano, person: "Soprono Name")
         tag.addMusicianCredit(role: .alto, person: "Alto Name")
 
-        tag.fileType.fileType = .MPG
-        tag.fileType.additionalFileTypeInfo = .mpegLayerIII
-        tag.fileType.fileTypeDescription = "File Type Description"
-        tag.genre.genreName = .Audiobook
-        tag.genre.genreDescription = "Genre Description"
-        tag.mediaType.mediaType = .otherDigital
-        tag.mediaType.additionalMediaInfo = .analogTransfer
-        tag.mediaType.mediaTypeDescription = "Media Type Description"
+        tag.fileType?.fileType = .MPG
+        tag.fileType?.additionalFileTypeInfo = .mpegLayerIII
+        tag.fileType?.fileTypeDescription = "File Type Description"
+        tag.genre?.genreName = .Audiobook
+        tag.genre?.genreDescription = "Genre Description"
+        tag.mediaType?.mediaType = .otherDigital
+        tag.mediaType?.additionalMediaInfo = .analogTransfer
+        tag.mediaType?.mediaTypeDescription = "Media Type Description"
         
         #warning("Doesn't work. Metadata on file doesn't change, and audio doesn't play in Music (though it does in other apps)")
         let outputUrl = URL(fileURLWithPath: "/Users/nolainecrusher/Desktop/test output/testV24Writing.mp3")
@@ -200,14 +200,14 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.addInvolvedPersonCredit(role: .actor, person: "Actor Name")
         tag.addInvolvedPersonCredit(role: .actress, person: "Actress Name")
         
-        tag.fileType.fileType = .MPG
-        tag.fileType.additionalFileTypeInfo = .mpegLayerIII
-        tag.fileType.fileTypeDescription = "File Type Description"
-        tag.genre.genreName = .Audiobook
-        tag.genre.genreDescription = "Genre Description"
-        tag.mediaType.mediaType = .otherDigital
-        tag.mediaType.additionalMediaInfo = .analogTransfer
-        tag.mediaType.mediaTypeDescription = "Media Type Description"
+        tag.fileType?.fileType = .MPG
+        tag.fileType?.additionalFileTypeInfo = .mpegLayerIII
+        tag.fileType?.fileTypeDescription = "File Type Description"
+        tag.genre?.genreName = .Audiobook
+        tag.genre?.genreDescription = "Genre Description"
+        tag.mediaType?.mediaType = .otherDigital
+        tag.mediaType?.additionalMediaInfo = .analogTransfer
+        tag.mediaType?.mediaTypeDescription = "Media Type Description"
         
         #warning("Doesn't work. Metadata on file doesn't change, and audio doesn't play in Music (though it does in other apps)")
         let outputUrl = URL(fileURLWithPath: "/Users/nolainecrusher/Desktop/test output/testV23Writing.mp3")
@@ -287,14 +287,14 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.addInvolvedPersonCredit(role: .actor, person: "Actor Name")
         tag.addInvolvedPersonCredit(role: .actress, person: "Actress Name")
         
-        tag.fileType.fileType = .MPG
-        tag.fileType.additionalFileTypeInfo = .mpegLayerIII
-        tag.fileType.fileTypeDescription = "File Type Description"
-        tag.genre.genreName = .Audiobook
-        tag.genre.genreDescription = "Genre Description"
-        tag.mediaType.mediaType = .otherDigital
-        tag.mediaType.additionalMediaInfo = .analogTransfer
-        tag.mediaType.mediaTypeDescription = "Media Type Description"
+        tag.fileType?.fileType = .MPG
+        tag.fileType?.additionalFileTypeInfo = .mpegLayerIII
+        tag.fileType?.fileTypeDescription = "File Type Description"
+        tag.genre?.genreName = .Audiobook
+        tag.genre?.genreDescription = "Genre Description"
+        tag.mediaType?.mediaType = .otherDigital
+        tag.mediaType?.additionalMediaInfo = .analogTransfer
+        tag.mediaType?.mediaTypeDescription = "Media Type Description"
         
         #warning("Doesn't work. Metadata on file doesn't change, and audio doesn't play in Music (though it does in other apps)")
         let outputUrl = URL(fileURLWithPath: "/Users/nolainecrusher/Desktop/test output/testV22Writing.mp3")
