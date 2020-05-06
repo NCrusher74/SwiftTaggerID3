@@ -6,6 +6,7 @@
 //  Copyright © 2020 Nolaine Crusher. All rights reserved.
 //
 
+import Foundation
 /// An Mp3File represents an MP3 audio file somewhere on disk.
 ///
 /// This wrapper houses variables and methods for reading and writing to this file.

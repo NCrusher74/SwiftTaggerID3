@@ -151,13 +151,13 @@ extension Tag {
                 }
             }; return nil
         }
-        set {
-            var newDictionary = [String : [String] ]()
-            for key in newValue?.keys {
-                newDictionary[key.rawValue] = newValue?[key]
-            }
-            let frame = CreditsListFrame(layout: .known(.musicianCreditsList), credits: newDictionary)
-        }
+//        set {
+//            var newDictionary = [String : [String] ]()
+//            for key in newValue?.keys {
+//                newDictionary[key.rawValue] = newValue?[key]
+//            }
+//            let frame = CreditsListFrame(layout: .known(.musicianCreditsList), credits: newDictionary)
+//        }
     }
     
     /// Add a new [role:[person]] key-value pair, or, if the `role` already exists in the dictionary, append the person to the existing value for the `role` key
@@ -190,13 +190,12 @@ extension Tag {
                 }
             }; return nil
         }
-        set {
-            var newDictionary = [String : [String] ]()
-            for key in newValue?.keys {
-                newDictionary[key.rawValue] = newValue[key]
-            }
-            let frame = CreditsListFrame(layout: .known(.involvedPeopleList), credits: newDictionary)
-        }
-    }
-    
+//        set {
+//            var newDictionary = [String : [String] ]()
+//            for key in newValue?.keys {
+//                newDictionary[key.rawValue] = newValue[key]
+//            }
+//            let frame = CreditsListFrame(layout: .known(.involvedPeopleList), credits: newDictionary)
+//        }
+    }    
 }
