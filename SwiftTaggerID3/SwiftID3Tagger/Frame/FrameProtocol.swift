@@ -177,7 +177,7 @@ extension FrameProtocol {
     }
     
     // to be used with basic string frames that need no special handling
-    static func parseString(data: Data, version: Version) throws -> String {
+    static func parseEncodedString(data: Data, version: Version) throws -> String {
         var parsing = data
         // extract and decode the encoding byte
         let encoding = try StringFrame.extractEncoding(data: &parsing, version: version)
@@ -202,6 +202,41 @@ extension FrameProtocol {
         // extract and initialize the contentString property
         // decode the string content according to encoding as specified by encoding byte
         return Int(parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? "") ?? 0
+    }
+
+    // parse the parentheses out of version 2.2 and 2.3 strings
+    // for PresetOptionsFrame
+    static func parseParentheticalString(unparsedString: String) -> [String] {
+        var stringComponents = unparsedString.components(separatedBy: "(")
+        for (index, value) in stringComponents.enumerated() {
+            if index != 0 && value == "" {
+                let previousIndex = index - 1
+                let nextIndex = index + 1
+                let rangeToReplace = previousIndex...nextIndex
+                stringComponents[nextIndex].insert("(", at: stringComponents[nextIndex].startIndex)
+                let componentsToJoin = [stringComponents[previousIndex], stringComponents[nextIndex]]
+                let joinedComponents = [componentsToJoin.joined()]
+                stringComponents.replaceSubrange(rangeToReplace, with: joinedComponents)
+                stringComponents.removeAll(where: {$0 == ""})
+            }
+        }
+        var refinedComponents: [String] = []
+        for component in stringComponents {
+            if component.contains(")") {
+                var separatedComponents = component.components(separatedBy: ")")
+                separatedComponents.removeAll(where: {$0 == ""})
+                for (index, value) in separatedComponents.enumerated() {
+                    if value.contains("(") {
+                        var valueToChange = value
+                        valueToChange.append(")")
+                        separatedComponents.remove(at: index)
+                        separatedComponents.insert(valueToChange, at: index)
+                    }
+                }
+                refinedComponents.append(contentsOf: separatedComponents)
+            }
+        }
+        return refinedComponents
     }
 
 }

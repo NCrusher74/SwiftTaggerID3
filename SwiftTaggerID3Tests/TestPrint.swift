@@ -23,9 +23,7 @@ class TestPrint: XCTestCase {
         let slice = mp3Data.subdata(in: range)
         print(slice.hexadecimal())
     }
-
 }
-
 //Attached picture   "PIC"
 //Frame size         $xx xx xx
 //Text encoding      $xx

@@ -61,7 +61,8 @@ struct LanguageFrame: FrameProtocol {
     /// - Parameters:
     ///   - layout: the frame layout
     ///   - languages: the ISO-639-2 language codes as a string array
-    init(layout: FrameLayoutIdentifier, languages: [String]) {
+    init(_ layout: FrameLayoutIdentifier,
+         languages: [String]) {
         self.languages = languages
         self.flags = LanguageFrame.defaultFlags
         self.layout = layout
@@ -106,7 +107,7 @@ extension Tag {
                 languageStrings.append(code.rawValue)
             }
             let frame = LanguageFrame(
-                layout: .known(.languages),
+                .known(.languages),
                 languages: languageStrings)
             self.frames[.languages] = .languageFrame(frame)
         }

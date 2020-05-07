@@ -177,7 +177,7 @@ public enum MediaTypeRefinements: String, CaseIterable {
         return mapping
     }()
     
-    init(code: String) {
+    init?(code: String) {
         self = MediaTypeRefinements.codeMapping[code] ?? .none
     }
 }

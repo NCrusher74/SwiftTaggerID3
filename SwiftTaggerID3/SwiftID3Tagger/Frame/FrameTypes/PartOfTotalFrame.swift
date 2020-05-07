@@ -58,7 +58,9 @@ struct PartOfTotalFrame: FrameProtocol {
      - parameter part: the index of the track/disc.
      - parameter total: the total tracks/discs of the recordings.
      */
-    init(layout: FrameLayoutIdentifier, part: Int, total: Int?) {
+    init(_ layout: FrameLayoutIdentifier,
+         part: Int,
+         total: Int?) {
         self.part = part
         self.total = total
         self.flags = PartOfTotalFrame.defaultFlags
@@ -119,7 +121,7 @@ extension Tag {
                       and total: Int?) {
         // call the frame building initializer
         let frame = PartOfTotalFrame(
-            layout: layout,
+            layout,
             part: part,
             total: total)
         self.frames[frameKey] = .partOfTotalFrame(frame)

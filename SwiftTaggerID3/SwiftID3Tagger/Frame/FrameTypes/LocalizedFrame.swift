@@ -86,7 +86,7 @@ struct LocalizedFrame: FrameProtocol {
      - parameter descriptionString: a terminated text string describing the frame content
      - parameter contentString: the full text of the comment or lyric frame.
      */
-    init(layout: FrameLayoutIdentifier,
+    init(_ layout: FrameLayoutIdentifier,
          languageString: String?,
          descriptionString: String?,
          contentString: String) {
@@ -170,7 +170,7 @@ extension Tag {
                       in language: String,
                       to description: String?,
                       with content: String) {
-        let frame = LocalizedFrame(layout: layout,
+        let frame = LocalizedFrame(layout,
                                    languageString: language,
                                    descriptionString: description,
                                    contentString: content)
@@ -182,7 +182,7 @@ extension Tag {
                       to description: String?,
                       with content: String) {
         let frame = LocalizedFrame(
-            layout: layout, languageString: nil,
+            layout, languageString: nil,
             descriptionString: description ?? "",
             contentString: content)
         self.frames[frameKey] = .localizedFrame(frame)

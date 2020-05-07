@@ -8,11 +8,12 @@
 
 import Foundation
 
-public enum FileType: String {
+public enum FileType: String, CaseIterable {
     case MIME
     case MPG
     case VQF
     case PCM
+    case none
     
 }
 

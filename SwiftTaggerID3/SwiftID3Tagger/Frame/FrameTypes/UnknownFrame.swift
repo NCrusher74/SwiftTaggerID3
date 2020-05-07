@@ -21,7 +21,9 @@ public struct UnknownFrame: FrameProtocol {
 
     var contents: Data
     
-    private init(layout: FrameLayoutIdentifier, uuid: UUID, contents: Data){
+    private init(_ layout: FrameLayoutIdentifier,
+                 uuid: UUID,
+                 contents: Data){
         self.flags = UnknownFrame.defaultFlags
         self.layout = layout
         self.contents = contents

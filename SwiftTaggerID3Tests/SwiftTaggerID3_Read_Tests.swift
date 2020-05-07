@@ -88,16 +88,16 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         let mp3File = try Mp3File(location: mp3Url)
         let tag = try Tag(readFrom: mp3File)
         
-        XCTAssertEqual(tag.genre?.genreName, GenreType.none)
-        XCTAssertEqual(tag.genre?.genreDescription, "Test Genre")
+//        XCTAssertEqual(tag.genre?.presetGenre, GenreType.none)
+//        XCTAssertEqual(tag.genre?.customGenre, "Test Genre")
         // should not be nil, should be "Test Genre"
         // index 205-226
         // 54 43 4f 4e | 0 0 0 b | 0 0 | 0 | 54 65 73 74 20 47 65 6e 72 65 "Test Genre"
         // is there something in `54 65 73 74 20 47 65 6e 72 65` that is being read as 0 (or an integer string for 0?) Because that is the code for Blues.
         
-        XCTAssertEqual(tag.mediaType?.additionalMediaInfo, MediaTypeRefinements.none)
-        XCTAssertEqual(tag.mediaType?.mediaType, MediaType.none) // These two should be nil, but I think that means the frame is working as intended, because it should be returning .none if it comes up with Nil?
-        XCTAssertEqual(tag.mediaType?.mediaTypeDescription, "MediaType")
+//        XCTAssertEqual(tag.mediaType?.additionalMediaInfo, MediaTypeRefinements.none)
+//        XCTAssertEqual(tag.mediaType?.mediaType, MediaType.none) // These two should be nil, but I think that means the frame is working as intended, because it should be returning .none if it comes up with Nil?
+//        XCTAssertEqual(tag.mediaType?.description, "MediaType")
         // should not be nil
         // index 594-614
         // 54 4d 45 44 | 0 0 0 a | 0 0 | 0 | 4d 65 64 69 61 54 79 70 65 - "MediaType"
@@ -112,6 +112,9 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         // 50 72 6f 64 75 63 65 72 20 4e 61 6d 65 = "Producer Name"
         
         // both are being read as nil
+        
+        XCTAssertEqual(tag.genre, ["Test Genre"])
+        XCTAssertEqual(tag.mediaType, ["MediaType"])
     }
 
     func testV24Reading() throws {
@@ -206,10 +209,12 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         // "Musician/Musician Name" works, but "Singer/Singer Name is nil?"
         // OH FOR PITY'S SAKE, NOW IT'S THE OTHER WAY AROUND! THE SECOND IS WORKING THE FIRST ISN'T
         
-        XCTAssertEqual(tag.genre?.genreName, GenreType.none)
-        XCTAssertEqual(tag.genre?.genreDescription, "Test Genre")
-        XCTAssertNil(tag.mediaType?.mediaType) // Why is this nil here but not for version 2.3?
-        XCTAssertEqual(tag.mediaType?.additionalMediaInfo, MediaTypeRefinements.none)
-        XCTAssertEqual(tag.mediaType?.mediaTypeDescription, "MediaType") // should not be nil
+//        XCTAssertEqual(tag.genre?.presetGenre, GenreType.none)
+//        XCTAssertEqual(tag.genre?.customGenre, "Test Genre")
+//        XCTAssertNil(tag.mediaType?.mediaType) // Why is this nil here but not for version 2.3?
+//        XCTAssertEqual(tag.mediaType?.additionalMediaInfo, MediaTypeRefinements.none)
+//        XCTAssertEqual(tag.mediaType?.description, "MediaType") // should not be nil
+        XCTAssertEqual(tag.genre, ["Test Genre"])
+        XCTAssertEqual(tag.mediaType, ["MediaType"])
     }
 }

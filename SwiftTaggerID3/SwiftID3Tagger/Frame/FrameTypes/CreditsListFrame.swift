@@ -65,7 +65,7 @@ struct CreditsListFrame: FrameProtocol {
     /// - Parameters:
     ///   - layout: the frame layout
     ///   - credits: the credits dictionary
-    init(layout: FrameLayoutIdentifier,
+    init(_ layout: FrameLayoutIdentifier,
          credits: [ String: [String] ]) {
         self.layout = layout
         self.credits = credits
@@ -116,7 +116,7 @@ extension Tag {
     internal mutating func set(_ layout: FrameLayoutIdentifier,
                                _ frameKey: FrameKey,
                                to credits: [ String: [String] ]?) {
-        let frame = CreditsListFrame(layout: layout, credits: credits ?? [:])
+        let frame = CreditsListFrame(layout, credits: credits ?? [:])
         self.frames[frameKey] = .creditsListFrame(frame)
     }
     

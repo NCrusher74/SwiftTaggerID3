@@ -2,10 +2,6 @@
 //  GenreFrame.swift
 //  SwiftTaggerID3
 //
-//  Some of this code is adapted from ID3TagEditor
-//  Created by Fabrizio Duroni on 27/02/2018.
-//  2018 Fabrizio Duroni. https://github.com/chicio/ID3TagEditor
-//
 //  Created by Nolaine Crusher on 4/11/20.
 //  Copyright © 2020 Nolaine Crusher. All rights reserved.
 //
@@ -13,157 +9,109 @@
 import Foundation
 
 /// A type representing a frame with up to three optional strings as content, at least one of which is required to be pre-set content.
-
 struct PresetOptionsFrame: FrameProtocol {
     
     // MARK: Properties
+    // (inherited from FrameProtocol)
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
     var allowMultipleFrames: Bool = false
     
-    // frame-specific properties
-    var presetName: String?
-    var presetRefinement: String?
-    var refinementDescription: String?
+    var genreMediaOrFileInfo: [String?]
     
-    // MARK: Frame parsing
     init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,
-         flags: Data
-    ) throws {
-        self.flags = flags // this is just here for protocol comformance
+         flags: Data) throws {
+        self.flags = flags
         self.layout = layout
-        if layout == .known(.genre) {
+        
+        if self.layout == .known(.genre) {
             self.frameKey = .genre
-        } else if layout == .known(.mediaType) {
+        } else if self.layout == .known(.mediaType) {
             self.frameKey = .mediaType
-        } else {
+        } else if self.layout == .known(.fileType) {
             self.frameKey = .fileType
+        } else {
+            let uuid = UUID()
+            self.frameKey = .unknown(uuid: uuid)
         }
         
         var parsing = contents
-        
         let encoding = try PresetOptionsFrame.extractEncoding(data: &parsing, version: version)
-        var parsedArray: [String] = []
+        let unparsedString = parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? ""
+        let parsedComponents = PresetOptionsFrame.parseParentheticalString(unparsedString: unparsedString)
         
-        // versions 2.2 and 2.3 handle strings differently than version 2.4.
-        // 2.2 and 2.3 relies on parentheses, while 2.4 just uses null termination
-        if version == .v2_2 || version == .v2_3 {
-            let unparsedString = parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? ""
-            parsedArray = parseParentheticalString(unparsedString: unparsedString)
-        } else {
-            while !parsing.isEmpty,
-                let next = parsing.extractPrefixAsStringUntilNullTermination(encoding) {
-                    parsedArray.append(next)
-            }
-            
-            for parsedComponent in parsedArray {
-                if layout == .known(.genre) {
-                    var genreType: GenreType = .none
-                    let genreCodeIntRange = 0...191
-                    // check to see if the component is one of the genre "special cases"
-                    if parsedComponent == "CR" {
-                        genreType = .Cover
-                    } else if parsedComponent == "RX" {
-                        genreType = .Remix
-                        
-                        // if not, check to make sure it's a valid genre code
-                    } else if genreCodeIntRange.contains(Int(parsedComponent) ?? 255) {
-                        let validGenre = GenreType(code: Int(parsedComponent) ?? 255)
-                        genreType = validGenre
-                        
-                        // if it's not a special case or valid genre code, handle it as a freeform string
+        for component in parsedComponents {
+            var infoArray = [String]()
+            if self.frameKey == .genre {
+                // these are the numeric codes for the genres in GenreType.code
+                let codeRange = 0...191
+                // see if the string can be converted to an Int
+                if let genreInt = Int(component) {
+                    // see if it matches any of the codes
+                    if codeRange.contains(genreInt) {
+                        // if so, we know it's a genreType
+                        infoArray.append(GenreType(code: genreInt)?.rawValue ?? "")
+                        // if not, see if it's one of the genre type special cases
+                    } else if component == "RX" {
+                        infoArray.append(GenreType.Remix.rawValue)
+                    } else if component == "CR" {
+                        infoArray.append(GenreType.Cover.rawValue)
+                        // if it doesn't match a genreType, handle it as freeform description
                     } else {
-                        self.refinementDescription = parsedComponent
-                    }
-                    // initialize presetName to the raw value of the genre type
-                    self.presetName = String(genreType.code)
-                } else if layout == .known(.mediaType) {
-                    
-                    // check to see if it's a preset refinement string
-                    // only preset refinement strings should start with "/"
-                    if parsedComponent.first == "/" {
-                        self.presetRefinement = MediaTypeRefinements(rawValue: parsedComponent)!.rawValue
-                        
-                    // if it's not a preset refinement string
-                    // check to see if it's a known media type code
-                    } else if MediaType.allCases.contains(MediaType(rawValue: parsedComponent) ?? .none) {
-                        self.presetName = parsedComponent
-                    // if neither of those is true, handle it as a freeform string
-                    } else {
-                        self.refinementDescription = parsedComponent
-                    }
-                } else if layout == .known(.fileType) {
-                    if parsedComponent.first == "/" {
-                        self.presetRefinement = parsedComponent
-                    } else {
-                        self.presetName = parsedComponent
+                        infoArray.append(component)
                     }
                 }
-            }
-        }
-    }
-    
-    // parse the parentheses out of version 2.2 and 2.3 strings
-    private func parseParentheticalString(unparsedString: String) -> [String] {
-        var stringComponents = unparsedString.components(separatedBy: "(")
-        for (index, value) in stringComponents.enumerated() {
-            if index != 0 && value == "" {
-                let previousIndex = index - 1
-                let nextIndex = index + 1
-                let rangeToReplace = previousIndex...nextIndex
-                stringComponents[nextIndex].insert("(", at: stringComponents[nextIndex].startIndex)
-                let componentsToJoin = [stringComponents[previousIndex], stringComponents[nextIndex]]
-                let joinedComponents = [componentsToJoin.joined()]
-                stringComponents.replaceSubrange(rangeToReplace, with: joinedComponents)
-                stringComponents.removeAll(where: {$0 == ""})
-            }
-        }
-        var refinedComponents: [String] = []
-        for component in stringComponents {
-            if component.contains(")") {
-                var separatedComponents = component.components(separatedBy: ")")
-                separatedComponents.removeAll(where: {$0 == ""})
-                for (index, value) in separatedComponents.enumerated() {
-                    if value.contains("(") {
-                        var valueToChange = value
-                        valueToChange.append(")")
-                        separatedComponents.remove(at: index)
-                        separatedComponents.insert(valueToChange, at: index)
-                    }
+            } else if self.frameKey == .mediaType {
+                // forward slash means it's a refinement string
+                if component.first == "/" {
+                    infoArray.append(MediaTypeRefinements(
+                        code: component)?.code ?? "")
+                    // if it's not a refinement, check to see if it's a media type
+                } else if MediaType.allCases.contains(
+                    MediaType(rawValue: component) ?? .none) {
+                    infoArray.append(MediaType(rawValue: component)?.rawValue ?? "")
+                    // if it's not either of those, handle it as a freeform description
+                } else {
+                    infoArray.append(component)
                 }
-                refinedComponents.append(contentsOf: separatedComponents)
+            } else if self.frameKey == .fileType {
+                // forward slash means it's a refinement string
+                if component.first == "/" {
+                    infoArray.append(
+                        FileTypeRefinements(
+                            rawValue: component)?.rawValue ?? "")
+                    // if it's not a refinement, check to see if it's afile type
+                } else if FileType.allCases.contains(
+                    FileType(rawValue: component) ?? .none) {
+                    infoArray.append(
+                        FileType(rawValue: component)?.rawValue ?? "")
+                    // if it's not either of those, handle it as a freeform description
+                } else {
+                    infoArray.append(component)
+                }
             }
-        }
-        return refinedComponents
+            self.genreMediaOrFileInfo = infoArray
+        }; self.genreMediaOrFileInfo = []
     }
     
-    // MARK: Frame building
-    /**
-     Initialize a frame-building operation
-     Parameters:
-       - layout: the frame's layout
-       - presetName: the list of names of the genres or media types.
-       - presetRefinement: a list of preset refinements for media types.
-       - refinementDescription: a freeform string for customized descriptions.
-     */
-    init(layout: FrameLayoutIdentifier,
-         presetName: String?,
-         presetRefinement: String?,
-         refinementDescription: String?) {
-        self.presetName = presetName
-        self.presetRefinement = presetRefinement
-        self.refinementDescription = refinementDescription
+    init(_ layout: FrameLayoutIdentifier,
+         genreMediaOrFileInfo: [String?]) {
+        self.layout = layout
+        self.genreMediaOrFileInfo = genreMediaOrFileInfo
         self.flags = PresetOptionsFrame.defaultFlags
-        self.layout = layout        
-        if layout == .known(.genre) {
+        
+        if self.layout == .known(.genre) {
             self.frameKey = .genre
-        } else if layout == .known(.mediaType) {
+        } else if self.layout == .known(.mediaType) {
             self.frameKey = .mediaType
-        } else {
+        } else if self.layout == .known(.fileType) {
             self.frameKey = .fileType
+        } else {
+            let uuid = UUID()
+            self.frameKey = .unknown(uuid: uuid)
         }
     }
     
@@ -172,163 +120,208 @@ struct PresetOptionsFrame: FrameProtocol {
         // append encoding byte
         frameData.append(StringEncoding.preferred.rawValue.encoding(
             endianness: .bigEndian))
-        // encode and append presetType
-        if let convertedType = convertAndEncodePresetType(version: version) {
-            frameData.append(convertedType)
-        }
-        // encode and append presetRefinement
-        if let convertedPresetRefinement = convertAndEncodePresetRefinement(version: version) {
-            frameData.append(convertedPresetRefinement)
-        }
-        // encode and append freeform refinement/description
-        if let convertedRefinement = encodeRefinementString(version: version) {
-            frameData.append(convertedRefinement)
+        switch version {
+            case .v2_2, .v2_3: // null termination will be false
+                for item in genreMediaOrFileInfo {
+                    frameData.append(
+                        reassembleParentheticalStringsForEncoding(
+                            itemString: item ?? "")
+                            .encoded(withNullTermination: false))
+            }
+            case .v2_4: // null termination will be true
+                for item in genreMediaOrFileInfo {
+                    frameData.append(
+                        reassembleParentheticalStringsForEncoding(
+                            itemString: item ?? "")
+                            .encoded(withNullTermination: true))
+            }
         }
         return frameData
     }
     
-    // encode presetType
-    private func convertAndEncodePresetType(version: Version) -> Data? {
-        switch version {
-            case .v2_2, .v2_3 :
-                let presetCode = PresetOption(presetName: self.presetName ?? "").code
-                return (presetCode).encoded(withNullTermination: false)
-            case .v2_4 :
-                let presetCode = PresetOption(presetName: self.presetName ?? "").code
-                return (presetCode).encoded(withNullTermination: true)
-        }
-    }
-    
-    // encode presetRefinement
-    private func convertAndEncodePresetRefinement(version: Version) -> Data? {
-        var refinementCode: String = ""
-        switch version {
-            case .v2_2, .v2_3 :
-                if let refinement = self.presetRefinement {
-                    if self.layout == .known(.mediaType) {
-                        refinementCode = MediaTypeRefinements(rawValue: refinement)?.code ?? ""
-                    } else if self.layout == .known(.fileType) {
-                        refinementCode = FileTypeRefinements(rawValue: refinement)?.rawValue ?? ""
-                    }
+    func reassembleParentheticalStringsForEncoding(itemString: String) -> String {
+        if self.frameKey == .genre {
+            // see if the string is a genre raw value
+            if GenreType.allCases.contains(GenreType(rawValue: itemString) ?? .none) {
+                // get the genre type
+                let genreType = GenreType(rawValue: itemString)
+                // get the genre code int
+                let genreCode = genreType?.code
+                // check if the int is one of the special cases for remix and cover
+                if genreCode == 256 {
+                    return "(RX)"
+                } else if genreCode == 257 {
+                    return "(CR)"
+                } else {
+                    // make the Int a string and wrap it in parentheses again
+                    // this is necessary because the spec expects these strings in parentheses
+                    let genreCodeString = String(genreCode ?? 255)
+                    return "(\(genreCodeString))"
                 }
-                return refinementCode.encoded(withNullTermination: false)
-            case .v2_4 :
-                if let refinement = self.presetRefinement {
-                    if self.layout == .known(.mediaType) {
-                        refinementCode = MediaTypeRefinements(rawValue: refinement)?.code ?? ""
-                    } else if self.layout == .known(.fileType) {
-                        refinementCode = FileTypeRefinements(rawValue: refinement)?.rawValue ?? ""
-                    }
-                }
-                return refinementCode.encoded(withNullTermination: true)
-        }
-    }
-    
-    // encode freeform refinement/description
-    private func encodeRefinementString(version: Version) -> Data? {
-        switch version {
-            case .v2_2, .v2_3 :
-                if let refinement = self.refinementDescription {
-                    return refinement.encoded(withNullTermination: false)
+            } else {
+                // it's a freeform description, no need to put parentheses on it
+                return itemString
             }
-            case .v2_4 :
-                if let refinement = self.refinementDescription {
-                    return refinement.encoded(withNullTermination: true)
+        } else if self.frameKey == .mediaType {
+            // see if the string is a media type refinement code
+            if itemString.first == "/", MediaTypeRefinements.allCases.contains(
+                MediaTypeRefinements(code: itemString) ?? .none) {
+                return MediaTypeRefinements(code: itemString)?.code ?? ""
+                // if not, check and see if it's a media type code
+            } else if MediaType.allCases.contains(
+                MediaType(rawValue: itemString) ?? .none) {
+                // ... and if so, wrap it in parens
+                return "(\(MediaType(rawValue: itemString)?.rawValue ?? ""))"
+            } else {
+                // if not, it's a freeform description
+                return itemString
             }
-        }; return nil
+        } else if self.frameKey == .fileType {
+            // see if the string is a file type refinement code
+            if itemString.first == "/", FileTypeRefinements.allCases.contains(
+                FileTypeRefinements(rawValue: itemString) ?? .none) {
+                return FileTypeRefinements(rawValue: itemString)?.rawValue ?? ""
+                // if not, check and see if it's a file type code
+            } else if FileType.allCases.contains(
+                FileType(rawValue: itemString) ?? .none) {
+                // ... and if so, wrap it in parens
+                return "(\(FileType(rawValue: itemString)?.rawValue ?? ""))"
+            } else {
+                // if not, it's a freeform description
+                return itemString
+            }
+        }; return ""
     }
 }
 
 // MARK: Tag extensions
+// get and set functions for `PresetOptionsFrame` frame types, which retrieves or sets three strings, all of which are optional (genre only uses two of these.) Each individual frame of this type will call these functions in a get-set property of function, where appropriate.
 extension Tag {
-    // get and set functions for `PresetOptionsFrame` frame types, which retrieves or sets three strings, all of which are optional (genre only uses two of these.) Each individual frame of this type will call these functions in a get-set property of function, where appropriate.
-    mutating func set(_ layout: FrameLayoutIdentifier,
-                      _ frameKey: FrameKey,
-                      to presetName: String?,
-                      and presetRefinement: String?,
-                      with description: String?) {
-        let frame = PresetOptionsFrame(layout: layout,
-                                       presetName: presetName,
-                                       presetRefinement: presetRefinement,
-                                       refinementDescription: description)
+    func presetOptionGetter(for frameKey: FrameKey) -> [String?]? {
+        if let frame = self.frames[frameKey],
+            case .presetOptionsFrame(let presetOptionsFrame) = frame {
+            return presetOptionsFrame.genreMediaOrFileInfo
+        }; return nil
+    }
+
+    internal mutating func set(_ layout: FrameLayoutIdentifier,
+                               _ frameKey: FrameKey,
+                               infoArray: [String?]) {
+        let frame = PresetOptionsFrame(layout, genreMediaOrFileInfo: infoArray)
         self.frames[frameKey] = .presetOptionsFrame(frame)
     }
     
-    /// - Genre getter ID3 Identifier: `TCO`/`TCON`
-    /// `genreName`: refers to specific genre or genres catalogued by numeric codes in the `GenreType` enum.
-    /// `genreDescription`: a freeform string for custom genre
-    public var genre: (
-        genreName: GenreType?,
-        genreDescription: String?)? {
+    public var genre: [String?]? {
         get {
-            if let frame = self.frames[.genre],
-                case .presetOptionsFrame(let presetOptionsFrame) = frame {
-                // the genre should be stored as an integer string of the code. We will fetch is as an integer
-                let nameAsInt: Int = Int(presetOptionsFrame.presetName ?? "") ?? 255
-                // initialize the genre type using the code
-                let name = GenreType(code: nameAsInt)
-                let description = presetOptionsFrame.refinementDescription
-                return (name, description)
-            }; return nil
+            presetOptionGetter(for: .genre)
         }
         set {
-            set(.known(.genre), .genre,
-                to: String(newValue?.genreName?.code ?? 255),
-                and: nil,
-                with: newValue?.genreDescription)
+            set(.known(.genre), .genre, infoArray: newValue ?? [])
         }
     }
-    
-    //    / The `mediaTypeDescription` parameter is a freeform field that may be used to refine existing information
-    /// MediaType getter-setter. ID3 identifier `TMT`/`TMED`
-    /// `mediaType`: refers to specific type of media catalogued by codes in the `MediaType` enum.
-    /// `additionalMediaInfo`: refers to a specific type of refinement pertaining to the `MediaType`, catalogued by codes in the `MediaTypeRefinements` enum
-    /// `mediaTypeDescription`: a freeform string
-    public var mediaType: (
-        mediaType: MediaType?,
-        additionalMediaInfo: MediaTypeRefinements?,
-        mediaTypeDescription: String?)? {
+
+    public var mediaType: [String?]? {
         get {
-            if let frame = self.frames[.mediaType],
-                case .presetOptionsFrame(let presetOptionsFrame) = frame {
-                // the media type and preset refinements should be stored as a string of the code.
-                let presetName = MediaType(rawValue: presetOptionsFrame.presetName ?? "")
-                let presetRefinement = MediaTypeRefinements(code: presetOptionsFrame.presetRefinement ?? "")
-                let description = presetOptionsFrame.refinementDescription
-                return (presetName, presetRefinement, description)
-            }; return nil
+            presetOptionGetter(for: .mediaType)
         }
         set {
-            set(.known(.mediaType), .mediaType,
-                to: newValue?.mediaType?.rawValue,
-                and: newValue?.additionalMediaInfo?.code,
-                with: newValue?.mediaTypeDescription)
+            set(.known(.mediaType), .mediaType, infoArray: newValue ?? [])
         }
     }
-    
-    /// - FileType getter-setter. ID3 Identifier: `TFT`/`TFLT`
-    /// `fileType`: refers to specific type of file catalogued by codes in the `FileType` enum.
-    /// `additionalFileTypeInfo`: refers to specific type of refinement pertaining to the `FileType`, catalogued by codes in the `FileTypeRefinements` enum
-    /// `fileTypeDescription`: is a freeform string
-    public var fileType: (
-        fileType: FileType?,
-        additionalFileTypeInfo: FileTypeRefinements?,
-        fileTypeDescription: String?)? {
+
+    public var fileType: [String?]? {
         get {
-            if let frame = self.frames[.fileType],
-                case .presetOptionsFrame(let presetOptionsFrame) = frame {
-                let presetName = FileType(rawValue: presetOptionsFrame.presetName ?? "")
-                // the preset refinement should be stored as a string of the code.
-                let presetRefinement = FileTypeRefinements(rawValue: presetOptionsFrame.presetRefinement ?? "")
-                let description = presetOptionsFrame.refinementDescription
-                return (presetName, presetRefinement, description)
-            }; return nil
+            presetOptionGetter(for: .fileType)
         }
         set {
-            set(.known(.fileType), .fileType,
-                to: newValue?.fileType?.rawValue,
-                and: newValue?.additionalFileTypeInfo?.rawValue,
-                with: newValue?.fileTypeDescription)
+            set(.known(.fileType), .fileType, infoArray: newValue ?? [])
         }
     }
+
+//    public var genre: (presetGenre: GenreType?, customGenre: String?)? {
+//        get {
+//            var genrePreset: GenreType = .none
+//            var customGenre: String = ""
+//            if let frame = self.frames[.genre],
+//                case .presetOptionsFrame(let presetOptionsFrame) = frame {
+//                for item in presetOptionsFrame.genreMediaOrFileInfo {
+//                    let genreCodeRange = 0...191
+//                    if let genreInt = Int(item ?? "") {
+//                        if genreCodeRange.contains(genreInt) {
+//                            genrePreset = GenreType(code: genreInt) ?? .none
+//                        }
+//                    } else {
+//                        customGenre = item ?? ""
+//                    }
+//                }
+//            }
+//            return (genrePreset, customGenre)
+//        }
+//        set {
+//            var itemArray: [String?] = []
+//            itemArray.append(newValue?.presetGenre?.rawValue)
+//            itemArray.append(newValue?.customGenre)
+//            set(.known(.genre), .genre, infoArray: itemArray)
+//        }
+//    }
+//
+//    public var mediaType: (mediaType: MediaType?, additionalMediaInfo: MediaTypeRefinements?, description: String?)? {
+//        get {
+//            var mediaPreset: MediaType = .none
+//            var refinementPreset: MediaTypeRefinements = .none
+//            var description: String = ""
+//            if let frame = self.frames[.mediaType],
+//                case .presetOptionsFrame(let presetOptionsFrame) = frame {
+//                for item in presetOptionsFrame.genreMediaOrFileInfo {
+//                    if item?.first == "/" {
+//                        refinementPreset = MediaTypeRefinements(
+//                            code: item ?? "") ?? .none
+//                    } else if MediaType.allCases.contains(
+//                        MediaType(rawValue: item ?? "") ?? .none) {
+//                        mediaPreset = MediaType(rawValue: item ?? "") ?? .none
+//                    } else {
+//                        description = item ?? ""
+//                    }
+//                }
+//            }
+//            return (mediaPreset, refinementPreset, description)
+//        }
+//        set {
+//            var itemArray: [String?] = []
+//            itemArray.append(newValue?.mediaType?.rawValue)
+//            itemArray.append(newValue?.additionalMediaInfo?.code)
+//            itemArray.append(newValue?.description)
+//            set(.known(.mediaType), .mediaType, infoArray: itemArray)
+//        }
+//    }
+//
+//    public var fileType: (fileType: FileType?, additionalFileInfo: FileTypeRefinements?, description: String?)? {
+//        get {
+//            var fileTypePreset: FileType = .none
+//            var refinementPreset: FileTypeRefinements = .none
+//            var description: String = ""
+//            if let frame = self.frames[.fileType],
+//                case .presetOptionsFrame(let presetOptionsFrame) = frame {
+//                for item in presetOptionsFrame.genreMediaOrFileInfo {
+//                    if item?.first == "/" {
+//                        refinementPreset = FileTypeRefinements(
+//                            rawValue: item ?? "") ?? .none
+//                    } else if FileType.allCases.contains(
+//                        FileType(rawValue: item ?? "") ?? .none) {
+//                        fileTypePreset = FileType(rawValue: item ?? "") ?? .none
+//                    } else {
+//                        description = item ?? ""
+//                    }
+//                }
+//            }
+//            return (fileTypePreset, refinementPreset, description)
+//        }
+//        set {
+//            var itemArray: [String?] = []
+//            itemArray.append(newValue?.fileType?.rawValue)
+//            itemArray.append(newValue?.additionalFileInfo?.rawValue)
+//            itemArray.append(newValue?.description)
+//            set(.known(.fileType), .fileType, infoArray: itemArray)
+//        }
+//    }
 }

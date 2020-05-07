@@ -24,7 +24,13 @@ struct StringFrame: FrameProtocol {
     var contentString: String
   
     let urlFrameKeys: [FrameKey] = [
-        .artistWebpage, .audioFileWebpage, .audioSourceWebpage, .copyrightWebpage, .paymentWebpage, .publisherWebpage, .radioStationWebpage]
+        .artistWebpage,
+        .audioFileWebpage,
+        .audioSourceWebpage,
+        .copyrightWebpage,
+        .paymentWebpage,
+        .publisherWebpage,
+        .radioStationWebpage]
 
     // MARK: Frame Parsing
     init(decodingContents contents: Data.SubSequence,
@@ -90,7 +96,7 @@ struct StringFrame: FrameProtocol {
         if urlFrameKeys.contains(self.frameKey) {
             self.contentString = try StringFrame.parseUrlString(data: parsing, version: version)
         } else {
-            self.contentString = try StringFrame.parseString(data: parsing, version: version)
+            self.contentString = try StringFrame.parseEncodedString(data: parsing, version: version)
         }
     }
     
@@ -101,7 +107,8 @@ struct StringFrame: FrameProtocol {
      - layout: the frame's layout according to its identifier
      - contentString: the content of the frame.
      */
-    init(layout: FrameLayoutIdentifier, contentString: String) {
+    init(_ layout: FrameLayoutIdentifier,
+         contentString: String) {
         // initialize the contentString property
         self.contentString = contentString
         // initialize the flags property using the default flags
@@ -207,7 +214,7 @@ extension Tag {
                                to string: String) {
         // call the StringFrame initializer
         let frame = StringFrame(
-            layout: layout,
+            layout,
             contentString: string)
         self.frames[frameKey] = .stringFrame(frame)
     }

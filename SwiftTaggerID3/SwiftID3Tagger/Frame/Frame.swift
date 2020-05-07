@@ -88,7 +88,8 @@ enum Frame {
                     version: version,
                     layout: layout))
             case .known(.genre),
-                 .known(.mediaType):
+                 .known(.mediaType),
+                 .known(.fileType):
                 self = .presetOptionsFrame(try PresetOptionsFrame(
                     decodingFromStartOf: &data,
                     version: version,

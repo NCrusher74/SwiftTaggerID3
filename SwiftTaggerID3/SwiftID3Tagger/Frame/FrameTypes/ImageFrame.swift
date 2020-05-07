@@ -87,7 +87,7 @@
      - parameter imageDescription?: an optional description of the image content.
      - parameter image: the image bytes as `Data`.
      */
-    init(layout: FrameLayoutIdentifier,
+    init(_ layout: FrameLayoutIdentifier,
                  imageType: ImageType,
                  imageFormat: ImageFormat,
                  imageDescription: String?,
@@ -165,7 +165,7 @@ extension Tag {
         let imageData = try Data(contentsOf: location)
         let key: FrameKey = .attachedPicture(description: (imageDescription ?? imageType?.pictureDescription) ?? "Other")
         self.frames[key] = Frame.imageFrame(.init(
-            layout: .known(.attachedPicture),
+            .known(.attachedPicture),
             imageType: imageType ?? .Other,
             imageFormat: imageFormat,
             imageDescription: imageDescription,

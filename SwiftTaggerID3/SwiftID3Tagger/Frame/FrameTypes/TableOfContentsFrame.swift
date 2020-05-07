@@ -117,7 +117,7 @@ public struct TableOfContentsFrame: FrameProtocol {
        - childElementIDs: the array of child elementIDs. Must not be empty. Each entry is null terminated.
        - embeddedSubFrames: the (optional) frames containing title and descriptor text for the CTOC frame.
      */
-    private init(layout: FrameLayoutIdentifier,
+    private init(_ layout: FrameLayoutIdentifier,
                  elementID: String,
                  topLevelFlag: Bool,
                  orderedFlag: Bool,
@@ -194,7 +194,7 @@ public struct TableOfContentsFrame: FrameProtocol {
          embeddedSubframes: [FrameKey: Frame]?) {
         let uuid = UUID()
         let elementID = uuid.uuidString
-        self.init(layout: .known(.tableOfContents),
+        self.init(.known(.tableOfContents),
                   elementID: elementID,
                   topLevelFlag: isTopTOC,
                   orderedFlag: elementsAreOrdered,

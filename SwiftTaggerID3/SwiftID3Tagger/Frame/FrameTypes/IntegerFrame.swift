@@ -82,7 +82,8 @@ struct IntegerFrame: FrameProtocol {
      - parameter value: the content of the frame.
      - parameter layout: the frame layout identifier, used to determine the `frameKey`
      */
-    init(layout: FrameLayoutIdentifier, value: Int) {
+    init(_ layout: FrameLayoutIdentifier,
+         value: Int) {
         self.value = value
         self.flags = IntegerFrame.defaultFlags
         self.layout = layout
@@ -136,9 +137,7 @@ extension Tag {
                                _ frameKey: FrameKey,
                                to value: Int) {
         // call the frame-building initializer
-        let frame = IntegerFrame(
-            layout: layout,
-            value: value)
+        let frame = IntegerFrame(layout, value: value)
         self.frames[frameKey] = .integerFrame(frame)
     }
     

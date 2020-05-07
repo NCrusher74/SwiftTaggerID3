@@ -19,49 +19,49 @@ struct DateFrame: FrameProtocol {
     
     /// TDAT Date Frame
     init(month: Int?, day: Int?) {
-        self.init(layout: .known(.date),
+        self.init(.known(.date),
                   timeStampString: "\(month ?? 00)-\(day ?? 00)")
     }
     
     /// TIM/TIME Time Frame
     init(hour: Int?, minute: Int?) {
-        self.init(layout: .known(.time),
+        self.init(.known(.time),
                   timeStampString: "\(hour ?? 00):\(minute ?? 00)")
     }
     
     /// TYE/TYER Year Frame
     init(year: Int?) {
-        self.init(layout: .known(.year),
+        self.init(.known(.year),
                   timeStampString: "\(year ?? 00)")
     }
     
     /// TDEN Encoding Time Frame
     init(encodingYear: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?) {
-        self.init(layout: .known(.encodingTime),
+        self.init(.known(.encodingTime),
                   timeStampString: "\(encodingYear ?? 0000)-\(month ?? 00)-\(day ?? 00)T\(hour ?? 00):\(minute ?? 00)")
     }
     
     /// TOR/TORY/TDOR - Original Release Date/Year Frame
     init(originalReleaseYear: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?) {
-        self.init(layout: .known(.originalReleaseTime),
+        self.init(.known(.originalReleaseTime),
                   timeStampString: "\(originalReleaseYear ?? 0000)-\(month ?? 00)-\(day ?? 00)T\(hour ?? 00):\(minute ?? 00)")
     }
     
     /// TRD/TRDA/TDRC - Recording Date Frame
     init(recordingYear: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?) {
-        self.init(layout: .known(.recordingDate),
+        self.init(.known(.recordingDate),
                   timeStampString: "\(recordingYear ?? 0000)-\(month ?? 00)-\(day ?? 00)T\(hour ?? 00):\(minute ?? 00)")
     }
     
     /// TDRL - Release Time Frame
     init(releaseYear: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?) {
-        self.init(layout: .known(.releaseTime),
+        self.init(.known(.releaseTime),
                   timeStampString: "\(releaseYear ?? 0000)-\(month ?? 00)-\(day ?? 00)T\(hour ?? 00):\(minute ?? 00)")
     }
     
     /// TDTG - Tagging Time Frame
     init(taggingYear: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?) {
-        self.init(layout: .known(.taggingTime),
+        self.init(.known(.taggingTime),
                   timeStampString: "\(taggingYear ?? 0000)-\(month ?? 00)-\(day ?? 00)T\(hour ?? 00):\(minute ?? 00)")
     }
     
@@ -90,7 +90,7 @@ struct DateFrame: FrameProtocol {
     var minute: Int?
     var timeStampString: String
     
-    init(layout: FrameLayoutIdentifier,
+    init(_ layout: FrameLayoutIdentifier,
                  timeStampString: String) {
         self.flags = DateFrame.defaultFlags
         self.layout = layout
@@ -163,7 +163,7 @@ public extension Tag {
             }
         }
         set {
-            let frame = DateFrame(layout: .known(.date), timeStampString: newValue ?? "")
+            let frame = DateFrame(.known(.date), timeStampString: newValue ?? "")
             frames[.date] = .dateFrame(frame)
         }
     }
@@ -180,7 +180,7 @@ public extension Tag {
             }
         }
         set {
-            let frame = DateFrame(layout: .known(.time), timeStampString: newValue ?? "")
+            let frame = DateFrame(.known(.time), timeStampString: newValue ?? "")
             frames[.time] = .dateFrame(frame)
         }
     }
@@ -197,7 +197,7 @@ public extension Tag {
             }
         }
         set {
-            let frame = DateFrame(layout: .known(.year), timeStampString: newValue ?? "")
+            let frame = DateFrame(.known(.year), timeStampString: newValue ?? "")
             frames[.year] = .dateFrame(frame)
         }
     }
@@ -213,7 +213,7 @@ public extension Tag {
             }
         }
         set {
-            let frame = DateFrame(layout: .known(.releaseTime), timeStampString: newValue ?? "")
+            let frame = DateFrame(.known(.releaseTime), timeStampString: newValue ?? "")
             frames[.releaseTime] = .dateFrame(frame)
         }
     }
@@ -229,7 +229,7 @@ public extension Tag {
             }
         }
         set {
-            let frame = DateFrame(layout: .known(.encodingTime), timeStampString: newValue ?? "")
+            let frame = DateFrame(.known(.encodingTime), timeStampString: newValue ?? "")
             frames[.encodingTime] = .dateFrame(frame)
         }
     }
@@ -246,7 +246,7 @@ public extension Tag {
             }
         }
         set {
-            let frame = DateFrame(layout: .known(.originalReleaseTime), timeStampString: newValue ?? "")
+            let frame = DateFrame(.known(.originalReleaseTime), timeStampString: newValue ?? "")
             frames[.originalReleaseTime] = .dateFrame(frame)
         }
     }
@@ -262,7 +262,7 @@ public extension Tag {
             }
         }
         set {
-            let frame = DateFrame(layout: .known(.recordingDate), timeStampString: newValue ?? "")
+            let frame = DateFrame(.known(.recordingDate), timeStampString: newValue ?? "")
             frames[.recordingDate] = .dateFrame(frame)
         }
     }
@@ -278,7 +278,7 @@ public extension Tag {
             }
         }
         set {
-            let frame = DateFrame(layout: .known(.taggingTime), timeStampString: newValue ?? "")
+            let frame = DateFrame(.known(.taggingTime), timeStampString: newValue ?? "")
             frames[.taggingTime] = .dateFrame(frame)
         }
     }
