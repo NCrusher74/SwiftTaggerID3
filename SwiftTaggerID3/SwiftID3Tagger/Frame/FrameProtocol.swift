@@ -91,7 +91,6 @@ extension FrameProtocol {
             case .v2_2: flagsData = Data()
             case .v2_3, .v2_4: flagsData = data.extractFirst(version.flagsLength)
         }
-
         // parse content last
         let contentDataStart = data.startIndex
         let contentDataRange = contentDataStart ..< contentDataStart + frameSize
@@ -167,6 +166,7 @@ extension FrameProtocol {
     ///   - encoding: The `StringEncoding` instance parsed out of the frame content previously
     /// - Throws: Caller will determine how to handle any errors
     /// - Returns: The frame's description and content strings
+    /// this is used for frames with a terminated description string followed by a content string
     static func extractDescriptionAndContent(
         from frameData: inout Data.SubSequence,
         encoding: StringEncoding
@@ -193,8 +193,6 @@ extension FrameProtocol {
     }
     
     // to be used with frames in which the single content string is an integer
-
-    // to be used with basic string frames that need no special handling
     static func parseInteger(data: Data, version: Version) throws -> Int {
         var parsing = data
         // extract and decode the encoding byte
@@ -207,35 +205,54 @@ extension FrameProtocol {
     // parse the parentheses out of version 2.2 and 2.3 strings
     // for PresetOptionsFrame
     static func parseParentheticalString(unparsedString: String) -> [String] {
+        // separate the components into an array using the open paren as a separator
+        // this will remove the open parens from parenthetical comments as well as the codes
+        // so we'll have to place those when we spot a double-paren
         var stringComponents = unparsedString.components(separatedBy: "(")
+        // take it one component at a time
         for (index, value) in stringComponents.enumerated() {
+            // for any component except the first one, if it's empty, it means we removed a double-paren
             if index != 0 && value == "" {
+                // find the previous and next components and make a range of them
                 let previousIndex = index - 1
                 let nextIndex = index + 1
                 let rangeToReplace = previousIndex...nextIndex
+                // replace the open paren because it's a double-paren situation
                 stringComponents[nextIndex].insert("(", at: stringComponents[nextIndex].startIndex)
+                // join the previous and next components
                 let componentsToJoin = [stringComponents[previousIndex], stringComponents[nextIndex]]
                 let joinedComponents = [componentsToJoin.joined()]
+                // replace the separate components with the joined components
                 stringComponents.replaceSubrange(rangeToReplace, with: joinedComponents)
+                // remove all the empty components
                 stringComponents.removeAll(where: {$0 == ""})
             }
         }
         var refinedComponents: [String] = []
         for component in stringComponents {
-            if component.contains(")") {
+            if !component.contains(")") {
+                refinedComponents.append(component)
+            // find the close parens and parse them out
+            } else if component.contains(")") {
                 var separatedComponents = component.components(separatedBy: ")")
+                // remove the empty elements
                 separatedComponents.removeAll(where: {$0 == ""})
+                // find the elements where there is an unterminated open paren now
                 for (index, value) in separatedComponents.enumerated() {
                     if value.contains("(") {
+                        // append a close paren to the string containing the open paren
                         var valueToChange = value
                         valueToChange.append(")")
+                        // replace the string containing the unterminated open paren with the new string
                         separatedComponents.remove(at: index)
                         separatedComponents.insert(valueToChange, at: index)
                     }
                 }
+                // append the fixed components to the array
                 refinedComponents.append(contentsOf: separatedComponents)
             }
         }
+        // return the array
         return refinedComponents
     }
 

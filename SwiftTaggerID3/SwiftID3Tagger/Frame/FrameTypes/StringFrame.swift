@@ -93,10 +93,12 @@ struct StringFrame: FrameProtocol {
         }
         // parse contents
         let parsing = contents
+//        print(parsing) // 1 ff fe 41 0 6c 0 62 0 75 0 6d 0 0 0
         if urlFrameKeys.contains(self.frameKey) {
             self.contentString = try StringFrame.parseUrlString(data: parsing, version: version)
         } else {
             self.contentString = try StringFrame.parseEncodedString(data: parsing, version: version)
+//            print(contentString) // Albu
         }
     }
     

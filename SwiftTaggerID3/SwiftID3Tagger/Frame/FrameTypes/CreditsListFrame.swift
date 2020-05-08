@@ -127,18 +127,16 @@ extension Tag {
     // TODO: if version is 2.2. or 2.3, make this an `involved person` entry instead?
     public mutating func addMusicianCredit(
         role: MusicianAndPerformerCredits, person: String) {
-        var creditsList = musicianCreditsList
-        let keys = creditsList?.keys
-        
-        if keys?.contains(role) ?? true {
-            var arrayValue = creditsList?[role]
-            arrayValue?.append(person)
-        } else {
-            creditsList?[role] = [person]
+        if let keys = musicianCreditsList?.keys {
+            if keys.contains(role) {
+                var arrayValue = musicianCreditsList?[role]
+                arrayValue?.append(person)
+                musicianCreditsList?[role] = arrayValue
+            } else {
+                musicianCreditsList?[role] = [person]
+            }
         }
     }
-    
-    #warning("Should probably also add an option to empty the value array and start over instead of append?")
     
     /// Getter-setter property for the dictionary of `[role: [person]]` pairs
     public var musicianCreditsList: [MusicianAndPerformerCredits:[String]]? {
@@ -148,17 +146,21 @@ extension Tag {
                 for credit in credits.keys {
                     let transformedCredit = MusicianAndPerformerCredits(rawValue: credit)
                     transformedDictionary[transformedCredit ?? .none] = credits[credit]
-                    return transformedDictionary
                 }
+                return transformedDictionary
             }; return nil
         }
-//        set {
-//            var newDictionary = [String : [String] ]()
-//            for key in newValue?.keys {
-//                newDictionary[key.rawValue] = newValue?[key]
-//            }
-//            let frame = CreditsListFrame(layout: .known(.musicianCreditsList), credits: newDictionary)
-//        }
+        set {
+            var newDictionary = [String : [String] ]()
+            if let newKeys = newValue?.keys {
+                for key in newKeys {
+                    newDictionary[key.rawValue] = newValue?[key]
+                    set(.known(.musicianCreditsList),
+                        .musicianCreditsList,
+                        to: newDictionary)
+                }
+            }
+        }
     }
     
     /// Add a new [role:[person]] key-value pair, or, if the `role` already exists in the dictionary, append the person to the existing value for the `role` key
@@ -167,14 +169,14 @@ extension Tag {
     ///   - person: the person performing the role
     public mutating func addInvolvedPersonCredit(
         role: InvolvedPersonCredits, person: String) {
-        var creditsList = involvedPeopleList
-        let keys = creditsList?.keys
-        
-        if keys?.contains(role) ?? true {
-            var arrayValue = creditsList?[role]
-            arrayValue?.append(person)
-        } else {
-            creditsList?[role] = [person]
+        if let keys = involvedPeopleList?.keys {
+            if keys.contains(role) {
+                var arrayValue = involvedPeopleList?[role]
+                arrayValue?.append(person)
+                involvedPeopleList?[role] = arrayValue
+            } else {
+                involvedPeopleList?[role] = [person]
+            }
         }
     }
     
@@ -182,20 +184,24 @@ extension Tag {
     public var involvedPeopleList: [InvolvedPersonCredits:[String]]? {
         get {
             var transformedDictionary: [InvolvedPersonCredits:[String]] = [:]
-            if let credits = dictionary(for: .musicianCreditsList) {
+            if let credits = dictionary(for: .involvedPeopleList) {
                 for credit in credits.keys {
                     let transformedCredit = InvolvedPersonCredits(rawValue: credit)
                     transformedDictionary[transformedCredit ?? .none] = credits[credit]
-                    return transformedDictionary
                 }
+                return transformedDictionary
             }; return nil
         }
-//        set {
-//            var newDictionary = [String : [String] ]()
-//            for key in newValue?.keys {
-//                newDictionary[key.rawValue] = newValue[key]
-//            }
-//            let frame = CreditsListFrame(layout: .known(.involvedPeopleList), credits: newDictionary)
-//        }
+        set {
+            var newDictionary = [String : [String] ]()
+            if let newKeys = newValue?.keys {
+                for key in newKeys {
+                    newDictionary[key.rawValue] = newValue?[key]
+                    set(.known(.involvedPeopleList),
+                        .involvedPeopleList,
+                        to: newDictionary)
+                }
+            }
+        }
     }    
 }

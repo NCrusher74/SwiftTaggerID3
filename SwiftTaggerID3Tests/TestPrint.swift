@@ -11,7 +11,28 @@ import SwiftTaggerID3
 
 class TestPrint: XCTestCase {
 
-    func testExample() throws {
+    
+    func testMediaType() throws {
+        let url = Bundle.writtenV23
+        
+        let mp3File = try Mp3File(location: url)
+        let mp3Data = mp3File.data
+        let startIndex = 205
+        let endIndex = 226
+        let range = startIndex ..< endIndex
+        let slice = mp3Data.subdata(in: range)
+        
+        print(slice.hexadecimal())
+        // 54 4d 45 44 0 0 0 a 0 0 0 4d 65 64 69 61 54 79 70 65
+        // 4d 65 64 69 61 54 79 70 65 (before parsing - "Test Genre")
+        
+        // 54 43 4f 4e 0 0 0 b 0 0 0 54 65 73 74 20 47 65 6e 72 65
+        // 0 54 65 73 74 20 47 65 6e 72 65 (before parsing - "MediaType")
+        
+        // 46 69 6c 65 54 79 70 65 (before parsing - "FileType")
+    }
+
+    func testPrint() throws {
         let url = Bundle.writtenV24
 
         let mp3File = try Mp3File(location: url)

@@ -18,6 +18,7 @@ struct PresetOptionsFrame: FrameProtocol {
     var frameKey: FrameKey
     var allowMultipleFrames: Bool = false
     
+    // the array of strings from the frame
     var genreMediaOrFileInfo: [String?]
     
     init(decodingContents contents: Data.SubSequence,
@@ -27,24 +28,38 @@ struct PresetOptionsFrame: FrameProtocol {
         self.flags = flags
         self.layout = layout
         
-        if self.layout == .known(.genre) {
-            self.frameKey = .genre
+        // this frametype handles three frame keys
+        if self.layout == .known(.fileType) {
+            self.frameKey = .fileType
         } else if self.layout == .known(.mediaType) {
             self.frameKey = .mediaType
-        } else if self.layout == .known(.fileType) {
-            self.frameKey = .fileType
         } else {
-            let uuid = UUID()
-            self.frameKey = .unknown(uuid: uuid)
+            self.frameKey = .genre
         }
         
+        // standard boilerplate, it's a text frame (of sorts) so strings are encoded
         var parsing = contents
         let encoding = try PresetOptionsFrame.extractEncoding(data: &parsing, version: version)
-        let unparsedString = parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? ""
-        let parsedComponents = PresetOptionsFrame.parseParentheticalString(unparsedString: unparsedString)
+        // initialize an empty array to store the parsed strings in
+        var parsedArray: [String] = []
         
-        for component in parsedComponents {
-            var infoArray = [String]()
+        // versions 2.2 and 2.3 handle strings differently than version 2.4.
+        // 2.2 and 2.3 relies on parentheses, while 2.4 just uses null termination
+        switch version {
+            // v2.2 and v2.3 use parentheses to denote codes
+            case .v2_2, .v2_3:
+                // extract the full string
+                let unparsedString = parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? ""
+                // parse out the parentheses and return the array of parsed strings
+                parsedArray = PresetOptionsFrame.parseParentheticalString(unparsedString: unparsedString)
+            case .v2_4:
+                while !parsing.isEmpty,
+                    let next = parsing.extractPrefixAsStringUntilNullTermination(encoding) {
+                        parsedArray.append(next)
+            }
+        }
+        var infoArray: [String] = []
+        for component in parsedArray {
             if self.frameKey == .genre {
                 // these are the numeric codes for the genres in GenreType.code
                 let codeRange = 0...191
@@ -63,6 +78,8 @@ struct PresetOptionsFrame: FrameProtocol {
                     } else {
                         infoArray.append(component)
                     }
+                } else {
+                    infoArray.append(component)
                 }
             } else if self.frameKey == .mediaType {
                 // forward slash means it's a refinement string
@@ -70,22 +87,22 @@ struct PresetOptionsFrame: FrameProtocol {
                     infoArray.append(MediaTypeRefinements(
                         code: component)?.code ?? "")
                     // if it's not a refinement, check to see if it's a media type
-                } else if MediaType.allCases.contains(
-                    MediaType(rawValue: component) ?? .none) {
+                } else if let mediaTypeRawValue = MediaType(rawValue: component),
+                    MediaType.allCases.contains(mediaTypeRawValue) {
                     infoArray.append(MediaType(rawValue: component)?.rawValue ?? "")
                     // if it's not either of those, handle it as a freeform description
                 } else {
                     infoArray.append(component)
                 }
-            } else if self.frameKey == .fileType {
+            } else {
                 // forward slash means it's a refinement string
                 if component.first == "/" {
                     infoArray.append(
                         FileTypeRefinements(
                             rawValue: component)?.rawValue ?? "")
-                    // if it's not a refinement, check to see if it's afile type
-                } else if FileType.allCases.contains(
-                    FileType(rawValue: component) ?? .none) {
+                    // if it's not a refinement, check to see if it's a file type
+                } else if let fileTypeRawValue = FileType(rawValue: component),
+                    FileType.allCases.contains(fileTypeRawValue) {
                     infoArray.append(
                         FileType(rawValue: component)?.rawValue ?? "")
                     // if it's not either of those, handle it as a freeform description
@@ -93,8 +110,8 @@ struct PresetOptionsFrame: FrameProtocol {
                     infoArray.append(component)
                 }
             }
-            self.genreMediaOrFileInfo = infoArray
-        }; self.genreMediaOrFileInfo = []
+        }
+        self.genreMediaOrFileInfo = infoArray
     }
     
     init(_ layout: FrameLayoutIdentifier,
@@ -103,15 +120,12 @@ struct PresetOptionsFrame: FrameProtocol {
         self.genreMediaOrFileInfo = genreMediaOrFileInfo
         self.flags = PresetOptionsFrame.defaultFlags
         
-        if self.layout == .known(.genre) {
-            self.frameKey = .genre
+        if self.layout == .known(.fileType) {
+            self.frameKey = .fileType
         } else if self.layout == .known(.mediaType) {
             self.frameKey = .mediaType
-        } else if self.layout == .known(.fileType) {
-            self.frameKey = .fileType
         } else {
-            let uuid = UUID()
-            self.frameKey = .unknown(uuid: uuid)
+            self.frameKey = .genre
         }
     }
     
