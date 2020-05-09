@@ -110,7 +110,6 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
 //        tag.mediaType?.additionalMediaInfo = .analogTransfer
 //        tag.mediaType?.description = "Media Type Description"
         
-        #warning("Doesn't work. Metadata on file doesn't change, and audio doesn't play in Music (though it does in other apps)")
         let outputUrl = URL(fileURLWithPath: "/Users/nolainecrusher/Desktop/test output/testV24Writing.mp3")
         XCTAssertNoThrow(try mp3File.write(tagVersion: .v2_4, using: tag, writingTo: outputUrl))
     }
@@ -209,7 +208,6 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
 //        tag.mediaType?.additionalMediaInfo = .analogTransfer
 //        tag.mediaType?.description = "Media Type Description"
 
-        #warning("Doesn't work. Metadata on file doesn't change, and audio doesn't play in Music (though it does in other apps)")
         let outputUrl = URL(fileURLWithPath: "/Users/nolainecrusher/Desktop/test output/testV23Writing.mp3")
         XCTAssertNoThrow(try mp3File.write(tagVersion: .v2_3, using: tag, writingTo: outputUrl))
     }
@@ -296,7 +294,6 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
 //        tag.mediaType?.additionalMediaInfo = .analogTransfer
 //        tag.mediaType?.description = "Media Type Description"
 
-        #warning("Doesn't work. Metadata on file doesn't change, and audio doesn't play in Music (though it does in other apps)")
         let outputUrl = URL(fileURLWithPath: "/Users/nolainecrusher/Desktop/test output/testV22Writing.mp3")
         XCTAssertNoThrow(try mp3File.write(tagVersion: .v2_2, using: tag, writingTo: outputUrl))
     }

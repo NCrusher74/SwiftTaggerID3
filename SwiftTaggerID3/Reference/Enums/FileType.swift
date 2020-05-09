@@ -8,6 +8,12 @@
 
 import Foundation
 
+//struct FileTypeEntry {
+//    var presetType: FileType?
+//    var presetRefinement: FileTypeRefinements?
+//    var freeformRefinement: String?
+//}
+
 public enum FileType: String, CaseIterable {
     case MIME
     case MPG

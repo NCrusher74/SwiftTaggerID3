@@ -10,6 +10,9 @@ import Foundation
 
 /**
  A type representing an ID3 frame that holds a single string, such as Artist, Title, Album, etc
+ 
+ In ID3 tags, most data is stored as a string, so single integers are actually integerStrings, a boolean is a string of "0" or "1", etc.
+ Therefore, this frame also handles simple, single-value integer and boolean frames
  */
 struct StringFrame: FrameProtocol {
     
@@ -23,6 +26,8 @@ struct StringFrame: FrameProtocol {
     /// This sting may be a URL for an external webpage
     var contentString: String
   
+    // URL frames do not have an encoding byte, so they must be parsed differently
+    // this just lets us know which frames to handle differently
     let urlFrameKeys: [FrameKey] = [
         .artistWebpage,
         .audioFileWebpage,
@@ -82,6 +87,7 @@ struct StringFrame: FrameProtocol {
             case .known(.subtitle): self.frameKey = .subtitle
             case .known(.title): self.frameKey = .title
             case .known(.titleSort): self.frameKey = .titleSort
+            // url frames
             case .known(.artistWebpage): self.frameKey = .artistWebpage
             case .known(.audioFileWebpage): self.frameKey = .audioFileWebpage
             case .known(.audioSourceWebpage): self.frameKey = .audioSourceWebpage
@@ -89,16 +95,28 @@ struct StringFrame: FrameProtocol {
             case .known(.paymentWebpage): self.frameKey = .paymentWebpage
             case .known(.publisherWebpage): self.frameKey = .publisherWebpage
             case .known(.radioStationWebpage): self.frameKey = .radioStationWebpage
-            default: self.frameKey = .userDefinedText(description: "")
+            // integer frames
+            case .known(.bpm): self.frameKey = .bpm
+            case .known(.isrc): self.frameKey = .isrc
+            case .known(.length): self.frameKey = .length
+            case .known(.movementCount): self.frameKey = .movementCount
+            case .known(.movementNumber): self.frameKey = .movementNumber
+            case .known(.playlistDelay): self.frameKey = .playlistDelay
+            // boolean frame
+            case .known(.compilation): self.frameKey = .compilation
+            default: self.frameKey = .userDefinedText(description: "(\(layout.id3Identifier(version: version) ?? "TXXX"))")
         }
         // parse contents
+        /* since URL frames do not use an encoding byte, we parse them without one */
         let parsing = contents
-//        print(parsing) // 1 ff fe 41 0 6c 0 62 0 75 0 6d 0 0 0
         if urlFrameKeys.contains(self.frameKey) {
             self.contentString = try StringFrame.parseUrlString(data: parsing, version: version)
+        /* since the compilation frame is technically a string frame, it may contain a "boolean-esque" string, like "true" or "yes". We will attempt to catch those cases as well. */
+        } else if self.frameKey == .compilation {
+            self.contentString = try StringFrame.parseBooleanIntFromString(version: version, data: parsing)
+        /* everything else can be handled as a simple string with an encoding byte */
         } else {
             self.contentString = try StringFrame.parseEncodedString(data: parsing, version: version)
-//            print(contentString) // Albu
         }
     }
     
@@ -157,6 +175,7 @@ struct StringFrame: FrameProtocol {
             case .known(.subtitle): self.frameKey = .subtitle
             case .known(.title): self.frameKey = .title
             case .known(.titleSort): self.frameKey = .titleSort
+            // url frames
             case .known(.artistWebpage): self.frameKey = .artistWebpage
             case .known(.audioFileWebpage): self.frameKey = .audioFileWebpage
             case .known(.audioSourceWebpage): self.frameKey = .audioSourceWebpage
@@ -164,7 +183,7 @@ struct StringFrame: FrameProtocol {
             case .known(.paymentWebpage): self.frameKey = .paymentWebpage
             case .known(.publisherWebpage): self.frameKey = .publisherWebpage
             case .known(.radioStationWebpage): self.frameKey = .radioStationWebpage
-            default: self.frameKey = .userDefinedText(description: "")
+            default: self.frameKey = .userDefinedText(description: "\(contentString)")
         }
     }
     
@@ -201,6 +220,17 @@ extension Tag {
             case .stringFrame(let stringFrame) = frame {
             // get the contentString from the frame data
             return stringFrame.contentString
+        } else {
+            return nil
+        }
+    }
+    
+    internal func intString(for frameKey: FrameKey) -> Int? {
+        if let frame = self.frames[frameKey],
+            case .stringFrame(let stringFrame) = frame {
+            // get the contentString from the frame data and convert it to an Int
+            let contentString = stringFrame.contentString
+            return Int(contentString)
         } else {
             return nil
         }
@@ -616,5 +646,62 @@ extension Tag {
     public var radioStationWebpage: String {
         get { string(for: .radioStationWebpage) ?? "" }
         set { set(.known(.radioStationWebpage), .radioStationWebpage, to: newValue) }
+    }
+    
+    /// BeatsPerMinute getter-setter. ID3 Identifier: `TBP`/`TBPM`
+    public var bpm: Int {
+        get { intString(for: .bpm) ?? 0 }
+        set { set(.known(.bpm), .bpm, to: String(newValue)) }
+    }
+    
+    /// IRSC getter-setter. ID3 Identifier: `TRC`/`TSRC`
+    public var isrc: Int {
+        get { intString(for: .isrc) ?? 0 }
+        set { set(.known(.isrc), .isrc, to: String(newValue)) }
+    }
+    
+    /// Length getter-setter. ID3 Identifier: `TLE`/`TLEN`
+    public var length: Int {
+        get { intString(for: .length) ?? 0 }
+        set { set(.known(.length), .length, to: String(newValue)) }
+    }
+    
+    /// TotalMovements getter-setter. This is a non-standard, iTunes non-standard frame
+    /// ID3 Identifier: `MVCN`. Valid only for tag versions 2.3/2.4
+    public var totalMovements: Int {
+        get { intString(for: .movementCount) ?? 0 }
+        set { set(.known(.movementCount), .movementCount, to: String(newValue)) }
+    }
+    
+    /// MovementNumber getter-setter. This is a non-standard, iTunes non-standard frame
+    /// ID3 Identifier: `MVIN`. Valid only for tag versions 2.3/2.4
+    public var movementNumber: Int {
+        get { intString(for: .movementNumber) ?? 0 }
+        set { set(.known(.movementNumber), .movementNumber, to: String(newValue)) }
+    }
+    
+    /// PlaylistDelay getter-setter. ID3 Identifier: `TDY`/`TDLY`
+    public var playlistDelay: Int {
+        get { intString(for: .playlistDelay) ?? 0 }
+        set { set(.known(.playlistDelay), .playlistDelay, to: String(newValue)) }
+    }
+    
+    /// Compilation (flag) getter-setter. ID3 identifier: `TCP`/`TCMP`. iTunes non-standard frame
+    public var compilation: Bool {
+        get {
+            let intValue = intString(for: .compilation) ?? 0
+            if intValue == 1 {
+                return true
+            } else {
+                return false
+            }
+        }
+        set {
+            if newValue == true {
+                set(.known(.compilation), .compilation, to: "1")
+            } else {
+                set(.known(.compilation), .compilation, to: "0")
+            }
+        }
     }
 }

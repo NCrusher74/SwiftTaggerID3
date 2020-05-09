@@ -6,6 +6,11 @@
 //  Copyright © 2020 Nolaine Crusher. All rights reserved.
 //
 
+//public struct GenreEntry {
+//    var presetType: GenreType?
+//    var customGenre: String?
+//}
+
 public enum GenreType: String, CaseIterable  {
     
     case Blues = "Blues"

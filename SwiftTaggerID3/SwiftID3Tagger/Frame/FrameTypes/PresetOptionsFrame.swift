@@ -83,13 +83,13 @@ struct PresetOptionsFrame: FrameProtocol {
                 }
             } else if self.frameKey == .mediaType {
                 // forward slash means it's a refinement string
-                if component.first == "/" {
+                if component.first == "/", MediaTypeRefinements(
+                    code: component) != nil {
                     infoArray.append(MediaTypeRefinements(
-                        code: component)?.code ?? "")
+                        code: component)!.code)
                     // if it's not a refinement, check to see if it's a media type
-                } else if let mediaTypeRawValue = MediaType(rawValue: component),
-                    MediaType.allCases.contains(mediaTypeRawValue) {
-                    infoArray.append(MediaType(rawValue: component)?.rawValue ?? "")
+                } else if MediaType(rawValue: component) != nil {
+                    infoArray.append(MediaType(rawValue: component)!.rawValue)
                     // if it's not either of those, handle it as a freeform description
                 } else {
                     infoArray.append(component)
@@ -178,12 +178,10 @@ struct PresetOptionsFrame: FrameProtocol {
             }
         } else if self.frameKey == .mediaType {
             // see if the string is a media type refinement code
-            if itemString.first == "/", MediaTypeRefinements.allCases.contains(
-                MediaTypeRefinements(code: itemString) ?? .none) {
+            if itemString.first == "/", MediaTypeRefinements(code: itemString) != nil {
                 return MediaTypeRefinements(code: itemString)?.code ?? ""
                 // if not, check and see if it's a media type code
-            } else if MediaType.allCases.contains(
-                MediaType(rawValue: itemString) ?? .none) {
+            } else if MediaType(rawValue: itemString) != nil {
                 // ... and if so, wrap it in parens
                 return "(\(MediaType(rawValue: itemString)?.rawValue ?? ""))"
             } else {
@@ -192,12 +190,10 @@ struct PresetOptionsFrame: FrameProtocol {
             }
         } else if self.frameKey == .fileType {
             // see if the string is a file type refinement code
-            if itemString.first == "/", FileTypeRefinements.allCases.contains(
-                FileTypeRefinements(rawValue: itemString) ?? .none) {
+            if itemString.first == "/", FileTypeRefinements(rawValue: itemString) != nil {
                 return FileTypeRefinements(rawValue: itemString)?.rawValue ?? ""
                 // if not, check and see if it's a file type code
-            } else if FileType.allCases.contains(
-                FileType(rawValue: itemString) ?? .none) {
+            } else if FileType(rawValue: itemString) != nil {
                 // ... and if so, wrap it in parens
                 return "(\(FileType(rawValue: itemString)?.rawValue ?? ""))"
             } else {
@@ -211,7 +207,7 @@ struct PresetOptionsFrame: FrameProtocol {
 // MARK: Tag extensions
 // get and set functions for `PresetOptionsFrame` frame types, which retrieves or sets three strings, all of which are optional (genre only uses two of these.) Each individual frame of this type will call these functions in a get-set property of function, where appropriate.
 extension Tag {
-    func presetOptionGetter(for frameKey: FrameKey) -> [String?]? {
+    func presetOptionData(for frameKey: FrameKey) -> [String?]? {
         if let frame = self.frames[frameKey],
             case .presetOptionsFrame(let presetOptionsFrame) = frame {
             return presetOptionsFrame.genreMediaOrFileInfo
@@ -224,118 +220,101 @@ extension Tag {
         let frame = PresetOptionsFrame(layout, genreMediaOrFileInfo: infoArray)
         self.frames[frameKey] = .presetOptionsFrame(frame)
     }
+
+    public var genre: (presetGenre: GenreType?, customGenre: String?)? {
+        get {
+            var presetType: GenreType? = nil
+            var customString: String? = ""
+            //if the array exists...
+            if let frameArray = presetOptionData(for: .genre),
+                // ... and isn't empty (should be safe to force-unwrap)
+                !frameArray.isEmpty {
+                for element in frameArray {
+                    // see if the string is a GenreType rawValue
+                    if let genreType = GenreType(rawValue: element ?? "") {
+                        presetType = genreType
+                    // if not return it as a custom genre
+                    } else {
+                        customString = element
+                    }
+                }
+            }
+            return (presetType, customString)
+        }
+        set {
+            var frameArray = [String?]()
+            frameArray.append(newValue?.presetGenre?.rawValue)
+            frameArray.append(newValue?.customGenre)
+            set(.known(.genre), .genre, infoArray: frameArray)
+        }
+    }
     
-    public var genre: [String?]? {
+    public var mediaType: (mediaType: MediaType?, mediaTypeRefinement: MediaTypeRefinements?, additionalInformation: String?)? {
         get {
-            presetOptionGetter(for: .genre)
+            var presetType: MediaType? = nil
+            var presetRefinement: MediaTypeRefinements? = nil
+            var refinementString: String? = ""
+            // if the array exists...
+            if let frameArray = presetOptionData(for: .mediaType),
+                // ... and it isn't empty... (should be safe to force-unwrap)
+                !frameArray.isEmpty {
+                for element in frameArray {
+                    // forward slash means it's a refinement string
+                    if element?.first == "/" {
+                        presetRefinement = MediaTypeRefinements(code: element ?? "")
+                        // if it's not a refinement, check to see if it's a media type
+                    } else if MediaType(rawValue: element!) != nil {
+                        presetType = MediaType(rawValue: element!)
+                        // if it's not either of those, handle it as a freeform description
+                    } else {
+                        refinementString = element!
+                    }
+                }
+            }
+            return (presetType, presetRefinement, refinementString)
         }
         set {
-            set(.known(.genre), .genre, infoArray: newValue ?? [])
+            var frameArray = [String?]()
+            frameArray.append(newValue?.mediaType?.rawValue)
+            frameArray.append(newValue?.mediaTypeRefinement?.code)
+            frameArray.append(newValue?.additionalInformation)
+            set(.known(.mediaType), .mediaType, infoArray: frameArray)
+
         }
     }
 
-    public var mediaType: [String?]? {
+    public var fileType: (fileType: FileType?, fileTypeRefinement: FileTypeRefinements?, additionalInformation: String?)? {
         get {
-            presetOptionGetter(for: .mediaType)
+            var presetType: FileType? = nil
+            var presetRefinement: FileTypeRefinements? = nil
+            var refinementString: String? = ""
+            // if the array exists...
+            if let frameArray = presetOptionData(for: .fileType),
+                // ... and it isn't empty... (should be safe to force-unwrap)
+                !frameArray.isEmpty {
+                for element in frameArray {
+                    // forward slash means it's a refinement string
+                    if element?.first == "/" {
+                        presetRefinement = FileTypeRefinements(rawValue: element!)
+                        // if it's not a refinement, check to see if it's a file type
+                    } else if FileType(rawValue: element!) != nil {
+                        presetType = FileType(rawValue: element!)
+                        // if it's not either of those, handle it as a freeform description
+                    } else {
+                        refinementString = element!
+                    }
+                }
+            }
+            return (presetType, presetRefinement, refinementString)
         }
         set {
-            set(.known(.mediaType), .mediaType, infoArray: newValue ?? [])
+            var frameArray = [String?]()
+            frameArray.append(newValue?.fileType?.rawValue)
+            frameArray.append(newValue?.fileTypeRefinement?.rawValue)
+            frameArray.append(newValue?.additionalInformation)
+            set(.known(.fileType), .fileType, infoArray: frameArray)
         }
     }
 
-    public var fileType: [String?]? {
-        get {
-            presetOptionGetter(for: .fileType)
-        }
-        set {
-            set(.known(.fileType), .fileType, infoArray: newValue ?? [])
-        }
-    }
-
-//    public var genre: (presetGenre: GenreType?, customGenre: String?)? {
-//        get {
-//            var genrePreset: GenreType = .none
-//            var customGenre: String = ""
-//            if let frame = self.frames[.genre],
-//                case .presetOptionsFrame(let presetOptionsFrame) = frame {
-//                for item in presetOptionsFrame.genreMediaOrFileInfo {
-//                    let genreCodeRange = 0...191
-//                    if let genreInt = Int(item ?? "") {
-//                        if genreCodeRange.contains(genreInt) {
-//                            genrePreset = GenreType(code: genreInt) ?? .none
-//                        }
-//                    } else {
-//                        customGenre = item ?? ""
-//                    }
-//                }
-//            }
-//            return (genrePreset, customGenre)
-//        }
-//        set {
-//            var itemArray: [String?] = []
-//            itemArray.append(newValue?.presetGenre?.rawValue)
-//            itemArray.append(newValue?.customGenre)
-//            set(.known(.genre), .genre, infoArray: itemArray)
-//        }
-//    }
-//
-//    public var mediaType: (mediaType: MediaType?, additionalMediaInfo: MediaTypeRefinements?, description: String?)? {
-//        get {
-//            var mediaPreset: MediaType = .none
-//            var refinementPreset: MediaTypeRefinements = .none
-//            var description: String = ""
-//            if let frame = self.frames[.mediaType],
-//                case .presetOptionsFrame(let presetOptionsFrame) = frame {
-//                for item in presetOptionsFrame.genreMediaOrFileInfo {
-//                    if item?.first == "/" {
-//                        refinementPreset = MediaTypeRefinements(
-//                            code: item ?? "") ?? .none
-//                    } else if MediaType.allCases.contains(
-//                        MediaType(rawValue: item ?? "") ?? .none) {
-//                        mediaPreset = MediaType(rawValue: item ?? "") ?? .none
-//                    } else {
-//                        description = item ?? ""
-//                    }
-//                }
-//            }
-//            return (mediaPreset, refinementPreset, description)
-//        }
-//        set {
-//            var itemArray: [String?] = []
-//            itemArray.append(newValue?.mediaType?.rawValue)
-//            itemArray.append(newValue?.additionalMediaInfo?.code)
-//            itemArray.append(newValue?.description)
-//            set(.known(.mediaType), .mediaType, infoArray: itemArray)
-//        }
-//    }
-//
-//    public var fileType: (fileType: FileType?, additionalFileInfo: FileTypeRefinements?, description: String?)? {
-//        get {
-//            var fileTypePreset: FileType = .none
-//            var refinementPreset: FileTypeRefinements = .none
-//            var description: String = ""
-//            if let frame = self.frames[.fileType],
-//                case .presetOptionsFrame(let presetOptionsFrame) = frame {
-//                for item in presetOptionsFrame.genreMediaOrFileInfo {
-//                    if item?.first == "/" {
-//                        refinementPreset = FileTypeRefinements(
-//                            rawValue: item ?? "") ?? .none
-//                    } else if FileType.allCases.contains(
-//                        FileType(rawValue: item ?? "") ?? .none) {
-//                        fileTypePreset = FileType(rawValue: item ?? "") ?? .none
-//                    } else {
-//                        description = item ?? ""
-//                    }
-//                }
-//            }
-//            return (fileTypePreset, refinementPreset, description)
-//        }
-//        set {
-//            var itemArray: [String?] = []
-//            itemArray.append(newValue?.fileType?.rawValue)
-//            itemArray.append(newValue?.additionalFileInfo?.rawValue)
-//            itemArray.append(newValue?.description)
-//            set(.known(.fileType), .fileType, infoArray: itemArray)
-//        }
-//    }
+    
 }

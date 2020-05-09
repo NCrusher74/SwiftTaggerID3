@@ -141,7 +141,7 @@ struct DateFrame: FrameProtocol {
             // HHMM
             case .known(.year): self.frameKey = .year
             // YYYY
-            default: self.frameKey = .userDefinedText(description: "")
+            default: self.frameKey = .userDefinedText(description: "(\(layout.id3Identifier(version: version) ?? "TXXX"))")
         }
         
         var parsing = contents

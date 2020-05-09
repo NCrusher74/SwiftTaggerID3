@@ -17,6 +17,12 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         let tag = try Tag(readFrom: mp3File)
         
         XCTAssertEqual(tag.album, "Album")
+        XCTAssertEqual(tag.albumArtist, "AlbumArtist")
+        XCTAssertEqual(tag.artist, "Artist")
+        XCTAssertEqual(tag.author, "Artist")
+        XCTAssertEqual(tag.title, "Title")
+        XCTAssertEqual(tag.trackNumber.track, 1)
+        XCTAssertEqual(tag.trackNumber.totalTracks, 2)
     }
     
     func testV23Reading() throws {
@@ -89,8 +95,17 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         let mp3File = try Mp3File(location: mp3Url)
         let tag = try Tag(readFrom: mp3File)
         
-        XCTAssertEqual(tag.genre, ["Test Genre"])
-        XCTAssertEqual(tag.mediaType, ["MediaType"])
+        XCTAssertNil(tag.fileType?.fileType)
+        XCTAssertNil(tag.fileType?.fileTypeRefinement)
+        XCTAssertEqual(tag.fileType?.additionalInformation, "FileType")
+        
+        XCTAssertNil(tag.mediaType?.mediaType)
+        XCTAssertNil(tag.mediaType?.mediaTypeRefinement)
+        XCTAssertEqual(tag.mediaType?.additionalInformation, "MediaType")
+        
+        XCTAssertNil(tag.genre?.presetGenre)
+        XCTAssertEqual(tag.genre?.customGenre, "Test Genre")
+        
     }
 
     func testV24Reading() throws {
@@ -166,8 +181,17 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         let mp3Url = Bundle.writtenV24
         let mp3File = try Mp3File(location: mp3Url)
         let tag = try Tag(readFrom: mp3File)
+        
+        XCTAssertNil(tag.fileType?.fileType)
+        XCTAssertNil(tag.fileType?.fileTypeRefinement)
+        XCTAssertEqual(tag.fileType?.additionalInformation, "FileType")
+        
+        XCTAssertNil(tag.mediaType?.mediaType)
+        XCTAssertNil(tag.mediaType?.mediaTypeRefinement)
+        XCTAssertEqual(tag.mediaType?.additionalInformation, "MediaType")
 
-        XCTAssertEqual(tag.genre, ["Test Genre"])
-        XCTAssertEqual(tag.mediaType, ["MediaType"])
+        XCTAssertNil(tag.genre?.presetGenre)
+        XCTAssertEqual(tag.genre?.customGenre, "Test Genre")
+
     }
 }

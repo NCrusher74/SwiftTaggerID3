@@ -127,14 +127,23 @@ extension Tag {
     // TODO: if version is 2.2. or 2.3, make this an `involved person` entry instead?
     public mutating func addMusicianCredit(
         role: MusicianAndPerformerCredits, person: String) {
+        // get the list of pre-existing keys in the dictionary
         if let keys = musicianCreditsList?.keys {
+            // check if the role is already in there
             if keys.contains(role) {
+                // if it is, append the person to the existing value array
                 var arrayValue = musicianCreditsList?[role]
                 arrayValue?.append(person)
                 musicianCreditsList?[role] = arrayValue
             } else {
+                // dictionary exists but doesn't contain role
                 musicianCreditsList?[role] = [person]
             }
+        } else {
+            // dictionary doesn't exist, create it
+            var dictionary: [MusicianAndPerformerCredits:[String]] = [:]
+            dictionary[role] = [person]
+            musicianCreditsList = dictionary
         }
     }
     
@@ -169,14 +178,23 @@ extension Tag {
     ///   - person: the person performing the role
     public mutating func addInvolvedPersonCredit(
         role: InvolvedPersonCredits, person: String) {
+        // get the list of pre-existing keys in the dictionary
         if let keys = involvedPeopleList?.keys {
+            // check if the role is already in there
             if keys.contains(role) {
+                // if it is, append the person to the existing value array
                 var arrayValue = involvedPeopleList?[role]
                 arrayValue?.append(person)
                 involvedPeopleList?[role] = arrayValue
             } else {
+                // dictionary exists but doesn't contain role
                 involvedPeopleList?[role] = [person]
             }
+        } else {
+            // dictionary doesn't exist, create it
+            var dictionary: [InvolvedPersonCredits:[String]] = [:]
+            dictionary[role] = [person]
+            involvedPeopleList = dictionary
         }
     }
     

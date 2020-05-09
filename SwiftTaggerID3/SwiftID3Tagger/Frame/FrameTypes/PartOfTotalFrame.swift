@@ -36,7 +36,7 @@ struct PartOfTotalFrame: FrameProtocol {
         switch layout {
             case .known(.discNumber) : self.frameKey = .discNumber
             case .known(.trackNumber): self.frameKey = .trackNumber
-            default: self.frameKey = .userDefinedText(description: "")
+            default: self.frameKey = .userDefinedText(description: "(\(layout.id3Identifier(version: version) ?? "TXXX"))")
         }
         
         var parsing = contents
@@ -127,7 +127,7 @@ extension Tag {
         self.frames[frameKey] = .partOfTotalFrame(frame)
     }
 
-    /// - DiscNumber(/TotalDiscs) getter-setter. ID3 Identifier: `TPA`/`TPOS`
+    /// DiscNumber(/TotalDiscs) getter-setter. ID3 Identifier: `TPA`/`TPOS`
     public var discNumber: (disc: Int, totalDiscs: Int?) {
         get {
             let tuple = intTuple(for: .discNumber)
@@ -139,7 +139,7 @@ extension Tag {
         }
     }
     
-    /// - TrackNumber(/TotalTracks) getter-setter. ID3 Identifier: `TRK`/`TRCK`
+    /// TrackNumber(/TotalTracks) getter-setter. ID3 Identifier: `TRK`/`TRCK`
     public var trackNumber: (track: Int, totalTracks: Int?) {
         get {
             let tuple = intTuple(for: .trackNumber)

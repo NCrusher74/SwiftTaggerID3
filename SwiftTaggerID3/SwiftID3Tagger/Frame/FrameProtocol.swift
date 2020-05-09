@@ -176,6 +176,12 @@ extension FrameProtocol {
         return (description: description, content: content)
     }
     
+    // to be used with url frames, which do not have an encoding byte
+    static func parseUrlString(data: Data, version: Version) throws -> String {
+        let parsing = data
+        return try String(ascii: parsing)
+    }
+
     // to be used with basic string frames that need no special handling
     static func parseEncodedString(data: Data, version: Version) throws -> String {
         var parsing = data
@@ -185,22 +191,24 @@ extension FrameProtocol {
         // decode the string content according to encoding as specified by encoding byte
         return parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? ""
     }
-    
-    // to be used with url frames, which do not have an encoding byte
-    static func parseUrlString(data: Data, version: Version) throws -> String {
-        let parsing = data
-        return try String(ascii: parsing)
-    }
-    
-    // to be used with frames in which the single content string is an integer
-    static func parseInteger(data: Data, version: Version) throws -> Int {
+        
+    /// Interpret the most common "quasi-boolean" strings as boolean values
+    /// - Parameter boolString: The string parsed from the frame's contents
+    /// - Returns: 1 or 0, if a value can be determined
+    static func parseBooleanIntFromString(version: Version, data: Data) throws -> String {
         var parsing = data
-        // extract and decode the encoding byte
-        let encoding = try StringFrame.extractEncoding(data: &parsing, version: version)
-        // extract and initialize the contentString property
-        // decode the string content according to encoding as specified by encoding byte
-        return Int(parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? "") ?? 0
+        let encoding = try extractEncoding(data: &parsing, version: version)
+        let contentString = parsing.extractPrefixAsStringUntilNullTermination(encoding)
+        switch contentString?.lowercased() {
+            case "true", "t", "yes", "y", "1":
+                return "1"
+            case "false", "f", "no", "n", "0":
+                return "0"
+            default:
+                return "0"
+        }
     }
+    
 
     // parse the parentheses out of version 2.2 and 2.3 strings
     // for PresetOptionsFrame
