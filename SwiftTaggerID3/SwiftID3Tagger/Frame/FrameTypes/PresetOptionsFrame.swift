@@ -86,10 +86,10 @@ struct PresetOptionsFrame: FrameProtocol {
                 if component.first == "/", MediaTypeRefinements(
                     code: component) != nil {
                     infoArray.append(MediaTypeRefinements(
-                        code: component)!.code)
+                        code: component)?.code ?? "")
                     // if it's not a refinement, check to see if it's a media type
                 } else if MediaType(rawValue: component) != nil {
-                    infoArray.append(MediaType(rawValue: component)!.rawValue)
+                    infoArray.append(MediaType(rawValue: component)?.rawValue ?? "")
                     // if it's not either of those, handle it as a freeform description
                 } else {
                     infoArray.append(component)
@@ -263,11 +263,11 @@ extension Tag {
                     if element?.first == "/" {
                         presetRefinement = MediaTypeRefinements(code: element ?? "")
                         // if it's not a refinement, check to see if it's a media type
-                    } else if MediaType(rawValue: element!) != nil {
-                        presetType = MediaType(rawValue: element!)
+                    } else if MediaType(rawValue: element ?? "") != nil {
+                        presetType = MediaType(rawValue: element ?? "")
                         // if it's not either of those, handle it as a freeform description
                     } else {
-                        refinementString = element!
+                        refinementString = element
                     }
                 }
             }
@@ -295,13 +295,13 @@ extension Tag {
                 for element in frameArray {
                     // forward slash means it's a refinement string
                     if element?.first == "/" {
-                        presetRefinement = FileTypeRefinements(rawValue: element!)
+                        presetRefinement = FileTypeRefinements(rawValue: element ?? "")
                         // if it's not a refinement, check to see if it's a file type
-                    } else if FileType(rawValue: element!) != nil {
-                        presetType = FileType(rawValue: element!)
+                    } else if FileType(rawValue: element ?? "") != nil {
+                        presetType = FileType(rawValue: element ?? "")
                         // if it's not either of those, handle it as a freeform description
                     } else {
-                        refinementString = element!
+                        refinementString = element
                     }
                 }
             }

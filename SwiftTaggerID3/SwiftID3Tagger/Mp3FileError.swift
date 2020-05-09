@@ -35,6 +35,8 @@ extension Mp3File {
         case DataOutOfBounds
         /// Error thrown when the image is in an unhandled format
         case UnhandledImageFormat
+        /// Error thrown when the data cannot be retrieved from a frame
+        case UnreadableFrame
     }
 }
 
@@ -77,6 +79,8 @@ extension Mp3File.Error: LocalizedError {
             case .UnhandledImageFormat:
                 return NSLocalizedString(
                     "This image type is not handled by SwiftTagger", comment: "")
+            case .UnreadableFrame:
+                return NSLocalizedString("The data in this frame cannot be retrieved", comment: "")
         }
     }
 }

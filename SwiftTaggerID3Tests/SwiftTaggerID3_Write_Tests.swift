@@ -101,15 +101,15 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.addMusicianCredit(role: .soprano, person: "Soprono Name")
         tag.addMusicianCredit(role: .alto, person: "Alto Name")
 
-//        tag.fileType?.fileType = .MPG
-//        tag.fileType?.additionalFileInfo = .mpegLayerIII
-//        tag.fileType?.description = "File Type Description"
-//        tag.genre?.presetGenre = .Audiobook
-//        tag.genre?.customGenre = "Genre Description"
-//        tag.mediaType?.mediaType = .otherDigital
-//        tag.mediaType?.additionalMediaInfo = .analogTransfer
-//        tag.mediaType?.description = "Media Type Description"
-        
+        tag.fileType?.fileType = .MPG
+        tag.fileType?.fileTypeRefinement = .mpegLayerIII
+        tag.fileType?.additionalInformation = "File Type Description"
+        tag.genre?.presetGenre = .Audiobook
+        tag.genre?.customGenre = "Genre Description"
+        tag.mediaType?.mediaType = .otherDigital
+        tag.mediaType?.mediaTypeRefinement = .analogTransfer
+        tag.mediaType?.additionalInformation = "Media Type Description"
+
         let outputUrl = URL(fileURLWithPath: "/Users/nolainecrusher/Desktop/test output/testV24Writing.mp3")
         XCTAssertNoThrow(try mp3File.write(tagVersion: .v2_4, using: tag, writingTo: outputUrl))
     }
@@ -199,14 +199,14 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.addInvolvedPersonCredit(role: .actor, person: "Actor Name")
         tag.addInvolvedPersonCredit(role: .actress, person: "Actress Name")
         
-//        tag.fileType?.fileType = .MPG
-//        tag.fileType?.additionalFileInfo = .mpegLayerIII
-//        tag.fileType?.description = "File Type Description"
-//        tag.genre?.presetGenre = .Audiobook
-//        tag.genre?.customGenre = "Genre Description"
-//        tag.mediaType?.mediaType = .otherDigital
-//        tag.mediaType?.additionalMediaInfo = .analogTransfer
-//        tag.mediaType?.description = "Media Type Description"
+        tag.fileType?.fileType = .MPG
+        tag.fileType?.fileTypeRefinement = .mpegLayerIII
+        tag.fileType?.additionalInformation = "File Type Description"
+        tag.genre?.presetGenre = .Audiobook
+        tag.genre?.customGenre = "Genre Description"
+        tag.mediaType?.mediaType = .otherDigital
+        tag.mediaType?.mediaTypeRefinement = .analogTransfer
+        tag.mediaType?.additionalInformation = "Media Type Description"
 
         let outputUrl = URL(fileURLWithPath: "/Users/nolainecrusher/Desktop/test output/testV23Writing.mp3")
         XCTAssertNoThrow(try mp3File.write(tagVersion: .v2_3, using: tag, writingTo: outputUrl))
@@ -220,79 +220,89 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         
         tag.album = "New Album"
         tag.albumArtist = "New Album Artist"
-        tag.acknowledgment = "New Acknowledgment"
-        tag.audioSourceWebpage = "HTTP://AlbumSource.url"
-        tag.audioFileWebpage = "HTTP://AlbumFile.url"
         tag.artist = "New Artist"
         tag.albumSort = "Album Sort"
         tag.albumArtistSort = "Album Artist Sort"
         tag.artistSort = "Artist Sort"
         tag.arranger = "Arranger"
-        tag.artistWebpage = "HTTP://Artist.url"
-        tag.bpm = 98
-        tag.copyrightWebpage = "HTTP://Copyright.url"
         tag.composer = "New Composer"
         tag.conductor = "New Conductor"
         tag.copyright = "2020 Copyright"
-        tag.compilation = false
         tag.composerSort = "Composer Sort"
         tag.contentGroup = "Content Group"
-        tag.contentRating = .clean
-        tag.contentAdvisory = .usMovieUnrated
-        tag.discNumber.disc = 11
-        tag.discNumber.totalDiscs = 12
         tag.encodedBy = "New Encoded By"
-        tag.episodeName = "Episode Name"
-        tag.episodeNumber = 13
         tag.encodingSettings = "New Encoding Settings"
         tag.fileOwner = "New File Owner"
         tag.grouping = "Grouping"
-        tag.isrc = 987654321098
-        tag.initialKey = .cMinor
-        tag.keywords = ["words","and more words"]
-        tag.length = 5041
         tag.lyricist = "New Lyricist"
-        tag.languages = [.und, .eng]
-        tag.network = "Network"
-        tag.onlineExtras = "HTTP://OnlineExtras.com"
         tag.originalAlbum = "New Original Album"
         tag.originalArtist = "New Original Artist"
         tag.originalFilename = "New Original Filename"
         tag.originalLyricist = "New Original Lyricist"
         tag.publisher = "New Publisher"
-        tag.playlistDelay = 0
-        tag.publisherWebpage = "HTTP://Publisher.url"
         tag.radioStation = "New Radio Station"
         tag.radioStationOwner = "New Radio Station Owner"
-        tag.season = 16
         tag.subtitle = "New Subtitle"
-        tag.seriesName = "Series Name"
-        tag.sourceCredit = "Source Credit"
         tag.title = "New Title"
-        tag.thanks = "Thanks"
         tag.titleSort = "Title Sort"
-        
+
+        tag.compilation = true
+        tag.playlistDelay = 0
         tag[comments: .eng, "Comment Description"] = "Comment Content"
         tag[lyrics: .eng, "Lyrics Description"] = "Lyrics Content"
-        tag[userDefinedText: "User Text Description"] = "User Text Content"
-        tag[userDefinedUrl: "User Webpage Description"] = "HTTP://UserDefined.url"
-        tag[description: .eng] = "Description Content"
-        tag[linerNotes: .eng] = "Liner Notes Content"
-        tag[longDescription: .eng] = "Long Description Content"
-        tag[songDescription: .eng] = "Song Description Content"
-        tag[seriesDescription: .eng] = "Series Description Content"
-                
-        tag.addInvolvedPersonCredit(role: .actor, person: "Actor Name")
-        tag.addInvolvedPersonCredit(role: .actress, person: "Actress Name")
+        /* EVERYTHING ABOVE THIS POINT PLAYS IN ITUNES */
         
+//        tag.initialKey = .cMinor
+//        tag.languages = [.und, .eng]
+//        tag.discNumber.disc = 11
+//        tag.discNumber.totalDiscs = 12
+//        tag.trackNumber.track = 13
+//        tag.trackNumber.totalTracks = 14
+//
+//        tag.bpm = 98
+//        tag.isrc = 987654321098
+//        tag.length = 5041
+//
+//        tag.audioSourceWebpage = "HTTP://AlbumSource.url"
+//        tag.audioFileWebpage = "HTTP://AlbumFile.url"
+//        tag.artistWebpage = "HTTP://Artist.url"
+//        tag.copyrightWebpage = "HTTP://Copyright.url"
+//        tag.publisherWebpage = "HTTP://Publisher.url"
+//
+//        // MARK: Comments, Lyrics, User Text Frams
+//        tag[userDefinedText: "User Text Description"] = "User Text Content"
+//        tag[userDefinedUrl: "User Webpage Description"] = "HTTP://UserDefined.url"
+//        tag[description: .eng] = "Description Content"
+//        tag[linerNotes: .eng] = "Liner Notes Content"
+//        tag[longDescription: .eng] = "Long Description Content"
+//        tag[songDescription: .eng] = "Song Description Content"
+//        tag[seriesDescription: .eng] = "Series Description Content"
+//        tag.acknowledgment = "New Acknowledgment"
+//        tag.thanks = "Thanks"
+//        tag.sourceCredit = "Source Credit"
+//        tag.seriesName = "Series Name"
+//        tag.season = 16
+//        tag.episodeNumber = 13
+//        tag.episodeName = "Episode Name"
+//        tag.network = "Network"
+//        tag.onlineExtras = "HTTP://OnlineExtras.com"
+//        tag.contentRating = .clean
+//        tag.contentAdvisory = .usMovieUnrated
+//        tag.keywords = ["words","and more words"]
+//
+//        // MARK: Credits List Frame
+//        tag.addInvolvedPersonCredit(role: .actor, person: "Actor Name")
+//        tag.addInvolvedPersonCredit(role: .actress, person: "Actress Name")
+//
+//        // MARK: Preset Options Frame
 //        tag.fileType?.fileType = .MPG
-//        tag.fileType?.additionalFileInfo = .mpegLayerIII
-//        tag.fileType?.description = "File Type Description"
+//        tag.fileType?.fileTypeRefinement = .mpegLayerIII
+//        tag.fileType?.additionalInformation = "File Type Description"
 //        tag.genre?.presetGenre = .Audiobook
 //        tag.genre?.customGenre = "Genre Description"
 //        tag.mediaType?.mediaType = .otherDigital
-//        tag.mediaType?.additionalMediaInfo = .analogTransfer
-//        tag.mediaType?.description = "Media Type Description"
+//        tag.mediaType?.mediaTypeRefinement = .analogTransfer
+//        tag.mediaType?.additionalInformation = "Media Type Description"
 
         let outputUrl = URL(fileURLWithPath: "/Users/nolainecrusher/Desktop/test output/testV22Writing.mp3")
         XCTAssertNoThrow(try mp3File.write(tagVersion: .v2_2, using: tag, writingTo: outputUrl))

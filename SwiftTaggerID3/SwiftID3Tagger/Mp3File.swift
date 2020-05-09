@@ -38,23 +38,6 @@ public struct Mp3File {
        return try Tag(readFrom: self)
     }
     
-    /// Build a new mp3 file from a `Tag` instance and the audio data of the current `Mp3File` instance
-    /// - Parameters:
-    ///   - tag: `Tag` instance holding the ID3 metadata to be written
-    ///   - version: ID3 `Version` of the tag being used
-    /// - Throws: caller will determine how to handle any errors.
-    /// - Returns: data to be written to a new file
-    private func buildNewFile(using tag: Tag, version: Version) throws -> Data {
-        // initialize an empty data array
-        var fileData = Data()
-        // append the tag data to the data array
-        fileData.append(try tag.buildTag(version: version))
-        // append the audio data to the array
-        fileData.append(self.data)
-        // return the data
-        return fileData
-    }
-    
     /// Write an Mp3File to disk with new or updated `Tag` data.
     /// - Parameters:
     ///   - tagVersion: ID3 `Version` of the tag being used
@@ -73,4 +56,30 @@ public struct Mp3File {
         // write the file
         try fileData.write(to: url)
     }
+    
+    /// Build a new mp3 file from a `Tag` instance and the audio data of the current `Mp3File` instance
+    /// - Parameters:
+    ///   - tag: `Tag` instance holding the ID3 metadata to be written
+    ///   - version: ID3 `Version` of the tag being used
+    /// - Throws: caller will determine how to handle any errors.
+    /// - Returns: data to be written to a new file
+    private func buildNewFile(using tag: Tag, version: Version) throws -> Data {
+        var fileData = self.data
+        let tagSizeDataRange = TagProperties().tagSizeDeclarationOffset ..<
+            TagProperties().tagSizeDeclarationOffset +
+            TagProperties().tagSizeDeclarationLength
+        
+        // get the size of the starting tag and the tag data range
+        let tagSizeData = fileData.subdata(in: tagSizeDataRange)
+        let tagDataCount = try TagProperties().size(data: tagSizeData)
+        let tagDataRange = fileData.startIndex ..<
+            TagProperties().tagHeaderLength + tagDataCount
+        
+        let tagData = try tag.buildTag(version: version)
+        // strip out the existing tag data and replace with new tag data
+        fileData.replaceSubrange(tagDataRange, with: tagData)
+        return fileData
+    }
+    
+
 }
