@@ -128,26 +128,26 @@ extension Tag {
     }
 
     /// DiscNumber(/TotalDiscs) getter-setter. ID3 Identifier: `TPA`/`TPOS`
-    public var discNumber: (disc: Int, totalDiscs: Int?) {
+    public var discNumber: (disc: Int, totalDiscs: Int?)? {
         get {
             let tuple = intTuple(for: .discNumber)
             return (disc: tuple?.part ?? 0, totalDiscs: tuple?.total)
         }
         set {
             set(.known(.discNumber), .discNumber,
-                to: newValue.disc, and: newValue.totalDiscs)
+                to: newValue?.disc ?? 0, and: newValue?.totalDiscs)
         }
     }
     
     /// TrackNumber(/TotalTracks) getter-setter. ID3 Identifier: `TRK`/`TRCK`
-    public var trackNumber: (track: Int, totalTracks: Int?) {
+    public var trackNumber: (track: Int, totalTracks: Int?)? {
         get {
             let tuple = intTuple(for: .trackNumber)
             return (track: tuple?.part ?? 0, totalTracks: tuple?.total)
         }
         set {
             set(.known(.trackNumber), .trackNumber,
-                to: newValue.track, and: newValue.totalTracks)
+                to: newValue?.track ?? 0, and: newValue?.totalTracks)
         }
     }
 }

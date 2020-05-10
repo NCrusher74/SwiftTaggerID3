@@ -58,6 +58,7 @@
 		518807292442F1CB008D488B /* ImageTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518807282442F1CB008D488B /* ImageTypes.swift */; };
 		5188072B2442F3DE008D488B /* GenreType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5188072A2442F3DE008D488B /* GenreType.swift */; };
 		51A3C6A02442FEF000909952 /* DateFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A3C69F2442FEF000909952 /* DateFrame.swift */; };
+		51AFE01E2468768D00CC3751 /* CommentDescriptionPresets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51AFE01D2468768D00CC3751 /* CommentDescriptionPresets.swift */; };
 		51D58B39244D497000DBA9FB /* ISOLanguages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D58B38244D497000DBA9FB /* ISOLanguages.swift */; };
 		51E432B6243DA257006574A1 /* SwiftTaggerID3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51E432AC243DA257006574A1 /* SwiftTaggerID3.framework */; };
 		51E432BD243DA257006574A1 /* SwiftTaggerID3.h in Headers */ = {isa = PBXBuildFile; fileRef = 51E432AF243DA257006574A1 /* SwiftTaggerID3.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -152,6 +153,7 @@
 		518807282442F1CB008D488B /* ImageTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTypes.swift; sourceTree = "<group>"; };
 		5188072A2442F3DE008D488B /* GenreType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreType.swift; sourceTree = "<group>"; };
 		51A3C69F2442FEF000909952 /* DateFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFrame.swift; sourceTree = "<group>"; };
+		51AFE01D2468768D00CC3751 /* CommentDescriptionPresets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentDescriptionPresets.swift; sourceTree = "<group>"; };
 		51D58B38244D497000DBA9FB /* ISOLanguages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISOLanguages.swift; sourceTree = "<group>"; };
 		51E432AC243DA257006574A1 /* SwiftTaggerID3.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftTaggerID3.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		51E432AF243DA257006574A1 /* SwiftTaggerID3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftTaggerID3.h; sourceTree = "<group>"; };
@@ -257,6 +259,7 @@
 				515AF65A2449A8E2005C29FA /* KeySignatures.swift */,
 				51D58B38244D497000DBA9FB /* ISOLanguages.swift */,
 				51FF4954245BEE4C0006F8F8 /* ContentRatings.swift */,
+				51AFE01D2468768D00CC3751 /* CommentDescriptionPresets.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -519,6 +522,7 @@
 				5144EC7524577F41001757DA /* Collection.swift in Sources */,
 				51753026244DC5700005B2AB /* MusicianPerformerCredits.swift in Sources */,
 				518807292442F1CB008D488B /* ImageTypes.swift in Sources */,
+				51AFE01E2468768D00CC3751 /* CommentDescriptionPresets.swift in Sources */,
 				51E432DA243DB096006574A1 /* Version.swift in Sources */,
 				51E432CB243DA3F6006574A1 /* Mp3FileError.swift in Sources */,
 				517754542442E757005E43C5 /* LocalizedFrame.swift in Sources */,
