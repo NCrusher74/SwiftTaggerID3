@@ -117,7 +117,7 @@ public struct TableOfContentsFrame: FrameProtocol {
        - childElementIDs: the array of child elementIDs. Must not be empty. Each entry is null terminated.
        - embeddedSubFrames: the (optional) frames containing title and descriptor text for the CTOC frame.
      */
-    private init(layout: FrameLayoutIdentifier,
+    private init(_ layout: FrameLayoutIdentifier,
                  elementID: String,
                  topLevelFlag: Bool,
                  orderedFlag: Bool,
@@ -138,6 +138,7 @@ public struct TableOfContentsFrame: FrameProtocol {
     // encode the contents of the frame to add to an ID3 tag
     func encodeContents(version: Version) throws -> Data {
         var frameData = Data()
+        // there is no encoding byte for TOC frames
         // encode and append the elementID
         frameData.append(self.elementID.encoded(withNullTermination: true))
         // encode and append the entry count
@@ -194,7 +195,7 @@ public struct TableOfContentsFrame: FrameProtocol {
          embeddedSubframes: [FrameKey: Frame]?) {
         let uuid = UUID()
         let elementID = uuid.uuidString
-        self.init(layout: .known(.tableOfContents),
+        self.init(.known(.tableOfContents),
                   elementID: elementID,
                   topLevelFlag: isTopTOC,
                   orderedFlag: elementsAreOrdered,

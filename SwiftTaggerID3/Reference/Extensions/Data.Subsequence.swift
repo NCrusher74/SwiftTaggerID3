@@ -32,7 +32,8 @@ extension Data.SubSequence {
         search: while let null = remainder.firstIndex(of: 0) {
             remainder = self[null...].dropFirst()
             if double {
-                if remainder.first == 0 {
+                if remainder.first == 0,
+                    self.distance(from: startIndex, to: remainder.startIndex) % 2 != 0 {
                     // Found double‐byte null.
                     remainder = remainder.dropFirst()
                     break search

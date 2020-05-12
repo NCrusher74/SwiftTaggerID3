@@ -61,7 +61,8 @@ struct LanguageFrame: FrameProtocol {
     /// - Parameters:
     ///   - layout: the frame layout
     ///   - languages: the ISO-639-2 language codes as a string array
-    init(layout: FrameLayoutIdentifier, languages: [String]) {
+    init(_ layout: FrameLayoutIdentifier,
+         languages: [String]) {
         self.languages = languages
         self.flags = LanguageFrame.defaultFlags
         self.layout = layout
@@ -71,7 +72,7 @@ struct LanguageFrame: FrameProtocol {
     func encodeContents(version: Version) throws -> Data {
         var frameData = Data()
         // append encoding byte
-        frameData.append(StringEncoding.preferred.rawValue.encoding(endianness: .bigEndian))
+        frameData.append(StringEncoding.preferred.rawValue)
         // append language array
         for language in self.languages {
             switch version {
@@ -106,7 +107,7 @@ extension Tag {
                 languageStrings.append(code.rawValue)
             }
             let frame = LanguageFrame(
-                layout: .known(.languages),
+                .known(.languages),
                 languages: languageStrings)
             self.frames[.languages] = .languageFrame(frame)
         }

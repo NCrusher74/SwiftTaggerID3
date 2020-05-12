@@ -36,7 +36,7 @@ struct PartOfTotalFrame: FrameProtocol {
         switch layout {
             case .known(.discNumber) : self.frameKey = .discNumber
             case .known(.trackNumber): self.frameKey = .trackNumber
-            default: self.frameKey = .userDefinedText(description: "")
+            default: self.frameKey = .userDefinedText(description: "(\(layout.id3Identifier(version: version) ?? "TXXX"))")
         }
         
         var parsing = contents
@@ -58,7 +58,9 @@ struct PartOfTotalFrame: FrameProtocol {
      - parameter part: the index of the track/disc.
      - parameter total: the total tracks/discs of the recordings.
      */
-    init(layout: FrameLayoutIdentifier, part: Int, total: Int?) {
+    init(_ layout: FrameLayoutIdentifier,
+         part: Int,
+         total: Int?) {
         self.part = part
         self.total = total
         self.flags = PartOfTotalFrame.defaultFlags
@@ -74,7 +76,7 @@ struct PartOfTotalFrame: FrameProtocol {
     func encodeContents(version: Version) throws -> Data {
         var frameData = Data()
         // append the encoding byte
-        frameData.append(StringEncoding.preferred.rawValue.encoding(endianness: .bigEndian))
+        frameData.append(StringEncoding.preferred.rawValue)
         if self.total == nil { // string will contain only the "part" value
             let partOfTotalString = String(self.part)
             frameData.append(
@@ -95,7 +97,7 @@ extension Tag {
     /// Retrieve an integer tuple from the frame data
     /// - Parameter frameKey: the unique identifier of the frame
     /// - Returns: the frame's contents as an integer tuple
-    func intTuple(for frameKey: FrameKey)
+    internal func intTuple(for frameKey: FrameKey)
         -> (part: Int, total: Int?)? {
             // check that the frame is a PartOfTotalFrame
             if let frame = self.frames[frameKey],
@@ -113,39 +115,39 @@ extension Tag {
     ///   - frameKey: the frame's unique identifier, used to ensure frame uniqueness
     ///   - part: the position of a track or disc within a set
     ///   - total: the total number of tracks or discs in the set
-    mutating func set(_ layout: FrameLayoutIdentifier,
+    internal mutating func set(_ layout: FrameLayoutIdentifier,
                       _ frameKey: FrameKey,
                       to part: Int,
                       and total: Int?) {
         // call the frame building initializer
         let frame = PartOfTotalFrame(
-            layout: layout,
+            layout,
             part: part,
             total: total)
         self.frames[frameKey] = .partOfTotalFrame(frame)
     }
 
-    /// - DiscNumber(/TotalDiscs) getter-setter. ID3 Identifier: `TPA`/`TPOS`
-    var discNumber: (disc: Int, totalDiscs: Int?) {
+    /// DiscNumber(/TotalDiscs) getter-setter. ID3 Identifier: `TPA`/`TPOS`
+    public var discNumber: (disc: Int, totalDiscs: Int?)? {
         get {
             let tuple = intTuple(for: .discNumber)
             return (disc: tuple?.part ?? 0, totalDiscs: tuple?.total)
         }
         set {
             set(.known(.discNumber), .discNumber,
-                to: newValue.disc, and: newValue.totalDiscs)
+                to: newValue?.disc ?? 0, and: newValue?.totalDiscs)
         }
     }
     
-    /// - TrackNumber(/TotalTracks) getter-setter. ID3 Identifier: `TRK`/`TRCK`
-    var trackNumber: (track: Int, totalTracks: Int?) {
+    /// TrackNumber(/TotalTracks) getter-setter. ID3 Identifier: `TRK`/`TRCK`
+    public var trackNumber: (track: Int, totalTracks: Int?)? {
         get {
             let tuple = intTuple(for: .trackNumber)
             return (track: tuple?.part ?? 0, totalTracks: tuple?.total)
         }
         set {
             set(.known(.trackNumber), .trackNumber,
-                to: newValue.track, and: newValue.totalTracks)
+                to: newValue?.track ?? 0, and: newValue?.totalTracks)
         }
     }
 }

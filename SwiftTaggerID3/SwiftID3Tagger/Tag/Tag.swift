@@ -30,7 +30,7 @@ public struct Tag {
     /** Initializes an ID3 tag, derives required data from the tag header, and instantiates the parsing of the frames within the tag. */
     /// - Parameter file: The `Mp3File` containing the tag data.
     /// - Throws: `InvalidFileFormat` if the `Mp3File` does not have a valid Mp3 file extension.
-    init(readFrom file: Mp3File) throws {
+    public init(readFrom file: Mp3File) throws {
         // a type containing tag-level properties and methods for querying tag-level information
         let properties = TagProperties()
         
@@ -50,14 +50,17 @@ public struct Tag {
         } else {
             // parse version data from tag header
             // the first five bytes of a valid ID3 Tag are "ID3"+ the version number in UInt8
+            // this strips out the version bytes and passes along the rest
             let versionData = remainder.extractFirst(properties.versionDeclarationLength)
             version = try properties.version(data: versionData)
-            // parse flag from tag header. This data is generally unused and use of this data is not supported by SwiftTagger. We're just getting it out of the way here.
+            // parse flag from tag header. This data is generally unused and use of this data is not supported by SwiftTagger. We're just stripping it out here.
             _ = remainder.extractFirst(properties.tagFlagsLength)
             // parse tag size information from tag header to create an upper bound for frames parsing
+            // this strips out the size data and passes along the rest
             let tagSizeData = remainder.extractFirst(properties.tagSizeDeclarationLength)
             tagSize = try properties.size(data: tagSizeData)
         }
+        // at this point, remainder should be all the data except the 10-byte tag header
         
         // set range of tag data using tag size as the upper bound
         let tagDataRange = remainder.startIndex ..< remainder.startIndex + tagSize
@@ -114,8 +117,10 @@ public struct Tag {
     /// - Returns: `data` containing all the frames of the tag
     func framesData(version: Version) throws -> Data {
         var framesData = Data()
-        for frame in self.frames.values {
-            framesData.append(try frame.getFramesData(version: version))
+        for frameKey in self.frames.keys {
+            if let frame = self.frames[frameKey] {
+                framesData.append(try frame.getFramesData(version: version))
+            }
         }
         return framesData
     }

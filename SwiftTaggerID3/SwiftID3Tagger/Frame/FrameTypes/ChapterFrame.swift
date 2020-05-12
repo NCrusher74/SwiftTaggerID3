@@ -97,7 +97,7 @@ public struct ChapterFrame: FrameProtocol {
      - parameter endByteOffset: integer indicating the byte offset for the end of the chapter
      - parameter embeddedSubFrames: the (optional) frames containing title and descriptor text for the CHAP frame. A title is recommended at the least.
      */
-    private init(layout: FrameLayoutIdentifier,
+    private init(_ layout: FrameLayoutIdentifier,
                  elementID: String,
                  startTime: Int,
                  endTime: Int,
@@ -118,6 +118,7 @@ public struct ChapterFrame: FrameProtocol {
     // encodes the contents of the frame and returns Data that can be added to the Tag instance to write to the file
     func encodeContents(version: Version) throws -> Data {
         var frameData = Data()
+        // there is no encoding byte for Chapter frames
         // encode and append ElementID string
         frameData.append(self.elementID.encoded(withNullTermination: true))
         // convert integers to UInt32 and then to Data and append
@@ -144,7 +145,7 @@ public struct ChapterFrame: FrameProtocol {
                 endTime: Int,
                 embeddedSubframes: [FrameKey: Frame]) {
         let uuid = UUID()
-        self.init(layout: .known(.chapter),
+        self.init(.known(.chapter),
                   elementID: uuid.uuidString,
                   startTime: startTime,
                   endTime: endTime,
@@ -160,12 +161,12 @@ public struct ChapterFrame: FrameProtocol {
                 endTime: Int) {
         // create title stringframe as subframe
         let subframeKey = FrameKey.title
-        let subframeFrame: Frame = .stringFrame(.init(layout: .known(.title), contentString: chapterTitle))
+        let subframeFrame: Frame = .stringFrame(.init(.known(.title), contentString: chapterTitle))
         let subframe = [subframeKey : subframeFrame]
 
         let uuid = UUID()
         // initialize chapter frame with subframe in place
-        self.init(layout: .known(.chapter),
+        self.init(.known(.chapter),
                   elementID: uuid.uuidString,
                   startTime: startTime,
                   endTime: endTime,
@@ -191,13 +192,13 @@ public struct ChapterFrame: FrameProtocol {
         let subframeKey = FrameKey.attachedPicture(
             description: imageDescription)
         let subframeFrame: Frame = .imageFrame(.init(
-            layout: .known(.attachedPicture),
+            .known(.attachedPicture),
             imageType: .Illustration,
             imageFormat: imageFormat,
             imageDescription: imageDescription,
             image: imageData))
         let subframe = [subframeKey : subframeFrame]
-        self.init(layout: .known(.chapter),
+        self.init(.known(.chapter),
                   elementID: uuid.uuidString,
                   startTime: startTime,
                   endTime: endTime,

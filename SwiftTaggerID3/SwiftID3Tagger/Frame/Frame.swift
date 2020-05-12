@@ -33,10 +33,6 @@ enum Frame {
      
         Frames of this type MAY NOT be duplicated within a valid ID3 tag */
     case creditsListFrame(CreditsListFrame)
-    /** A frame type containing an integer value that will be encoded and stored as an integer string
-     
-        Frames of this type MAY NOT be duplicated within a valid ID3 tag*/
-    case integerFrame(IntegerFrame)
     /** A frame type containing an date value that will be encoded and stored as a timestamp string.
      
         Frames of this type MAY NOT be duplicated within a valid ID3 tag*/
@@ -88,7 +84,8 @@ enum Frame {
                     version: version,
                     layout: layout))
             case .known(.genre),
-                 .known(.mediaType):
+                 .known(.mediaType),
+                 .known(.fileType):
                 self = .presetOptionsFrame(try PresetOptionsFrame(
                     decodingFromStartOf: &data,
                     version: version,
@@ -115,17 +112,6 @@ enum Frame {
             case .known(.involvedPeopleList),
                  .known(.musicianCreditsList):
                 self = .creditsListFrame(try CreditsListFrame(
-                    decodingFromStartOf: &data,
-                    version: version,
-                    layout: layout))
-            case .known(.bpm),
-                 .known(.isrc),
-                 .known(.length),
-                 .known(.movementCount),
-                 .known(.movementNumber),
-                 .known(.playlistDelay),
-                 .known(.compilation):
-                self = .integerFrame(try IntegerFrame(
                     decodingFromStartOf: &data,
                     version: version,
                     layout: layout))
@@ -169,8 +155,6 @@ enum Frame {
                 return presetOptionsFrame.frameKey
             case .stringFrame(let stringFrame):
                 return stringFrame.frameKey
-            case .integerFrame(let integerFrame):
-                return integerFrame.frameKey
             case .partOfTotalFrame(let partOfTotalFrame):
                 return partOfTotalFrame.frameKey
             case .unknownFrame(let unknownFrame):
@@ -202,8 +186,6 @@ enum Frame {
                 return try languageFrame.encode(version: version)
             case .creditsListFrame(let creditsListFrame):
                 return try creditsListFrame.encode(version: version)
-            case .integerFrame(let integerFrame):
-                return try integerFrame.encode(version: version)
             case .dateFrame(let dateFrame):
                 return try dateFrame.encode(version: version)
             case .imageFrame(let imageFrame):
@@ -234,8 +216,6 @@ extension Frame {
                 return languageFrame
             case .creditsListFrame(let creditsListFrame):
                 return creditsListFrame
-            case .integerFrame(let integerFrame):
-                return integerFrame
             case .dateFrame(let dateFrame):
                 return dateFrame
             case .presetOptionsFrame(let presetOptionsFrame):

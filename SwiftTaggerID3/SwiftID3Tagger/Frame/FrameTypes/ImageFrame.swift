@@ -87,7 +87,7 @@
      - parameter imageDescription?: an optional description of the image content.
      - parameter image: the image bytes as `Data`.
      */
-    init(layout: FrameLayoutIdentifier,
+    init(_ layout: FrameLayoutIdentifier,
                  imageType: ImageType,
                  imageFormat: ImageFormat,
                  imageDescription: String?,
@@ -105,8 +105,7 @@
     func encodeContents(version: Version) throws -> Data {
         var frameData = Data()
         // append encoding byte
-        frameData.append(StringEncoding.preferred.rawValue.encoding(
-            endianness: .bigEndian))
+        frameData.append(StringEncoding.preferred.rawValue)
         // determine format based upon magic number
         // encode and append a format or MIME-type string according to version requirements
         var formatString: String = ""
@@ -165,7 +164,7 @@ extension Tag {
         let imageData = try Data(contentsOf: location)
         let key: FrameKey = .attachedPicture(description: (imageDescription ?? imageType?.pictureDescription) ?? "Other")
         self.frames[key] = Frame.imageFrame(.init(
-            layout: .known(.attachedPicture),
+            .known(.attachedPicture),
             imageType: imageType ?? .Other,
             imageFormat: imageFormat,
             imageDescription: imageDescription,

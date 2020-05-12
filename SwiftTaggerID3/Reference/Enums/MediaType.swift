@@ -8,6 +8,12 @@
 
 import Foundation
 
+//struct MediaTypeEntry {
+//    var presetType: MediaType?
+//    var presetRefinement: MediaTypeRefinements?
+//    var freeformRefinement: String?
+//}
+
 public enum MediaType: String, CaseIterable {
     
     /// Other digital media
@@ -177,7 +183,7 @@ public enum MediaTypeRefinements: String, CaseIterable {
         return mapping
     }()
     
-    init(code: String) {
+    init?(code: String) {
         self = MediaTypeRefinements.codeMapping[code] ?? .none
     }
 }
