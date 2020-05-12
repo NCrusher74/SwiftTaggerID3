@@ -113,8 +113,7 @@ struct LocalizedFrame: FrameProtocol {
     func encodeContents(version: Version) throws -> Data {
         var frameData = Data()
         // append encoding byte
-        frameData.append(StringEncoding.preferred.rawValue.encoding(
-            endianness: .bigEndian))
+        frameData.append(StringEncoding.preferred.rawValue)
 
         if self.layout == .known(.comments) ||
             self.layout == .known(.unsynchronizedLyrics) {

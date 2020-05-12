@@ -106,8 +106,7 @@ struct DateFrame: FrameProtocol {
     func encodeContents(version: Version) throws -> Data {
         var frameData = Data()
         // append encoding byte
-        frameData.append(StringEncoding.preferred.rawValue.encoding(
-            endianness: .bigEndian))
+        frameData.append(StringEncoding.preferred.rawValue)
         let formatter = DateFormatter()
         // format, encode and append a string value for the date as required by the frame
         if layout == .known(.date) {

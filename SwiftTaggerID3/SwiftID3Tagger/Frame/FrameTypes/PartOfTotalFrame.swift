@@ -76,7 +76,7 @@ struct PartOfTotalFrame: FrameProtocol {
     func encodeContents(version: Version) throws -> Data {
         var frameData = Data()
         // append the encoding byte
-        frameData.append(StringEncoding.preferred.rawValue.encoding(endianness: .bigEndian))
+        frameData.append(StringEncoding.preferred.rawValue)
         if self.total == nil { // string will contain only the "part" value
             let partOfTotalString = String(self.part)
             frameData.append(

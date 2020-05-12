@@ -132,8 +132,7 @@ struct PresetOptionsFrame: FrameProtocol {
     func encodeContents(version: Version) throws -> Data {
         var frameData = Data()
         // append encoding byte
-        frameData.append(StringEncoding.preferred.rawValue.encoding(
-            endianness: .bigEndian))
+        frameData.append(StringEncoding.preferred.rawValue)
         switch version {
             case .v2_2, .v2_3: // null termination will be false
                 for item in genreMediaOrFileInfo {

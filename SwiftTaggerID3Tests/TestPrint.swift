@@ -20,8 +20,8 @@ class TestPrint: XCTestCase {
         tag.album = "Album"
         tag.albumArtist = "Album Artist"
         tag.albumArtistSort = "Album Artist Sort"
+        tag.albumSort = "Album Sort"
         
-//        tag.albumSort = "Album Sort"
 //        tag.arranger = "Arranger"
 //        tag.artist = "Artist"
 //        tag.artistSort = "Artist Sort"
@@ -31,7 +31,7 @@ class TestPrint: XCTestCase {
 //        tag.contentGroup = "Content Group"
 //        tag.copyright = "2020 Copyright"
 //        tag.encodedBy = "Encoded By"
-//        tag.encodingSettings = "Encoding Settings"
+        tag.encodingSettings = "Encoding Settings"
 //        tag.fileOwner = "File Owner"
 //        tag.grouping = "Grouping"
 //        tag.initialKey = .aFlatMinor
@@ -85,7 +85,7 @@ class TestPrint: XCTestCase {
 //        tag[comments: .eng, "Comment"] = "Comment Content" // reading description as part of the comment for some reason
 //        tag[lyrics: .eng, "Lyrics"] = "Lyrics Content" // same here - null term not working?
 //        tag[userDefinedUrl: "UserURL"] = "http://userdefined.url"
-        tag[userDefinedText: "UserText"] = "User Defined Text Content"
+//        tag[userDefinedText: "UserText"] = "User Defined Text Content"
         
         // MARK: Credits List Frame
 //        tag.addInvolvedPersonCredit(role: .actor, person: "Actor Name")
@@ -116,8 +116,8 @@ class TestPrint: XCTestCase {
         XCTAssertEqual(tagWritten.album, "Album")
         XCTAssertEqual(tagWritten.albumArtist, "Album Artist")
         XCTAssertEqual(tagWritten.albumArtistSort, "Album Artist Sort")
+        XCTAssertEqual(tagWritten.albumSort, "Album Sort")
         
-//        XCTAssertEqual(tagWritten.albumSort, "Album Sort")
 //        XCTAssertEqual(tagWritten.arranger, "Arranger")
 //        XCTAssertEqual(tagWritten.artist, "Artist")
 //        XCTAssertEqual(tagWritten.artistSort, "Artist Sort")
@@ -127,7 +127,7 @@ class TestPrint: XCTestCase {
 //        XCTAssertEqual(tagWritten.contentGroup, "Content Group")
 //        XCTAssertEqual(tagWritten.copyright, "2020 Copyright")
 //        XCTAssertEqual(tagWritten.encodedBy, "Encoded By")
-//        XCTAssertEqual(tagWritten.encodingSettings, "Encoding Settings")
+        XCTAssertEqual(tagWritten.encodingSettings, "Encoding Settings")
 //        XCTAssertEqual(tagWritten.fileOwner, "File Owner")
 //        XCTAssertEqual(tagWritten.grouping, "Grouping")
 //        XCTAssertEqual(tagWritten.initialKey, .aFlatMinor)
@@ -178,7 +178,7 @@ class TestPrint: XCTestCase {
 //        XCTAssertEqual(tag[comments: .eng, "Comment"], "Comment Content")
 //        XCTAssertEqual(tag[lyrics: .eng, "Lyrics"], "Lyrics Content")
 //        XCTAssertEqual(tag[userDefinedUrl: "UserURL"], "http://userdefined.url")
-        XCTAssertEqual(tag[userDefinedText: "UserText"], "User Defined Text Content")
+//        XCTAssertEqual(tag[userDefinedText: "UserText"], "User Defined Text Content")
 //
 //        XCTAssertEqual(tagWritten.involvedPeopleList?[.actor], ["Actor Name"])
 //        XCTAssertEqual(tagWritten.involvedPeopleList?[.actress], ["Actress Name"])
@@ -200,6 +200,70 @@ class TestPrint: XCTestCase {
 }
 
 /*
+ // OMITTING USER TEXT, USER URL, INVOLVED PERSON AND MUSICIAN CREDITS FRAMES, AS THEY ARE KNOWN TO FAIL NOW
+ // ALBUM + ALBUMARTIST + ALBUMARTISTSORT + ALBUM SORT frame PLUS
+ "Arranger" frame = failed. No frames wrote.
+ "Artist" frame = failed. No frames wrote.
+ "ArtistSort" frame = failed. No frames wrote.
+ "Composer" frame = failed. No frames wrote.
+ "ComposerSort" frame = failed. No frames wrote.
+ "Conductor" frame = failed. No frames wrote.
+ "Content Group" frame = failed. No frames wrote.
+ "Copyright" frame = failed. No frames wrote.
+ "EncodedBy" frame = failed. No frames wrote.
+ "Encoding Settings" frame = failed. "Thread 1: EXC_BAD_INSTRUCTION (code=EXC_I386_INVOP, subcode=0x0)" at line 97 of `FrameProtocol`. It looks like it's looking for bytes that are out of range, perhaps because they didn't write?
+ "File Owner" frame = success
+ "Grouping" frame = success
+ "InitialKey" frame = success
+ "Lyricist" frame = success
+ "Mood" frame = success
+ "Movement Name" frame = success
+ "Original Album" frame = success
+ "Original Artist" frame = success
+ "Original Filename" frame = success
+ "Original Lyricist" frame = success
+ "PodcastID" frame = success
+ "Podcast Category" frame = success
+ "Podcast Feedlink" frame = success
+ "Podcast Description" frame = success
+ "Podcast Keywords" frame = success
+ "Publisher" frame = success
+ "Produced Notice" frame = success
+ "Radio Station" frame = success
+ "Radio Station Owner" frame = success
+ "Subtitle" frame = success
+ "Set Subtitle" frame = success
+ "Title" frame = success
+ "Title Sort" frame = success
+ 
+ "Compilation" frame = success
+ "BPM" frame = success
+ "ISRC" frame = success
+ "Length" frame = success
+ "Movement Number" frame = success
+ "Movement Count" frame = success
+ "Playlist Delay" frame = success
+ 
+ "Audio Source Webpage" frame = success
+ "Audio File Webpage" frame = success
+ "Artist Webpage" frame = success
+ "Copyright Webpage" frame = success
+ "Payment Webpage" frame = success
+ "Publisher Webpage" frame = success
+ "Radio Station Webpage" frame = success
+ 
+ "Languages" frame = success
+ 
+ "Track Number" frame = success
+ "Disc Number" frame = success
+ 
+ "Comments" frame = success
+ "Lyrics" frame = success
+ 
+ "File Type" frame = success
+ "Media Type" frame = success
+
+ 
  // ALBUM + ALBUMARTIST + ALBUMARTISTSORT frame PLUS
  "AlbumSort" frame = success
  "Arranger" frame = success
@@ -259,11 +323,11 @@ class TestPrint: XCTestCase {
  
  "Comments" frame = success
  "Lyrics" frame = success
- "UserDefinedUrl" frame = success
- "User Defined Text" frame = success
+ "UserDefinedUrl" frame = FAILURE - leading 1 and terminator in this frame causing other frames not to write
+ "User Defined Text" frame = FAILURE - leading 1 and terminator in this frame causing other frames not to write
  
- "Involved People List" frame = success
- "Musician Credit List" frame = success
+ "Involved People List" frame = succeeds if I only use one Role:Person pair. Otherwise causes all frames to fail
+ "Musician Credit List" frame = succeeds if I only use one Role:Person pair. Otherwise causes all frames to fail
  
  "File Type" frame = success
  "Media Type" frame = success

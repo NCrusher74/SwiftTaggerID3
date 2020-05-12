@@ -72,7 +72,7 @@ struct LanguageFrame: FrameProtocol {
     func encodeContents(version: Version) throws -> Data {
         var frameData = Data()
         // append encoding byte
-        frameData.append(StringEncoding.preferred.rawValue.encoding(endianness: .bigEndian))
+        frameData.append(StringEncoding.preferred.rawValue)
         // append language array
         for language in self.languages {
             switch version {

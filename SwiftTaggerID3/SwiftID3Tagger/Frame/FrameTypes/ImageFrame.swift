@@ -105,8 +105,7 @@
     func encodeContents(version: Version) throws -> Data {
         var frameData = Data()
         // append encoding byte
-        frameData.append(StringEncoding.preferred.rawValue.encoding(
-            endianness: .bigEndian))
+        frameData.append(StringEncoding.preferred.rawValue)
         // determine format based upon magic number
         // encode and append a format or MIME-type string according to version requirements
         var formatString: String = ""

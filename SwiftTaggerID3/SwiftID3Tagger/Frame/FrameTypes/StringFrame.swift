@@ -198,8 +198,7 @@ struct StringFrame: FrameProtocol {
         if !urlFrameKeys.contains(self.frameKey) {
             // append encoding byte to frameData
             frameData.append(
-                StringEncoding.preferred.rawValue.encoding(
-                    endianness: .bigEndian))
+                StringEncoding.preferred.rawValue)
             // convert and append contentString to frameData
             frameData.append(self.contentString.encoded(
                 withNullTermination: false))
