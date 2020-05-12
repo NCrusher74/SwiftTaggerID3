@@ -44,5 +44,5 @@ extension StringEncoding {
     
     // Because every string can be losslessly encoded this way,
     // and because it is supported by all ID3 versions.
-    static let preferred = utf16WithBOM
+    static let preferred = isoLatin1
 }
