@@ -31,7 +31,7 @@ class TestPrint: XCTestCase {
 //        tag.contentGroup = "Content Group"
 //        tag.copyright = "2020 Copyright"
 //        tag.encodedBy = "Encoded By"
-        tag.encodingSettings = "Encoding Settings"
+//        tag.encodingSettings = "Encoding Settings"
 //        tag.fileOwner = "File Owner"
 //        tag.grouping = "Grouping"
 //        tag.initialKey = .aFlatMinor
@@ -101,9 +101,9 @@ class TestPrint: XCTestCase {
 //        tag.genre?.presetGenre = .Audiobook
 //        tag.genre?.customGenre = "Genre Type" // needs to be fixed
 
-//        tag.mediaType?.mediaType = nil // get rid of parens when nil
-//        tag.mediaType?.mediaTypeRefinement = nil
-//        tag.mediaType?.additionalInformation = "Media Type"
+        tag.mediaType?.mediaType = nil // get rid of parens when nil
+        tag.mediaType?.mediaTypeRefinement = nil
+        tag.mediaType?.additionalInformation = "Media Type"
         
         let outputUrl = URL(fileURLWithPath: "/Users/nolainecrusher/Desktop/test output/testV24Writing.mp3")
         XCTAssertNoThrow(try mp3File.write(tagVersion: .v2_4, using: tag, writingTo: outputUrl))
@@ -127,7 +127,7 @@ class TestPrint: XCTestCase {
 //        XCTAssertEqual(tagWritten.contentGroup, "Content Group")
 //        XCTAssertEqual(tagWritten.copyright, "2020 Copyright")
 //        XCTAssertEqual(tagWritten.encodedBy, "Encoded By")
-        XCTAssertEqual(tagWritten.encodingSettings, "Encoding Settings")
+//        XCTAssertEqual(tagWritten.encodingSettings, "Encoding Settings")
 //        XCTAssertEqual(tagWritten.fileOwner, "File Owner")
 //        XCTAssertEqual(tagWritten.grouping, "Grouping")
 //        XCTAssertEqual(tagWritten.initialKey, .aFlatMinor)
@@ -192,9 +192,9 @@ class TestPrint: XCTestCase {
 //        XCTAssertEqual(tagWritten.genre?.presetGenre, .Audiobook)
 //        XCTAssertEqual(tagWritten.genre?.customGenre, "Genre Type")
 
-//        XCTAssertNil(tagWritten.mediaType?.mediaType)
-//        XCTAssertNil(tagWritten.mediaType?.mediaTypeRefinement)
-//        XCTAssertEqual(tagWritten.mediaType?.additionalInformation, "Media Type")
+        XCTAssertNil(tagWritten.mediaType?.mediaType)
+        XCTAssertNil(tagWritten.mediaType?.mediaTypeRefinement)
+        XCTAssertEqual(tagWritten.mediaType?.additionalInformation, "Media Type")
 
     }
 }
@@ -202,66 +202,66 @@ class TestPrint: XCTestCase {
 /*
  // OMITTING USER TEXT, USER URL, INVOLVED PERSON AND MUSICIAN CREDITS FRAMES, AS THEY ARE KNOWN TO FAIL NOW
  // ALBUM + ALBUMARTIST + ALBUMARTISTSORT + ALBUM SORT frame PLUS
- "Arranger" frame = failed. No frames wrote.
- "Artist" frame = failed. No frames wrote.
- "ArtistSort" frame = failed. No frames wrote.
- "Composer" frame = failed. No frames wrote.
- "ComposerSort" frame = failed. No frames wrote.
- "Conductor" frame = failed. No frames wrote.
- "Content Group" frame = failed. No frames wrote.
- "Copyright" frame = failed. No frames wrote.
- "EncodedBy" frame = failed. No frames wrote.
- "Encoding Settings" frame = failed. "Thread 1: EXC_BAD_INSTRUCTION (code=EXC_I386_INVOP, subcode=0x0)" at line 97 of `FrameProtocol`. It looks like it's looking for bytes that are out of range, perhaps because they didn't write?
- "File Owner" frame = success
- "Grouping" frame = success
- "InitialKey" frame = success
- "Lyricist" frame = success
- "Mood" frame = success
- "Movement Name" frame = success
- "Original Album" frame = success
- "Original Artist" frame = success
- "Original Filename" frame = success
- "Original Lyricist" frame = success
- "PodcastID" frame = success
- "Podcast Category" frame = success
- "Podcast Feedlink" frame = success
- "Podcast Description" frame = success
- "Podcast Keywords" frame = success
- "Publisher" frame = success
- "Produced Notice" frame = success
- "Radio Station" frame = success
- "Radio Station Owner" frame = success
- "Subtitle" frame = success
- "Set Subtitle" frame = success
- "Title" frame = success
- "Title Sort" frame = success
+ "Arranger" frame = failed. No frames wrote. (8 byte content string)
+ "Artist" frame = failed. No frames wrote. (6 byte content string)
+ "ArtistSort" frame = failed. No frames wrote. (10 byte content string)
+ "Composer" frame = failed. No frames wrote. (8 byte content string)
+ "ComposerSort" frame = failed. No frames wrote. (12 byte content string)
+ "Conductor" frame = failed. No frames wrote. (9 byte content string)
+ "Content Group" frame = failed. No frames wrote. (13 byte content string)
+ "Copyright" frame = failed. No frames wrote. (9 byte content string)
+ "EncodedBy" frame = failed. No frames wrote. (9 byte content string)
+ "Encoding Settings" frame = ERROR. (17 byte content string) "Thread 1: EXC_BAD_INSTRUCTION (code=EXC_I386_INVOP, subcode=0x0)" at line 97 of `FrameProtocol`. It looks like it's looking for bytes that are out of range, perhaps because they didn't write?
+ "File Owner" frame = failed. (10 byte content string)
+ "Grouping" frame = failed. (8 byte content string)
+ "InitialKey" frame = SUCCESS (3-byte frame)
+ "Lyricist" frame = failed (8 byte content string)
+ "Mood" frame = SUCCESS (4 byte content string)
+ "Movement Name" frame = failed (13 byte content string)
+ "Original Album" frame = failed (14 byte content string)
+ "Original Artist" frame = failed (15 byte content string)
+ "Original Filename" frame = ERROR. (17 byte content string)
+ "Original Lyricist" frame = ERROR. (17 byte content string)
+ "PodcastID" frame = failed (10 byte content string)
+ "Podcast Category" frame = failed (16 byte content string)
+ "Podcast Feedlink" frame = ERROR. (18 byte content string)
+ "Podcast Description" frame = ERROR. (19 byte content string)
+ "Podcast Keywords" frame = failed (16 byte content string)
+ "Publisher" frame = failed (9 byte content string)
+ "Produced Notice" frame = ERROR (20 byte content string)
+ "Radio Station" frame = failed (13 byte content string)
+ "Radio Station Owner" frame = ERROR (19 byte content string)
+ "Subtitle" frame = failed (8 byte content string)
+ "Set Subtitle" frame = failed (12 byte content string)
+ "Title" frame = SUCCESS (5 byte content string)
+ "Title Sort" frame = failed (10 byte content string)
  
- "Compilation" frame = success
- "BPM" frame = success
- "ISRC" frame = success
- "Length" frame = success
- "Movement Number" frame = success
- "Movement Count" frame = success
- "Playlist Delay" frame = success
+ "Compilation" frame = SUCCESS. (1 byte content string)
+ "BPM" frame = SUCCESS. (2 byte content string)
+ "ISRC" frame = failed. (12 byte content string)
+ "Length" frame = SUCCESS. (4 byte content string)
+ "Movement Number" frame = SUCCESS. (1 byte content string)
+ "Movement Count" frame = SUCCESS. (1 byte content string)
+ "Playlist Delay" frame = SUCCESS. (1 byte content string)
  
- "Audio Source Webpage" frame = success
- "Audio File Webpage" frame = success
- "Artist Webpage" frame = success
- "Copyright Webpage" frame = success
- "Payment Webpage" frame = success
- "Publisher Webpage" frame = success
- "Radio Station Webpage" frame = success
+ "Audio Source Webpage" frame = ERROR (22 byte content string without encoding byte)
+ "Audio File Webpage" frame = ERROR (20 byte content string without encoding byte)
+ "Artist Webpage" frame = failed (17 byte content string without encoding byte)
+ "Copyright Webpage" frame = ERROR (20 byte content string without encoding byte)
+ "Payment Webpage" frame = failed (18 byte content string without encoding byte)
+ "Publisher Webpage" frame = ERROR (20 byte content string without encoding byte)
+ "Radio Station Webpage" frame = ERROR (23 byte content string without encoding byte)
  
- "Languages" frame = success
+ "Languages" frame = SUCCESS (3 byte content string)
  
- "Track Number" frame = success
- "Disc Number" frame = success
+ "Track Number" frame = SUCCESS (3 byte content string)
+ "Disc Number" frame = SUCCESS (3 byte content string)
  
- "Comments" frame = success
- "Lyrics" frame = success
+ "Comments" frame = ERROR (26 bytes of content in total (3 language, 8 description, 15 content)
+ "Lyrics" frame = ERROR (26 bytes of content in total (3 language, 7 description, 14 content)
  
- "File Type" frame = success
- "Media Type" frame = success
+ "File Type" frame = failed (9 byte content string)
+ "Media Type" frame = failed (10 byte content string)
 
  
  // ALBUM + ALBUMARTIST + ALBUMARTISTSORT frame PLUS
