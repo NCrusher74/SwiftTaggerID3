@@ -44,7 +44,7 @@ struct TagProperties {
     /// - Throws: figure this out
     /// - Returns: a four-byte data slice containing the `Tag` size
     func calculateNewTagSize(data: Data) throws -> Data {
-        return data.count.truncatedUInt32.bigEndianData
+        return data.count.truncatedUInt32.encodingSynchsafe().bigEndianData
     }
 }
 
