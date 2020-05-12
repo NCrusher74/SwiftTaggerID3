@@ -121,8 +121,9 @@ struct LocalizedFrame: FrameProtocol {
         }
 
         // encode and append description string
-        frameData.append(self.descriptionString?.encoded(withNullTermination: true) ?? "".encoded(withNullTermination: true))
-
+        if let encodedDescription = self.descriptionString?.encoded(withNullTermination: true) {
+            frameData.append(encodedDescription)
+        }
         // encode and append contents string
         frameData.append(self.contentString.encoded(withNullTermination: false))
         return frameData
