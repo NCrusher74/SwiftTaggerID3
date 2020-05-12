@@ -34,6 +34,7 @@ struct LocalizedFrame: FrameProtocol {
     /// the content of the frame
     var contentString: String
     
+    // MARK: Frame Parsing
     init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,
@@ -81,6 +82,7 @@ struct LocalizedFrame: FrameProtocol {
         }
     }
     
+    // MARK: Frame building
     /**
      - parameter languageString: the ISO-639-2 language code. default is `undetermined`
      - parameter descriptionString: a terminated text string describing the frame content
@@ -103,6 +105,7 @@ struct LocalizedFrame: FrameProtocol {
         self.languageString = languageString ?? "und"
         self.descriptionString = descriptionString ?? ""
         self.contentString = contentString
+//        print(self.contentString) //-- works as expected
     }
     
     
@@ -112,15 +115,19 @@ struct LocalizedFrame: FrameProtocol {
         // append encoding byte
         frameData.append(StringEncoding.preferred.rawValue.encoding(
             endianness: .bigEndian))
+
         if self.layout == .known(.comments) ||
             self.layout == .known(.unsynchronizedLyrics) {
             // encode and append language string
             frameData.append(self.languageString?.encoded(withNullTermination: false) ?? "und".encoded(withNullTermination: false))
         }
+
         // encode and append description string
         frameData.append(self.descriptionString?.encoded(withNullTermination: true) ?? "".encoded(withNullTermination: true))
 
         // encode and append contents string
+//                print(self.contentString)
+//                print(self.contentString.encoded(withNullTermination: false).hexadecimal())
         frameData.append(self.contentString.encoded(withNullTermination: false))
         return frameData
     }
@@ -155,12 +162,12 @@ extension Tag {
                     case .localizedFrame(let localizedFrame) = frame {
                     // return the content string of a specific frame by searching using the description string
                     return localizedFrame.contentString
-                } else {
-                    if let frame = self.frames[.userDefinedText(
-                        description: description ?? "")],
-                        case .localizedFrame(let localizedFrame) = frame {
-                        return localizedFrame.contentString
-                    }
+                }
+            } else {
+                if let frame = self.frames[.userDefinedText(
+                    description: description ?? "")],
+                    case .localizedFrame(let localizedFrame) = frame {
+                    return localizedFrame.contentString
                 }
             }; return nil
     }
@@ -185,6 +192,7 @@ extension Tag {
             layout, languageString: nil,
             descriptionString: description ?? "",
             contentString: content)
+//        print(content) - as expected
         self.frames[frameKey] = .localizedFrame(frame)
     }
 

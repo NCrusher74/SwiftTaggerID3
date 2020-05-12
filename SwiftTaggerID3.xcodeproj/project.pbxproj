@@ -34,7 +34,6 @@
 		515AF6592449A099005C29FA /* InvolvedPersonCredits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515AF6582449A098005C29FA /* InvolvedPersonCredits.swift */; };
 		515AF65B2449A8E2005C29FA /* KeySignatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515AF65A2449A8E2005C29FA /* KeySignatures.swift */; };
 		515CC1052448EB0C005906D0 /* UnknownFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515CC1042448EB0C005906D0 /* UnknownFrame.swift */; };
-		515F2923244FDE0400B4CC44 /* Tag Header Data For Test Files in Resources */ = {isa = PBXBuildFile; fileRef = 515F2922244FDE0400B4CC44 /* Tag Header Data For Test Files */; };
 		5168949B244C112E008F6124 /* MediaType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5168949A244C112E008F6124 /* MediaType.swift */; };
 		51753026244DC5700005B2AB /* MusicianPerformerCredits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51753025244DC5700005B2AB /* MusicianPerformerCredits.swift */; };
 		5175303F244DF1B20005B2AB /* StringEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5175303E244DF1B20005B2AB /* StringEncoding.swift */; };
@@ -129,7 +128,6 @@
 		515AF6582449A098005C29FA /* InvolvedPersonCredits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvolvedPersonCredits.swift; sourceTree = "<group>"; };
 		515AF65A2449A8E2005C29FA /* KeySignatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySignatures.swift; sourceTree = "<group>"; };
 		515CC1042448EB0C005906D0 /* UnknownFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnknownFrame.swift; sourceTree = "<group>"; };
-		515F2922244FDE0400B4CC44 /* Tag Header Data For Test Files */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Tag Header Data For Test Files"; sourceTree = "<group>"; };
 		5168949A244C112E008F6124 /* MediaType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaType.swift; sourceTree = "<group>"; };
 		51753025244DC5700005B2AB /* MusicianPerformerCredits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicianPerformerCredits.swift; sourceTree = "<group>"; };
 		5175303E244DF1B20005B2AB /* StringEncoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringEncoding.swift; sourceTree = "<group>"; };
@@ -324,7 +322,6 @@
 				51753042244ECF6C0005B2AB /* v23-test-file-raw-tag-info */,
 				51753040244ECDD00005B2AB /* v24-test-file-raw-tag-info */,
 				5144EC8A24596CD8001757DA /* v24-chapterized-raw-tag-info */,
-				515F2922244FDE0400B4CC44 /* Tag Header Data For Test Files */,
 			);
 			path = TestMedia;
 			sourceTree = "<group>";
@@ -497,7 +494,6 @@
 				51FF4949245BBAC10006F8F8 /* mp3-v23-with-meta.mp3 in Resources */,
 				5144EC832458C993001757DA /* mp3-v24-with-meta.mp3 in Resources */,
 				5144EC8D24596CEB001757DA /* mp3-chapterized.mp3 in Resources */,
-				515F2923244FDE0400B4CC44 /* Tag Header Data For Test Files in Resources */,
 				51753043244ECF6C0005B2AB /* v23-test-file-raw-tag-info in Resources */,
 				5144EC812458C993001757DA /* mp3-v22-with-meta.mp3 in Resources */,
 				51490E71243F3CE9009D4BA4 /* samplecover-green.jpg in Resources */,

@@ -244,7 +244,7 @@ enum FrameKey: Hashable {
     case producedNotice
     /** `Publisher` frame
      
-     Simply contains the name of the label or publisher.4*/
+        Simply contains the name of the label or publisher.4*/
     case publisher
     /** `Publishers official webpage` frame
      

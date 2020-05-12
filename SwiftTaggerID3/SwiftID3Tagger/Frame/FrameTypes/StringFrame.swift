@@ -194,15 +194,18 @@ struct StringFrame: FrameProtocol {
     func encodeContents(version: Version) throws -> Data {
         // initialize an empty data array
         var frameData = Data()
+        // url frames don't have an encoding byte, so don't add one for them
         if !urlFrameKeys.contains(self.frameKey) {
             // append encoding byte to frameData
             frameData.append(
-                StringEncoding.isoLatin1.rawValue.encoding(
+                StringEncoding.preferred.rawValue.encoding(
                     endianness: .bigEndian))
+            // convert and append contentString to frameData
+            frameData.append(self.contentString.encoded(
+                withNullTermination: false))
+        } else {
+            frameData.append(self.contentString.encodedASCII())
         }
-        // convert and append contentString to frameData
-        frameData.append(self.contentString.encoded(
-            withNullTermination: false))
         return frameData
     }
 }

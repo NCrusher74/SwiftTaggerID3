@@ -88,13 +88,6 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag.involvedPeopleList?[.director], ["Director Name"])
         XCTAssertEqual(tag.involvedPeopleList?[.producer], ["Producer Name"])
 
-    }
-   
-    func testProblemChildrenV23() throws {
-        let mp3Url = Bundle.writtenV23
-        let mp3File = try Mp3File(location: mp3Url)
-        let tag = try Tag(readFrom: mp3File)
-        
         XCTAssertNil(tag.fileType?.fileType)
         XCTAssertNil(tag.fileType?.fileTypeRefinement)
         XCTAssertEqual(tag.fileType?.additionalInformation, "FileType")
@@ -105,7 +98,14 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         
         XCTAssertNil(tag.genre?.presetGenre)
         XCTAssertEqual(tag.genre?.customGenre, "Test Genre")
+    }
+   
+    func testProblemChildrenV23() throws {
+        let mp3Url = Bundle.writtenV23
+        let mp3File = try Mp3File(location: mp3Url)
+        let tag = try Tag(readFrom: mp3File)
         
+        XCTAssertEqual(tag.year, 2019)
     }
 
     func testV24Reading() throws {
@@ -174,6 +174,17 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag.involvedPeopleList?[.producer], ["Producer Name"])
         XCTAssertEqual(tag.musicianCreditsList?[.musician], ["Musician Name"])
         XCTAssertEqual(tag.musicianCreditsList?[.singer], ["Singer Name"])
+        XCTAssertNil(tag.fileType?.fileType)
+        XCTAssertNil(tag.fileType?.fileTypeRefinement)
+        XCTAssertEqual(tag.fileType?.additionalInformation, "FileType")
+        
+        XCTAssertNil(tag.mediaType?.mediaType)
+        XCTAssertNil(tag.mediaType?.mediaTypeRefinement)
+        XCTAssertEqual(tag.mediaType?.additionalInformation, "MediaType")
+        
+        XCTAssertNil(tag.genre?.presetGenre)
+        XCTAssertEqual(tag.genre?.customGenre, "Test Genre")
+
 
     }
  
@@ -182,16 +193,16 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         let mp3File = try Mp3File(location: mp3Url)
         let tag = try Tag(readFrom: mp3File)
         
-        XCTAssertNil(tag.fileType?.fileType)
-        XCTAssertNil(tag.fileType?.fileTypeRefinement)
-        XCTAssertEqual(tag.fileType?.additionalInformation, "FileType")
-        
-        XCTAssertNil(tag.mediaType?.mediaType)
-        XCTAssertNil(tag.mediaType?.mediaTypeRefinement)
-        XCTAssertEqual(tag.mediaType?.additionalInformation, "MediaType")
-
-        XCTAssertNil(tag.genre?.presetGenre)
-        XCTAssertEqual(tag.genre?.customGenre, "Test Genre")
+        XCTAssertEqual(tag.encodingDateTime?.year, 2019)
+        XCTAssertEqual(tag.taggingDateTime?.year, 1997)
+        XCTAssertEqual(tag.taggingDateTime?.month, 06)
+        XCTAssertEqual(tag.taggingDateTime?.day, 07)
+        XCTAssertEqual(tag.originalReleaseDate?.year, 1998)
+        XCTAssertEqual(tag.originalReleaseDate?.month, 03)
+        XCTAssertEqual(tag.originalReleaseDate?.day, 04)
+        XCTAssertEqual(tag.releaseDateTime?.year, 1999)
+        XCTAssertEqual(tag.releaseDateTime?.month, 05)
+        XCTAssertEqual(tag.releaseDateTime?.day, 08)
 
     }
 }

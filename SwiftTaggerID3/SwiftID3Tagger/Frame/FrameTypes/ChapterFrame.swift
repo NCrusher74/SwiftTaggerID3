@@ -118,6 +118,7 @@ public struct ChapterFrame: FrameProtocol {
     // encodes the contents of the frame and returns Data that can be added to the Tag instance to write to the file
     func encodeContents(version: Version) throws -> Data {
         var frameData = Data()
+        // there is no encoding byte for Chapter frames
         // encode and append ElementID string
         frameData.append(self.elementID.encoded(withNullTermination: true))
         // convert integers to UInt32 and then to Data and append

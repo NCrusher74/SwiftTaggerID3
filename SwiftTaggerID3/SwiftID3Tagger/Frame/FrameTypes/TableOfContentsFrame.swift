@@ -138,6 +138,7 @@ public struct TableOfContentsFrame: FrameProtocol {
     // encode the contents of the frame to add to an ID3 tag
     func encodeContents(version: Version) throws -> Data {
         var frameData = Data()
+        // there is no encoding byte for TOC frames
         // encode and append the elementID
         frameData.append(self.elementID.encoded(withNullTermination: true))
         // encode and append the entry count
