@@ -58,12 +58,11 @@ struct LocalizedFrame: FrameProtocol {
             self.descriptionString = parsed.description ?? ""
             self.contentString = parsed.content
             
-            switch layout {
-                case .known(.comments) : self.frameKey = .comments(
+            if self.layout == .known(.comments) {
+                self.frameKey = .comments(
                     description: parsed.description ?? "")
-                case .known(.unsynchronizedLyrics) : self.frameKey = .unsynchronizedLyrics(
-                    description: parsed.description ?? "")
-                default: self.frameKey = .comments(
+            } else {
+                self.frameKey = .unsynchronizedLyrics(
                     description: parsed.description ?? "")
             }
         } else {
@@ -71,12 +70,11 @@ struct LocalizedFrame: FrameProtocol {
             self.descriptionString = parsed.description ?? ""
             self.contentString = parsed.content
             
-            switch layout {
-                case .known(.userDefinedText) : self.frameKey = .userDefinedText(
+            if self.layout == .known(.userDefinedText) {
+                self.frameKey = .userDefinedText(
                     description: parsed.description ?? "")
-                case .known(.userDefinedWebpage) : self.frameKey = .userDefinedWebpage(
-                    description: parsed.description ?? "")
-                default: self.frameKey = .userDefinedText(
+            } else {
+                self.frameKey = .userDefinedWebpage(
                     description: parsed.description ?? "")
             }
         }
@@ -93,19 +91,20 @@ struct LocalizedFrame: FrameProtocol {
          descriptionString: String?,
          contentString: String) {
         self.layout = layout
-        switch layout {
-            case .known(.comments) : self.frameKey = .comments(description: descriptionString ?? "")
-            case .known(.unsynchronizedLyrics) : self.frameKey = .unsynchronizedLyrics(description: descriptionString ?? "")
-            case .known(.userDefinedText): self.frameKey = .userDefinedText(description: descriptionString ?? "")
-            case .known(.userDefinedWebpage) : self.frameKey = .userDefinedWebpage(description: descriptionString ?? "")
-            default: self.frameKey = .userDefinedText(description: descriptionString ?? "")
+        if layout == .known(.unsynchronizedLyrics) {
+            self.frameKey = .unsynchronizedLyrics(description: descriptionString ?? "")
+        } else if layout == .known(.comments) {
+            self.frameKey = .comments(description: descriptionString ?? "")
+        } else if layout == .known(.userDefinedText) {
+            self.frameKey = .userDefinedText(description: descriptionString ?? "")
+        } else {
+            self.frameKey = .userDefinedWebpage(description: descriptionString ?? "")
         }
-        self.flags = LocalizedFrame.defaultFlags
         
+        self.flags = LocalizedFrame.defaultFlags
         self.languageString = languageString ?? "und"
         self.descriptionString = descriptionString ?? ""
         self.contentString = contentString
-//        print(self.contentString) //-- works as expected
     }
     
     
@@ -125,8 +124,6 @@ struct LocalizedFrame: FrameProtocol {
         frameData.append(self.descriptionString?.encoded(withNullTermination: true) ?? "".encoded(withNullTermination: true))
 
         // encode and append contents string
-//                print(self.contentString)
-//                print(self.contentString.encoded(withNullTermination: false).hexadecimal())
         frameData.append(self.contentString.encoded(withNullTermination: false))
         return frameData
     }
@@ -191,7 +188,6 @@ extension Tag {
             layout, languageString: nil,
             descriptionString: description ?? "",
             contentString: content)
-//        print(content) - as expected
         self.frames[frameKey] = .localizedFrame(frame)
     }
 
