@@ -39,26 +39,8 @@ struct DateFrame: FrameProtocol {
          flags: Data) throws {
         self.flags = flags
         self.layout = layout
-        switch layout {
-            case .known(.date): self.frameKey = .date
-            // (2.2-2.3) DDMM
-            case .known(.encodingTime): self.frameKey = .encodingTime
-            // (2.4) timestamp
-            case .known(.originalReleaseTime): self.frameKey = .originalReleaseTime
-            // (2.2-2.3) YYYY, (2.4) timestamp
-            case .known(.recordingDate): self.frameKey = .recordingDate
-            //  (2.2-2.3) "4th-7th June, 12th June" (2.4) timestamp
-            case .known(.releaseTime): self.frameKey = .releaseTime
-            // timestamp 2.4
-            case .known(.taggingTime): self.frameKey = .taggingTime
-            // timestamp 2.4
-            case .known(.time): self.frameKey = .time
-            // HHMM
-            case .known(.year): self.frameKey = .year
-            // YYYY
-            default: self.frameKey = .userDefinedText(description: "(\(layout.id3Identifier(version: version) ?? "TXXX"))")
-        }
-        
+        self.frameKey = layout.frameKey(additionalIdentifier: nil)
+
         var parsing = contents
         let encoding = try DateFrame.extractEncoding(data: &parsing, version: version)
 
@@ -80,25 +62,7 @@ struct DateFrame: FrameProtocol {
          timeStamp: Date) {
         self.flags = DateFrame.defaultFlags
         self.layout = layout
-        switch layout {
-            case .known(.date): self.frameKey = .date
-            // TDAT - (2.2-2.3) DDMM
-            case .known(.encodingTime): self.frameKey = .encodingTime
-            // TDEN (2.4) timestamp
-            case .known(.originalReleaseTime): self.frameKey = .originalReleaseTime
-            // (2.2-2.3) YYYY, (2.4) timestamp
-            case .known(.recordingDate): self.frameKey = .recordingDate
-            //  (2.2-2.3) "4th-7th June, 12th June" (2.4) timestamp
-            case .known(.releaseTime): self.frameKey = .releaseTime
-            // timestamp 2.4
-            case .known(.taggingTime): self.frameKey = .taggingTime
-            // timestamp 2.4
-            case .known(.time): self.frameKey = .time
-            // HHMM (2.2-2.3)
-            case .known(.year): self.frameKey = .year
-            // YYYY (2.2-2.3)
-            default: self.frameKey = .userDefinedText(description: "")
-        }
+        self.frameKey = layout.frameKey(additionalIdentifier: nil)
         self.timeStamp = timeStamp
     }
 

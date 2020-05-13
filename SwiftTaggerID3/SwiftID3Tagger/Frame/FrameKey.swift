@@ -286,7 +286,7 @@ enum FrameKey: Hashable {
     case tableOfContents(elementID: String)
     /** `Tagging time` frame
      
-     Contains a timestamp describing then the audio was tagged. NEW IN VERSION  2.4 */
+        Contains a timestamp describing then the audio was tagged. NEW IN VERSION  2.4 */
     case taggingTime
     /** `Time` frame
      
@@ -294,7 +294,7 @@ enum FrameKey: Hashable {
     case time
     /** `Title/Songname/Content description`'` frame
      
-     The actual name of the piece (e.g. "Adagio", "Hurricane Donna").
+        The actual name of the piece (e.g. "Adagio", "Hurricane Donna").
      
         For audiobooks that are stored in multiple files, this is usually the title of the part contained in the file, rather than the book title. */
     case title

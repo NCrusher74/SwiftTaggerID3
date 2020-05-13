@@ -15,20 +15,12 @@ extension Mp3File {
         case CannotReadFile;
         /// Error generated when an invalid file format is passed to the ID3TagEditor.
         case InvalidFileFormat;
-        /// Error generated when the tag size exceed 256 MB.
-        case TagTooBig;
-        /// Error generated when a tag isn't large enough to hold meaningful content
-        case TagTooSmall;
         /// Error generated when there's not valid data in the tag.
         case InvalidTagData;
-        /// Error generated when the file is corrupted.
-        case CorruptedFile;
-        /// Error generated if the file size is too small for a valid tag.
-        case FileTooSmall;
-        /** Error generated if a frame is not available for a particular version and an equivalent user-text frame cannot be substituted */
-        case InvalidFrameForVersion
-        /// Error generated if frame is a date frame that was implemented in a later version of ID3v2
-        case InvalidDateFrameForVersion
+        /// Error thrown when the tag version cannot be determined
+        case InvalidVersionData;
+        /// Error thrown when the tag is not large enough to hold at least one valid frame
+        case InvalidTagSize;
         /// Error thrown when string is not convertible
         case InconvertibleString
         /// Error thrown when the data requested is out of bounds
@@ -49,27 +41,9 @@ extension Mp3File.Error: LocalizedError {
             case .InvalidFileFormat:
                 return NSLocalizedString(
                     "The file needs to be an MP3 file", comment: "")
-            case .TagTooBig:
-                return NSLocalizedString(
-                    "Tag size exceeds limit", comment: "")
-            case .TagTooSmall:
-                return NSLocalizedString(
-                    "Tag is not large enough to hold valid content", comment: "")
             case .InvalidTagData:
                 return NSLocalizedString(
                     "The tag header is unrecognized", comment: "")
-            case .CorruptedFile:
-                return NSLocalizedString(
-                    "Tag data size cannot exceed file size", comment: "")
-            case .FileTooSmall:
-                return NSLocalizedString(
-                    "The file is too small to hold a valid ID3 tag", comment: "")
-            case .InvalidFrameForVersion:
-                return NSLocalizedString(
-                    "This frame type is incompatible with this version of ID3", comment: "")
-            case .InvalidDateFrameForVersion:
-                return NSLocalizedString(
-                    "This frame type was not implemented for this version of ID3. Please used another date type", comment: "")
             case .InconvertibleString:
                 return NSLocalizedString(
                     "String is not representable in ISO 8859‐1", comment: "")
@@ -81,6 +55,10 @@ extension Mp3File.Error: LocalizedError {
                     "This image type is not handled by SwiftTagger", comment: "")
             case .UnreadableFrame:
                 return NSLocalizedString("The data in this frame cannot be retrieved", comment: "")
+            case .InvalidVersionData:
+                return NSLocalizedString("The ID3 version for the tag cannot be determined", comment: "")
+            case .InvalidTagSize:
+                return NSLocalizedString("The tag is not large enough to hold valid frame data", comment: "")
         }
     }
 }

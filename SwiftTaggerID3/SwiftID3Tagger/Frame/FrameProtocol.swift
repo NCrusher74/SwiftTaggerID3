@@ -156,7 +156,7 @@ extension FrameProtocol {
         let encodingData = data.extractFirst(1)
         let encodingByteArray = [UInt8](encodingData)
         let encodingByte = encodingByteArray.first ?? 0x00
-        return StringEncoding(rawValue: encodingByte) ?? .utf8
+        return StringEncoding(rawValue: encodingByte) ?? .isoLatin1
     }
     
     /// Extracts and decodes description and content strings for frame types that use them.
@@ -209,12 +209,12 @@ extension FrameProtocol {
     }
     
 
-    // parse the parentheses out of version 2.2 and 2.3 strings
+    // parse the parentheses out of version 2.2 and 2.3 strings (Genre and MediaType frames)
     // for PresetOptionsFrame
     static func parseParentheticalString(unparsedString: String) -> [String] {
         // separate the components into an array using the open paren as a separator
         // this will remove the open parens from parenthetical comments as well as the codes
-        // so we'll have to place those when we spot a double-paren
+        // so we'll have to replace those when we spot a double-paren
         var stringComponents = unparsedString.components(separatedBy: "(")
         // take it one component at a time
         for (index, value) in stringComponents.enumerated() {

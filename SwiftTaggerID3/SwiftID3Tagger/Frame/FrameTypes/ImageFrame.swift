@@ -106,7 +106,7 @@
         var frameData = Data()
         // append encoding byte
         frameData.append(StringEncoding.preferred.rawValue)
-        // determine format based upon magic number
+        // determine format based on file extension
         // encode and append a format or MIME-type string according to version requirements
         var formatString: String = ""
         switch version {

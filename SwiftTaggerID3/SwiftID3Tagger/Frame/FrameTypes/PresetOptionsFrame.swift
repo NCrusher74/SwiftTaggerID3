@@ -27,16 +27,8 @@ struct PresetOptionsFrame: FrameProtocol {
          flags: Data) throws {
         self.flags = flags
         self.layout = layout
-        
-        // this frametype handles three frame keys
-        if self.layout == .known(.fileType) {
-            self.frameKey = .fileType
-        } else if self.layout == .known(.mediaType) {
-            self.frameKey = .mediaType
-        } else {
-            self.frameKey = .genre
-        }
-        
+        self.frameKey = layout.frameKey(additionalIdentifier: nil)
+
         // standard boilerplate, it's a text frame (of sorts) so strings are encoded
         var parsing = contents
         let encoding = try PresetOptionsFrame.extractEncoding(data: &parsing, version: version)
@@ -119,14 +111,7 @@ struct PresetOptionsFrame: FrameProtocol {
         self.layout = layout
         self.genreMediaOrFileInfo = genreMediaOrFileInfo
         self.flags = PresetOptionsFrame.defaultFlags
-        
-        if self.layout == .known(.fileType) {
-            self.frameKey = .fileType
-        } else if self.layout == .known(.mediaType) {
-            self.frameKey = .mediaType
-        } else {
-            self.frameKey = .genre
-        }
+        self.frameKey = layout.frameKey(additionalIdentifier: nil)
     }
     
     func encodeContents(version: Version) throws -> Data {

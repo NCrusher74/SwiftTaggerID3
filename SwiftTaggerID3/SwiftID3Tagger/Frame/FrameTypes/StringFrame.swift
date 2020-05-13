@@ -48,64 +48,7 @@ struct StringFrame: FrameProtocol {
         // initialize layout property
         self.layout = layout
         
-        // initialize frame key property based on the layout
-        switch layout {
-            case .known(.album): self.frameKey = .album
-            case .known(.albumSort): self.frameKey = .albumSort
-            case .known(.albumArtist): self.frameKey = .albumArtist
-            case .known(.albumArtistSort): self.frameKey = .albumArtistSort
-            case .known(.arranger): self.frameKey = .arranger
-            case .known(.artist): self.frameKey = .artist
-            case .known(.artistSort): self.frameKey = .artistSort
-            case .known(.composer): self.frameKey = .composer
-            case .known(.composerSort): self.frameKey = .composerSort
-            case .known(.conductor): self.frameKey = .conductor
-            case .known(.contentGroup): self.frameKey = .contentGroup
-            case .known(.copyright): self.frameKey = .copyright
-            case .known(.encodedBy): self.frameKey = .encodedBy
-            case .known(.encodingSettings): self.frameKey = .encodingSettings
-            case .known(.fileOwner): self.frameKey = .fileOwner
-            case .known(.grouping): self.frameKey = .grouping
-            case .known(.initialKey): self.frameKey = .initialKey
-            case .known(.lyricist): self.frameKey = .lyricist
-            case .known(.mood): self.frameKey = .mood
-            case .known(.movementName): self.frameKey = .movementName
-            case .known(.originalAlbum): self.frameKey = .originalAlbum
-            case .known(.originalArtist): self.frameKey = .originalArtist
-            case .known(.originalFilename): self.frameKey = .originalFilename
-            case .known(.originalLyricist): self.frameKey = .originalLyricist
-            case .known(.podcastCategory): self.frameKey = .podcastCategory
-            case .known(.podcastDescription): self.frameKey = .podcastDescription
-            case .known(.podcastFeedLink): self.frameKey = .podcastFeedLink
-            case .known(.podcastID): self.frameKey = .podcastID
-            case .known(.podcastKeywords): self.frameKey = .podcastKeywords
-            case .known(.producedNotice): self.frameKey = .producedNotice
-            case .known(.publisher): self.frameKey = .publisher
-            case .known(.radioStation): self.frameKey = .radioStation
-            case .known(.radioStationOwner): self.frameKey = .radioStationOwner
-            case .known(.setSubtitle): self.frameKey = .setSubtitle
-            case .known(.subtitle): self.frameKey = .subtitle
-            case .known(.title): self.frameKey = .title
-            case .known(.titleSort): self.frameKey = .titleSort
-            // url frames
-            case .known(.artistWebpage): self.frameKey = .artistWebpage
-            case .known(.audioFileWebpage): self.frameKey = .audioFileWebpage
-            case .known(.audioSourceWebpage): self.frameKey = .audioSourceWebpage
-            case .known(.copyrightWebpage): self.frameKey = .copyrightWebpage
-            case .known(.paymentWebpage): self.frameKey = .paymentWebpage
-            case .known(.publisherWebpage): self.frameKey = .publisherWebpage
-            case .known(.radioStationWebpage): self.frameKey = .radioStationWebpage
-            // integer frames
-            case .known(.bpm): self.frameKey = .bpm
-            case .known(.isrc): self.frameKey = .isrc
-            case .known(.length): self.frameKey = .length
-            case .known(.movementCount): self.frameKey = .movementCount
-            case .known(.movementNumber): self.frameKey = .movementNumber
-            case .known(.playlistDelay): self.frameKey = .playlistDelay
-            // boolean frame
-            case .known(.compilation): self.frameKey = .compilation
-            default: self.frameKey = .userDefinedText(description: "(\(layout.id3Identifier(version: version) ?? "TXXX"))")
-        }
+        self.frameKey = layout.frameKey(additionalIdentifier: nil)
         // parse contents
         /* since URL frames do not use an encoding byte, we parse them without one */
         let parsing = contents
@@ -134,57 +77,9 @@ struct StringFrame: FrameProtocol {
         // initialize the flags property using the default flags
         self.flags = StringFrame.defaultFlags
         // initialize the layout property
-        self.layout = layout
-        
+        self.layout = layout        
         // initialize the frameKey property based on the layout
-        switch layout {
-            case .known(.album): self.frameKey = .album
-            case .known(.albumSort): self.frameKey = .albumSort
-            case .known(.albumArtist): self.frameKey = .albumArtist
-            case .known(.albumArtistSort): self.frameKey = .albumArtistSort
-            case .known(.arranger): self.frameKey = .arranger
-            case .known(.artist): self.frameKey = .artist
-            case .known(.artistSort): self.frameKey = .artistSort
-            case .known(.composer): self.frameKey = .composer
-            case .known(.composerSort): self.frameKey = .composerSort
-            case .known(.conductor): self.frameKey = .conductor
-            case .known(.contentGroup): self.frameKey = .contentGroup
-            case .known(.copyright): self.frameKey = .copyright
-            case .known(.encodedBy): self.frameKey = .encodedBy
-            case .known(.encodingSettings): self.frameKey = .encodingSettings
-            case .known(.fileOwner): self.frameKey = .fileOwner
-            case .known(.grouping): self.frameKey = .grouping
-            case .known(.initialKey): self.frameKey = .initialKey
-            case .known(.lyricist): self.frameKey = .lyricist
-            case .known(.mood): self.frameKey = .mood
-            case .known(.movementName): self.frameKey = .movementName
-            case .known(.originalAlbum): self.frameKey = .originalAlbum
-            case .known(.originalArtist): self.frameKey = .originalArtist
-            case .known(.originalFilename): self.frameKey = .originalFilename
-            case .known(.originalLyricist): self.frameKey = .originalLyricist
-            case .known(.podcastCategory): self.frameKey = .podcastCategory
-            case .known(.podcastDescription): self.frameKey = .podcastDescription
-            case .known(.podcastFeedLink): self.frameKey = .podcastFeedLink
-            case .known(.podcastID): self.frameKey = .podcastID
-            case .known(.podcastKeywords): self.frameKey = .podcastKeywords
-            case .known(.producedNotice): self.frameKey = .producedNotice
-            case .known(.publisher): self.frameKey = .publisher
-            case .known(.radioStation): self.frameKey = .radioStation
-            case .known(.radioStationOwner): self.frameKey = .radioStationOwner
-            case .known(.setSubtitle): self.frameKey = .setSubtitle
-            case .known(.subtitle): self.frameKey = .subtitle
-            case .known(.title): self.frameKey = .title
-            case .known(.titleSort): self.frameKey = .titleSort
-            // url frames
-            case .known(.artistWebpage): self.frameKey = .artistWebpage
-            case .known(.audioFileWebpage): self.frameKey = .audioFileWebpage
-            case .known(.audioSourceWebpage): self.frameKey = .audioSourceWebpage
-            case .known(.copyrightWebpage): self.frameKey = .copyrightWebpage
-            case .known(.paymentWebpage): self.frameKey = .paymentWebpage
-            case .known(.publisherWebpage): self.frameKey = .publisherWebpage
-            case .known(.radioStationWebpage): self.frameKey = .radioStationWebpage
-            default: self.frameKey = .userDefinedText(description: "\(contentString)")
-        }
+        self.frameKey = layout.frameKey(additionalIdentifier: nil)
     }
     
     /// Encodes the contents of the frame, without any header data
@@ -610,82 +505,95 @@ extension Tag {
     /// - ArtistWebpage getter-setter. ID3 Identifier: `WAR`/`WOAR`
     public var artistWebpage: String? {
         get { string(for: .artistWebpage) ?? "" }
-        set { set(.known(.artistWebpage), .artistWebpage, to: newValue ?? "") }
+        set { set(.known(.artistWebpage), .artistWebpage,
+                  to: newValue ?? "") }
     }
     
     /// - (Official)AudioFileWebpage getter-setter. ID3 Identifier: `WAF`/`WOAF`
     public var audioFileWebpage: String? {
         get { string(for: .audioFileWebpage) ?? "" }
-        set { set(.known(.audioFileWebpage), .audioFileWebpage, to: newValue ?? "") }
+        set { set(.known(.audioFileWebpage), .audioFileWebpage,
+                  to: newValue ?? "") }
     }
     
     /// - (Official)AudioSourceWebpage getter-setter. ID3 Identifier: `WAS`/`WOAS`
     public var audioSourceWebpage: String? {
         get { string(for: .audioSourceWebpage) ?? "" }
-        set { set(.known(.audioSourceWebpage), .audioSourceWebpage, to: newValue ?? "") }
+        set { set(.known(.audioSourceWebpage), .audioSourceWebpage,
+                  to: newValue ?? "") }
     }
     
     /// - Copyright/Legal Information Webpage getter-setter. ID3 Identifier: `WCP`/`WCOP`
     public var copyrightWebpage: String? {
         get { string(for: .copyrightWebpage) ?? "" }
-        set { set(.known(.copyrightWebpage), .copyrightWebpage, to: newValue ?? "") }
+        set { set(.known(.copyrightWebpage), .copyrightWebpage,
+                  to: newValue ?? "") }
     }
     
     /// - PaymentWebpage getter-setter. ID3 Identifier: `WPAY`
     /// Valid for tag versions 2.3/2.4 only
     public var paymentWebpage: String? {
         get { string(for: .paymentWebpage) ?? "" }
-        set { set(.known(.paymentWebpage), .paymentWebpage, to: newValue ?? "") }
+        set { set(.known(.paymentWebpage), .paymentWebpage,
+                  to: newValue ?? "") }
     }
     
     /// - PublisherWebpage getter-setter. ID3 Identifier: `WPB`/`WPUB`
     public var publisherWebpage: String? {
         get { string(for: .publisherWebpage) ?? "" }
-        set { set(.known(.publisherWebpage), .publisherWebpage, to: newValue ?? "") }
+        set { set(.known(.publisherWebpage), .publisherWebpage,
+                  to: newValue ?? "") }
     }
     
     /// - (Official Internet)RadioStationWebpage getter-setter. ID3 Identifier: `WRS`/`WORS`
     public var radioStationWebpage: String? {
         get { string(for: .radioStationWebpage) ?? "" }
-        set { set(.known(.radioStationWebpage), .radioStationWebpage, to: newValue ?? "") }
+        set { set(.known(.radioStationWebpage), .radioStationWebpage,
+                  to: newValue ?? "") }
     }
     
     /// BeatsPerMinute getter-setter. ID3 Identifier: `TBP`/`TBPM`
     public var bpm: Int? {
         get { intString(for: .bpm) ?? 0 }
-        set { set(.known(.bpm), .bpm, to: String(newValue ?? 0)) }
+        set { set(.known(.bpm), .bpm,
+                  to: String(newValue ?? 0)) }
     }
     
     /// IRSC getter-setter. ID3 Identifier: `TRC`/`TSRC`
     public var isrc: Int? {
         get { intString(for: .isrc) ?? 0 }
-        set { set(.known(.isrc), .isrc, to: String(newValue ?? 0)) }
+        set { set(.known(.isrc), .isrc,
+                  to: String(newValue ?? 0)) }
     }
     
     /// Length getter-setter. ID3 Identifier: `TLE`/`TLEN`
     public var length: Int? {
         get { intString(for: .length) ?? 0 }
-        set { set(.known(.length), .length, to: String(newValue ?? 0)) }
+        set { set(.known(.length), .length,
+                  to: String(newValue ?? 0)) }
     }
     
     /// TotalMovements getter-setter. This is a non-standard, iTunes non-standard frame
     /// ID3 Identifier: `MVCN`. Valid only for tag versions 2.3/2.4
     public var totalMovements: Int? {
         get { intString(for: .movementCount) ?? 0 }
-        set { set(.known(.movementCount), .movementCount, to: String(newValue ?? 0)) }
+        set { set(.known(.movementCount), .movementCount,
+                  to: String(newValue ?? 0)) }
     }
     
     /// MovementNumber getter-setter. This is a non-standard, iTunes non-standard frame
     /// ID3 Identifier: `MVIN`. Valid only for tag versions 2.3/2.4
     public var movementNumber: Int? {
         get { intString(for: .movementNumber) ?? 0 }
-        set { set(.known(.movementNumber), .movementNumber, to: String(newValue ?? 0)) }
+        set { set(.known(.movementNumber), .movementNumber,
+                  to: String(newValue ?? 0)) }
     }
     
     /// PlaylistDelay getter-setter. ID3 Identifier: `TDY`/`TDLY`
     public var playlistDelay: Int? {
         get { intString(for: .playlistDelay) ?? 0 }
-        set { set(.known(.playlistDelay), .playlistDelay, to: String(newValue ?? 0)) }
+        set { set(.known(.playlistDelay), .playlistDelay,
+                  to: String(newValue ?? 0)) }
     }
     
     /// Compilation (flag) getter-setter. ID3 identifier: `TCP`/`TCMP`. iTunes non-standard frame

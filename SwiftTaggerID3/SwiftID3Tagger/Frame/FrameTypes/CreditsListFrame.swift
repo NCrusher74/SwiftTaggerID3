@@ -30,13 +30,8 @@ struct CreditsListFrame: FrameProtocol {
          flags: Data) throws {
         self.flags = flags
         self.layout = layout
-        
-        if layout == .known(.involvedPeopleList) {
-            self.frameKey = .involvedPeopleList
-        } else {
-            self.frameKey = .musicianCreditsList
-        }
-        
+        self.frameKey = layout.frameKey(additionalIdentifier: nil)
+
         var parsing = contents
         let encoding = try CreditsListFrame.extractEncoding(data: &parsing, version: version)
         self.credits = CreditsListFrame.extractCreditStrings(from: &parsing, encoding: encoding)
@@ -70,12 +65,7 @@ struct CreditsListFrame: FrameProtocol {
         self.layout = layout
         self.credits = credits
         self.flags = CreditsListFrame.defaultFlags
-        
-        if layout == .known(.involvedPeopleList) {
-            self.frameKey = .involvedPeopleList
-        } else {
-            self.frameKey = .musicianCreditsList
-        }
+        self.frameKey = layout.frameKey(additionalIdentifier: nil)
     }
     
     func encodeContents(version: Version) throws -> Data {

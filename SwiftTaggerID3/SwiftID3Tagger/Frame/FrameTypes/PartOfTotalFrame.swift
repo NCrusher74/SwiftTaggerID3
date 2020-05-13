@@ -33,12 +33,8 @@ struct PartOfTotalFrame: FrameProtocol {
     ) throws {
         self.flags = flags
         self.layout = layout
-        switch layout {
-            case .known(.discNumber) : self.frameKey = .discNumber
-            case .known(.trackNumber): self.frameKey = .trackNumber
-            default: self.frameKey = .userDefinedText(description: "(\(layout.id3Identifier(version: version) ?? "TXXX"))")
-        }
-        
+        self.frameKey = layout.frameKey(additionalIdentifier: nil)
+
         var parsing = contents
         // extract and interpret encoding byte
         let encoding = try PartOfTotalFrame.extractEncoding(data: &parsing, version: version)
@@ -65,11 +61,7 @@ struct PartOfTotalFrame: FrameProtocol {
         self.total = total
         self.flags = PartOfTotalFrame.defaultFlags
         self.layout = layout
-        switch layout {
-            case .known(.discNumber) : self.frameKey = .discNumber
-            case .known(.trackNumber): self.frameKey = .trackNumber
-            default: self.frameKey = .userDefinedText(description: "")
-        }
+        self.frameKey = layout.frameKey(additionalIdentifier: nil)
     }
     
     // encode the contents of the frame to add to an ID3 tag
