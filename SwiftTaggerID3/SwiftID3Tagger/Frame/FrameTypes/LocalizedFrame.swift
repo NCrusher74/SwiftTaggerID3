@@ -28,9 +28,9 @@ struct LocalizedFrame: FrameProtocol {
     
     // unique properties for this frame type
     /// ISO-639-2 languge code
-    var languageString: String? = nil
+    var languageString: String?
     /// A short description of the frame content.
-    var descriptionString: String? = nil
+    var descriptionString: String?
     /// the content of the frame
     var contentString: String
     
@@ -102,8 +102,8 @@ struct LocalizedFrame: FrameProtocol {
         }
         
         self.flags = LocalizedFrame.defaultFlags
-        self.languageString = languageString ?? "und"
-        self.descriptionString = descriptionString ?? ""
+        self.languageString = languageString
+        self.descriptionString = descriptionString
         self.contentString = contentString
     }
     
@@ -126,6 +126,7 @@ struct LocalizedFrame: FrameProtocol {
         }
         // encode and append contents string
         frameData.append(self.contentString.encoded(withNullTermination: false))
+        print(frameData.hexadecimal())
         return frameData
     }
 }
@@ -187,7 +188,7 @@ extension Tag {
                       with content: String) {
         let frame = LocalizedFrame(
             layout, languageString: nil,
-            descriptionString: description ?? "",
+            descriptionString: description,
             contentString: content)
         self.frames[frameKey] = .localizedFrame(frame)
     }
@@ -197,14 +198,14 @@ extension Tag {
         comments language: ISO6392Codes,
         commentsDescription: String?) -> String? {
         get {
-            localizedGetter(for: .comments(
-                description: commentsDescription ?? ""),
+            localizedGetter(for:
+                .comments(description: commentsDescription ?? ""),
                             language: language,
                             description: commentsDescription) ?? ""
         }
         set {
-            set(.known(.comments), .comments(
-                description: commentsDescription ?? ""),
+            set(.known(.comments),
+                .comments(description: commentsDescription ?? ""),
                 in: language.rawValue,
                 to: commentsDescription,
                 with: newValue ?? "")
@@ -215,14 +216,14 @@ extension Tag {
     public subscript(customComment language: ISO6392Codes,
         description: CommentDescriptionPresets?) -> String? {
         get {
-            localizedGetter(for: .comments(
-                description: description?.rawValue ?? ""),
+            localizedGetter(for:
+                .comments(description: description?.rawValue ?? ""),
                             language: language,
                             description: description?.rawValue)
         }
         set {
-            set(.known(.comments), .comments(
-                description: description?.rawValue ?? ""),
+            set(.known(.comments),
+                .comments(description: description?.rawValue ?? ""),
                 in: language.rawValue,
                 to: description?.rawValue,
                 with: newValue ?? "")

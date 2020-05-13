@@ -137,21 +137,20 @@ struct PresetOptionsFrame: FrameProtocol {
             case .v2_2, .v2_3: // null termination will be false
                 for item in genreMediaOrFileInfo {
                     frameData.append(
-                        reassembleParentheticalStringsForEncoding(
-                            itemString: item ?? "")
-                            .encoded(withNullTermination: false))
+                        item?.encoded(withNullTermination: false) ?? Data())
             }
             case .v2_4: // null termination will be true
                 for item in genreMediaOrFileInfo {
                     frameData.append(
-                        reassembleParentheticalStringsForEncoding(
-                            itemString: item ?? "")
-                            .encoded(withNullTermination: true))
+                            item?.encoded(withNullTermination: true) ?? Data())
             }
         }
         return frameData
     }
     
+    // NOTE: THIS ISN'T BEING USED BECAUSE NO OTHER APPS SEEM TO WANT TO READ THE CODES PROPERLY
+    // WHICH I THINK IS DUE TO THEM BEING OFF-SPEC, RATHER THAN POOR IMPLEMENTATION
+    // KEEPING IN CASE I FIGURE IT OUT LATER
     func reassembleParentheticalStringsForEncoding(itemString: String) -> String {
         if self.frameKey == .genre {
             // see if the string is a genre raw value
@@ -314,6 +313,4 @@ extension Tag {
             set(.known(.fileType), .fileType, infoArray: frameArray)
         }
     }
-
-    
 }
