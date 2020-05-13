@@ -46,11 +46,13 @@ struct LocalizedFrame: FrameProtocol {
         var parsing = contents
         let encoding = try LocalizedFrame.extractEncoding(data: &parsing, version: version)
         
-        if layout == .known(.comments) || layout == .known(.unsynchronizedLyrics) {
+        if layout == .known(.comments) ||
+            layout == .known(.unsynchronizedLyrics) {
             /// parse out a language string only for these frame types
-            let languageCode = try String(ascii: parsing.extractFirst(3))
-            if ISO6392Codes.allCases.contains(where: { $0.rawValue == languageCode }) {
-                self.languageString = languageCode
+            
+            let codeString = try String(ascii: parsing.extractFirst(3))
+            if let languageCode = ISO6392Codes(rawValue: codeString) {
+                self.languageString = languageCode.rawValue
             } else {
                 self.languageString = "und"
             }
@@ -90,19 +92,19 @@ struct LocalizedFrame: FrameProtocol {
         if self.layout == .known(.comments) ||
             self.layout == .known(.unsynchronizedLyrics) {
             // encode and append language string
-            frameData.append(self.languageString?.encoded(withNullTermination: false) ?? "und".encoded(withNullTermination: false))
-        }        
+            frameData.append(self.languageString?.encodedASCII() ?? "und".encodedASCII())
+        }
         // encode and append description string
         if let encodedDescription = self.descriptionString?.encoded(withNullTermination: true) {
             frameData.append(encodedDescription)
         }
         // encode and append contents string
         frameData.append(self.contentString.encoded(withNullTermination: false))
-        print(frameData.hexadecimal())
         return frameData
     }
 }
 
+// MARK: Tag extension
 // get and set functions for `LocalizedFrame` frame types, which retrieves or sets up to three strings, one of which may be a language code, and one of which is an optional description string. Each individual frame of this type will call these functions in a get-set property or function, where appropriate.
 extension Tag {
     internal func localizedGetter(for frameKey: FrameKey,

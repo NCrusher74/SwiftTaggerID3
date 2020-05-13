@@ -11,7 +11,37 @@ import SwiftTaggerID3
 
 class TestPrint: XCTestCase {
     
+    
+    func testPrint() throws {
+        let path = "/Users/nolainecrusher/Desktop/test output/testV24Writing.mp3"
+        let mp3Url = URL(fileURLWithPath: path)
+//        let mp3Url = Bundle.writtenV24
+        let mp3File = try Mp3File(location: mp3Url)
+        let mp3Data = mp3File.data
+        
+        let rangeIn = 1302
+        let rangeOut = 1350
+        let range = rangeIn ..< rangeOut
+        
+        let data = mp3Data.subdata(in: range)
+        print(data.hexadecimal())
+    }
 
+  /*
+
+     0 65 6e 67
+     43 6f 6d 6d 65 6e 74 44 65 73 63 72 69 70 74 69 6f 6e 0
+     43 6f 6d 6d 65 6e 74 20 43 6f 6e 74 65 6e 74
+
+     0 65 6e 67 0
+     43 6f 6d 6d 65 6e 74 0
+     43 6f 6d 6d 65 6e 74 20 43 6f 6e 74 65 6e 74 0
+
+     */
+    
+    
+    
+    
     func testProblems() throws {
         let mp3Url = Bundle.v23NoMeta
         let mp3File = try Mp3File(location: mp3Url)

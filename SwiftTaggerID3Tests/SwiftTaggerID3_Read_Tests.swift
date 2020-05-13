@@ -99,14 +99,6 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertNil(tag.genre?.presetGenre)
         XCTAssertEqual(tag.genre?.customGenre, "Test Genre")
     }
-   
-    func testProblemChildrenV23() throws {
-        let mp3Url = Bundle.writtenV23
-        let mp3File = try Mp3File(location: mp3Url)
-        let tag = try Tag(readFrom: mp3File)
-        
-        XCTAssertEqual(tag.year, 2019)
-    }
 
     func testV24Reading() throws {
         let mp3Url = Bundle.writtenV24
@@ -185,24 +177,6 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertNil(tag.genre?.presetGenre)
         XCTAssertEqual(tag.genre?.customGenre, "Test Genre")
 
-
-    }
- 
-    func testProblemChildrenV24() throws {
-        let mp3Url = Bundle.writtenV24
-        let mp3File = try Mp3File(location: mp3Url)
-        let tag = try Tag(readFrom: mp3File)
-        
-        XCTAssertEqual(tag.encodingDateTime?.year, 2019)
-        XCTAssertEqual(tag.taggingDateTime?.year, 1997)
-        XCTAssertEqual(tag.taggingDateTime?.month, 06)
-        XCTAssertEqual(tag.taggingDateTime?.day, 07)
-        XCTAssertEqual(tag.originalReleaseDate?.year, 1998)
-        XCTAssertEqual(tag.originalReleaseDate?.month, 03)
-        XCTAssertEqual(tag.originalReleaseDate?.day, 04)
-        XCTAssertEqual(tag.releaseDateTime?.year, 1999)
-        XCTAssertEqual(tag.releaseDateTime?.month, 05)
-        XCTAssertEqual(tag.releaseDateTime?.day, 08)
 
     }
 }
