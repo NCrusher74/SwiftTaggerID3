@@ -46,7 +46,7 @@ public enum MediaType: String, CaseIterable {
     case normalCassette = "MC"
     /// Reel
     case reel = "REE"
-    case none = ""
+    case none = "none"
     
 }
 
@@ -170,7 +170,7 @@ public enum MediaTypeRefinements: String, CaseIterable {
             case .typeII: return "/II"
             case .typeIII: return "/III"
             case .typeIV: return "/IV"
-            case .none: return ""
+            case .none: return "none"
         }
     }
     

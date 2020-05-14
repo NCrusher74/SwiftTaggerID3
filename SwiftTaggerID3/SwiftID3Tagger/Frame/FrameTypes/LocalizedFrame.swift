@@ -28,9 +28,9 @@ struct LocalizedFrame: FrameProtocol {
     
     // unique properties for this frame type
     /// ISO-639-2 languge code
-    var languageString: String? = nil
+    var languageString: String?
     /// A short description of the frame content.
-    var descriptionString: String? = nil
+    var descriptionString: String?
     /// the content of the frame
     var contentString: String
     
@@ -46,40 +46,21 @@ struct LocalizedFrame: FrameProtocol {
         var parsing = contents
         let encoding = try LocalizedFrame.extractEncoding(data: &parsing, version: version)
         
-        if layout == .known(.comments) || layout == .known(.unsynchronizedLyrics) {
+        if layout == .known(.comments) ||
+            layout == .known(.unsynchronizedLyrics) {
             /// parse out a language string only for these frame types
-            let languageCode = try String(ascii: parsing.extractFirst(3))
-            if ISO6392Codes.allCases.contains(where: { $0.rawValue == languageCode }) {
-                self.languageString = languageCode
+            
+            let codeString = try String(ascii: parsing.extractFirst(3))
+            if let languageCode = ISO6392Codes(rawValue: codeString) {
+                self.languageString = languageCode.rawValue
             } else {
                 self.languageString = "und"
             }
-            let parsed = try LocalizedFrame.extractDescriptionAndContent(from: &parsing, encoding: encoding)
-            self.descriptionString = parsed.description ?? ""
-            self.contentString = parsed.content
-            
-            switch layout {
-                case .known(.comments) : self.frameKey = .comments(
-                    description: parsed.description ?? "")
-                case .known(.unsynchronizedLyrics) : self.frameKey = .unsynchronizedLyrics(
-                    description: parsed.description ?? "")
-                default: self.frameKey = .comments(
-                    description: parsed.description ?? "")
-            }
-        } else {
-            let parsed = try LocalizedFrame.extractDescriptionAndContent(from: &parsing, encoding: encoding)
-            self.descriptionString = parsed.description ?? ""
-            self.contentString = parsed.content
-            
-            switch layout {
-                case .known(.userDefinedText) : self.frameKey = .userDefinedText(
-                    description: parsed.description ?? "")
-                case .known(.userDefinedWebpage) : self.frameKey = .userDefinedWebpage(
-                    description: parsed.description ?? "")
-                default: self.frameKey = .userDefinedText(
-                    description: parsed.description ?? "")
-            }
         }
+        let parsed = try LocalizedFrame.extractDescriptionAndContent(from: &parsing, encoding: encoding)
+        self.descriptionString = parsed.description ?? ""
+        self.contentString = parsed.content
+        self.frameKey = layout.frameKey(additionalIdentifier: self.descriptionString)
     }
     
     // MARK: Frame building
@@ -93,19 +74,12 @@ struct LocalizedFrame: FrameProtocol {
          descriptionString: String?,
          contentString: String) {
         self.layout = layout
-        switch layout {
-            case .known(.comments) : self.frameKey = .comments(description: descriptionString ?? "")
-            case .known(.unsynchronizedLyrics) : self.frameKey = .unsynchronizedLyrics(description: descriptionString ?? "")
-            case .known(.userDefinedText): self.frameKey = .userDefinedText(description: descriptionString ?? "")
-            case .known(.userDefinedWebpage) : self.frameKey = .userDefinedWebpage(description: descriptionString ?? "")
-            default: self.frameKey = .userDefinedText(description: descriptionString ?? "")
-        }
-        self.flags = LocalizedFrame.defaultFlags
+        self.frameKey = layout.frameKey(additionalIdentifier: descriptionString)
         
-        self.languageString = languageString ?? "und"
-        self.descriptionString = descriptionString ?? ""
+        self.flags = LocalizedFrame.defaultFlags
+        self.languageString = languageString
+        self.descriptionString = descriptionString
         self.contentString = contentString
-//        print(self.contentString) //-- works as expected
     }
     
     
@@ -114,29 +88,28 @@ struct LocalizedFrame: FrameProtocol {
         var frameData = Data()
         // append encoding byte
         frameData.append(StringEncoding.preferred.rawValue)
-
+        
         if self.layout == .known(.comments) ||
             self.layout == .known(.unsynchronizedLyrics) {
             // encode and append language string
-            frameData.append(self.languageString?.encoded(withNullTermination: false) ?? "und".encoded(withNullTermination: false))
+            frameData.append(self.languageString?.encodedASCII() ?? "und".encodedASCII())
         }
-
         // encode and append description string
-        frameData.append(self.descriptionString?.encoded(withNullTermination: true) ?? "".encoded(withNullTermination: true))
-
+        if let encodedDescription = self.descriptionString?.encoded(withNullTermination: true) {
+            frameData.append(encodedDescription)
+        }
         // encode and append contents string
-//                print(self.contentString)
-//                print(self.contentString.encoded(withNullTermination: false).hexadecimal())
         frameData.append(self.contentString.encoded(withNullTermination: false))
         return frameData
     }
 }
 
+// MARK: Tag extension
 // get and set functions for `LocalizedFrame` frame types, which retrieves or sets up to three strings, one of which may be a language code, and one of which is an optional description string. Each individual frame of this type will call these functions in a get-set property or function, where appropriate.
 extension Tag {
     internal func localizedGetter(for frameKey: FrameKey,
-                         language: ISO6392Codes?,
-                         description: String?) -> String? {
+                                  language: ISO6392Codes?,
+                                  description: String?) -> String? {
         if frameKey == .unsynchronizedLyrics(description: description ?? "") {
             if let frame = self.frames[.unsynchronizedLyrics(
                 description: description ?? "")],
@@ -172,10 +145,10 @@ extension Tag {
     }
     
     internal mutating func set(_ layout: FrameLayoutIdentifier,
-                      _ frameKey: FrameKey,
-                      in language: String,
-                      to description: String?,
-                      with content: String) {
+                               _ frameKey: FrameKey,
+                               in language: String?,
+                               to description: String?,
+                               with content: String) {
         let frame = LocalizedFrame(layout,
                                    languageString: language,
                                    descriptionString: description,
@@ -184,15 +157,30 @@ extension Tag {
     }
     
     internal mutating func set(_ layout: FrameLayoutIdentifier,
-                      _ frameKey: FrameKey,
-                      to description: String?,
-                      with content: String) {
+                               _ frameKey: FrameKey,
+                               to description: String?,
+                               with content: String) {
         let frame = LocalizedFrame(
             layout, languageString: nil,
-            descriptionString: description ?? "",
+            descriptionString: description,
             contentString: content)
-//        print(content) - as expected
         self.frames[frameKey] = .localizedFrame(frame)
+    }
+    
+    public mutating func removeComment(withDescription: String?) {
+        set(.known(.comments),
+            .comments(description: withDescription ?? ""),
+            in: nil,
+            to: nil,
+            with: "")
+    }
+
+    public mutating func removeLyrics(withDescription: String?) {
+        set(.known(.unsynchronizedLyrics),
+            .unsynchronizedLyrics(description: withDescription ?? ""),
+            in: nil,
+            to: nil,
+            with: "")
     }
 
     /// Comments frame getter-setter. ID3 Identifier `COM`/`COMM`
@@ -200,14 +188,14 @@ extension Tag {
         comments language: ISO6392Codes,
         commentsDescription: String?) -> String? {
         get {
-            localizedGetter(for: .comments(
-                description: commentsDescription ?? ""),
+            localizedGetter(for:
+                .comments(description: commentsDescription ?? ""),
                             language: language,
                             description: commentsDescription) ?? ""
         }
         set {
-            set(.known(.comments), .comments(
-                description: commentsDescription ?? ""),
+            set(.known(.comments),
+                .comments(description: commentsDescription ?? ""),
                 in: language.rawValue,
                 to: commentsDescription,
                 with: newValue ?? "")
@@ -218,14 +206,14 @@ extension Tag {
     public subscript(customComment language: ISO6392Codes,
         description: CommentDescriptionPresets?) -> String? {
         get {
-            localizedGetter(for: .comments(
-                description: description?.rawValue ?? ""),
+            localizedGetter(for:
+                .comments(description: description?.rawValue ?? ""),
                             language: language,
                             description: description?.rawValue)
         }
         set {
-            set(.known(.comments), .comments(
-                description: description?.rawValue ?? ""),
+            set(.known(.comments),
+                .comments(description: description?.rawValue ?? ""),
                 in: language.rawValue,
                 to: description?.rawValue,
                 with: newValue ?? "")
@@ -259,7 +247,21 @@ extension Tag {
                 with: newValue ?? "")
         }
     }
-    
+
+    public mutating func removeUserText(withDescription: String?) {
+        set(.known(.userDefinedText),
+            .userDefinedText(description: withDescription ?? ""),
+            to: nil,
+            with: "")
+    }
+
+    public mutating func removeUserWebpage(withDescription: String?) {
+        set(.known(.userDefinedWebpage),
+            .userDefinedWebpage(description: withDescription ?? ""),
+            to: nil,
+            with: "")
+    }
+
     /// UserDefinedWebpage frame getter-setter. ID3 Identifier `WXX`/`WXXX`
     public subscript(userDefinedUrl userDefinedUrlDescription: String?) -> String? {
         get {
@@ -428,5 +430,5 @@ extension Tag {
             set(.known(.userDefinedText), .userDefinedText(description: "Content Rating"), to: "Content Rating", with: newValue?.rawValue ?? "")
         }
     }
-
+    
 }

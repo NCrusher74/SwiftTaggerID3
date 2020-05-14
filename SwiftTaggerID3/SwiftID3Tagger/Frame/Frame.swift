@@ -174,7 +174,7 @@ enum Frame {
     /// - Parameter version: The `Version` of the ID3 tag
     /// - Throws: Caller will determine how errors will be handled
     /// - Returns: `data` containing the encoded frame
-    func getFramesData(version: Version) throws -> Data {
+    func framesData(version: Version) throws -> Data {
         switch self {
             case .stringFrame(let stringFrame):
                 return try stringFrame.encode(version: version)

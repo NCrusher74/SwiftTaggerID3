@@ -7,79 +7,62 @@
 //
 
 import Foundation
-/// An Mp3File represents an MP3 audio file somewhere on disk.
-///
-/// This wrapper houses variables and methods for reading and writing to this file.
+
+/// An Mp3File represets an mp3-format file on the local drive
+/// This wrapper houses variables and methods for querying and modifying an Mp3File
 public struct Mp3File {
     
-    /// the location of the Mp3File on the local disk
+    /// The location of an mp3-format file somewhere on the local drive
     let location: URL
-    /// the Mp3File presented as data
+    /// The Mp3File as data
     public var data: Data
     
-    /// initialize an Mp3File instance
-    /// - Parameter location: the location of the Mp3File
-    /// - Throws: If reading the file fails.
+    /// Initialize an Mp3File instance and the data from the file
+    /// - Parameter location: The location of an mp3-format file somewhere on the local drive
+    /// - Throws: `CannotReadFile` If the file cannot be reached
+    /// - Throws: `InvalidFileFormat` If the file does not have an mp3 extension
     public init(location: URL) throws {
-        // initialize the `location` parameter
         self.location = location
+        // validate that the file is an mp3 file
+        guard location.pathExtension.lowercased() == "mp3" else {
+            throw Mp3File.Error.InvalidFileFormat
+        }
+        // get the file as data
         do {
-            // initialize the `data` parameter using the `location` of the file
             self.data = try Data(contentsOf: location)
         } catch {
             throw Mp3File.Error.CannotReadFile
         }
     }
     
-    /// Read an `Mp3File` from disk and return a `Tag` instance
-    /// - Throws: The caller will determine how to handle any errors.
-    /// - Returns: `Tag`, a structure containing all the `Mp3File` metadata.
     public func read() throws -> Tag {
-       return try Tag(readFrom: self)
+        return try Tag(readFrom: self)
     }
     
-    /// Write an Mp3File to disk with new or updated `Tag` data.
-    /// - Parameters:
-    ///   - tagVersion: ID3 `Version` of the tag being used
-    ///   - tag: `Tag` instance holding the ID3 metadata to be written
-    ///   - url: the location for the new file to be written to.
-    /// - Throws: the caller will determine how to handle any errors
     public func write(tagVersion: Version,
                       using tag: Tag,
                       writingTo url: URL) throws {
-        // build a new file for writing
         let fileData = try buildNewFile(using: tag, version: tagVersion)
-        // create a new directory if necessary
         try FileManager.default.createDirectory(
             at: url.parentDirectory,
             withIntermediateDirectories: true)
-        // write the file
         try fileData.write(to: url)
     }
     
-    /// Build a new mp3 file from a `Tag` instance and the audio data of the current `Mp3File` instance
-    /// - Parameters:
-    ///   - tag: `Tag` instance holding the ID3 metadata to be written
-    ///   - version: ID3 `Version` of the tag being used
-    /// - Throws: caller will determine how to handle any errors.
-    /// - Returns: data to be written to a new file
     private func buildNewFile(using tag: Tag, version: Version) throws -> Data {
         var fileData = self.data
-        let tagSizeDataRange = TagProperties().tagSizeDeclarationOffset ..<
-            TagProperties().tagSizeDeclarationOffset +
-            TagProperties().tagSizeDeclarationLength
+        let properties = TagProperties()
+        let tagSizeDataRange = properties.tagSizeDeclarationOffset ..<
+            properties.tagSizeDeclarationOffset +
+            properties.tagSizeDeclarationLength
         
-        // get the size of the starting tag and the tag data range
         let tagSizeData = fileData.subdata(in: tagSizeDataRange)
-        let tagDataCount = try TagProperties().size(data: tagSizeData)
+        let tagDataCount = try properties.size(data: tagSizeData, version: version)
         let tagDataRange = fileData.startIndex ..<
-            TagProperties().tagHeaderLength + tagDataCount
+            properties.tagHeaderLength + tagDataCount
         
         let tagData = try tag.buildTag(version: version)
-        // strip out the existing tag data and replace with new tag data
         fileData.replaceSubrange(tagDataRange, with: tagData)
         return fileData
     }
-    
-
 }
