@@ -41,9 +41,6 @@ struct DateFrame: FrameProtocol {
         var dateTimeString = ""
         // assuming the timestamp is in ISO-8601 format as per the ID3 spec
         if let parsedString = parsing.extractPrefixAsStringUntilNullTermination(encoding) {
-//            let formatter = ISO8601DateFormatter()
-//            formatter.formatOptions = [.withInternetDateTime]
-//
             dateTimeString = parsedString
         }
         self.timeStampString = dateTimeString
@@ -73,18 +70,28 @@ struct DateFrame: FrameProtocol {
         let formatter = ISO8601DateFormatter()
         formatter.formatOptions = [.withInternetDateTime]
         if let date = formatter.date(from: dateString) {
-            let components = Calendar(identifier: .iso8601).dateComponents([.year,.month,.day,.hour,.minute], from: date)
+
+            let calendar = Calendar(identifier: .iso8601)
+            let timeZone = TimeZone(secondsFromGMT: 0) ?? .current
+            let components = calendar.dateComponents(in: timeZone, from: date)
+
+            let year = components.year ?? 2001
+            let month = components.month ?? 01
+            let day = components.day ?? 01
+            let hour = components.hour ?? 00
+            let minute = components.minute ?? 00
+
             // TDA/TDAT frame uses DDMM 4-character formatted string
             if self.frameKey == .date {
-                dateForFrame = "\(components.day ?? 00)\(components.month ?? 00)"
+                dateForFrame = "\(day)\(month)"
             }
             // TIM/TIME frame uses HHmm 4 character formatted string
             if self.frameKey == .time {
-                dateForFrame = "\(components.hour ?? 00)\(components.minute ?? 00)"
+                dateForFrame = "\(hour)\(minute)"
             }
             // TYE/TYER frame uses yyyy 4 character formatted string
             if self.frameKey == .year {
-                dateForFrame = "\(components.year ?? 0000)"
+                dateForFrame = "\(year)"
             }
             // all other frames get a full timestamp
             if self.frameKey == .encodingTime ||
@@ -92,7 +99,7 @@ struct DateFrame: FrameProtocol {
                 self.frameKey == .recordingDate ||
                 self.frameKey == .releaseTime ||
                 self.frameKey == .taggingTime {
-                dateForFrame = "\(components.year ?? 0000)-\(components.month ?? 00)-\(components.day ?? 00)T\(components.hour ?? 00):\(components.minute ?? 00)"
+                dateForFrame = "\(year)-\(month)-\(day)T\(hour):\(minute)"
                 frameData.append(dateForFrame.encoded(withNullTermination: false))
             }
         }
@@ -101,96 +108,39 @@ struct DateFrame: FrameProtocol {
     }
 }
 
+// MARK: Tag extension
 extension Tag {
-    /// - (Release) Date frame getter-setter. Valid for versions 2.2 and 2.3 only.
-    /// ID3 Identifier: `TDA`/`TDAT`
-    public var date: (month: Int?, day: Int?)? {
-        get {
-            if let frame = self.frames[.date],
-                case .dateFrame(let dateFrame) = frame {
-                let dateString = dateFrame.timeStampString
-                let formatter = ISO8601DateFormatter()
-                formatter.formatOptions = [.withInternetDateTime]
-                if let date = formatter.date(from: dateString) {
-                    let components = Calendar(identifier: .iso8601).dateComponents([.day,.month], from: date)
-                    return (components.month, components.day)
-                } else {
-                    return nil
-                }
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let date = DateComponents(
-                calendar: Calendar(identifier: .iso8601),
-                month: newValue?.month,
-                day: newValue?.day).date {
-            let frame = DateFrame(.known(.date), timeStamp: date)
-            frames[.date] = .dateFrame(frame)
-            }
+    internal func date(for frameKey: FrameKey) -> Date? {
+        if let frame = self.frames[frameKey],
+            case .dateFrame(let dateFrame) = frame {
+            let dateString = dateFrame.timeStampString
+            let formatter = ISO8601DateFormatter()
+            formatter.formatOptions = [.withInternetDateTime]
+            return formatter.date(from: dateString) ?? Date.distantPast
+        } else {
+            return nil
         }
     }
     
-    /// - (Release) Time frame getter-setter. Valid for versions 2.2 and 2.3 only.
-    /// ID3 Identifier: `TIM`/`TIME`
-    public var time: (hour: Int?, minute: Int?)? {
-        get {
-            if let frame = self.frames[.time],
-                case .dateFrame(let dateFrame) = frame {
-                let dateString = dateFrame.timeStampString
-                let formatter = ISO8601DateFormatter()
-                formatter.formatOptions = [.withInternetDateTime]
-                if let date = formatter.date(from: dateString) {
-                    let components = Calendar(identifier: .iso8601).dateComponents([.hour,.minute], from: date)
-                    return (components.hour, components.minute)
-                } else {
-                    return nil
-                }
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let date = DateComponents(
-                calendar: Calendar(identifier: .iso8601),
-                hour: newValue?.hour,
-                minute: newValue?.minute).date {
-                let frame = DateFrame(.known(.time), timeStamp: date)
-                frames[.time] = .dateFrame(frame)
-            }
+    internal mutating func set(_ layout: FrameLayoutIdentifier,
+                      _ frameKey: FrameKey,
+                      year: Int?,
+                      month: Int?,
+                      day: Int?,
+                      hour: Int?,
+                      minute: Int?) {
+        if let date = DateComponents(
+            calendar: Calendar(identifier: .iso8601),
+            year: year,
+            month: month,
+            day: day,
+            hour: hour,
+            minute: minute).date {
+            let frame = DateFrame(layout, timeStamp: date)
+            self.frames[frameKey] = .dateFrame(frame)
         }
     }
-    
-    /// - (Release) Year frame getter-setter. Valid for versions 2.2 and 2.3 only.
-    /// ID3 Identifier: `TYE`/`TYER`
-    public var year: Int? {
-        get {
-            if let frame = self.frames[.year],
-                case .dateFrame(let dateFrame) = frame {
-                let dateString = dateFrame.timeStampString
-                let formatter = ISO8601DateFormatter()
-                formatter.formatOptions = [.withInternetDateTime]
-                if let date = formatter.date(from: dateString) {
-                    let components = Calendar(identifier: .iso8601).dateComponents([.year], from: date)
-                    return components.year
-                } else {
-                    return nil
-                }
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let date = DateComponents(
-                calendar: Calendar(identifier: .iso8601),
-                year: newValue).date {
-                let frame = DateFrame(.known(.year), timeStamp: date)
-                frames[.year] = .dateFrame(frame)
-            }
-        }
-    }
-    
+
     /// - (Release) DateTime frame getter-setter. ID3 Identifier: `TDRL` Valid for version 2.4 only
     public var releaseDateTime: (
         year: Int?,
@@ -199,36 +149,97 @@ extension Tag {
         hour: Int?,
         minute: Int?)? {
         get {
-            if let frame = self.frames[.releaseTime],
-                case .dateFrame(let dateFrame) = frame {
-                let dateString = dateFrame.timeStampString
-                let formatter = ISO8601DateFormatter()
-                formatter.formatOptions = [.withInternetDateTime]
-                if let date = formatter.date(from: dateString) {
-                    let components = Calendar(identifier: .iso8601).dateComponents([.year,.month,.day,.hour,.minute], from: date)
-                    return (components.year,
-                            components.month,
-                            components.day,
-                            components.hour,
-                            components.minute)
-                } else {
-                    return nil
-                }
+            if let date = date(for: .releaseTime) {
+                let calendar = Calendar(identifier: .iso8601)
+                let timeZone = TimeZone(secondsFromGMT: 0) ?? .current
+                let components = calendar.dateComponents(in: timeZone, from: date)
+                return (components.year,
+                        components.month,
+                        components.day,
+                        components.hour,
+                        components.minute)
             } else {
                 return nil
             }
         }
         set {
-            if let date = DateComponents(
-                calendar: Calendar(identifier: .iso8601),
+            set(.known(.releaseTime), .releaseTime,
                 year: newValue?.year,
                 month: newValue?.month,
                 day: newValue?.day,
                 hour: newValue?.hour,
-                minute: newValue?.minute).date {
-                let frame = DateFrame(.known(.releaseTime), timeStamp: date)
-                frames[.releaseTime] = .dateFrame(frame)
+                minute: newValue?.minute)
+        }
+    }
+
+    /// - (Release) Date frame getter-setter. Valid for versions 2.2 and 2.3 only. Format: DDMM
+    /// ID3 Identifier: `TDA`/`TDAT`
+    public var date: (month: Int?, day: Int?)? {
+        get {
+            if let date = date(for: .date) {
+                let calendar = Calendar(identifier: .iso8601)
+                let timeZone = TimeZone(secondsFromGMT: 0) ?? .current
+                let components = calendar.dateComponents(in: timeZone, from: date)
+                return (components.month,
+                        components.day)
+            } else {
+                return nil
             }
+        }
+        set {
+            set(.known(.date), .date,
+                year: nil,
+                month: newValue?.month,
+                day: newValue?.day,
+                hour: nil,
+                minute: nil)
+        }
+    }
+    
+    /// - (Release) Time frame getter-setter. Valid for versions 2.2 and 2.3 only.
+    /// ID3 Identifier: `TIM`/`TIME`
+    public var time: (hour: Int?, minute: Int?)? {
+        get {
+            if let date = date(for: .time) {
+                let calendar = Calendar(identifier: .iso8601)
+                let timeZone = TimeZone(secondsFromGMT: 0) ?? .current
+                let components = calendar.dateComponents(in: timeZone, from: date)
+                return (components.hour,
+                        components.minute)
+            } else {
+                return nil
+            }
+        }
+        set {
+            set(.known(.time), .time,
+                year: nil,
+                month: nil,
+                day: nil,
+                hour: newValue?.hour,
+                minute: newValue?.minute)
+        }
+    }
+    
+    /// - (Release) Year frame getter-setter. Valid for versions 2.2 and 2.3 only.
+    /// ID3 Identifier: `TYE`/`TYER`
+    public var year: Int? {
+        get {
+            if let date = date(for: .year) {
+                let calendar = Calendar(identifier: .iso8601)
+                let timeZone = TimeZone(secondsFromGMT: 0) ?? .current
+                let components = calendar.dateComponents(in: timeZone, from: date)
+                return components.year
+            } else {
+                return nil
+            }
+        }
+        set {
+            set(.known(.year), .year,
+                year: newValue,
+                month: nil,
+                day: nil,
+                hour: nil,
+                minute: nil)
         }
     }
     
@@ -240,36 +251,26 @@ extension Tag {
         hour: Int?,
         minute: Int?)? {
         get {
-            if let frame = self.frames[.encodingTime],
-                case .dateFrame(let dateFrame) = frame {
-                let dateString = dateFrame.timeStampString
-                let formatter = ISO8601DateFormatter()
-                formatter.formatOptions = [.withInternetDateTime]
-                if let date = formatter.date(from: dateString) {
-                    let components = Calendar(identifier: .iso8601).dateComponents([.year,.month,.day,.hour,.minute], from: date)
-                    return (components.year,
-                            components.month,
-                            components.day,
-                            components.hour,
-                            components.minute)
-                } else {
-                    return nil
-                }
+            if let date = date(for: .encodingTime) {
+                let calendar = Calendar(identifier: .iso8601)
+                let timeZone = TimeZone(secondsFromGMT: 0) ?? .current
+                let components = calendar.dateComponents(in: timeZone, from: date)
+                return (components.year,
+                        components.month,
+                        components.day,
+                        components.hour,
+                        components.minute)
             } else {
                 return nil
             }
         }
         set {
-            if let date = DateComponents(
-                calendar: Calendar(identifier: .iso8601),
+            set(.known(.encodingTime), .encodingTime,
                 year: newValue?.year,
                 month: newValue?.month,
                 day: newValue?.day,
                 hour: newValue?.hour,
-                minute: newValue?.minute).date {
-                let frame = DateFrame(.known(.encodingTime), timeStamp: date)
-                frames[.encodingTime] = .dateFrame(frame)
-            }
+                minute: newValue?.minute)
         }
     }
     
@@ -282,36 +283,26 @@ extension Tag {
         hour: Int?,
         minute: Int?)? {
         get {
-            if let frame = self.frames[.originalReleaseTime],
-                case .dateFrame(let dateFrame) = frame {
-                let dateString = dateFrame.timeStampString
-                let formatter = ISO8601DateFormatter()
-                formatter.formatOptions = [.withInternetDateTime]
-                if let date = formatter.date(from: dateString) {
-                    let components = Calendar(identifier: .iso8601).dateComponents([.year,.month,.day,.hour,.minute], from: date)
-                    return (components.year,
-                            components.month,
-                            components.day,
-                            components.hour,
-                            components.minute)
-                } else {
-                    return nil
-                }
+            if let date = date(for: .originalReleaseTime) {
+                let calendar = Calendar(identifier: .iso8601)
+                let timeZone = TimeZone(secondsFromGMT: 0) ?? .current
+                let components = calendar.dateComponents(in: timeZone, from: date)
+                return (components.year,
+                        components.month,
+                        components.day,
+                        components.hour,
+                        components.minute)
             } else {
                 return nil
             }
         }
         set {
-            if let date = DateComponents(
-                calendar: Calendar(identifier: .iso8601),
+            set(.known(.originalReleaseTime), .originalReleaseTime,
                 year: newValue?.year,
                 month: newValue?.month,
                 day: newValue?.day,
                 hour: newValue?.hour,
-                minute: newValue?.minute).date {
-                let frame = DateFrame(.known(.originalReleaseTime), timeStamp: date)
-                frames[.originalReleaseTime] = .dateFrame(frame)
-            }
+                minute: newValue?.minute)
         }
     }
     
@@ -323,36 +314,26 @@ extension Tag {
         hour: Int?,
         minute: Int?)? {
         get {
-            if let frame = self.frames[.recordingDate],
-                case .dateFrame(let dateFrame) = frame {
-                let dateString = dateFrame.timeStampString
-                let formatter = ISO8601DateFormatter()
-                formatter.formatOptions = [.withInternetDateTime]
-                if let date = formatter.date(from: dateString) {
-                    let components = Calendar(identifier: .iso8601).dateComponents([.year,.month,.day,.hour,.minute], from: date)
-                    return (components.year,
-                            components.month,
-                            components.day,
-                            components.hour,
-                            components.minute)
-                } else {
-                    return nil
-                }
+            if let date = date(for: .recordingDate) {
+                let calendar = Calendar(identifier: .iso8601)
+                let timeZone = TimeZone(secondsFromGMT: 0) ?? .current
+                let components = calendar.dateComponents(in: timeZone, from: date)
+                return (components.year,
+                        components.month,
+                        components.day,
+                        components.hour,
+                        components.minute)
             } else {
                 return nil
             }
         }
         set {
-            if let date = DateComponents(
-                calendar: Calendar(identifier: .iso8601),
+            set(.known(.recordingDate), .recordingDate,
                 year: newValue?.year,
                 month: newValue?.month,
                 day: newValue?.day,
                 hour: newValue?.hour,
-                minute: newValue?.minute).date {
-                let frame = DateFrame(.known(.recordingDate), timeStamp: date)
-                frames[.recordingDate] = .dateFrame(frame)
-            }
+                minute: newValue?.minute)
         }
     }
     
@@ -364,36 +345,26 @@ extension Tag {
         hour: Int?,
         minute: Int?)? {
         get {
-            if let frame = self.frames[.taggingTime],
-                case .dateFrame(let dateFrame) = frame {
-                let dateString = dateFrame.timeStampString
-                let formatter = ISO8601DateFormatter()
-                formatter.formatOptions = [.withInternetDateTime]
-                if let date = formatter.date(from: dateString) {
-                    let components = Calendar(identifier: .iso8601).dateComponents([.year,.month,.day,.hour,.minute], from: date)
-                    return (components.year,
-                            components.month,
-                            components.day,
-                            components.hour,
-                            components.minute)
-                } else {
-                    return nil
-                }
+            if let date = date(for: .taggingTime) {
+                let calendar = Calendar(identifier: .iso8601)
+                let timeZone = TimeZone(secondsFromGMT: 0) ?? .current
+                let components = calendar.dateComponents(in: timeZone, from: date)
+                return (components.year,
+                        components.month,
+                        components.day,
+                        components.hour,
+                        components.minute)
             } else {
                 return nil
             }
         }
         set {
-            if let date = DateComponents(
-                calendar: Calendar(identifier: .iso8601),
+            set(.known(.taggingTime), .taggingTime,
                 year: newValue?.year,
                 month: newValue?.month,
                 day: newValue?.day,
                 hour: newValue?.hour,
-                minute: newValue?.minute).date {
-                let frame = DateFrame(.known(.taggingTime), timeStamp: date)
-                frames[.taggingTime] = .dateFrame(frame)
-            }
+                minute: newValue?.minute)
         }
     }
 }
