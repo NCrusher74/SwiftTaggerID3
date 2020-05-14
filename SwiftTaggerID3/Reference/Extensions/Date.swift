@@ -40,6 +40,7 @@ extension Date {
 }
 
 extension DateFormatter {
+    // This is the format used in the ID3 "Date" frame
     static let id3DayMonth: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd-MM"
@@ -49,6 +50,7 @@ extension DateFormatter {
         return formatter
     }()
 
+    // This is the format used in the ID3 "Time" frame
     static let id3HourMinute: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "HH-mm"
@@ -58,6 +60,7 @@ extension DateFormatter {
         return formatter
     }()
 
+    // This is the format used in the ID3 "Year" frame
     static let id3Year: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy"
@@ -67,6 +70,7 @@ extension DateFormatter {
         return formatter
     }()
 
+    // this is the format used in all other ID3 date-related frames
     static let id3TimeStamp: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm"
