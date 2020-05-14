@@ -214,7 +214,7 @@ extension FrameProtocol {
     static func parseParentheticalString(unparsedString: String) -> [String] {
         // separate the components into an array using the open paren as a separator
         // this will remove the open parens from parenthetical comments as well as the codes
-        // so we'll have to replace those when we spot a double-paren
+        // so we'll have to replace those when we spot a double-paren that denotes a parenthetical freeform comment
         var stringComponents = unparsedString.components(separatedBy: "(")
         // take it one component at a time
         for (index, value) in stringComponents.enumerated() {
@@ -262,5 +262,93 @@ extension FrameProtocol {
         // return the array
         return refinedComponents
     }
+    
+    static func parseGenreStrings(parsedArray: [String]) -> [String] {
+        var infoArray: [String] = []
+        for component in parsedArray {
+            // see if the string can be converted to an Int
+            if let genreInt = Int(component) {
+                // see if it matches any of the codes
+                if let genreType = GenreType(code: genreInt) {
+                    // if so, we know it's a genreType
+                    infoArray.append(genreType.rawValue)
+                }
+                // if not, see if it's one of the genre type special cases
+            } else if component == "RX" {
+                infoArray.append(GenreType.Remix.rawValue)
+            } else if component == "CR" {
+                infoArray.append(GenreType.Cover.rawValue)
+                // if it doesn't match a genreType, handle it as freeform description
+            } else {
+                infoArray.append(component)
+            }
+        }
+        return infoArray
+    }
+    
+    static func parseMediaTypeStrings(parsedArray: [String]) -> [String] {
+        var refinedArray: [String] = []
+        for component in parsedArray {
+            if component.contains("/") {
+                let splitString = component.components(separatedBy: "/")
+                if let firstString = splitString.first {
+                    refinedArray.append(firstString)
+                }
+                if let lastString = splitString.last {
+                    // replace the slash we removed
+                    let fixedString = ("/\(lastString)")
+                    refinedArray.append(fixedString)
+                }
+            } else {
+                refinedArray.append(component)
+            }
+        }
+        var infoArray: [String] = []
+        for item in refinedArray {
+            if item.first == "/" {
+                if let refinement = MediaTypeRefinements(code: item) {
+                    infoArray.append(refinement.code)
+                }
+            } else if let mediaType = MediaType(rawValue: item) {
+                infoArray.append(mediaType.rawValue)
+            } else {
+                infoArray.append(item)
+            }
+        }
+        return infoArray
+    }
+    
+    static func parseFileTypeStrings(parsedArray: [String]) -> [String] {
+        var refinedArray: [String] = []
+        for component in parsedArray {
+            if component.contains("/") {
+                let splitString = component.components(separatedBy: "/")
+                if let firstString = splitString.first {
+                    refinedArray.append(firstString)
+                }
+                if let lastString = splitString.last {
+                    // replace the slash we removed
+                    let fixedString = ("/\(lastString)")
+                    refinedArray.append(fixedString)
+                }
+            } else {
+                refinedArray.append(component)
+            }
+        }
+        var infoArray: [String] = []
+        for item in refinedArray {
+            if item.first == "/" {
+                if let refinement = FileTypeRefinements(rawValue: item) {
+                    infoArray.append(refinement.rawValue)
+                }
+            } else if let fileType = FileType(rawValue: item) {
+                infoArray.append(fileType.rawValue)
+            } else {
+                infoArray.append(item)
+            }
+        }
+        return infoArray
+    }
+    
 
 }

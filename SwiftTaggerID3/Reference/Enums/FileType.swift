@@ -34,5 +34,5 @@ public enum FileTypeRefinements: String, CaseIterable {
     case mpeg25 = "/2.5"
     /// Advanced Audio Compression
     case AAC = "/AAC"
-    case none = ""
+    case none = "none"
 }

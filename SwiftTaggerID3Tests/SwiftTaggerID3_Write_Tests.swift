@@ -378,8 +378,8 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.fileType?.fileTypeRefinement = nil
         tag.fileType?.additionalInformation = "File Type"
         tag.genre?.presetGenre = .Audiobook
-        tag.genre?.customGenre = "Genre Type" // needs to be fixed
-        tag.mediaType?.mediaType = nil // get rid of parens when nil
+        tag.genre?.customGenre = "Genre Type"
+        tag.mediaType?.mediaType = nil
         tag.mediaType?.mediaTypeRefinement = nil
         tag.mediaType?.additionalInformation = "Media Type"
         
@@ -588,8 +588,8 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.fileType?.fileTypeRefinement = nil
         tag.fileType?.additionalInformation = "File Type"
         tag.genre?.presetGenre = .Audiobook
-        tag.genre?.customGenre = "Genre Type" // needs to be fixed
-        tag.mediaType?.mediaType = nil // get rid of parens when nil
+        tag.genre?.customGenre = "Genre Type"
+        tag.mediaType?.mediaType = nil
         tag.mediaType?.mediaTypeRefinement = nil
         tag.mediaType?.additionalInformation = "Media Type"
         

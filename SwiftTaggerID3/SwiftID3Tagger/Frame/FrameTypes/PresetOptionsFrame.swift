@@ -28,7 +28,7 @@ struct PresetOptionsFrame: FrameProtocol {
         self.flags = flags
         self.layout = layout
         self.frameKey = layout.frameKey(additionalIdentifier: nil)
-
+        
         // standard boilerplate, it's a text frame (of sorts) so strings are encoded
         var parsing = contents
         let encoding = try PresetOptionsFrame.extractEncoding(data: &parsing, version: version)
@@ -50,62 +50,17 @@ struct PresetOptionsFrame: FrameProtocol {
                         parsedArray.append(next)
             }
         }
-        var infoArray: [String] = []
-        for component in parsedArray {
             if self.frameKey == .genre {
-                // these are the numeric codes for the genres in GenreType.code
-                let codeRange = 0...191
-                // see if the string can be converted to an Int
-                if let genreInt = Int(component) {
-                    // see if it matches any of the codes
-                    if codeRange.contains(genreInt) {
-                        // if so, we know it's a genreType
-                        infoArray.append(GenreType(code: genreInt)?.rawValue ?? "")
-                        // if not, see if it's one of the genre type special cases
-                    } else if component == "RX" {
-                        infoArray.append(GenreType.Remix.rawValue)
-                    } else if component == "CR" {
-                        infoArray.append(GenreType.Cover.rawValue)
-                        // if it doesn't match a genreType, handle it as freeform description
-                    } else {
-                        infoArray.append(component)
-                    }
-                } else {
-                    infoArray.append(component)
-                }
+                self.genreMediaOrFileInfo = PresetOptionsFrame.parseGenreStrings(parsedArray: parsedArray)
             } else if self.frameKey == .mediaType {
-                // forward slash means it's a refinement string
-                if component.first == "/", MediaTypeRefinements(
-                    code: component) != nil {
-                    infoArray.append(MediaTypeRefinements(
-                        code: component)?.code ?? "")
-                    // if it's not a refinement, check to see if it's a media type
-                } else if MediaType(rawValue: component) != nil {
-                    infoArray.append(MediaType(rawValue: component)?.rawValue ?? "")
-                    // if it's not either of those, handle it as a freeform description
-                } else {
-                    infoArray.append(component)
-                }
+                self.genreMediaOrFileInfo = PresetOptionsFrame.parseMediaTypeStrings(parsedArray: parsedArray)
             } else {
-                // forward slash means it's a refinement string
-                if component.first == "/" {
-                    infoArray.append(
-                        FileTypeRefinements(
-                            rawValue: component)?.rawValue ?? "")
-                    // if it's not a refinement, check to see if it's a file type
-                } else if let fileTypeRawValue = FileType(rawValue: component),
-                    FileType.allCases.contains(fileTypeRawValue) {
-                    infoArray.append(
-                        FileType(rawValue: component)?.rawValue ?? "")
-                    // if it's not either of those, handle it as a freeform description
-                } else {
-                    infoArray.append(component)
-                }
-            }
+                self.genreMediaOrFileInfo = PresetOptionsFrame.parseFileTypeStrings(parsedArray: parsedArray)
         }
-        self.genreMediaOrFileInfo = infoArray
     }
+
     
+    // MARK: Frame Building
     init(_ layout: FrameLayoutIdentifier,
          genreMediaOrFileInfo: [String?]) {
         self.layout = layout
@@ -120,105 +75,243 @@ struct PresetOptionsFrame: FrameProtocol {
         frameData.append(StringEncoding.preferred.rawValue)
         switch version {
             case .v2_2, .v2_3: // null termination will be false
-                for item in genreMediaOrFileInfo {
+                if self.frameKey == .genre {
                     frameData.append(
-                        item?.encoded(withNullTermination: false) ?? Data())
+                        reassembleAndEncodeGenreParentheticalStrings())
+                } else if self.frameKey == .mediaType {
+                    frameData.append(
+                        reassembleAndEncodeMediaTypeParentheticalStrings())
+                } else if self.frameKey == .fileType {
+                    frameData.append(reassembleAndEncodeFileTypeStrings())
             }
             case .v2_4: // null termination will be true
-                for item in genreMediaOrFileInfo {
+                if self.frameKey == .genre {
                     frameData.append(
-                            item?.encoded(withNullTermination: true) ?? Data())
+                        reassembleAndEncodeNonParentheticalGenreStrings())
+                } else if self.frameKey == .mediaType {
+                    frameData.append(
+                        reassembleAndEncodeNonParentheticalMediaTypeStrings())
+                } else if self.frameKey == .fileType {
+                    frameData.append(
+                        reassembleAndEncodeNonParentheticalFileTypeStrings())
             }
         }
         return frameData
     }
     
-    // NOTE: THIS ISN'T BEING USED BECAUSE NO OTHER APPS SEEM TO WANT TO READ THE CODES PROPERLY
-    // WHICH I THINK IS DUE TO THEM BEING OFF-SPEC, RATHER THAN POOR IMPLEMENTATION
-    // KEEPING IN CASE I FIGURE IT OUT LATER
-    func reassembleParentheticalStringsForEncoding(itemString: String) -> String {
-        if self.frameKey == .genre {
-            // see if the string is a genre raw value
-            if GenreType.allCases.contains(GenreType(rawValue: itemString) ?? .none) {
-                // get the genre type
-                let genreType = GenreType(rawValue: itemString)
-                // get the genre code int
-                let genreCode = genreType?.code
-                // check if the int is one of the special cases for remix and cover
-                if genreCode == 256 {
-                    return "(RX)"
-                } else if genreCode == 257 {
-                    return "(CR)"
+    // NOTE: This will produce a numeric code wrapped in parentheses, which is in keeping with the spec, but a lot of metadata reading apps won't extrapolate from the numeric code to a genre type
+    private func reassembleAndEncodeGenreParentheticalStrings() -> Data {
+        var newArray: [String] = []
+        for item in self.genreMediaOrFileInfo {
+            // get rid of the empty strings
+            if item != "" {
+                // see if the item represents a genreType
+                if let genreType = GenreType(rawValue: item ?? "") {
+                    // if it does, append the code in parens to the return array
+                    if genreType == .Remix {
+                        newArray.append("(RX)")
+                    } else if genreType == .Cover {
+                        newArray.append("(CR)")
+                    } else {
+                        newArray.append("(\(genreType.code))")
+                    }
                 } else {
-                    // make the Int a string and wrap it in parentheses again
-                    // this is necessary because the spec expects these strings in parentheses
-                    let genreCodeString = String(genreCode ?? 255)
-                    return "(\(genreCodeString))"
+                    // otherwise just append the string to the array
+                    newArray.append(item ?? "")
                 }
-            } else {
-                // it's a freeform description, no need to put parentheses on it
-                return itemString
             }
-        } else if self.frameKey == .mediaType {
-            // see if the string is a media type refinement code
-            if itemString.first == "/", MediaTypeRefinements(code: itemString) != nil {
-                return MediaTypeRefinements(code: itemString)?.code ?? ""
-                // if not, check and see if it's a media type code
-            } else if MediaType(rawValue: itemString) != nil {
-                // ... and if so, wrap it in parens
-                return "(\(MediaType(rawValue: itemString)?.rawValue ?? ""))"
-            } else {
-                // if not, it's a freeform description
-                return itemString
-            }
-        } else if self.frameKey == .fileType {
-            // see if the string is a file type refinement code
-            if itemString.first == "/", FileTypeRefinements(rawValue: itemString) != nil {
-                return FileTypeRefinements(rawValue: itemString)?.rawValue ?? ""
-                // if not, check and see if it's a file type code
-            } else if FileType(rawValue: itemString) != nil {
-                // ... and if so, wrap it in parens
-                return "(\(FileType(rawValue: itemString)?.rawValue ?? ""))"
-            } else {
-                // if not, it's a freeform description
-                return itemString
-            }
-        }; return ""
+        }
+        var genreData = Data()
+        for item in newArray {
+            genreData.append(item.encoded(withNullTermination: false))
+        }
+        return genreData
     }
+    
+    private func reassembleAndEncodeNonParentheticalGenreStrings() -> Data {
+        var frameData = Data()
+        // convert the raw value to the numerical code, if necessary
+        for item in self.genreMediaOrFileInfo {
+            if let itemString = item, itemString != "" {
+                if let genreType = GenreType(rawValue: itemString) {
+                    var itemCode: String = ""
+                    if genreType == .Remix {
+                        itemCode = "RX"
+                    } else if genreType == .Cover {
+                        itemCode = "CR"
+                    } else {
+                        itemCode = String(genreType.code)
+                    }
+                    frameData.append(itemCode.encoded(withNullTermination: true))
+                } else {
+                    frameData.append(itemString.encoded(withNullTermination: true))
+                }
+            }
+        }
+        return frameData
+    }
+    
+    private func reassembleAndEncodeMediaTypeParentheticalStrings() -> Data {
+        var newArray: [String] = []
+        for (index, item) in self.genreMediaOrFileInfo.enumerated() {
+            // make sure the item isn't an empty string
+            if item != "" {
+                // check if it's a valid media type
+                if let mediaType = MediaType(rawValue: item ?? "") {
+                    if let nextItem = self.genreMediaOrFileInfo[index + 1], nextItem.first == "/" {
+                            if let refinement = MediaTypeRefinements(
+                                code: nextItem) {
+                                // if it is, merge them into a single string
+                                let mergedItems = "(\(mediaType.rawValue)\(refinement.code))"
+                                // add them to the new array
+                                newArray.append(mergedItems)
+                            }
+                        } else {
+                            // if there's not a refinement after it, but it is a media type raw value
+                            // wrap it in parens and call it a day
+                            let wrappedItem = "(\(mediaType.rawValue))"
+                            newArray.append(wrappedItem)
+                        }
+                    // if it's not a media type or refinement, add it to the array as is
+                } else if item?.first != "/" {
+                    newArray.append(item ?? "")
+                }
+            }
+        }
+        var mediaTypeData = Data()
+        for item in newArray {
+            mediaTypeData.append(item.encoded(withNullTermination: false))
+        }
+        return mediaTypeData
+    }
+    
+    private func reassembleAndEncodeNonParentheticalMediaTypeStrings() -> Data {
+        var frameData = Data()
+        for (index, item) in self.genreMediaOrFileInfo.enumerated() {
+            // make sure the string isn't empty
+            if let itemString = item, itemString != "" {
+                // if the string represents a valid media type
+                if let mediaType = MediaType(rawValue: itemString) {
+                    // see if the next one is a valid refinement
+                    if let nextItem = self.genreMediaOrFileInfo[index + 1], nextItem.first == "/" {
+                            if let refinement = MediaTypeRefinements(code: nextItem) {
+                                // if it is, merge them into one string
+                                let mergedItems = "\(mediaType.rawValue)\(refinement.code)"
+                                // and encode them together
+                                frameData.append(mergedItems.encoded(withNullTermination: true))
+                        }
+                        // if it isn't, encode the media type raw value by itself
+                    } else {
+                        frameData.append(mediaType.rawValue.encoded(withNullTermination: true))
+                    }
+                    // if the item isn't a media type or a refinement, encode it as is
+                } else if itemString.first != "/" {
+                    frameData.append(itemString.encoded(
+                        withNullTermination: true))
+                }
+            }
+        }
+        return frameData
+    }
+    
+    // According to the letter of the specs, fileType isn't supposed to have parentheses
+    // however, it's easier to parse the codes from the freeform string this way
+    private func reassembleAndEncodeFileTypeStrings() -> Data {
+        var newArray: [String] = []
+        for (index, item) in self.genreMediaOrFileInfo.enumerated() {
+            // make sure the item isn't an empty string
+            if item != "" {
+                // check if it's a valid file type
+                if let fileType = FileType(rawValue: item ?? "") {
+                    if let nextItem = self.genreMediaOrFileInfo[index + 1], nextItem.first == "/" {
+                            if let refinement = FileTypeRefinements(
+                                rawValue: nextItem) {
+                                // if it is, merge them into a single string, no parens
+                                let mergedItems = "(\(fileType.rawValue)\(refinement.rawValue))"
+                                // add them to the new array
+                                newArray.append(mergedItems)
+                            }
+                    } else {
+                        // if there's not a refinement after it, but it is a file type raw value
+                        // add it to the array
+                        let fileTypeItem = "(\(fileType.rawValue))"
+                        newArray.append(fileTypeItem)
+                    }
+                    // if it's not a media type or refinement, add it to the array as is
+                } else if item?.first != "/" {
+                    newArray.append(item ?? "")
+                }
+            }
+        }
+        var fileTypeData = Data()
+        for item in newArray {
+            fileTypeData.append(item.encoded(withNullTermination: false))
+        }
+        return fileTypeData
+    }
+
+    private func reassembleAndEncodeNonParentheticalFileTypeStrings() -> Data {
+        var frameData = Data()
+        for (index, item) in self.genreMediaOrFileInfo.enumerated() {
+            if let itemString = item, itemString != "" {
+                if let fileType = FileType(rawValue: itemString) {
+                    if let nextItem = self.genreMediaOrFileInfo[index + 1], nextItem.first == "/" {
+                        if let refinement = FileTypeRefinements(rawValue: nextItem) {
+                            let mergedItems = "\(fileType.rawValue)\(refinement.rawValue)"
+                            frameData.append(
+                                mergedItems.encoded(withNullTermination: true))
+                        }
+                    } else {
+                        frameData.append(fileType.rawValue.encoded(
+                                withNullTermination: true))
+                    }
+                } else if itemString.first != "/" {
+                    frameData.append(itemString.encoded(
+                        withNullTermination: true))
+                }
+            }
+        }
+        return frameData
+    }
+
+    
 }
 
 // MARK: Tag extensions
 // get and set functions for `PresetOptionsFrame` frame types, which retrieves or sets three strings, all of which are optional (genre only uses two of these.) Each individual frame of this type will call these functions in a get-set property of function, where appropriate.
 extension Tag {
-    func presetOptionData(for frameKey: FrameKey) -> [String?]? {
+    func presetOptionArray(for frameKey: FrameKey) -> [String?]? {
         if let frame = self.frames[frameKey],
             case .presetOptionsFrame(let presetOptionsFrame) = frame {
             return presetOptionsFrame.genreMediaOrFileInfo
         }; return nil
     }
-
+    
     internal mutating func set(_ layout: FrameLayoutIdentifier,
                                _ frameKey: FrameKey,
                                infoArray: [String?]) {
-        let frame = PresetOptionsFrame(layout, genreMediaOrFileInfo: infoArray)
+        let frame = PresetOptionsFrame(
+            layout, genreMediaOrFileInfo: infoArray)
         self.frames[frameKey] = .presetOptionsFrame(frame)
     }
-
+    
     public var genre: (presetGenre: GenreType?, customGenre: String?)? {
         get {
             var presetType: GenreType? = nil
             var customString: String? = ""
-            //if the array exists...
-            if let frameArray = presetOptionData(for: .genre),
-                // ... and isn't empty (should be safe to force-unwrap)
-                !frameArray.isEmpty {
-                for element in frameArray {
-                    // see if the string is a GenreType rawValue
-                    if let genreType = GenreType(rawValue: element ?? "") {
-                        presetType = genreType
-                    // if not return it as a custom genre
-                    } else {
-                        customString = element
+            // if the array exists and isn't empty
+            if let frameArray = presetOptionArray(for: .genre) {
+                // for each item in the array...
+                for item in frameArray {
+                    // if the item isn't an empty string
+                    if let itemString = item, itemString != "" {
+                        // see if the string is a GenreType rawValue
+                        if let genreType = GenreType(rawValue: itemString) {
+                            presetType = genreType
+                            // if not return it as a custom genre
+                        } else {
+                            customString = itemString
+                        }
                     }
                 }
             }
@@ -237,20 +330,21 @@ extension Tag {
             var presetType: MediaType? = nil
             var presetRefinement: MediaTypeRefinements? = nil
             var refinementString: String? = ""
-            // if the array exists...
-            if let frameArray = presetOptionData(for: .mediaType),
-                // ... and it isn't empty... (should be safe to force-unwrap)
+            // if the array exists and isn't empty
+            if let frameArray = presetOptionArray(for: .mediaType),
                 !frameArray.isEmpty {
                 for element in frameArray {
-                    // forward slash means it's a refinement string
-                    if element?.first == "/" {
-                        presetRefinement = MediaTypeRefinements(code: element ?? "")
-                        // if it's not a refinement, check to see if it's a media type
-                    } else if MediaType(rawValue: element ?? "") != nil {
-                        presetType = MediaType(rawValue: element ?? "")
-                        // if it's not either of those, handle it as a freeform description
-                    } else {
-                        refinementString = element
+                    if let elementString = element, elementString != "" {
+                        // forward slash means it's a refinement string
+                        if elementString.first == "/" {
+                            presetRefinement = MediaTypeRefinements(code: elementString)
+                            // if it's not a refinement, check to see if it's a media type
+                        } else if MediaType(rawValue: elementString) != nil {
+                            presetType = MediaType(rawValue: elementString)
+                            // if it's not either of those, handle it as a freeform description
+                        } else {
+                            refinementString = elementString
+                        }
                     }
                 }
             }
@@ -262,29 +356,30 @@ extension Tag {
             frameArray.append(newValue?.mediaTypeRefinement?.code)
             frameArray.append(newValue?.additionalInformation)
             set(.known(.mediaType), .mediaType, infoArray: frameArray)
-
+            
         }
     }
-
+    
     public var fileType: (fileType: FileType?, fileTypeRefinement: FileTypeRefinements?, additionalInformation: String?)? {
         get {
             var presetType: FileType? = nil
             var presetRefinement: FileTypeRefinements? = nil
             var refinementString: String? = ""
-            // if the array exists...
-            if let frameArray = presetOptionData(for: .fileType),
-                // ... and it isn't empty... (should be safe to force-unwrap)
+            // if the array exists and isn't empty
+            if let frameArray = presetOptionArray(for: .fileType),
                 !frameArray.isEmpty {
                 for element in frameArray {
-                    // forward slash means it's a refinement string
-                    if element?.first == "/" {
-                        presetRefinement = FileTypeRefinements(rawValue: element ?? "")
-                        // if it's not a refinement, check to see if it's a file type
-                    } else if FileType(rawValue: element ?? "") != nil {
-                        presetType = FileType(rawValue: element ?? "")
-                        // if it's not either of those, handle it as a freeform description
-                    } else {
-                        refinementString = element
+                    if let elementString = element, elementString != "" {
+                        // forward slash means it's a refinement string
+                        if elementString.first == "/" {
+                            presetRefinement = FileTypeRefinements(rawValue: elementString)
+                            // if it's not a refinement, check to see if it's a media type
+                        } else if FileType(rawValue: elementString) != nil {
+                            presetType = FileType(rawValue: elementString)
+                            // if it's not either of those, handle it as a freeform description
+                        } else {
+                            refinementString = elementString
+                        }
                     }
                 }
             }

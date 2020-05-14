@@ -146,7 +146,7 @@ extension Tag {
     
     internal mutating func set(_ layout: FrameLayoutIdentifier,
                                _ frameKey: FrameKey,
-                               in language: String,
+                               in language: String?,
                                to description: String?,
                                with content: String) {
         let frame = LocalizedFrame(layout,
@@ -167,6 +167,22 @@ extension Tag {
         self.frames[frameKey] = .localizedFrame(frame)
     }
     
+    public mutating func removeComment(withDescription: String?) {
+        set(.known(.comments),
+            .comments(description: withDescription ?? ""),
+            in: nil,
+            to: nil,
+            with: "")
+    }
+
+    public mutating func removeLyrics(withDescription: String?) {
+        set(.known(.unsynchronizedLyrics),
+            .unsynchronizedLyrics(description: withDescription ?? ""),
+            in: nil,
+            to: nil,
+            with: "")
+    }
+
     /// Comments frame getter-setter. ID3 Identifier `COM`/`COMM`
     public subscript(
         comments language: ISO6392Codes,
@@ -231,7 +247,21 @@ extension Tag {
                 with: newValue ?? "")
         }
     }
-    
+
+    public mutating func removeUserText(withDescription: String?) {
+        set(.known(.userDefinedText),
+            .userDefinedText(description: withDescription ?? ""),
+            to: nil,
+            with: "")
+    }
+
+    public mutating func removeUserWebpage(withDescription: String?) {
+        set(.known(.userDefinedWebpage),
+            .userDefinedWebpage(description: withDescription ?? ""),
+            to: nil,
+            with: "")
+    }
+
     /// UserDefinedWebpage frame getter-setter. ID3 Identifier `WXX`/`WXXX`
     public subscript(userDefinedUrl userDefinedUrlDescription: String?) -> String? {
         get {

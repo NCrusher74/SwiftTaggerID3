@@ -21,8 +21,10 @@ extension String {
             // This will never happen unless “preferred” is changed to something besides Unicode.
             fatalError("\(encoding) cannot encode “\(self)”.")
         }
-        let null = Data(repeating: 0x00, count: encoding.sizeOfTermination)
-        result.append(contentsOf: null)
+        if withNullTermination == true {
+            let null = Data(repeating: 0x00, count: encoding.sizeOfTermination)
+            result.append(contentsOf: null)
+        }
         return result
     }
     

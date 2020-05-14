@@ -76,10 +76,8 @@ struct CreditsListFrame: FrameProtocol {
         // encode and append each credit
         for key in credits.keys {
             frameData.append(key.encoded(withNullTermination: true))
-//            print(key.encoded(withNullTermination: true).hexadecimal())
             let valueString = credits[key]?.joined(separator: ",") ?? ""
             frameData.append(valueString.encoded(withNullTermination: true))
-//            print(valueString.encoded(withNullTermination: true).hexadecimal())
         }
         return frameData
     }

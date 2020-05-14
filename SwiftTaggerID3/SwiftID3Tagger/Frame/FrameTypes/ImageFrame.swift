@@ -170,4 +170,12 @@ extension Tag {
             imageDescription: imageDescription,
             image: imageData))
     }
+    
+    public mutating func removeAttachedPicture(withDescription: String?) {
+        set(.known(.attachedPicture),
+            .attachedPicture(description: withDescription ?? ""),
+            to: nil,
+            with: "")
+    }
+
 }

@@ -205,7 +205,7 @@ public enum GenreType: String, CaseIterable  {
     case Dubstep = "Dubstep"
     case GarageRock = "Garage Rock"
     case Psybient = "Psybient"
-    case none = ""
+    case none = "None"
     case Remix = "Remix"
     case Cover = "Cover"
     
