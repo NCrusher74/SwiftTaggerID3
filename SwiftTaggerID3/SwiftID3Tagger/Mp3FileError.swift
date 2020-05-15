@@ -29,6 +29,8 @@ extension Mp3File {
         case UnhandledImageFormat
         /// Error thrown when the data cannot be retrieved from a frame
         case UnreadableFrame
+        /// Error thrown when the date formatter cannot parse a correctly formatted date from the string
+        case InvalidDateString
     }
 }
 
@@ -59,6 +61,8 @@ extension Mp3File.Error: LocalizedError {
                 return NSLocalizedString("The ID3 version for the tag cannot be determined", comment: "")
             case .InvalidTagSize:
                 return NSLocalizedString("The tag is not large enough to hold valid frame data", comment: "")
+            case .InvalidDateString:
+            return NSLocalizedString("A date cannot be parsed from the string in the required format", comment: "String needs to be in ISO8601 (yyyy-MM-dd`T`HH:mm) format, per ID3 specs")
         }
     }
 }
