@@ -24,7 +24,6 @@ struct DateFrame: FrameProtocol {
     var allowMultipleFrames: Bool = false
     
     // needs to be in ISO-8601 format
-    var timeStampString: String?
     var timeStamp: Date?
     
     // MARK: Frame parsing
@@ -40,14 +39,34 @@ struct DateFrame: FrameProtocol {
         var parsing = contents
         let encoding = try DateFrame.extractEncoding(data: &parsing, version: version)
         let parsedString = parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? ""
-
-        // assuming the timestamp is in ISO-8601 format as per the ID3 spec
-        let formatter = ISO8601DateFormatter()
-        guard let date = formatter.date(from: parsedString) else {
-            throw Mp3File.Error.InvalidDateString
+        // assumes frame contents are 4-characters, DDMM string
+        if self.frameKey == .date {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "DDMM"
+            if let date = formatter.date(from: parsedString) {
+                self.timeStamp = date
+            }
+        // assumes frame contents are 4-characters long, HHmm string
+        } else if self.frameKey == .time {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "HHmm"
+            if let time = formatter.date(from: parsedString) {
+                self.timeStamp = time
+            }
+        // assumes frame contents are 4-characters long, yyyy string
+        } else if self.frameKey == .year {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy"
+            if let year = formatter.date(from: parsedString) {
+                self.timeStamp = year
+            }
+        } else {
+            let formatter = ISO8601DateFormatter()
+            formatter.formatOptions = [.withInternetDateTime]
+            if let date = formatter.date(from: parsedString) {
+                self.timeStamp = date
+            }
         }
-        self.timeStamp = date
-        self.timeStampString = formatter.string(from: date)
     }
     
     // MARK: Frame Building
@@ -56,10 +75,7 @@ struct DateFrame: FrameProtocol {
         self.flags = DateFrame.defaultFlags
         self.layout = layout
         self.frameKey = layout.frameKey(additionalIdentifier: nil)
-        
-        let formatter = ISO8601DateFormatter()
         self.timeStamp = timeStamp
-        self.timeStampString = formatter.string(from: timeStamp)
     }
     
     // encode contents of the frame to add to an ID3 tag
@@ -68,34 +84,37 @@ struct DateFrame: FrameProtocol {
         // append encoding byte
         frameData.append(StringEncoding.preferred.rawValue)
         
-        frameData.append(timeStampString?.encoded(withNullTermination: false) ?? Data())
-
+        var encodedString = Data()
+        if self.frameKey == .date {
+            let day = self.timeStamp?.id3DayMonth.day ?? 01
+            let month = self.timeStamp?.id3DayMonth.month ?? 01
+            encodedString = "\(day)\(month)".encoded(withNullTermination: false)
+        } else if self.frameKey == .time {
+            let hour = self.timeStamp?.id3HourMinute.hour ?? 00
+            let minute = self.timeStamp?.id3HourMinute.minute ?? 00
+            encodedString = "\(hour)\(minute)".encoded(withNullTermination: false)
+        } else if self.frameKey == .year {
+            let year = self.timeStamp?.id3Year ?? 2001
+            encodedString = String(year).encoded(withNullTermination: false)
+        } else {
+            let formatter = ISO8601DateFormatter()
+            formatter.formatOptions = [.withInternetDateTime]
+            let dateString = formatter.string(from: timeStamp ?? Date.distantPast )
+            encodedString = dateString.encoded(withNullTermination: false)
+        }
+        frameData.append(encodedString)
         return frameData
     }
 }
 
 // MARK: Tag extension
+// These are convenience getter-setter properties
 extension Tag {
-    internal func date(for frameKey: FrameKey) -> Date? {
-        if let frame = self.frames[frameKey],
-            case .dateFrame(let dateFrame) = frame {
-            return dateFrame.timeStamp
-        } else {
-            return nil
-        }
-    }
-    
-    internal mutating func set(_ layout: FrameLayoutIdentifier,
-                               _ frameKey: FrameKey,
-                               timeStamp: Date) {
-        let frame = DateFrame(layout, timeStamp: timeStamp)
-        self.frames[frameKey] = .dateFrame(frame)
-    }
-    
-    public var releaseDateTime:
-        (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
-        get {
-            if let date = date(for: .releaseTime) {
+    internal func date(for frameKey: FrameKey)
+        -> (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
+            if let frame = self.frames[frameKey],
+                case .dateFrame(let dateFrame) = frame {
+                let date = dateFrame.timeStamp ?? Date.distantPast
                 let calendar = Calendar(identifier: .iso8601)
                 let timeZone = TimeZone(secondsFromGMT: 0) ?? .current
                 let components = calendar.dateComponents(in: timeZone, from: date)
@@ -107,18 +126,186 @@ extension Tag {
             } else {
                 return nil
             }
+    }
+    
+    internal mutating func set(_ layout: FrameLayoutIdentifier,
+                               _ frameKey: FrameKey,
+                               timeStamp: Date) {
+        let frame = DateFrame(layout, timeStamp: timeStamp)
+        self.frames[frameKey] = .dateFrame(frame)
+    }
+    
+    /// Version 2.4 only. Identifier: `TDRL`
+    public var releaseDateTime:
+        (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
+        get {
+            date(for: .releaseTime)
         }
         set {
             let calendar = Calendar(identifier: .iso8601)
             let timeZone = TimeZone.init(secondsFromGMT: 0)
-            if let date = DateComponents(calendar: calendar,
-                                      timeZone: timeZone,
-                                      year: newValue?.year,
-                                      month: newValue?.month,
-                                      day: newValue?.day,
-                                      hour: newValue?.hour,
-                                      minute: newValue?.minute).date {
+            let dateComponents = DateComponents(calendar: calendar,
+                                                timeZone: timeZone,
+                                                year: newValue?.year,
+                                                month: newValue?.month,
+                                                day: newValue?.day,
+                                                hour: newValue?.hour,
+                                                minute: newValue?.minute)
+            if let date = calendar.date(from: dateComponents) {
                 set(.known(.releaseTime), .releaseTime, timeStamp: date)
+            }
+        }
+    }
+    
+    /// Version 2.4 only. Identifier `TDEN`
+    public var encodingDateTime:
+        (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
+        get {
+            date(for: .encodingTime)
+        }
+        set {
+            let calendar = Calendar(identifier: .iso8601)
+            let timeZone = TimeZone.init(secondsFromGMT: 0)
+            let dateComponents = DateComponents(calendar: calendar,
+                                                timeZone: timeZone,
+                                                year: newValue?.year,
+                                                month: newValue?.month,
+                                                day: newValue?.day,
+                                                hour: newValue?.hour,
+                                                minute: newValue?.minute)
+            if let date = calendar.date(from: dateComponents) {
+                set(.known(.encodingTime), .encodingTime, timeStamp: date)
+            }
+        }
+    }
+    
+    /// Version 2.4 only. Identifier `TDTG`
+    public var taggingDateTime:
+        (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
+        get {
+            date(for: .taggingTime)
+        }
+        set {
+            let calendar = Calendar(identifier: .iso8601)
+            let timeZone = TimeZone.init(secondsFromGMT: 0)
+            let dateComponents = DateComponents(calendar: calendar,
+                                                timeZone: timeZone,
+                                                year: newValue?.year,
+                                                month: newValue?.month,
+                                                day: newValue?.day,
+                                                hour: newValue?.hour,
+                                                minute: newValue?.minute)
+            if let date = calendar.date(from: dateComponents) {
+                set(.known(.taggingTime), .taggingTime, timeStamp: date)
+            }
+        }
+    }
+    
+    /// Identifier `TRD`/`TRDA`/`TDRC`
+    public var recordingDateTime:
+        (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
+        get {
+            date(for: .recordingDate)
+        }
+        set {
+            let calendar = Calendar(identifier: .iso8601)
+            let timeZone = TimeZone.init(secondsFromGMT: 0)
+            let dateComponents = DateComponents(calendar: calendar,
+                                                timeZone: timeZone,
+                                                year: newValue?.year,
+                                                month: newValue?.month,
+                                                day: newValue?.day,
+                                                hour: newValue?.hour,
+                                                minute: newValue?.minute)
+            if let date = calendar.date(from: dateComponents) {
+                set(.known(.recordingDate), .recordingDate, timeStamp: date)
+            }
+        }
+    }
+    
+    /// Full date/time for version 2.4. Year-only for versions 2.2 and 2.3. Identifer `TOY`/`TORY`/`TDOR`
+    public var originalReleaseDateTime:
+        (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
+        get {
+            date(for: .originalReleaseTime)
+        }
+        set {
+            let calendar = Calendar(identifier: .iso8601)
+            let timeZone = TimeZone.init(secondsFromGMT: 0)
+            let dateComponents = DateComponents(calendar: calendar,
+                                                timeZone: timeZone,
+                                                year: newValue?.year,
+                                                month: newValue?.month,
+                                                day: newValue?.day,
+                                                hour: newValue?.hour,
+                                                minute: newValue?.minute)
+            if let date = calendar.date(from: dateComponents) {
+                set(.known(.originalReleaseTime), .originalReleaseTime, timeStamp: date)
+            }
+        }
+    }
+    
+    /// version 2.2/2.3 only Identifier `TDA`/`TDAT`
+    public var date: (month: Int?, day: Int?)? {
+        get {
+            if let date = date(for: .date) {
+                return (date.month, date.day)
+            } else {
+                return nil
+            }
+        }
+        set {
+            let calendar = Calendar(identifier: .iso8601)
+            let timeZone = TimeZone(secondsFromGMT: 0)
+            let dateComponents = DateComponents(calendar: calendar,
+                                                timeZone: timeZone,
+                                                month: newValue?.month,
+                                                day: newValue?.day)
+            if let date = calendar.date(from: dateComponents) {
+                set(.known(.date), .date, timeStamp: date)
+            }
+        }
+    }
+    
+    /// version 2.2/2.3. Identifier `TIM`/`TIME`
+    public var time: (hour: Int?, minute: Int?)? {
+        get {
+            if let date = date(for: .time) {
+                return (date.hour, date.minute)
+            } else {
+                return nil
+            }
+        }
+        set {
+            let calendar = Calendar(identifier: .iso8601)
+            let timeZone = TimeZone(secondsFromGMT: 0)
+            let dateComponents = DateComponents(calendar: calendar,
+                                                timeZone: timeZone,
+                                                hour: newValue?.hour,
+                                                minute: newValue?.minute)
+            if let date = calendar.date(from: dateComponents) {
+                set(.known(.time), .time, timeStamp: date)
+            }
+        }
+    }
+    
+    /// version 2.2/2.3 Identifier `TYE`/`TYER`
+    public var year: Int? {
+        get {
+            if let date = date(for: .year) {
+                return date.year
+            } else {
+                return nil
+            }
+        }
+        set {
+            let calendar = Calendar(identifier: .iso8601)
+            let timeZone = TimeZone.init(secondsFromGMT: 0)
+            let dateComponents = DateComponents(calendar: calendar,
+                                                timeZone: timeZone,
+                                                year: newValue)
+            if let date = calendar.date(from: dateComponents) {
+                set(.known(.year), .year, timeStamp: date)
             }
         }
     }

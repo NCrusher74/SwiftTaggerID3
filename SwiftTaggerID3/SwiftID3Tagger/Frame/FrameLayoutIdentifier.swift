@@ -257,7 +257,7 @@ enum KnownFrameLayoutIdentifier: CaseIterable {
                 switch version {
                     case .v2_2: return "TDA"
                     case .v2_3: return "TDAT"
-                    case .v2_4: return "TDRL"
+                    case .v2_4: return nil
             }
             case .discNumber:
                 switch version {
@@ -487,7 +487,7 @@ enum KnownFrameLayoutIdentifier: CaseIterable {
                 switch version {
                     case .v2_2: return "TIM"
                     case .v2_3: return "TIME"
-                    case .v2_4: return "TDRL"
+                    case .v2_4: return nil
             }
             case .title:
                 switch version {
@@ -523,7 +523,7 @@ enum KnownFrameLayoutIdentifier: CaseIterable {
                 switch version {
                     case .v2_2: return "TYE"
                     case .v2_3: return "TYER"
-                    case .v2_4: return "TDRL"
+                    case .v2_4: return nil
             }
         }
     }

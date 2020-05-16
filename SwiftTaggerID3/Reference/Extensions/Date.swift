@@ -54,7 +54,7 @@ extension Date {
 
 }
 
-extension ISO8601DateFormatter {
+extension DateFormatter {
     // This is the format used in the ID3 "Date" frame
     static let id3DayMonth: DateFormatter = {
         let formatter = DateFormatter()
