@@ -37,38 +37,71 @@ struct DateFrame: FrameProtocol {
         self.frameKey = layout.frameKey(additionalIdentifier: nil)
         
         var parsing = contents
+        // extract and interpret encoding byte
         let encoding = try DateFrame.extractEncoding(data: &parsing, version: version)
+        // extract string content
         let parsedString = parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? ""
+
+        let calendar = Calendar(identifier: .iso8601)
+        let timeZone = TimeZone(secondsFromGMT: 0)
 
         // assumes frame contents are spec-compliant, 4-characters, DDMM string
         if self.frameKey == .date {
-//            print(parsedString) // 0302
-            let formatter = DateFormatter()
-            formatter.dateFormat = "DDMM"
-            formatter.timeZone = TimeZone(secondsFromGMT: 0)
-            formatter.locale = Locale(identifier: "en_US_POSIX")
-            if let date = formatter.date(from: parsedString) {
-//                print(date.id3DayMonth.month) // Optional(1)
+            // split the four-character string into an array of 2-character strings
+            let dayMonthArray = parsedString.components(withLength: 2)
+            // make sure the array has at least two elements so we don't go out of bounds
+            guard dayMonthArray.count >= 2 else {
+                throw Mp3File.Error.InvalidDateString
+            }
+            // if parsedString is not spec-compliant, there may be more than two elements
+            // so we'll use the first two, rather than .first and .last
+            // because those should be day and month
+            // if they're not, we'll probably get nil when we try to make a date out of them
+            // the first array element is the day, make the string an Int
+            let day = Int(dayMonthArray[0])
+            // second element is the month, make it an Int
+            let month = Int(dayMonthArray[1])
+            // use day and month as components for a date
+            let dateComponents = DateComponents(calendar: calendar,
+                                                timeZone: timeZone,
+                                                month: month,
+                                                day: day)
+            if let date = dateComponents.date {
+                // initialize the timeStamp property
                 self.timeStamp = date
             }
-        // assumes frame contents are pec-compliant, 4-characters long, HHmm string
+        // assumes frame contents are spec-compliant, 4-characters, HHmm string
         } else if self.frameKey == .time {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "HHmm"
-            formatter.timeZone = TimeZone(secondsFromGMT: 0)
-            formatter.locale = Locale(identifier: "en_US_POSIX")
-            if let time = formatter.date(from: parsedString) {
+            // split the four-character string into an array of 2-character strings
+            let hourMinuteArray = parsedString.components(withLength: 2)
+            // make sure the array has at least two elements so we don't go out of bounds
+            guard hourMinuteArray.count >= 2 else {
+                throw Mp3File.Error.InvalidDateString
+            }
+            // the first array element is the hour, make the string an Int
+            let hour = Int(hourMinuteArray[0])
+            // the second array element is the minute, make the string an Int
+            let minute = Int(hourMinuteArray[1])
+            // use hour and minute as components
+            let dateComponents = DateComponents(calendar: calendar,
+                                                timeZone: timeZone,
+                                                hour: hour,
+                                                minute: minute)
+            if let time = dateComponents.date {
                 self.timeStamp = time
             }
-        // assumes frame contents are pec-compliant, 4-characters long, yyyy string
+        // assumes frame contents are spec-compliant, 4-characters long, yyyy string
         } else if self.frameKey == .year {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy"
-            formatter.timeZone = TimeZone(secondsFromGMT: 0)
-            formatter.locale = Locale(identifier: "en_US_POSIX")
-            if let year = formatter.date(from: parsedString) {
+            // make the string into an Int
+            let year = Int(parsedString)
+            // use it as a component
+            let dateComponents = DateComponents(calendar: calendar,
+                                                timeZone: timeZone,
+                                                year: year)
+            if let year = dateComponents.date {
                 self.timeStamp = year
             }
+            // everything else should be an ISO-8601 compliant string
         } else {
             let formatter = ISO8601DateFormatter()
             formatter.formatOptions = [.withInternetDateTime]
@@ -98,7 +131,6 @@ struct DateFrame: FrameProtocol {
         if self.frameKey == .date {
             let day = String(withInt: self.timeStamp?.id3DayMonth.day ?? 01)
             let month = String(withInt: self.timeStamp?.id3DayMonth.month ?? 01)
-//            print(month) // 02
             encodedString = "\(day)\(month)".encoded(withNullTermination: false)
         } else if self.frameKey == .time {
             let hour = String(withInt: self.timeStamp?.id3HourMinute.hour ?? 00)
@@ -129,7 +161,6 @@ extension Tag {
                 let calendar = Calendar(identifier: .iso8601)
                 let timeZone = TimeZone(secondsFromGMT: 0) ?? .current
                 let components = calendar.dateComponents(in: timeZone, from: date)
-//                print(components.month) // Optional(1)
                 return (components.year,
                         components.month,
                         components.day,
