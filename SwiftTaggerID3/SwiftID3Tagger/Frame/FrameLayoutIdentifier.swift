@@ -131,10 +131,6 @@ enum KnownFrameLayoutIdentifier: CaseIterable {
         self = KnownFrameLayoutIdentifier.stringToLayoutMapping[identifier] ?? .userDefinedText
     }
          
-    /*
-     
-
-     */
     // MARK: ID3Identifier
     /** The ID3 code for the frame
 
@@ -296,7 +292,7 @@ enum KnownFrameLayoutIdentifier: CaseIterable {
             }
             case .grouping:
                 switch version {
-                    case .v2_2: return nil
+                    case .v2_2: return "GP1"
                     case .v2_3, .v2_4: return "GRP1"
             }
             case .initialKey:
@@ -342,18 +338,18 @@ enum KnownFrameLayoutIdentifier: CaseIterable {
             }
             case .movementCount:
                 switch version {
-                    case .v2_2: return nil
+                    case .v2_2: return "MVC"
                     case .v2_3, .v2_4: return "MVCN"
             }
             
             case .movementName:
                 switch version {
-                    case .v2_2: return nil
+                    case .v2_2: return "MVN"
                     case .v2_3, .v2_4: return "MVNM"
             }
             case .movementNumber:
                 switch version {
-                    case .v2_2: return nil
+                    case .v2_2: return "MVI"
                     case .v2_3, .v2_4: return "MVIN"
             }
             case .musicianCreditsList:
@@ -399,27 +395,27 @@ enum KnownFrameLayoutIdentifier: CaseIterable {
             }
             case .podcastCategory:
                 switch version {
-                    case .v2_2: return nil
+                    case .v2_2: return "TCT"
                     case .v2_3, .v2_4: return "TCAT"
             }
             case .podcastDescription:
                 switch version {
-                    case .v2_2: return nil
+                    case .v2_2: return "TDS"
                     case .v2_3, .v2_4: return "TDES"
             }
             case .podcastID:
                 switch version {
-                    case .v2_2: return nil
+                    case .v2_2: return "TID"
                     case .v2_3, .v2_4: return "TGID"
             }
             case .podcastKeywords:
                 switch version {
-                    case .v2_2: return nil
+                    case .v2_2: return "TKW"
                     case .v2_3, .v2_4: return "TKWD"
             }
             case .podcastFeedLink:
                 switch version {
-                    case .v2_2: return nil
+                    case .v2_2: return "WFD"
                     case .v2_3, .v2_4: return "WFED"
             }
             case .producedNotice:

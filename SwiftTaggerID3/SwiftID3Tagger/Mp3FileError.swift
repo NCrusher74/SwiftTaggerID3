@@ -13,6 +13,8 @@ extension Mp3File {
     public enum Error: Swift.Error {
         /// Error generated when the mp3 file cannot be converted to Data
         case CannotReadFile;
+        /// Error generated when an date frame is not available for the chosen version
+        case DateFrameNotAvailableForVersion
         /// Error generated when an invalid file format is passed to the ID3TagEditor.
         case InvalidFileFormat;
         /// Error generated when there's not valid data in the tag.
@@ -40,6 +42,15 @@ extension Mp3File.Error: LocalizedError {
             case .CannotReadFile:
                 return NSLocalizedString(
                     "Cannot Read MP3 File", comment: "")
+            case .DateFrameNotAvailableForVersion:
+                return NSLocalizedString(
+                    "That date frame is not available for the selected ID3 version",
+                    comment: """
+                            Valid date frames for version 2.2/2.3 are:
+                            .date, .time, .year, .originalReleaseDateTime, .recordingDateTime
+                            Valid date frames for version 2.4 are:
+                            .encodingDateTime, .originalReleaseDateTime, .recordingDateTime, .releaseDateTime, .taggingDateTime
+                """)
             case .InvalidFileFormat:
                 return NSLocalizedString(
                     "The file needs to be an MP3 file", comment: "")

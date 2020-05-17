@@ -33,8 +33,9 @@ struct DateFrame: FrameProtocol {
          layout: FrameLayoutIdentifier,
          flags: Data) throws {
         self.flags = flags
+        
         self.layout = layout
-        self.frameKey = layout.frameKey(additionalIdentifier: nil)
+        self.frameKey = self.layout.frameKey(additionalIdentifier: nil)
         
         var parsing = contents
         // extract and interpret encoding byte
@@ -101,6 +102,17 @@ struct DateFrame: FrameProtocol {
             if let year = dateComponents.date {
                 self.timeStamp = year
             }
+        // versions 2.2 and 2.3 should only have a year for this frame
+        } else if self.frameKey == .originalReleaseTime && (version == .v2_2 || version == .v2_3) {
+            // make the string into an Int
+            let year = Int(parsedString)
+            // use it as a component
+            let dateComponents = DateComponents(calendar: calendar,
+                                                timeZone: timeZone,
+                                                year: year)
+            if let year = dateComponents.date {
+                self.timeStamp = year
+            }
             // everything else should be an ISO-8601 compliant string
         } else {
             let formatter = ISO8601DateFormatter()
@@ -125,6 +137,14 @@ struct DateFrame: FrameProtocol {
         var frameData = Data()
         // append encoding byte
         frameData.append(StringEncoding.preferred.rawValue)
+        
+        guard !(version == .v2_2 || version == .v2_3) && !(self.layout == .known(.encodingTime) || self.layout == .known(.taggingTime) || self.layout == .known(.releaseTime))  else {
+            throw Mp3File.Error.DateFrameNotAvailableForVersion
+        }
+        
+        guard !(self.layout == .known(.date) || self.layout == .known(.time) || self.layout == .known(.year)) && version != .v2_4 else {
+            throw Mp3File.Error.DateFrameNotAvailableForVersion
+        }
 
         var encodedString = Data()
 
@@ -139,6 +159,12 @@ struct DateFrame: FrameProtocol {
         } else if self.frameKey == .year {
             let year = self.timeStamp?.id3Year ?? 2001
             encodedString = String(year).encoded(withNullTermination: false)
+        } else if self.frameKey == .originalReleaseTime && (version == .v2_2 || version == .v2_3) {
+            let calendar = Calendar(identifier: .iso8601)
+            let timeZone = TimeZone(secondsFromGMT: 0) ?? .current
+            let components = calendar.dateComponents(in: timeZone, from: self.timeStamp ?? Date.distantPast)
+            let year = String(components.year ?? 2001)
+            encodedString = year.encoded(withNullTermination: false)
         } else {
             let formatter = ISO8601DateFormatter()
             formatter.formatOptions = [.withInternetDateTime]

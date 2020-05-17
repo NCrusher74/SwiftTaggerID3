@@ -13,9 +13,9 @@ class TestPrint: XCTestCase {
     
     
     func testPrint() throws {
-        let path = "/Users/nolainecrusher/Desktop/test output/testV24Writing.mp3"
-        let mp3Url = URL(fileURLWithPath: path)
-//        let mp3Url = Bundle.writtenV24
+//        let path = "/Users/nolainecrusher/Desktop/test output/testV24Writing.mp3"
+//        let mp3Url = URL(fileURLWithPath: path)
+        let mp3Url = Bundle.writtenV24
         let mp3File = try Mp3File(location: mp3Url)
         let mp3Data = mp3File.data
         
@@ -86,8 +86,6 @@ class TestPrint: XCTestCase {
         let tagWritten = try Tag(readFrom: mp3FileWritten)
         
         XCTAssertEqual(tagWritten.originalReleaseDateTime?.year, 2014)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.month, 08)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.day, 09)
         XCTAssertEqual(tagWritten.recordingDateTime?.year, 2018)
         XCTAssertEqual(tagWritten.recordingDateTime?.month, 10)
         XCTAssertEqual(tagWritten.recordingDateTime?.day, 11)
@@ -96,7 +94,6 @@ class TestPrint: XCTestCase {
         XCTAssertEqual(tagWritten.time?.hour, 11)
         XCTAssertEqual(tagWritten.time?.minute, 11)
         XCTAssertEqual(tagWritten.year, 2015)
-        
     }
 
 }
