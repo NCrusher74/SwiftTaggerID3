@@ -39,24 +39,33 @@ struct DateFrame: FrameProtocol {
         var parsing = contents
         let encoding = try DateFrame.extractEncoding(data: &parsing, version: version)
         let parsedString = parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? ""
-        // assumes frame contents are 4-characters, DDMM string
+
+        // assumes frame contents are spec-compliant, 4-characters, DDMM string
         if self.frameKey == .date {
+//            print(parsedString) // 0302
             let formatter = DateFormatter()
             formatter.dateFormat = "DDMM"
+            formatter.timeZone = TimeZone(secondsFromGMT: 0)
+            formatter.locale = Locale(identifier: "en_US_POSIX")
             if let date = formatter.date(from: parsedString) {
+//                print(date.id3DayMonth.month) // Optional(1)
                 self.timeStamp = date
             }
-        // assumes frame contents are 4-characters long, HHmm string
+        // assumes frame contents are pec-compliant, 4-characters long, HHmm string
         } else if self.frameKey == .time {
             let formatter = DateFormatter()
             formatter.dateFormat = "HHmm"
+            formatter.timeZone = TimeZone(secondsFromGMT: 0)
+            formatter.locale = Locale(identifier: "en_US_POSIX")
             if let time = formatter.date(from: parsedString) {
                 self.timeStamp = time
             }
-        // assumes frame contents are 4-characters long, yyyy string
+        // assumes frame contents are pec-compliant, 4-characters long, yyyy string
         } else if self.frameKey == .year {
             let formatter = DateFormatter()
             formatter.dateFormat = "yyyy"
+            formatter.timeZone = TimeZone(secondsFromGMT: 0)
+            formatter.locale = Locale(identifier: "en_US_POSIX")
             if let year = formatter.date(from: parsedString) {
                 self.timeStamp = year
             }
@@ -83,15 +92,17 @@ struct DateFrame: FrameProtocol {
         var frameData = Data()
         // append encoding byte
         frameData.append(StringEncoding.preferred.rawValue)
-        
+
         var encodedString = Data()
+
         if self.frameKey == .date {
-            let day = self.timeStamp?.id3DayMonth.day ?? 01
-            let month = self.timeStamp?.id3DayMonth.month ?? 01
+            let day = String(withInt: self.timeStamp?.id3DayMonth.day ?? 01)
+            let month = String(withInt: self.timeStamp?.id3DayMonth.month ?? 01)
+//            print(month) // 02
             encodedString = "\(day)\(month)".encoded(withNullTermination: false)
         } else if self.frameKey == .time {
-            let hour = self.timeStamp?.id3HourMinute.hour ?? 00
-            let minute = self.timeStamp?.id3HourMinute.minute ?? 00
+            let hour = String(withInt: self.timeStamp?.id3HourMinute.hour ?? 00)
+            let minute = String(withInt: self.timeStamp?.id3HourMinute.minute ?? 00)
             encodedString = "\(hour)\(minute)".encoded(withNullTermination: false)
         } else if self.frameKey == .year {
             let year = self.timeStamp?.id3Year ?? 2001
@@ -118,6 +129,7 @@ extension Tag {
                 let calendar = Calendar(identifier: .iso8601)
                 let timeZone = TimeZone(secondsFromGMT: 0) ?? .current
                 let components = calendar.dateComponents(in: timeZone, from: date)
+//                print(components.month) // Optional(1)
                 return (components.year,
                         components.month,
                         components.day,
@@ -143,7 +155,7 @@ extension Tag {
         }
         set {
             let calendar = Calendar(identifier: .iso8601)
-            let timeZone = TimeZone.init(secondsFromGMT: 0)
+            let timeZone = TimeZone(secondsFromGMT: 0)
             let dateComponents = DateComponents(calendar: calendar,
                                                 timeZone: timeZone,
                                                 year: newValue?.year,
@@ -165,7 +177,7 @@ extension Tag {
         }
         set {
             let calendar = Calendar(identifier: .iso8601)
-            let timeZone = TimeZone.init(secondsFromGMT: 0)
+            let timeZone = TimeZone(secondsFromGMT: 0)
             let dateComponents = DateComponents(calendar: calendar,
                                                 timeZone: timeZone,
                                                 year: newValue?.year,
@@ -187,7 +199,7 @@ extension Tag {
         }
         set {
             let calendar = Calendar(identifier: .iso8601)
-            let timeZone = TimeZone.init(secondsFromGMT: 0)
+            let timeZone = TimeZone(secondsFromGMT: 0)
             let dateComponents = DateComponents(calendar: calendar,
                                                 timeZone: timeZone,
                                                 year: newValue?.year,
@@ -209,7 +221,7 @@ extension Tag {
         }
         set {
             let calendar = Calendar(identifier: .iso8601)
-            let timeZone = TimeZone.init(secondsFromGMT: 0)
+            let timeZone = TimeZone(secondsFromGMT: 0)
             let dateComponents = DateComponents(calendar: calendar,
                                                 timeZone: timeZone,
                                                 year: newValue?.year,
@@ -231,7 +243,7 @@ extension Tag {
         }
         set {
             let calendar = Calendar(identifier: .iso8601)
-            let timeZone = TimeZone.init(secondsFromGMT: 0)
+            let timeZone = TimeZone(secondsFromGMT: 0)
             let dateComponents = DateComponents(calendar: calendar,
                                                 timeZone: timeZone,
                                                 year: newValue?.year,
@@ -300,7 +312,7 @@ extension Tag {
         }
         set {
             let calendar = Calendar(identifier: .iso8601)
-            let timeZone = TimeZone.init(secondsFromGMT: 0)
+            let timeZone = TimeZone(secondsFromGMT: 0)
             let dateComponents = DateComponents(calendar: calendar,
                                                 timeZone: timeZone,
                                                 year: newValue)
