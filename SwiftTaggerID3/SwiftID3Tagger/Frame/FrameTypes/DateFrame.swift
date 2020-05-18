@@ -221,6 +221,7 @@ extension Tag {
                                _ frameKey: FrameKey,
                                timeStamp: Date) {
         let frame = DateFrame(layout, timeStamp: timeStamp)
+//        print(timeStamp) // 0001-11-07 09:23:00 +000
         self.frames[frameKey] = .dateFrame(frame)
     }
     
@@ -263,6 +264,7 @@ extension Tag {
                                                 hour: newValue?.hour,
                                                 minute: newValue?.minute)
             if let date = calendar.date(from: dateComponents) {
+//                print(date) // 0001-11-07 09:23:00 +0000
                 set(.known(.encodingTime), .encodingTime, timeStamp: date)
             }
         }

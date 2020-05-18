@@ -124,4 +124,16 @@ extension Bundle {
         let mp3File = try Mp3File(location: v23NoMeta)
         return mp3File.data
     }
+    
+    static func tagV22() throws -> Tag {
+        return try Tag(readFrom: mp3V22())
+    }
+
+    static func tagV23() throws -> Tag {
+        return try Tag(readFrom: mp3V22())
+    }
+
+    static func tagV24() throws -> Tag {
+        return try Tag(readFrom: mp3V22())
+    }
 }

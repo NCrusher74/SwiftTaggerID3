@@ -35,6 +35,9 @@
 		515AF65B2449A8E2005C29FA /* KeySignatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515AF65A2449A8E2005C29FA /* KeySignatures.swift */; };
 		515CC1052448EB0C005906D0 /* UnknownFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 515CC1042448EB0C005906D0 /* UnknownFrame.swift */; };
 		5168949B244C112E008F6124 /* MediaType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5168949A244C112E008F6124 /* MediaType.swift */; };
+		516E1B2424728E180087A093 /* SwiftTaggerMp3_PartOfTotalFrame_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516E1B2324728E180087A093 /* SwiftTaggerMp3_PartOfTotalFrame_Tests.swift */; };
+		516E1B26247297940087A093 /* SwiftTaggerMp3_CreditsListFrame_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516E1B25247297940087A093 /* SwiftTaggerMp3_CreditsListFrame_Tests.swift */; };
+		516E1B29247314930087A093 /* SwiftTaggerMp3_DateFrame_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516E1B28247314930087A093 /* SwiftTaggerMp3_DateFrame_Tests.swift */; };
 		51753026244DC5700005B2AB /* MusicianPerformerCredits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51753025244DC5700005B2AB /* MusicianPerformerCredits.swift */; };
 		5175303F244DF1B20005B2AB /* StringEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5175303E244DF1B20005B2AB /* StringEncoding.swift */; };
 		51753041244ECDD00005B2AB /* v24-test-file-raw-tag-info in Resources */ = {isa = PBXBuildFile; fileRef = 51753040244ECDD00005B2AB /* v24-test-file-raw-tag-info */; };
@@ -129,6 +132,9 @@
 		515AF65A2449A8E2005C29FA /* KeySignatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySignatures.swift; sourceTree = "<group>"; };
 		515CC1042448EB0C005906D0 /* UnknownFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnknownFrame.swift; sourceTree = "<group>"; };
 		5168949A244C112E008F6124 /* MediaType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaType.swift; sourceTree = "<group>"; };
+		516E1B2324728E180087A093 /* SwiftTaggerMp3_PartOfTotalFrame_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftTaggerMp3_PartOfTotalFrame_Tests.swift; sourceTree = "<group>"; };
+		516E1B25247297940087A093 /* SwiftTaggerMp3_CreditsListFrame_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftTaggerMp3_CreditsListFrame_Tests.swift; sourceTree = "<group>"; };
+		516E1B28247314930087A093 /* SwiftTaggerMp3_DateFrame_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftTaggerMp3_DateFrame_Tests.swift; sourceTree = "<group>"; };
 		51753025244DC5700005B2AB /* MusicianPerformerCredits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicianPerformerCredits.swift; sourceTree = "<group>"; };
 		5175303E244DF1B20005B2AB /* StringEncoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringEncoding.swift; sourceTree = "<group>"; };
 		51753040244ECDD00005B2AB /* v24-test-file-raw-tag-info */ = {isa = PBXFileReference; lastKnownFileType = text; path = "v24-test-file-raw-tag-info"; sourceTree = "<group>"; };
@@ -297,6 +303,9 @@
 			isa = PBXGroup;
 			children = (
 				5144EC7C2458C43C001757DA /* TestPrint.swift */,
+				516E1B2324728E180087A093 /* SwiftTaggerMp3_PartOfTotalFrame_Tests.swift */,
+				516E1B25247297940087A093 /* SwiftTaggerMp3_CreditsListFrame_Tests.swift */,
+				516E1B28247314930087A093 /* SwiftTaggerMp3_DateFrame_Tests.swift */,
 				51779430245016AF0022E02F /* SwiftTaggerID3_Read_Tests.swift */,
 				51FF494A245BBBB00006F8F8 /* SwiftTaggerID3_Write_Tests.swift */,
 				51E432BC243DA257006574A1 /* SwiftTaggerID3Tests.plist */,
@@ -558,10 +567,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				516E1B2424728E180087A093 /* SwiftTaggerMp3_PartOfTotalFrame_Tests.swift in Sources */,
 				51FF494B245BBBB00006F8F8 /* SwiftTaggerID3_Write_Tests.swift in Sources */,
 				51779431245016AF0022E02F /* SwiftTaggerID3_Read_Tests.swift in Sources */,
+				516E1B26247297940087A093 /* SwiftTaggerMp3_CreditsListFrame_Tests.swift in Sources */,
 				51E432D2243DA64B006574A1 /* Bundle.swift in Sources */,
 				5144EC7D2458C43C001757DA /* TestPrint.swift in Sources */,
+				516E1B29247314930087A093 /* SwiftTaggerMp3_DateFrame_Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
