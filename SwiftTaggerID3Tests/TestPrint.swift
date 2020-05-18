@@ -76,7 +76,7 @@ class TestPrint: XCTestCase {
         tag.date = (month: 02, day: 03)
         tag.time = (hour: 11, minute: 11)
         tag.year = 2015
-        
+
         let outputUrl = URL(fileURLWithPath: "/Users/nolainecrusher/Desktop/test output/testV23Date.mp3")
         XCTAssertNoThrow(try mp3File.write(tagVersion: .v2_3, using: tag, writingTo: outputUrl))
         

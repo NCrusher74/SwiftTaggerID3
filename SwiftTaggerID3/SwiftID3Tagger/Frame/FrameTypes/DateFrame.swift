@@ -28,6 +28,13 @@ struct DateFrame: FrameProtocol {
     
     // MARK: Frame parsing
     // subset of ISO 8601; valid timestamps are yyyy, yyyy-MM, yyyy-MM-dd, yyyy-MM-ddTHH, yyyy-MM-ddTHH:mm and yyyy-MM-ddTHH:mm:ss.
+    /// Decode the contents of a date frame being read from a file
+    /// - Parameters:
+    ///   - contents: the frame `Data` being decoded
+    ///   - version: the ID3 version of the tag being read
+    ///   - layout: the layout identifier of the frame
+    ///   - flags: the frame flags
+    /// - Throws: `InvalidDateString` if the string SwiftTagger is attempting to parse is not spec-compliant and thus a valid date cannot be derived
     init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,
@@ -124,6 +131,10 @@ struct DateFrame: FrameProtocol {
     }
     
     // MARK: Frame Building
+    /// Initialize a date frame for writing to file
+    /// - Parameters:
+    ///   - layout: the frame layout
+    ///   - timeStamp: the date/time being encoded into the frame
     init(_ layout: FrameLayoutIdentifier,
          timeStamp: Date) {
         self.flags = DateFrame.defaultFlags
@@ -132,22 +143,31 @@ struct DateFrame: FrameProtocol {
         self.timeStamp = timeStamp
     }
     
-    // encode contents of the frame to add to an ID3 tag
+    /// Certain date frames are only valid for ID3 versons 2.2 and 2.3. They have been deprecated in 2.4
+    let validVersion2223DateFrames: [FrameKey] = [.date, .time, .year, .originalReleaseTime, .recordingDate]
+    /// Certain date frames are only valid for ID3 version 2.4.
+    let validVersion24DateFrames: [FrameKey] = [.encodingTime, .taggingTime, .releaseTime, .originalReleaseTime, .recordingDate]
+
+    /// encode contents of the frame to add to an ID3 tag
+    /// - Parameter version: The ID3 version for the output file
+    /// - Throws: `DateFrameNotAvailableForVersion` if the frame has been deprecated in a later version or doesn't exist for an earlier version
+    /// - Returns: the frame contents as data
     func encodeContents(version: Version) throws -> Data {
         var frameData = Data()
         // append encoding byte
         frameData.append(StringEncoding.preferred.rawValue)
         
-        guard !(version == .v2_2 || version == .v2_3) && !(self.layout == .known(.encodingTime) || self.layout == .known(.taggingTime) || self.layout == .known(.releaseTime))  else {
-            throw Mp3File.Error.DateFrameNotAvailableForVersion
+        switch version {
+            case .v2_2, .v2_3:
+                guard validVersion2223DateFrames.contains(self.frameKey) else {
+                    throw Mp3File.Error.DateFrameNotAvailableForVersion
+            }
+            case .v2_4:
+                guard validVersion24DateFrames.contains(self.frameKey) else {
+                    throw Mp3File.Error.DateFrameNotAvailableForVersion
+            }
         }
-        
-        guard !(self.layout == .known(.date) || self.layout == .known(.time) || self.layout == .known(.year)) && version != .v2_4 else {
-            throw Mp3File.Error.DateFrameNotAvailableForVersion
-        }
-
         var encodedString = Data()
-
         if self.frameKey == .date {
             let day = String(withInt: self.timeStamp?.id3DayMonth.day ?? 01)
             let month = String(withInt: self.timeStamp?.id3DayMonth.month ?? 01)
