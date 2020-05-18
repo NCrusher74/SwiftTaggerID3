@@ -202,7 +202,7 @@ extension Tag {
                         components.hour,
                         components.minute)
             } else {
-                return nil
+                return (nil, nil, nil, nil, nil)
             }
     }
     
@@ -245,7 +245,6 @@ extension Tag {
         set {
             let calendar = Calendar(identifier: .iso8601)
             let timeZone = TimeZone(secondsFromGMT: 0)
-//            print(newValue?.year) // Optional(1)
             let dateComponents = DateComponents(calendar: calendar,
                                                 timeZone: timeZone,
                                                 year: newValue?.year,
@@ -253,7 +252,6 @@ extension Tag {
                                                 day: newValue?.day,
                                                 hour: newValue?.hour,
                                                 minute: newValue?.minute)
-//            print(dateComponents) // calendar: iso8601 (fixed) timeZone: GMT (fixed) year: 1 month: 11 day: 7 hour: 9 minute: 23 isLeapMonth: false
             if let date = calendar.date(from: dateComponents) {
                 set(.known(.encodingTime), .encodingTime, timeStamp: date)
             }
@@ -304,8 +302,8 @@ extension Tag {
         }
     }
     
-    /// Full date/time for version 2.4. Year-only for versions 2.2 and 2.3. Identifer `TOY`/`TORY`/`TDOR`
-    public var originalReleaseDateTime:
+    /// Full date/time for version 2.4. Identifer`TDOR`
+    public var originalReleaseTime:
         (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
         get {
             date(for: .originalReleaseTime)
@@ -325,7 +323,23 @@ extension Tag {
             }
         }
     }
-    
+    /// Full date/time for version 2.2/2.3. Identifer `TOY`/`TORY`
+    public var originalReleaseYear: Int? {
+        get {
+            date(for: .originalReleaseTime)?.year
+        }
+        set {
+            let calendar = Calendar(identifier: .iso8601)
+            let timeZone = TimeZone(secondsFromGMT: 0)
+            let dateComponents = DateComponents(calendar: calendar,
+                                                timeZone: timeZone,
+                                                year: newValue)
+            if let date = calendar.date(from: dateComponents) {
+                set(.known(.originalReleaseTime), .originalReleaseTime, timeStamp: date)
+            }
+        }
+    }
+
     /// version 2.2/2.3 only Identifier `TDA`/`TDAT`
     public var date: (month: Int?, day: Int?)? {
         get {

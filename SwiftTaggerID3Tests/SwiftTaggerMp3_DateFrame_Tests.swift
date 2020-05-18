@@ -7,8 +7,6 @@
 //
 
 #warning("NEEDS FIXING: When writing to a file with a tag in an existing version that is incompatible, version-restricted frames will error out even if the outgoing version is correct")
-
-#warning("NEEDS FIXING: When writing components separately to blank file, the year won't work")
 import XCTest
 import SwiftTaggerID3
 
@@ -1156,33 +1154,67 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
         let mp3File = try Mp3File(location: mp3Url)
         var tag = try Tag(readFrom: mp3File)
         
-        tag.originalReleaseDateTime?.year = 2002
-        tag.originalReleaseDateTime?.month = 11
-        tag.originalReleaseDateTime?.day = 7
-        tag.originalReleaseDateTime?.hour = 9
-        tag.originalReleaseDateTime?.minute = 23
+        tag.originalReleaseTime?.year = 2002
+        tag.originalReleaseTime?.month = 11
+        tag.originalReleaseTime?.day = 7
+        tag.originalReleaseTime?.hour = 9
+        tag.originalReleaseTime?.minute = 23
         
-        let outputUrl = URL(fileURLWithPath: "/Users/nolainecrusher/Desktop/test output/FrameTDORtest1.mp3")
+        let outputUrl = URL(fileURLWithPath: "/Users/nolainecrusher/Desktop/test output/FrameTDORtest1v24.mp3")
         XCTAssertNoThrow(try mp3File.write(tagVersion: .v2_4, using: tag, writingTo: outputUrl))
         
         let mp3UrlWritten = outputUrl
         let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
         let tagWritten = try Tag(readFrom: mp3FileWritten)
         
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.year, 2002)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.month, 11)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.day, 7)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.hour, 9)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.minute, 23)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.year, 2002)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.month, 11)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.day, 7)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.hour, 9)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.minute, 23)
     }
     
+    func testTDORExpectedInputComponentsBlankFileV23() throws {
+        let mp3Url = Bundle.v23NoMeta
+        let mp3File = try Mp3File(location: mp3Url)
+        var tag = try Tag(readFrom: mp3File)
+        
+        tag.originalReleaseYear = 2002
+        
+        let outputUrl = URL(fileURLWithPath: "/Users/nolainecrusher/Desktop/test output/FrameTDORtest1v23.mp3")
+        XCTAssertNoThrow(try mp3File.write(tagVersion: .v2_3, using: tag, writingTo: outputUrl))
+        
+        let mp3UrlWritten = outputUrl
+        let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
+        let tagWritten = try Tag(readFrom: mp3FileWritten)
+        
+        XCTAssertEqual(tagWritten.originalReleaseYear, 2002)
+    }
+
+    func testTDORExpectedInputComponentsBlankFileV22() throws {
+        let mp3Url = Bundle.v23NoMeta
+        let mp3File = try Mp3File(location: mp3Url)
+        var tag = try Tag(readFrom: mp3File)
+        
+        tag.originalReleaseYear = 2002
+        
+        let outputUrl = URL(fileURLWithPath: "/Users/nolainecrusher/Desktop/test output/FrameTDORtest1v22.mp3")
+        XCTAssertNoThrow(try mp3File.write(tagVersion: .v2_2, using: tag, writingTo: outputUrl))
+        
+        let mp3UrlWritten = outputUrl
+        let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
+        let tagWritten = try Tag(readFrom: mp3FileWritten)
+        
+        XCTAssertEqual(tagWritten.originalReleaseYear, 2002)
+    }
+
     // MARK: TDOR, Expected, Blank, Tuple
     func testTDORExpectedInputTupleBlankFileV24() throws {
         let mp3Url = Bundle.v23NoMeta
         let mp3File = try Mp3File(location: mp3Url)
         var tag = try Tag(readFrom: mp3File)
         
-        tag.originalReleaseDateTime = (year: 2002, month: 11, day: 7, hour: 9, minute: 23)
+        tag.originalReleaseTime = (year: 2002, month: 11, day: 7, hour: 9, minute: 23)
         
         let outputUrl = URL(fileURLWithPath: "/Users/nolainecrusher/Desktop/test output/FrameTDORtest2.mp3")
         XCTAssertNoThrow(try mp3File.write(tagVersion: .v2_4, using: tag, writingTo: outputUrl))
@@ -1191,11 +1223,11 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
         let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
         let tagWritten = try Tag(readFrom: mp3FileWritten)
         
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.year, 2002)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.month, 11)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.day, 7)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.hour, 9)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.minute, 23)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.year, 2002)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.month, 11)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.day, 7)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.hour, 9)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.minute, 23)
     }
     
     // MARK: TDOR, Expected, Overwrite, Components
@@ -1204,11 +1236,11 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
         let mp3File = try Mp3File(location: mp3Url)
         var tag = try Tag(readFrom: mp3File)
         
-        tag.originalReleaseDateTime?.year = 2002
-        tag.originalReleaseDateTime?.month = 11
-        tag.originalReleaseDateTime?.day = 7
-        tag.originalReleaseDateTime?.hour = 9
-        tag.originalReleaseDateTime?.minute = 23
+        tag.originalReleaseTime?.year = 2002
+        tag.originalReleaseTime?.month = 11
+        tag.originalReleaseTime?.day = 7
+        tag.originalReleaseTime?.hour = 9
+        tag.originalReleaseTime?.minute = 23
         
         let outputUrl = URL(fileURLWithPath: "/Users/nolainecrusher/Desktop/test output/FrameTDORtest3.mp3")
         XCTAssertNoThrow(try mp3File.write(tagVersion: .v2_4, using: tag, writingTo: outputUrl))
@@ -1217,11 +1249,11 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
         let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
         let tagWritten = try Tag(readFrom: mp3FileWritten)
         
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.year, 2002)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.month, 11)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.day, 7)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.hour, 9)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.minute, 23)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.year, 2002)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.month, 11)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.day, 7)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.hour, 9)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.minute, 23)
     }
     
     // MARK: TDOR, Expected, Overwrite, Tuple
@@ -1230,7 +1262,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
         let mp3File = try Mp3File(location: mp3Url)
         var tag = try Tag(readFrom: mp3File)
         
-        tag.originalReleaseDateTime = (year: 2002, month: 11, day: 7, hour: 9, minute: 23)
+        tag.originalReleaseTime = (year: 2002, month: 11, day: 7, hour: 9, minute: 23)
         
         let outputUrl = URL(fileURLWithPath: "/Users/nolainecrusher/Desktop/test output/FrameTDORtest4.mp3")
         XCTAssertNoThrow(try mp3File.write(tagVersion: .v2_4, using: tag, writingTo: outputUrl))
@@ -1239,11 +1271,11 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
         let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
         let tagWritten = try Tag(readFrom: mp3FileWritten)
         
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.year, 2002)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.month, 11)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.day, 7)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.hour, 9)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.minute, 23)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.year, 2002)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.month, 11)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.day, 7)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.hour, 9)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.minute, 23)
     }
     
     // MARK: TDOR, Unexpected, Blank, Components
@@ -1252,11 +1284,11 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
         let mp3File = try Mp3File(location: mp3Url)
         var tag = try Tag(readFrom: mp3File)
         
-        tag.originalReleaseDateTime?.year = 2002
-        tag.originalReleaseDateTime?.month = 55
-        tag.originalReleaseDateTime?.day = 119
-        tag.originalReleaseDateTime?.hour = nil
-        tag.originalReleaseDateTime?.minute = 6784
+        tag.originalReleaseTime?.year = 2002
+        tag.originalReleaseTime?.month = 55
+        tag.originalReleaseTime?.day = 119
+        tag.originalReleaseTime?.hour = nil
+        tag.originalReleaseTime?.minute = 6784
         
         let outputUrl = URL(fileURLWithPath: "/Users/nolainecrusher/Desktop/test output/FrameTDORtest5.mp3")
         XCTAssertNoThrow(try mp3File.write(tagVersion: .v2_4, using: tag, writingTo: outputUrl))
@@ -1265,11 +1297,11 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
         let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
         let tagWritten = try Tag(readFrom: mp3FileWritten)
         
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.year, 2006)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.month, 10)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.day, 31)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.hour, 17)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.minute, 4)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.year, 2006)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.month, 10)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.day, 31)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.hour, 17)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.minute, 4)
     }
     
     // MARK: TDOR, Unexpected, Blank, Tuple
@@ -1278,7 +1310,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
         let mp3File = try Mp3File(location: mp3Url)
         var tag = try Tag(readFrom: mp3File)
         
-        tag.originalReleaseDateTime = (year: 2002, month: 55, day: 119, hour: nil, minute: 6784)
+        tag.originalReleaseTime = (year: 2002, month: 55, day: 119, hour: nil, minute: 6784)
         
         let outputUrl = URL(fileURLWithPath: "/Users/nolainecrusher/Desktop/test output/FrameTDORtest6.mp3")
         XCTAssertNoThrow(try mp3File.write(tagVersion: .v2_4, using: tag, writingTo: outputUrl))
@@ -1287,11 +1319,11 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
         let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
         let tagWritten = try Tag(readFrom: mp3FileWritten)
         
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.year, 2006)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.month, 10)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.day, 31)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.hour, 17)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.minute, 4)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.year, 2006)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.month, 10)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.day, 31)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.hour, 17)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.minute, 4)
     }
     
     // MARK: TDOR, Unexpected, Overwrite, Components
@@ -1300,11 +1332,11 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
         let mp3File = try Mp3File(location: mp3Url)
         var tag = try Tag(readFrom: mp3File)
         
-        tag.originalReleaseDateTime?.year = 2002
-        tag.originalReleaseDateTime?.month = 55
-        tag.originalReleaseDateTime?.day = 119
-        tag.originalReleaseDateTime?.hour = nil
-        tag.originalReleaseDateTime?.minute = 6784
+        tag.originalReleaseTime?.year = 2002
+        tag.originalReleaseTime?.month = 55
+        tag.originalReleaseTime?.day = 119
+        tag.originalReleaseTime?.hour = nil
+        tag.originalReleaseTime?.minute = 6784
         
         let outputUrl = URL(fileURLWithPath: "/Users/nolainecrusher/Desktop/test output/FrameTDORtest7.mp3")
         XCTAssertNoThrow(try mp3File.write(tagVersion: .v2_4, using: tag, writingTo: outputUrl))
@@ -1313,11 +1345,11 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
         let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
         let tagWritten = try Tag(readFrom: mp3FileWritten)
         
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.year, 2006)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.month, 10)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.day, 31)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.hour, 17)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.minute, 4)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.year, 2006)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.month, 10)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.day, 31)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.hour, 17)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.minute, 4)
     }
     
     // MARK: TDOR, Unexpected, Overwrite, Tuple
@@ -1326,7 +1358,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
         let mp3File = try Mp3File(location: mp3Url)
         var tag = try Tag(readFrom: mp3File)
         
-        tag.originalReleaseDateTime = (year: 2002, month: 55, day: 119, hour: nil, minute: 6784)
+        tag.originalReleaseTime = (year: 2002, month: 55, day: 119, hour: nil, minute: 6784)
         
         let outputUrl = URL(fileURLWithPath: "/Users/nolainecrusher/Desktop/test output/FrameTDORtest8.mp3")
         XCTAssertNoThrow(try mp3File.write(tagVersion: .v2_4, using: tag, writingTo: outputUrl))
@@ -1335,11 +1367,11 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
         let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
         let tagWritten = try Tag(readFrom: mp3FileWritten)
         
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.year, 2006)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.month, 10)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.day, 31)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.hour, 17)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.minute, 4)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.year, 2006)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.month, 10)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.day, 31)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.hour, 17)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.minute, 4)
     }
     
 
