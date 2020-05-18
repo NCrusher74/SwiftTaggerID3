@@ -49,10 +49,10 @@ struct DateFrame: FrameProtocol {
         let encoding = try DateFrame.extractEncoding(data: &parsing, version: version)
         // extract string content
         let parsedString = parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? ""
-
+        
         let calendar = Calendar(identifier: .iso8601)
         let timeZone = TimeZone(secondsFromGMT: 0)
-
+        
         // assumes frame contents are spec-compliant, 4-characters, DDMM string
         if self.frameKey == .date {
             // split the four-character string into an array of 2-character strings
@@ -78,7 +78,7 @@ struct DateFrame: FrameProtocol {
                 // initialize the timeStamp property
                 self.timeStamp = date
             }
-        // assumes frame contents are spec-compliant, 4-characters, HHmm string
+            // assumes frame contents are spec-compliant, 4-characters, HHmm string
         } else if self.frameKey == .time {
             // split the four-character string into an array of 2-character strings
             let hourMinuteArray = parsedString.components(withLength: 2)
@@ -98,7 +98,7 @@ struct DateFrame: FrameProtocol {
             if let time = dateComponents.date {
                 self.timeStamp = time
             }
-        // assumes frame contents are spec-compliant, 4-characters long, yyyy string
+            // assumes frame contents are spec-compliant, 4-characters long, yyyy string
         } else if self.frameKey == .year {
             // make the string into an Int
             let year = Int(parsedString)
@@ -109,7 +109,7 @@ struct DateFrame: FrameProtocol {
             if let year = dateComponents.date {
                 self.timeStamp = year
             }
-        // versions 2.2 and 2.3 should only have a year for this frame
+            // versions 2.2 and 2.3 should only have a year for this frame
         } else if self.frameKey == .originalReleaseTime && (version == .v2_2 || version == .v2_3) {
             // make the string into an Int
             let year = Int(parsedString)
@@ -143,11 +143,6 @@ struct DateFrame: FrameProtocol {
         self.timeStamp = timeStamp
     }
     
-    /// Certain date frames are only valid for ID3 versons 2.2 and 2.3. They have been deprecated in 2.4
-    let validVersion2223DateFrames: [FrameKey] = [.date, .time, .year, .originalReleaseTime, .recordingDate]
-    /// Certain date frames are only valid for ID3 version 2.4.
-    let validVersion24DateFrames: [FrameKey] = [.encodingTime, .taggingTime, .releaseTime, .originalReleaseTime, .recordingDate]
-
     /// encode contents of the frame to add to an ID3 tag
     /// - Parameter version: The ID3 version for the output file
     /// - Throws: `DateFrameNotAvailableForVersion` if the frame has been deprecated in a later version or doesn't exist for an earlier version
@@ -157,42 +152,36 @@ struct DateFrame: FrameProtocol {
         // append encoding byte
         frameData.append(StringEncoding.preferred.rawValue)
         
-        switch version {
-            case .v2_2, .v2_3:
-                guard validVersion2223DateFrames.contains(self.frameKey) else {
-                    throw Mp3File.Error.DateFrameNotAvailableForVersion
+        if self.layout.id3Identifier(version: version) != nil {
+            var encodedString = Data()
+            if self.frameKey == .date {
+                let day = String(withInt: self.timeStamp?.id3DayMonth.day ?? 01)
+                let month = String(withInt: self.timeStamp?.id3DayMonth.month ?? 01)
+                encodedString = "\(day)\(month)".encoded(withNullTermination: false)
+            } else if self.frameKey == .time {
+                let hour = String(withInt: self.timeStamp?.id3HourMinute.hour ?? 00)
+                let minute = String(withInt: self.timeStamp?.id3HourMinute.minute ?? 00)
+                encodedString = "\(hour)\(minute)".encoded(withNullTermination: false)
+            } else if self.frameKey == .year {
+                let year = self.timeStamp?.id3Year ?? 2001
+                encodedString = String(year).encoded(withNullTermination: false)
+            } else if self.frameKey == .originalReleaseTime && (version == .v2_2 || version == .v2_3) {
+                let calendar = Calendar(identifier: .iso8601)
+                let timeZone = TimeZone(secondsFromGMT: 0) ?? .current
+                let components = calendar.dateComponents(in: timeZone, from: self.timeStamp ?? Date.distantPast)
+                let year = String(components.year ?? 2001)
+                encodedString = year.encoded(withNullTermination: false)
+            } else {
+                let formatter = ISO8601DateFormatter()
+                formatter.formatOptions = [.withInternetDateTime]
+                let dateString = formatter.string(from: timeStamp ?? Date.distantPast )
+                encodedString = dateString.encoded(withNullTermination: false)
             }
-            case .v2_4:
-                guard validVersion24DateFrames.contains(self.frameKey) else {
-                    throw Mp3File.Error.DateFrameNotAvailableForVersion
-            }
-        }
-        var encodedString = Data()
-        if self.frameKey == .date {
-            let day = String(withInt: self.timeStamp?.id3DayMonth.day ?? 01)
-            let month = String(withInt: self.timeStamp?.id3DayMonth.month ?? 01)
-            encodedString = "\(day)\(month)".encoded(withNullTermination: false)
-        } else if self.frameKey == .time {
-            let hour = String(withInt: self.timeStamp?.id3HourMinute.hour ?? 00)
-            let minute = String(withInt: self.timeStamp?.id3HourMinute.minute ?? 00)
-            encodedString = "\(hour)\(minute)".encoded(withNullTermination: false)
-        } else if self.frameKey == .year {
-            let year = self.timeStamp?.id3Year ?? 2001
-            encodedString = String(year).encoded(withNullTermination: false)
-        } else if self.frameKey == .originalReleaseTime && (version == .v2_2 || version == .v2_3) {
-            let calendar = Calendar(identifier: .iso8601)
-            let timeZone = TimeZone(secondsFromGMT: 0) ?? .current
-            let components = calendar.dateComponents(in: timeZone, from: self.timeStamp ?? Date.distantPast)
-            let year = String(components.year ?? 2001)
-            encodedString = year.encoded(withNullTermination: false)
+            frameData.append(encodedString)
+            return frameData
         } else {
-            let formatter = ISO8601DateFormatter()
-            formatter.formatOptions = [.withInternetDateTime]
-            let dateString = formatter.string(from: timeStamp ?? Date.distantPast )
-            encodedString = dateString.encoded(withNullTermination: false)
+            throw Mp3File.Error.DateFrameNotAvailableForVersion
         }
-        frameData.append(encodedString)
-        return frameData
     }
 }
 
@@ -221,7 +210,7 @@ extension Tag {
                                _ frameKey: FrameKey,
                                timeStamp: Date) {
         let frame = DateFrame(layout, timeStamp: timeStamp)
-//        print(timeStamp) // 0001-11-07 09:23:00 +000
+        //        print(timeStamp) // 0001-11-07 09:23:00 +000
         self.frames[frameKey] = .dateFrame(frame)
     }
     
@@ -256,6 +245,7 @@ extension Tag {
         set {
             let calendar = Calendar(identifier: .iso8601)
             let timeZone = TimeZone(secondsFromGMT: 0)
+//            print(newValue?.year) // Optional(1)
             let dateComponents = DateComponents(calendar: calendar,
                                                 timeZone: timeZone,
                                                 year: newValue?.year,
@@ -263,8 +253,8 @@ extension Tag {
                                                 day: newValue?.day,
                                                 hour: newValue?.hour,
                                                 minute: newValue?.minute)
+//            print(dateComponents) // calendar: iso8601 (fixed) timeZone: GMT (fixed) year: 1 month: 11 day: 7 hour: 9 minute: 23 isLeapMonth: false
             if let date = calendar.date(from: dateComponents) {
-//                print(date) // 0001-11-07 09:23:00 +0000
                 set(.known(.encodingTime), .encodingTime, timeStamp: date)
             }
         }

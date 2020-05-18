@@ -387,7 +387,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.date = (month: 02, day: 03)
         tag.time = (hour: 11, minute: 11)
         tag.year = 2015
-        tag.originalReleaseDateTime = (year: 2014, month: 08, day: 09, hour: nil, minute: nil)
+        tag.originalReleaseDateTime = (year: 2014, month: nil, day: nil, hour: nil, minute: nil)
         
         let outputUrl = URL(fileURLWithPath: "/Users/nolainecrusher/Desktop/test output/testV23Writing.mp3")
         XCTAssertNoThrow(try mp3File.write(tagVersion: .v2_3, using: tag, writingTo: outputUrl))
@@ -408,11 +408,6 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.time?.minute, 11)
         XCTAssertEqual(tagWritten.year, 2015)
         XCTAssertEqual(tagWritten.originalReleaseDateTime?.year, 2014)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.month, 08)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.day, 09)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.hour, 0)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.minute, 0)
-        
         XCTAssertEqual(tagWritten.album, "Album")
         XCTAssertEqual(tagWritten.albumArtist, "Album Artist")
         XCTAssertEqual(tagWritten.albumArtistSort, "Album Artist Sort")
@@ -597,8 +592,8 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.date = (month: 02, day: 03)
         tag.time = (hour: 11, minute: 11)
         tag.year = 2015
-        tag.originalReleaseDateTime = (year: 2014, month: 08, day: 09, hour: nil, minute: nil)
-        
+        tag.originalReleaseDateTime = (year: 2014, month: nil, day: nil, hour: nil, minute: nil)
+
         let outputUrl = URL(fileURLWithPath: "/Users/nolainecrusher/Desktop/test output/testV22Writing.mp3")
         XCTAssertNoThrow(try mp3File.write(tagVersion: .v2_2, using: tag, writingTo: outputUrl))
         
@@ -618,10 +613,6 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.time?.minute, 11)
         XCTAssertEqual(tagWritten.year, 2015)
         XCTAssertEqual(tagWritten.originalReleaseDateTime?.year, 2014)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.month, 08)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.day, 09)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.hour, 0)
-        XCTAssertEqual(tagWritten.originalReleaseDateTime?.minute, 0)
         
         XCTAssertEqual(tagWritten.album, "Album")
         XCTAssertEqual(tagWritten.albumArtist, "Album Artist")
