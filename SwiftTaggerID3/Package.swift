@@ -19,7 +19,7 @@ let package = Package(
             dependencies: [
                 .product(name: "WorkspaceConfiguration", package: "Workspace"),
         ],
-            path: "Sources/SwiftTaggerID3"),
+            path: "Sources"),
         .testTarget(
             name: "SwiftTaggerID3Tests",
             dependencies: ["SwiftTaggerID3"]),
