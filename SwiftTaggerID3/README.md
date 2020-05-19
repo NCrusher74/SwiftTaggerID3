@@ -17,8 +17,8 @@ For frames where there can be multiple versions of the frame in a tag, you can l
 
 ```swift
 print(tag[userDefinedText: "UserDefinedText"]) // "User Defined Text Content"
-print(tag[comments: "eng", "CommentDescription"]) // "Comment Content"
-print(tag[lyrics: "eng", "LyricsDescription"]) // "Lyrics Content"
+print(tag[comments: .eng, "CommentDescription"]) // "Comment Content"
+print(tag[lyrics: .eng, "LyricsDescription"]) // "Lyrics Content"
 ```
 
 To access information from the `InvolvedPeopleList` and `MusicianCreditsList` frames:
@@ -36,16 +36,16 @@ print(tag.musicianCreditsList?[0].person) // "Musician Name"
 To access `CTOC` and `CHAP` frame content, the subscript accessor is the frame's `elementID`:
 
 ```swift
-print(tag[tableOfContents: "TOC"]?.entryCount) // 2
 print(tag[tableOfContents: "TOC"]?.topLevelFlag) // true
 print(tag[tableOfContents: "TOC"]?.orderedFlag) // true
+print(tag[tableOfContents: "TOC"]?.entryCount) // 2
 print(tag[tableOfContents: "TOC"]?.childElementIDs) // ["ch0","ch1"]
 print(tag[chapters: "ch0"]?.startTime) // 0
 print(tag[chapters: "ch0"]?.endTime) // 2795
 print(tag[embeddedSubframes: "ch0"]?.title) // "Chapter 01"
 ```
 
-You can also export the images from the `AttachedPicture` frames using their optional `descriptionString` as a subscript, but honestly it'd be just as easy to get them using `AVFoundation`:
+You can also export the images from the `AttachedPicture` frames using their optional `descriptionString` as a subscript, but honestly it's just as easy to get them using `AVFoundation`:
 
 ```swift
 let outputURL = URL(fileURLWithPath: "/destination/path/for/image.jpg")

@@ -15,10 +15,11 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "SwiftTaggerID3",
+            name: "Mp3File",
             dependencies: [
                 .product(name: "WorkspaceConfiguration", package: "Workspace"),
-        ]),
+        ],
+            path: "Sources/SwiftTaggerID3"),
         .testTarget(
             name: "SwiftTaggerID3Tests",
             dependencies: ["SwiftTaggerID3"]),
