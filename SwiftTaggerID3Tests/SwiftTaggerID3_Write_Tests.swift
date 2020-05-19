@@ -13,7 +13,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
     
     // MARK: V24 writing test
     func testV24Writing() throws {
-        let mp3Url = Bundle.v23NoMeta
+        let mp3Url = Bundle.noMeta
         let mp3File = try Mp3File(location: mp3Url)
         var tag = try Tag(readFrom: mp3File)
         
@@ -54,7 +54,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.setSubtitle = "Set Subtitle"
         tag.title = "Title"
         tag.titleSort = "Title Sort"
-
+        
         tag.compilation = true
         tag.bpm = 99
         tag.isrc = 987654321098
@@ -70,7 +70,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.paymentWebpage = "http://payment.url"
         tag.publisherWebpage = "http://publisher.url"
         tag.radioStationWebpage = "http://radiostation.url"
-
+        
         // MARK: Language Frame
         tag.languages = [.eng]
         
@@ -132,14 +132,14 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.mediaType?.mediaType = nil // get rid of parens when nil
         tag.mediaType?.mediaTypeRefinement = nil
         tag.mediaType?.additionalInformation = "Media Type"
-
-//        // MARK: Date Frame
-//        tag.releaseDateTime = (year: 2015, month: 02, day: 03, hour: 11, minute: 11)
-//        tag.encodingDateTime = (year: 2016, month: 04, day: 05, hour: nil, minute: nil)
-//        tag.taggingDateTime = (year: 2017, month: 06, day: 07, hour: nil, minute: nil)
-//        tag.originalReleaseDate = (year: 2014, month: 08, day: 09, hour: nil, minute: nil)
-//        tag.recordingDateTime = (year: 2018, month: 10, day: 11, hour: nil, minute: nil)
-
+        
+        // MARK: Date Frame
+        tag.releaseDateTime = (year: 2015, month: 02, day: 03, hour: 11, minute: 11)
+        tag.encodingDateTime = (year: 2016, month: 04, day: 05, hour: nil, minute: nil)
+        tag.taggingDateTime = (year: 2017, month: 06, day: 07, hour: nil, minute: nil)
+        tag.originalReleaseTime = (year: 2014, month: 08, day: 09, hour: nil, minute: nil)
+        tag.recordingDateTime = (year: 2018, month: 10, day: 11, hour: nil, minute: nil)
+        
         let outputUrl = URL(fileURLWithPath: "/Users/nolainecrusher/Desktop/test output/testV24Writing.mp3")
         XCTAssertNoThrow(try mp3File.write(tagVersion: .v2_4, using: tag, writingTo: outputUrl))
         
@@ -147,7 +147,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         let mp3UrlWritten = outputUrl
         let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
         let tagWritten = try Tag(readFrom: mp3FileWritten)
-
+        
         XCTAssertEqual(tagWritten.album, "Album")
         XCTAssertEqual(tagWritten.albumArtist, "Album Artist")
         XCTAssertEqual(tagWritten.albumArtistSort, "Album Artist Sort")
@@ -173,11 +173,11 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.discNumber?.disc, 3)
         XCTAssertEqual(tagWritten.discNumber?.totalDiscs, 4)
         XCTAssertEqual(tagWritten.encodedBy, "Encoded By")
-//        XCTAssertEqual(tagWritten.encodingDateTime?.year, 2016)
-//        XCTAssertEqual(tagWritten.encodingDateTime?.month, 04)
-//        XCTAssertEqual(tagWritten.encodingDateTime?.day, 05)
-//        XCTAssertNil(tagWritten.encodingDateTime?.hour)
-//        XCTAssertNil(tagWritten.encodingDateTime?.minute)
+        XCTAssertEqual(tagWritten.encodingDateTime?.year, 2016)
+        XCTAssertEqual(tagWritten.encodingDateTime?.month, 04)
+        XCTAssertEqual(tagWritten.encodingDateTime?.day, 05)
+        XCTAssertEqual(tagWritten.encodingDateTime?.hour, 0)
+        XCTAssertEqual(tagWritten.encodingDateTime?.minute, 0)
         XCTAssertEqual(tagWritten.encodingSettings, "Encoding Settings")
         XCTAssertEqual(tagWritten.episodeName, "Episode Name")
         XCTAssertEqual(tagWritten.episodeNumber, 7)
@@ -215,11 +215,11 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.originalArtist, "Original Artist")
         XCTAssertEqual(tagWritten.originalFilename, "Original Filename")
         XCTAssertEqual(tagWritten.originalLyricist, "Original Lyricist")
-//        XCTAssertEqual(tagWritten.originalReleaseDate?.year, 2014)
-//        XCTAssertEqual(tagWritten.originalReleaseDate?.month, 08)
-//        XCTAssertEqual(tagWritten.originalReleaseDate?.day, 09)
-//        XCTAssertNil(tagWritten.originalReleaseDate?.hour)
-//        XCTAssertNil(tagWritten.originalReleaseDate?.minute)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.year, 2014)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.month, 08)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.day, 09)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.hour, 0)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.minute, 0)
         XCTAssertEqual(tagWritten.paymentWebpage, "http://payment.url")
         XCTAssertEqual(tagWritten.playlistDelay, 0)
         XCTAssertEqual(tagWritten.podcastCategory, "Podcast Category")
@@ -234,16 +234,16 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.radioStationOwner, "Radio Station Owner")
         XCTAssertEqual(tagWritten.radioStationWebpage, "http://radiostation.url")
         XCTAssertEqual(tagWritten.recordCompany, "Publisher")
-//        XCTAssertEqual(tagWritten.recordingDateTime?.year, 2018)
-//        XCTAssertEqual(tagWritten.recordingDateTime?.month, 10)
-//        XCTAssertEqual(tagWritten.recordingDateTime?.day, 11)
-//        XCTAssertNil(tagWritten.recordingDateTime?.hour)
-//        XCTAssertNil(tagWritten.recordingDateTime?.minute)
-//        XCTAssertEqual(tagWritten.releaseDateTime?.year, 2015)
-//        XCTAssertEqual(tagWritten.releaseDateTime?.month, 02)
-//        XCTAssertEqual(tagWritten.releaseDateTime?.day, 03)
-//        XCTAssertEqual(tagWritten.releaseDateTime?.hour, 11)
-//        XCTAssertEqual(tagWritten.releaseDateTime?.minute, 11)
+        XCTAssertEqual(tagWritten.recordingDateTime?.year, 2018)
+        XCTAssertEqual(tagWritten.recordingDateTime?.month, 10)
+        XCTAssertEqual(tagWritten.recordingDateTime?.day, 11)
+        XCTAssertEqual(tagWritten.recordingDateTime?.hour, 0)
+        XCTAssertEqual(tagWritten.recordingDateTime?.minute, 0)
+        XCTAssertEqual(tagWritten.releaseDateTime?.year, 2015)
+        XCTAssertEqual(tagWritten.releaseDateTime?.month, 02)
+        XCTAssertEqual(tagWritten.releaseDateTime?.day, 03)
+        XCTAssertEqual(tagWritten.releaseDateTime?.hour, 11)
+        XCTAssertEqual(tagWritten.releaseDateTime?.minute, 11)
         XCTAssertEqual(tagWritten.remixer, "Arranger")
         XCTAssertEqual(tagWritten.season, 8)
         XCTAssertEqual(tagWritten.series, "Content Group")
@@ -252,23 +252,22 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.sourceCredit, "Source Credit")
         XCTAssertEqual(tagWritten.studio, "Publisher")
         XCTAssertEqual(tagWritten.subtitle, "Subtitle")
-//        XCTAssertEqual(tagWritten.taggingDateTime?.year, 2017)
-//        XCTAssertEqual(tagWritten.taggingDateTime?.month, 06)
-//        XCTAssertEqual(tagWritten.taggingDateTime?.day, 07)
-//        XCTAssertNil(tagWritten.taggingDateTime?.hour)
-//        XCTAssertNil(tagWritten.taggingDateTime?.minute)
+        XCTAssertEqual(tagWritten.taggingDateTime?.year, 2017)
+        XCTAssertEqual(tagWritten.taggingDateTime?.month, 06)
+        XCTAssertEqual(tagWritten.taggingDateTime?.day, 07)
+        XCTAssertEqual(tagWritten.taggingDateTime?.hour, 0)
+        XCTAssertEqual(tagWritten.taggingDateTime?.minute, 0)
         XCTAssertEqual(tagWritten.thanks, "Thanks")
         XCTAssertEqual(tagWritten.title, "Title")
         XCTAssertEqual(tagWritten.titleSort, "Title Sort")
         XCTAssertEqual(tagWritten.trackNumber?.track, 1)
         XCTAssertEqual(tagWritten.trackNumber?.totalTracks, 2)
-        XCTAssertEqual(tagWritten.work, "Content Group")
-        
+        XCTAssertEqual(tagWritten.work, "Content Group")        
     }
     
     // MARK: V23 writing test
     func testV23Writing() throws {
-        let mp3Url = Bundle.v23NoMeta
+        let mp3Url = Bundle.noMeta
         let mp3File = try Mp3File(location: mp3Url)
         var tag = try Tag(readFrom: mp3File)
         
@@ -388,32 +387,27 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.date = (month: 02, day: 03)
         tag.time = (hour: 11, minute: 11)
         tag.year = 2015
-        tag.originalReleaseDate = (year: 2014, month: 08, day: 09, hour: nil, minute: nil)
-
+        tag.originalReleaseTime = (year: 2014, month: nil, day: nil, hour: nil, minute: nil)
+        
         let outputUrl = URL(fileURLWithPath: "/Users/nolainecrusher/Desktop/test output/testV23Writing.mp3")
         XCTAssertNoThrow(try mp3File.write(tagVersion: .v2_3, using: tag, writingTo: outputUrl))
-
+        
         // MARK: Confirm accuracy
         let mp3UrlWritten = outputUrl
         let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
         let tagWritten = try Tag(readFrom: mp3FileWritten)
         
-//        XCTAssertEqual(tag.recordingDateTime?.year, 2018)
-//        XCTAssertEqual(tag.recordingDateTime?.month, 10)
-//        XCTAssertEqual(tag.recordingDateTime?.day, 11)
-//        XCTAssertNil(tag.recordingDateTime?.hour)
-//        XCTAssertNil(tag.recordingDateTime?.minute)
-//        XCTAssertEqual(tag.date?.month, 02)
-//        XCTAssertEqual(tag.date?.day, 03)
-//        XCTAssertEqual(tag.time?.hour, 11)
-//        XCTAssertEqual(tag.time?.minute, 11)
-//        XCTAssertEqual(tag.year, 2015)
-//        XCTAssertEqual(tag.originalReleaseDate?.year, 2014)
-//        XCTAssertEqual(tag.originalReleaseDate?.month, 08)
-//        XCTAssertEqual(tag.originalReleaseDate?.day, 09)
-//        XCTAssertNil(tag.originalReleaseDate?.hour)
-//        XCTAssertNil(tag.originalReleaseDate?.minute)
-
+        XCTAssertEqual(tagWritten.recordingDateTime?.year, 2018)
+        XCTAssertEqual(tagWritten.recordingDateTime?.month, 10)
+        XCTAssertEqual(tagWritten.recordingDateTime?.day, 11)
+        XCTAssertEqual(tagWritten.recordingDateTime?.hour, 0)
+        XCTAssertEqual(tagWritten.recordingDateTime?.minute, 0)
+        XCTAssertEqual(tagWritten.date?.month, 02)
+        XCTAssertEqual(tagWritten.date?.day, 03)
+        XCTAssertEqual(tagWritten.time?.hour, 11)
+        XCTAssertEqual(tagWritten.time?.minute, 11)
+        XCTAssertEqual(tagWritten.year, 2015)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.year, 2014)
         XCTAssertEqual(tagWritten.album, "Album")
         XCTAssertEqual(tagWritten.albumArtist, "Album Artist")
         XCTAssertEqual(tagWritten.albumArtistSort, "Album Artist Sort")
@@ -500,9 +494,9 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.trackNumber?.totalTracks, 2)
         XCTAssertEqual(tagWritten.work, "Content Group")
     }
-
+    
     func testV22Writing() throws {
-        let mp3Url = Bundle.v23NoMeta
+        let mp3Url = Bundle.noMeta
         let mp3File = try Mp3File(location: mp3Url)
         var tag = try Tag(readFrom: mp3File)
         
@@ -598,31 +592,27 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.date = (month: 02, day: 03)
         tag.time = (hour: 11, minute: 11)
         tag.year = 2015
-        tag.originalReleaseDate = (year: 2014, month: 08, day: 09, hour: nil, minute: nil)
-        
+        tag.originalReleaseTime = (year: 2014, month: nil, day: nil, hour: nil, minute: nil)
+
         let outputUrl = URL(fileURLWithPath: "/Users/nolainecrusher/Desktop/test output/testV22Writing.mp3")
         XCTAssertNoThrow(try mp3File.write(tagVersion: .v2_2, using: tag, writingTo: outputUrl))
-
+        
         // MARK: Confirm accuracy
         let mp3UrlWritten = outputUrl
         let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
         let tagWritten = try Tag(readFrom: mp3FileWritten)
         
-        //        XCTAssertEqual(tag.recordingDateTime?.year, 2018)
-        //        XCTAssertEqual(tag.recordingDateTime?.month, 10)
-        //        XCTAssertEqual(tag.recordingDateTime?.day, 11)
-        //        XCTAssertNil(tag.recordingDateTime?.hour)
-        //        XCTAssertNil(tag.recordingDateTime?.minute)
-        //        XCTAssertEqual(tag.date?.month, 02)
-        //        XCTAssertEqual(tag.date?.day, 03)
-        //        XCTAssertEqual(tag.time?.hour, 11)
-        //        XCTAssertEqual(tag.time?.minute, 11)
-        //        XCTAssertEqual(tag.year, 2015)
-        //        XCTAssertEqual(tag.originalReleaseDate?.year, 2014)
-        //        XCTAssertEqual(tag.originalReleaseDate?.month, 08)
-        //        XCTAssertEqual(tag.originalReleaseDate?.day, 09)
-        //        XCTAssertNil(tag.originalReleaseDate?.hour)
-        //        XCTAssertNil(tag.originalReleaseDate?.minute)
+        XCTAssertEqual(tagWritten.recordingDateTime?.year, 2018)
+        XCTAssertEqual(tagWritten.recordingDateTime?.month, 10)
+        XCTAssertEqual(tagWritten.recordingDateTime?.day, 11)
+        XCTAssertEqual(tagWritten.recordingDateTime?.hour, 0)
+        XCTAssertEqual(tagWritten.recordingDateTime?.minute, 0)
+        XCTAssertEqual(tagWritten.date?.month, 02)
+        XCTAssertEqual(tagWritten.date?.day, 03)
+        XCTAssertEqual(tagWritten.time?.hour, 11)
+        XCTAssertEqual(tagWritten.time?.minute, 11)
+        XCTAssertEqual(tagWritten.year, 2015)
+        XCTAssertEqual(tagWritten.originalReleaseTime?.year, 2014)
         
         XCTAssertEqual(tagWritten.album, "Album")
         XCTAssertEqual(tagWritten.albumArtist, "Album Artist")
@@ -698,5 +688,5 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.trackNumber?.totalTracks, 2)
         XCTAssertEqual(tagWritten.work, "Content Group")
     }
-
+    
 }

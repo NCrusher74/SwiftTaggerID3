@@ -13,6 +13,8 @@ extension Mp3File {
     public enum Error: Swift.Error {
         /// Error generated when the mp3 file cannot be converted to Data
         case CannotReadFile;
+        /// Error generated when an date frame is not available for the chosen version
+        case DateFrameNotAvailableForVersion
         /// Error generated when an invalid file format is passed to the ID3TagEditor.
         case InvalidFileFormat;
         /// Error generated when there's not valid data in the tag.
@@ -29,6 +31,8 @@ extension Mp3File {
         case UnhandledImageFormat
         /// Error thrown when the data cannot be retrieved from a frame
         case UnreadableFrame
+        /// Error thrown when the date formatter cannot parse a correctly formatted date from the string
+        case InvalidDateString
     }
 }
 
@@ -38,6 +42,15 @@ extension Mp3File.Error: LocalizedError {
             case .CannotReadFile:
                 return NSLocalizedString(
                     "Cannot Read MP3 File", comment: "")
+            case .DateFrameNotAvailableForVersion:
+                return NSLocalizedString(
+                    "That date frame is not available for the selected ID3 version",
+                    comment: """
+                            Valid date frames for version 2.2/2.3 are:
+                            .date, .time, .year, .originalReleaseDateTime, .recordingDateTime
+                            Valid date frames for version 2.4 are:
+                            .encodingDateTime, .originalReleaseDateTime, .recordingDateTime, .releaseDateTime, .taggingDateTime
+                """)
             case .InvalidFileFormat:
                 return NSLocalizedString(
                     "The file needs to be an MP3 file", comment: "")
@@ -59,6 +72,8 @@ extension Mp3File.Error: LocalizedError {
                 return NSLocalizedString("The ID3 version for the tag cannot be determined", comment: "")
             case .InvalidTagSize:
                 return NSLocalizedString("The tag is not large enough to hold valid frame data", comment: "")
+            case .InvalidDateString:
+            return NSLocalizedString("A date cannot be parsed from the string in the required format", comment: "String needs to be in ISO8601 (yyyy-MM-dd`T`HH:mm) format, per ID3 specs")
         }
     }
 }

@@ -108,15 +108,15 @@ public struct TableOfContentsFrame: FrameProtocol {
     }
 
     // MARK: Frame building initializer
-    /**
-     Parameters:
-       - elementID: the elementID of the frame. Null terminated.
-       - topLevelFlag: boolean indicating if this CTOC frame has any children (or parent) CTOC frame(s)
-       - orderedFlag: boolean indicating whether any child elementIDs are ordered or not
-       - entryCount: the number of child ElementIDs.
-       - childElementIDs: the array of child elementIDs. Must not be empty. Each entry is null terminated.
-       - embeddedSubFrames: the (optional) frames containing title and descriptor text for the CTOC frame.
-     */
+    /// Initialize a table of contents for adding to a tag
+    /// - Parameters:
+    ///   - layout: the frame layout
+    ///   - elementID: the elementID of the frame. Null terminated.
+    ///   - topLevelFlag: boolean indicating if this CTOC frame has any children (or parent) CTOC frame(s)
+    ///   - orderedFlag: boolean indicating whether any child elementIDs are ordered or not
+    ///   - entryCount: the number of child ElementIDs.
+    ///   - childElementIDs: the array of child elementIDs. Must not be empty. Each entry is null terminated.
+    ///   - embeddedSubframes: the (optional) frames containing title and descriptor text for the CTOC frame.
     private init(_ layout: FrameLayoutIdentifier,
                  elementID: String,
                  topLevelFlag: Bool,

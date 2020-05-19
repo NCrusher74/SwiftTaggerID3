@@ -347,14 +347,16 @@ enum FrameKey: Hashable {
         If another `contentGroup` frame is already present, the frame will be created as a `grouping` frame. If another `grouping` frame is present, the frame will be created as a `UserDefinedText` frame with the description, "Series Name" */
     static var series: FrameKey { return .contentGroup }
     
-    /// For audiobook use. Maps to the `artist` frame, which is usually used for authors of audiobooks.
+    /// For audiobook use. Maps to the `artist` frame, which is usually used for authors of audiobooks. If an `artist` frame already exists, the frame will be created as a `UserDefinedText` frame with the description `Author`
     static var author: FrameKey { return .artist }
-    /// For audiobook use. Maps to the `artistSort` frame, which is usually used for authors of audiobooks.
+
+    /// For audiobook use. Maps to the `artistSort` frame, which is usually used for authors of audiobooks. If an `artistSort` frame already exists, the frame will be created as a `UserDefinedText` frame with the description `AuthorSort`
     static var authorSort: FrameKey { return .artistSort }
     
-    /// For audiobook use. Maps to the `composer` frame, which is usually used for narrators of audiobooks
+    /// For audiobook use. Maps to the `composer` frame, which is usually used for narrators of audiobooks. If a `composer` frame already exists, the frame will be created as a `UserDefinedText` frame with the description `Narrator`
     static var narrator: FrameKey { return .composer }
-    /// For audiobook use. Maps to the `composerSort` frame, which is usually used for narrators of audiobooks
+
+    /// For audiobook use. Maps to the `composerSort` frame, which is usually used for narrators of audiobooks. If a `composerSort` frame already exists, the frame will be created as a `UserDefinedText` frame with the description `NarratorSort`
     static var narratorSort: FrameKey { return .composerSort }
     
     /** Maps to the `publisher` frame.
@@ -396,5 +398,8 @@ enum FrameKey: Hashable {
     
     /// Maps to `UserText` frame with the description, "Credit"
     static var credit: FrameKey { return .userDefinedText(description: "Source Credit") }
+    
+    /// maps to `ReleaseTime` frame
+    static var releaseDate: FrameKey { return .releaseTime }
     
 }

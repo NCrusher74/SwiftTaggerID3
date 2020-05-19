@@ -33,5 +33,25 @@ extension String {
         return Data(utf8)
     }
     
+    init(withInt int: Int, leadingZeros: Int = 2) {
+        self.init(format: "%0\(leadingZeros)d", int)
+    }
+    
+    func leadingZeros(_ zeros: Int) -> String {
+        if let int = Int(self) {
+            return String(withInt: int, leadingZeros: zeros)
+        }
+        print("Warning: \(self) is not an Int")
+        return ""
+    }
+
+    func components(withLength length: Int) -> [String] {
+        return stride(from: 0, to: self.count, by: length).map {
+            let start = self.index(self.startIndex, offsetBy: $0)
+            let end = self.index(start, offsetBy: length, limitedBy: self.endIndex) ?? self.endIndex
+            return String(self[start..<end])
+        }
+    }
+
     
 }
