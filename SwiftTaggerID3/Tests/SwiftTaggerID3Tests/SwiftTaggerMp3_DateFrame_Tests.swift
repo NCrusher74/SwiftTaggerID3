@@ -514,7 +514,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
         XCTAssertEqual(result.date?.day, 7)
     }
 
-    func testTDATExpectedInputv23BlankAsComponents() throws {
+    func testTDAExpectedInputv23BlankAsComponents() throws {
         var tag = try Bundle.tagNoMeta()
         tag.date?.month = 11
         tag.date?.day = 7
@@ -531,7 +531,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
         XCTAssertEqual(result.date?.day, 7)
     }
     
-    func testTDATExpectedInputv23BlankAsTuple() throws {
+    func testTDAExpectedInputv23BlankAsTuple() throws {
         var tag = try Bundle.tagNoMeta()
         tag.date = (day: 7, month: 11)
         
@@ -547,7 +547,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
         XCTAssertEqual(result.date?.day, 7)
     }
     
-    func testTDATExpectedInputv23OverwriteAsComponents() throws {
+    func testTDAExpectedInputv23OverwriteAsComponents() throws {
         var tag = try Bundle.tagV23()
         tag.date?.month = 11
         tag.date?.day = 7
@@ -564,7 +564,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
         XCTAssertEqual(result.date?.day, 7)
     }
     
-    func testTDATExpectedInputv23OverwriteAsTuple() throws {
+    func testTDAExpectedInputv23OverwriteAsTuple() throws {
         var tag = try Bundle.tagV23()
         tag.date = (day: 7, month: 11)
         
@@ -580,7 +580,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
         XCTAssertEqual(result.date?.day, 7)
     }
     
-    func testTDATVersionErrorv24OverwriteAsComponents() throws {
+    func testTDRLVersionErrorv24OverwriteAsComponents() throws {
         var tag = try Bundle.tagV24()
         tag.date?.month = 11
         tag.date?.day = 7
@@ -591,224 +591,5 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
                                              using: tag,
                                              writingTo: outputUrl))
     }
-    
-    // MARK: Time frame tests
-    func testTIMExpectedInputv22BlankAsComponents() throws {
-        var tag = try Bundle.tagNoMeta()
-        tag.time?.hour = 9
-        tag.time?.minute = 23
-        
-        let outputUrl = try Bundle.createTempFile(fileNameWithExtension: "testFile.mp3")
-        let outputMp3 = try Mp3File(location: Bundle.noMeta)
-        XCTAssertNoThrow(try outputMp3.write(tagVersion: .v2_2,
-                                             using: tag,
-                                             writingTo: outputUrl))
-        
-        let resultMp3 = try Mp3File(location: outputUrl)
-        let result = try Tag(readFrom: resultMp3)
-        XCTAssertEqual(result.time?.hour, 9)
-        XCTAssertEqual(result.time?.minute, 23)
-    }
-    
-    func testTIMExpectedInputv22BlankAsTuple() throws {
-        var tag = try Bundle.tagNoMeta()
-        tag.time = (hour: 9, minute: 23)
-        
-        let outputUrl = try Bundle.createTempFile(fileNameWithExtension: "testFile.mp3")
-        let outputMp3 = try Bundle.mp3NoMeta()
-        XCTAssertNoThrow(try outputMp3.write(tagVersion: .v2_2,
-                                             using: tag,
-                                             writingTo: outputUrl))
-        
-        let resultMp3 = try Mp3File(location: outputUrl)
-        let result = try Tag(readFrom: resultMp3)
-        XCTAssertEqual(result.time?.hour, 9)
-        XCTAssertEqual(result.time?.minute, 23)
-    }
-    
-    func testTIMExpectedInputv22OverwriteAsComponents() throws {
-        var tag = try Bundle.tagV22()
-        tag.time?.hour = 9
-        tag.time?.minute = 23
-        
-        let outputUrl = try Bundle.createTempFile(fileNameWithExtension: "testFile.mp3")
-        let outputMp3 = try Bundle.mp3v22()
-        XCTAssertNoThrow(try outputMp3.write(tagVersion: .v2_2,
-                                             using: tag,
-                                             writingTo: outputUrl))
-        
-        let resultMp3 = try Mp3File(location: outputUrl)
-        let result = try Tag(readFrom: resultMp3)
-        XCTAssertEqual(result.time?.hour, 9)
-        XCTAssertEqual(result.time?.minute, 23)
-    }
-    
-    func testTIMExpectedInputv22OverwriteAsTuple() throws {
-        var tag = try Bundle.tagV22()
-        tag.time = (hour: 9, minute: 23)
-        
-        let outputUrl = try Bundle.createTempFile(fileNameWithExtension: "testFile.mp3")
-        let outputMp3 = try Bundle.mp3v22()
-        XCTAssertNoThrow(try outputMp3.write(tagVersion: .v2_2,
-                                             using: tag,
-                                             writingTo: outputUrl))
-        
-        let resultMp3 = try Mp3File(location: outputUrl)
-        let result = try Tag(readFrom: resultMp3)
-        XCTAssertEqual(result.time?.hour, 9)
-        XCTAssertEqual(result.time?.minute, 23)
-    }
-    
-    func testTIMEExpectedInputv23BlankAsComponents() throws {
-        var tag = try Bundle.tagNoMeta()
-        tag.time?.hour = 9
-        tag.time?.minute = 23
-        
-        let outputUrl = try Bundle.createTempFile(fileNameWithExtension: "testFile.mp3")
-        let outputMp3 = try Mp3File(location: Bundle.noMeta)
-        XCTAssertNoThrow(try outputMp3.write(tagVersion: .v2_3,
-                                             using: tag,
-                                             writingTo: outputUrl))
-        
-        let resultMp3 = try Mp3File(location: outputUrl)
-        let result = try Tag(readFrom: resultMp3)
-        XCTAssertEqual(result.time?.hour, 9)
-        XCTAssertEqual(result.time?.minute = 23)
-    }
-    
-    func testTIMEExpectedInputv23BlankAsTuple() throws {
-        var tag = try Bundle.tagNoMeta()
-        tag.time = (hour: 9, minute: 23)
-        
-        let outputUrl = try Bundle.createTempFile(fileNameWithExtension: "testFile.mp3")
-        let outputMp3 = try Bundle.mp3NoMeta()
-        XCTAssertNoThrow(try outputMp3.write(tagVersion: .v2_3,
-                                             using: tag,
-                                             writingTo: outputUrl))
-        
-        let resultMp3 = try Mp3File(location: outputUrl)
-        let result = try Tag(readFrom: resultMp3)
-        XCTAssertEqual(result.time?.hour, 9)
-        XCTAssertEqual(result.time?.minute, 23)
-    }
-    
-    func testTIMEExpectedInputv23OverwriteAsComponents() throws {
-        var tag = try Bundle.tagV23()
-        tag.time?.hour = 9
-        tag.time?.hour = 23
-        
-        let outputUrl = try Bundle.createTempFile(fileNameWithExtension: "testFile.mp3")
-        let outputMp3 = try Bundle.mp3v23()
-        XCTAssertNoThrow(try outputMp3.write(tagVersion: .v2_3,
-                                             using: tag,
-                                             writingTo: outputUrl))
-        
-        let resultMp3 = try Mp3File(location: outputUrl)
-        let result = try Tag(readFrom: resultMp3)
-        XCTAssertEqual(result.time?.hour, 9)
-        XCTAssertEqual(result.time?.minute, 23)
-    }
-    
-    func testTIMEExpectedInputv23OverwriteAsTuple() throws {
-        var tag = try Bundle.tagV23()
-        tag.time = (hour: 9, minute: 23)
-        
-        let outputUrl = try Bundle.createTempFile(fileNameWithExtension: "testFile.mp3")
-        let outputMp3 = try Bundle.mp3v23()
-        XCTAssertNoThrow(try outputMp3.write(tagVersion: .v2_3,
-                                             using: tag,
-                                             writingTo: outputUrl))
-        
-        let resultMp3 = try Mp3File(location: outputUrl)
-        let result = try Tag(readFrom: resultMp3)
-        XCTAssertEqual(result.time?.hour, 9)
-        XCTAssertEqual(result.time?.minute, 23)
-    }
-    
-    func testTIMEVersionErrorv24Overwrite() throws {
-        var tag = try Bundle.tagV24()
-        tag.time?.hour = 11
-        tag.time?.minute = 23
-        
-        let outputUrl = try Bundle.createTempFile(fileNameWithExtension: "testFile.mp3")
-        let outputMp3 = try Bundle.mp3v24()
-        XCTAssertThrowsError(try outputMp3.write(tagVersion: .v2_4,
-                                                 using: tag,
-                                                 writingTo: outputUrl))
-    }
-    
-    // MARK: Year frame tests
-    func testTYEExpectedInputv22Blank() throws {
-        var tag = try Bundle.tagNoMeta()
-        tag.year = 2005
-        
-        let outputUrl = try Bundle.createTempFile(fileNameWithExtension: "testFile.mp3")
-        let outputMp3 = try Mp3File(location: Bundle.noMeta)
-        XCTAssertNoThrow(try outputMp3.write(tagVersion: .v2_2,
-                                             using: tag,
-                                             writingTo: outputUrl))
-        
-        let resultMp3 = try Mp3File(location: outputUrl)
-        let result = try Tag(readFrom: resultMp3)
-        XCTAssertEqual(result.year, 2005)
-    }
-        
-    func testTYEExpectedInputv22Overwrite() throws {
-        var tag = try Bundle.tagV22()
-        tag.year = 2005
-        
-        let outputUrl = try Bundle.createTempFile(fileNameWithExtension: "testFile.mp3")
-        let outputMp3 = try Bundle.mp3v22()
-        XCTAssertNoThrow(try outputMp3.write(tagVersion: .v2_2,
-                                             using: tag,
-                                             writingTo: outputUrl))
-        
-        let resultMp3 = try Mp3File(location: outputUrl)
-        let result = try Tag(readFrom: resultMp3)
-        XCTAssertEqual(result.year, 2005)
-    }
-    
-    func testTYERExpectedInputv23Blank() throws {
-        var tag = try Bundle.tagNoMeta()
-        tag.year = 2005
-        
-        let outputUrl = try Bundle.createTempFile(fileNameWithExtension: "testFile.mp3")
-        let outputMp3 = try Mp3File(location: Bundle.noMeta)
-        XCTAssertNoThrow(try outputMp3.write(tagVersion: .v2_3,
-                                             using: tag,
-                                             writingTo: outputUrl))
-        
-        let resultMp3 = try Mp3File(location: outputUrl)
-        let result = try Tag(readFrom: resultMp3)
-        XCTAssertEqual(result.year, 2005)
-    }
-    
-    func testTYERExpectedInputv23Overwrite() throws {
-        var tag = try Bundle.tagV23()
-        tag.year = 2005
-        
-        let outputUrl = try Bundle.createTempFile(fileNameWithExtension: "testFile.mp3")
-        let outputMp3 = try Bundle.mp3v23()
-        XCTAssertNoThrow(try outputMp3.write(tagVersion: .v2_3,
-                                             using: tag,
-                                             writingTo: outputUrl))
-        
-        let resultMp3 = try Mp3File(location: outputUrl)
-        let result = try Tag(readFrom: resultMp3)
-        XCTAssertEqual(result.year, 2005)
-    }
-    
-    func testTYERVersionErrorv24Overwrite() throws {
-        var tag = try Bundle.tagV24()
-        tag.year = 2005
-        
-        let outputUrl = try Bundle.createTempFile(fileNameWithExtension: "testFile.mp3")
-        let outputMp3 = try Bundle.mp3v24()
-        XCTAssertThrowsError(try outputMp3.write(tagVersion: .v2_4,
-                                                 using: tag,
-                                                 writingTo: outputUrl))
-    }
-    
-
 
 }
