@@ -121,7 +121,7 @@ class SwiftTaggerMp3_PartOfTotalFrame_Tests: XCTestCase {
     }*/
     
     func testOverwriting() throws {
-        let mp3v22 = try Bundle.mp3V22()
+        let mp3v22 = try Bundle.mp3v22()
         var v22Tag = try Tag(readFrom: mp3v22)
         
         // Test when both values are valid - v22
@@ -145,7 +145,7 @@ class SwiftTaggerMp3_PartOfTotalFrame_Tests: XCTestCase {
         XCTAssertEqual(tagWrittenV22.trackNumber?.totalTracks, 7)
         
         // test V23
-        let mp3v23 = try Bundle.mp3V23()
+        let mp3v23 = try Bundle.mp3v23()
         var v23Tag = try Tag(readFrom: mp3v23)
         
         // Test when both values are valid - v22
@@ -168,7 +168,7 @@ class SwiftTaggerMp3_PartOfTotalFrame_Tests: XCTestCase {
         XCTAssertEqual(tagWrittenV23.trackNumber?.totalTracks, 7)
         
         // test V24
-        let mp3v24 = try Bundle.mp3V24()
+        let mp3v24 = try Bundle.mp3v24()
         var v24Tag = try Tag(readFrom: mp3v24)
         
         // Test when both values are valid - v22

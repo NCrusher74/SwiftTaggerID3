@@ -15,7 +15,7 @@ class TestPrint: XCTestCase {
     func testPrint() throws {
 //        let path = "/Users/nolainecrusher/Desktop/test output/testV24Writing.mp3"
 //        let mp3Url = URL(fileURLWithPath: path)
-        let mp3Url = Bundle.writtenV24
+        let mp3Url = Bundle.v24File
         let mp3File = try Mp3File(location: mp3Url)
         let mp3Data = mp3File.data
         

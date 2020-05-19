@@ -12,7 +12,7 @@ import SwiftTaggerID3
 class SwiftTaggerID3_Read_Tests: XCTestCase {
 
     func testV24Reading() throws {
-        let mp3Url = Bundle.writtenV24
+        let mp3Url = Bundle.v24File
         let mp3File = try Mp3File(location: mp3Url)
         let tag = try Tag(readFrom: mp3File)
         
@@ -160,7 +160,7 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
     }
     
     func testV23Reading() throws {
-        let mp3Url = Bundle.writtenV23
+        let mp3Url = Bundle.v23File
         let mp3File = try Mp3File(location: mp3Url)
         let tag = try Tag(readFrom: mp3File)
 
@@ -293,7 +293,7 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
     }
 
     func testV22Reading() throws {
-        let mp3Url = Bundle.writtenV22
+        let mp3Url = Bundle.v22File
         let mp3File = try Mp3File(location: mp3Url)
         let tag = try Tag(readFrom: mp3File)
         

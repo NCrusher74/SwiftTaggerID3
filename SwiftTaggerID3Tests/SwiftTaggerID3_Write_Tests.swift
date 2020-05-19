@@ -13,7 +13,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
     
     // MARK: V24 writing test
     func testV24Writing() throws {
-        let mp3Url = Bundle.v23NoMeta
+        let mp3Url = Bundle.noMeta
         let mp3File = try Mp3File(location: mp3Url)
         var tag = try Tag(readFrom: mp3File)
         
@@ -267,7 +267,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
     
     // MARK: V23 writing test
     func testV23Writing() throws {
-        let mp3Url = Bundle.v23NoMeta
+        let mp3Url = Bundle.noMeta
         let mp3File = try Mp3File(location: mp3Url)
         var tag = try Tag(readFrom: mp3File)
         
@@ -496,7 +496,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
     }
     
     func testV22Writing() throws {
-        let mp3Url = Bundle.v23NoMeta
+        let mp3Url = Bundle.noMeta
         let mp3File = try Mp3File(location: mp3Url)
         var tag = try Tag(readFrom: mp3File)
         
