@@ -138,6 +138,7 @@
 		5175303E244DF1B20005B2AB /* StringEncoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringEncoding.swift; sourceTree = "<group>"; };
 		51753040244ECDD00005B2AB /* v24-test-file-raw-tag-info */ = {isa = PBXFileReference; lastKnownFileType = text; path = "v24-test-file-raw-tag-info"; sourceTree = "<group>"; };
 		51753042244ECF6C0005B2AB /* v23-test-file-raw-tag-info */ = {isa = PBXFileReference; lastKnownFileType = text; path = "v23-test-file-raw-tag-info"; sourceTree = "<group>"; };
+		51762D8C2473C9050033F5EB /* SwiftTaggerID3 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = SwiftTaggerID3; sourceTree = "<group>"; };
 		51775435244058DB005E43C5 /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		5177543A244136A3005E43C5 /* Endianess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endianess.swift; sourceTree = "<group>"; };
 		5177543D24413768005E43C5 /* UnsignedInteger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsignedInteger.swift; sourceTree = "<group>"; };
@@ -171,7 +172,7 @@
 		51FA350D244034B2000997EC /* UInt32.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UInt32.swift; sourceTree = "<group>"; };
 		51FA350F244038D0000997EC /* FrameProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameProtocol.swift; sourceTree = "<group>"; };
 		51FE588C244F6F3C0042570F /* v22-test-file-raw-tag-info */ = {isa = PBXFileReference; lastKnownFileType = text; path = "v22-test-file-raw-tag-info"; sourceTree = "<group>"; };
-		51FF4946245BA84F0006F8F8 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		51FF4946245BA84F0006F8F8 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = SwiftTaggerID3/README.md; sourceTree = "<group>"; };
 		51FF4948245BBAC10006F8F8 /* mp3-v23-with-meta.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "mp3-v23-with-meta.mp3"; sourceTree = "<group>"; };
 		51FF494A245BBBB00006F8F8 /* SwiftTaggerID3_Write_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftTaggerID3_Write_Tests.swift; sourceTree = "<group>"; };
 		51FF494C245BC4870006F8F8 /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
@@ -276,6 +277,7 @@
 		51E432A2243DA257006574A1 = {
 			isa = PBXGroup;
 			children = (
+				51762D8C2473C9050033F5EB /* SwiftTaggerID3 */,
 				51FF4946245BA84F0006F8F8 /* README.md */,
 				51490E56243EF92F009D4BA4 /* Docs */,
 				51E432AE243DA257006574A1 /* SwiftTaggerID3 */,
