@@ -172,7 +172,6 @@ extension Bundle {
     
     static func removeTempFile(at location: URL) throws {
         try FileManager.default.removeItem(at: location.parentDirectory)
-
     }
     
 }
