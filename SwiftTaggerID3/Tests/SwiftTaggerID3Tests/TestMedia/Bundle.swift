@@ -163,6 +163,7 @@ extension Bundle {
         return tag
     }
 
+    @available(macOS 10.12, *)
     static func createTempFile(fileNameWithExtension: String) throws -> URL {
         try FileManager.default.createDirectory(
             at: FileManager.default.temporaryDirectory,

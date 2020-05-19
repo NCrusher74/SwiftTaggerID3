@@ -6,6 +6,8 @@
 //  Copyright © 2020 Nolaine Crusher. All rights reserved.
 //
 
+import Foundation
+
 /**
  An enum determining ID3 version and housing variables and methods are that dependent upon ID3 version
  */

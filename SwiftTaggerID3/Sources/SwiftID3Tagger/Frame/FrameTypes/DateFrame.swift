@@ -15,6 +15,7 @@ import Foundation
 /**
  A type used to represent an ID3-formatted timestamp tag. The information delivered from this type will vary depending on the tag version and formatting.
  */
+@available(macOS 10.12, *)
 struct DateFrame: FrameProtocol {
     
     // MARK: Properties
@@ -205,7 +206,8 @@ extension Tag {
                 return (nil, nil, nil, nil, nil)
             }
     }
-    
+
+    @available(macOS 10.12, *)
     internal mutating func set(_ layout: FrameLayoutIdentifier,
                                _ frameKey: FrameKey,
                                timeStamp: Date) {
@@ -215,6 +217,7 @@ extension Tag {
     }
     
     /// Version 2.4 only. Identifier: `TDRL`
+    @available(macOS 10.12, *)
     public var releaseDateTime:
         (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
         get {
@@ -237,6 +240,7 @@ extension Tag {
     }
     
     /// Version 2.4 only. Identifier `TDEN`
+    @available(macOS 10.12, *)
     public var encodingDateTime:
         (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
         get {
@@ -259,6 +263,7 @@ extension Tag {
     }
     
     /// Version 2.4 only. Identifier `TDTG`
+    @available(macOS 10.12, *)
     public var taggingDateTime:
         (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
         get {
@@ -281,6 +286,7 @@ extension Tag {
     }
     
     /// Identifier `TRD`/`TRDA`/`TDRC`
+    @available(macOS 10.12, *)
     public var recordingDateTime:
         (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
         get {
@@ -303,6 +309,7 @@ extension Tag {
     }
     
     /// Full date/time for version 2.4. Identifer`TDOR`
+    @available(macOS 10.12, *)
     public var originalReleaseTime:
         (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
         get {
@@ -324,6 +331,7 @@ extension Tag {
         }
     }
     /// Full date/time for version 2.2/2.3. Identifer `TOY`/`TORY`
+    @available(macOS 10.12, *)
     public var originalReleaseYear: Int? {
         get {
             date(for: .originalReleaseTime)?.year
@@ -341,6 +349,7 @@ extension Tag {
     }
 
     /// version 2.2/2.3 only Identifier `TDA`/`TDAT`
+    @available(macOS 10.12, *)
     public var date: (month: Int?, day: Int?)? {
         get {
             if let date = date(for: .date) {
@@ -363,6 +372,7 @@ extension Tag {
     }
     
     /// version 2.2/2.3. Identifier `TIM`/`TIME`
+    @available(macOS 10.12, *)
     public var time: (hour: Int?, minute: Int?)? {
         get {
             if let date = date(for: .time) {
@@ -385,6 +395,7 @@ extension Tag {
     }
     
     /// version 2.2/2.3 Identifier `TYE`/`TYER`
+    @available(macOS 10.12, *)
     public var year: Int? {
         get {
             if let date = date(for: .year) {

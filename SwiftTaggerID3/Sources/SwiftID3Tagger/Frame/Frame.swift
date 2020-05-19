@@ -36,6 +36,7 @@ enum Frame {
     /** A frame type containing an date value that will be encoded and stored as a timestamp string.
      
         Frames of this type MAY NOT be duplicated within a valid ID3 tag*/
+    @available(macOS 10.12, *)
     case dateFrame(DateFrame)
     /** A frame type containing an attached image pertaining to the audio media.
         
@@ -123,10 +124,17 @@ enum Frame {
                  .known(.taggingTime),
                  .known(.time),
                  .known(.year):
+              if #available(macOS 10.12, *) {
                 self = .dateFrame(try DateFrame(
                     decodingFromStartOf: &data,
                     version: version,
                     layout: layout))
+              } else {
+                self = .unknownFrame(try UnknownFrame(
+                  decodingFromStartOf: &data,
+                  version: version,
+                  layout: layout))
+              }
             case .unknown(identifier):
                 self = .unknownFrame(try UnknownFrame(
                     decodingFromStartOf: &data,
