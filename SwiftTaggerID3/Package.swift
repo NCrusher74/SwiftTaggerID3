@@ -11,13 +11,7 @@ let package = Package(
             name: "SwiftTaggerID3",
             targets: ["SwiftTaggerID3"]),
     ],
-    dependencies: [
-        .package(
-            name: "Workspace",
-            url: "https://github.com/SDGGiesbrecht/Workspace",
-            .upToNextMinor(from: Version(0, 32, 3))
-        ),
-    ],
+    dependencies: [],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
