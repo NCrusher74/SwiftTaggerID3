@@ -89,7 +89,6 @@
 				51490E56243EF92F009D4BA4 /* Docs */,
 				51752A4C2473B9FF00A903D7 /* SwiftTaggerID3 */,
 				51E432AE243DA257006574A1 /* SwiftTaggerID3 */,
-				51E432B9243DA257006574A1 /* SwiftTaggerID3Tests */,
 				51E432AD243DA257006574A1 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -108,23 +107,8 @@
 			children = (
 				51E432AF243DA257006574A1 /* SwiftTaggerID3.h */,
 				51E432B0243DA257006574A1 /* SwiftTaggerID3.plist */,
-				51E432D0243DA61B006574A1 /* SwiftID3Tagger */,
 			);
 			path = SwiftTaggerID3;
-			sourceTree = "<group>";
-		};
-		51E432B9243DA257006574A1 /* SwiftTaggerID3Tests */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = SwiftTaggerID3Tests;
-			sourceTree = "<group>";
-		};
-		51E432D0243DA61B006574A1 /* SwiftID3Tagger */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = SwiftID3Tagger;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
