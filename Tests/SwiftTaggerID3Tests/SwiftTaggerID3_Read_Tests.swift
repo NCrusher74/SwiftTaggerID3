@@ -12,9 +12,7 @@ import SwiftTaggerID3
 class SwiftTaggerID3_Read_Tests: XCTestCase {
 
     func testV24Reading() throws {
-        let mp3Url = Bundle.v24File
-        let mp3File = try Mp3File(location: mp3Url)
-        let tag = try Tag(readFrom: mp3File)
+        let tag = try tagv24()
         
         // StringFrame
         XCTAssertEqual(tag.album, "Album")
@@ -162,9 +160,7 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
     }
     
     func testV23Reading() throws {
-        let mp3Url = Bundle.v23File
-        let mp3File = try Mp3File(location: mp3Url)
-        let tag = try Tag(readFrom: mp3File)
+        let tag = try tagv23()
 
         // StringFrame
         XCTAssertEqual(tag.album, "Album")
@@ -297,9 +293,7 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
     }
 
     func testV22Reading() throws {
-        let mp3Url = Bundle.v22File
-        let mp3File = try Mp3File(location: mp3Url)
-        let tag = try Tag(readFrom: mp3File)
+        let tag = try tagv22()
         
         // StringFrame
         XCTAssertEqual(tag.album, "Album")

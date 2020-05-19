@@ -9,14 +9,13 @@
 import XCTest
 import SwiftTaggerID3
 
+@available(OSX 10.12, *)
 class SwiftTaggerID3_Write_Tests: XCTestCase {
     
     // MARK: V24 writing test
     func testV24Writing() throws {
-        let mp3Url = Bundle.noMeta
-        let mp3File = try Mp3File(location: mp3Url)
-        var tag = try Tag(readFrom: mp3File)
-        
+        var tag = try tagv24()
+
         tag.album = "Album"
         tag.albumArtist = "Album Artist"
         tag.albumSort = "Album Sort"
@@ -141,9 +140,8 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.originalReleaseTime = (year: 2014, month: 08, day: 09, hour: nil, minute: nil)
         tag.recordingDateTime = (year: 2018, month: 10, day: 11, hour: nil, minute: nil)
       }
-        
-        let outputUrl = URL(fileURLWithPath: "/Users/nolainecrusher/Desktop/test output/testV24Writing.mp3")
-        XCTAssertNoThrow(try mp3File.write(tagVersion: .v2_4, using: tag, writingTo: outputUrl))
+        let outputUrl = try tempDirectory().appendingPathComponent("testV24Writing.mp3")
+        XCTAssertNoThrow(try mp3NoMeta().write(tagVersion: .v2_4, using: tag, writingTo: outputUrl))
         
         // MARK: Confirm accuracy
         let mp3UrlWritten = outputUrl
@@ -277,10 +275,8 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
     
     // MARK: V23 writing test
     func testV23Writing() throws {
-        let mp3Url = Bundle.noMeta
-        let mp3File = try Mp3File(location: mp3Url)
-        var tag = try Tag(readFrom: mp3File)
-        
+        var tag = try tagv23()
+
         tag.album = "Album"
         tag.albumArtist = "Album Artist"
         tag.albumSort = "Album Sort"
@@ -401,9 +397,9 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.originalReleaseTime = (year: 2014, month: nil, day: nil, hour: nil, minute: nil)
       }
         
-        let outputUrl = URL(fileURLWithPath: "/Users/nolainecrusher/Desktop/test output/testV23Writing.mp3")
-        XCTAssertNoThrow(try mp3File.write(tagVersion: .v2_3, using: tag, writingTo: outputUrl))
-        
+        let outputUrl = try tempDirectory().appendingPathComponent("testV23Writing.mp3")
+        XCTAssertNoThrow(try mp3NoMeta().write(tagVersion: .v2_3, using: tag, writingTo: outputUrl))
+
         // MARK: Confirm accuracy
         let mp3UrlWritten = outputUrl
         let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
@@ -510,10 +506,8 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
     }
     
     func testV22Writing() throws {
-        let mp3Url = Bundle.noMeta
-        let mp3File = try Mp3File(location: mp3Url)
-        var tag = try Tag(readFrom: mp3File)
-        
+        var tag = try tagv22()
+
         tag.album = "Album"
         tag.albumArtist = "Album Artist"
         tag.albumSort = "Album Sort"
@@ -610,9 +604,9 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.originalReleaseTime = (year: 2014, month: nil, day: nil, hour: nil, minute: nil)
       }
 
-        let outputUrl = URL(fileURLWithPath: "/Users/nolainecrusher/Desktop/test output/testV22Writing.mp3")
-        XCTAssertNoThrow(try mp3File.write(tagVersion: .v2_2, using: tag, writingTo: outputUrl))
-        
+        let outputUrl = try tempDirectory().appendingPathComponent("testV22Writing.mp3")
+        XCTAssertNoThrow(try mp3NoMeta().write(tagVersion: .v2_2, using: tag, writingTo: outputUrl))
+
         // MARK: Confirm accuracy
         let mp3UrlWritten = outputUrl
         let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
