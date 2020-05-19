@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:/Users/nolainecrusher/Documents/Git/SwiftTagger_MacOS/SwiftTaggerID3.xcodeproj">
+      location = "self:">
    </FileRef>
 </Workspace>
