@@ -1,6 +1,6 @@
 /*
 
- SwiftTaggerMp3_DateFrame_Tests.swift
+ SwiftTaggerID3_DateFrame_Tests.swift
  SwiftTaggerID3
 
  Copyright ©2020 Nolaine Crusher. All rights reserved.
@@ -11,7 +11,7 @@
 import XCTest
 import SwiftTaggerID3
 
-class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
+class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
     
     // MARK: EncodingTime frame tests
     // Test EncodingTime frame for version 2.4, with expected input, writing values as individual components to file without metadata

@@ -1,6 +1,6 @@
 /*
 
- SwiftTaggerMp3_PartOfTotalFrame_Tests.swift
+ SwiftTaggerID3_PartOfTotalFrame_Tests.swift
  SwiftTaggerID3
 
  Copyright ©2020 Nolaine Crusher. All rights reserved.
@@ -11,7 +11,7 @@ import XCTest
 import SwiftTaggerID3
 
 @available(OSX 10.12, *)
-class SwiftTaggerMp3_PartOfTotalFrame_Tests: XCTestCase {
+class SwiftTaggerID3_PartOfTotalFrame_Tests: XCTestCase {
     
     // PartOfTotalFrame tests
     func testWithBothValuesWrittenOnBlankFile() throws {

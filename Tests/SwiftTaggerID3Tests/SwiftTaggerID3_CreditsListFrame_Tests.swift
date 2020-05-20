@@ -1,6 +1,6 @@
 /*
 
- SwiftTaggerMp3_CreditsListFrame_Tests.swift
+ SwiftTaggerID3_CreditsListFrame_Tests.swift
  SwiftTaggerID3
 
  Copyright ©2020 Nolaine Crusher. All rights reserved.
@@ -10,7 +10,7 @@
 import XCTest
 import SwiftTaggerID3
 
-class SwiftTaggerMp3_CreditsListFrame_Tests: XCTestCase {
+class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
 
     #warning("NEEDS FIXING: Need a way to specify whether a change to a credits list frame should append the existing credits list entries, or overwrite.")
     #warning("NEEDS FIXING: Check for duplicates in the values array.")
