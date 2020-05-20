@@ -109,7 +109,6 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         // MARK: TOC and Chapter Frames
         tag[tableOfContents: "TOC"]?.topLevelFlag = true
         tag[tableOfContents: "TOC"]?.orderedFlag = true
-        tag[tableOfContents: "TOC"]?.entryCount = 2
         tag[tableOfContents: "TOC"]?.childElementIDs = ["Ch01","Ch02"]
         
         tag[chapters: "Ch01"]?.startTime = 0
@@ -361,7 +360,6 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         // MARK: TOC and Chapter Frames
         tag[tableOfContents: "TOC"]?.topLevelFlag = true
         tag[tableOfContents: "TOC"]?.orderedFlag = true
-        tag[tableOfContents: "TOC"]?.entryCount = 2
         tag[tableOfContents: "TOC"]?.childElementIDs = ["Ch01","Ch02"]
         
         tag[chapters: "Ch01"]?.startTime = 0

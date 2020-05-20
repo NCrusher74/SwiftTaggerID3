@@ -234,12 +234,12 @@ public extension Tag {
     }
     
     /** creates a "subframe tag" instance to use when accessing data within the embedded subframes of a `CHAP` or `CTOC` frame */
-    subscript(embeddedSubframes forParentFrameElementID: String) -> Tag? {
+    subscript(embeddedSubframes parentFrameElementID: String) -> Tag? {
         get {
             var frames: [FrameKey:Frame] = [:]
-            if let parentFrame = self[chapters: forParentFrameElementID] {
+            if let parentFrame = self[chapters: parentFrameElementID] {
                 frames = parentFrame.embeddedSubframes
-            } else if let parentFrame = self[tableOfContents: forParentFrameElementID] {
+            } else if let parentFrame = self[tableOfContents: parentFrameElementID] {
                 frames = parentFrame.embeddedSubframes
             } else {
                 return nil

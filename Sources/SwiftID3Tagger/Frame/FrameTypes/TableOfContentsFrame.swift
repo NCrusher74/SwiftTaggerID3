@@ -33,9 +33,6 @@ public struct TableOfContentsFrame: FrameProtocol {
      Note: The Bool flags are documented as being paired in a 2-byte unit: https://mutagen-specs.readthedocs.io/en/latest/_images/CTOCFrame-1.0.png ` */
     public var orderedFlag: Bool
     
-    /**The Entry count is the number of entries in the Child Element ID list that follows and must be greater than zero. Each entry in the list consists of the ElementID of any "child" CTOC or CHAP frames.*/
-    public var entryCount: UInt8
-    
     /** the list of all child CTOC and/or CHAP frames,
      each entry is null-terminated */
     public var childElementIDs: [String]
@@ -79,8 +76,6 @@ public struct TableOfContentsFrame: FrameProtocol {
         
         // parse the entry-count byte to derive integer value
         let childIDByte = parsing.extractFirst(1)
-        self.entryCount = childIDByte.uint8
-        
         let entryCountUInt32 = UInt32(parsing: childIDByte, .bigEndian)
         var childIDCount = Int(entryCountUInt32)
         var childIDArray: [String] = []
@@ -122,13 +117,11 @@ public struct TableOfContentsFrame: FrameProtocol {
                  elementID: String,
                  topLevelFlag: Bool,
                  orderedFlag: Bool,
-                 entryCount: UInt8,
                  childElementIDs: [String],
                  embeddedSubframes: [FrameKey: Frame]) {
         self.elementID = elementID
         self.topLevelFlag = topLevelFlag
         self.orderedFlag = orderedFlag
-        self.entryCount = entryCount
         self.childElementIDs = childElementIDs
         self.embeddedSubframes = embeddedSubframes
         self.flags = TableOfContentsFrame.defaultFlags
@@ -143,7 +136,10 @@ public struct TableOfContentsFrame: FrameProtocol {
         // encode and append the elementID
         frameData.append(self.elementID.encoded(withNullTermination: true))
         // encode and append the entry count
-        frameData.append(contentsOf: [self.entryCount])
+        let entryCount = self.childElementIDs.count
+        let entryCountUInt8 = UInt8(entryCount)
+
+        frameData.append(entryCountUInt8)
         // encode and append the array of child element IDs
         var idArray = Data()
         for id in self.childElementIDs {
@@ -200,7 +196,6 @@ public struct TableOfContentsFrame: FrameProtocol {
                   elementID: elementID,
                   topLevelFlag: isTopTOC,
                   orderedFlag: elementsAreOrdered,
-                  entryCount: UInt8(childElementIDs.count),
                   childElementIDs: childElementIDs,
                   embeddedSubframes: embeddedSubframes ?? [:])
     }
