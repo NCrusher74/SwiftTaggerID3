@@ -12,9 +12,7 @@ import SwiftTaggerID3
 class SwiftTaggerID3_Read_Tests: XCTestCase {
 
     func testV24Reading() throws {
-        let mp3Url = Bundle.v24File
-        let mp3File = try Mp3File(location: mp3Url)
-        let tag = try Tag(readFrom: mp3File)
+        let tag = try tagv24()
         
         // StringFrame
         XCTAssertEqual(tag.album, "Album")
@@ -100,6 +98,7 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag.musicianCreditsList?[.soprano], ["Soprano Name"])
         XCTAssertEqual(tag.musicianCreditsList?[.alto], ["Alto Name"])
 
+      if #available(macOS 10.12, *) {
         // DateFrame
         XCTAssertEqual(tag.encodingDateTime?.year, 2016)
         XCTAssertEqual(tag.encodingDateTime?.month, 04)
@@ -126,6 +125,7 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag.taggingDateTime?.day, 07)
         XCTAssertEqual(tag.taggingDateTime?.hour, 0)
         XCTAssertEqual(tag.taggingDateTime?.minute, 0)
+      }
         
         // LocalizedFrame
         XCTAssertEqual(tag.acknowledgment, "Acknowledgment")
@@ -160,9 +160,7 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
     }
     
     func testV23Reading() throws {
-        let mp3Url = Bundle.v23File
-        let mp3File = try Mp3File(location: mp3Url)
-        let tag = try Tag(readFrom: mp3File)
+        let tag = try tagv23()
 
         // StringFrame
         XCTAssertEqual(tag.album, "Album")
@@ -229,6 +227,7 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag.series, "Content Group")
         XCTAssertEqual(tag.work, "Content Group")
 
+      if #available(macOS 10.12, *) {
         // DateFrame
         XCTAssertEqual(tag.recordingDateTime?.year, 2018)
         XCTAssertEqual(tag.recordingDateTime?.month, 10)
@@ -243,6 +242,7 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag.originalReleaseTime?.year, 2014)
         XCTAssertEqual(tag.originalReleaseTime?.hour, 0)
         XCTAssertEqual(tag.originalReleaseTime?.minute, 0)
+      }
         
         XCTAssertEqual(tag.languages, [.eng])
 
@@ -293,9 +293,7 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
     }
 
     func testV22Reading() throws {
-        let mp3Url = Bundle.v22File
-        let mp3File = try Mp3File(location: mp3Url)
-        let tag = try Tag(readFrom: mp3File)
+        let tag = try tagv22()
         
         // StringFrame
         XCTAssertEqual(tag.album, "Album")
@@ -373,6 +371,7 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag[userDefinedText: "UserText"], "User Text Content")
         XCTAssertEqual(tag[userDefinedUrl: "UserURL"], "http://userdefined.url")
 
+      if #available(macOS 10.12, *) {
         // DateFrame
         XCTAssertEqual(tag.recordingDateTime?.year, 2018)
         XCTAssertEqual(tag.recordingDateTime?.month, 10)
@@ -387,6 +386,7 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag.originalReleaseTime?.year, 2014)
         XCTAssertEqual(tag.originalReleaseTime?.hour, 0)
         XCTAssertEqual(tag.originalReleaseTime?.minute, 0)
+      }
 
         // CreditsListFrame
         XCTAssertEqual(tag.involvedPeopleList?[.actor], ["Actor Name"])

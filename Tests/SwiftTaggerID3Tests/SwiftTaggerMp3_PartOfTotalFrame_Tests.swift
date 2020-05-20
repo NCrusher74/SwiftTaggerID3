@@ -9,12 +9,12 @@
 import XCTest
 import SwiftTaggerID3
 
+@available(OSX 10.12, *)
 class SwiftTaggerMp3_PartOfTotalFrame_Tests: XCTestCase {
     
     // PartOfTotalFrame tests
     func testWithBothValuesWrittenOnBlankFile() throws {
-        let mp3Blank = try Bundle.mp3NoMeta()
-        var blankTag = try Tag(readFrom: mp3Blank)
+        var blankTag = try tagNoMeta()
 
         // Test when both values are valid - v22
         blankTag.discNumber?.disc = 4
@@ -23,11 +23,11 @@ class SwiftTaggerMp3_PartOfTotalFrame_Tests: XCTestCase {
         blankTag.trackNumber?.totalTracks = 7
         
         // test V22
-        let outputUrlV22 = URL(fileURLWithPath: "/Users/nolainecrusher/Desktop/test output/v22test1.mp3")
-        XCTAssertNoThrow(try mp3Blank.write(tagVersion: .v2_2,
+        let outputUrlv22 = try tempDirectory().appendingPathComponent("testV22PartOfTotal.mp3")
+        XCTAssertNoThrow(try mp3NoMeta().write(tagVersion: .v2_2,
                                             using: blankTag,
-                                            writingTo: outputUrlV22))
-        let mp3UrlWrittenV22 = outputUrlV22
+                                            writingTo: outputUrlv22))
+        let mp3UrlWrittenV22 = outputUrlv22
         let mp3FileWrittenV22 = try Mp3File(location: mp3UrlWrittenV22)
         let tagWrittenV22 = try Tag(readFrom: mp3FileWrittenV22)
         
@@ -37,11 +37,11 @@ class SwiftTaggerMp3_PartOfTotalFrame_Tests: XCTestCase {
         XCTAssertEqual(tagWrittenV22.trackNumber?.totalTracks, 7)
         
         // test V23
-        let outputUrlV23 = URL(fileURLWithPath: "/Users/nolainecrusher/Desktop/test output/v23test1.mp3")
-        XCTAssertNoThrow(try mp3Blank.write(tagVersion: .v2_3,
+        let outputUrlv23 = try tempDirectory().appendingPathComponent("testV23PartOfTotal.mp3")
+        XCTAssertNoThrow(try mp3NoMeta().write(tagVersion: .v2_3,
                                             using: blankTag,
-                                            writingTo: outputUrlV23))
-        let mp3UrlWrittenV23 = outputUrlV23
+                                            writingTo: outputUrlv23))
+        let mp3UrlWrittenV23 = outputUrlv23
         let mp3FileWrittenV23 = try Mp3File(location: mp3UrlWrittenV23)
         let tagWrittenV23 = try Tag(readFrom: mp3FileWrittenV23)
         
@@ -51,11 +51,11 @@ class SwiftTaggerMp3_PartOfTotalFrame_Tests: XCTestCase {
         XCTAssertEqual(tagWrittenV23.trackNumber?.totalTracks, 7)
 
         // test V24
-        let outputUrlV24 = URL(fileURLWithPath: "/Users/nolainecrusher/Desktop/test output/v24test1.mp3")
-        XCTAssertNoThrow(try mp3Blank.write(tagVersion: .v2_4,
+        let outputUrlv24 = try tempDirectory().appendingPathComponent("testV24PartOfTotal.mp3")
+        XCTAssertNoThrow(try mp3NoMeta().write(tagVersion: .v2_4,
                                             using: blankTag,
-                                            writingTo: outputUrlV24))
-        let mp3UrlWrittenV24 = outputUrlV24
+                                            writingTo: outputUrlv24))
+        let mp3UrlWrittenV24 = outputUrlv24
         let mp3FileWrittenV24 = try Mp3File(location: mp3UrlWrittenV24)
         let tagWrittenV24 = try Tag(readFrom: mp3FileWrittenV24)
         
@@ -78,7 +78,7 @@ class SwiftTaggerMp3_PartOfTotalFrame_Tests: XCTestCase {
         blankTag.trackNumber?.track = 6
         
         // test V22
-        let outputUrlV22 = URL(fileURLWithPath: "/Users/nolainecrusher/Desktop/test output/v22test1.mp3")
+     let outputUrlv22 = try tempDirectory().appendingPathComponent("testV22PartOfTotal.mp3")
         XCTAssertNoThrow(try mp3Blank.write(tagVersion: .v2_2,
                                             using: blankTag,
                                             writingTo: outputUrlV22))
@@ -92,7 +92,7 @@ class SwiftTaggerMp3_PartOfTotalFrame_Tests: XCTestCase {
         XCTAssertNil(tagWrittenV22.trackNumber?.totalTracks)
         
         // test V23
-        let outputUrlV23 = URL(fileURLWithPath: "/Users/nolainecrusher/Desktop/test output/v23test1.mp3")
+     let outputUrlv23 = try tempDirectory().appendingPathComponent("testV23PartOfTotal.mp3")
         XCTAssertNoThrow(try mp3Blank.write(tagVersion: .v2_3,
                                             using: blankTag,
                                             writingTo: outputUrlV23))
@@ -106,7 +106,7 @@ class SwiftTaggerMp3_PartOfTotalFrame_Tests: XCTestCase {
         XCTAssertNil(tagWrittenV23.trackNumber?.totalTracks)
         
         // test V23
-        let outputUrlV24 = URL(fileURLWithPath: "/Users/nolainecrusher/Desktop/test output/v24test1.mp3")
+     let outputUrlv24 = try tempDirectory().appendingPathComponent("testV24PartOfTotal.mp3")
         XCTAssertNoThrow(try mp3Blank.write(tagVersion: .v2_4,
                                             using: blankTag,
                                             writingTo: outputUrlV24))
@@ -121,9 +121,7 @@ class SwiftTaggerMp3_PartOfTotalFrame_Tests: XCTestCase {
     }*/
     
     func testOverwriting() throws {
-        let mp3v22 = try Bundle.mp3v22()
-        var v22Tag = try Tag(readFrom: mp3v22)
-        
+        var v22Tag = try tagv22()
         // Test when both values are valid - v22
         v22Tag.discNumber?.disc = 4
         v22Tag.discNumber?.totalDiscs = 5
@@ -131,8 +129,8 @@ class SwiftTaggerMp3_PartOfTotalFrame_Tests: XCTestCase {
         v22Tag.trackNumber?.totalTracks = 7
         
         // test V22
-        let outputUrlv22 = URL(fileURLWithPath: "/Users/nolainecrusher/Desktop/test output/v22test2.mp3")
-        XCTAssertNoThrow(try mp3v22.write(tagVersion: .v2_2,
+        let outputUrlv22 = try tempDirectory().appendingPathComponent("testV22PartOfTotal.mp3")
+        XCTAssertNoThrow(try mp3v22().write(tagVersion: .v2_2,
                                             using: v22Tag,
                                             writingTo: outputUrlv22))
         let mp3UrlWrittenV22 = outputUrlv22
@@ -145,8 +143,7 @@ class SwiftTaggerMp3_PartOfTotalFrame_Tests: XCTestCase {
         XCTAssertEqual(tagWrittenV22.trackNumber?.totalTracks, 7)
         
         // test V23
-        let mp3v23 = try Bundle.mp3v23()
-        var v23Tag = try Tag(readFrom: mp3v23)
+        var v23Tag = try tagv23()
         
         // Test when both values are valid - v22
         v23Tag.discNumber?.disc = 4
@@ -154,11 +151,11 @@ class SwiftTaggerMp3_PartOfTotalFrame_Tests: XCTestCase {
         v23Tag.trackNumber?.track = 6
         v23Tag.trackNumber?.totalTracks = 7
         
-        let outputUrlV23 = URL(fileURLWithPath: "/Users/nolainecrusher/Desktop/test output/v23test2.mp3")
-        XCTAssertNoThrow(try mp3v23.write(tagVersion: .v2_3,
+        let outputUrlv23 = try tempDirectory().appendingPathComponent("testV23PartOfTotal.mp3")
+        XCTAssertNoThrow(try mp3v23().write(tagVersion: .v2_3,
                                             using: v23Tag,
-                                            writingTo: outputUrlV23))
-        let mp3UrlWrittenV23 = outputUrlV23
+                                            writingTo: outputUrlv23))
+        let mp3UrlWrittenV23 = outputUrlv23
         let mp3FileWrittenV23 = try Mp3File(location: mp3UrlWrittenV23)
         let tagWrittenV23 = try Tag(readFrom: mp3FileWrittenV23)
         
@@ -168,8 +165,7 @@ class SwiftTaggerMp3_PartOfTotalFrame_Tests: XCTestCase {
         XCTAssertEqual(tagWrittenV23.trackNumber?.totalTracks, 7)
         
         // test V24
-        let mp3v24 = try Bundle.mp3v24()
-        var v24Tag = try Tag(readFrom: mp3v24)
+        var v24Tag = try tagv24()
         
         // Test when both values are valid - v22
         v24Tag.discNumber?.disc = 4
@@ -177,11 +173,11 @@ class SwiftTaggerMp3_PartOfTotalFrame_Tests: XCTestCase {
         v24Tag.trackNumber?.track = 6
         v24Tag.trackNumber?.totalTracks = 7
         
-        let outputUrlV24 = URL(fileURLWithPath: "/Users/nolainecrusher/Desktop/test output/v24test2.mp3")
-        XCTAssertNoThrow(try mp3v24.write(tagVersion: .v2_4,
+        let outputUrlv24 = try tempDirectory().appendingPathComponent("testV24PartOfTotal.mp3")
+        XCTAssertNoThrow(try mp3v24().write(tagVersion: .v2_4,
                                             using: v24Tag,
-                                            writingTo: outputUrlV24))
-        let mp3UrlWrittenV24 = outputUrlV24
+                                            writingTo: outputUrlv24))
+        let mp3UrlWrittenV24 = outputUrlv24
         let mp3FileWrittenV24 = try Mp3File(location: mp3UrlWrittenV24)
         let tagWrittenV24 = try Tag(readFrom: mp3FileWrittenV24)
         
