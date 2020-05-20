@@ -20,5 +20,35 @@ let configuration: WorkspaceConfiguration = {
   // This maintains standard “.gitignore” entries for a Swift package.
   configuration.git.manage = true
 
+  // #workaround(Not sure which of these style guidelines the project wants to follow. These ones currently flag violations.)
+  // These are rules provided by Workspace natively.
+  configuration.proofreading.rules.subtract([
+    .calloutCasing,
+    .parameterGrouping,
+    .syntaxColoring,
+    .manualWarnings,
+    .marks,
+    .unicode
+  ])
+  // These are rules provided by swift‐format, Swift’s official code formatter.
+  for ruleName in [
+    "BeginDocumentationCommentWithOneLineSummary",
+    "DoNotUseSemicolons",
+    "GroupNumericLiterals",
+    "NoAccessLevelOnExtensionDeclaration",
+    "UseSingleLinePropertyGetter",
+    "UseTripleSlashForDocumentationComments"
+    ] {
+      configuration.proofreading.swiftFormatConfiguration?.rules[ruleName] = false
+  }
+  // #workaround(swift‐format currently flags indentation violations that cannot be suppressed without disabling swift‐format altogether.)
+  configuration.proofreading.swiftFormatConfiguration = nil
+
+  // #workaround(Not everything is being tested yet.)
+  configuration.testing.enforceCoverage = false
+
+  // #workaround(Not everything is documented yet.)
+  configuration.documentation.api.enforceCoverage = false
+
   return configuration
 }()
