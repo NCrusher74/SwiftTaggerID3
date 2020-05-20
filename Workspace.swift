@@ -20,7 +20,7 @@ let configuration: WorkspaceConfiguration = {
   // This maintains standard “.gitignore” entries for a Swift package.
   configuration.git.manage = true
 
-  // #workaround(Not sure which of these style guidelines the project wants to follow. These ones currently flag violations.)
+  // #workaround(Not sure which of these style guidelines the project wants to follow. These ones are disabled because they currently flag violations.)
   // These are rules provided by Workspace natively.
   configuration.proofreading.rules.subtract([
     .calloutCasing,
