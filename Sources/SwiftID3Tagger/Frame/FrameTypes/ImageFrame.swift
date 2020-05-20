@@ -1,13 +1,13 @@
-//
-//  ImageFrame.swift
-//  SwiftTaggerID3
-//
-//  Created by Nolaine Crusher on 4/11/20.
-//  Copyright © 2020 Nolaine Crusher. All rights reserved.
-//
+/*
 
+ ImageFrame.swift
+ SwiftTaggerID3
 
- import Foundation
+ Copyright ©2020 Nolaine Crusher. All rights reserved.
+
+ */
+
+import Foundation
 
 /**
  A type representing an ID3 frame that contains an attached image

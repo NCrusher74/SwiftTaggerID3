@@ -1,18 +1,20 @@
-//
-//  SwiftTaggerMp3_DateFrame_Tests.swift
-//  SwiftTaggerID3Tests
-//
-//  Created by Nolaine Crusher on 5/18/20.
-//  Copyright © 2020 Nolaine Crusher. All rights reserved.
-//
+/*
+
+ SwiftTaggerID3_DateFrame_Tests.swift
+ SwiftTaggerID3
+
+ Copyright ©2020 Nolaine Crusher. All rights reserved.
+
+ */
 
 #warning("NEEDS FIXING: When writing to a file with a tag in an existing version that is incompatible, version-restricted frames will error out even if the outgoing version is correct")
 import XCTest
 import SwiftTaggerID3
 
-class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
+class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
     
     // MARK: EncodingTime frame tests
+    // Test EncodingTime frame for version 2.4, with expected input, writing values as individual components to file without metadata
     func testTDENv24ExpectedInputBlankFileAsComponents() throws {
       if #available(macOS 10.12, *) {
 
@@ -40,6 +42,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
 
+    // Test EncodingTime frame for version 2.4, with expected input, writing values as individual components to file with metadata
     func testTDENv24ExpectedInputOverwriteFileAsComponents() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagv24()
@@ -65,6 +68,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
 
+    // Test EncodingTime frame for version 2.4, with expected input, writing values as tuple to file without metadata
     func testTDENv24ExpectedInputBlankFileAsTuple() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagNoMeta()
@@ -86,6 +90,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
     
+    // Test EncodingTime frame for version 2.4, with expected input, writing values as tuple to file with metadata
     func testTDENv24ExpectedInputOverwriteFileAsTuple() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagv24()
@@ -107,6 +112,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
     
+    // Test EncodingTime frame will throw error when attempting to use with version 2.2, writing to file with metadata
     func testTDENVersionErrorv22Overwrite() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagv22()
@@ -124,6 +130,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
 
+    // Test EncodingTime frame will throw error when attempting to use with version 2.3, writing to file with metadata
     func testTDENVersionErrorv23Overwrite() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagv23()
@@ -141,6 +148,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
 
+    // Test EncodingTime frame will throw error when attempting to use with version 2.2 writing to file without metadata
     func testTDENVersionErrorv22Blank() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagNoMeta()
@@ -158,6 +166,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
     
+    // Test EncodingTime frame will throw error when attempting to use with version 2.3 writing to file without metadata
     func testTDENVersionErrorv23Blank() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagNoMeta()
@@ -176,6 +185,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
     }
     
     // MARK: TaggingTime frame tests
+    // Test TaggingTime frame for version 2.4, with expected input, writing values as individual components to file without metadata
     func testTDTGv24ExpectedInputBlankFileAsComponents() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagNoMeta()
@@ -201,6 +211,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
     
+    // Test TaggingTime frame for version 2.4, with expected input, writing values as individual components to file with metadata
     func testTDTGv24ExpectedInputOverwriteFileAsComponents() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagv24()
@@ -226,6 +237,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
     
+    // Test TaggingTime frame for version 2.4, with expected input, writing values as tuple to file without metadata
     func testTDTGv24ExpectedInputBlankFileAsTuple() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagNoMeta()
@@ -247,6 +259,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
     
+    // Test TaggingTime frame for version 2.4, with expected input, writing values as individual components to file with metadata
     func testTDTGv24ExpectedInputOverwriteFileAsTuple() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagv24()
@@ -268,6 +281,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
     
+    // Test TaggingTime frame will throw error when attempting to use with version 2.2 writing to file with metadata
     func testTDTGVersionErrorv22Overwrite() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagv22()
@@ -285,6 +299,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
     
+    // Test TaggingTime frame will throw error when attempting to use with version 2.3 writing to file with metadata
     func testTDTGVersionErrorv23Overwrite() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagv23()
@@ -302,6 +317,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
     
+    // Test TaggingTime frame will throw error when attempting to use with version 2.2 writing to file without metadata
     func testTDTGVersionErrorv22Blank() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagNoMeta()
@@ -319,6 +335,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
     
+    // Test TaggingTime frame will throw error when attempting to use with version 2.3 writing to file without metadata
     func testTDTGVersionErrorv23Blank() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagNoMeta()
@@ -337,6 +354,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
     }
     
     // MARK: ReleaseTime frame tests
+    // Test ReleaseTime frame for version 2.4, with expected input, writing values as individual components to file without metadata
     func testTDRLv24ExpectedInputBlankFileAsComponents() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagNoMeta()
@@ -362,6 +380,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
     
+    // Test ReleaseTime frame for version 2.4, with expected input, writing values as individual components to file with metadata
     func testTDRLv24ExpectedInputOverwriteFileAsComponents() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagv24()
@@ -387,6 +406,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
     
+    // Test ReleaseTime frame for version 2.4, with expected input, writing values as tuple to file without metadata
     func testTDRLv24ExpectedInputBlankFileAsTuple() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagNoMeta()
@@ -408,6 +428,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
     
+    // Test ReleaseTime frame for version 2.4, with expected input, writing values as tuple to file with metadata
     func testTDRLv24ExpectedInputOverwriteFileAsTuple() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagv24()
@@ -429,6 +450,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
     
+    // Test ReleaseTime frame will throw error when attempting to use with version 2.2 writing to file with metadata
     func testTDRLVersionErrorv22Overwrite() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagv22()
@@ -446,6 +468,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
     
+    // Test ReleaseTime frame will throw error when attempting to use with version 2.3 writing to file with metadata
     func testTDRLVersionErrorv23Overwrite() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagv23()
@@ -463,6 +486,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
     
+    // Test ReleaseTime frame will throw error when attempting to use with version 2.2 writing to file without metadata
     func testTDRLVersionErrorv22Blank() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagNoMeta()
@@ -480,6 +504,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
     
+    // Test ReleaseTime frame will throw error when attempting to use with version 2.3 writing to file without metadata
     func testTDRLVersionErrorv23Blank() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagNoMeta()
@@ -498,6 +523,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
     }
     
     // MARK: Date frame tests
+    // test DATE frame works in version 2.2, when writing expected input to file without metadata, as individual components
     func testTDAExpectedInputv22BlankAsComponents() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagNoMeta()
@@ -517,6 +543,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
 
+    // test DATE frame works in version 2.2, when writing expected input to file without metadata, as tuple
     func testTDAExpectedInputv22BlankAsTuple() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagNoMeta()
@@ -535,6 +562,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
 
+    // test DATE frame works in version 2.2, when writing expected input to file with metadata, as individual components
     func testTDAExpectedInputv22OverwriteAsComponents() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagv22()
@@ -554,6 +582,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
     
+    // test DATE frame works in version 2.2, when writing expected input to file with metadata, as tuple
     func testTDAExpectedInputv22OverwriteAsTuple() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagv22()
@@ -572,6 +601,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
 
+    // test DATE frame works in version 2.3, when writing expected input to file without metadata, as individual components
     func testTDATExpectedInputv23BlankAsComponents() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagNoMeta()
@@ -591,6 +621,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
     
+    // test DATE frame works in version 2.3, when writing expected input to file without metadata, as tuple
     func testTDATExpectedInputv23BlankAsTuple() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagNoMeta()
@@ -609,6 +640,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
     
+    // test DATE frame works in version 2.3, when writing expected input to file with metadata, as individual components
     func testTDATExpectedInputv23OverwriteAsComponents() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagv23()
@@ -628,6 +660,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
     
+    // test DATE frame works in version 2.3, when writing expected input to file with metadata, as tuple
     func testTDATExpectedInputv23OverwriteAsTuple() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagv23()
@@ -646,6 +679,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
     
+    // test DATE frame will throw error when attempting to use with version 2.4
     func testTDRLVersionErrorv24OverwriteAsComponents() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagv24()
@@ -661,6 +695,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
     }
 
     // MARK: Time frame tests
+    // test TIME frame works in version 2.2, when writing expected input to file without metadata, as individual components
     func testTIMExpectedInputv22BlankAsComponents() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagNoMeta()
@@ -680,6 +715,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
     
+    // test TIME frame works in version 2.2, when writing expected input to file without metadata, as tuple
     func testTIMExpectedInputv22BlankAsTuple() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagNoMeta()
@@ -698,6 +734,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
     
+    // test TIME frame works in version 2.2, when writing expected input to file with metadata, as individual components
     func testTIMExpectedInputv22OverwriteAsComponents() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagv22()
@@ -717,6 +754,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
     
+    // test TIME frame works in version 2.2, when writing expected input to file with metadata, as tuple
     func testTIMExpectedInputv22OverwriteAsTuple() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagv22()
@@ -735,6 +773,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
     
+    // test TIME frame works in version 2.3, when writing expected input to file without metadata, as individual components
     func testTIMEExpectedInputv23BlankAsComponents() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagNoMeta()
@@ -754,6 +793,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
     
+    // test TIME frame works in version 2.3, when writing expected input to file without metadata, as tuple
     func testTIMEExpectedInputv23BlankAsTuple() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagNoMeta()
@@ -772,6 +812,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
     
+    // test TIME frame works in version 2.3, when writing expected input to file with metadata, as individual components
     func testTIMEExpectedInputv23OverwriteAsComponents() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagv23()
@@ -791,6 +832,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
     
+    // test TIME frame works in version 2.3, when writing expected input to file with metadata, as tuple
     func testTIMEExpectedInputv23OverwriteAsTuple() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagv23()
@@ -809,6 +851,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
     
+    // test TIME frame will throw error when attempting to use with version 2.4
     func testTIMEVersionErrorv24Overwrite() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagv24()
@@ -824,6 +867,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
     }
     
     // MARK: Year frame tests
+    // test YEAR frame works in version 2.2, when writing expected input to file without metadata
     func testTYEExpectedInputv22Blank() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagNoMeta()
@@ -841,6 +885,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
     
+    // test YEAR frame works in version 2.2, when writing expected input to file with metadata
     func testTYEExpectedInputv22Overwrite() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagv22()
@@ -858,6 +903,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
     
+    // test YEAR frame works in version 2.3, when writing expected input to file without metadata
     func testTYERExpectedInputv23Blank() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagNoMeta()
@@ -875,6 +921,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
     
+    // test YEAR frame works in version 2.3, when writing expected input to file with metadata
     func testTYERExpectedInputv23Overwrite() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagv23()
@@ -892,6 +939,7 @@ class SwiftTaggerMp3_DateFrame_Tests: XCTestCase {
       }
     }
     
+    // test YEAR frame will throw error when attempting to use with version 2.4
     func testTYERVersionErrorv24Overwrite() throws {
       if #available(macOS 10.12, *) {
         var tag = try tagv24()

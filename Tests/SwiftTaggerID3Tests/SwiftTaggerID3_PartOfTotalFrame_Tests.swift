@@ -1,16 +1,17 @@
-//
-//  SwiftTaggerMp3_PartOfTotalFrame_Tests.swift
-//  SwiftTaggerID3Tests
-//
-//  Created by Nolaine Crusher on 5/18/20.
-//  Copyright © 2020 Nolaine Crusher. All rights reserved.
-//
+/*
+
+ SwiftTaggerID3_PartOfTotalFrame_Tests.swift
+ SwiftTaggerID3
+
+ Copyright ©2020 Nolaine Crusher. All rights reserved.
+
+ */
 
 import XCTest
 import SwiftTaggerID3
 
 @available(OSX 10.12, *)
-class SwiftTaggerMp3_PartOfTotalFrame_Tests: XCTestCase {
+class SwiftTaggerID3_PartOfTotalFrame_Tests: XCTestCase {
     
     // PartOfTotalFrame tests
     func testWithBothValuesWrittenOnBlankFile() throws {
@@ -65,7 +66,7 @@ class SwiftTaggerMp3_PartOfTotalFrame_Tests: XCTestCase {
         XCTAssertEqual(tagWrittenV24.trackNumber?.totalTracks, 7)
     }
 
-    #warning("CAUSES OUT OF BOUNDS ERROR FOR SECOND VALUE")
+    #warning("NEEDS FIXING: Causes out of bounds error when checking for second value")
     /*
 
      // PartOfTotalFrame tests

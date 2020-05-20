@@ -1,18 +1,13 @@
-//
-//  FileType.swift
-//  SwiftTaggerID3
-//
-//  Created by Nolaine Crusher on 4/29/20.
-//  Copyright © 2020 Nolaine Crusher. All rights reserved.
-//
+/*
+
+ FileType.swift
+ SwiftTaggerID3
+
+ Copyright ©2020 Nolaine Crusher. All rights reserved.
+
+ */
 
 import Foundation
-
-//struct FileTypeEntry {
-//    var presetType: FileType?
-//    var presetRefinement: FileTypeRefinements?
-//    var freeformRefinement: String?
-//}
 
 public enum FileType: String, CaseIterable {
     case MIME

@@ -1,16 +1,18 @@
-//
-//  SwiftTaggerID3_Read_Tests.swift
-//  SwiftTaggerID3Tests
-//
-//  Created by Nolaine Crusher on 4/21/20.
-//  Copyright © 2020 Nolaine Crusher. All rights reserved.
-//
+/*
+
+ SwiftTaggerID3_Read_Tests.swift
+ SwiftTaggerID3
+
+ Copyright ©2020 Nolaine Crusher. All rights reserved.
+
+ */
 
 import XCTest
 import SwiftTaggerID3
 
 class SwiftTaggerID3_Read_Tests: XCTestCase {
 
+    // test reading of V24 tag from file
     func testV24Reading() throws {
         let tag = try tagv24()
         
@@ -159,6 +161,7 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag.trackNumber?.totalTracks, 2)
     }
     
+    // test reading of v23 tag from file
     func testV23Reading() throws {
         let tag = try tagv23()
 
@@ -292,6 +295,7 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag.trackNumber?.totalTracks, 2)
     }
 
+    // test reading of v22 tag from file
     func testV22Reading() throws {
         let tag = try tagv22()
         

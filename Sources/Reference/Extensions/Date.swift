@@ -1,10 +1,11 @@
-//
-//  Date.swift
-//  SwiftTaggerID3
-//
-//  Created by Nolaine Crusher on 4/27/20.
-//  Copyright © 2020 Nolaine Crusher. All rights reserved.
-//
+/*
+
+ Date.swift
+ SwiftTaggerID3
+
+ Copyright ©2020 Nolaine Crusher. All rights reserved.
+
+ */
 
 import Foundation
 
