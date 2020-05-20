@@ -14,7 +14,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
     
     // MARK: V24 writing test
     func testV24Writing() throws {
-        var tag = try tagv24()
+        var tag = try tagNoMeta()
 
         tag.album = "Album"
         tag.albumArtist = "Album Artist"
@@ -140,6 +140,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.originalReleaseTime = (year: 2014, month: 08, day: 09, hour: nil, minute: nil)
         tag.recordingDateTime = (year: 2018, month: 10, day: 11, hour: nil, minute: nil)
       }
+        try emptyDirectory()
         let outputUrl = try tempDirectory().appendingPathComponent("testV24Writing.mp3")
         XCTAssertNoThrow(try mp3NoMeta().write(tagVersion: .v2_4, using: tag, writingTo: outputUrl))
         
@@ -275,7 +276,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
     
     // MARK: V23 writing test
     func testV23Writing() throws {
-        var tag = try tagv23()
+        var tag = try tagNoMeta()
 
         tag.album = "Album"
         tag.albumArtist = "Album Artist"
@@ -397,6 +398,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.originalReleaseTime = (year: 2014, month: nil, day: nil, hour: nil, minute: nil)
       }
         
+        try emptyDirectory()
         let outputUrl = try tempDirectory().appendingPathComponent("testV23Writing.mp3")
         XCTAssertNoThrow(try mp3NoMeta().write(tagVersion: .v2_3, using: tag, writingTo: outputUrl))
 
@@ -506,7 +508,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
     }
     
     func testV22Writing() throws {
-        var tag = try tagv22()
+        var tag = try tagNoMeta()
 
         tag.album = "Album"
         tag.albumArtist = "Album Artist"
@@ -604,6 +606,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.originalReleaseTime = (year: 2014, month: nil, day: nil, hour: nil, minute: nil)
       }
 
+        try emptyDirectory()
         let outputUrl = try tempDirectory().appendingPathComponent("testV22Writing.mp3")
         XCTAssertNoThrow(try mp3NoMeta().write(tagVersion: .v2_2, using: tag, writingTo: outputUrl))
 
