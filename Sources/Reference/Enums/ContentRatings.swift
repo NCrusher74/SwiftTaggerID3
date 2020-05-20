@@ -1,10 +1,11 @@
-//
-//  ContentRatings.swift
-//  SwiftTaggerID3
-//
-//  Created by Nolaine Crusher on 4/30/20.
-//  Copyright © 2020 Nolaine Crusher. All rights reserved.
-//
+/*
+
+ ContentRatings.swift
+ SwiftTaggerID3
+
+ Copyright ©2020 Nolaine Crusher. All rights reserved.
+
+ */
 
 import Foundation
 
@@ -184,4 +185,3 @@ public enum ContentAdvisory: String {
     case intvA = "in-tv|A|600|"
     case intvS = "in-tv|S|600|"
 }
-

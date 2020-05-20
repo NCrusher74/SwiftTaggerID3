@@ -1,5 +1,13 @@
 // swift-tools-version:5.2
-// The swift-tools-version declares the minimum version of Swift required to build this package.
+
+/*
+
+ Package.swift
+ SwiftTaggerID3
+
+ Copyright ©2020 Nolaine Crusher. All rights reserved.
+
+ */
 
 import PackageDescription
 

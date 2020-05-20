@@ -1,15 +1,11 @@
-//
-//  GenreType.swift
-//  SwiftTaggerID3
-//
-//  Created by Nolaine Crusher on 4/18/20.
-//  Copyright © 2020 Nolaine Crusher. All rights reserved.
-//
+/*
 
-//public struct GenreEntry {
-//    var presetType: GenreType?
-//    var customGenre: String?
-//}
+ GenreType.swift
+ SwiftTaggerID3
+
+ Copyright ©2020 Nolaine Crusher. All rights reserved.
+
+ */
 
 public enum GenreType: String, CaseIterable  {
     

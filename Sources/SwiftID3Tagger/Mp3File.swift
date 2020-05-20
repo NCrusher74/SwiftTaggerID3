@@ -1,10 +1,11 @@
-//
-//  Mp3File.swift
-//  SwiftTaggerID3
-//
-//  Created by Nolaine Crusher on 4/10/20.
-//  Copyright © 2020 Nolaine Crusher. All rights reserved.
-//
+/*
+
+ Mp3File.swift
+ SwiftTaggerID3
+
+ Copyright ©2020 Nolaine Crusher. All rights reserved.
+
+ */
 
 import Foundation
 

@@ -1,9 +1,11 @@
-//
-//  URLExtension.swift
-//
-//  Created by Nolaine Crusher on 11/25/19.
-//  Copyright © 2019 Nolaine Crusher. All rights reserved.
-//
+/*
+
+ URL.swift
+ SwiftTaggerID3
+
+ Copyright ©2019–2020 Nolaine Crusher. All rights reserved.
+
+ */
 
 import Foundation
 

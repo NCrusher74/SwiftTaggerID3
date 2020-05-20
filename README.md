@@ -1,3 +1,12 @@
+<!--
+
+ README.md
+ SwiftTaggerID3
+
+ Copyright ©2020 Nolaine Crusher. All rights reserved.
+
+ -->
+
 # SwiftTaggerID3
 
 SwiftTaggerID3 is a Swift library for reading and writing ID3 tags in MP3 audio files. 

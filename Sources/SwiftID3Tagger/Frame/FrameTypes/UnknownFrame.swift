@@ -1,10 +1,11 @@
-//
-//  UnknownFrame.swift
-//  SwiftTaggerID3
-//
-//  Created by Nolaine Crusher on 4/16/20.
-//  Copyright © 2020 Nolaine Crusher. All rights reserved.
-//
+/*
+
+ UnknownFrame.swift
+ SwiftTaggerID3
+
+ Copyright ©2020 Nolaine Crusher. All rights reserved.
+
+ */
 
 import Foundation
 

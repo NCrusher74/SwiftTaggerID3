@@ -1,10 +1,11 @@
-//
-//  Mp3FileError.swift
-//  SwiftTaggerID3
-//
-//  Created by Nolaine Crusher on 4/7/20.
-//  Copyright © 2020 Nolaine Crusher. All rights reserved.
-//
+/*
+
+ Mp3FileError.swift
+ SwiftTaggerID3
+
+ Copyright ©2020 Nolaine Crusher. All rights reserved.
+
+ */
 
 import Foundation
 

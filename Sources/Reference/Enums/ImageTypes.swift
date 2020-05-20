@@ -1,14 +1,11 @@
-//
-//  ImageType.swift
-//  SwiftTaggerID3
-//
-//  Some of this code is adapted from ID3TagEditor
-//  Created by Fabrizio Duroni on 27/02/2018.
-//  2018 Fabrizio Duroni. https://github.com/chicio/ID3TagEditor
-//
-//  Created by Nolaine Crusher on 4/11/20.
-//  Copyright © 2020 Nolaine Crusher. All rights reserved.
-//
+/*
+
+ ImageTypes.swift
+ SwiftTaggerID3
+
+ Copyright ©2020 Nolaine Crusher. All rights reserved.
+
+ */
 
 import Foundation
 

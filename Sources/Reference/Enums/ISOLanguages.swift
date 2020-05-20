@@ -1,10 +1,11 @@
-//
-//  ISOLanguages.swift
-//  SwiftTaggerID3
-//
-//  Created by Nolaine Crusher on 4/14/20.
-//  Copyright © 2020 Nolaine Crusher. All rights reserved.
-//
+/*
+
+ ISOLanguages.swift
+ SwiftTaggerID3
+
+ Copyright ©2020 Nolaine Crusher. All rights reserved.
+
+ */
 
 public enum ISO6392Codes: String, CaseIterable {
     
