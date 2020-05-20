@@ -37,14 +37,22 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         tag[tableOfContents: "ctoc"]?.topLevelFlag = true
         tag[tableOfContents: "ctoc"]?.orderedFlag = true
         tag[tableOfContents: "ctoc"]?.childElementIDs = ["ch01", "ch02", "ch03"]
-        var tocSubframeTag = tag[embeddedSubframes: "ctoc"]
-        tocSubframeTag?.title = "Table Of Contents"
-        
-        // need to tie this back into tag somehow
+
+        var subframeTag = tag[embeddedSubframes: "ctoc"]
+        subframeTag?.title = "Table Of Contents"
+        tag[tableOfContents: "ctoc"]?.embeddedSubframesTag = subframeTag
+
         let outputUrl = try localDirectory(fileName: "ctoctest", fileExtension: "mp3")
-        XCTAssertNoThrow(try mp3NoMeta().write(tagVersion: .v2_4, using: tag, writingTo: outputUrl))
+        XCTAssertNoThrow(try mp3NoMeta().write(tagVersion: .v2_4,
+                                               using: tag,
+                                               writingTo: outputUrl))
         
-        
+        // MARK: Confirm accuracy
+        let mp3UrlWritten = outputUrl
+        let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
+        let tagWritten = try Tag(readFrom: mp3FileWritten)
+
+        print(tagWritten[tableOfContents: "ctoc"])
     }
     
     

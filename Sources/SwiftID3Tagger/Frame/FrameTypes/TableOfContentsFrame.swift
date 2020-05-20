@@ -38,7 +38,7 @@ public struct TableOfContentsFrame: FrameProtocol {
     public var childElementIDs: [String]
     
     /** A sequence of optional frames that are embedded within the “CTOC” frame and which describe this element of the table of contents (e.g. a “TIT2” frame representing the name of the element) or provide related material such as URLs and images. These sub-frames are contained within the bounds of the “CTOC” frame as signalled by the size field in the “CTOC” frame header.*/
-    var embeddedSubframes: [FrameKey: Frame] = [:]
+    public var embeddedSubframesTag: Tag? = nil
     
     // MARK: Frame parsing initializer
     init(decodingContents contents: Data.SubSequence,
@@ -87,7 +87,7 @@ public struct TableOfContentsFrame: FrameProtocol {
         self.childElementIDs = childIDArray
         
         // parse the subframes and add them to the embedded subframes dictionary
-        var subframes: [FrameKey: Frame] = [:]
+        var subframes: [FrameKey:Frame] = [:]
         while !parsing.isEmpty {
             let embeddedSubframeIdentifierData = parsing.extractFirst(version.identifierLength)
             if embeddedSubframeIdentifierData.first == 0x00 { break } // Padding, not a frame.
@@ -100,7 +100,7 @@ public struct TableOfContentsFrame: FrameProtocol {
             let subframeFrameKey = subframe.frameKey
             subframes[subframeFrameKey] = subframe
         }
-        self.embeddedSubframes = subframes
+        self.embeddedSubframesTag = Tag(readFromEmbeddedSubframes: subframes)
     }
 
     // MARK: Frame building initializer
@@ -118,12 +118,12 @@ public struct TableOfContentsFrame: FrameProtocol {
                  topLevelFlag: Bool,
                  orderedFlag: Bool,
                  childElementIDs: [String],
-                 embeddedSubframes: [FrameKey: Frame]) {
+                 embeddedSubframesTag: Tag?) {
         self.elementID = elementID
         self.topLevelFlag = topLevelFlag
         self.orderedFlag = orderedFlag
         self.childElementIDs = childElementIDs
-        self.embeddedSubframes = embeddedSubframes
+        self.embeddedSubframesTag = embeddedSubframesTag
         self.flags = TableOfContentsFrame.defaultFlags
         self.layout = layout
         self.frameKey = .tableOfContents(elementID: elementID)
@@ -148,7 +148,7 @@ public struct TableOfContentsFrame: FrameProtocol {
         frameData.append(idArray)
         // encode and append the subframes to data
         var encodedSubframes = Data()
-        for subframe in self.embeddedSubframes {
+        for subframe in self.embeddedSubframesTag?.frames ?? [:] {
             encodedSubframes.append(try encodeSubframes(subframe: subframe.value.asFrameProtocol, version: version))
         }
         frameData.append(encodedSubframes)
@@ -189,7 +189,7 @@ public struct TableOfContentsFrame: FrameProtocol {
     init(isTopTOC: Bool,
          elementsAreOrdered: Bool,
          childElementIDs: [String],
-         embeddedSubframes: [FrameKey: Frame]?) {
+         embeddedSubframes: Tag?) {
         let uuid = UUID()
         let elementID = uuid.uuidString
         self.init(.known(.tableOfContents),
@@ -197,14 +197,14 @@ public struct TableOfContentsFrame: FrameProtocol {
                   topLevelFlag: isTopTOC,
                   orderedFlag: elementsAreOrdered,
                   childElementIDs: childElementIDs,
-                  embeddedSubframes: embeddedSubframes ?? [:])
+                  embeddedSubframesTag: embeddedSubframes)
     }
 }
 
-public extension Tag {
+extension Tag {
     /// - TableOfContents frame getter-setter. Valid for tag versions 2.3 and 2.4 only.
     /// ID3 Identifier `CTOC`
-    subscript(tableOfContents tocElementID: String) -> TableOfContentsFrame? {
+    public subscript(tableOfContents tocElementID: String) -> TableOfContentsFrame? {
         get {
             if let frame = self.frames[.tableOfContents(elementID: tocElementID)],
                 case .tocFrame(let tocFrame) = frame {
@@ -220,7 +220,7 @@ public extension Tag {
                     isTopTOC: new.topLevelFlag,
                     elementsAreOrdered: new.orderedFlag,
                     childElementIDs: new.childElementIDs,
-                    embeddedSubframes: new.embeddedSubframes))
+                    embeddedSubframes: new.embeddedSubframesTag))
             } else {
                 self.frames[key] = nil
             }

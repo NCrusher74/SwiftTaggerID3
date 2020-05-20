@@ -34,7 +34,7 @@ public struct ChapterFrame: FrameProtocol {
     var endByteOffset: Int
     
     /** A sequence of optional frames that are embedded within the “CHAP” frame and which describe the content of the chapter (e.g. a “TIT2” frame representing the chapter name) or provide related material such as URLs and images. These sub-frames are contained within the bounds of the “CHAP” frame as signalled by the size field in the “CHAP” frame header. If a parser does not recognise “CHAP” frames it can skip them using the size field in the frame header. When it does this it will skip any embedded sub-frames carried within the frame. */
-    var embeddedSubframes: [FrameKey: Frame]
+    var embeddedSubframesTag: Tag?
     
     // MARK: Frame parsing
     init(decodingContents contents: Data.SubSequence,
@@ -85,7 +85,7 @@ public struct ChapterFrame: FrameProtocol {
             let subframeFrameKey = subframe.frameKey
             subframes[subframeFrameKey] = subframe
         }
-        self.embeddedSubframes = subframes
+        self.embeddedSubframesTag = Tag(readFromEmbeddedSubframes: subframes)
     }
 
     // MARK: Frame building
@@ -103,13 +103,13 @@ public struct ChapterFrame: FrameProtocol {
                  endTime: Int,
                  startByteOffset: Int?,
                  endByteOffset: Int?,
-                 embeddedSubframes: [FrameKey: Frame]) {
+                 embeddedSubframesTag: Tag?) {
         self.elementID = elementID
         self.startTime = startTime
         self.endTime = endTime
         self.startByteOffset = startByteOffset ?? 0
         self.endByteOffset = endByteOffset ?? 0
-        self.embeddedSubframes = embeddedSubframes
+        self.embeddedSubframesTag = embeddedSubframesTag
         self.flags = ChapterFrame.defaultFlags
         self.layout = layout
         self.frameKey = .chapter(elementID: elementID)
@@ -128,7 +128,7 @@ public struct ChapterFrame: FrameProtocol {
         frameData.append(self.endByteOffset.truncatedUInt32.bigEndianData)
         // encoded and append the subframes
         var encodedSubframes = Data()
-        for subframe in self.embeddedSubframes {
+        for subframe in self.embeddedSubframesTag?.frames ?? [:] {
             encodedSubframes.append(try encodeSubframes(subframe: subframe.value.asFrameProtocol, version: version))
         }
         frameData.append(encodedSubframes)
@@ -143,7 +143,7 @@ public struct ChapterFrame: FrameProtocol {
     /// initialize a new chapter, manually building the embedded subframes
     init(startTime: Int,
                 endTime: Int,
-                embeddedSubframes: [FrameKey: Frame]) {
+                embeddedSubframesTag: Tag?) {
         let uuid = UUID()
         self.init(.known(.chapter),
                   elementID: uuid.uuidString,
@@ -151,7 +151,7 @@ public struct ChapterFrame: FrameProtocol {
                   endTime: endTime,
                   startByteOffset: nil,
                   endByteOffset: nil,
-                  embeddedSubframes: embeddedSubframes)
+                  embeddedSubframesTag: embeddedSubframesTag)
         self.frameKey = .chapter(elementID: elementID)
     }
 
@@ -163,6 +163,7 @@ public struct ChapterFrame: FrameProtocol {
         let subframeKey = FrameKey.title
         let subframeFrame: Frame = .stringFrame(.init(.known(.title), contentString: chapterTitle))
         let subframe = [subframeKey : subframeFrame]
+        let subframeTag = Tag(readFromEmbeddedSubframes: subframe)
 
         let uuid = UUID()
         // initialize chapter frame with subframe in place
@@ -172,7 +173,7 @@ public struct ChapterFrame: FrameProtocol {
                   endTime: endTime,
                   startByteOffset: nil,
                   endByteOffset: nil,
-                  embeddedSubframes: subframe)
+                  embeddedSubframesTag: subframeTag)
         self.frameKey = .chapter(elementID: uuid.uuidString)
     }
     
@@ -198,22 +199,23 @@ public struct ChapterFrame: FrameProtocol {
             imageDescription: imageDescription,
             image: imageData))
         let subframe = [subframeKey : subframeFrame]
+        let subframeTag = Tag(readFromEmbeddedSubframes: subframe)
         self.init(.known(.chapter),
                   elementID: uuid.uuidString,
                   startTime: startTime,
                   endTime: endTime,
                   startByteOffset: nil,
                   endByteOffset: nil,
-                  embeddedSubframes: subframe)
+                  embeddedSubframesTag: subframeTag)
         self.frameKey = .chapter(elementID: uuid.uuidString)
     }
 }
 
 // MARK: Tag Extension
-public extension Tag {
+extension Tag {
     /// - Chapter frame getter-setter. Valid for tag versions 2.3 and 2.4 only.
     /// ID3 Identifier `CHAP`
-    subscript(chapters chapterElementID: String) -> ChapterFrame? {
+    public subscript(chapters chapterElementID: String) -> ChapterFrame? {
         get {
             if let frame = self.frames[.chapter(elementID: chapterElementID)],
                 case .chapterFrame(let chapterFrame) = frame {
@@ -228,24 +230,33 @@ public extension Tag {
                 self.frames[key] = Frame.chapterFrame(.init(
                     startTime: new.startTime,
                     endTime: new.endTime,
-                    embeddedSubframes: new.embeddedSubframes))
+                    embeddedSubframesTag: new.embeddedSubframesTag))
             }
         }
     }
     
     /** creates a "subframe tag" instance to use when accessing data within the embedded subframes of a `CHAP` or `CTOC` frame */
-    subscript(embeddedSubframes parentFrameElementID: String) -> Tag? {
+    public subscript(embeddedSubframes parentFrameElementID: String) -> Tag? {
         get {
-            var frames: [FrameKey:Frame] = [:]
+            var tag = Tag(readFromEmbeddedSubframes: [:])
             if let parentFrame = self[chapters: parentFrameElementID] {
-                frames = parentFrame.embeddedSubframes
+                tag = parentFrame.embeddedSubframesTag ?? Tag(readFromEmbeddedSubframes: [:])
             } else if let parentFrame = self[tableOfContents: parentFrameElementID] {
-                frames = parentFrame.embeddedSubframes
+                tag = parentFrame.embeddedSubframesTag ?? Tag(readFromEmbeddedSubframes: [:])
             } else {
                 return nil
             }
-            let subframeTag = Tag(readFromEmbeddedSubframes: frames)
+            let subframeTag = tag
             return subframeTag
+        }
+        set {
+            if let new = newValue {
+                if var parentFrame = self[chapters: parentFrameElementID] {
+                    parentFrame.embeddedSubframesTag = new
+                } else if var parentFrame = self[tableOfContents: parentFrameElementID] {
+                    parentFrame.embeddedSubframesTag = new
+                }
+            }
         }
     }
     
