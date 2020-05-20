@@ -1,0 +1,13 @@
+
+
+.DS_Store
+*~
+.build
+Packages
+.swiftpm
+Validate\ (macOS).command
+Validate\ (Linux).sh
+*.xcodeproj
+IDEWorkspaceChecks.plist
+xcuserdata
+*.profraw
