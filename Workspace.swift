@@ -20,6 +20,19 @@ let configuration: WorkspaceConfiguration = {
   // This maintains standard “.gitignore” entries for a Swift package.
   configuration.git.manage = true
 
+  // Specifies the header applied to each file in the project.
+  configuration.fileHeaders.manage = true
+  configuration.fileHeaders.contents = Lazy<StrictString>(resolve: { configuration in
+    return [
+      "",
+      "#filename",
+      "\(WorkspaceContext.current.manifest.packageName)",
+      "",
+      "Copyright #dates Nolaine Crusher. All rights reserved.",
+      ""
+      ].joinedAsLines()
+  })
+
   // #workaround(Not sure which of these style guidelines the project wants to follow. These ones are disabled because they currently flag violations.)
   // These are rules provided by Workspace natively.
   configuration.proofreading.rules.subtract([
