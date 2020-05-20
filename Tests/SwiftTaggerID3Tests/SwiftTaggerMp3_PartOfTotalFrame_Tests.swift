@@ -66,7 +66,7 @@ class SwiftTaggerMp3_PartOfTotalFrame_Tests: XCTestCase {
         XCTAssertEqual(tagWrittenV24.trackNumber?.totalTracks, 7)
     }
 
-    #warning("CAUSES OUT OF BOUNDS ERROR FOR SECOND VALUE")
+    #warning("NEEDS FIXING: Causes out of bounds error when checking for second value")
     /*
 
      // PartOfTotalFrame tests

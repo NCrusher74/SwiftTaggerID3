@@ -12,6 +12,7 @@ import SwiftTaggerID3
 
 class SwiftTaggerID3_Read_Tests: XCTestCase {
 
+    // test reading of V24 tag from file
     func testV24Reading() throws {
         let tag = try tagv24()
         
@@ -160,6 +161,7 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag.trackNumber?.totalTracks, 2)
     }
     
+    // test reading of v23 tag from file
     func testV23Reading() throws {
         let tag = try tagv23()
 
@@ -293,6 +295,7 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag.trackNumber?.totalTracks, 2)
     }
 
+    // test reading of v22 tag from file
     func testV22Reading() throws {
         let tag = try tagv22()
         
