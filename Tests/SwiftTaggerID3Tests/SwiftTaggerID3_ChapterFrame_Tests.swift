@@ -19,15 +19,15 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         XCTAssertEqual(tag[tableOfContents: "TOC"]?.topLevelFlag, true)
         XCTAssertEqual(tag[tableOfContents: "TOC"]?.orderedFlag, true)
         XCTAssertEqual(tag[tableOfContents: "TOC"]?.childElementIDs, ["ch0", "ch1"])
-        XCTAssertEqual(tag[embeddedSubframes: "TOC"]?.title, "")
+        XCTAssertEqual(tag[subframeTag: "TOC"]?.title, "")
         
         XCTAssertEqual(tag[chapters: "ch0"]?.startTime, 0)
         XCTAssertEqual(tag[chapters: "ch0"]?.endTime, 2795)
-        XCTAssertEqual(tag[embeddedSubframes: "ch0"]?.title, "Chapter 01")
+        XCTAssertEqual(tag[subframeTag: "ch0"]?.title, "Chapter 01")
 
         XCTAssertEqual(tag[chapters: "ch1"]?.startTime, 2795)
         XCTAssertEqual(tag[chapters: "ch1"]?.endTime, 5250)
-        XCTAssertEqual(tag[embeddedSubframes: "ch1"]?.title, "Chapter 02")
+        XCTAssertEqual(tag[subframeTag: "ch1"]?.title, "Chapter 02")
     }
     
     @available(OSX 10.12, *)
@@ -38,7 +38,7 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         tag[tableOfContents: "ctoc"]?.orderedFlag = true
         tag[tableOfContents: "ctoc"]?.childElementIDs = ["ch01", "ch02", "ch03"]
 
-        var subframeTag = tag[embeddedSubframes: "ctoc"]
+        var subframeTag = tag[subframeTag: "ctoc"]
         subframeTag?.title = "Table Of Contents"
         tag[tableOfContents: "ctoc"]?.embeddedSubframesTag = subframeTag
 

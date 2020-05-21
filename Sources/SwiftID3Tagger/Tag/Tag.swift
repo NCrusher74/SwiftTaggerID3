@@ -136,3 +136,32 @@ public struct Tag {
         self.frames = subframes
     }
 }
+
+extension Tag {
+    /** creates a "subframe tag" instance to use when accessing data within the embedded subframes of a `CHAP` or `CTOC` frame */
+    public subscript(subframeTag parentFrameElementID: String) -> Tag? {
+        get {
+            var tag = Tag(readFromEmbeddedSubframes: [:])
+            if let parentFrame = self[chapters: parentFrameElementID] {
+                tag = parentFrame.embeddedSubframesTag ?? Tag(readFromEmbeddedSubframes: [:])
+            } else if let parentFrame = self[tableOfContents: parentFrameElementID] {
+                tag = parentFrame.embeddedSubframesTag ?? Tag(readFromEmbeddedSubframes: [:])
+            } else {
+                return nil
+            }
+            let subframeTag = tag
+            return subframeTag
+        }
+        set {
+            if let new = newValue {
+                if var parentFrame = self[chapters: parentFrameElementID] {
+                    parentFrame.embeddedSubframesTag = new
+                } else if var parentFrame = self[tableOfContents: parentFrameElementID] {
+                    parentFrame.embeddedSubframesTag = new
+                }
+            }
+        }
+    }
+    
+
+}

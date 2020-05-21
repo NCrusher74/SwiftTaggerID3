@@ -113,7 +113,7 @@ public struct TableOfContentsFrame: FrameProtocol {
     ///   - entryCount: the number of child ElementIDs.
     ///   - childElementIDs: the array of child elementIDs. Must not be empty. Each entry is null terminated.
     ///   - embeddedSubframes: the (optional) frames containing title and descriptor text for the CTOC frame.
-    private init(_ layout: FrameLayoutIdentifier,
+    init(_ layout: FrameLayoutIdentifier,
                  elementID: String,
                  topLevelFlag: Bool,
                  orderedFlag: Bool,
@@ -183,30 +183,33 @@ public struct TableOfContentsFrame: FrameProtocol {
     func encodeSubframes(subframe: FrameProtocol, version: Version) throws -> Data {
         return try subframe.encodeContents(version: version)
     }
-
     
-    // public initializer requiring only the boolean flags, the child element IDs, and the embedded subframes
-    init(isTopTOC: Bool,
-         elementsAreOrdered: Bool,
-         childElementIDs: [String],
-         embeddedSubframes: Tag?) {
-        let uuid = UUID()
-        let elementID = uuid.uuidString
-        self.init(.known(.tableOfContents),
-                  elementID: elementID,
-                  topLevelFlag: isTopTOC,
-                  orderedFlag: elementsAreOrdered,
-                  childElementIDs: childElementIDs,
-                  embeddedSubframesTag: embeddedSubframes)
-    }
 }
 
 extension Tag {
-    /// - TableOfContents frame getter-setter. Valid for tag versions 2.3 and 2.4 only.
+
+    internal mutating func set(_ layout: FrameLayoutIdentifier,
+                               _ frameKey: FrameKey,
+                               elementID: String,
+                               topLevelFlag: Bool,
+                               orderedFlag: Bool,
+                               childElementIDs: [String],
+                               embeddedSubframeTag: Tag?) {
+        let key = FrameKey.tableOfContents(elementID: elementID)
+        self.frames[key] = Frame.tocFrame(
+                .init(.known(.tableOfContents),
+                      elementID: elementID,
+                      topLevelFlag: topLevelFlag,
+                      orderedFlag: orderedFlag,
+                      childElementIDs: childElementIDs,
+                      embeddedSubframesTag: embeddedSubframeTag))
+    }
+
+    /// TableOfContents frame getter-setter. Valid for tag versions 2.3 and 2.4 only.
     /// ID3 Identifier `CTOC`
-    public subscript(tableOfContents tocElementID: String) -> TableOfContentsFrame? {
+    public subscript(tableOfContents elementID: String) -> TableOfContentsFrame? {
         get {
-            if let frame = self.frames[.tableOfContents(elementID: tocElementID)],
+            if let frame = self.frames[.tableOfContents(elementID: elementID)],
                 case .tocFrame(let tocFrame) = frame {
                 return tocFrame
             } else {
@@ -214,16 +217,13 @@ extension Tag {
             }
         }
         set {
-            let key = FrameKey.tableOfContents(elementID: tocElementID)
-            if let new = newValue {
-                self.frames[key] = Frame.tocFrame(.init(
-                    isTopTOC: new.topLevelFlag,
-                    elementsAreOrdered: new.orderedFlag,
-                    childElementIDs: new.childElementIDs,
-                    embeddedSubframes: new.embeddedSubframesTag))
-            } else {
-                self.frames[key] = nil
-            }
+            set(.known(.tableOfContents),
+                .tableOfContents(elementID: elementID),
+                elementID: elementID,
+                topLevelFlag: newValue?.topLevelFlag ?? true,
+                orderedFlag: newValue?.orderedFlag ?? true,
+                childElementIDs: newValue?.childElementIDs ?? [],
+                embeddedSubframeTag: newValue?.embeddedSubframesTag)
         }
     }
 }
