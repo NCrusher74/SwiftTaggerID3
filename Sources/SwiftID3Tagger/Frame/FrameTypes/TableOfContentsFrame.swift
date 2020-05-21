@@ -38,7 +38,7 @@ public struct TableOfContentsFrame: FrameProtocol {
     public var childElementIDs: [String]
     
     /** A sequence of optional frames that are embedded within the “CTOC” frame and which describe this element of the table of contents (e.g. a “TIT2” frame representing the name of the element) or provide related material such as URLs and images. These sub-frames are contained within the bounds of the “CTOC” frame as signalled by the size field in the “CTOC” frame header.*/
-    public var embeddedSubframesTag: Tag? = nil
+    public var embeddedSubframesTag: Tag?
     
     // MARK: Frame parsing initializer
     init(decodingContents contents: Data.SubSequence,
@@ -50,10 +50,9 @@ public struct TableOfContentsFrame: FrameProtocol {
         
         // get the elementID from the frame, using a uuid as default if none exists
         var parsing = contents
-        let uuid = UUID()
         let elementID = parsing.extractPrefixAsStringUntilNullTermination(.isoLatin1)
-        self.elementID = elementID ?? uuid.uuidString
-        self.frameKey = .tableOfContents(elementID: elementID ?? uuid.uuidString)
+        self.elementID = elementID ?? UUID().uuidString
+        self.frameKey = .tableOfContents(elementID: elementID ?? UUID().uuidString)
         
         // parse the flags byte and interpret boolean values
         let flagsByteData = parsing.extractFirst(1)
@@ -78,8 +77,8 @@ public struct TableOfContentsFrame: FrameProtocol {
         let childIDByte = parsing.extractFirst(1)
         let entryCountUInt32 = UInt32(parsing: childIDByte, .bigEndian)
         var childIDCount = Int(entryCountUInt32)
-        var childIDArray: [String] = []
         
+        var childIDArray: [String] = []
         while childIDCount > 0 {
             childIDArray.append(parsing.extractPrefixAsStringUntilNullTermination(.isoLatin1) ?? "")
             childIDCount -= 1
@@ -138,6 +137,10 @@ public struct TableOfContentsFrame: FrameProtocol {
 
         // encode and append the entry count
         let entryCount = self.childElementIDs.count
+        // a valid TOC frame needs at least 1 child element
+        guard entryCount >= 1 else {
+            throw Mp3File.Error.InvalidTOCFrame
+        }
         let entryCountUInt8 = UInt8(entryCount)
         frameData.append(entryCountUInt8)
 
@@ -193,56 +196,26 @@ public struct TableOfContentsFrame: FrameProtocol {
 // MARK: Tag Extension
 extension Tag {
     
-    internal func tocGetter(withElementID: String) -> (
-        elementID: String,
-        topLevelFlag: Bool,
-        orderedFlag: Bool,
-        childElementIDs: [String],
-        subframeTag: Tag?)? {
-            if let frame = self.frames[.tableOfContents(elementID: withElementID)],
+    // the elementID is used to differentiate potential multiple toc frames
+    public subscript(tableOfContents elementID: String) -> TableOfContentsFrame? {
+        get {
+            if let frame = self.frames[.tableOfContents(elementID: elementID)],
                 case .tocFrame(let tocFrame) = frame {
-                return (tocFrame.elementID,
-                        tocFrame.topLevelFlag,
-                        tocFrame.orderedFlag,
-                        tocFrame.childElementIDs,
-                        tocFrame.embeddedSubframesTag)
+                return tocFrame
             } else {
                 return nil
             }
-    }
-    
-    internal mutating func set(elementID: String,
-                               topLevelFlag: Bool,
-                               orderedFlag: Bool,
-                               childElementIDs: [String],
-                               embeddedSubframes: Tag?) {
-        let frame = TableOfContentsFrame(.known(.tableOfContents),
-                                         elementID: elementID,
-                                         topLevelFlag: topLevelFlag,
-                                         orderedFlag: orderedFlag,
-                                         childElementIDs: childElementIDs,
-                                         embeddedSubframesTag: embeddedSubframes)
-        self.frames[.tableOfContents(elementID: elementID)] = .tocFrame(frame)
-    }
-    
-    public subscript(tableOfContents elementID: String) -> TableOfContentsFrame? {
-        get {
-            let toc = tocGetter(withElementID: elementID)
-            let frame = TableOfContentsFrame(
-                .known(.tableOfContents),
-                elementID: toc?.elementID ?? UUID().uuidString,
-                topLevelFlag: toc?.topLevelFlag ?? true,
-                orderedFlag: toc?.orderedFlag ?? true,
-                childElementIDs: toc?.childElementIDs ?? [],
-                embeddedSubframesTag: toc?.subframeTag)
-            return frame
         }
         set {
-            set(elementID: elementID,
+            let key: FrameKey = .tableOfContents(elementID: elementID)
+            let frame = TableOfContentsFrame(
+                .known(.tableOfContents),
+                elementID: elementID,
                 topLevelFlag: newValue?.topLevelFlag ?? true,
                 orderedFlag: newValue?.orderedFlag ?? true,
                 childElementIDs: newValue?.childElementIDs ?? [],
-                embeddedSubframes: newValue?.embeddedSubframesTag)
+                embeddedSubframesTag: newValue?.embeddedSubframesTag)
+            self.frames[key] = .tocFrame(frame)
         }
     }
 }

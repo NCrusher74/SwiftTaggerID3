@@ -33,10 +33,10 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
     @available(OSX 10.12, *)
     func testWritingTableOfContentsOnBlankFile() throws {
         var tag = try tagNoMeta()
-        
-        tag[tableOfContents: "ctoc"]?.topLevelFlag = true
-        tag[tableOfContents: "ctoc"]?.orderedFlag = true
-        tag[tableOfContents: "ctoc"]?.childElementIDs = ["ch01", "ch02", "ch03"]        
+
+        tag[tableOfContents: "ctoc"]?.topLevelFlag = false
+        tag[tableOfContents: "ctoc"]?.orderedFlag = false
+        tag[tableOfContents: "ctoc"]?.childElementIDs = ["ch1", "ch2","ch3"]
         tag[tableOfContents: "ctoc"]?.embeddedSubframesTag?.title = "Table Of Contents"
         
         let outputUrl = try localDirectory(fileName: "ctoctest", fileExtension: "mp3")

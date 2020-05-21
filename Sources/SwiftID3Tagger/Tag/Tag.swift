@@ -125,11 +125,7 @@ public struct Tag {
         }
         return framesData
     }
-    
-    public init() {
-        self.frames = [:]
-    }
-    
+        
     init(subframes: [FrameKey: Frame]) {
         self.frames = subframes
     }

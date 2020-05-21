@@ -34,6 +34,8 @@ extension Mp3File {
         case UnreadableFrame
         /// Error thrown when the date formatter cannot parse a correctly formatted date from the string
         case InvalidDateString
+        /// Error thrown when a Table Of Contents frame does not have any child elements
+        case InvalidTOCFrame
     }
 }
 
@@ -75,6 +77,8 @@ extension Mp3File.Error: LocalizedError {
                 return NSLocalizedString("The tag is not large enough to hold valid frame data", comment: "")
             case .InvalidDateString:
             return NSLocalizedString("A date cannot be parsed from the string in the required format", comment: "String needs to be in ISO8601 (yyyy-MM-dd`T`HH:mm) format, per ID3 specs")
+            case .InvalidTOCFrame:
+                return NSLocalizedString("A table of contents frame requires at least one child element ID", comment: "")
         }
     }
 }
