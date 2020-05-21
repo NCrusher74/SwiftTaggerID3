@@ -52,7 +52,5 @@ extension String {
             let end = self.index(start, offsetBy: length, limitedBy: self.endIndex) ?? self.endIndex
             return String(self[start..<end])
         }
-    }
-
-    
+    }    
 }

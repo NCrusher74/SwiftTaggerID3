@@ -90,7 +90,7 @@ public struct TableOfContentsFrame: FrameProtocol {
         var subframes: [FrameKey:Frame] = [:]
         while !parsing.isEmpty {
             let embeddedSubframeIdentifierData = parsing.extractFirst(version.identifierLength)
-            if embeddedSubframeIdentifierData.first == 0x00 { break } // Padding, not a frame.
+            guard embeddedSubframeIdentifierData.first != 0x00  else { break }
             let subframeIdentifier = try String(ascii: embeddedSubframeIdentifierData)
             let subframe = try Frame(
                 identifier: subframeIdentifier,
@@ -133,23 +133,28 @@ public struct TableOfContentsFrame: FrameProtocol {
     func encodeContents(version: Version) throws -> Data {
         var frameData = Data()
         // there is no encoding byte for TOC frames
-        // encode and append the elementID
-        frameData.append(self.elementID.encodedASCII())
+        // encode and append the elementID, adding a null terminator
+        frameData.append(self.elementID.encodedASCII().addingNullTerminationToASCIIEncodedString())
+
         // encode and append the entry count
         let entryCount = self.childElementIDs.count
         let entryCountUInt8 = UInt8(entryCount)
-
         frameData.append(entryCountUInt8)
-        // encode and append the array of child element IDs
+
+        // encode and append the array of child element IDs, adding null terminator
         var idArray = Data()
         for id in self.childElementIDs {
-            idArray.append(id.encodedASCII())
+            idArray.append(id.encodedASCII().addingNullTerminationToASCIIEncodedString())
         }
         frameData.append(idArray)
+
         // encode and append the subframes to data
         var encodedSubframes = Data()
         for subframe in self.embeddedSubframesTag?.frames ?? [:] {
-            encodedSubframes.append(try encodeSubframes(subframe: subframe.value.asFrameProtocol, version: version))
+            encodedSubframes.append(
+                try encodeSubframes(
+                    subframe: subframe.value.asFrameProtocol,
+                    version: version))
         }
         frameData.append(encodedSubframes)
         return frameData
@@ -182,48 +187,5 @@ public struct TableOfContentsFrame: FrameProtocol {
     // use FrameProtocol `encodeContents` method to encode subframes
     func encodeSubframes(subframe: FrameProtocol, version: Version) throws -> Data {
         return try subframe.encodeContents(version: version)
-    }
-    
-}
-
-extension Tag {
-
-    internal mutating func set(_ layout: FrameLayoutIdentifier,
-                               _ frameKey: FrameKey,
-                               elementID: String,
-                               topLevelFlag: Bool,
-                               orderedFlag: Bool,
-                               childElementIDs: [String],
-                               embeddedSubframeTag: Tag?) {
-        let key = FrameKey.tableOfContents(elementID: elementID)
-        self.frames[key] = Frame.tocFrame(
-                .init(.known(.tableOfContents),
-                      elementID: elementID,
-                      topLevelFlag: topLevelFlag,
-                      orderedFlag: orderedFlag,
-                      childElementIDs: childElementIDs,
-                      embeddedSubframesTag: embeddedSubframeTag))
-    }
-
-    /// TableOfContents frame getter-setter. Valid for tag versions 2.3 and 2.4 only.
-    /// ID3 Identifier `CTOC`
-    public subscript(tableOfContents elementID: String) -> TableOfContentsFrame? {
-        get {
-            if let frame = self.frames[.tableOfContents(elementID: elementID)],
-                case .tocFrame(let tocFrame) = frame {
-                return tocFrame
-            } else {
-                return nil
-            }
-        }
-        set {
-            set(.known(.tableOfContents),
-                .tableOfContents(elementID: elementID),
-                elementID: elementID,
-                topLevelFlag: newValue?.topLevelFlag ?? true,
-                orderedFlag: newValue?.orderedFlag ?? true,
-                childElementIDs: newValue?.childElementIDs ?? [],
-                embeddedSubframeTag: newValue?.embeddedSubframesTag)
-        }
     }
 }

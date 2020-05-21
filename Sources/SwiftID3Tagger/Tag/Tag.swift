@@ -126,47 +126,11 @@ public struct Tag {
         return framesData
     }
     
-    /** An internal intializer used by certain frame types.
-     
-        `TableOfContentsFrame` and `ChapterFrame` types may contain optional embedded subframes, such as a Chapter Title or Image.
-     
-        This initializer allows those subframes to be handled as a `Tag` instance so that they may be parsed and constructed using the same methods and properties as top-level frames.
-     */
-    init(subframes: [FrameKey : Frame]) {
+    public init() {
+        self.frames = [:]
+    }
+    
+    init(subframes: [FrameKey: Frame]) {
         self.frames = subframes
     }
-}
-
-extension Tag {
-    
-    public init() {
-        self.init(subframes: [:])
-    }
-
-    /** creates a "subframe tag" instance to use when accessing data within the embedded subframes of a `CHAP` or `CTOC` frame */
-    public subscript(subframeTag parentFrameElementID: String) -> Tag? {
-        get {
-            var tag = Tag(subframes: [:])
-            if let parentFrame = self[chapters: parentFrameElementID] {
-                tag = parentFrame.embeddedSubframesTag ?? Tag(subframes: [:])
-            } else if let parentFrame = self[tableOfContents: parentFrameElementID] {
-                tag = parentFrame.embeddedSubframesTag ?? Tag(subframes: [:])
-            } else {
-                return nil
-            }
-            let subframeTag = tag
-            return subframeTag
-        }
-        set {
-            if let new = newValue {
-                if var parentFrame = self[chapters: parentFrameElementID] {
-                    parentFrame.embeddedSubframesTag = new
-                } else {
-                    var parentFrame = self[tableOfContents: parentFrameElementID]
-                    parentFrame?.embeddedSubframesTag = new
-                }
-            }
-        }
-    }
-
 }

@@ -106,15 +106,15 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.contentRating = .clean
         tag.contentAdvisory = .usMovieUnrated
         
-        // MARK: TOC and Chapter Frames
-        tag[tableOfContents: "TOC"]?.topLevelFlag = true
-        tag[tableOfContents: "TOC"]?.orderedFlag = true
-        tag[tableOfContents: "TOC"]?.childElementIDs = ["Ch01","Ch02"]
-        
-        tag[chapters: "Ch01"]?.startTime = 0
-        tag[chapters: "Ch01"]?.endTime = 4900
-        tag[chapters: "Ch02"]?.startTime = 4900
-        tag[chapters: "Ch02"]?.endTime = 9767
+//        // MARK: TOC and Chapter Frames
+//        tag[tableOfContents: "TOC"]?.topLevelFlag = true
+//        tag[tableOfContents: "TOC"]?.orderedFlag = true
+//        tag[tableOfContents: "TOC"]?.childElementIDs = ["Ch01","Ch02"]
+//        
+//        tag[chapters: "Ch01"]?.startTime = 0
+//        tag[chapters: "Ch01"]?.endTime = 4900
+//        tag[chapters: "Ch02"]?.startTime = 4900
+//        tag[chapters: "Ch02"]?.endTime = 9767
         //        tag[embeddedSubframes: "Ch01"]?.title = "Chapter Name" - subscript is get only?
         //
         // MARK: Credits List Frame
@@ -357,15 +357,15 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.contentRating = .clean
         tag.contentAdvisory = .usMovieUnrated
         
-        // MARK: TOC and Chapter Frames
-        tag[tableOfContents: "TOC"]?.topLevelFlag = true
-        tag[tableOfContents: "TOC"]?.orderedFlag = true
-        tag[tableOfContents: "TOC"]?.childElementIDs = ["Ch01","Ch02"]
-        
-        tag[chapters: "Ch01"]?.startTime = 0
-        tag[chapters: "Ch01"]?.endTime = 4900
-        tag[chapters: "Ch02"]?.startTime = 4900
-        tag[chapters: "Ch02"]?.endTime = 9767
+//        // MARK: TOC and Chapter Frames
+//        tag[tableOfContents: "TOC"]?.topLevelFlag = true
+//        tag[tableOfContents: "TOC"]?.orderedFlag = true
+//        tag[tableOfContents: "TOC"]?.childElementIDs = ["Ch01","Ch02"]
+//        
+//        tag[chapters: "Ch01"]?.startTime = 0
+//        tag[chapters: "Ch01"]?.endTime = 4900
+//        tag[chapters: "Ch02"]?.startTime = 4900
+//        tag[chapters: "Ch02"]?.endTime = 9767
         //        tag[embeddedSubframes: "Ch01"]?.title = "Chapter Name" - subscript is get only?
         //
         // MARK: Credits List Frame

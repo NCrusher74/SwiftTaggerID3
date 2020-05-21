@@ -119,13 +119,15 @@ public struct ChapterFrame: FrameProtocol {
     func encodeContents(version: Version) throws -> Data {
         var frameData = Data()
         // there is no encoding byte for Chapter frames
-        // encode and append ElementID string
-        frameData.append(self.elementID.encoded(withNullTermination: true))
+        // encode and append ElementID string, adding null terminator
+        frameData.append(self.elementID.encodedASCII().addingNullTerminationToASCIIEncodedString())
+
         // convert integers to UInt32 and then to Data and append
         frameData.append(self.startTime.truncatedUInt32.bigEndianData)
         frameData.append(self.endTime.truncatedUInt32.bigEndianData)
         frameData.append(self.startByteOffset.truncatedUInt32.bigEndianData)
         frameData.append(self.endByteOffset.truncatedUInt32.bigEndianData)
+
         // encoded and append the subframes
         var encodedSubframes = Data()
         for subframe in self.embeddedSubframesTag?.frames ?? [:] {
@@ -154,85 +156,4 @@ public struct ChapterFrame: FrameProtocol {
                   embeddedSubframesTag: embeddedSubframesTag)
         self.frameKey = .chapter(elementID: elementID)
     }
-
-    /// initialize a simple chapter frame with only chapter title, start and end times specified, creates the embedded subframe for the title automatically
-    init(chapterTitle: String,
-                startTime: Int,
-                endTime: Int) {
-        // create title stringframe as subframe
-        let subframeKey = FrameKey.title
-        let subframeFrame: Frame = .stringFrame(.init(.known(.title), contentString: chapterTitle))
-        let subframe = [subframeKey : subframeFrame]
-        let subframeTag = Tag(subframes: subframe)
-
-        let uuid = UUID()
-        // initialize chapter frame with subframe in place
-        self.init(.known(.chapter),
-                  elementID: uuid.uuidString,
-                  startTime: startTime,
-                  endTime: endTime,
-                  startByteOffset: nil,
-                  endByteOffset: nil,
-                  embeddedSubframesTag: subframeTag)
-        self.frameKey = .chapter(elementID: uuid.uuidString)
-    }
-    
-    /// initialize a simple chapter frame with embedded chapter image, start and end times specified, creates the embedded subframe for the image automatically
-    init(imageUrl: URL,
-                startTime: Int,
-                endTime: Int) throws {
-        var imageFormat: ImageFormat = .jpg
-        if imageUrl.pathExtension.lowercased() == "jpeg" || imageUrl.pathExtension.lowercased() == "jpg" {
-            imageFormat = .jpg
-        } else if imageUrl.pathExtension.lowercased() == "png" {
-            imageFormat = .png
-        }
-        let imageData = try Data(contentsOf: imageUrl)
-        let uuid = UUID()
-        let imageDescription = "Chapter Image \(uuid.uuidString)"
-        let subframeKey = FrameKey.attachedPicture(
-            description: imageDescription)
-        let subframeFrame: Frame = .imageFrame(.init(
-            .known(.attachedPicture),
-            imageType: .Illustration,
-            imageFormat: imageFormat,
-            imageDescription: imageDescription,
-            image: imageData))
-        let subframe = [subframeKey : subframeFrame]
-        let subframeTag = Tag(subframes: subframe)
-        self.init(.known(.chapter),
-                  elementID: uuid.uuidString,
-                  startTime: startTime,
-                  endTime: endTime,
-                  startByteOffset: nil,
-                  endByteOffset: nil,
-                  embeddedSubframesTag: subframeTag)
-        self.frameKey = .chapter(elementID: uuid.uuidString)
-    }
-}
-
-// MARK: Tag Extension
-extension Tag {
-    /// - Chapter frame getter-setter. Valid for tag versions 2.3 and 2.4 only.
-    /// ID3 Identifier `CHAP`
-    public subscript(chapters chapterElementID: String) -> ChapterFrame? {
-        get {
-            if let frame = self.frames[.chapter(elementID: chapterElementID)],
-                case .chapterFrame(let chapterFrame) = frame {
-                return chapterFrame
-            } else {
-                return nil
-            }
-        }
-        set {
-            let key = FrameKey.chapter(elementID: chapterElementID)
-            if let new = newValue {
-                self.frames[key] = Frame.chapterFrame(.init(
-                    startTime: new.startTime,
-                    endTime: new.endTime,
-                    embeddedSubframesTag: new.embeddedSubframesTag))
-            }
-        }
-    }
-    
 }
