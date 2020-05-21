@@ -20,9 +20,4 @@ extension Data {
         }
     }
     
-    func addingNullTerminationToASCIIEncodedString() -> Data {
-        let null = Data(repeating: 0x00, count: StringEncoding.utf8.sizeOfTermination)
-        return null
-    }
-
 }

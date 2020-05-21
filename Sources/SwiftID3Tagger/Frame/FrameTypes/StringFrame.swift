@@ -99,7 +99,7 @@ struct StringFrame: FrameProtocol {
             frameData.append(self.contentString.encoded(
                 withNullTermination: false))
         } else {
-            frameData.append(self.contentString.encodedASCII())
+            frameData.append(self.contentString.encodedASCII(withNullTermination: false))
         }
         return frameData
     }

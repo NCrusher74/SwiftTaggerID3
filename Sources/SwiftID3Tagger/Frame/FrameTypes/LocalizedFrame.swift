@@ -93,7 +93,7 @@ struct LocalizedFrame: FrameProtocol {
         if self.layout == .known(.comments) ||
             self.layout == .known(.unsynchronizedLyrics) {
             // encode and append language string
-            frameData.append(self.languageString?.encodedASCII() ?? "und".encodedASCII())
+            frameData.append(self.languageString?.encodedASCII(withNullTermination: false) ?? "und".encodedASCII(withNullTermination: false))
         }
         // encode and append description string
         if let encodedDescription = self.descriptionString?.encoded(withNullTermination: true) {

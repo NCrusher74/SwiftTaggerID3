@@ -29,9 +29,15 @@ extension String {
         return result
     }
     
-    func encodedASCII() -> Data {
+    func encodedASCII(withNullTermination: Bool) -> Data {
+        var data = Data()
+        data.append(contentsOf: self.utf8)
+        if withNullTermination == true {
+            let null = Data(repeating: 0x00, count: StringEncoding.utf8.sizeOfTermination)
+            data.append(contentsOf: null)
+        }
         // UTF‐8 is a superset of ASCII.
-        return Data(utf8)
+        return data
     }
     
     init(withInt int: Int, leadingZeros: Int = 2) {

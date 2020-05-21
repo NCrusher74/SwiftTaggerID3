@@ -133,7 +133,7 @@ public struct TableOfContentsFrame: FrameProtocol {
         var frameData = Data()
         // there is no encoding byte for TOC frames
         // encode and append the elementID, adding a null terminator
-        frameData.append(self.elementID.encodedASCII().addingNullTerminationToASCIIEncodedString())
+        frameData.append(self.elementID.encodedASCII(withNullTermination: true))
 
         // encode and append the entry count
         let entryCount = self.childElementIDs.count
@@ -147,7 +147,7 @@ public struct TableOfContentsFrame: FrameProtocol {
         // encode and append the array of child element IDs, adding null terminator
         var idArray = Data()
         for id in self.childElementIDs {
-            idArray.append(id.encodedASCII().addingNullTerminationToASCIIEncodedString())
+            idArray.append(id.encodedASCII(withNullTermination: true))
         }
         frameData.append(idArray)
 

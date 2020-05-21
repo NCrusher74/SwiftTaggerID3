@@ -107,7 +107,7 @@ public struct ChapterFrame: FrameProtocol {
         var frameData = Data()
         // there is no encoding byte for Chapter frames
         // encode and append ElementID string, adding null terminator
-        frameData.append(self.elementID.encodedASCII().addingNullTerminationToASCIIEncodedString())
+        frameData.append(self.elementID.encodedASCII(withNullTermination: true))
 
         // convert integers to UInt32 and then to Data and append
         frameData.append(self.startTime.truncatedUInt32.bigEndianData)

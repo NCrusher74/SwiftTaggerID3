@@ -132,10 +132,10 @@ extension FrameProtocol {
     static func identifierData(
         layout: FrameLayoutIdentifier,
         version: Version) -> Data {
-        guard let identifierString = layout.id3Identifier(version: version)?.encodedASCII() else {
+        guard let identifierString = layout.id3Identifier(version: version)?.encodedASCII(withNullTermination: false) else {
             switch version {
-                case .v2_2: return "TXX".encodedASCII()
-                case .v2_3, .v2_4: return "TXXX".encodedASCII()
+                case .v2_2: return "TXX".encodedASCII(withNullTermination: false)
+                case .v2_3, .v2_4: return "TXXX".encodedASCII(withNullTermination: false)
             }
         }
         return identifierString
