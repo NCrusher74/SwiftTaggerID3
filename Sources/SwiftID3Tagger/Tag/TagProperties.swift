@@ -35,16 +35,16 @@ struct TagProperties {
     func size(data: Data, version: Version) throws -> Int {
         let tagSize = (data as NSData).bytes.assumingMemoryBound(to: UInt32.self).pointee.bigEndian
         let decodedTagSize = tagSize.decodingSynchsafe()
-        switch version {
-            case .v2_2:
-                guard Int(decodedTagSize) > 6 else {
-                    throw Mp3File.Error.InvalidTagSize
-            }
-            case .v2_3, .v2_4:
-                guard Int(decodedTagSize) > 10 else {
-                    throw Mp3File.Error.InvalidTagSize
-            }
-        }
+//        switch version {
+//            case .v2_2:
+//                guard Int(decodedTagSize) >= 6 else {
+//                    throw Mp3File.Error.InvalidTagSize
+//            }
+//            case .v2_3, .v2_4:
+//                guard Int(decodedTagSize) >= 10 else {
+//                    throw Mp3File.Error.InvalidTagSize
+//            }
+//        }
         return Int(decodedTagSize)
     }
     

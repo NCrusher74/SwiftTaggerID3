@@ -12,7 +12,16 @@ import Foundation
 /**
  A type representing an ID3 chapter frame. There may be multiple chapter frames in a tag, but the `elementID` must be unique. Therefore, the `elementID` will serve as the `FrameKey`
  */
-public struct ChapterFrame: FrameProtocol {
+public struct ChapterFrame: FrameProtocol, CustomStringConvertible {
+    public var description: String {
+        return """
+        ElementID: \(elementID),
+        StartTime: \(startTime),
+        EndTime: \(endTime),
+        EmbeddedSubframes:
+        \(String(describing: embeddedSubframesTag.frames.keys)), \(embeddedSubframesTag.frames.values.description)
+        """
+        }
     
     // MARK: Properties
     var flags: Data
@@ -28,7 +37,7 @@ public struct ChapterFrame: FrameProtocol {
     public var endTime: Int
     
     /** A sequence of optional frames that are embedded within the “CHAP” frame and which describe the content of the chapter (e.g. a “TIT2” frame representing the chapter name) or provide related material such as URLs and images. These sub-frames are contained within the bounds of the “CHAP” frame as signalled by the size field in the “CHAP” frame header. If a parser does not recognise “CHAP” frames it can skip them using the size field in the frame header. When it does this it will skip any embedded sub-frames carried within the frame. */
-    public var embeddedSubframesTag: Tag?
+    public var embeddedSubframesTag: Tag = Tag(subframes: [:])
     
     // MARK: Frame parsing
     init(decodingContents contents: Data.SubSequence,
@@ -96,7 +105,7 @@ public struct ChapterFrame: FrameProtocol {
         self.elementID = elementID
         self.startTime = startTime
         self.endTime = endTime
-        self.embeddedSubframesTag = embeddedSubframesTag
+        self.embeddedSubframesTag = embeddedSubframesTag ?? Tag(subframes: [:])
         self.flags = ChapterFrame.defaultFlags
         self.layout = layout
         self.frameKey = .chapter(atStartTime: startTime)
@@ -110,8 +119,8 @@ public struct ChapterFrame: FrameProtocol {
         frameData.append(self.elementID.encodedASCII(withNullTermination: true))
 
         // convert integers to UInt32 and then to Data and append
-        frameData.append(self.startTime.truncatedUInt32.bigEndianData)
-        frameData.append(self.endTime.truncatedUInt32.bigEndianData)
+        frameData.append(self.startTime.bigEndian.data)
+        frameData.append(self.endTime.bigEndian.data)
         
         // add in start and end offset bytes to satisfy spec
         // since SwiftTagger uses start and end times, these are unused by default
@@ -122,7 +131,7 @@ public struct ChapterFrame: FrameProtocol {
 
         // encoded and append the subframes
         var encodedSubframes = Data()
-        for subframe in self.embeddedSubframesTag?.frames ?? [:] {
+        for subframe in self.embeddedSubframesTag.frames {
             encodedSubframes.append(try encodeSubframes(subframe: subframe.value.asFrameProtocol, version: version))
         }
         frameData.append(encodedSubframes)

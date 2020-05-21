@@ -64,6 +64,33 @@ try coverImageData?.write(to: outputURL)
 
 Unknown or unhandled frames are assigned a `UUID` that may be used in a similar fashion to a `descriptionString`.
 
+**Removing Frames**
+To wipe all metadata from a file, initialize `tag` to an empty `Tag()` instance:
+```swift
+let tag = Tag()
+
+let outputUrl = URL(fileURLWithPath: "/destination/path/for/blank.mp3")
+try mp3NoMeta().write(tagVersion: .v2_3, // whatever version you wish
+using: tag,
+writingTo: outputUrl)
+```
+
+This also works if you wish to write only your metadata to the file, and wipe everything else. Simply add the values you wish to `tag`.
+
+To wipe the data from a particular frame, set it equal to `nil`:
+```swift
+let tag = try mp3File.read()
+
+tag.album = nil
+tag.artist = nil
+tag.trackNumber = nil
+```
+
+If the frame is one that is accessible by a subscript, you need to locate it using the `remove[frame]` function:
+
+```swift
+tag.removeComment(withDescription: "Comment Description")
+```
 
 Here's a complete list of the frames handled by SwiftTaggerID3:
 

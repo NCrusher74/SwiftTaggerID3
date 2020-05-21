@@ -10,6 +10,7 @@
 import XCTest
 import SwiftTaggerID3
 
+@available(OSX 10.12, *)
 class TestPrint: XCTestCase {
     
     
@@ -26,5 +27,28 @@ class TestPrint: XCTestCase {
 //        
 //        let data = mp3Data.subdata(in: range)
 //        print(data.hexadecimal())
+    }
+    
+    func testWipe() throws {
+        var tag = try tagv22()
+        tag.album = nil
+//        tag.trackNumber = nil
+        tag.fileType = nil
+        tag.involvedPeopleList = nil
+        tag.recordingDateTime = nil
+        
+        tag.removeComment(withDescription: <#T##String?#>)
+        
+        let outputUrl = try localDirectory(fileName: "nometatest", fileExtension: "mp3")
+        XCTAssertNoThrow(try mp3NoMeta().write(tagVersion: .v2_3,
+                                               using: tag,
+                                               writingTo: outputUrl))
+        
+        // MARK: Confirm accuracy
+        let mp3UrlWritten = outputUrl
+        let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
+        let tagWritten = try Tag(readFrom: mp3FileWritten)
+        
+        print(tagWritten)
     }
 }

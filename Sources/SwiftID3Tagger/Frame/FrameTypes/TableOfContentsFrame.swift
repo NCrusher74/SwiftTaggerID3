@@ -13,8 +13,18 @@ import Foundation
  
  There may be more than one Table of Contents frame per tag, but only one may have the top-level flag set, and each one must have a unique `elementID`. Therefore, the `elementID` will serve as the `FrameKey`
  */
-public struct TableOfContentsFrame: FrameProtocol {
-    
+public struct TableOfContentsFrame: FrameProtocol, CustomStringConvertible {
+    public var description: String {
+        return """
+        ElementID: \(elementID),
+        TOCisTopLevel: \(topLevelFlag),
+        ChildElementsAreOrdered: \(orderedFlag),
+        ChildElementIDs: \(childElementIDs),
+        EmbeddedSubframes:
+        \(embeddedSubframesTag.frames.values.description)
+        """
+    }
+
     // MARK: Properties
     var flags: Data
     var layout: FrameLayoutIdentifier
@@ -25,12 +35,11 @@ public struct TableOfContentsFrame: FrameProtocol {
     var elementID: String
     
     /** Flag a - Top-level bit
-     This is set to 1 to identify the top-level “CTOC” frame. This frame is the root of the Table of Contents tree and is not a child of any other “CTOC” frame. Only one “CTOC” frame in an ID3v2 tag can have this bit set to 1. In all other “CTOC” frames this bit shall be set to 0.*/
+     This is set to 1 to identify the top-level "CTOC" frame. This frame is the root of the Table of Contents tree and is not a child of any other "CTOC" frame. Only one "CTOC" frame in an ID3v2 tag can have this bit set to 1. In all other "CTOC" frames this bit shall be set to 0.*/
     public var topLevelFlag: Bool
     
     /** Flag b - Ordered bit
-     This should be set to 1 if the entries in the Child Element ID list are ordered or set to 0 if they not are ordered. This provides a hint as to whether the elements should be played as a continuous ordered sequence or played individually.
-     Note: The Bool flags are documented as being paired in a 2-byte unit: https://mutagen-specs.readthedocs.io/en/latest/_images/CTOCFrame-1.0.png ` */
+     This should be set to 1 if the entries in the Child Element ID list are ordered or set to 0 if they not are ordered. This provides a hint as to whether the elements should be played as a continuous ordered sequence or played individually. */
     public var orderedFlag: Bool
     
     /** the list of all child CTOC and/or CHAP frames,
@@ -38,7 +47,7 @@ public struct TableOfContentsFrame: FrameProtocol {
     public var childElementIDs: [String]
     
     /** A sequence of optional frames that are embedded within the “CTOC” frame and which describe this element of the table of contents (e.g. a “TIT2” frame representing the name of the element) or provide related material such as URLs and images. These sub-frames are contained within the bounds of the “CTOC” frame as signalled by the size field in the “CTOC” frame header.*/
-    public var embeddedSubframesTag: Tag?
+    public var embeddedSubframesTag: Tag = Tag(subframes: [:])
     
     // MARK: Frame parsing initializer
     init(decodingContents contents: Data.SubSequence,
@@ -85,7 +94,7 @@ public struct TableOfContentsFrame: FrameProtocol {
         }
         self.childElementIDs = childIDArray
         
-        // parse the subframes and add them to the embedded subframes dictionary
+        // parse the subframes and add them to the embedded subframes tag
         var subframes: [FrameKey:Frame] = [:]
         while !parsing.isEmpty {
             let embeddedSubframeIdentifierData = parsing.extractFirst(version.identifierLength)
@@ -111,7 +120,7 @@ public struct TableOfContentsFrame: FrameProtocol {
     ///   - orderedFlag: boolean indicating whether any child elementIDs are ordered or not
     ///   - entryCount: the number of child ElementIDs.
     ///   - childElementIDs: the array of child elementIDs. Must not be empty. Each entry is null terminated.
-    ///   - embeddedSubframes: the (optional) frames containing title and descriptor text for the CTOC frame.
+    ///   - embeddedSubframesTag: a pseudo-tag instance holding the (optional) frames containing title and descriptor text for the CTOC frame.
     init(_ layout: FrameLayoutIdentifier,
                  elementID: String,
                  topLevelFlag: Bool,
@@ -122,7 +131,7 @@ public struct TableOfContentsFrame: FrameProtocol {
         self.topLevelFlag = topLevelFlag
         self.orderedFlag = orderedFlag
         self.childElementIDs = childElementIDs
-        self.embeddedSubframesTag = embeddedSubframesTag
+        self.embeddedSubframesTag = embeddedSubframesTag ?? Tag(subframes: [:])
         self.flags = TableOfContentsFrame.defaultFlags
         self.layout = layout
         self.frameKey = .tableOfContents(elementID: elementID)
@@ -134,11 +143,13 @@ public struct TableOfContentsFrame: FrameProtocol {
         // there is no encoding byte for TOC frames
         // encode and append the elementID, adding a null terminator
         frameData.append(self.elementID.encodedASCII(withNullTermination: true))
+        
+        frameData.append(encodedFlagByte)
 
         // encode and append the entry count
         let entryCount = self.childElementIDs.count
         // a valid TOC frame needs at least 1 child element
-        guard entryCount >= 1 else {
+        guard entryCount > 0 else {
             throw Mp3File.Error.InvalidTOCFrame
         }
         let entryCountUInt8 = UInt8(entryCount)
@@ -153,10 +164,11 @@ public struct TableOfContentsFrame: FrameProtocol {
 
         // encode and append the subframes to data
         var encodedSubframes = Data()
-        for subframe in self.embeddedSubframesTag?.frames ?? [:] {
+        for subframe in self.embeddedSubframesTag.frames {
+            let subframeAsFrameProtocol = subframe.value.asFrameProtocol
             encodedSubframes.append(
                 try encodeSubframes(
-                    subframe: subframe.value.asFrameProtocol,
+                    subframe: subframeAsFrameProtocol,
                     version: version))
         }
         frameData.append(encodedSubframes)
@@ -165,31 +177,29 @@ public struct TableOfContentsFrame: FrameProtocol {
     
     // convert the boolean flags to a single byte of data
     var encodedFlagByte: Data {
+        let flagByteBinaryInt: [UInt8]
         switch self.topLevelFlag {
             case true:
                 switch self.orderedFlag {
                     case true:
-                        let flagByteBinaryInt = 0b00000011
-                        return flagByteBinaryInt.truncatedUInt32.bigEndianData
+                        flagByteBinaryInt = [0b00000011]
                     case false:
-                        let flagByteBinaryInt = 0b00000010
-                        return flagByteBinaryInt.truncatedUInt32.bigEndianData
+                        flagByteBinaryInt = [0b00000010]
             }
             case false:
                 switch self.orderedFlag {
                     case true:
-                        let flagByteBinaryInt = 0b00000001
-                        return flagByteBinaryInt.truncatedUInt32.bigEndianData
+                        flagByteBinaryInt = [0b00000001]
                     case false:
-                        let flagByteBinaryInt = 0b00000000
-                        return flagByteBinaryInt.truncatedUInt32.bigEndianData
+                        flagByteBinaryInt = [0b00000000]
             }
         }
+        return Data(flagByteBinaryInt)
     }
  
     // use FrameProtocol `encodeContents` method to encode subframes
     func encodeSubframes(subframe: FrameProtocol, version: Version) throws -> Data {
-        return try subframe.encodeContents(version: version)
+        return try subframe.encode(version: version)
     }
 }
 

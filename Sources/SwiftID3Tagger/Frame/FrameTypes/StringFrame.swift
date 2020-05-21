@@ -15,8 +15,13 @@ import Foundation
  In ID3 tags, most data is stored as a string, so single integers are actually integerStrings, a boolean is a string of "0" or "1", etc.
  Therefore, this frame also handles simple, single-value integer and boolean frames
  */
-struct StringFrame: FrameProtocol {
-    
+struct StringFrame: FrameProtocol, CustomStringConvertible {
+    public var description: String {
+        return """
+        frameKey: .\(self.frameKey): \"\(self.contentString)\"
+        """
+    }
+
     // MARK: Properties
     var flags: Data
     var layout: FrameLayoutIdentifier
@@ -29,7 +34,7 @@ struct StringFrame: FrameProtocol {
   
     // URL frames do not have an encoding byte, so they must be parsed differently
     // this just lets us know which frames to handle differently
-    let urlFrameKeys: [FrameKey] = [
+    private let urlFrameKeys: [FrameKey] = [
         .artistWebpage,
         .audioFileWebpage,
         .audioSourceWebpage,

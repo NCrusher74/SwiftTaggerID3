@@ -19,15 +19,15 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         XCTAssertEqual(tag[tableOfContents: "TOC"]?.topLevelFlag, true)
         XCTAssertEqual(tag[tableOfContents: "TOC"]?.orderedFlag, true)
         XCTAssertEqual(tag[tableOfContents: "TOC"]?.childElementIDs, ["ch0","ch1"])
-        XCTAssertEqual(tag[tableOfContents: "TOC"]?.embeddedSubframesTag?.title, "")
+        XCTAssertEqual(tag[tableOfContents: "TOC"]?.embeddedSubframesTag.title, "")
         
         XCTAssertEqual(tag[chapter: 0]?.endTime, 2795)
         XCTAssertEqual(tag[chapter: 0]?.elementID, "ch0")
-        XCTAssertEqual(tag[chapter: 0]?.embeddedSubframesTag?.title, "Chapter 01")
+        XCTAssertEqual(tag[chapter: 0]?.embeddedSubframesTag.title, "Chapter 01")
 
         XCTAssertEqual(tag[chapter: 2795]?.endTime, 5250)
         XCTAssertEqual(tag[chapter: 2795]?.elementID, "ch1")
-        XCTAssertEqual(tag[chapter: 2795]?.embeddedSubframesTag?.title, "Chapter 02")
+        XCTAssertEqual(tag[chapter: 2795]?.embeddedSubframesTag.title, "Chapter 02")
     }
     
     @available(OSX 10.12, *)
@@ -37,7 +37,7 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         tag[tableOfContents: "ctoc"]?.topLevelFlag = false
         tag[tableOfContents: "ctoc"]?.orderedFlag = false
         tag[tableOfContents: "ctoc"]?.childElementIDs = ["ch1", "ch2","ch3"]
-        tag[tableOfContents: "ctoc"]?.embeddedSubframesTag?.title = "Table Of Contents"
+        tag[tableOfContents: "ctoc"]?.embeddedSubframesTag.title = "Table Of Contents"
         
         let outputUrl = try localDirectory(fileName: "ctoctest", fileExtension: "mp3")
         XCTAssertNoThrow(try mp3NoMeta().write(tagVersion: .v2_4,
