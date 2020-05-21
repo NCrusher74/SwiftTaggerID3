@@ -25,7 +25,7 @@ struct LocalizedFrame: FrameProtocol {
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
-    var allowMultipleFrames: Bool = false
+    var allowMultipleFrames: Bool = true
     
     // unique properties for this frame type
     /// ISO-639-2 languge code

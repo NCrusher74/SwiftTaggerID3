@@ -19,7 +19,7 @@ public struct TableOfContentsFrame: FrameProtocol {
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
-    var allowMultipleFrames: Bool = false
+    var allowMultipleFrames: Bool = true
     
     /** A null-terminated string with a unique ID. The Element ID uniquely identifies the frame. It is not intended to be human readable and should not be presented to the end-user. */
     var elementID: String
@@ -187,5 +187,62 @@ public struct TableOfContentsFrame: FrameProtocol {
     // use FrameProtocol `encodeContents` method to encode subframes
     func encodeSubframes(subframe: FrameProtocol, version: Version) throws -> Data {
         return try subframe.encodeContents(version: version)
+    }
+}
+
+// MARK: Tag Extension
+extension Tag {
+    
+    internal func tocGetter(withElementID: String) -> (
+        elementID: String,
+        topLevelFlag: Bool,
+        orderedFlag: Bool,
+        childElementIDs: [String],
+        subframeTag: Tag?)? {
+            if let frame = self.frames[.tableOfContents(elementID: withElementID)],
+                case .tocFrame(let tocFrame) = frame {
+                return (tocFrame.elementID,
+                        tocFrame.topLevelFlag,
+                        tocFrame.orderedFlag,
+                        tocFrame.childElementIDs,
+                        tocFrame.embeddedSubframesTag)
+            } else {
+                return nil
+            }
+    }
+    
+    internal mutating func set(elementID: String,
+                               topLevelFlag: Bool,
+                               orderedFlag: Bool,
+                               childElementIDs: [String],
+                               embeddedSubframes: Tag?) {
+        let frame = TableOfContentsFrame(.known(.tableOfContents),
+                                         elementID: elementID,
+                                         topLevelFlag: topLevelFlag,
+                                         orderedFlag: orderedFlag,
+                                         childElementIDs: childElementIDs,
+                                         embeddedSubframesTag: embeddedSubframes)
+        self.frames[.tableOfContents(elementID: elementID)] = .tocFrame(frame)
+    }
+    
+    public subscript(tableOfContents elementID: String) -> TableOfContentsFrame? {
+        get {
+            let toc = tocGetter(withElementID: elementID)
+            let frame = TableOfContentsFrame(
+                .known(.tableOfContents),
+                elementID: toc?.elementID ?? UUID().uuidString,
+                topLevelFlag: toc?.topLevelFlag ?? true,
+                orderedFlag: toc?.orderedFlag ?? true,
+                childElementIDs: toc?.childElementIDs ?? [],
+                embeddedSubframesTag: toc?.subframeTag)
+            return frame
+        }
+        set {
+            set(elementID: elementID,
+                topLevelFlag: newValue?.topLevelFlag ?? true,
+                orderedFlag: newValue?.orderedFlag ?? true,
+                childElementIDs: newValue?.childElementIDs ?? [],
+                embeddedSubframes: newValue?.embeddedSubframesTag)
+        }
     }
 }

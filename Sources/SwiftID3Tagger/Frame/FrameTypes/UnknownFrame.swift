@@ -40,7 +40,7 @@ public struct UnknownFrame: FrameProtocol {
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
-    var allowMultipleFrames: Bool = false
+    var allowMultipleFrames: Bool = true
     var uuid = UUID()
     
     init(decodingContents contents: Data.SubSequence,

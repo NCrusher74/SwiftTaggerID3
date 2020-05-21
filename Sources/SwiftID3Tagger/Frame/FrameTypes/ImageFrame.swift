@@ -18,7 +18,7 @@ import Foundation
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
-    var allowMultipleFrames: Bool = false
+    var allowMultipleFrames: Bool = true
     
     /// The image bytes as `Data`.
     let image: Data;

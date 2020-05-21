@@ -18,23 +18,17 @@ public struct ChapterFrame: FrameProtocol {
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
-    var allowMultipleFrames: Bool = false
+    var allowMultipleFrames: Bool = true
 
     /** The Element ID uniquely identifies the frame. It is not intended to be human readable and should not be presented to the end user. Null terminated */
-    var elementID: String
+    public var elementID: String
     
     /** The Start and End times are a count in milliseconds from the beginning of the file to the start and end of the chapter respectively. */
     public var startTime: Int
     public var endTime: Int
     
-    /** The Start offset is a zero-based count of bytes from the beginning of the file to the first byte of the first audio frame in the chapter. If these bytes are all set to 0xFF then the value should be ignored and the start time value should be utilized.*/
-    var startByteOffset: Int
-    
-    /** The End offset is a zero-based count of bytes from the beginning of the file to the first byte of the audio frame following the end of the chapter. If these bytes are all set to 0xFF then the value should be ignored and the end time value should be utilized.*/
-    var endByteOffset: Int
-    
     /** A sequence of optional frames that are embedded within the “CHAP” frame and which describe the content of the chapter (e.g. a “TIT2” frame representing the chapter name) or provide related material such as URLs and images. These sub-frames are contained within the bounds of the “CHAP” frame as signalled by the size field in the “CHAP” frame header. If a parser does not recognise “CHAP” frames it can skip them using the size field in the frame header. When it does this it will skip any embedded sub-frames carried within the frame. */
-    var embeddedSubframesTag: Tag?
+    public var embeddedSubframesTag: Tag?
     
     // MARK: Frame parsing
     init(decodingContents contents: Data.SubSequence,
@@ -47,13 +41,9 @@ public struct ChapterFrame: FrameProtocol {
         var parsing = contents
         
         // extract the elementID string
-        let uuid = UUID()
         let elementID = parsing.extractPrefixAsStringUntilNullTermination(.isoLatin1)
         // initialize the elementID property from the string
-        self.elementID = elementID ?? uuid.uuidString
-        // initialize the frameKey property using the elementID
-        self.frameKey = .chapter(elementID: elementID ?? uuid.uuidString)
-        
+        self.elementID = elementID ?? UUID().uuidString
         // extract and convert integer properties to integers
         let startTimeData = parsing.extractFirst(4)
         let startTimeUInt32 = UInt32(parsing: startTimeData, .bigEndian)
@@ -62,14 +52,15 @@ public struct ChapterFrame: FrameProtocol {
         let endTimeData = parsing.extractFirst(4)
         let endTimeUInt32 = UInt32(parsing: endTimeData, .bigEndian)
         self.endTime = Int(endTimeUInt32)
-        
-        let startByteOffsetData = parsing.extractFirst(4)
-        let startByteOffsetUInt32 = UInt32(parsing: startByteOffsetData, .bigEndian)
-        self.startByteOffset = Int(startByteOffsetUInt32)
-        
-        let endByteOffsetData = parsing.extractFirst(4)
-        let endByteOffsetUInt32 = UInt32(parsing: endByteOffsetData, .bigEndian)
-        self.endByteOffset = Int(endByteOffsetUInt32)
+
+        // initialize the frameKey property using the startTime
+        self.frameKey = .chapter(atStartTime: startTime)
+
+        /** The Start offset is a zero-based count of bytes from the beginning of the file to the first byte of the first audio frame in the chapter. If these bytes are all set to 0xFF then the value should be ignored and the start time value should be utilized.*/
+        /** The End offset is a zero-based count of bytes from the beginning of the file to the first byte of the audio frame following the end of the chapter. If these bytes are all set to 0xFF then the value should be ignored and the end time value should be utilized.*/
+        /// SwiftTagger uses start and end times, these will be set to 0xFF by default
+        _ = parsing.extractFirst(4) // start byte offset, unused
+        _ = parsing.extractFirst(4) // end byte offset, unused
         
         // extract and parse subframe data
         var subframes: [FrameKey: Frame] = [:]
@@ -97,22 +88,18 @@ public struct ChapterFrame: FrameProtocol {
      - parameter endByteOffset: integer indicating the byte offset for the end of the chapter
      - parameter embeddedSubFrames: the (optional) frames containing title and descriptor text for the CHAP frame. A title is recommended at the least.
      */
-    private init(_ layout: FrameLayoutIdentifier,
+    init(_ layout: FrameLayoutIdentifier,
                  elementID: String,
                  startTime: Int,
                  endTime: Int,
-                 startByteOffset: Int?,
-                 endByteOffset: Int?,
                  embeddedSubframesTag: Tag?) {
         self.elementID = elementID
         self.startTime = startTime
         self.endTime = endTime
-        self.startByteOffset = startByteOffset ?? 0
-        self.endByteOffset = endByteOffset ?? 0
         self.embeddedSubframesTag = embeddedSubframesTag
         self.flags = ChapterFrame.defaultFlags
         self.layout = layout
-        self.frameKey = .chapter(elementID: elementID)
+        self.frameKey = .chapter(atStartTime: startTime)
     }
     
     // encodes the contents of the frame and returns Data that can be added to the Tag instance to write to the file
@@ -125,8 +112,13 @@ public struct ChapterFrame: FrameProtocol {
         // convert integers to UInt32 and then to Data and append
         frameData.append(self.startTime.truncatedUInt32.bigEndianData)
         frameData.append(self.endTime.truncatedUInt32.bigEndianData)
-        frameData.append(self.startByteOffset.truncatedUInt32.bigEndianData)
-        frameData.append(self.endByteOffset.truncatedUInt32.bigEndianData)
+        
+        // add in start and end offset bytes to satisfy spec
+        // since SwiftTagger uses start and end times, these are unused by default
+        /** The Start offset/End offset is a zero-based count of bytes from the beginning of the file to the first byte of the first audio frame in the chapter. If these bytes are all set to 0xFF then the value should be ignored and the start time value should be utilized. */
+        let offsetBytes: [UInt8] = [0xFF, 0xFF, 0xFF, 0xFF]
+        frameData.append(contentsOf: offsetBytes) // start byte offset
+        frameData.append(contentsOf: offsetBytes) // end byte offset
 
         // encoded and append the subframes
         var encodedSubframes = Data()
@@ -141,19 +133,37 @@ public struct ChapterFrame: FrameProtocol {
     private func encodeSubframes(subframe: FrameProtocol, version: Version) throws -> Data {
         return try subframe.encodeContents(version: version)
     }
+}
 
-    /// initialize a new chapter, manually building the embedded subframes
-    init(startTime: Int,
-                endTime: Int,
-                embeddedSubframesTag: Tag?) {
-        let uuid = UUID()
-        self.init(.known(.chapter),
-                  elementID: uuid.uuidString,
-                  startTime: startTime,
-                  endTime: endTime,
-                  startByteOffset: nil,
-                  endByteOffset: nil,
-                  embeddedSubframesTag: embeddedSubframesTag)
-        self.frameKey = .chapter(elementID: elementID)
+// MARK: Tag extension
+extension Tag {
+    func chapterGetter(atStartTime: Int) -> (
+        elementID: String,
+        startTime: Int,
+        endTime: Int,
+        subframeTag: Tag?)? {
+            if let frame = self.frames[.chapter(atStartTime: atStartTime)],
+                case .chapterFrame(let chapterFrame) = frame {
+                return (chapterFrame.elementID,
+                        chapterFrame.startTime,
+                        chapterFrame.endTime,
+                        chapterFrame.embeddedSubframesTag)
+            } else {
+                return nil
+            }
     }
+    
+    public subscript(chapter atStartTime: Int) -> ChapterFrame? {
+        get {
+            let chapter = chapterGetter(atStartTime: atStartTime)
+            let frame = ChapterFrame(
+                .known(.chapter),
+                elementID: chapter?.elementID ?? UUID().uuidString,
+                startTime: atStartTime,
+                endTime: chapter?.endTime ?? 0,
+                embeddedSubframesTag: chapter?.subframeTag)
+            return frame
+        }
+    }
+
 }
