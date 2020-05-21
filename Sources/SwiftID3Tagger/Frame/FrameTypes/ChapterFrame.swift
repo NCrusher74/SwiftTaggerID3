@@ -85,7 +85,7 @@ public struct ChapterFrame: FrameProtocol {
             let subframeFrameKey = subframe.frameKey
             subframes[subframeFrameKey] = subframe
         }
-        self.embeddedSubframesTag = Tag(readFromEmbeddedSubframes: subframes)
+        self.embeddedSubframesTag = Tag(subframes: subframes)
     }
 
     // MARK: Frame building
@@ -163,7 +163,7 @@ public struct ChapterFrame: FrameProtocol {
         let subframeKey = FrameKey.title
         let subframeFrame: Frame = .stringFrame(.init(.known(.title), contentString: chapterTitle))
         let subframe = [subframeKey : subframeFrame]
-        let subframeTag = Tag(readFromEmbeddedSubframes: subframe)
+        let subframeTag = Tag(subframes: subframe)
 
         let uuid = UUID()
         // initialize chapter frame with subframe in place
@@ -199,7 +199,7 @@ public struct ChapterFrame: FrameProtocol {
             imageDescription: imageDescription,
             image: imageData))
         let subframe = [subframeKey : subframeFrame]
-        let subframeTag = Tag(readFromEmbeddedSubframes: subframe)
+        let subframeTag = Tag(subframes: subframe)
         self.init(.known(.chapter),
                   elementID: uuid.uuidString,
                   startTime: startTime,

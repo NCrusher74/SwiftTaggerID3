@@ -37,9 +37,9 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         tag[tableOfContents: "ctoc"]?.topLevelFlag = true
         tag[tableOfContents: "ctoc"]?.orderedFlag = true
         tag[tableOfContents: "ctoc"]?.childElementIDs = ["ch01", "ch02", "ch03"]
-
-        var subframeTag = tag[subframeTag: "ctoc"]
-        subframeTag?.title = "Table Of Contents"
+        
+        var subframeTag = Tag()
+        subframeTag.title = "Table Of Contents"
         tag[tableOfContents: "ctoc"]?.embeddedSubframesTag = subframeTag
 
         let outputUrl = try localDirectory(fileName: "ctoctest", fileExtension: "mp3")

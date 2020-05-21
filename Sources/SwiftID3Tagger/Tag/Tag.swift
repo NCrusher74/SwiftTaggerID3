@@ -132,20 +132,25 @@ public struct Tag {
      
         This initializer allows those subframes to be handled as a `Tag` instance so that they may be parsed and constructed using the same methods and properties as top-level frames.
      */
-    init(readFromEmbeddedSubframes subframes: [FrameKey : Frame]) {
+    init(subframes: [FrameKey : Frame]) {
         self.frames = subframes
     }
 }
 
 extension Tag {
+    
+    public init() {
+        self.init(subframes: [:])
+    }
+
     /** creates a "subframe tag" instance to use when accessing data within the embedded subframes of a `CHAP` or `CTOC` frame */
     public subscript(subframeTag parentFrameElementID: String) -> Tag? {
         get {
-            var tag = Tag(readFromEmbeddedSubframes: [:])
+            var tag = Tag(subframes: [:])
             if let parentFrame = self[chapters: parentFrameElementID] {
-                tag = parentFrame.embeddedSubframesTag ?? Tag(readFromEmbeddedSubframes: [:])
+                tag = parentFrame.embeddedSubframesTag ?? Tag(subframes: [:])
             } else if let parentFrame = self[tableOfContents: parentFrameElementID] {
-                tag = parentFrame.embeddedSubframesTag ?? Tag(readFromEmbeddedSubframes: [:])
+                tag = parentFrame.embeddedSubframesTag ?? Tag(subframes: [:])
             } else {
                 return nil
             }
@@ -156,12 +161,12 @@ extension Tag {
             if let new = newValue {
                 if var parentFrame = self[chapters: parentFrameElementID] {
                     parentFrame.embeddedSubframesTag = new
-                } else if var parentFrame = self[tableOfContents: parentFrameElementID] {
-                    parentFrame.embeddedSubframesTag = new
+                } else {
+                    var parentFrame = self[tableOfContents: parentFrameElementID]
+                    parentFrame?.embeddedSubframesTag = new
                 }
             }
         }
     }
-    
 
 }

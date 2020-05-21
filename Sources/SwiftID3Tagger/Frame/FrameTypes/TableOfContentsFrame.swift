@@ -100,7 +100,7 @@ public struct TableOfContentsFrame: FrameProtocol {
             let subframeFrameKey = subframe.frameKey
             subframes[subframeFrameKey] = subframe
         }
-        self.embeddedSubframesTag = Tag(readFromEmbeddedSubframes: subframes)
+        self.embeddedSubframesTag = Tag(subframes: subframes)
     }
 
     // MARK: Frame building initializer
@@ -134,7 +134,7 @@ public struct TableOfContentsFrame: FrameProtocol {
         var frameData = Data()
         // there is no encoding byte for TOC frames
         // encode and append the elementID
-        frameData.append(self.elementID.encoded(withNullTermination: true))
+        frameData.append(self.elementID.encodedASCII())
         // encode and append the entry count
         let entryCount = self.childElementIDs.count
         let entryCountUInt8 = UInt8(entryCount)
@@ -143,7 +143,7 @@ public struct TableOfContentsFrame: FrameProtocol {
         // encode and append the array of child element IDs
         var idArray = Data()
         for id in self.childElementIDs {
-            idArray.append(id.encoded(withNullTermination: true))
+            idArray.append(id.encodedASCII())
         }
         frameData.append(idArray)
         // encode and append the subframes to data
