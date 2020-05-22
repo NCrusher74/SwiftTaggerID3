@@ -54,10 +54,45 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         XCTAssertEqual(tagWritten[tableOfContents: "ctoc"]?.childElementIDs, ["ch1","ch2","ch3"])
         XCTAssertEqual(tagWritten[tableOfContents: "ctoc"]?.embeddedSubframesTag.title, "Table Of Contents")
     }
-    
+
+    @available(OSX 10.12, *)
+    func testWritingMultipleTableOfContentsOnBlankFile() throws {
+        var tag = try tagNoMeta()
+        
+        tag[tableOfContents: "toc1"]?.topLevelFlag = true
+        tag[tableOfContents: "toc1"]?.orderedFlag = true
+        tag[tableOfContents: "toc1"]?.childElementIDs = ["toc2"]
+        tag[tableOfContents: "toc1"]?.embeddedSubframesTag.title = "Table Of Contents (TOP)"
+        
+        tag[tableOfContents: "toc2"]?.topLevelFlag = false
+        tag[tableOfContents: "toc2"]?.orderedFlag = true
+        tag[tableOfContents: "toc2"]?.childElementIDs = ["ch1", "ch2", "ch3"]
+        tag[tableOfContents: "toc2"]?.embeddedSubframesTag.title = "Table Of Contents (SECONDARY)"
+        
+        let outputUrl = try localDirectory(fileName: "ctoctest", fileExtension: "mp3")
+        XCTAssertNoThrow(try mp3NoMeta().write(tagVersion: .v2_4,
+                                               using: tag,
+                                               writingTo: outputUrl))
+        
+        // MARK: Confirm accuracy
+        let mp3UrlWritten = outputUrl
+        let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
+        let tagWritten = try Tag(readFrom: mp3FileWritten)
+        
+        XCTAssertEqual(tagWritten[tableOfContents: "toc1"]?.topLevelFlag, true)
+        XCTAssertEqual(tagWritten[tableOfContents: "toc1"]?.orderedFlag, true)
+        XCTAssertEqual(tagWritten[tableOfContents: "toc1"]?.childElementIDs, ["toc2"])
+        XCTAssertEqual(tagWritten[tableOfContents: "toc1"]?.embeddedSubframesTag.title, "Table Of Contents (TOP)")
+
+        XCTAssertEqual(tagWritten[tableOfContents: "toc2"]?.topLevelFlag, false)
+        XCTAssertEqual(tagWritten[tableOfContents: "toc2"]?.orderedFlag, true)
+        XCTAssertEqual(tagWritten[tableOfContents: "toc2"]?.childElementIDs, ["ch1", "ch2", "ch3"])
+        XCTAssertEqual(tagWritten[tableOfContents: "toc2"]?.embeddedSubframesTag.title, "Table Of Contents (SECONDARY)")
+    }
+
     @available(OSX 10.12, *)
     func testWritingTableOfContentsOnWrittenFile() throws {
-        var tag = try tagNoMeta()
+        var tag = try tagv24()
         
         tag[tableOfContents: "ctoc"]?.topLevelFlag = false
         tag[tableOfContents: "ctoc"]?.orderedFlag = false
@@ -65,7 +100,7 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         tag[tableOfContents: "ctoc"]?.embeddedSubframesTag.title = "Table Of Contents"
         
         let outputUrl = try localDirectory(fileName: "ctoctest", fileExtension: "mp3")
-        XCTAssertNoThrow(try mp3NoMeta().write(tagVersion: .v2_4,
+        XCTAssertNoThrow(try mp3v24().write(tagVersion: .v2_4,
                                                using: tag,
                                                writingTo: outputUrl))
         
@@ -80,6 +115,41 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         XCTAssertEqual(tagWritten[tableOfContents: "ctoc"]?.embeddedSubframesTag.title, "Table Of Contents")
     }
     
+    @available(OSX 10.12, *)
+    func testWritingMultipleTableOfContentsOnWrittenFile() throws {
+        var tag = try tagv24()
+        
+        tag[tableOfContents: "toc1"]?.topLevelFlag = true
+        tag[tableOfContents: "toc1"]?.orderedFlag = true
+        tag[tableOfContents: "toc1"]?.childElementIDs = ["toc2"]
+        tag[tableOfContents: "toc1"]?.embeddedSubframesTag.title = "Table Of Contents (TOP)"
+        
+        tag[tableOfContents: "toc2"]?.topLevelFlag = false
+        tag[tableOfContents: "toc2"]?.orderedFlag = true
+        tag[tableOfContents: "toc2"]?.childElementIDs = ["ch1", "ch2", "ch3"]
+        tag[tableOfContents: "toc2"]?.embeddedSubframesTag.title = "Table Of Contents (SECONDARY)"
+        
+        let outputUrl = try localDirectory(fileName: "ctoctest", fileExtension: "mp3")
+        XCTAssertNoThrow(try mp3v24().write(tagVersion: .v2_4,
+                                               using: tag,
+                                               writingTo: outputUrl))
+        
+        // MARK: Confirm accuracy
+        let mp3UrlWritten = outputUrl
+        let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
+        let tagWritten = try Tag(readFrom: mp3FileWritten)
+        
+        XCTAssertEqual(tagWritten[tableOfContents: "toc1"]?.topLevelFlag, true)
+        XCTAssertEqual(tagWritten[tableOfContents: "toc1"]?.orderedFlag, true)
+        XCTAssertEqual(tagWritten[tableOfContents: "toc1"]?.childElementIDs, ["toc2"])
+        XCTAssertEqual(tagWritten[tableOfContents: "toc1"]?.embeddedSubframesTag.title, "Table Of Contents (TOP)")
+        
+        XCTAssertEqual(tagWritten[tableOfContents: "toc2"]?.topLevelFlag, false)
+        XCTAssertEqual(tagWritten[tableOfContents: "toc2"]?.orderedFlag, true)
+        XCTAssertEqual(tagWritten[tableOfContents: "toc2"]?.childElementIDs, ["ch1", "ch2", "ch3"])
+        XCTAssertEqual(tagWritten[tableOfContents: "toc2"]?.embeddedSubframesTag.title, "Table Of Contents (SECONDARY)")
+    }
+
     @available(OSX 10.12, *)
     func testWritingChaptersOnBlankFilev24() throws {
         var tag = Tag()
