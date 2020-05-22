@@ -37,7 +37,7 @@ class TestPrint: XCTestCase {
         tag.involvedPeopleList = nil
         tag.recordingDateTime = nil
         
-        tag.removeComment(withDescription: <#T##String?#>)
+        tag.removeComment(withDescription: "")
         
         let outputUrl = try localDirectory(fileName: "nometatest", fileExtension: "mp3")
         XCTAssertNoThrow(try mp3NoMeta().write(tagVersion: .v2_3,

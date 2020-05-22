@@ -10,7 +10,14 @@
 import Foundation
 
 /// A type representing a frame with up to three optional strings as content, at least one of which is required to be pre-set content.
-struct PresetOptionsFrame: FrameProtocol {
+struct PresetOptionsFrame: FrameProtocol, CustomStringConvertible {
+    public var description: String {
+        return """
+        frameKey: .\(self.frameKey):
+        \(self.genreMediaOrFileInfo)
+        """
+    }
+
     
     // MARK: Properties
     // (inherited from FrameProtocol)

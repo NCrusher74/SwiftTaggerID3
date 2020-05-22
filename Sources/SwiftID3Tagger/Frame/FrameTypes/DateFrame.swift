@@ -12,8 +12,13 @@ import Foundation
  A type used to represent an ID3-formatted timestamp tag. The information delivered from this type will vary depending on the tag version and formatting.
  */
 @available(macOS 10.12, *)
-struct DateFrame: FrameProtocol {
-    
+struct DateFrame: FrameProtocol, CustomStringConvertible {
+    public var description: String {
+        return """
+        frameKey: .\(self.frameKey): \"\(String(describing: self.timeStamp))\"
+        """
+    }
+
     // MARK: Properties
     var flags: Data
     var layout: FrameLayoutIdentifier

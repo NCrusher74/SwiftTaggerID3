@@ -12,8 +12,14 @@ import Foundation
 /**
  A type representing the track/disc index of the total tracks or discs.
  */
-struct PartOfTotalFrame: FrameProtocol {
-  
+struct PartOfTotalFrame: FrameProtocol, CustomStringConvertible {
+    public var description: String {
+        return """
+        frameKey: .\(self.frameKey):
+        \(self.part)/\(String(describing: self.total))
+        """
+    }
+
     // MARK: Properties
     var flags: Data
     var layout: FrameLayoutIdentifier
@@ -43,9 +49,12 @@ struct PartOfTotalFrame: FrameProtocol {
         let contentString = parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? ""
         // parse the string into an array
         let contentComponents = contentString.components(separatedBy: "/")
+
         // parse the integer values out of the array
         self.part = Int(contentComponents[0]) ?? 0
-        self.total = Int(contentComponents[1])
+        if contentComponents.count > 1 {
+            self.total = Int(contentComponents[1])
+        }
     }
 
 

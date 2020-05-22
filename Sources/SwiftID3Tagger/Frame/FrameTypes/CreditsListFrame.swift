@@ -13,7 +13,14 @@ import Foundation
  A type used to represent an ID3 involved peeople list or musician credits frame.
  handled as a dictionary: `[role : [array of people performing the role]]`
  */
-struct CreditsListFrame: FrameProtocol {
+struct CreditsListFrame: FrameProtocol, CustomStringConvertible {
+    public var description: String {
+        return """
+        frameKey: .\(self.frameKey)
+        \(self.credits)
+        """
+    }
+
     // MARK: Properties
     // inherited from FrameProtocol
     var flags: Data

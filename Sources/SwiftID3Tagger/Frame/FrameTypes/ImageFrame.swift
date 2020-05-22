@@ -12,8 +12,14 @@ import Foundation
 /**
  A type representing an ID3 frame that contains an attached image
  */
- struct ImageFrame: FrameProtocol {
-    
+ struct ImageFrame: FrameProtocol, CustomStringConvertible {
+    public var description: String {
+        return """
+        frameKey: .\(self.frameKey):
+        \(self.imageType.rawValue): \(String(describing: self.imageDescription))
+        """
+    }
+
     // MARK: Properties
     var flags: Data
     var layout: FrameLayoutIdentifier

@@ -14,8 +14,13 @@ import Foundation
  
  Though this frame is stored in the tag as an `ISO-639-2` code, parsing will return the isoName of the language in full, for user-friendliness. It will also take an `isoName` or `nativeName` as the `languageString` and convert it to the appropriate 3-letter code.
  */
-struct LanguageFrame: FrameProtocol {
-    
+struct LanguageFrame: FrameProtocol, CustomStringConvertible {
+    public var description: String {
+        return """
+        \(self.languages)
+        """
+    }
+
     // MARK: Properties
     var flags: Data
     var layout: FrameLayoutIdentifier

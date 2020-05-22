@@ -18,8 +18,14 @@ import Foundation
  
  `Comment` and `UnsynchronizedLyrics` frames are the only frames that allow the use of new-line characters. Therefore, they are ideally suited for long remarks and convenience getter-setter properties for the most common types have been added.
  */
-struct LocalizedFrame: FrameProtocol {
-    
+struct LocalizedFrame: FrameProtocol, CustomStringConvertible {
+    public var description: String {
+        return """
+        frameKey: .\(self.frameKey)
+        \(String(describing: self.descriptionString)): \(self.contentString)
+        """
+    }
+
     // MARK: Properties
     // Inherited from `FrameProtocol`
     var flags: Data
