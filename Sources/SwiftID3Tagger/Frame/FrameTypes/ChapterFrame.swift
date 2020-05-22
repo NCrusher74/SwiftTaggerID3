@@ -53,6 +53,9 @@ public struct ChapterFrame: FrameProtocol, CustomStringConvertible {
         let elementID = parsing.extractPrefixAsStringUntilNullTermination(.isoLatin1)
         // initialize the elementID property from the string
         self.elementID = elementID ?? UUID().uuidString
+        // initialize the frameKey property using the elementID
+        self.frameKey = .chapter(elementID: self.elementID)
+        
         // extract and convert integer properties to integers
         let startTimeData = parsing.extractFirst(4)
         let startTimeUInt32 = UInt32(parsing: startTimeData, .bigEndian)
@@ -62,14 +65,11 @@ public struct ChapterFrame: FrameProtocol, CustomStringConvertible {
         let endTimeUInt32 = UInt32(parsing: endTimeData, .bigEndian)
         self.endTime = Int(endTimeUInt32)
 
-        // initialize the frameKey property using the startTime
-        self.frameKey = .chapter(atStartTime: startTime)
-
         /** The Start offset is a zero-based count of bytes from the beginning of the file to the first byte of the first audio frame in the chapter. If these bytes are all set to 0xFF then the value should be ignored and the start time value should be utilized.*/
         /** The End offset is a zero-based count of bytes from the beginning of the file to the first byte of the audio frame following the end of the chapter. If these bytes are all set to 0xFF then the value should be ignored and the end time value should be utilized.*/
         /// SwiftTagger uses start and end times, these will be set to 0xFF by default
-        _ = parsing.extractFirst(4) // start byte offset, unused
-        _ = parsing.extractFirst(4) // end byte offset, unused
+        _ = parsing.dropFirst(4) // start byte offset, unused
+        _ = parsing.dropFirst(4) // end byte offset, unused
         
         // extract and parse subframe data
         var subframes: [FrameKey: Frame] = [:]
@@ -108,7 +108,7 @@ public struct ChapterFrame: FrameProtocol, CustomStringConvertible {
         self.embeddedSubframesTag = embeddedSubframesTag ?? Tag(subframes: [:])
         self.flags = ChapterFrame.defaultFlags
         self.layout = layout
-        self.frameKey = .chapter(atStartTime: startTime)
+        self.frameKey = .chapter(elementID: elementID)
     }
     
     // encodes the contents of the frame and returns Data that can be added to the Tag instance to write to the file
@@ -116,7 +116,7 @@ public struct ChapterFrame: FrameProtocol, CustomStringConvertible {
         var frameData = Data()
         // there is no encoding byte for Chapter frames
         // encode and append ElementID string, adding null terminator
-        frameData.append(self.elementID.encodedASCII(withNullTermination: true))
+        frameData.append(self.elementID.encoded(withNullTermination: true))
 
         // convert integers to UInt32 and then to Data and append
         frameData.append(self.startTime.bigEndian.data)
@@ -142,37 +142,42 @@ public struct ChapterFrame: FrameProtocol, CustomStringConvertible {
     private func encodeSubframes(subframe: FrameProtocol, version: Version) throws -> Data {
         return try subframe.encodeContents(version: version)
     }
+    
+    init(withElementID: String, from startTime: Int, to endTime: Int, withTitle: String) {
+        let subframeKey = FrameKey.title
+        let subframeFrame: Frame = .stringFrame(
+            .init(.known(.title), contentString: withTitle))
+
+        self.init(.known(.chapter),
+                  elementID: withElementID,
+                  startTime: startTime,
+                  endTime: endTime,
+                  embeddedSubframesTag: Tag(subframes: [subframeKey: subframeFrame]))
+    }
 }
 
 // MARK: Tag extension
 extension Tag {
-    func chapterGetter(atStartTime: Int) -> (
-        elementID: String,
-        startTime: Int,
-        endTime: Int,
-        subframeTag: Tag?)? {
-            if let frame = self.frames[.chapter(atStartTime: atStartTime)],
-                case .chapterFrame(let chapterFrame) = frame {
-                return (chapterFrame.elementID,
-                        chapterFrame.startTime,
-                        chapterFrame.endTime,
-                        chapterFrame.embeddedSubframesTag)
-            } else {
-                return nil
-            }
-    }
     
-    public subscript(chapter atStartTime: Int) -> ChapterFrame? {
+    public subscript(chapter elementID: String) -> ChapterFrame? {
         get {
-            let chapter = chapterGetter(atStartTime: atStartTime)
-            let frame = ChapterFrame(
-                .known(.chapter),
-                elementID: chapter?.elementID ?? UUID().uuidString,
-                startTime: atStartTime,
-                endTime: chapter?.endTime ?? 0,
-                embeddedSubframesTag: chapter?.subframeTag)
-            return frame
+            if let frame = self.frames[.chapter(elementID: elementID)],
+                case .chapterFrame(let chapterFrame) = frame {
+                return chapterFrame
+            } else {
+                return .init(withElementID: "",
+                             from: 0, to: 0,
+                             withTitle: "")
+            }
+        }
+        set {
+            let key: FrameKey = .chapter(elementID: elementID)
+            let frame = ChapterFrame(withElementID: elementID,
+                                     from: newValue?.startTime ?? 0,
+                                     to: newValue?.endTime ?? 0,
+                                     withTitle: newValue?.embeddedSubframesTag.title ?? "")
+            self.frames[key] = .chapterFrame(frame)
         }
     }
-
+    
 }

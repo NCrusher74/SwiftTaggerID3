@@ -142,7 +142,7 @@ public struct TableOfContentsFrame: FrameProtocol, CustomStringConvertible {
         var frameData = Data()
         // there is no encoding byte for TOC frames
         // encode and append the elementID, adding a null terminator
-        frameData.append(self.elementID.encodedASCII(withNullTermination: true))
+        frameData.append(self.elementID.encoded(withNullTermination: true))
         
         frameData.append(encodedFlagByte)
 
@@ -158,7 +158,7 @@ public struct TableOfContentsFrame: FrameProtocol, CustomStringConvertible {
         // encode and append the array of child element IDs, adding null terminator
         var idArray = Data()
         for id in self.childElementIDs {
-            idArray.append(id.encodedASCII(withNullTermination: true))
+            idArray.append(id.encoded(withNullTermination: true))
         }
         frameData.append(idArray)
 
@@ -213,7 +213,12 @@ extension Tag {
                 case .tocFrame(let tocFrame) = frame {
                 return tocFrame
             } else {
-                return nil
+                return .init(.known(.tableOfContents),
+                                   elementID: "",
+                                   topLevelFlag: true,
+                                   orderedFlag: true,
+                                   childElementIDs: [],
+                                   embeddedSubframesTag: Tag(subframes: [:]))
             }
         }
         set {
