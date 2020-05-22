@@ -143,41 +143,43 @@ public struct ChapterFrame: FrameProtocol, CustomStringConvertible {
         return try subframe.encodeContents(version: version)
     }
     
-    init(withElementID: String, from startTime: Int, to endTime: Int, withTitle: String) {
-        let subframeKey = FrameKey.title
-        let subframeFrame: Frame = .stringFrame(
-            .init(.known(.title), contentString: withTitle))
-
+    init() {
         self.init(.known(.chapter),
-                  elementID: withElementID,
-                  startTime: startTime,
-                  endTime: endTime,
-                  embeddedSubframesTag: Tag(subframes: [subframeKey: subframeFrame]))
+                  elementID: "",
+                  startTime: 0,
+                  endTime: 0,
+                  embeddedSubframesTag: nil)
     }
 }
 
+/*
+ let subframeKey: FrameKey = .title
+ let subframeFrame: Frame = .stringFrame(.init(.known(.title), contentString: title))
+ let subframeTag = Tag(subframes: [subframeKey: subframeFrame])
+ */
+
 // MARK: Tag extension
 extension Tag {
-    
+
     public subscript(chapter elementID: String) -> ChapterFrame? {
         get {
             if let frame = self.frames[.chapter(elementID: elementID)],
                 case .chapterFrame(let chapterFrame) = frame {
                 return chapterFrame
             } else {
-                return .init(withElementID: "",
-                             from: 0, to: 0,
-                             withTitle: "")
+                return .init()
             }
         }
         set {
             let key: FrameKey = .chapter(elementID: elementID)
-            let frame = ChapterFrame(withElementID: elementID,
-                                     from: newValue?.startTime ?? 0,
-                                     to: newValue?.endTime ?? 0,
-                                     withTitle: newValue?.embeddedSubframesTag.title ?? "")
+            let frame = ChapterFrame(.known(.chapter),
+                                     elementID: elementID,
+                                     startTime: newValue?.startTime ?? 0,
+                                     endTime: newValue?.endTime ?? 0,
+                                     embeddedSubframesTag: newValue?.embeddedSubframesTag)
             self.frames[key] = .chapterFrame(frame)
         }
     }
+    
     
 }
