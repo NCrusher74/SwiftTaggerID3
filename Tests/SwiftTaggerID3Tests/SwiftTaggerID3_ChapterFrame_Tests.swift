@@ -29,7 +29,21 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         XCTAssertEqual(tag[chapter: "ch1"]?.endTime, 5250)
         XCTAssertEqual(tag[chapter: "ch1"]?.embeddedSubframesTag.title, "Chapter 02")
     }
-    
+
+    @available(OSX 10.12, *)
+    func testFrameRemoval() throws {
+        var tag = try tagChapterized()
+        
+        tag.removeTOCFrame(withElementID: "TOC")
+        tag.removeChapterFrame(withElementID: "ch0")
+        tag.removeChapterFrame(withElementID: "ch1")
+        
+        let outputUrl = try localDirectory(fileName: "removaltest", fileExtension: "mp3")
+        XCTAssertNoThrow(try mp3Chapterized().write(tagVersion: .v2_4,
+                                               using: tag,
+                                               writingTo: outputUrl))
+    }
+
     @available(OSX 10.12, *)
     func testWritingTableOfContentsOnBlankFile() throws {
         var tag = try tagNoMeta()
@@ -196,6 +210,8 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         XCTAssertEqual(tagWritten[chapter: "ch03"]?.embeddedSubframesTag.title, "Chapter Three")
         // XCTAssertEqual failed: ("Optional("")") is not equal to ("Optional("Chapter Three")")
     }
+    
+    
 
 
 }

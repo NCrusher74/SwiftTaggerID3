@@ -201,6 +201,15 @@ public struct TableOfContentsFrame: FrameProtocol, CustomStringConvertible {
     func encodeSubframes(subframe: FrameProtocol, version: Version) throws -> Data {
         return try subframe.encode(version: version)
     }
+    
+    init() {
+        self.init(.known(.tableOfContents),
+                  elementID: "",
+                  topLevelFlag: true,
+                  orderedFlag: true,
+                  childElementIDs: [],
+                  embeddedSubframesTag: Tag(subframes: [:]))
+    }
 }
 
 // MARK: Tag Extension
@@ -233,4 +242,9 @@ extension Tag {
             self.frames[key] = .tocFrame(frame)
         }
     }
+    
+    public mutating func removeTOCFrame(withElementID: String) {
+        self.frames[.tableOfContents(elementID: withElementID)] = nil
+    }
+    
 }

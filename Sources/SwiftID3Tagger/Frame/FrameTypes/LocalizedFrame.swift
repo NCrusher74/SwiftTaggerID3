@@ -174,20 +174,12 @@ extension Tag {
         self.frames[frameKey] = .localizedFrame(frame)
     }
     
-    public mutating func removeComment(withDescription: String?) {
-        set(.known(.comments),
-            .comments(description: withDescription ?? ""),
-            in: nil,
-            to: nil,
-            with: "")
+    public mutating func removeCommentFrame(withDescription: String) {
+        self.frames[.comments(description: withDescription)] = nil
     }
 
-    public mutating func removeLyrics(withDescription: String?) {
-        set(.known(.unsynchronizedLyrics),
-            .unsynchronizedLyrics(description: withDescription ?? ""),
-            in: nil,
-            to: nil,
-            with: "")
+    public mutating func removeLyricsFrame(withDescription: String) {
+        self.frames[.unsynchronizedLyrics(description: withDescription)] = nil
     }
 
     /// Comments frame getter-setter. ID3 Identifier `COM`/`COMM`
@@ -255,18 +247,12 @@ extension Tag {
         }
     }
 
-    public mutating func removeUserText(withDescription: String?) {
-        set(.known(.userDefinedText),
-            .userDefinedText(description: withDescription ?? ""),
-            to: nil,
-            with: "")
+    public mutating func removeUserTextFrame(withDescription: String) {
+        self.frames[.userDefinedText(description: withDescription)] = nil
     }
 
-    public mutating func removeUserWebpage(withDescription: String?) {
-        set(.known(.userDefinedWebpage),
-            .userDefinedWebpage(description: withDescription ?? ""),
-            to: nil,
-            with: "")
+    public mutating func removeUserUrlFrame(withDescription: String) {
+        self.frames[.userDefinedWebpage(description: withDescription)] = nil
     }
 
     /// UserDefinedWebpage frame getter-setter. ID3 Identifier `WXX`/`WXXX`

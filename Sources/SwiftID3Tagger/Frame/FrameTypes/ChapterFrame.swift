@@ -181,5 +181,8 @@ extension Tag {
         }
     }
     
-    
+    public mutating func removeChapterFrame(withElementID: String) {
+        self.frames[.chapter(elementID: withElementID)] = nil
+    }
+
 }

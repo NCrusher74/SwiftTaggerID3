@@ -11,7 +11,7 @@ import Foundation
 
 public enum CommentDescriptionPresets: String {
     case description = "Description"
-    case longDescription = "LongDescription"
+    case longDescription = "Long Description"
     case linerNotes = "Liner Notes"
     case songDescription = "Song Description"
     case seriesDescription = "Series Description"
