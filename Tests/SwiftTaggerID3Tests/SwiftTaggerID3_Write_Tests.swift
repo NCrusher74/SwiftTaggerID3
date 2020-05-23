@@ -16,95 +16,95 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
     // MARK: V24 writing test
     // Test writing, and accuracy of written data, version 2.4
     func testV24Writing() throws {
-        var tag = try tagNoMeta()
+        var tag = try TestFile.noMeta.tag()
 
-        tag.album = "Album"
-        tag.albumArtist = "Album Artist"
-        tag.albumSort = "Album Sort"
-        tag.albumArtistSort = "Album Artist Sort"
-        tag.arranger = "Arranger"
-        tag.artist = "Artist"
-        tag.artistSort = "Artist Sort"
-        tag.composer = "Composer"
-        tag.composerSort = "Composer Sort"
-        tag.conductor = "Conductor"
-        tag.contentGroup = "Content Group"
-        tag.copyright = "2020 Copyright"
-        tag.encodedBy = "Encoded By"
-        tag.encodingSettings = "Encoding Settings"
-        tag.fileOwner = "File Owner"
-        tag.grouping = "Grouping"
-        tag.initialKey = .aFlatMinor
-        tag.lyricist = "Lyricist"
-        tag.mood = "Mood"
-        tag.movementName = "Movement Name"
-        tag.originalAlbum = "Original Album"
-        tag.originalArtist = "Original Artist"
-        tag.originalFilename = "Original Filename"
-        tag.originalLyricist = "Original Lyricist"
-        tag.podcastID = "Podcast ID"
-        tag.podcastCategory = "Podcast Category"
-        tag.podcastFeedLink = "http://podcast.url"
-        tag.podcastDescription = "Podcast Description"
-        tag.podcastKeywords = "Podcast Keywords"
-        tag.publisher = "Publisher"
-        tag.producedNotice = "2020 Produced Notice"
-        tag.radioStation = "Radio Station"
-        tag.radioStationOwner = "Radio Station Owner"
-        tag.subtitle = "Subtitle"
-        tag.setSubtitle = "Set Subtitle"
-        tag.title = "Title"
-        tag.titleSort = "Title Sort"
+        tag?.album = "Album"
+        tag?.albumArtist = "Album Artist"
+        tag?.albumSort = "Album Sort"
+        tag?.albumArtistSort = "Album Artist Sort"
+        tag?.arranger = "Arranger"
+        tag?.artist = "Artist"
+        tag?.artistSort = "Artist Sort"
+        tag?.composer = "Composer"
+        tag?.composerSort = "Composer Sort"
+        tag?.conductor = "Conductor"
+        tag?.contentGroup = "Content Group"
+        tag?.copyright = "2020 Copyright"
+        tag?.encodedBy = "Encoded By"
+        tag?.encodingSettings = "Encoding Settings"
+        tag?.fileOwner = "File Owner"
+        tag?.grouping = "Grouping"
+        tag?.initialKey = .aFlatMinor
+        tag?.lyricist = "Lyricist"
+        tag?.mood = "Mood"
+        tag?.movementName = "Movement Name"
+        tag?.originalAlbum = "Original Album"
+        tag?.originalArtist = "Original Artist"
+        tag?.originalFilename = "Original Filename"
+        tag?.originalLyricist = "Original Lyricist"
+        tag?.podcastID = "Podcast ID"
+        tag?.podcastCategory = "Podcast Category"
+        tag?.podcastFeedLink = "http://podcast.url"
+        tag?.podcastDescription = "Podcast Description"
+        tag?.podcastKeywords = "Podcast Keywords"
+        tag?.publisher = "Publisher"
+        tag?.producedNotice = "2020 Produced Notice"
+        tag?.radioStation = "Radio Station"
+        tag?.radioStationOwner = "Radio Station Owner"
+        tag?.subtitle = "Subtitle"
+        tag?.setSubtitle = "Set Subtitle"
+        tag?.title = "Title"
+        tag?.titleSort = "Title Sort"
         
-        tag.compilation = true
-        tag.bpm = 99
-        tag.isrc = 987654321098
-        tag.length = 9767
-        tag.movementNumber = 5
-        tag.totalMovements = 6
-        tag.playlistDelay = 0
+        tag?.compilation = true
+        tag?.bpm = 99
+        tag?.isrc = 987654321098
+        tag?.length = 9767
+        tag?.movementNumber = 5
+        tag?.totalMovements = 6
+        tag?.playlistDelay = 0
         
-        tag.audioSourceWebpage = "http://audiosource.url"
-        tag.audioFileWebpage = "http://audiofile.url"
-        tag.artistWebpage = "http://artist.url"
-        tag.copyrightWebpage = "http://copyright.url"
-        tag.paymentWebpage = "http://payment.url"
-        tag.publisherWebpage = "http://publisher.url"
-        tag.radioStationWebpage = "http://radiostation.url"
+        tag?.audioSourceWebpage = "http://audiosource.url"
+        tag?.audioFileWebpage = "http://audiofile.url"
+        tag?.artistWebpage = "http://artist.url"
+        tag?.copyrightWebpage = "http://copyright.url"
+        tag?.paymentWebpage = "http://payment.url"
+        tag?.publisherWebpage = "http://publisher.url"
+        tag?.radioStationWebpage = "http://radiostation.url"
         
         // MARK: Language Frame
-        tag.languages = [.eng]
+        tag?.languages = [.eng]
         
         // MARK: Part Of Total frame
-        tag.trackNumber?.track = 1
-        tag.trackNumber?.totalTracks = 2
-        tag.discNumber?.disc = 3
-        tag.discNumber?.totalDiscs = 4
+        tag?.trackNumber?.track = 1
+        tag?.trackNumber?.totalTracks = 2
+        tag?.discNumber?.disc = 3
+        tag?.discNumber?.totalDiscs = 4
         
         // MARK: Localized Frame
-        tag[comments: .eng, "Comment"] = "Comment Content" // reading description as part of the comment for some reason
-        tag[lyrics: .eng, "Lyrics"] = "Lyrics Content" // same here - null term not working?
-        tag[customComment: .eng, .description] = "Description Content"
-        tag[customComment: .eng, .linerNotes] = "Liner Notes Content"
-        tag[customComment: .eng, .longDescription] = "Long Description Content"
-        tag[customComment: .eng, .seriesDescription] = "Series Description Content"
-        tag[customComment: .eng, .songDescription] = "Song Description Content"
+        tag?[comments: .eng, "Comment"] = "Comment Content"
+        tag?[lyrics: .eng, "Lyrics"] = "Lyrics Content"
+        tag?[customComment: .eng, .description] = "Description Content"
+        tag?[customComment: .eng, .linerNotes] = "Liner Notes Content"
+        tag?[customComment: .eng, .longDescription] = "Long Description Content"
+        tag?[customComment: .eng, .seriesDescription] = "Series Description Content"
+        tag?[customComment: .eng, .songDescription] = "Song Description Content"
         
-        tag[userDefinedUrl: "UserURL"] = "http://userdefined.url"
-        tag.onlineExtras = "http://onlineextras.url"
+        tag?[userDefinedUrl: "UserURL"] = "http://userdefined.url"
+        tag?.onlineExtras = "http://onlineextras.url"
         
-        tag[userDefinedText: "UserText"] = "User Text Content"
-        tag.thanks = "Thanks"
-        tag.sourceCredit = "Source Credit"
-        tag.season = 8
-        tag.seriesName = "Series Name"
-        tag.network = "Network"
-        tag.acknowledgment = "Acknowledgment"
-        tag.episodeName = "Episode Name"
-        tag.episodeNumber = 7
-        tag.keywords = ["Key","Words"]
-        tag.contentRating = .clean
-        tag.contentAdvisory = .usMovieUnrated
+        tag?[userDefinedText: "UserText"] = "User Text Content"
+        tag?.thanks = "Thanks"
+        tag?.sourceCredit = "Source Credit"
+        tag?.season = 8
+        tag?.seriesName = "Series Name"
+        tag?.network = "Network"
+        tag?.acknowledgment = "Acknowledgment"
+        tag?.episodeName = "Episode Name"
+        tag?.episodeNumber = 7
+        tag?.keywords = ["Key","Words"]
+        tag?.contentRating = .clean
+        tag?.contentAdvisory = .usMovieUnrated
         
 //        // MARK: TOC and Chapter Frames
 //        tag[tableOfContents: "TOC"]?.topLevelFlag = true
@@ -118,31 +118,31 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         //        tag[embeddedSubframes: "Ch01"]?.title = "Chapter Name" - subscript is get only?
         //
         // MARK: Credits List Frame
-        tag.addInvolvedPersonCredit(role: .actor, person: "Actor Name")
-        tag.addInvolvedPersonCredit(role: .actress, person: "Actress Name")
-        tag.addMusicianCredit(role: .soprano, person: "Soprano Name")
-        tag.addMusicianCredit(role: .alto, person: "Alto Name")
+        tag?.addInvolvedPersonCredit(role: .actor, person: "Actor Name")
+        tag?.addInvolvedPersonCredit(role: .actress, person: "Actress Name")
+        tag?.addMusicianCredit(role: .soprano, person: "Soprano Name")
+        tag?.addMusicianCredit(role: .alto, person: "Alto Name")
         
         // MARK: Preset Options Frame
-        tag.fileType?.fileType = nil
-        tag.fileType?.fileTypeRefinement = nil
-        tag.fileType?.additionalInformation = "File Type"
-        tag.genre?.presetGenre = .Audiobook
-        tag.genre?.customGenre = "Genre Type" // needs to be fixed
-        tag.mediaType?.mediaType = nil // get rid of parens when nil
-        tag.mediaType?.mediaTypeRefinement = nil
-        tag.mediaType?.additionalInformation = "Media Type"
+        tag?.fileType?.fileType = nil
+        tag?.fileType?.fileTypeRefinement = nil
+        tag?.fileType?.additionalInformation = "File Type"
+        tag?.genre?.presetGenre = .Audiobook
+        tag?.genre?.customGenre = "Genre Type" // needs to be fixed
+        tag?.mediaType?.mediaType = nil // get rid of parens when nil
+        tag?.mediaType?.mediaTypeRefinement = nil
+        tag?.mediaType?.additionalInformation = "Media Type"
         
         // MARK: Date Frame
-        tag.releaseDateTime = (year: 2015, month: 02, day: 03, hour: 11, minute: 11)
-        tag.encodingDateTime = (year: 2016, month: 04, day: 05, hour: nil, minute: nil)
-        tag.taggingDateTime = (year: 2017, month: 06, day: 07, hour: nil, minute: nil)
-        tag.originalReleaseTime = (year: 2014, month: 08, day: 09, hour: nil, minute: nil)
-        tag.recordingDateTime = (year: 2018, month: 10, day: 11, hour: nil, minute: nil)
+        tag?.releaseDateTime = (year: 2015, month: 02, day: 03, hour: 11, minute: 11)
+        tag?.encodingDateTime = (year: 2016, month: 04, day: 05, hour: nil, minute: nil)
+        tag?.taggingDateTime = (year: 2017, month: 06, day: 07, hour: nil, minute: nil)
+        tag?.originalReleaseTime = (year: 2014, month: 08, day: 09, hour: nil, minute: nil)
+        tag?.recordingDateTime = (year: 2018, month: 10, day: 11, hour: nil, minute: nil)
 
         try emptyDirectory()
         let outputUrl = try tempDirectory().appendingPathComponent("testV24Writing.mp3")
-        XCTAssertNoThrow(try mp3NoMeta().write(tagVersion: .v2_4, using: tag, writingTo: outputUrl))
+        XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_4, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v24.url)), writingTo: outputUrl))
         
         // MARK: Confirm accuracy
         let mp3UrlWritten = outputUrl
@@ -270,92 +270,92 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
     // MARK: V23 writing test
     // Test writing, and accuracy of written data, version 2.3
     func testV23Writing() throws {
-        var tag = try tagNoMeta()
+        var tag = try TestFile.noMeta.tag()
 
-        tag.album = "Album"
-        tag.albumArtist = "Album Artist"
-        tag.albumSort = "Album Sort"
-        tag.albumArtistSort = "Album Artist Sort"
-        tag.arranger = "Arranger"
-        tag.artist = "Artist"
-        tag.artistSort = "Artist Sort"
-        tag.composer = "Composer"
-        tag.composerSort = "Composer Sort"
-        tag.conductor = "Conductor"
-        tag.contentGroup = "Content Group"
-        tag.copyright = "2020 Copyright"
-        tag.encodedBy = "Encoded By"
-        tag.encodingSettings = "Encoding Settings"
-        tag.fileOwner = "File Owner"
-        tag.grouping = "Grouping"
-        tag.initialKey = .aFlatMinor
-        tag.lyricist = "Lyricist"
-        tag.movementName = "Movement Name"
-        tag.originalAlbum = "Original Album"
-        tag.originalArtist = "Original Artist"
-        tag.originalFilename = "Original Filename"
-        tag.originalLyricist = "Original Lyricist"
-        tag.podcastID = "Podcast ID"
-        tag.podcastCategory = "Podcast Category"
-        tag.podcastFeedLink = "http://podcast.url"
-        tag.podcastDescription = "Podcast Description"
-        tag.podcastKeywords = "Podcast Keywords"
-        tag.publisher = "Publisher"
-        tag.radioStation = "Radio Station"
-        tag.radioStationOwner = "Radio Station Owner"
-        tag.subtitle = "Subtitle"
-        tag.title = "Title"
-        tag.titleSort = "Title Sort"
+        tag?.album = "Album"
+        tag?.albumArtist = "Album Artist"
+        tag?.albumSort = "Album Sort"
+        tag?.albumArtistSort = "Album Artist Sort"
+        tag?.arranger = "Arranger"
+        tag?.artist = "Artist"
+        tag?.artistSort = "Artist Sort"
+        tag?.composer = "Composer"
+        tag?.composerSort = "Composer Sort"
+        tag?.conductor = "Conductor"
+        tag?.contentGroup = "Content Group"
+        tag?.copyright = "2020 Copyright"
+        tag?.encodedBy = "Encoded By"
+        tag?.encodingSettings = "Encoding Settings"
+        tag?.fileOwner = "File Owner"
+        tag?.grouping = "Grouping"
+        tag?.initialKey = .aFlatMinor
+        tag?.lyricist = "Lyricist"
+        tag?.movementName = "Movement Name"
+        tag?.originalAlbum = "Original Album"
+        tag?.originalArtist = "Original Artist"
+        tag?.originalFilename = "Original Filename"
+        tag?.originalLyricist = "Original Lyricist"
+        tag?.podcastID = "Podcast ID"
+        tag?.podcastCategory = "Podcast Category"
+        tag?.podcastFeedLink = "http://podcast.url"
+        tag?.podcastDescription = "Podcast Description"
+        tag?.podcastKeywords = "Podcast Keywords"
+        tag?.publisher = "Publisher"
+        tag?.radioStation = "Radio Station"
+        tag?.radioStationOwner = "Radio Station Owner"
+        tag?.subtitle = "Subtitle"
+        tag?.title = "Title"
+        tag?.titleSort = "Title Sort"
         
-        tag.compilation = true
-        tag.bpm = 99
-        tag.isrc = 987654321098
-        tag.length = 9767
-        tag.movementNumber = 5
-        tag.totalMovements = 6
-        tag.playlistDelay = 0
+        tag?.compilation = true
+        tag?.bpm = 99
+        tag?.isrc = 987654321098
+        tag?.length = 9767
+        tag?.movementNumber = 5
+        tag?.totalMovements = 6
+        tag?.playlistDelay = 0
         
-        tag.audioSourceWebpage = "http://audiosource.url"
-        tag.audioFileWebpage = "http://audiofile.url"
-        tag.artistWebpage = "http://artist.url"
-        tag.copyrightWebpage = "http://copyright.url"
-        tag.paymentWebpage = "http://payment.url"
-        tag.publisherWebpage = "http://publisher.url"
-        tag.radioStationWebpage = "http://radiostation.url"
+        tag?.audioSourceWebpage = "http://audiosource.url"
+        tag?.audioFileWebpage = "http://audiofile.url"
+        tag?.artistWebpage = "http://artist.url"
+        tag?.copyrightWebpage = "http://copyright.url"
+        tag?.paymentWebpage = "http://payment.url"
+        tag?.publisherWebpage = "http://publisher.url"
+        tag?.radioStationWebpage = "http://radiostation.url"
         
         // MARK: Language Frame
-        tag.languages = [.eng]
+        tag?.languages = [.eng]
         
         // MARK: Part Of Total frame
-        tag.trackNumber?.track = 1
-        tag.trackNumber?.totalTracks = 2
-        tag.discNumber?.disc = 3
-        tag.discNumber?.totalDiscs = 4
+        tag?.trackNumber?.track = 1
+        tag?.trackNumber?.totalTracks = 2
+        tag?.discNumber?.disc = 3
+        tag?.discNumber?.totalDiscs = 4
         
         // MARK: Localized Frame
-        tag[comments: .eng, "Comment"] = "Comment Content" // reading description as part of the comment for some reason
-        tag[lyrics: .eng, "Lyrics"] = "Lyrics Content" // same here - null term not working?
-        tag[customComment: .eng, .description] = "Description Content"
-        tag[customComment: .eng, .linerNotes] = "Liner Notes Content"
-        tag[customComment: .eng, .longDescription] = "Long Description Content"
-        tag[customComment: .eng, .seriesDescription] = "Series Description Content"
-        tag[customComment: .eng, .songDescription] = "Song Description Content"
+        tag?[comments: .eng, "Comment"] = "Comment Content" // reading description as part of the comment for some reason
+        tag?[lyrics: .eng, "Lyrics"] = "Lyrics Content" // same here - null term not working?
+        tag?[customComment: .eng, .description] = "Description Content"
+        tag?[customComment: .eng, .linerNotes] = "Liner Notes Content"
+        tag?[customComment: .eng, .longDescription] = "Long Description Content"
+        tag?[customComment: .eng, .seriesDescription] = "Series Description Content"
+        tag?[customComment: .eng, .songDescription] = "Song Description Content"
         
-        tag[userDefinedUrl: "UserURL"] = "http://userdefined.url"
-        tag.onlineExtras = "http://onlineextras.url"
+        tag?[userDefinedUrl: "UserURL"] = "http://userdefined.url"
+        tag?.onlineExtras = "http://onlineextras.url"
         
-        tag[userDefinedText: "UserText"] = "User Text Content"
-        tag.thanks = "Thanks"
-        tag.sourceCredit = "Source Credit"
-        tag.season = 8
-        tag.seriesName = "Series Name"
-        tag.network = "Network"
-        tag.acknowledgment = "Acknowledgment"
-        tag.episodeName = "Episode Name"
-        tag.episodeNumber = 7
-        tag.keywords = ["Key","Words"]
-        tag.contentRating = .clean
-        tag.contentAdvisory = .usMovieUnrated
+        tag?[userDefinedText: "UserText"] = "User Text Content"
+        tag?.thanks = "Thanks"
+        tag?.sourceCredit = "Source Credit"
+        tag?.season = 8
+        tag?.seriesName = "Series Name"
+        tag?.network = "Network"
+        tag?.acknowledgment = "Acknowledgment"
+        tag?.episodeName = "Episode Name"
+        tag?.episodeNumber = 7
+        tag?.keywords = ["Key","Words"]
+        tag?.contentRating = .clean
+        tag?.contentAdvisory = .usMovieUnrated
         
 //        // MARK: TOC and Chapter Frames
 //        tag[tableOfContents: "TOC"]?.topLevelFlag = true
@@ -369,29 +369,29 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         //        tag[embeddedSubframes: "Ch01"]?.title = "Chapter Name" - subscript is get only?
         //
         // MARK: Credits List Frame
-        tag.addInvolvedPersonCredit(role: .actor, person: "Actor Name")
-        tag.addInvolvedPersonCredit(role: .actress, person: "Actress Name")
+        tag?.addInvolvedPersonCredit(role: .actor, person: "Actor Name")
+        tag?.addInvolvedPersonCredit(role: .actress, person: "Actress Name")
         
         // MARK: Preset Options Frame
-        tag.fileType?.fileType = nil
-        tag.fileType?.fileTypeRefinement = nil
-        tag.fileType?.additionalInformation = "File Type"
-        tag.genre?.presetGenre = .Audiobook
-        tag.genre?.customGenre = "Genre Type"
-        tag.mediaType?.mediaType = nil
-        tag.mediaType?.mediaTypeRefinement = nil
-        tag.mediaType?.additionalInformation = "Media Type"
+        tag?.fileType?.fileType = nil
+        tag?.fileType?.fileTypeRefinement = nil
+        tag?.fileType?.additionalInformation = "File Type"
+        tag?.genre?.presetGenre = .Audiobook
+        tag?.genre?.customGenre = "Genre Type"
+        tag?.mediaType?.mediaType = nil
+        tag?.mediaType?.mediaTypeRefinement = nil
+        tag?.mediaType?.additionalInformation = "Media Type"
         
         // MARK: Date frame
-        tag.recordingDateTime = (year: 2018, month: 10, day: 11, hour: nil, minute: nil)
-        tag.date = (month: 02, day: 03)
-        tag.time = (hour: 11, minute: 11)
-        tag.year = 2015
-        tag.originalReleaseTime = (year: 2014, month: nil, day: nil, hour: nil, minute: nil)
+        tag?.recordingDateTime = (year: 2018, month: 10, day: 11, hour: nil, minute: nil)
+        tag?.date = (month: 02, day: 03)
+        tag?.time = (hour: 11, minute: 11)
+        tag?.year = 2015
+        tag?.originalReleaseTime = (year: 2014, month: nil, day: nil, hour: nil, minute: nil)
         
         try emptyDirectory()
         let outputUrl = try tempDirectory().appendingPathComponent("testV23Writing.mp3")
-        XCTAssertNoThrow(try mp3NoMeta().write(tagVersion: .v2_3, using: tag, writingTo: outputUrl))
+        XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_3, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v23.url)), writingTo: outputUrl))
 
         // MARK: Confirm accuracy
         let mp3UrlWritten = outputUrl
@@ -498,105 +498,105 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
     
     // Test writing, and accuracy of written data, version 2.2
     func testV22Writing() throws {
-        var tag = try tagNoMeta()
+        var tag = try TestFile.noMeta.tag()
 
-        tag.album = "Album"
-        tag.albumArtist = "Album Artist"
-        tag.albumSort = "Album Sort"
-        tag.albumArtistSort = "Album Artist Sort"
-        tag.arranger = "Arranger"
-        tag.artist = "Artist"
-        tag.artistSort = "Artist Sort"
-        tag.composer = "Composer"
-        tag.composerSort = "Composer Sort"
-        tag.conductor = "Conductor"
-        tag.contentGroup = "Content Group"
-        tag.copyright = "2020 Copyright"
-        tag.encodedBy = "Encoded By"
-        tag.encodingSettings = "Encoding Settings"
-        tag.initialKey = .aFlatMinor
-        tag.lyricist = "Lyricist"
-        tag.originalAlbum = "Original Album"
-        tag.originalArtist = "Original Artist"
-        tag.originalFilename = "Original Filename"
-        tag.originalLyricist = "Original Lyricist"
-        tag.publisher = "Publisher"
-        tag.radioStation = "Radio Station"
-        tag.radioStationOwner = "Radio Station Owner"
-        tag.subtitle = "Subtitle"
-        tag.title = "Title"
-        tag.titleSort = "Title Sort"
+        tag?.album = "Album"
+        tag?.albumArtist = "Album Artist"
+        tag?.albumSort = "Album Sort"
+        tag?.albumArtistSort = "Album Artist Sort"
+        tag?.arranger = "Arranger"
+        tag?.artist = "Artist"
+        tag?.artistSort = "Artist Sort"
+        tag?.composer = "Composer"
+        tag?.composerSort = "Composer Sort"
+        tag?.conductor = "Conductor"
+        tag?.contentGroup = "Content Group"
+        tag?.copyright = "2020 Copyright"
+        tag?.encodedBy = "Encoded By"
+        tag?.encodingSettings = "Encoding Settings"
+        tag?.initialKey = .aFlatMinor
+        tag?.lyricist = "Lyricist"
+        tag?.originalAlbum = "Original Album"
+        tag?.originalArtist = "Original Artist"
+        tag?.originalFilename = "Original Filename"
+        tag?.originalLyricist = "Original Lyricist"
+        tag?.publisher = "Publisher"
+        tag?.radioStation = "Radio Station"
+        tag?.radioStationOwner = "Radio Station Owner"
+        tag?.subtitle = "Subtitle"
+        tag?.title = "Title"
+        tag?.titleSort = "Title Sort"
         
-        tag.compilation = true
-        tag.bpm = 99
-        tag.isrc = 987654321098
-        tag.length = 9767
-        tag.playlistDelay = 0
+        tag?.compilation = true
+        tag?.bpm = 99
+        tag?.isrc = 987654321098
+        tag?.length = 9767
+        tag?.playlistDelay = 0
         
-        tag.audioSourceWebpage = "http://audiosource.url"
-        tag.audioFileWebpage = "http://audiofile.url"
-        tag.artistWebpage = "http://artist.url"
-        tag.copyrightWebpage = "http://copyright.url"
-        tag.publisherWebpage = "http://publisher.url"
+        tag?.audioSourceWebpage = "http://audiosource.url"
+        tag?.audioFileWebpage = "http://audiofile.url"
+        tag?.artistWebpage = "http://artist.url"
+        tag?.copyrightWebpage = "http://copyright.url"
+        tag?.publisherWebpage = "http://publisher.url"
         
         // MARK: Language Frame
-        tag.languages = [.eng]
+        tag?.languages = [.eng]
         
         // MARK: Part Of Total frame
-        tag.trackNumber?.track = 1
-        tag.trackNumber?.totalTracks = 2
-        tag.discNumber?.disc = 3
-        tag.discNumber?.totalDiscs = 4
+        tag?.trackNumber?.track = 1
+        tag?.trackNumber?.totalTracks = 2
+        tag?.discNumber?.disc = 3
+        tag?.discNumber?.totalDiscs = 4
         
         // MARK: Localized Frame
-        tag[comments: .eng, "Comment"] = "Comment Content" // reading description as part of the comment for some reason
-        tag[lyrics: .eng, "Lyrics"] = "Lyrics Content" // same here - null term not working?
-        tag[customComment: .eng, .description] = "Description Content"
-        tag[customComment: .eng, .linerNotes] = "Liner Notes Content"
-        tag[customComment: .eng, .longDescription] = "Long Description Content"
-        tag[customComment: .eng, .seriesDescription] = "Series Description Content"
-        tag[customComment: .eng, .songDescription] = "Song Description Content"
+        tag?[comments: .eng, "Comment"] = "Comment Content" // reading description as part of the comment for some reason
+        tag?[lyrics: .eng, "Lyrics"] = "Lyrics Content" // same here - null term not working?
+        tag?[customComment: .eng, .description] = "Description Content"
+        tag?[customComment: .eng, .linerNotes] = "Liner Notes Content"
+        tag?[customComment: .eng, .longDescription] = "Long Description Content"
+        tag?[customComment: .eng, .seriesDescription] = "Series Description Content"
+        tag?[customComment: .eng, .songDescription] = "Song Description Content"
         
-        tag[userDefinedUrl: "UserURL"] = "http://userdefined.url"
-        tag.onlineExtras = "http://onlineextras.url"
+        tag?[userDefinedUrl: "UserURL"] = "http://userdefined.url"
+        tag?.onlineExtras = "http://onlineextras.url"
         
-        tag[userDefinedText: "UserText"] = "User Text Content"
-        tag.thanks = "Thanks"
-        tag.sourceCredit = "Source Credit"
-        tag.season = 8
-        tag.seriesName = "Series Name"
-        tag.network = "Network"
-        tag.acknowledgment = "Acknowledgment"
-        tag.episodeName = "Episode Name"
-        tag.episodeNumber = 7
-        tag.keywords = ["Key","Words"]
-        tag.contentRating = .clean
-        tag.contentAdvisory = .usMovieUnrated
+        tag?[userDefinedText: "UserText"] = "User Text Content"
+        tag?.thanks = "Thanks"
+        tag?.sourceCredit = "Source Credit"
+        tag?.season = 8
+        tag?.seriesName = "Series Name"
+        tag?.network = "Network"
+        tag?.acknowledgment = "Acknowledgment"
+        tag?.episodeName = "Episode Name"
+        tag?.episodeNumber = 7
+        tag?.keywords = ["Key","Words"]
+        tag?.contentRating = .clean
+        tag?.contentAdvisory = .usMovieUnrated
         
         // MARK: Credits List Frame
-        tag.addInvolvedPersonCredit(role: .actor, person: "Actor Name")
-        tag.addInvolvedPersonCredit(role: .actress, person: "Actress Name")
+        tag?.addInvolvedPersonCredit(role: .actor, person: "Actor Name")
+        tag?.addInvolvedPersonCredit(role: .actress, person: "Actress Name")
         
         // MARK: Preset Options Frame
-        tag.fileType?.fileType = nil
-        tag.fileType?.fileTypeRefinement = nil
-        tag.fileType?.additionalInformation = "File Type"
-        tag.genre?.presetGenre = .Audiobook
-        tag.genre?.customGenre = "Genre Type"
-        tag.mediaType?.mediaType = nil
-        tag.mediaType?.mediaTypeRefinement = nil
-        tag.mediaType?.additionalInformation = "Media Type"
+        tag?.fileType?.fileType = nil
+        tag?.fileType?.fileTypeRefinement = nil
+        tag?.fileType?.additionalInformation = "File Type"
+        tag?.genre?.presetGenre = .Audiobook
+        tag?.genre?.customGenre = "Genre Type"
+        tag?.mediaType?.mediaType = nil
+        tag?.mediaType?.mediaTypeRefinement = nil
+        tag?.mediaType?.additionalInformation = "Media Type"
         
         // MARK: Date frame
-        tag.recordingDateTime = (year: 2018, month: 10, day: 11, hour: nil, minute: nil)
-        tag.date = (month: 02, day: 03)
-        tag.time = (hour: 11, minute: 11)
-        tag.year = 2015
-        tag.originalReleaseTime = (year: 2014, month: nil, day: nil, hour: nil, minute: nil)
+        tag?.recordingDateTime = (year: 2018, month: 10, day: 11, hour: nil, minute: nil)
+        tag?.date = (month: 02, day: 03)
+        tag?.time = (hour: 11, minute: 11)
+        tag?.year = 2015
+        tag?.originalReleaseTime = (year: 2014, month: nil, day: nil, hour: nil, minute: nil)
 
         try emptyDirectory()
         let outputUrl = try tempDirectory().appendingPathComponent("testV22Writing.mp3")
-        XCTAssertNoThrow(try mp3NoMeta().write(tagVersion: .v2_2, using: tag, writingTo: outputUrl))
+        XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_2, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)), writingTo: outputUrl))
 
         // MARK: Confirm accuracy
         let mp3UrlWritten = outputUrl

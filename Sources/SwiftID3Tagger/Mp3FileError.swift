@@ -1,10 +1,10 @@
 /*
-
+ 
  Mp3FileError.swift
  SwiftTaggerID3
-
+ 
  Copyright ©2020 Nolaine Crusher. All rights reserved.
-
+ 
  */
 
 import Foundation
@@ -16,6 +16,8 @@ extension Mp3File {
         case CannotReadFile;
         /// Error generated when an date frame is not available for the chosen version
         case DateFrameNotAvailableForVersion
+        /// Error generated when a frame is not available for the version
+        case FrameNotValidForVersion
         /// Error generated when an invalid file format is passed to the ID3TagEditor.
         case InvalidFileFormat;
         /// Error generated when there's not valid data in the tag.
@@ -54,6 +56,8 @@ extension Mp3File.Error: LocalizedError {
                             Valid date frames for version 2.4 are:
                             .encodingDateTime, .originalReleaseDateTime, .recordingDateTime, .releaseDateTime, .taggingDateTime
                 """)
+            case .FrameNotValidForVersion:
+                return NSLocalizedString("This frame type is not available for this ID3 version", comment: "")
             case .InvalidFileFormat:
                 return NSLocalizedString(
                     "The file needs to be an MP3 file", comment: "")
@@ -76,7 +80,7 @@ extension Mp3File.Error: LocalizedError {
             case .InvalidTagSize:
                 return NSLocalizedString("The tag is not large enough to hold valid frame data", comment: "")
             case .InvalidDateString:
-            return NSLocalizedString("A date cannot be parsed from the string in the required format", comment: "String needs to be in ISO8601 (yyyy-MM-dd`T`HH:mm) format, per ID3 specs")
+                return NSLocalizedString("A date cannot be parsed from the string in the required format", comment: "String needs to be in ISO8601 (yyyy-MM-dd`T`HH:mm) format, per ID3 specs")
             case .InvalidTOCFrame:
                 return NSLocalizedString("A table of contents frame requires at least one child element ID", comment: "")
         }

@@ -14,109 +14,64 @@ let testMediaDirectory = URL(fileURLWithPath: #file)
     .deletingLastPathComponent()
     .appendingPathComponent("TestMedia")
 
-// MARK: v22 file
-let v22File = testMediaDirectory
-    .appendingPathComponent("mp3-v22-with-meta.mp3")
+enum TestFile {
+    case noMeta
+    case v22
+    case v23
+    case v24
+    case chapterized
+    case nonMP3
+    case sampleCover
+    
+    var url: URL {
+        switch self {
+            case .v22:
+                return testMediaDirectory
+                    .appendingPathComponent("mp3-v22-with-meta.mp3")
+            case .v23:
+                return testMediaDirectory
+                    .appendingPathComponent("mp3-v23-with-meta.mp3")
+            case .v24:
+                return testMediaDirectory
+                    .appendingPathComponent("mp3-v24-with-meta.mp3")
+            case .noMeta:
+                return testMediaDirectory
+                    .appendingPathComponent("mp3-nometa.mp3")
+            case .chapterized:
+                return testMediaDirectory
+                    .appendingPathComponent("mp3-chapterized.mp3")
+            case .nonMP3:
+                return testMediaDirectory
+                    .appendingPathComponent("not-an-mp3.m4a")
+            case .sampleCover:
+                return testMediaDirectory
+                    .appendingPathComponent("samplecover-green.jpg")
+        }
+    }
+    
+    func mp3File() throws -> Mp3File? {
+        switch self {
+            case .v22, .v23, .v24, .noMeta, .chapterized: return try Mp3File(location: self.url)
+            default: return nil
+        }
+    }
+    
+    func tag() throws -> Tag? {
+        switch self {
+            case .v22, .v23, .v24, .noMeta, .chapterized:
+                return try Tag(readFrom: self.mp3File() ?? Mp3File(location: self.url))
+            default: return nil
+        }
+    }
+    
+    func data() throws -> Data? {
+        switch self {
+            case .v22, .v23, .v24, .noMeta, .chapterized: return try Mp3File(location: self.url).data
+            default: return nil
+        }
+    }
 
-func mp3v22() throws -> Mp3File {
-    return try Mp3File(location: v22File)
 }
-
-func v22Data() throws -> Data {
-    return try Mp3File(location: v22File).data
-}
-
-func tagv22() throws -> Tag {
-    return try Tag(readFrom: mp3v22())
-}
-
-// MARK: v23 file
-let v23File = testMediaDirectory
-    .appendingPathComponent("mp3-v23-with-meta.mp3")
-
-func mp3v23() throws -> Mp3File {
-    return try Mp3File(location: v23File)
-}
-
-func v23Data() throws -> Data {
-    return try Mp3File(location: v23File).data
-}
-
-func tagv23() throws -> Tag {
-    return try Tag(readFrom: mp3v23())
-}
-
-// MARK: v24 file
-let v24File = testMediaDirectory
-    .appendingPathComponent("mp3-v24-with-meta.mp3")
-
-func mp3v24() throws -> Mp3File {
-    return try Mp3File(location: v24File)
-}
-
-func v24Data() throws -> Data {
-    return try Mp3File(location: v24File).data
-}
-
-func tagv24() throws -> Tag {
-    return try Tag(readFrom: mp3v24())
-}
-
-// MARK: noMeta file
-let noMetaFile = testMediaDirectory
-    .appendingPathComponent("mp3-nometa.mp3")
-
-func mp3NoMeta() throws -> Mp3File {
-    return try Mp3File(location: noMetaFile)
-}
-
-func noMetaData() throws -> Data {
-    return try Mp3File(location: noMetaFile).data
-}
-
-func tagNoMeta() throws -> Tag {
-    return try Tag(readFrom: mp3NoMeta())
-}
-
-// MARK: corrupted file
-let corruptedFile = testMediaDirectory
-    .appendingPathComponent("mp3-corrupted.mp3")
-
-func mp3Corrupted() throws -> Mp3File {
-    return try Mp3File(location: corruptedFile)
-}
-
-func corruptedData() throws -> Data {
-    return try Mp3File(location: corruptedFile).data
-}
-
-func tagCorrupted() throws -> Tag {
-    return try Tag(readFrom: mp3Corrupted())
-}
-
-// MARK: chapterized file
-let chapterizedFile = testMediaDirectory
-    .appendingPathComponent("mp3-chapterized.mp3")
-
-func mp3Chapterized() throws -> Mp3File {
-    return try Mp3File(location: chapterizedFile)
-}
-
-func chapterizedData() throws -> Data {
-    return try Mp3File(location: chapterizedFile).data
-}
-
-func tagChapterized() throws -> Tag {
-    return try Tag(readFrom: mp3Chapterized())
-}
-
-// MARK: other
-let nonMp3File = testMediaDirectory
-    .appendingPathComponent("not-an-mp3.m4a")
-
-let sampleCover = testMediaDirectory
-    .appendingPathComponent("samplecover-green.jpg")
-
 
 @available(OSX 10.12, *)
 func tempDirectory() throws -> URL {

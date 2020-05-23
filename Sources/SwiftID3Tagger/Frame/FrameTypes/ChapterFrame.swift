@@ -64,18 +64,19 @@ public struct ChapterFrame: FrameProtocol, CustomStringConvertible {
         let endTimeData = parsing.extractFirst(4)
         let endTimeUInt32 = UInt32(parsing: endTimeData, .bigEndian)
         self.endTime = Int(endTimeUInt32)
+        print(parsing.hexadecimal())
 
         /** The Start offset is a zero-based count of bytes from the beginning of the file to the first byte of the first audio frame in the chapter. If these bytes are all set to 0xFF then the value should be ignored and the start time value should be utilized.*/
         /** The End offset is a zero-based count of bytes from the beginning of the file to the first byte of the audio frame following the end of the chapter. If these bytes are all set to 0xFF then the value should be ignored and the end time value should be utilized.*/
         /// SwiftTagger uses start and end times, these will be set to 0xFF by default
-        _ = parsing.dropFirst(4) // start byte offset, unused
-        _ = parsing.dropFirst(4) // end byte offset, unused
+        parsing = parsing.dropFirst(4) // start byte offset, unused
+        parsing = parsing.dropFirst(4) // end byte offset, unused
         
-        // extract and parse subframe data
-        var subframes: [FrameKey: Frame] = [:]
+        // parse the subframes and add them to the embedded subframes tag
+        var subframes: [FrameKey:Frame] = [:]
         while !parsing.isEmpty {
             let embeddedSubframeIdentifierData = parsing.extractFirst(version.identifierLength)
-            if embeddedSubframeIdentifierData.first == 0x00 { break } // Padding, not a frame.
+            guard embeddedSubframeIdentifierData.first != 0x00  else { break }
             let subframeIdentifier = try String(ascii: embeddedSubframeIdentifierData)
             let subframe = try Frame(
                 identifier: subframeIdentifier,
@@ -113,14 +114,17 @@ public struct ChapterFrame: FrameProtocol, CustomStringConvertible {
     
     // encodes the contents of the frame and returns Data that can be added to the Tag instance to write to the file
     func encodeContents(version: Version) throws -> Data {
+        guard version != .v2_2 else {
+            throw Mp3File.Error.FrameNotValidForVersion
+        }
         var frameData = Data()
         // there is no encoding byte for Chapter frames
         // encode and append ElementID string, adding null terminator
         frameData.append(self.elementID.encoded(withNullTermination: true))
 
         // convert integers to UInt32 and then to Data and append
-        frameData.append(self.startTime.bigEndian.data)
-        frameData.append(self.endTime.bigEndian.data)
+        frameData.append(self.startTime.truncatedUInt32.bigEndianData)
+        frameData.append(self.endTime.truncatedUInt32.bigEndianData)
         
         // add in start and end offset bytes to satisfy spec
         // since SwiftTagger uses start and end times, these are unused by default
@@ -129,20 +133,24 @@ public struct ChapterFrame: FrameProtocol, CustomStringConvertible {
         frameData.append(contentsOf: offsetBytes) // start byte offset
         frameData.append(contentsOf: offsetBytes) // end byte offset
 
-        // encoded and append the subframes
+        // encode and append the subframes to data
         var encodedSubframes = Data()
         for subframe in self.embeddedSubframesTag.frames {
-            encodedSubframes.append(try encodeSubframes(subframe: subframe.value.asFrameProtocol, version: version))
+            let subframeAsFrameProtocol = subframe.value.asFrameProtocol
+            encodedSubframes.append(
+                try encodeSubframes(
+                    subframe: subframeAsFrameProtocol,
+                    version: version))
         }
         frameData.append(encodedSubframes)
         return frameData
     }
  
-    // encodes the subframes of the chapter frame
-    private func encodeSubframes(subframe: FrameProtocol, version: Version) throws -> Data {
-        return try subframe.encodeContents(version: version)
+    // use FrameProtocol `encodeContents` method to encode subframes
+    func encodeSubframes(subframe: FrameProtocol, version: Version) throws -> Data {
+        return try subframe.encode(version: version)
     }
-    
+
     init() {
         self.init(.known(.chapter),
                   elementID: "",

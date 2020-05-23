@@ -93,7 +93,7 @@ public struct TableOfContentsFrame: FrameProtocol, CustomStringConvertible {
             childIDCount -= 1
         }
         self.childElementIDs = childIDArray
-        
+
         // parse the subframes and add them to the embedded subframes tag
         var subframes: [FrameKey:Frame] = [:]
         while !parsing.isEmpty {
@@ -139,6 +139,9 @@ public struct TableOfContentsFrame: FrameProtocol, CustomStringConvertible {
     
     // encode the contents of the frame to add to an ID3 tag
     func encodeContents(version: Version) throws -> Data {
+        guard version != .v2_2 else {
+            throw Mp3File.Error.FrameNotValidForVersion
+        }
         var frameData = Data()
         // there is no encoding byte for TOC frames
         // encode and append the elementID, adding a null terminator
@@ -200,15 +203,6 @@ public struct TableOfContentsFrame: FrameProtocol, CustomStringConvertible {
     // use FrameProtocol `encodeContents` method to encode subframes
     func encodeSubframes(subframe: FrameProtocol, version: Version) throws -> Data {
         return try subframe.encode(version: version)
-    }
-    
-    init() {
-        self.init(.known(.tableOfContents),
-                  elementID: "",
-                  topLevelFlag: true,
-                  orderedFlag: true,
-                  childElementIDs: [],
-                  embeddedSubframesTag: Tag(subframes: [:]))
     }
 }
 

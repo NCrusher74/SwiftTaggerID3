@@ -30,18 +30,18 @@ class TestPrint: XCTestCase {
     }
     
     func testWipe() throws {
-        var tag = try tagv22()
-        tag.album = nil
-//        tag.trackNumber = nil
-        tag.fileType = nil
-        tag.involvedPeopleList = nil
-        tag.recordingDateTime = nil
+        var tag = try TestFile.noMeta.tag()
+        tag?.album = nil
+//        tag?.trackNumber = nil
+        tag?.fileType = nil
+        tag?.involvedPeopleList = nil
+        tag?.recordingDateTime = nil
         
-        tag.removeCommentFrame(withDescription: "")
+        tag?.removeCommentFrame(withDescription: "")
         
         let outputUrl = try localDirectory(fileName: "nometatest", fileExtension: "mp3")
-        XCTAssertNoThrow(try mp3NoMeta().write(tagVersion: .v2_3,
-                                               using: tag,
+        XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_3,
+                                                              using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)),
                                                writingTo: outputUrl))
         
         // MARK: Confirm accuracy
