@@ -539,7 +539,7 @@ enum KnownFrameLayoutIdentifier: CaseIterable {
             case .audioFileWebpage: return .audioFileWebpage
             case .audioSourceWebpage: return .audioSourceWebpage
             case .bpm: return .bpm
-            case .chapter: return .chapter(elementID: additionalIdentifier ?? UUID().uuidString)
+            case .chapter: return .chapter(startTimeString: additionalIdentifier ?? UUID().uuidString)
             case .comments: return .comments(description: additionalIdentifier ?? "")
             case .compilation: return .compilation
             case .composer: return .composer
@@ -591,7 +591,7 @@ enum KnownFrameLayoutIdentifier: CaseIterable {
             case .releaseTime: return .releaseTime
             case .setSubtitle: return .setSubtitle
             case .subtitle: return .subtitle
-            case .tableOfContents: return .tableOfContents(elementID: additionalIdentifier ?? UUID().uuidString)
+            case .tableOfContents: return .tableOfContentsSecondaryTOC(elementID: additionalIdentifier ?? UUID().uuidString)
             case .taggingTime: return .taggingTime
             case .time: return .time
             case .title: return .title

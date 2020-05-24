@@ -63,7 +63,7 @@ public enum FrameKey: Hashable {
     /** `Chapter` frame
      
         The purpose of this frame is to describe a single chapter within an audio file. */
-    case chapter(elementID: String)
+    case chapter(startTimeString: String)
     /** `Comments` frame
      
         This frame is intended for any kind of full text information that does not fit in any other frame. ALLOWS `(/n)` new line characters.
@@ -284,7 +284,8 @@ public enum FrameKey: Hashable {
         The purpose of "CTOC" frames is to allow a table of contents to be defined.
      
         In the simplest case, a single "CTOC" frame can be used to provide a flat (single-level) table of contents. However, multiple "CTOC" frames can also be used to define a hierarchical (multi-level) table of contents.  */
-    case tableOfContents(elementID: String)
+    case tableOfContentsTopLevelTOC
+    case tableOfContentsSecondaryTOC(elementID: String)
     /** `Tagging time` frame
      
         Contains a timestamp describing then the audio was tagged. NEW IN VERSION  2.4 */

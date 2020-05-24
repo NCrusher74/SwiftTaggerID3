@@ -38,7 +38,7 @@ struct CreditsListFrame: FrameProtocol, CustomStringConvertible {
          flags: Data) throws {
         self.flags = flags
         self.layout = layout
-        self.frameKey = layout.frameKey(additionalIdentifier: nil)
+        self.frameKey = self.layout.frameKey(additionalIdentifier: nil)
 
         var parsing = contents
         let encoding = try CreditsListFrame.extractEncoding(data: &parsing, version: version)

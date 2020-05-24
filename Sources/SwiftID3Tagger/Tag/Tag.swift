@@ -14,7 +14,7 @@ import Cocoa
 /// This wrapper houses methods and properties for parsing and constructing an ID3 tag
 public struct Tag: CustomStringConvertible {
     public var description: String {
-        return "\(frames.keys), \(frames.values.description)"
+        return "\(frames.values.description)"
     }
 
     /// The ID3 frames contained within the `Tag`
@@ -129,11 +129,13 @@ public struct Tag: CustomStringConvertible {
         return framesData
     }
         
+    // initializer for embedded subframes of Chapter and TOC frames
     init(subframes: [FrameKey: Frame]) {
         self.frames = subframes
     }
     
+    // initializer for starting with a completely empty tag instead of importing from file
     public init() {
-        self.init(subframes: [:])
+        self.frames = [:]
     }
 }

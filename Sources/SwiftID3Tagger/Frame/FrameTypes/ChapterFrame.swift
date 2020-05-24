@@ -53,18 +53,18 @@ public struct ChapterFrame: FrameProtocol, CustomStringConvertible {
         let elementID = parsing.extractPrefixAsStringUntilNullTermination(.isoLatin1)
         // initialize the elementID property from the string
         self.elementID = elementID ?? UUID().uuidString
-        // initialize the frameKey property using the elementID
-        self.frameKey = .chapter(elementID: self.elementID)
         
         // extract and convert integer properties to integers
         let startTimeData = parsing.extractFirst(4)
         let startTimeUInt32 = UInt32(parsing: startTimeData, .bigEndian)
         self.startTime = Int(startTimeUInt32)
-        
+
+        // initialize the frameKey property using the elementID
+        self.frameKey = .chapter(startTimeString: String(self.startTime))
+
         let endTimeData = parsing.extractFirst(4)
         let endTimeUInt32 = UInt32(parsing: endTimeData, .bigEndian)
         self.endTime = Int(endTimeUInt32)
-        print(parsing.hexadecimal())
 
         /** The Start offset is a zero-based count of bytes from the beginning of the file to the first byte of the first audio frame in the chapter. If these bytes are all set to 0xFF then the value should be ignored and the start time value should be utilized.*/
         /** The End offset is a zero-based count of bytes from the beginning of the file to the first byte of the audio frame following the end of the chapter. If these bytes are all set to 0xFF then the value should be ignored and the end time value should be utilized.*/
@@ -109,7 +109,7 @@ public struct ChapterFrame: FrameProtocol, CustomStringConvertible {
         self.embeddedSubframesTag = embeddedSubframesTag ?? Tag(subframes: [:])
         self.flags = ChapterFrame.defaultFlags
         self.layout = layout
-        self.frameKey = .chapter(elementID: elementID)
+        self.frameKey = .chapter(startTimeString: String(startTime))
     }
     
     // encodes the contents of the frame and returns Data that can be added to the Tag instance to write to the file
@@ -128,7 +128,7 @@ public struct ChapterFrame: FrameProtocol, CustomStringConvertible {
         
         // add in start and end offset bytes to satisfy spec
         // since SwiftTagger uses start and end times, these are unused by default
-        /** The Start offset/End offset is a zero-based count of bytes from the beginning of the file to the first byte of the first audio frame in the chapter. If these bytes are all set to 0xFF then the value should be ignored and the start time value should be utilized. */
+        /* The Start offset/End offset is a zero-based count of bytes from the beginning of the file to the first byte of the first audio frame in the chapter. If these bytes are all set to 0xFF then the value should be ignored and the start time value should be utilized. */
         let offsetBytes: [UInt8] = [0xFF, 0xFF, 0xFF, 0xFF]
         frameData.append(contentsOf: offsetBytes) // start byte offset
         frameData.append(contentsOf: offsetBytes) // end byte offset
@@ -160,18 +160,12 @@ public struct ChapterFrame: FrameProtocol, CustomStringConvertible {
     }
 }
 
-/*
- let subframeKey: FrameKey = .title
- let subframeFrame: Frame = .stringFrame(.init(.known(.title), contentString: title))
- let subframeTag = Tag(subframes: [subframeKey: subframeFrame])
- */
-
 // MARK: Tag extension
 extension Tag {
 
-    public subscript(chapter elementID: String) -> ChapterFrame? {
+    public subscript(chapter atStartTime: Int) -> ChapterFrame? {
         get {
-            if let frame = self.frames[.chapter(elementID: elementID)],
+            if let frame = self.frames[.chapter(startTimeString: String(atStartTime))],
                 case .chapterFrame(let chapterFrame) = frame {
                 return chapterFrame
             } else {
@@ -179,18 +173,17 @@ extension Tag {
             }
         }
         set {
-            let key: FrameKey = .chapter(elementID: elementID)
+            let key: FrameKey = .chapter(startTimeString: String(atStartTime))
             let frame = ChapterFrame(.known(.chapter),
-                                     elementID: elementID,
-                                     startTime: newValue?.startTime ?? 0,
+                                     elementID: newValue?.elementID ?? UUID().uuidString,
+                                     startTime: atStartTime,
                                      endTime: newValue?.endTime ?? 0,
                                      embeddedSubframesTag: newValue?.embeddedSubframesTag)
             self.frames[key] = .chapterFrame(frame)
         }
     }
     
-    public mutating func removeChapterFrame(withElementID: String) {
-        self.frames[.chapter(elementID: withElementID)] = nil
+    public mutating func removeChapterFrame(atStartTime: Int) {
+        self.frames[.chapter(startTimeString: String(atStartTime))] = nil
     }
-
 }

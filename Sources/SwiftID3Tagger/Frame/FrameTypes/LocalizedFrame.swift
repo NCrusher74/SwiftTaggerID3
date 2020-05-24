@@ -67,7 +67,7 @@ struct LocalizedFrame: FrameProtocol, CustomStringConvertible {
         let parsed = try LocalizedFrame.extractDescriptionAndContent(from: &parsing, encoding: encoding)
         self.descriptionString = parsed.description ?? ""
         self.contentString = parsed.content
-        self.frameKey = layout.frameKey(additionalIdentifier: self.descriptionString)
+        self.frameKey = layout.frameKey(additionalIdentifier: self.descriptionString) 
     }
     
     // MARK: Frame building

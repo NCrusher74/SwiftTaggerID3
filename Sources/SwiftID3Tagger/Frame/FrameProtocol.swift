@@ -54,8 +54,8 @@ extension FrameProtocol {
         
         var frameData = Data()
         // encode and append header data
-        frameData.append(Self.identifierData(layout: layout, version: version))
-        frameData.append(Self.calculateFrameContentSize(encodedContent: contents, version: version))
+        frameData.append(identifierData(layout: layout, version: version))
+        frameData.append(calculateFrameContentSize(encodedContent: contents, version: version))
         switch version {
             case .v2_2:
                 break // Skip flags.
@@ -113,7 +113,7 @@ extension FrameProtocol {
     /// - Returns:
     ///   - Version 2.2: three bytes of frame-size data.
     ///   - Versions 2.3 & 2.4: four bytes of frame-size data
-    static func calculateFrameContentSize(encodedContent: Data, version: Version) -> Data {
+    func calculateFrameContentSize(encodedContent: Data, version: Version) -> Data {
         let contentSize = encodedContent.count.truncatedUInt32
         switch version {
             case .v2_2:
@@ -129,9 +129,10 @@ extension FrameProtocol {
     ///   - layout: the FrameLayoutIdentifier
     ///   - version: The version of the ID3 tag
     /// - Returns: The encoded identifier string
-    static func identifierData(
+    func identifierData(
         layout: FrameLayoutIdentifier,
         version: Version) -> Data {
+                
         guard let identifierString = layout.id3Identifier(version: version)?.encodedASCII(withNullTermination: false) else {
             switch version {
                 case .v2_2: return "TXX".encodedASCII(withNullTermination: false)
@@ -350,6 +351,8 @@ extension FrameProtocol {
         }
         return infoArray
     }
+    
+    
     
 
 }

@@ -40,7 +40,7 @@ struct PartOfTotalFrame: FrameProtocol, CustomStringConvertible {
     ) throws {
         self.flags = flags
         self.layout = layout
-        self.frameKey = layout.frameKey(additionalIdentifier: nil)
+        self.frameKey = layout.frameKey(additionalIdentifier: nil) 
 
         var parsing = contents
         // extract and interpret encoding byte
