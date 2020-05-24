@@ -42,17 +42,44 @@ print(tag.musicianCreditsList?[0].person) // "Musician Name"
 
 ```
 
-To access `CTOC` and `CHAP` frame content, the subscript accessor is the frame's `elementID`:
+To access `CTOC` frame content, the subscript accessor is the `topLevelFlag` boolean (only one `CTOC` frame is allowed to have this flag set to `true`) followed by the `elementID` for `CTOC` frames where the `topLevelFlag` is set to false:
 
 ```swift
-print(tag[tableOfContents: "TOC"]?.entryCount) // 2
-print(tag[tableOfContents: "TOC"]?.topLevelFlag) // true
-print(tag[tableOfContents: "TOC"]?.orderedFlag) // true
-print(tag[tableOfContents: "TOC"]?.childElementIDs) // ["ch0","ch1"]
-print(tag[chapters: "ch0"]?.startTime) // 0
-print(tag[chapters: "ch0"]?.endTime) // 2795
-print(tag[embeddedSubframes: "ch0"]?.title) // "Chapter 01"
+tag?[tableOfContents: true, "toc1"]?.orderedFlag = true
+tag?[tableOfContents: true, "toc1"]?.childElementIDs = ["toc2"]
+tag?[tableOfContents: true, "toc1"]?.embeddedSubframesTag.title = "Table Of Contents (TOP)"
+
+tag?[tableOfContents: false, "toc2"]?.orderedFlag = true
+tag?[tableOfContents: false, "toc2"]?.childElementIDs = ["ch1", "ch2", "ch3"]
+tag?[tableOfContents: false, "toc2"]?.embeddedSubframesTag.title = "Table Of Contents (SECONDARY)"
 ```
+
+To access `CHAP` frame content, the subscript accessor is the `startTime` (in milliseconds.)
+
+```swift
+tag[chapter: 0]?.elementID = "ch1"
+tag[chapter: 0]?.endTime = 1680
+tag[chapter: 0]?.embeddedSubframesTag.title = "Chapter One"
+
+tag[chapter: 1680]?.elementID = "ch2"
+tag[chapter: 1680]?.endTime = 3360
+tag[chapter: 1680]?.embeddedSubframesTag.title = "Chapter Two"
+
+tag[chapter: 3360]?.elementID = "ch3"
+tag[chapter: 3360]?.endTime = 5040
+tag[chapter: 3360]?.embeddedSubframesTag.title = "Chapter Three"
+```
+
+In order for some apps to correctly recognize the chapters, the `CTOC` frame must be present and its list of `childElementIDs` must contain the `elementID` of every `CHAP` frame.
+
+In order to remove old or unused `CHAP` and `CTOC` frames, call the `remove` function using the same accessors used to write and query it:
+
+```swift
+tag?.removeTOCFrame(isTopLevel: true, withElementID: "TOC")
+tag?.removeChapterFrame(atStartTime: 2795)
+```
+
+
 
 You can also export the images from the `AttachedPicture` frames using their optional `descriptionString` as a subscript, but honestly it'd be just as easy to get them using `AVFoundation`:
 
@@ -65,17 +92,18 @@ try coverImageData?.write(to: outputURL)
 Unknown or unhandled frames are assigned a `UUID` that may be used in a similar fashion to a `descriptionString`.
 
 **Removing Frames**
-To wipe all metadata from a file, initialize `tag` to an empty `Tag()` instance:
+To wipe all metadata from a file, initialize `tag` to an empty `Tag()` instance. This also works if you wish to write only your metadata to the file, and wipe everything else. Simply add the values you wish to `tag`.
+:
 ```swift
 let tag = Tag()
+
+tag.album = "Completely New Album Data"
 
 let outputUrl = URL(fileURLWithPath: "/destination/path/for/blank.mp3")
 try mp3NoMeta().write(tagVersion: .v2_3, // whatever version you wish
 using: tag,
 writingTo: outputUrl)
 ```
-
-This also works if you wish to write only your metadata to the file, and wipe everything else. Simply add the values you wish to `tag`.
 
 To wipe the data from a particular frame, set it equal to `nil`:
 ```swift

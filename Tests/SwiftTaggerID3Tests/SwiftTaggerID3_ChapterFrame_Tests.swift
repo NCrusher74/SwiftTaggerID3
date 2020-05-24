@@ -211,15 +211,15 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
     func testWritingChaptersOnBlankFilev24() throws {
         var tag = Tag()
         
-        tag[chapter: 0]?.startTime = 0
+        tag[chapter: 0]?.elementID = "ch1"
         tag[chapter: 0]?.endTime = 1680
         tag[chapter: 0]?.embeddedSubframesTag.title = "Chapter One"
         
-        tag[chapter: 1680]?.startTime = 1680
+        tag[chapter: 1680]?.elementID = "ch2"
         tag[chapter: 1680]?.endTime = 3360
         tag[chapter: 1680]?.embeddedSubframesTag.title = "Chapter Two"
 
-        tag[chapter: 3360]?.startTime = 3360
+        tag[chapter: 3360]?.elementID = "ch3"
         tag[chapter: 3360]?.endTime = 5040
         tag[chapter: 3360]?.embeddedSubframesTag.title = "Chapter Three"
         
@@ -232,16 +232,15 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
         let tagWritten = try Tag(readFrom: mp3FileWritten)
         
-        XCTAssertEqual(tagWritten[chapter: 0]?.startTime, 0)
+        XCTAssertEqual(tagWritten[chapter: 0]?.elementID, "ch1")
         XCTAssertEqual(tagWritten[chapter: 0]?.endTime, 1680)
         XCTAssertEqual(tagWritten[chapter: 0]?.embeddedSubframesTag.title, "Chapter One")
 
-        XCTAssertEqual(tagWritten[chapter: 1680]?.startTime, 1680)
-
+        XCTAssertEqual(tagWritten[chapter: 1680]?.elementID, "ch2")
         XCTAssertEqual(tagWritten[chapter: 1680]?.endTime, 3360)
         XCTAssertEqual(tagWritten[chapter: 1680]?.embeddedSubframesTag.title, "Chapter Two")
 
-        XCTAssertEqual(tagWritten[chapter: 3360]?.startTime, 3360)
+        XCTAssertEqual(tagWritten[chapter: 3360]?.elementID, "ch3")
         XCTAssertEqual(tagWritten[chapter: 3360]?.endTime, 5040)
         XCTAssertEqual(tagWritten[chapter: 3360]?.embeddedSubframesTag.title, "Chapter Three")
     }
