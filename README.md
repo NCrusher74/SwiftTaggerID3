@@ -26,18 +26,18 @@ For frames where there can be multiple versions of the frame in a tag, you can l
 
 ```swift
 print(tag[userDefinedText: "UserDefinedText"]) // "User Defined Text Content"
-print(tag[comments: "eng", "CommentDescription"]) // "Comment Content"
-print(tag[lyrics: "eng", "LyricsDescription"]) // "Lyrics Content"
+print(tag[comments: .eng, "CommentDescription"]) // "Comment Content"
+print(tag[lyrics: .eng, "LyricsDescription"]) // "Lyrics Content"
 ```
 
 To access information from the `InvolvedPeopleList` and `MusicianCreditsList` frames:
 
 ```swift
-print(tag.involvedPeopleList?[0].role) // "Director"
+print(tag.involvedPeopleList?[0].role) // .Director
 print(tag.involvedPeopleList?[0].person) // "Director Name"
-print(tag.involvedPeopleList?[1].role) // "Producer"
+print(tag.involvedPeopleList?[1].role) // .Producer
 print(tag.involvedPeopleList?[1].person) // "Producer Name"
-print(tag.musicianCreditsList?[0].role) // "Musician"
+print(tag.musicianCreditsList?[0].role) // .Musician
 print(tag.musicianCreditsList?[0].person) // "Musician Name"
 
 ```
@@ -45,10 +45,12 @@ print(tag.musicianCreditsList?[0].person) // "Musician Name"
 To access `CTOC` frame content, the subscript accessor is the `topLevelFlag` boolean (only one `CTOC` frame is allowed to have this flag set to `true`) followed by the `elementID` for `CTOC` frames where the `topLevelFlag` is set to false:
 
 ```swift
+// topLevelFlag = true, elementID = "toc1"
 tag?[tableOfContents: true, "toc1"]?.orderedFlag = true
 tag?[tableOfContents: true, "toc1"]?.childElementIDs = ["toc2"]
 tag?[tableOfContents: true, "toc1"]?.embeddedSubframesTag.title = "Table Of Contents (TOP)"
 
+// topLevelFlag = false, elementID = "toc2"
 tag?[tableOfContents: false, "toc2"]?.orderedFlag = true
 tag?[tableOfContents: false, "toc2"]?.childElementIDs = ["ch1", "ch2", "ch3"]
 tag?[tableOfContents: false, "toc2"]?.embeddedSubframesTag.title = "Table Of Contents (SECONDARY)"
@@ -57,20 +59,23 @@ tag?[tableOfContents: false, "toc2"]?.embeddedSubframesTag.title = "Table Of Con
 To access `CHAP` frame content, the subscript accessor is the `startTime` (in milliseconds.)
 
 ```swift
+// startTime is at 0 milliseconds
 tag[chapter: 0]?.elementID = "ch1"
 tag[chapter: 0]?.endTime = 1680
 tag[chapter: 0]?.embeddedSubframesTag.title = "Chapter One"
 
+// startTime is at 1680 milliseconds
 tag[chapter: 1680]?.elementID = "ch2"
 tag[chapter: 1680]?.endTime = 3360
 tag[chapter: 1680]?.embeddedSubframesTag.title = "Chapter Two"
 
+// startTime is at 3360 milliseconds
 tag[chapter: 3360]?.elementID = "ch3"
 tag[chapter: 3360]?.endTime = 5040
 tag[chapter: 3360]?.embeddedSubframesTag.title = "Chapter Three"
 ```
 
-In order for some apps to correctly recognize the chapters, the `CTOC` frame must be present and its list of `childElementIDs` must contain the `elementID` of every `CHAP` frame.
+In order for some apps to correctly recognize the chapters, the `CTOC` frame must be present and its list of `childElementIDs` must contain the `elementID` of every chapter frame.
 
 In order to remove old or unused `CHAP` and `CTOC` frames, call the `remove` function using the same accessors used to write and query it:
 
@@ -114,10 +119,10 @@ tag.artist = nil
 tag.trackNumber = nil
 ```
 
-If the frame is one that is accessible by a subscript, you need to locate it using the `remove[frame]` function:
+If the frame is one that is accessible by a subscript, you need to locate it using the `remove<Frame>(withSubscriptAccessor:)` function:
 
 ```swift
-tag.removeComment(withDescription: "Comment Description")
+tag.removeCommentFrame(withDescription: "Comment Description")
 ```
 
 Here's a complete list of the frames handled by SwiftTaggerID3:
@@ -130,12 +135,12 @@ Here's a complete list of the frames handled by SwiftTaggerID3:
 * `artist`
 * `artistSort`
 * `artistWebpage`
-* `attachedPicture`
+* `attachedPicture // query using description as subscript accessor`
 * `audioFileWebpage`
 * `audioSourceWebpage`
 * `bpm`
-* `chapter`
-* `comments`
+* `chapter // query using startTime in milliseconds as subscript accessor`
+* `comments // query using description as subscript accessor`
 * `compilation`
 * `composer`
 * `composerSort`
@@ -186,13 +191,13 @@ Here's a complete list of the frames handled by SwiftTaggerID3:
 * `releaseTime`
 * `setSubtitle`
 * `subtitle`
-* `tableOfContents`
+* `tableOfContents // query using topLevelFlag boolean and elementID as subscript accessors`
 * `taggingTime`
 * `time`
 * `title`
 * `titleSort`
 * `trackNumber`
-* `unsynchronizedLyrics`
-* `userDefinedText`
-* `userDefinedWebpage`
+* `unsynchronizedLyrics // query using description as subscript accessor`
+* `userDefinedText // query using description as subscript accessor`
+* `userDefinedWebpage // query using description as subscript accessor`
 * `year`
