@@ -11,17 +11,14 @@ import Foundation
 /**
  A type representing a Table Of Contents frame.
  
- There may be more than one Table of Contents frame per tag, but only one may have the top-level flag set, and each one must have a unique `elementID`. Therefore, the `elementID` will serve as the `FrameKey`
+ According to the spec, there may be more than one Table of Contents frame per tag, but only one may have the top-level flag set, and each one must have a unique `elementID`.
+ 
+ However, SwiftTaggerID only supports a single TOC frame, which is assigned a UUID as the elementID. Because of this, the top-level flag will always be true, and SwiftTaggerID3s handling of this frame will ensure the child elements are always ordered, therefore the orderedFlag is also set to true.
  */
 public struct TableOfContentsFrame: FrameProtocol, CustomStringConvertible {
     public var description: String {
         return """
-        ElementID: \(elementID),
-        TOCisTopLevel: \(topLevelFlag),
-        ChildElementsAreOrdered: \(orderedFlag),
         ChildElementIDs: \(childElementIDs),
-        EmbeddedSubframes:
-        \(embeddedSubframesTag.frames.values.description)
         """
     }
 
@@ -30,23 +27,9 @@ public struct TableOfContentsFrame: FrameProtocol, CustomStringConvertible {
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
     var allowMultipleFrames: Bool = true
-    
-    /** A null-terminated string with a unique ID. The Element ID uniquely identifies the frame. It is not intended to be human readable and should not be presented to the end-user. */
-    var elementID: String
-    
-    /** Flag a - Top-level bit
-     This is set to 1 to identify the top-level "CTOC" frame. This frame is the root of the Table of Contents tree and is not a child of any other "CTOC" frame. Only one "CTOC" frame in an ID3v2 tag can have this bit set to 1. In all other "CTOC" frames this bit shall be set to 0.*/
-    public var topLevelFlag: Bool
-    
-    /** Flag b - Ordered bit
-     This should be set to 1 if the entries in the Child Element ID list are ordered or set to 0 if they not are ordered. This provides a hint as to whether the elements should be played as a continuous ordered sequence or played individually. */
-    public var orderedFlag: Bool
-    
-    /** the list of all child CTOC and/or CHAP frames,
-     each entry is null-terminated */
+
+    /** the list of all child CTOC and/or CHAP frames, each entry is null-terminated */
     public var childElementIDs: [String]
-    
-    /** A sequence of optional frames that are embedded within the “CTOC” frame and which describe this element of the table of contents (e.g. a “TIT2” frame representing the name of the element) or provide related material such as URLs and images. These sub-frames are contained within the bounds of the “CTOC” frame as signalled by the size field in the “CTOC” frame header.*/
     public var embeddedSubframesTag: Tag = Tag(subframes: [:])
     
     // MARK: Frame parsing initializer
@@ -56,30 +39,20 @@ public struct TableOfContentsFrame: FrameProtocol, CustomStringConvertible {
          flags: Data) throws {
         self.flags = flags
         self.layout = layout
-        
+        self.frameKey = .tableOfContents
+
         // get the elementID from the frame, using a uuid as default if none exists
         var parsing = contents
-        let elementID = parsing.extractPrefixAsStringUntilNullTermination(.isoLatin1)
-        self.elementID = elementID ?? UUID().uuidString
-        self.frameKey = .tableOfContents
+        /* A null-terminated string with a unique ID. The Element ID uniquely identifies the frame. It is not intended to be human readable and should not be presented to the end-user.
+         
+         This is unused by SwiftTaggerID3. A TOC frame is assigned a UUID */
+        let elementID = parsing.extractPrefixAsStringUntilNullTermination(.isoLatin1) // unused
         // parse the flags byte and interpret boolean values
-        let flagsByteData = parsing.extractFirst(1)
-        guard let flagsByte = flagsByteData.first else {
-            throw Mp3File.Error.InvalidTagData
-        }
-        let flagA: UInt8 = 0b00000010
-        let flagB: UInt8 = 0b00000001
-        
-        if flagsByte & flagA == flagA {
-            self.topLevelFlag = true
-        } else {
-            self.topLevelFlag = false
-        }
-        if flagsByte & flagB == flagB {
-            self.orderedFlag = true
-        } else {
-            self.orderedFlag = false
-        }
+        /* Flag a - Top-level bit
+        This is set to 1 to identify the top-level "CTOC" frame. This frame is the root of the Table of Contents tree and is not a child of any other "CTOC" frame. Only one "CTOC" frame in an ID3v2 tag can have this bit set to 1. In all other "CTOC" frames this bit shall be set to 0.
+        Flag b - Ordered bit
+        This should be set to 1 if the entries in the Child Element ID list are ordered or set to 0 if they not are ordered. This provides a hint as to whether the elements should be played as a continuous ordered sequence or played individually. */
+        let flagsByteData = parsing.extractFirst(1) // unused
         
         // parse the entry-count byte to derive integer value
         let childIDByte = parsing.extractFirst(1)
@@ -94,6 +67,7 @@ public struct TableOfContentsFrame: FrameProtocol, CustomStringConvertible {
         self.childElementIDs = childIDArray
 
         // parse the subframes and add them to the embedded subframes tag
+        /* A sequence of optional frames that are embedded within the “CTOC” frame and which describe this element of the table of contents (e.g. a “TIT2” frame representing the name of the element) or provide related material such as URLs and images. These sub-frames are contained within the bounds of the “CTOC” frame as signalled by the size field in the “CTOC” frame header.*/
         var subframes: [FrameKey:Frame] = [:]
         while !parsing.isEmpty {
             let embeddedSubframeIdentifierData = parsing.extractFirst(version.identifierLength)
@@ -114,21 +88,11 @@ public struct TableOfContentsFrame: FrameProtocol, CustomStringConvertible {
     /// Initialize a table of contents for adding to a tag
     /// - Parameters:
     ///   - layout: the frame layout
-    ///   - elementID: the elementID of the frame. Null terminated.
-    ///   - topLevelFlag: boolean indicating if this CTOC frame has any children (or parent) CTOC frame(s)
-    ///   - orderedFlag: boolean indicating whether any child elementIDs are ordered or not
-    ///   - entryCount: the number of child ElementIDs.
     ///   - childElementIDs: the array of child elementIDs. Must not be empty. Each entry is null terminated.
     ///   - embeddedSubframesTag: a pseudo-tag instance holding the (optional) frames containing title and descriptor text for the CTOC frame.
     init(_ layout: FrameLayoutIdentifier,
-                 elementID: String,
-                 topLevelFlag: Bool,
-                 orderedFlag: Bool,
                  childElementIDs: [String],
                  embeddedSubframesTag: Tag?) {
-        self.elementID = elementID
-        self.topLevelFlag = topLevelFlag
-        self.orderedFlag = orderedFlag
         self.childElementIDs = childElementIDs
         self.embeddedSubframesTag = embeddedSubframesTag ?? Tag(subframes: [:])
         self.flags = TableOfContentsFrame.defaultFlags
@@ -144,7 +108,7 @@ public struct TableOfContentsFrame: FrameProtocol, CustomStringConvertible {
         var frameData = Data()
         // there is no encoding byte for TOC frames
         // encode and append the elementID, adding a null terminator
-        frameData.append(self.elementID.encoded(withNullTermination: true))
+        frameData.append("TOC".encoded(withNullTermination: true))
         
         frameData.append(encodedFlagByte)
 
@@ -178,24 +142,9 @@ public struct TableOfContentsFrame: FrameProtocol, CustomStringConvertible {
     }
     
     // convert the boolean flags to a single byte of data
+    // both flags are set to true as SwiftTaggerID3 default
     var encodedFlagByte: Data {
-        let flagByteBinaryInt: [UInt8]
-        switch self.topLevelFlag {
-            case true:
-                switch self.orderedFlag {
-                    case true:
-                        flagByteBinaryInt = [0b00000011]
-                    case false:
-                        flagByteBinaryInt = [0b00000010]
-            }
-            case false:
-                switch self.orderedFlag {
-                    case true:
-                        flagByteBinaryInt = [0b00000001]
-                    case false:
-                        flagByteBinaryInt = [0b00000000]
-            }
-        }
+        let flagByteBinaryInt: [UInt8] = [0b00000011]
         return Data(flagByteBinaryInt)
     }
  
@@ -206,9 +155,6 @@ public struct TableOfContentsFrame: FrameProtocol, CustomStringConvertible {
     
     init() {
         self.init(.known(.tableOfContents),
-                  elementID: "",
-                  topLevelFlag: true,
-                  orderedFlag: true,
                   childElementIDs: [],
                   embeddedSubframesTag: Tag(subframes: [:]))
     }
@@ -217,10 +163,6 @@ public struct TableOfContentsFrame: FrameProtocol, CustomStringConvertible {
 // MARK: Tag Extension
 extension Tag {
     public mutating func removeTOCFrame(isTopLevel: Bool, withElementID: String) {
-        if isTopLevel == true {
-            self.frames[.tableOfContentsTopLevelTOC] = nil
-        } else {
-            self.frames[.tableOfContentsSecondaryTOC(elementID: withElementID)] = nil
-        }
+        self.frames[.tableOfContents] = nil
     }
 }
