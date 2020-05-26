@@ -63,7 +63,8 @@ public enum FrameKey: Hashable {
     /** `Chapter` frame
      
         The purpose of this frame is to describe a single chapter within an audio file. */
-    case chapter(startTimeString: String)
+    case chapter(byStartTimeString: String)
+    case chapter(byElementID: String)
     /** `Comments` frame
      
         This frame is intended for any kind of full text information that does not fit in any other frame. ALLOWS `(/n)` new line characters.

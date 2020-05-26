@@ -14,7 +14,7 @@ public struct TableOfContents {
     /// `Int`: the chapter start time
     public var chapters: [Int: Chapter]
     
-
+    
     
     /// a public-facing type for handling the Chapter frame in a more intuitive manner
     public struct Chapter {
@@ -37,7 +37,7 @@ public struct TableOfContents {
         
         
     }
-
+    
     /// The chapters in chronological order.
     public func sortedChapters() -> [(startTime: Int, chapter: Chapter)] {
         return chapters.keys.sorted().map { ($0, chapters[$0]!) }
@@ -47,6 +47,17 @@ public struct TableOfContents {
 extension Tag {
     var tableOfContents: TableOfContents {
         get {
+            var chapters: [Int: TableOfContents.Chapter] = [:]
+            if let frame = self.frames[.tableOfContents],
+                case .tocFrame(let tocFrame) = frame {
+                for id in tocFrame.childElementIDs {
+                    if let chapter = self.frames[.chapter(byElementID: id)],
+                        case .chapterFrame(let chapterFrame) = chapter {
+                        chapters[chapterFrame.startTime] = 
+                        
+                    }
+                }
+            }
             // Find the frame and assemble an instance of your more intuitive type to return.
         }
         set {

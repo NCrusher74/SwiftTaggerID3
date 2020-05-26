@@ -46,13 +46,13 @@ public struct TableOfContentsFrame: FrameProtocol, CustomStringConvertible {
         /* A null-terminated string with a unique ID. The Element ID uniquely identifies the frame. It is not intended to be human readable and should not be presented to the end-user.
          
          This is unused by SwiftTaggerID3. A TOC frame is assigned a UUID */
-        let elementID = parsing.extractPrefixAsStringUntilNullTermination(.isoLatin1) // unused
+        _ = parsing.extractPrefixAsStringUntilNullTermination(.isoLatin1) // unused
         // parse the flags byte and interpret boolean values
         /* Flag a - Top-level bit
         This is set to 1 to identify the top-level "CTOC" frame. This frame is the root of the Table of Contents tree and is not a child of any other "CTOC" frame. Only one "CTOC" frame in an ID3v2 tag can have this bit set to 1. In all other "CTOC" frames this bit shall be set to 0.
         Flag b - Ordered bit
         This should be set to 1 if the entries in the Child Element ID list are ordered or set to 0 if they not are ordered. This provides a hint as to whether the elements should be played as a continuous ordered sequence or played individually. */
-        let flagsByteData = parsing.extractFirst(1) // unused
+        _ = parsing.extractFirst(1) // unused
         
         // parse the entry-count byte to derive integer value
         let childIDByte = parsing.extractFirst(1)
@@ -109,7 +109,6 @@ public struct TableOfContentsFrame: FrameProtocol, CustomStringConvertible {
         // there is no encoding byte for TOC frames
         // encode and append the elementID, adding a null terminator
         frameData.append("TOC".encoded(withNullTermination: true))
-        
         frameData.append(encodedFlagByte)
 
         // encode and append the entry count

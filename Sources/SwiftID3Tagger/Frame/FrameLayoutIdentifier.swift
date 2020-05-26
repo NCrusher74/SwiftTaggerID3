@@ -539,7 +539,7 @@ enum KnownFrameLayoutIdentifier: CaseIterable {
             case .audioFileWebpage: return .audioFileWebpage
             case .audioSourceWebpage: return .audioSourceWebpage
             case .bpm: return .bpm
-            case .chapter: return .chapter(startTimeString: additionalIdentifier ?? UUID().uuidString)
+            case .chapter: return .chapter(byStartTimeString: additionalIdentifier ?? UUID().uuidString)
             case .comments: return .comments(description: additionalIdentifier ?? "")
             case .compilation: return .compilation
             case .composer: return .composer
