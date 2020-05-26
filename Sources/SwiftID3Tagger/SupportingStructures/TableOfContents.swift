@@ -18,23 +18,11 @@ public struct TableOfContents {
     
     /// a public-facing type for handling the Chapter frame in a more intuitive manner
     public struct Chapter {
-        // arbitrarily assigned elementID
-        var elementID: UUID
         /// the start time in miliseconds
-        public var startTime: Int
-        // derived from the start time of the next chapter
-        var endTime: Int
-        /// an optional title for the chapter
-        /// (will initialize a `TIT2` (title) subframe)
-        public var chapterTitle: String?
-        /// an optional description for the chapter
-        /// (will initialize an `COMM` (comment) subframe)
-        public var chapterDescription: String?
-        /// an optional image for the chapter
-        /// (will initialize a `APIC` (attached picture) subframe)
-        public var chapterImage: Data?
-        
-        
+        public var startTime: Int        
+        init(chapterFrame: ChapterFrame) {
+            self.startTime = chapterFrame.startTime
+        }
         
     }
     
@@ -53,12 +41,11 @@ extension Tag {
                 for id in tocFrame.childElementIDs {
                     if let chapter = self.frames[.chapter(byElementID: id)],
                         case .chapterFrame(let chapterFrame) = chapter {
-                        chapters[chapterFrame.startTime] = 
-                        
+                        chapters[chapterFrame.startTime] = TableOfContents.Chapter(chapterFrame: chapterFrame)
                     }
                 }
             }
-            // Find the frame and assemble an instance of your more intuitive type to return.
+            return TableOfContents(chapters: chapters)
         }
         set {
             // Assemble a frame based on the new value of your type and overwrite the old frame.
