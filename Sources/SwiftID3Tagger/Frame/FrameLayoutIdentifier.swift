@@ -591,7 +591,7 @@ enum KnownFrameLayoutIdentifier: CaseIterable {
             case .releaseTime: return .releaseTime
             case .setSubtitle: return .setSubtitle
             case .subtitle: return .subtitle
-            case .tableOfContents: return .tableOfContentsSecondaryTOC(elementID: additionalIdentifier ?? UUID().uuidString)
+            case .tableOfContents: return .tableOfContents
             case .taggingTime: return .taggingTime
             case .time: return .time
             case .title: return .title

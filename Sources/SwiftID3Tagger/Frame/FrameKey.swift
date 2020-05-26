@@ -68,7 +68,7 @@ public enum FrameKey: Hashable {
      
         This frame is intended for any kind of full text information that does not fit in any other frame. ALLOWS `(/n)` new line characters.
      
-        In audiobooks, this frame is frequently used to contain the book-jacket description, or "blurb" */
+        For audiobooks, this frame is frequently used to contain the book-jacket description, or "blurb" */
     case comments(description: String)
     /** `Compilation` frame
      
@@ -283,9 +283,10 @@ public enum FrameKey: Hashable {
      
         The purpose of "CTOC" frames is to allow a table of contents to be defined.
      
-        In the simplest case, a single "CTOC" frame can be used to provide a flat (single-level) table of contents. However, multiple "CTOC" frames can also be used to define a hierarchical (multi-level) table of contents.  */
-    case tableOfContentsTopLevelTOC
-    case tableOfContentsSecondaryTOC(elementID: String)
+        In the simplest case, a single "CTOC" frame can be used to provide a flat (single-level) table of contents. However, multiple "CTOC" frames can also be used to define a hierarchical (multi-level) table of contents.
+     
+        NOTE: `SwiftTaggerID3` does not support multiple TOC frames*/
+    case tableOfContents
     /** `Tagging time` frame
      
         Contains a timestamp describing then the audio was tagged. NEW IN VERSION  2.4 */

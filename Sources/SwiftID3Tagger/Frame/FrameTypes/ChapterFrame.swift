@@ -163,7 +163,7 @@ public struct ChapterFrame: FrameProtocol, CustomStringConvertible {
 // MARK: Tag extension
 extension Tag {
 
-    public subscript(chapter atStartTime: Int) -> ChapterFrame? {
+    subscript(chapter atStartTime: Int) -> ChapterFrame? {
         get {
             if let frame = self.frames[.chapter(startTimeString: String(atStartTime))],
                 case .chapterFrame(let chapterFrame) = frame {

@@ -61,7 +61,7 @@ public struct TableOfContentsFrame: FrameProtocol, CustomStringConvertible {
         var parsing = contents
         let elementID = parsing.extractPrefixAsStringUntilNullTermination(.isoLatin1)
         self.elementID = elementID ?? UUID().uuidString
-        
+        self.frameKey = .tableOfContents
         // parse the flags byte and interpret boolean values
         let flagsByteData = parsing.extractFirst(1)
         guard let flagsByte = flagsByteData.first else {
@@ -72,10 +72,8 @@ public struct TableOfContentsFrame: FrameProtocol, CustomStringConvertible {
         
         if flagsByte & flagA == flagA {
             self.topLevelFlag = true
-            self.frameKey = .tableOfContentsTopLevelTOC
         } else {
             self.topLevelFlag = false
-            self.frameKey = .tableOfContentsSecondaryTOC(elementID: self.elementID)
         }
         if flagsByte & flagB == flagB {
             self.orderedFlag = true
@@ -130,16 +128,12 @@ public struct TableOfContentsFrame: FrameProtocol, CustomStringConvertible {
                  embeddedSubframesTag: Tag?) {
         self.elementID = elementID
         self.topLevelFlag = topLevelFlag
-        if self.topLevelFlag == true {
-            self.frameKey = .tableOfContentsTopLevelTOC
-        } else {
-            self.frameKey = .tableOfContentsSecondaryTOC(elementID: elementID)
-        }
         self.orderedFlag = orderedFlag
         self.childElementIDs = childElementIDs
         self.embeddedSubframesTag = embeddedSubframesTag ?? Tag(subframes: [:])
         self.flags = TableOfContentsFrame.defaultFlags
         self.layout = layout
+        self.frameKey = .tableOfContents
     }
     
     // encode the contents of the frame to add to an ID3 tag
@@ -218,52 +212,10 @@ public struct TableOfContentsFrame: FrameProtocol, CustomStringConvertible {
                   childElementIDs: [],
                   embeddedSubframesTag: Tag(subframes: [:]))
     }
-
-    
 }
 
 // MARK: Tag Extension
 extension Tag {
-    
-    // the top-level flag is used to differentiate potential multiple toc frames
-    // only one may have a top-level flag set
-    // all others will differentiate using elementID
-    public subscript(tableOfContents isTopLevel: Bool, withElementID: String) -> TableOfContentsFrame? {
-        get {
-            if isTopLevel == true {
-                if let frame = self.frames[.tableOfContentsTopLevelTOC],
-                    case .tocFrame(let tocFrame) = frame {
-                    return tocFrame
-                } else {
-                    return .init()
-                }
-            } else {
-                if let frame = self.frames[.tableOfContentsSecondaryTOC(elementID: withElementID)],
-                    case .tocFrame(let tocFrame) = frame {
-                    return tocFrame
-                } else {
-                    return .init()
-                }
-            }
-        }
-        set {
-            let key: FrameKey
-            if isTopLevel == true {
-                key = .tableOfContentsTopLevelTOC
-            } else {
-                key = .tableOfContentsSecondaryTOC(elementID: withElementID)
-            }
-            let frame = TableOfContentsFrame(
-                .known(.tableOfContents),
-                elementID: withElementID,
-                topLevelFlag: isTopLevel,
-                orderedFlag: newValue?.orderedFlag ?? true,
-                childElementIDs: newValue?.childElementIDs ?? [],
-                embeddedSubframesTag: newValue?.embeddedSubframesTag)
-            self.frames[key] = .tocFrame(frame)
-        }
-    }
-    
     public mutating func removeTOCFrame(isTopLevel: Bool, withElementID: String) {
         if isTopLevel == true {
             self.frames[.tableOfContentsTopLevelTOC] = nil
@@ -271,5 +223,4 @@ extension Tag {
             self.frames[.tableOfContentsSecondaryTOC(elementID: withElementID)] = nil
         }
     }
-    
 }
