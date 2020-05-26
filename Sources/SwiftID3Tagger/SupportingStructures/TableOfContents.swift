@@ -14,16 +14,15 @@ public struct TableOfContents {
     /// `Int`: the chapter start time
     public var chapters: [Int: Chapter]
     
-    
-    
     /// a public-facing type for handling the Chapter frame in a more intuitive manner
     public struct Chapter {
         /// the start time in miliseconds
-        public var startTime: Int        
-        init(chapterFrame: ChapterFrame) {
-            self.startTime = chapterFrame.startTime
-        }
+        public var startTime: Int
         
+        // initialize a Chapter instance using a chapter start time
+        init(startTime: Int) {
+            self.startTime = startTime
+        }
     }
     
     /// The chapters in chronological order.
@@ -33,23 +32,54 @@ public struct TableOfContents {
 }
 
 extension Tag {
-    var tableOfContents: TableOfContents {
+    public var tableOfContents: TableOfContents {
         get {
+            // initialize a chapter instance by the start time
             var chapters: [Int: TableOfContents.Chapter] = [:]
-            if let frame = self.frames[.tableOfContents],
-                case .tocFrame(let tocFrame) = frame {
-                for id in tocFrame.childElementIDs {
-                    if let chapter = self.frames[.chapter(byElementID: id)],
-                        case .chapterFrame(let chapterFrame) = chapter {
-                        chapters[chapterFrame.startTime] = TableOfContents.Chapter(chapterFrame: chapterFrame)
+            // get the TOC frame
+            if let tocFrame = self.toc {
+                let childElementIDs = tocFrame.childElementIDs
+                for id in childElementIDs {
+                    if let chapterFrame = self[chapterFrom: id] {
+                        chapters[chapterFrame.startTime] = TableOfContents.Chapter(startTime: chapterFrame.startTime)
                     }
                 }
             }
             return TableOfContents(chapters: chapters)
         }
+        
         set {
-            // Assemble a frame based on the new value of your type and overwrite the old frame.
-            // You’ll create arbitrary identifiers of your own here whenever needed.
+            // build the chapter frames from the start times in the TOC
+            var childElementIDs: [String] = []
+            var chapterNumber: Int = 0
+            // get the endTime for the current chapter from the startTime of the next chapter
+            var endTime: Int = 0
+            for (index, _) in newValue.sortedChapters() {
+                // will this go out of bounds at the end?
+                let nextIndex = index + 1
+                let nextChapter = newValue.chapters[nextIndex]
+                let nextStartTime = nextChapter?.startTime
+                endTime = nextStartTime ?? 0
+            }
+            // initialize a chapter frame deriving elementID from the chapter
+            for chapter in newValue.sortedChapters() {
+                // create an elementID from the chapter's index
+                let elementID = "ch\(chapterNumber)"
+                childElementIDs.append(elementID)
+                let startTime = chapter.startTime
+
+                var chapterFrame = ChapterFrame()
+                chapterFrame.elementID = elementID
+                chapterFrame.endTime = endTime
+                chapterFrame.embeddedSubframesTag = 
+                chapterNumber += 1
+                self[chapterFrom: startTime] = chapterFrame
+            }
+            
+            var toc = TableOfContentsFrame()
+            toc.childElementIDs = childElementIDs
+            self.toc = toc
         }
     }
+    
 }

@@ -108,6 +108,11 @@ struct StringFrame: FrameProtocol, CustomStringConvertible {
         }
         return frameData
     }
+    
+    /// initialize an empty title frame
+    init() {
+        self.init(.known(.title), contentString: "")
+    }
 }
 
 // MARK: Tag extension

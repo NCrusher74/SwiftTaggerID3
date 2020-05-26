@@ -161,7 +161,20 @@ public struct TableOfContentsFrame: FrameProtocol, CustomStringConvertible {
 
 // MARK: Tag Extension
 extension Tag {
-    public mutating func removeTOCFrame(isTopLevel: Bool, withElementID: String) {
-        self.frames[.tableOfContents] = nil
+    var toc: TableOfContentsFrame? {
+        get {
+            if let frame = self.frames[.tableOfContents],
+                case .tocFrame(let tocFrame) = frame {
+                return tocFrame
+            } else {
+                return .init()
+            }
+        }
+        set {
+            let frame = TableOfContentsFrame(.known(.tableOfContents),
+                                             childElementIDs: newValue?.childElementIDs ?? [],
+                                             embeddedSubframesTag: newValue?.embeddedSubframesTag)
+            self.frames[.tableOfContents] = .tocFrame(frame)
+        }
     }
 }

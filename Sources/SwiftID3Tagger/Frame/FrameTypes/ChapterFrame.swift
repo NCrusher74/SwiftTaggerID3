@@ -53,14 +53,13 @@ public struct ChapterFrame: FrameProtocol, CustomStringConvertible {
         let elementID = parsing.extractPrefixAsStringUntilNullTermination(.isoLatin1)
         // initialize the elementID property from the string
         self.elementID = elementID ?? UUID().uuidString
-        
+        // initialize the frameKey property using the elementID
+        self.frameKey = .chapter(byElementID: self.elementID)
+
         // extract and convert integer properties to integers
         let startTimeData = parsing.extractFirst(4)
         let startTimeUInt32 = UInt32(parsing: startTimeData, .bigEndian)
         self.startTime = Int(startTimeUInt32)
-
-        // initialize the frameKey property using the elementID
-        self.frameKey = .chapter(byStartTimeString: String(self.startTime))
 
         let endTimeData = parsing.extractFirst(4)
         let endTimeUInt32 = UInt32(parsing: endTimeData, .bigEndian)
@@ -162,20 +161,29 @@ public struct ChapterFrame: FrameProtocol, CustomStringConvertible {
 
 // MARK: Tag extension
 extension Tag {
-    subscript(chapterByID elementID: String) -> ChapterFrame {
+
+    subscript(chapterFrom elementID: String) -> ChapterFrame? {
         get {
             if let frame = self.frames[.chapter(byElementID: elementID)],
                 case .chapterFrame(let chapterFrame) = frame {
                 return chapterFrame
             } else {
-                return .init()
+                return nil
             }
+        }
+        set {
+            let frame = ChapterFrame(.known(.chapter),
+                                     elementID: elementID,
+                                     startTime: newValue?.startTime ?? 0,
+                                     endTime: newValue?.endTime ?? 0,
+                                     embeddedSubframesTag: newValue?.embeddedSubframesTag)
+            self.frames[.chapter(byElementID: elementID)] = .chapterFrame(frame)
         }
     }
 
-    public subscript(chapter atStartTime: Int) -> ChapterFrame? {
+    subscript(chapterFrom startTime: Int) -> ChapterFrame? {
         get {
-            if let frame = self.frames[.chapter(byStartTimeString: String(atStartTime))],
+            if let frame = self.frames[.chapter(byStartTimeString: String(startTime))],
                 case .chapterFrame(let chapterFrame) = frame {
                 return chapterFrame
             } else {
@@ -183,15 +191,32 @@ extension Tag {
             }
         }
         set {
-            let key: FrameKey = .chapter(byStartTimeString: String(atStartTime))
             let frame = ChapterFrame(.known(.chapter),
                                      elementID: newValue?.elementID ?? UUID().uuidString,
-                                     startTime: atStartTime,
+                                     startTime: startTime,
                                      endTime: newValue?.endTime ?? 0,
                                      embeddedSubframesTag: newValue?.embeddedSubframesTag)
-            self.frames[key] = .chapterFrame(frame)
+            self.frames[.chapter(byStartTimeString: String(startTime))] = .chapterFrame(frame)
         }
     }
+//    
+//    subscript(embeddedSubframesForChapterWith elementID: String) -> Tag? {
+//        get {
+//            if let frame = self.frames[.chapter(byElementID: elementID)],
+//                case .chapterFrame(let chapterFrame) = frame {
+//                return chapterFrame.embeddedSubframesTag
+//            } else {
+//                return nil
+//            }
+//        }
+//    }
+//    
+//    func set(embeddedSubframesForChapterAt startTime: Int) {
+//        if let frame = self.frames[.chapter(byStartTimeString: String(startTime))],
+//            case .chapterFrame(let chapterFrame) = frame {
+//            chapterFrame.embeddedSubframesTag = 
+//        }
+//    }
     
     public mutating func removeChapterFrame(atStartTime: Int) {
         self.frames[.chapter(byStartTimeString: String(atStartTime))] = nil
