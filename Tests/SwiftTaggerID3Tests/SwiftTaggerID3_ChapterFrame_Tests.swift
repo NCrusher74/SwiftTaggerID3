@@ -24,8 +24,6 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         XCTAssertEqual(ch1?.startTime, 2795)
         let chapter0 = ch0?.chapter
         let chapter1 = ch1?.chapter
-        XCTAssertEqual(chapter0?.chapterTitle, "Chapter 01")
-//        XCTAssertEqual(chapter1?.chapterTitle, "Chapter 02")
 
     }
 
@@ -34,8 +32,8 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
     func testFrameRemoval() throws {
         var tag = try TestFile.chapterized.tag()
         
-        tag?.removeChapterFrame(atStartTime: 0)
-        tag?.removeChapterFrame(atStartTime: 2795)
+        tag?.removeChapter(at: 0)
+        tag?.removeChapter(at: 2795)
         
         let outputUrl = try localDirectory(fileName: "removaltest", fileExtension: "mp3")
         XCTAssertNoThrow(try TestFile.chapterized.mp3File()?.write(

@@ -158,16 +158,16 @@ extension Tag {
         }
     }
     
-    public mutating func setAttachedPicture(imageType: ImageType?, imageDescription: String?, location: URL) throws {
+    public mutating func setAttachedPicture(imageType: ImageType?, imageDescription: String?, location: URL?) throws {
         var imageFormat: ImageFormat
-        if location.pathExtension.lowercased() == "jpg" || location.pathExtension.lowercased() == "jpeg" {
+        if location?.pathExtension.lowercased() == "jpg" || location?.pathExtension.lowercased() == "jpeg" {
             imageFormat = .jpg
-        } else if location.pathExtension.lowercased() == "png" {
+        } else if location?.pathExtension.lowercased() == "png" {
             imageFormat = .png
         } else {
             throw Mp3File.Error.UnhandledImageFormat
         }
-        let imageData = try Data(contentsOf: location)
+        let imageData = try Data(contentsOf: location ?? URL(fileURLWithPath: ""))
         let key: FrameKey = .attachedPicture(description: (imageDescription ?? imageType?.pictureDescription) ?? "Other")
         self.frames[key] = Frame.imageFrame(.init(
             .known(.attachedPicture),

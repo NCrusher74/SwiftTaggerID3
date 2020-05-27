@@ -8,6 +8,7 @@
  */
 
 import Foundation
+import AVFoundation
 
 /// An Mp3File represets an mp3-format file on the local drive
 /// This wrapper houses variables and methods for querying and modifying an Mp3File

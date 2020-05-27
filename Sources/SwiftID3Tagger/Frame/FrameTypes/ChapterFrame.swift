@@ -19,7 +19,7 @@ public struct ChapterFrame: FrameProtocol, CustomStringConvertible {
         StartTime: \(startTime),
         EndTime: \(endTime),
         EmbeddedSubframes:
-        \(String(describing: embeddedSubframesTag.frames.keys)), \(embeddedSubframesTag.frames.values.description)
+        \(String(describing: embeddedSubframesTag?.frames.keys)), \(String(describing: embeddedSubframesTag?.frames.values.description))
         """
         }
     
@@ -37,7 +37,7 @@ public struct ChapterFrame: FrameProtocol, CustomStringConvertible {
     public var endTime: Int
     
     /** A sequence of optional frames that are embedded within the “CHAP” frame and which describe the content of the chapter (e.g. a “TIT2” frame representing the chapter name) or provide related material such as URLs and images. These sub-frames are contained within the bounds of the “CHAP” frame as signalled by the size field in the “CHAP” frame header. If a parser does not recognise “CHAP” frames it can skip them using the size field in the frame header. When it does this it will skip any embedded sub-frames carried within the frame. */
-    public var embeddedSubframesTag: Tag = Tag(subframes: [:])
+    public var embeddedSubframesTag: Tag?
     
     // MARK: Frame parsing
     init(decodingContents contents: Data.SubSequence,
@@ -134,7 +134,7 @@ public struct ChapterFrame: FrameProtocol, CustomStringConvertible {
 
         // encode and append the subframes to data
         var encodedSubframes = Data()
-        for subframe in self.embeddedSubframesTag.frames {
+        for subframe in self.embeddedSubframesTag?.frames ?? [:] {
             let subframeAsFrameProtocol = subframe.value.asFrameProtocol
             encodedSubframes.append(
                 try encodeSubframes(
@@ -199,26 +199,8 @@ extension Tag {
             self.frames[.chapter(byStartTimeString: String(startTime))] = .chapterFrame(frame)
         }
     }
-//    
-//    subscript(embeddedSubframesForChapterWith elementID: String) -> Tag? {
-//        get {
-//            if let frame = self.frames[.chapter(byElementID: elementID)],
-//                case .chapterFrame(let chapterFrame) = frame {
-//                return chapterFrame.embeddedSubframesTag
-//            } else {
-//                return nil
-//            }
-//        }
-//    }
-//    
-//    func set(embeddedSubframesForChapterAt startTime: Int) {
-//        if let frame = self.frames[.chapter(byStartTimeString: String(startTime))],
-//            case .chapterFrame(let chapterFrame) = frame {
-//            chapterFrame.embeddedSubframesTag = 
-//        }
-//    }
     
-    public mutating func removeChapterFrame(atStartTime: Int) {
-        self.frames[.chapter(byStartTimeString: String(atStartTime))] = nil
+    public mutating func removeChapter(at startTime: Int) {
+        self.frames[.chapter(byStartTimeString: String(startTime))] = nil
     }
 }
