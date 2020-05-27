@@ -85,6 +85,5 @@ extension Tag {
             toc.childElementIDs = childElementIDs
             self.toc = toc
         }
-    }
-    
+    }    
 }
