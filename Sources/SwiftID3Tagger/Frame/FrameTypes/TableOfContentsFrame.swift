@@ -177,4 +177,9 @@ extension Tag {
             self.frames[.tableOfContents] = .tocFrame(frame)
         }
     }
+    
+    public mutating func removeTableOfContents() {
+        self.frames[.tableOfContents] = nil
+    }
+
 }

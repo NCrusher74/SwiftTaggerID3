@@ -201,6 +201,6 @@ extension Tag {
     }
     
     public mutating func removeChapter(at startTime: Int) {
-        self.frames[.chapter(byStartTimeString: String(startTime))] = nil
+        self[chapterFrom: startTime] = nil
     }
 }

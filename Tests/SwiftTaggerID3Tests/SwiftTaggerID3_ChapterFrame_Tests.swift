@@ -24,16 +24,19 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         XCTAssertEqual(ch1?.startTime, 2795)
         let chapter0 = ch0?.chapter
         let chapter1 = ch1?.chapter
-
+        XCTAssertEqual(chapter0?.subframes?.title, "Chapter 01")
+        XCTAssertEqual(chapter1?.subframes?.title, "Chapter 02")
     }
 
     // MARK: Frame removal test
+    #warning("chapter removal broke with changes to chapter and toc handling")
     @available(OSX 10.12, *)
     func testFrameRemoval() throws {
         var tag = try TestFile.chapterized.tag()
         
         tag?.removeChapter(at: 0)
         tag?.removeChapter(at: 2795)
+        tag?.removeTableOfContents()
         
         let outputUrl = try localDirectory(fileName: "removaltest", fileExtension: "mp3")
         XCTAssertNoThrow(try TestFile.chapterized.mp3File()?.write(
@@ -42,4 +45,12 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
             writingTo: outputUrl))
     }
 
+    // MARK: Writing test
+    func testFrameWriting() throws {
+        var tag = try TestFile.noMeta.tag()
+        
+        tag?.tableOfContents.chapters[0] = // what?
+        tag?.tableOfContents.chapters[1680] =
+        tag?.tableOfContents.chapters[3360] =
+    }
 }
