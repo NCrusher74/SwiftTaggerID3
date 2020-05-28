@@ -35,7 +35,9 @@ extension Tag {
             var chapters: [Int: TableOfContents.Chapter] = [:]
             // get the TOC frame
             if let tocFrame = self.toc {
+                // the TOC frame has an array of elementIDs for the chapters
                 let childElementIDs = tocFrame.childElementIDs
+                // use those to initialize and decode a chapter frame
                 for elementID in childElementIDs {
                     let frameKey: FrameKey = .chapter(byElementID: elementID)
                     if let frame = self.frames[frameKey],
@@ -49,41 +51,42 @@ extension Tag {
             return TableOfContents(chapters: chapters)
         }
         set {
-            // get the endTime for the current chapter from the startTime of the next chapter
-            var endTime: Int = 0
-            for (index, _) in newValue.sortedChapters().enumerated() {
-                if index < newValue.sortedChapters().count {
-                    let nextChapter = newValue.sortedChapters()[index + 1]
+            // initialize an empty `childElementIDs` array
+            var childElementIDs: [String] = []
+            // store the new chapters array to avoid resorting every time we call it
+            let newChapters = newValue.sortedChapters()
+            // for each index in the chapters array...
+            for index in newChapters.indices {
+                // get the current chapter
+                let chapter = newChapters[index]
+                // get the endTime for the current chapter from the startTime of the next chapter
+                let endTime: Int
+                // get the index of the next chapter
+                let nextIndex = newChapters.index(after: index)
+                if nextIndex < newChapters.endIndex {
+                    let nextChapter = newChapters[nextIndex]
+                    // get the start time of the next chapter for the end time of the current chapter
                     endTime = nextChapter.startTime
                 } else {
+                    // unless it's the last chapter, in which case the end time is the end of the file
                     endTime = self.mp3Duration ?? 0
                 }
-            }
-            
-            var childElementIDs: [String] = []
-
-            // assign an arbitary elementID to the chapter
-            var chapterNumber: Int = 0
-            let elementID = "ch\(chapterNumber)"
-
-            // build the chapter frames
-            for chapter in newValue.sortedChapters() {
-                var chapterFrame = ChapterFrame()
-                // populate the empty frame with all the new data
-                chapterFrame.startTime = chapter.startTime
-                chapterFrame.endTime = endTime
-                chapterFrame.elementID = elementID
-                // append the elementID to the array for the TOC while we're here
+                // assign an arbitary elementID to the chapter
+                let elementID = "ch\(index)"
+                // initialize a ChapterFrame instance for the chapter
+                let frame = ChapterFrame(.known(.chapter),
+                                         elementID: elementID,
+                                         startTime: chapter.startTime,
+                                         endTime: endTime,
+                                         embeddedSubframesTag: chapter.chapter.subframes)
+                self.frames[.chapter(byStartTime: chapter.startTime)] = .chapterFrame(frame)
                 childElementIDs.append(elementID)
-                chapterFrame.embeddedSubframesTag = chapter.chapter.subframes
-                self[chapterFrom: chapter.startTime] = chapterFrame
-                chapterNumber += 1
             }
-            
-            // initialize an empty CTOC frame and populate it with the child element IDs array
-            var toc = TableOfContentsFrame()
-            toc.childElementIDs = childElementIDs
-            self.toc = toc
+            // initialize a CTOC frame and populate it with the child element IDs array
+            let frame = TableOfContentsFrame(.known(.tableOfContents),
+                                             childElementIDs: childElementIDs,
+                                             embeddedSubframesTag: nil)
+            self.frames[.tableOfContents] = .tocFrame(frame)
         }
     }    
 }

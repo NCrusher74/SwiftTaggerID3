@@ -45,15 +45,11 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
     // MARK: Writing test
     @available(OSX 10.12, *)
     func testFrameWriting() throws {
-        let tag = try TestFile.noMeta.tag()
+        var tag = try TestFile.noMeta.tag()
 
-        var chapters = tag?.tableOfContents.sortedChapters()
-        chapters?[0].startTime = 0 // Fatal error: Index out of range: file 
-        chapters?[1].startTime = 1680
-        chapters?[2].startTime = 3360
-        chapters?[0].chapter.subframes?.title = "Chapter 001"
-        chapters?[1].chapter.subframes?.title = "Chapter 002"
-        chapters?[2].chapter.subframes?.title = "Chapter 003"
+        tag?.tableOfContents.chapters[0]?.subframes?.title = "Chapter 001"
+        tag?.tableOfContents.chapters[1680]?.subframes?.title = "Chapter 002"
+        tag?.tableOfContents.chapters[3360]?.subframes?.title = "Chapter 003"
         
         let outputUrl = try localDirectory(fileName: "newtoctest", fileExtension: "mp3")
         XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(
@@ -63,14 +59,12 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         
         let writtenMp3 = try Mp3File(location: outputUrl)
         let writtenTag = try Tag(readFrom: writtenMp3)
-        let writtenChapters = writtenTag.tableOfContents.sortedChapters()
+        let toc = writtenTag.tableOfContents
+        let writtenChapters = toc.chapters
 
         XCTAssertEqual(writtenChapters.count, 3)
-        XCTAssertEqual(writtenChapters[0].startTime, 0)
-        XCTAssertEqual(writtenChapters[1].startTime, 1680)
-        XCTAssertEqual(writtenChapters[2].startTime, 3360)
-        XCTAssertEqual(writtenChapters[0].chapter.subframes?.title, "Chapter 001")
-        XCTAssertEqual(writtenChapters[1].chapter.subframes?.title, "Chapter 002")
-        XCTAssertEqual(writtenChapters[2].chapter.subframes?.title, "Chapter 003")
+        XCTAssertEqual(writtenChapters[0]?.subframes?.title, "Chapter 001")
+        XCTAssertEqual(writtenChapters[1680]?.subframes?.title, "Chapter 002")
+        XCTAssertEqual(writtenChapters[3360]?.subframes?.title, "Chapter 003")
     }
 }

@@ -63,7 +63,8 @@ public enum FrameKey: Hashable {
     /** `Chapter` frame
      
         The purpose of this frame is to describe a single chapter within an audio file. */
-    case chapter(byStartTimeString: String)
+//    case chapter(byStartTime: Int?, orElementID: String?)
+    case chapter(byStartTime: Int)
     case chapter(byElementID: String)
     /** `Comments` frame
      
@@ -406,4 +407,5 @@ public enum FrameKey: Hashable {
     /// maps to `ReleaseTime` frame
     static var releaseDate: FrameKey { return .releaseTime }
     
+
 }
