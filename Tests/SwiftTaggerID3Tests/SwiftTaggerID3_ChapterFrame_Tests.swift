@@ -26,16 +26,15 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
     }
 
     // MARK: Frame removal test
-    #warning("chapter removal broke with changes to chapter and toc handling")
     @available(OSX 10.12, *)
     func testFrameRemoval() throws {
         var tag = try TestFile.chapterized.tag()
-        
-        tag?.removeChapter(at: 0)
-        tag?.removeChapter(at: 2795)
+
+        tag?.tableOfContents.chapters = [:]
         tag?.removeTableOfContents()
         
         let outputUrl = try localDirectory(fileName: "removaltest", fileExtension: "mp3")
+
         XCTAssertNoThrow(try TestFile.chapterized.mp3File()?.write(
             tagVersion: .v2_4,
             using: tag ?? Tag(readFrom: Mp3File(location: TestFile.chapterized.url)),
@@ -46,10 +45,13 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
     @available(OSX 10.12, *)
     func testFrameWriting() throws {
         var tag = try TestFile.noMeta.tag()
+        
+        var toc = tag?.tableOfContents.chapters
+        toc?[0]?.subframes?.title = "Chapter 001"
+        toc?[1680]?.subframes?.title = "Chapter 002"
+        toc?[3360]?.subframes?.title = "Chapter 003"
 
-        tag?.tableOfContents.chapters[0]?.subframes?.title = "Chapter 001"
-        tag?.tableOfContents.chapters[1680]?.subframes?.title = "Chapter 002"
-        tag?.tableOfContents.chapters[3360]?.subframes?.title = "Chapter 003"
+        tag?.tableOfContents.chapters = toc ?? [:]
         
         let outputUrl = try localDirectory(fileName: "newtoctest", fileExtension: "mp3")
         XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(
@@ -59,8 +61,8 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         
         let writtenMp3 = try Mp3File(location: outputUrl)
         let writtenTag = try Tag(readFrom: writtenMp3)
-        let toc = writtenTag.tableOfContents
-        let writtenChapters = toc.chapters
+        let writtenToc = writtenTag.tableOfContents
+        let writtenChapters = writtenToc.chapters
 
         XCTAssertEqual(writtenChapters.count, 3)
         XCTAssertEqual(writtenChapters[0]?.subframes?.title, "Chapter 001")

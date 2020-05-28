@@ -107,7 +107,7 @@ public struct ChapterFrame: FrameProtocol, CustomStringConvertible {
         self.embeddedSubframesTag = embeddedSubframesTag ?? Tag(subframes: [:])
         self.flags = ChapterFrame.defaultFlags
         self.layout = layout
-        self.frameKey = .chapter(byStartTime: startTime)
+        self.frameKey = .chapter(byElementID: elementID)
     }
     
     // encodes the contents of the frame and returns Data that can be added to the Tag instance to write to the file
@@ -149,58 +149,15 @@ public struct ChapterFrame: FrameProtocol, CustomStringConvertible {
         return try subframe.encode(version: version)
     }
 
-    init() {
-        self.init(.known(.chapter),
-                  elementID: "",
-                  startTime: 0,
-                  endTime: 0,
-                  embeddedSubframesTag: nil)
+    init?() {
+        return nil
     }
 }
 
 // MARK: Tag extension
 extension Tag {
 
-    subscript(chapterFrom elementID: String) -> ChapterFrame? {
-        get {
-            if let frame = self.frames[.chapter(byElementID: elementID)],
-                case .chapterFrame(let chapterFrame) = frame {
-                return chapterFrame
-            } else {
-                return nil
-            }
-        }
-        set {
-            let frame = ChapterFrame(.known(.chapter),
-                                     elementID: elementID,
-                                     startTime: newValue?.startTime ?? 0,
-                                     endTime: newValue?.endTime ?? 0,
-                                     embeddedSubframesTag: newValue?.embeddedSubframesTag)
-            self.frames[.chapter(byElementID: elementID)] = .chapterFrame(frame)
-        }
-    }
-
-    subscript(chapterFrom startTime: Int) -> ChapterFrame? {
-        get {
-            if let frame = self.frames[.chapter(byStartTime: startTime)],
-                case .chapterFrame(let chapterFrame) = frame {
-                return chapterFrame
-            } else {
-                return .init()
-            }
-        }
-        set {
-            let frame = ChapterFrame(.known(.chapter),
-                                     elementID: newValue?.elementID ?? UUID().uuidString,
-                                     startTime: startTime,
-                                     endTime: newValue?.endTime ?? 0,
-                                     embeddedSubframesTag: newValue?.embeddedSubframesTag)
-            self.frames[.chapter(byStartTime: startTime)] = .chapterFrame(frame)
-        }
-    }
-    
-    public mutating func removeChapter(at startTime: Int) {
-        print(self.frames[.chapter(byStartTime: startTime)])
-        self.frames[.chapter(byStartTime: startTime)] = nil
+    mutating func removeChapterFrame(with elementID: String) {
+        self.frames[.chapter(byElementID: elementID)] = nil
     }
 }

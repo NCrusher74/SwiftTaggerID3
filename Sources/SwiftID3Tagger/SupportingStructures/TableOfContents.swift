@@ -13,13 +13,16 @@ public struct TableOfContents {
     /// a dictionary of chapter frames within the tag.
     /// `Int`: the chapter start time
     public var chapters: [Int: Chapter]
-        
+
     /// a public-facing type for handling the Chapter frame in a more intuitive manner
     public struct Chapter {
         init(from chapterFrame: ChapterFrame) {
+            self.chapterFrame = chapterFrame
             self.subframes = chapterFrame.embeddedSubframesTag
         }
+        var chapterFrame: ChapterFrame
         public var subframes: Tag?
+        
     }
     
     /// The chapters in chronological order.
@@ -51,6 +54,15 @@ extension Tag {
             return TableOfContents(chapters: chapters)
         }
         set {
+            // wipe the existing chapter frames and TOC so they can be replaced
+            if let tocFrame = self.toc {
+                let oldElementIDs = tocFrame.childElementIDs
+                for id in oldElementIDs {
+                    self.frames.removeValue(forKey: .chapter(byElementID: id))
+                }
+            }
+            self.toc = nil
+            
             // initialize an empty `childElementIDs` array
             var childElementIDs: [String] = []
             // store the new chapters array to avoid resorting every time we call it
@@ -79,7 +91,7 @@ extension Tag {
                                          startTime: chapter.startTime,
                                          endTime: endTime,
                                          embeddedSubframesTag: chapter.chapter.subframes)
-                self.frames[.chapter(byStartTime: chapter.startTime)] = .chapterFrame(frame)
+                self.frames[.chapter(byElementID: elementID)] = .chapterFrame(frame)
                 childElementIDs.append(elementID)
             }
             // initialize a CTOC frame and populate it with the child element IDs array
@@ -88,5 +100,5 @@ extension Tag {
                                              embeddedSubframesTag: nil)
             self.frames[.tableOfContents] = .tocFrame(frame)
         }
-    }    
+    }
 }

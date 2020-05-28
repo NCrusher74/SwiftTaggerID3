@@ -152,10 +152,8 @@ public struct TableOfContentsFrame: FrameProtocol, CustomStringConvertible {
         return try subframe.encode(version: version)
     }
     
-    init() {
-        self.init(.known(.tableOfContents),
-                  childElementIDs: [],
-                  embeddedSubframesTag: Tag(subframes: [:]))
+    init?() {
+        return nil
     }
 }
 
@@ -167,7 +165,7 @@ extension Tag {
                 case .tocFrame(let tocFrame) = frame {
                 return tocFrame
             } else {
-                return .init()
+                return nil
             }
         }
         set {
@@ -181,5 +179,4 @@ extension Tag {
     public mutating func removeTableOfContents() {
         self.frames[.tableOfContents] = nil
     }
-
 }
