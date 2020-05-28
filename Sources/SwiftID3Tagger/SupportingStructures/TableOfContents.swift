@@ -8,34 +8,35 @@
 import Foundation
 
 /// a public-facing type for handling the TableOfContents frame in a more intuitive manner
-public struct TableOfContents {
+struct TableOfContents {
     
     /// a dictionary of chapter frames within the tag.
     /// `Int`: the chapter start time
-    public var chapters: [Int: Chapter]
-
+    var chapters: [Int: Chapter]
+    init(chapters: [Int : Chapter]) {
+        self.chapters = chapters
+    }
+    
     /// a public-facing type for handling the Chapter frame in a more intuitive manner
-    public struct Chapter {
-        init(from chapterFrame: ChapterFrame) {
-            self.chapterFrame = chapterFrame
-            self.subframes = chapterFrame.embeddedSubframesTag
+    struct Chapter {
+        var chapterTitle: String?
+        init(title: String?) {
+            self.chapterTitle = title
         }
-        var chapterFrame: ChapterFrame
-        public var subframes: Tag?
-        
     }
     
     /// The chapters in chronological order.
-    public func sortedChapters() -> [(startTime: Int, chapter: Chapter)] {
+    func sortedChapters() -> [(startTime: Int, chapter: Chapter)] {
         return chapters.keys.sorted().map { ($0, chapters[$0]!) }
     }
 }
 
 extension Tag {
-    public var tableOfContents: TableOfContents {
+    var tableOfContents: TableOfContents {
         get {
             // initialize a chapter instance by the start time
             var chapters: [Int: TableOfContents.Chapter] = [:]
+            
             // get the TOC frame
             if let tocFrame = self.toc {
                 // the TOC frame has an array of elementIDs for the chapters
@@ -46,7 +47,12 @@ extension Tag {
                     if let frame = self.frames[frameKey],
                         case .chapterFrame(let chapterFrame) = frame {
                         let startTime = chapterFrame.startTime
-                        let chapter = TableOfContents.Chapter(from: chapterFrame)
+                        let chapter: TableOfContents.Chapter
+                        if let title = chapterFrame.embeddedSubframesTag?.title {
+                            chapter = TableOfContents.Chapter(title: title)
+                        } else {
+                            chapter = TableOfContents.Chapter(title: "Chapter Title")
+                        }
                         chapters[startTime] = chapter
                     }
                 }
@@ -85,13 +91,21 @@ extension Tag {
                 }
                 // assign an arbitary elementID to the chapter
                 let elementID = "ch\(index)"
+                // build a title subframe
+                let titleFrame = StringFrame(.known(.title), contentString: chapter.chapter.chapterTitle ?? "Chapter Title")
+                let titleFrameKey: FrameKey = .title
+                let subframe = Frame.stringFrame(titleFrame)
+                let subframesTag = Tag(subframes: [titleFrameKey : subframe])
+                
                 // initialize a ChapterFrame instance for the chapter
+                // using all the elements we just constructed
                 let frame = ChapterFrame(.known(.chapter),
                                          elementID: elementID,
                                          startTime: chapter.startTime,
                                          endTime: endTime,
-                                         embeddedSubframesTag: chapter.chapter.subframes)
+                                         embeddedSubframesTag: subframesTag)
                 self.frames[.chapter(byElementID: elementID)] = .chapterFrame(frame)
+                // add the elementID to the childElementIDs array for the TOC frame
                 childElementIDs.append(elementID)
             }
             // initialize a CTOC frame and populate it with the child element IDs array
@@ -100,5 +114,28 @@ extension Tag {
                                              embeddedSubframesTag: nil)
             self.frames[.tableOfContents] = .tocFrame(frame)
         }
+    }
+    
+    public func getChapters() -> [Int: String] {
+        var dict: [Int: String] = [:]
+        let chapters = self.tableOfContents.sortedChapters()
+        for chapter in chapters {
+            dict[chapter.startTime] = chapter.chapter.chapterTitle
+        }
+        return dict
+    }
+    
+    public mutating func addChapter(at startTime: Int, title: String) {
+        var toc = self.tableOfContents.chapters
+        toc.updateValue(TableOfContents.Chapter(title: title), forKey: startTime)
+        self.tableOfContents.chapters = toc
+    }
+    
+    public mutating func removeChapter(at startTime: Int) {
+        self.tableOfContents.chapters[startTime] = nil
+    }
+    
+    public mutating func removeAllChapters() {
+        self.tableOfContents.chapters = [:]
     }
 }

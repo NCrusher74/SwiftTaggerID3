@@ -16,13 +16,10 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
     // MARK: Read test
     func testReadChapterizedFile() throws {
         let tag = try TestFile.chapterized.tag()
-        
-        let chapters = tag?.tableOfContents.sortedChapters()
-        XCTAssertEqual(chapters?.count, 2)
-        XCTAssertEqual(chapters?[0].startTime, 0)
-        XCTAssertEqual(chapters?[1].startTime, 2795)
-        XCTAssertEqual(chapters?[0].chapter.subframes?.title, "Chapter 01")
-        XCTAssertEqual(chapters?[1].chapter.subframes?.title, "Chapter 02")
+
+        XCTAssertEqual(tag?.getChapters().count, 2)
+        XCTAssertEqual(tag?.getChapters()[0], "Chapter 01")
+        XCTAssertEqual(tag?.getChapters()[2795], "Chapter 02")
     }
 
     // MARK: Frame removal test
@@ -30,7 +27,7 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
     func testFrameRemoval() throws {
         var tag = try TestFile.chapterized.tag()
 
-        tag?.tableOfContents.chapters = [:]
+        tag?.removeAllChapters()
         tag?.removeTableOfContents()
         
         let outputUrl = try localDirectory(fileName: "removaltest", fileExtension: "mp3")
@@ -39,6 +36,11 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
             tagVersion: .v2_4,
             using: tag ?? Tag(readFrom: Mp3File(location: TestFile.chapterized.url)),
             writingTo: outputUrl))
+        
+        let writtenFile = try Mp3File(location: outputUrl)
+        let writtenTag = try Tag(readFrom: writtenFile)
+        
+        XCTAssertEqual(writtenTag.getChapters(),[:])
     }
 
     // MARK: Writing test
@@ -46,12 +48,9 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
     func testFrameWriting() throws {
         var tag = try TestFile.noMeta.tag()
         
-        var toc = tag?.tableOfContents.chapters
-        toc?[0]?.subframes?.title = "Chapter 001"
-        toc?[1680]?.subframes?.title = "Chapter 002"
-        toc?[3360]?.subframes?.title = "Chapter 003"
-
-        tag?.tableOfContents.chapters = toc ?? [:]
+        tag?.addChapter(at: 0, title: "Chapter 001")
+        tag?.addChapter(at: 1680, title: "Chapter 002")
+        tag?.addChapter(at: 3360, title: "Chapter 003")
         
         let outputUrl = try localDirectory(fileName: "newtoctest", fileExtension: "mp3")
         XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(
@@ -59,14 +58,13 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
             using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)),
             writingTo: outputUrl))
         
-        let writtenMp3 = try Mp3File(location: outputUrl)
-        let writtenTag = try Tag(readFrom: writtenMp3)
-        let writtenToc = writtenTag.tableOfContents
-        let writtenChapters = writtenToc.chapters
+        let writtenFile = try Mp3File(location: outputUrl)
+        let writtenTag = try Tag(readFrom: writtenFile)
 
-        XCTAssertEqual(writtenChapters.count, 3)
-        XCTAssertEqual(writtenChapters[0]?.subframes?.title, "Chapter 001")
-        XCTAssertEqual(writtenChapters[1680]?.subframes?.title, "Chapter 002")
-        XCTAssertEqual(writtenChapters[3360]?.subframes?.title, "Chapter 003")
+        XCTAssertEqual(writtenTag.getChapters(), [
+            0 : "Chapter 001",
+            1680: "Chapter 002",
+            3360: "Chapter 003"
+        ])
     }
 }
