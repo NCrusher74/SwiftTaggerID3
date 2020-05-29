@@ -169,6 +169,14 @@ extension Tag {
         }
     }
     
+    public mutating func clearMusicianCreditsList() {
+        self.frames[.musicianCreditsList] = nil
+    }
+
+    public mutating func clearMusicianCreditsForRole(role: MusicianAndPerformerCredits) {
+        self.musicianCreditsList?[role] = nil
+    }
+
     /// Add a new [role:[person]] key-value pair, or, if the `role` already exists in the dictionary, append the person to the existing value for the `role` key
     /// - Parameters:
     ///   - role: the role being performed
@@ -218,5 +226,14 @@ extension Tag {
                 }
             }
         }
-    }    
+    }
+    
+    public mutating func clearInvolvedPeopleList() {
+        self.frames[.involvedPeopleList] = nil
+    }
+
+    public mutating func clearInvolvedPeopleForRole(role: InvolvedPersonCredits) {
+        self.involvedPeopleList?[role] = nil
+    }
+
 }

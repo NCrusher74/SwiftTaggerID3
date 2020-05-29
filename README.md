@@ -17,7 +17,7 @@ SwiftTaggerID3 is a Swift library for reading and writing ID3 tags in MP3 audio 
 ```swift
 let mp3Url = URL(fileURLWithPath: "/path/to/file.mp3")
 let mp3File = try Mp3File(location: mp3Url)
-let tag = try mp3File.read()
+var tag = try mp3File.read()
 
 print(tag.album)
 print(tag.artist)
@@ -42,14 +42,14 @@ try mp3File.write(
 
 If you wish to overwrite all metadata on the file and replace it with only your newly-created frames, initialize `tag` to an empty `Tag()` instance instead of reading from an mp3 file. 
 ```swift
-let tag = Tag()
+var tag = Tag()
 
 tag.album = "Completely New Album Title"
 ```
 
 To wipe the data from a particular frame, set it equal to `nil`:
 ```swift
-let tag = try mp3File.read()
+var tag = try mp3File.read()
 
 tag.album = nil
 tag.artist = nil
@@ -211,7 +211,7 @@ Here's a complete list of the frames handled by SwiftTaggerID3:
 `SwiftTaggerID3` tries to stick pretty close to the requirements of the documented specs, but there are a few places where it deviates, either because the spec is silly, or compliance would be more cumbersome to achieve can be justified by the author's needs, or compliance would make the usage of `SwiftTaggerID3` too convoluted. These deviations are:
 
 * In cases where a frame didn't exist for ID3 version 2.2, but does in version 2.3/2.4, a non-standard ID3 identifier for the frame has been created. Whenever possible, this identifier is the same one used by `TagLib` in similar instances, so that the frame will be recognized by apps built using `TagLib`. Chapter frames, however, are still not supported for version 2.2.
-* The ID3 specs for the `TCON` ("Genre"), `TMED` ("MediaType"), and `TFLT` ("File Type") frames make these frames exceptionally difficult to parse. So while the spec allows for an unlimited array of pre-determined types, pre-determined refinements, and free-form description or refinement strings, `SwiftTaggerID3` only permits one of each type of input. This should be more than sufficient for most user's needs.
+* The ID3 specs for the `TCON` ("Genre"), `TMED` ("MediaType"), and `TFLT` ("File Type") frames make these frames exceptionally difficult to parse. So while the spec allows for an unlimited array of pre-determined types, pre-determined refinements, and free-form description or refinement strings, `SwiftTaggerID3` only permits one of each. This should be more than sufficient for most user's needs.
 * The ID3 specs allow for multiple `CTOC` (Table Of Contents) frames, and for the `CTOC` frames to have embedded subframes. To keep chapter implementation simple, however, `SwiftTaggerID3` only supports a single `CTOC` frame, with no embedded subframes.
 
 If you wish to add these missing features, while keeping the usage user-friendly, the author will welcome pull requests.
