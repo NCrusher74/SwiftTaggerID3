@@ -99,8 +99,114 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.involvedPeopleList?[.actress], ["Actress Name"])
     }
     
-    func testCreditsListFrameRemovalv24() {
+    @available(OSX 10.12, *)
+    func testCreditsListFrameRemovalv24() throws {
+        var tag = try TestFile.v24.tag()
+
+        tag?.clearMusicianCreditsList()
+        tag?.clearInvolvedPeopleList()
+
+        let outputUrl = try tempDirectory().appendingPathComponent("testV24Writing.mp3")
+        XCTAssertNoThrow(try TestFile.v24.mp3File()?.write(tagVersion: .v2_4, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v24.url)), writingTo: outputUrl))
         
+        // MARK: Confirm accuracy
+        let mp3UrlWritten = outputUrl
+        let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
+        let tagWritten = try Tag(readFrom: mp3FileWritten)
+
+        XCTAssertNil(tagWritten.musicianCreditsList)
+        XCTAssertNil(tagWritten.involvedPeopleList)
+    }
+
+    @available(OSX 10.12, *)
+    func testCreditsListFrameRemovalv23() throws {
+        var tag = try TestFile.v23.tag()
+        
+        tag?.clearInvolvedPeopleList()
+        
+        let outputUrl = try tempDirectory().appendingPathComponent("testV23Writing.mp3")
+        XCTAssertNoThrow(try TestFile.v23.mp3File()?.write(tagVersion: .v2_3, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v23.url)), writingTo: outputUrl))
+        
+        // MARK: Confirm accuracy
+        let mp3UrlWritten = outputUrl
+        let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
+        let tagWritten = try Tag(readFrom: mp3FileWritten)
+        
+        XCTAssertNil(tagWritten.involvedPeopleList)
+    }
+
+    @available(OSX 10.12, *)
+    func testCreditsListFrameRemovalv22() throws {
+        var tag = try TestFile.v22.tag()
+        
+        tag?.clearInvolvedPeopleList()
+        
+        let outputUrl = try tempDirectory().appendingPathComponent("testV22Writing.mp3")
+        XCTAssertNoThrow(try TestFile.v22.mp3File()?.write(tagVersion: .v2_2, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v22.url)), writingTo: outputUrl))
+        
+        // MARK: Confirm accuracy
+        let mp3UrlWritten = outputUrl
+        let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
+        let tagWritten = try Tag(readFrom: mp3FileWritten)
+        
+        XCTAssertNil(tagWritten.involvedPeopleList)
+    }
+
+    @available(OSX 10.12, *)
+    func testCreditsListSingleItemRemovalv24() throws {
+        var tag = try TestFile.v24.tag()
+        
+        tag?.clearInvolvedPeopleForRole(role: .actor)
+        tag?.clearMusicianCreditsForRole(role: .soprano)
+        
+        let outputUrl = try tempDirectory().appendingPathComponent("testV24Writing.mp3")
+        XCTAssertNoThrow(try TestFile.v24.mp3File()?.write(tagVersion: .v2_4, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v24.url)), writingTo: outputUrl))
+        
+        // MARK: Confirm accuracy
+        let mp3UrlWritten = outputUrl
+        let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
+        let tagWritten = try Tag(readFrom: mp3FileWritten)
+        
+        XCTAssertNil(tagWritten.involvedPeopleList?[.actor])
+        XCTAssertEqual(tagWritten.involvedPeopleList?[.actress], ["Actress Name"])
+        XCTAssertNil(tagWritten.musicianCreditsList?[.soprano])
+        XCTAssertEqual(tagWritten.musicianCreditsList?[.alto], ["Alto Name"])
+    }
+    
+    @available(OSX 10.12, *)
+    func testCreditsListSingleItemRemovalv23() throws {
+        var tag = try TestFile.v23.tag()
+        
+        tag?.clearInvolvedPeopleForRole(role: .actor)
+        
+        let outputUrl = try tempDirectory().appendingPathComponent("testV23Writing.mp3")
+        XCTAssertNoThrow(try TestFile.v23.mp3File()?.write(tagVersion: .v2_3, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v23.url)), writingTo: outputUrl))
+        
+        // MARK: Confirm accuracy
+        let mp3UrlWritten = outputUrl
+        let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
+        let tagWritten = try Tag(readFrom: mp3FileWritten)
+        
+        XCTAssertNil(tagWritten.involvedPeopleList?[.actor])
+        XCTAssertEqual(tagWritten.involvedPeopleList?[.actress], ["Actress Name"])
+    }
+
+    @available(OSX 10.12, *)
+    func testCreditsListSingleItemRemovalv22() throws {
+        var tag = try TestFile.v22.tag()
+        
+        tag?.clearInvolvedPeopleForRole(role: .actor)
+        
+        let outputUrl = try tempDirectory().appendingPathComponent("testV22Writing.mp3")
+        XCTAssertNoThrow(try TestFile.v22.mp3File()?.write(tagVersion: .v2_2, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v22.url)), writingTo: outputUrl))
+        
+        // MARK: Confirm accuracy
+        let mp3UrlWritten = outputUrl
+        let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
+        let tagWritten = try Tag(readFrom: mp3FileWritten)
+        
+        XCTAssertNil(tagWritten.involvedPeopleList?[.actor])
+        XCTAssertEqual(tagWritten.involvedPeopleList?[.actress], ["Actress Name"])
     }
 
 }
