@@ -142,5 +142,6 @@ extension Tag {
     /// Removes all chapters.
     public mutating func removeAllChapters() {
         self.tableOfContents.chapters = [:]
+        self.removeTableOfContents()
     }
 }

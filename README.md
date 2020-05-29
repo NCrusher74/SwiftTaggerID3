@@ -12,6 +12,7 @@
 SwiftTaggerID3 is a Swift library for reading and writing ID3 tags in MP3 audio files. 
 
 **Usage**
+
 *Reading ID3 frames from a file*
 ```swift
 let mp3Url = URL(fileURLWithPath: "/path/to/file.mp3")
@@ -24,6 +25,7 @@ print(tag.trackNumber)
 ```
 
 *Writing ID3 frames to a file*
+
 To add new frames to a file, or edit existing frames, read the tag as demonstrated above, and add/edit whatever frames you wish:
 ```swift
 tag.album = "New Album Title"
@@ -38,7 +40,7 @@ try mp3File.write(
     writingTo: outputUrl)
 ```
 
-If you wish to overwrite all metadata on the file and replace it with only your newly-created frames, initialize `tag` to an empty `Tag()` instance. 
+If you wish to overwrite all metadata on the file and replace it with only your newly-created frames, initialize `tag` to an empty `Tag()` instance instead of reading from an mp3 file. 
 ```swift
 let tag = Tag()
 
@@ -60,10 +62,12 @@ print(tag[userDefinedText: "UserDefinedText"]) // "User Defined Text Content"
 print(tag[comments: .eng, "CommentDescription"]) // "Comment Content"
 print(tag[lyrics: .eng, "LyricsDescription"]) // "Lyrics Content"
 
-// and to write to these frames
+```
+Writing to these frames works the same way. **NOTE** The `Comment` and `UnsynchronizedLyrics` frames permit the use of newline characters.
+```swift
 tag[userDefinedText: "NewDescription"] = "New User Defined Text Content"
-tag[comments .eng, "NewDescription"] = "New Comment Content"
-tag[lyrics: .eng, "NewDescription"] = "New Lyrics Content"
+tag[comments .eng, "NewDescription"] = """New Comment Content"""
+tag[lyrics: .eng, "NewDescription"] = """New Lyrics Content"""
 
 ```
 To overwrite an existing frame with a subscript accessor, just use the same `descriptionString` and language (if applicable). To remove an existing frame of this type, access it using its removal function:
@@ -73,6 +77,7 @@ tag.removeUserTextFrame(withDescription: "UserText")
 ```
 
 *Involved People and Musician Credit List frames*
+
 To access information from the `InvolvedPeopleList` and `MusicianCreditsList` frames:
 ```swift
 print(tag.involvedPeopleList?[1].role) // .Producer
@@ -83,6 +88,7 @@ print(tag.musicianCreditsList?[0].person) // "Musician Name"
 (NEED REMOVAL INSTRUCTIONS)
 
 *Chapter Frames*
+
 To retrieve a list of all the chapters in the file, use the `allChapters` property.
 ```swift
 print(tag.allChapters)
@@ -98,21 +104,22 @@ print(tag.allChapters[0].title) // "Chapter 01"
 To add a chapter, use the `addChapter(at startTime: Int, title: String)` function. **The `startTime` must be in milliseconds**. *If a chapter exists at the specified `startTime`, it will be overwritten.* Otherwise, new chapters will be added to any existing chapters:
 
 ```swift
-tag.addChapter(at: 1000, title: "Chapter 02")
+tag.addChapter(at: 1000, title: "Chapter 02") // start time in milliseconds
 ```
 
-To remove a single chapter from the tag:
+To remove a single chapter frame from the tag:
 ```swift
 tag.removeChapter(at: startTime)
 ```
 
-To wipe all chapters from the tag:
+To wipe all chapters frames from the tag:
 ```swift
 tag.removeAllChapters()
 ```
 
 
 *Other Frames*
+
 You can export the images from the `AttachedPicture` frames using their optional `descriptionString` as a subscript, but honestly it'd be just as easy to get them using `AVFoundation`:
 ```swift
 let outputURL = URL(fileURLWithPath: "/destination/path/for/image.jpg")
@@ -200,6 +207,7 @@ Here's a complete list of the frames handled by SwiftTaggerID3:
 * `year`
 
 *A note on ID3 specification compliance*
+
 `SwiftTaggerID3` tries to stick pretty close to the requirements of the documented specs, but there are a few places where it deviates, either because the spec is silly, or compliance would be more cumbersome to achieve can be justified by the author's needs, or compliance would make the usage of `SwiftTaggerID3` too convoluted. These deviations are:
 
 * In cases where a frame didn't exist for ID3 version 2.2, but does in version 2.3/2.4, a non-standard ID3 identifier for the frame has been created. Whenever possible, this identifier is the same one used by `TagLib` in similar instances, so that the frame will be recognized by apps built using `TagLib`. Chapter frames, however, are still not supported for version 2.2.

@@ -306,7 +306,7 @@ extension Tag {
     /// Copyright getter-setter. ID3 Identifier: `TCR`/`TCOP`
     public var copyright: String? {
         get { string(for: .copyright) ?? "" }
-        set { set(.known(.copyright), .copyright, to: newValue ?? "") }
+        set { set(.known(.copyright), .copyright, to: "© \(newValue)" ?? "") }
     }
     
     /// EncodedBy getter-setter. ID3 Identifier: `TEN`/`TENC`
@@ -439,7 +439,7 @@ extension Tag {
     /// Valid for tag version 2.4 only
     public var producedNotice: String? {
         get { string(for: .producedNotice) ?? "" }
-        set { set(.known(.producedNotice), .producedNotice, to: newValue ?? "") }
+        set { set(.known(.producedNotice), .producedNotice, to: "℗ \(newValue)" ?? "") }
     }
     
     /// Publisher getter-setter. ID3 Identifier: `TPB`/`TPUB`.

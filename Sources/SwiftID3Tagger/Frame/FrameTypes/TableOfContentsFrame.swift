@@ -176,7 +176,7 @@ extension Tag {
         }
     }
     
-    public mutating func removeTableOfContents() {
+    mutating func removeTableOfContents() {
         self.frames[.tableOfContents] = nil
     }
 }
