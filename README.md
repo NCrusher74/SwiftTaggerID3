@@ -12,6 +12,7 @@
 SwiftTaggerID3 is a Swift library for reading and writing ID3 tags in MP3 audio files. 
 
 **Usage**
+*Reading ID3 frames from a file*
 ```swift
 let mp3Url = URL(fileURLWithPath: "/path/to/file.mp3")
 let mp3File = try Mp3File(location: mp3Url)
@@ -22,92 +23,26 @@ print(tag.artist)
 print(tag.trackNumber)
 ```
 
-For frames where there can be multiple versions of the frame in a tag, you can locate the specific frame using it's `descriptionString` as a subscript, or for frames that also require an ISO-639-2 language code, the language code and the `descriptionString`:
-
+*Writing ID3 frames to a file*
+To add new frames to a file, or edit existing frames, read the tag as demonstrated above, and add/edit whatever frames you wish:
 ```swift
-print(tag[userDefinedText: "UserDefinedText"]) // "User Defined Text Content"
-print(tag[comments: .eng, "CommentDescription"]) // "Comment Content"
-print(tag[lyrics: .eng, "LyricsDescription"]) // "Lyrics Content"
+tag.album = "New Album Title"
+tag.artist = "New Artist"
+tag.trackNumber.track = 3
+tag.trackNumber.totalTracks = 12
+
+let outputUrl = URL(fileURLWithPath: "/path/to/new.mp3")
+try mp3File.write(
+    tagVersion: .v2_4,
+    using: tag,
+    writingTo: outputUrl)
 ```
 
-To access information from the `InvolvedPeopleList` and `MusicianCreditsList` frames:
-
-```swift
-print(tag.involvedPeopleList?[0].role) // .Director
-print(tag.involvedPeopleList?[0].person) // "Director Name"
-print(tag.involvedPeopleList?[1].role) // .Producer
-print(tag.involvedPeopleList?[1].person) // "Producer Name"
-print(tag.musicianCreditsList?[0].role) // .Musician
-print(tag.musicianCreditsList?[0].person) // "Musician Name"
-
-```
-
-To access `CTOC` frame content, the subscript accessor is the `topLevelFlag` boolean (only one `CTOC` frame is allowed to have this flag set to `true`) followed by the `elementID` for `CTOC` frames where the `topLevelFlag` is set to false:
-
-```swift
-// topLevelFlag = true, elementID = "toc1"
-tag?[tableOfContents: true, "toc1"]?.orderedFlag = true
-tag?[tableOfContents: true, "toc1"]?.childElementIDs = ["toc2"]
-tag?[tableOfContents: true, "toc1"]?.embeddedSubframesTag.title = "Table Of Contents (TOP)"
-
-// topLevelFlag = false, elementID = "toc2"
-tag?[tableOfContents: false, "toc2"]?.orderedFlag = true
-tag?[tableOfContents: false, "toc2"]?.childElementIDs = ["ch1", "ch2", "ch3"]
-tag?[tableOfContents: false, "toc2"]?.embeddedSubframesTag.title = "Table Of Contents (SECONDARY)"
-```
-
-To access `CHAP` frame content, the subscript accessor is the `startTime` (in milliseconds.)
-
-```swift
-// startTime is at 0 milliseconds
-tag[chapter: 0]?.elementID = "ch1"
-tag[chapter: 0]?.endTime = 1680
-tag[chapter: 0]?.embeddedSubframesTag.title = "Chapter One"
-
-// startTime is at 1680 milliseconds
-tag[chapter: 1680]?.elementID = "ch2"
-tag[chapter: 1680]?.endTime = 3360
-tag[chapter: 1680]?.embeddedSubframesTag.title = "Chapter Two"
-
-// startTime is at 3360 milliseconds
-tag[chapter: 3360]?.elementID = "ch3"
-tag[chapter: 3360]?.endTime = 5040
-tag[chapter: 3360]?.embeddedSubframesTag.title = "Chapter Three"
-```
-
-In order for some apps to correctly recognize the chapters, the `CTOC` frame must be present and its list of `childElementIDs` must contain the `elementID` of every chapter frame.
-
-In order to remove old or unused `CHAP` and `CTOC` frames, call the `remove` function using the same accessors used to write and query it:
-
-```swift
-tag?.removeTOCFrame(isTopLevel: true, withElementID: "TOC")
-tag?.removeChapterFrame(atStartTime: 2795)
-```
-
-
-
-You can also export the images from the `AttachedPicture` frames using their optional `descriptionString` as a subscript, but honestly it'd be just as easy to get them using `AVFoundation`:
-
-```swift
-let outputURL = URL(fileURLWithPath: "/destination/path/for/image.jpg")
-let coverImageData = tag[attachedPicture: "SampleCover"]
-try coverImageData?.write(to: outputURL)
-```
-
-Unknown or unhandled frames are assigned a `UUID` that may be used in a similar fashion to a `descriptionString`.
-
-**Removing Frames**
-To wipe all metadata from a file, initialize `tag` to an empty `Tag()` instance. This also works if you wish to write only your metadata to the file, and wipe everything else. Simply add the values you wish to `tag`.
-:
+If you wish to overwrite all metadata on the file and replace it with only your newly-created frames, initialize `tag` to an empty `Tag()` instance. 
 ```swift
 let tag = Tag()
 
-tag.album = "Completely New Album Data"
-
-let outputUrl = URL(fileURLWithPath: "/destination/path/for/blank.mp3")
-try mp3NoMeta().write(tagVersion: .v2_3, // whatever version you wish
-using: tag,
-writingTo: outputUrl)
+tag.album = "Completely New Album Title"
 ```
 
 To wipe the data from a particular frame, set it equal to `nil`:
@@ -119,11 +54,73 @@ tag.artist = nil
 tag.trackNumber = nil
 ```
 
-If the frame is one that is accessible by a subscript, you need to locate it using the `remove<Frame>(withSubscriptAccessor:)` function:
+For some frames (such as `Comment` or `userDefinedText`), multiple versions of the frame are permitted in a tag (according to the ID3 spec.) In these cases, you can locate the specific frame using it's `descriptionString` as a subscript, or for frames that also require an ISO-639-2 language code, the language code and the `descriptionString`:
+```swift
+print(tag[userDefinedText: "UserDefinedText"]) // "User Defined Text Content"
+print(tag[comments: .eng, "CommentDescription"]) // "Comment Content"
+print(tag[lyrics: .eng, "LyricsDescription"]) // "Lyrics Content"
+
+// and to write to these frames
+tag[userDefinedText: "NewDescription"] = "New User Defined Text Content"
+tag[comments .eng, "NewDescription"] = "New Comment Content"
+tag[lyrics: .eng, "NewDescription"] = "New Lyrics Content"
+
+```
+To overwrite an existing frame with a subscript accessor, just use the same `descriptionString` and language (if applicable). To remove an existing frame of this type, access it using its removal function:
+```swift
+tag.removeCommentFrame(withDescription: "Comment")
+tag.removeUserTextFrame(withDescription: "UserText")
+```
+
+*Involved People and Musician Credit List frames*
+To access information from the `InvolvedPeopleList` and `MusicianCreditsList` frames:
+```swift
+print(tag.involvedPeopleList?[1].role) // .Producer
+print(tag.involvedPeopleList?[1].person) // "Producer Name"
+print(tag.musicianCreditsList?[0].role) // .Musician
+print(tag.musicianCreditsList?[0].person) // "Musician Name"
+```
+(NEED REMOVAL INSTRUCTIONS)
+
+*Chapter Frames*
+To retrieve a list of all the chapters in the file, use the `allChapters` property.
+```swift
+print(tag.allChapters)
+```
+This will return an array of ( `startTime`,  `chapterTitle`) pairs, where the `startTime` is in milliseconds.
+
+To access the data of a specific chapter, use its index in the `allChapters` array:
+```swift
+print(tag.allChapters[0].startTime) // 0
+print(tag.allChapters[0].title) // "Chapter 01"
+```
+
+To add a chapter, use the `addChapter(at startTime: Int, title: String)` function. **The `startTime` must be in milliseconds**. *If a chapter exists at the specified `startTime`, it will be overwritten.* Otherwise, new chapters will be added to any existing chapters:
 
 ```swift
-tag.removeCommentFrame(withDescription: "Comment Description")
+tag.addChapter(at: 1000, title: "Chapter 02")
 ```
+
+To remove a single chapter from the tag:
+```swift
+tag.removeChapter(at: startTime)
+```
+
+To wipe all chapters from the tag:
+```swift
+tag.removeAllChapters()
+```
+
+
+*Other Frames*
+You can export the images from the `AttachedPicture` frames using their optional `descriptionString` as a subscript, but honestly it'd be just as easy to get them using `AVFoundation`:
+```swift
+let outputURL = URL(fileURLWithPath: "/destination/path/for/image.jpg")
+let coverImageData = tag[attachedPicture: "SampleCover"]
+try coverImageData?.write(to: outputURL)
+```
+
+Unknown or unhandled frames are assigned a `UUID` that may be used in a similar fashion to a `descriptionString`.
 
 Here's a complete list of the frames handled by SwiftTaggerID3:
 
@@ -139,7 +136,7 @@ Here's a complete list of the frames handled by SwiftTaggerID3:
 * `audioFileWebpage`
 * `audioSourceWebpage`
 * `bpm`
-* `chapter // query using startTime in milliseconds as subscript accessor`
+* `chapter`
 * `comments // query using description as subscript accessor`
 * `compilation`
 * `composer`
@@ -191,7 +188,7 @@ Here's a complete list of the frames handled by SwiftTaggerID3:
 * `releaseTime`
 * `setSubtitle`
 * `subtitle`
-* `tableOfContents // query using topLevelFlag boolean and elementID as subscript accessors`
+* `tableOfContents`
 * `taggingTime`
 * `time`
 * `title`
@@ -201,3 +198,12 @@ Here's a complete list of the frames handled by SwiftTaggerID3:
 * `userDefinedText // query using description as subscript accessor`
 * `userDefinedWebpage // query using description as subscript accessor`
 * `year`
+
+*A note on ID3 specification compliance*
+`SwiftTaggerID3` tries to stick pretty close to the requirements of the documented specs, but there are a few places where it deviates, either because the spec is silly, or compliance would be more cumbersome to achieve can be justified by the author's needs, or compliance would make the usage of `SwiftTaggerID3` too convoluted. These deviations are:
+
+* In cases where a frame didn't exist for ID3 version 2.2, but does in version 2.3/2.4, a non-standard ID3 identifier for the frame has been created. Whenever possible, this identifier is the same one used by `TagLib` in similar instances, so that the frame will be recognized by apps built using `TagLib`. Chapter frames, however, are still not supported for version 2.2.
+* The ID3 specs for the `TCON` ("Genre"), `TMED` ("MediaType"), and `TFLT` ("File Type") frames make these frames exceptionally difficult to parse. So while the spec allows for an unlimited array of pre-determined types, pre-determined refinements, and free-form description or refinement strings, `SwiftTaggerID3` only permits one of each type of input. This should be more than sufficient for most user's needs.
+* The ID3 specs allow for multiple `CTOC` (Table Of Contents) frames, and for the `CTOC` frames to have embedded subframes. To keep chapter implementation simple, however, `SwiftTaggerID3` only supports a single `CTOC` frame, with no embedded subframes.
+
+If you wish to add these missing features, while keeping the usage user-friendly, the author will welcome pull requests.

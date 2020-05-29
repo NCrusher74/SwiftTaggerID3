@@ -13,9 +13,6 @@ struct TableOfContents {
     /// a dictionary of chapter frames within the tag.
     /// `Int`: the chapter start time
     var chapters: [Int: Chapter]
-    init(chapters: [Int : Chapter]) {
-        self.chapters = chapters
-    }
     
     /// a public-facing type for handling the Chapter frame in a more intuitive manner
     struct Chapter {
@@ -51,7 +48,7 @@ extension Tag {
                         if let title = chapterFrame.embeddedSubframesTag?.title {
                             chapter = TableOfContents.Chapter(title: title)
                         } else {
-                            chapter = TableOfContents.Chapter(title: "Chapter Title")
+                            chapter = TableOfContents.Chapter(title: "")
                         }
                         chapters[startTime] = chapter
                     }
@@ -60,19 +57,19 @@ extension Tag {
             return TableOfContents(chapters: chapters)
         }
         set {
+            // store the new chapters array to avoid resorting every time we call it
+            let newChapters = newValue.sortedChapters()
             // wipe the existing chapter frames and TOC so they can be replaced
             if let tocFrame = self.toc {
                 let oldElementIDs = tocFrame.childElementIDs
                 for id in oldElementIDs {
-                    self.frames.removeValue(forKey: .chapter(byElementID: id))
+                    self.removeChapterFrame(with: id)
                 }
             }
-            self.toc = nil
+            self.removeTableOfContents()
             
             // initialize an empty `childElementIDs` array
             var childElementIDs: [String] = []
-            // store the new chapters array to avoid resorting every time we call it
-            let newChapters = newValue.sortedChapters()
             // for each index in the chapters array...
             for index in newChapters.indices {
                 // get the current chapter
@@ -92,7 +89,7 @@ extension Tag {
                 // assign an arbitary elementID to the chapter
                 let elementID = "ch\(index)"
                 // build a title subframe
-                let titleFrame = StringFrame(.known(.title), contentString: chapter.chapter.chapterTitle ?? "Chapter Title")
+                let titleFrame = StringFrame(.known(.title), contentString: chapter.chapter.chapterTitle ?? "")
                 let titleFrameKey: FrameKey = .title
                 let subframe = Frame.stringFrame(titleFrame)
                 let subframesTag = Tag(subframes: [titleFrameKey : subframe])
@@ -116,25 +113,33 @@ extension Tag {
         }
     }
     
-    public func getChapters() -> [Int: String] {
-        var dict: [Int: String] = [:]
+    /// Retrieves an array of chapters by start time (in milliseconds) and title.
+    public var allChapters: [(startTime: Int, title: String)] {
+        var chaptersArray: [(Int, String)] = []
         let chapters = self.tableOfContents.sortedChapters()
         for chapter in chapters {
-            dict[chapter.startTime] = chapter.chapter.chapterTitle
+            let startTime = chapter.startTime
+            let title = chapter.chapter.chapterTitle ?? ""
+            chaptersArray.append((startTime, title))
         }
-        return dict
+        return chaptersArray
     }
     
+    /// Adds a chapter at the specified start time (in milliseconds) with the specified title.
+    /// If a chapter exists at the specified start time, it will be overwritten.
+    /// To edit a chapter title, simply overwrite the existing chapter with a new one
     public mutating func addChapter(at startTime: Int, title: String) {
-        var toc = self.tableOfContents.chapters
-        toc.updateValue(TableOfContents.Chapter(title: title), forKey: startTime)
-        self.tableOfContents.chapters = toc
+        var tocChapters = self.tableOfContents.chapters
+        tocChapters.updateValue(TableOfContents.Chapter(title: title), forKey: startTime)
+        self.tableOfContents.chapters = tocChapters
     }
     
+    /// Removes the chapter at the specified start time.
     public mutating func removeChapter(at startTime: Int) {
         self.tableOfContents.chapters[startTime] = nil
     }
     
+    /// Removes all chapters.
     public mutating func removeAllChapters() {
         self.tableOfContents.chapters = [:]
     }

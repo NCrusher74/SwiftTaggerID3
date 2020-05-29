@@ -17,9 +17,12 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
     func testReadChapterizedFile() throws {
         let tag = try TestFile.chapterized.tag()
 
-        XCTAssertEqual(tag?.getChapters().count, 2)
-        XCTAssertEqual(tag?.getChapters()[0], "Chapter 01")
-        XCTAssertEqual(tag?.getChapters()[2795], "Chapter 02")
+        XCTAssertEqual(tag?.allChapters.count,2)
+        XCTAssertEqual(tag?.allChapters[0].startTime, 0)
+        XCTAssertEqual(tag?.allChapters[0].title, "Chapter 01")
+        XCTAssertEqual(tag?.allChapters[1].startTime, 2795)
+        XCTAssertEqual(tag?.allChapters[1].title, "Chapter 02")
+
     }
 
     // MARK: Frame removal test
@@ -40,7 +43,7 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         let writtenFile = try Mp3File(location: outputUrl)
         let writtenTag = try Tag(readFrom: writtenFile)
         
-        XCTAssertEqual(writtenTag.getChapters(),[:])
+        XCTAssertTrue(writtenTag.allChapters.isEmpty)
     }
 
     // MARK: Writing test
@@ -61,10 +64,39 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         let writtenFile = try Mp3File(location: outputUrl)
         let writtenTag = try Tag(readFrom: writtenFile)
 
-        XCTAssertEqual(writtenTag.getChapters(), [
-            0 : "Chapter 001",
-            1680: "Chapter 002",
-            3360: "Chapter 003"
-        ])
+        XCTAssertEqual(writtenTag.allChapters[0].startTime, 0)
+        XCTAssertEqual(writtenTag.allChapters[0].title, "Chapter 001")
+        XCTAssertEqual(writtenTag.allChapters[1].startTime, 1680)
+        XCTAssertEqual(writtenTag.allChapters[1].title, "Chapter 002")
+        XCTAssertEqual(writtenTag.allChapters[2].startTime, 3360)
+        XCTAssertEqual(writtenTag.allChapters[2].title, "Chapter 003")
+    }
+
+    // MARK: Writing test
+    @available(OSX 10.12, *)
+    func testOverwriting() throws {
+        var tag = try TestFile.chapterized.tag()
+        
+        tag?.addChapter(at: 0, title: "Chapter 001")
+        tag?.addChapter(at: 1680, title: "Chapter 002")
+        tag?.addChapter(at: 3360, title: "Chapter 003")
+        
+        let outputUrl = try localDirectory(fileName: "newtoctest", fileExtension: "mp3")
+        XCTAssertNoThrow(try TestFile.chapterized.mp3File()?.write(
+            tagVersion: .v2_4,
+            using: tag ?? Tag(readFrom: Mp3File(location: TestFile.chapterized.url)),
+            writingTo: outputUrl))
+        
+        let writtenFile = try Mp3File(location: outputUrl)
+        let writtenTag = try Tag(readFrom: writtenFile)
+        
+        XCTAssertEqual(writtenTag.allChapters[0].startTime, 0)
+        XCTAssertEqual(writtenTag.allChapters[0].title, "Chapter 001")
+        XCTAssertEqual(writtenTag.allChapters[1].startTime, 1680)
+        XCTAssertEqual(writtenTag.allChapters[1].title, "Chapter 002")
+        XCTAssertEqual(writtenTag.allChapters[2].startTime, 2795)
+        XCTAssertEqual(writtenTag.allChapters[2].title, "Chapter 02")
+        XCTAssertEqual(writtenTag.allChapters[3].startTime, 3360)
+        XCTAssertEqual(writtenTag.allChapters[3].title, "Chapter 003")
     }
 }
