@@ -15,9 +15,92 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
     #warning("NEEDS FIXING: Need a way to specify whether a change to a credits list frame should append the existing credits list entries, or overwrite.")
     #warning("NEEDS FIXING: Check for duplicates in the values array.")
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testCreditsListFrameReadingv24() throws {
+        let tag = try TestFile.v24.tag()
+
+        XCTAssertEqual(tag?.involvedPeopleList?[.actor], ["Actor Name"])
+        XCTAssertEqual(tag?.involvedPeopleList?[.actress], ["Actress Name"])
+        XCTAssertEqual(tag?.musicianCreditsList?[.soprano], ["Soprano Name"])
+        XCTAssertEqual(tag?.musicianCreditsList?[.alto], ["Alto Name"])
+    }
+
+    func testCreditsListFrameReadingv23() throws {
+        let tag = try TestFile.v23.tag()
+        
+        XCTAssertEqual(tag?.involvedPeopleList?[.actor], ["Actor Name"])
+        XCTAssertEqual(tag?.involvedPeopleList?[.actress], ["Actress Name"])
+    }
+
+    func testCreditsListFrameReadingv22() throws {
+        let tag = try TestFile.v22.tag()
+        
+        XCTAssertEqual(tag?.involvedPeopleList?[.actor], ["Actor Name"])
+        XCTAssertEqual(tag?.involvedPeopleList?[.actress], ["Actress Name"])
+    }
+
+    @available(OSX 10.12, *)
+    func testCreditsListFrameWritingv24() throws {
+        var tag = try TestFile.noMeta.tag()
+
+        tag?.addInvolvedPersonCredit(role: .actor, person: "Actor Name")
+        tag?.addInvolvedPersonCredit(role: .actress, person: "Actress Name")
+        tag?.addMusicianCredit(role: .soprano, person: "Soprano Name")
+        tag?.addMusicianCredit(role: .alto, person: "Alto Name")
+
+        let outputUrl = try tempDirectory().appendingPathComponent("testV24Writing.mp3")
+        XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_4, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v24.url)), writingTo: outputUrl))
+        
+        // MARK: Confirm accuracy
+        let mp3UrlWritten = outputUrl
+        let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
+        let tagWritten = try Tag(readFrom: mp3FileWritten)
+
+        XCTAssertEqual(tagWritten.involvedPeopleList?[.actor], ["Actor Name"])
+        XCTAssertEqual(tagWritten.involvedPeopleList?[.actress], ["Actress Name"])
+        XCTAssertEqual(tagWritten.musicianCreditsList?[.soprano], ["Soprano Name"])
+        XCTAssertEqual(tagWritten.musicianCreditsList?[.alto], ["Alto Name"])
+    }
+
+    @available(OSX 10.12, *)
+    func testCreditsListFrameWritingv23() throws {
+        var tag = try TestFile.noMeta.tag()
+        
+        tag?.addInvolvedPersonCredit(role: .actor, person: "Actor Name")
+        tag?.addInvolvedPersonCredit(role: .actress, person: "Actress Name")
+        
+        let outputUrl = try tempDirectory().appendingPathComponent("testV23Writing.mp3")
+        XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_3, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v23.url)), writingTo: outputUrl))
+        
+        // MARK: Confirm accuracy
+        let mp3UrlWritten = outputUrl
+        let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
+        let tagWritten = try Tag(readFrom: mp3FileWritten)
+        
+        XCTAssertEqual(tagWritten.involvedPeopleList?[.actor], ["Actor Name"])
+        XCTAssertEqual(tagWritten.involvedPeopleList?[.actress], ["Actress Name"])
+    }
+    
+    @available(OSX 10.12, *)
+    func testCreditsListFrameWritingv22() throws {
+        var tag = try TestFile.noMeta.tag()
+        
+        tag?.addInvolvedPersonCredit(role: .actor, person: "Actor Name")
+        tag?.addInvolvedPersonCredit(role: .actress, person: "Actress Name")
+        
+        let outputUrl = try tempDirectory().appendingPathComponent("testV22Writing.mp3")
+        XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_2, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v22.url)), writingTo: outputUrl))
+        
+        // MARK: Confirm accuracy
+        let mp3UrlWritten = outputUrl
+        let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
+        let tagWritten = try Tag(readFrom: mp3FileWritten)
+        
+        XCTAssertEqual(tagWritten.involvedPeopleList?[.actor], ["Actor Name"])
+        XCTAssertEqual(tagWritten.involvedPeopleList?[.actress], ["Actress Name"])
+    }
+    
+    func testCreditsListFrameRemovalv24() {
+        
     }
 
 }

@@ -80,38 +80,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag?.trackNumber?.totalTracks = 2
         tag?.discNumber?.disc = 3
         tag?.discNumber?.totalDiscs = 4
-        
-        // MARK: Localized Frame
-        tag?[comments: .eng, "Comment"] = "Comment Content"
-        tag?[lyrics: .eng, "Lyrics"] = "Lyrics Content"
-        tag?[customComment: .eng, .description] = "Description Content"
-        tag?[customComment: .eng, .linerNotes] = "Liner Notes Content"
-        tag?[customComment: .eng, .longDescription] = "Long Description Content"
-        tag?[customComment: .eng, .seriesDescription] = "Series Description Content"
-        tag?[customComment: .eng, .songDescription] = "Song Description Content"
-        
-        tag?[userDefinedUrl: "UserURL"] = "http://userdefined.url"
-        tag?.onlineExtras = "http://onlineextras.url"
-        
-        tag?[userDefinedText: "UserText"] = "User Text Content"
-        tag?.thanks = "Thanks"
-        tag?.sourceCredit = "Source Credit"
-        tag?.season = 8
-        tag?.seriesName = "Series Name"
-        tag?.network = "Network"
-        tag?.acknowledgment = "Acknowledgment"
-        tag?.episodeName = "Episode Name"
-        tag?.episodeNumber = 7
-        tag?.keywords = ["Key","Words"]
-        tag?.contentRating = .clean
-        tag?.contentAdvisory = .usMovieUnrated
-        
-        // MARK: Credits List Frame
-        tag?.addInvolvedPersonCredit(role: .actor, person: "Actor Name")
-        tag?.addInvolvedPersonCredit(role: .actress, person: "Actress Name")
-        tag?.addMusicianCredit(role: .soprano, person: "Soprano Name")
-        tag?.addMusicianCredit(role: .alto, person: "Alto Name")
-        
+                        
         // MARK: Preset Options Frame
         tag?.fileType?.fileType = nil
         tag?.fileType?.fileTypeRefinement = nil
@@ -155,9 +124,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.composer, "Composer")
         XCTAssertEqual(tagWritten.composerSort, "Composer Sort")
         XCTAssertEqual(tagWritten.conductor, "Conductor")
-        XCTAssertEqual(tagWritten.contentAdvisory, .usMovieUnrated)
         XCTAssertEqual(tagWritten.contentGroup, "Content Group")
-        XCTAssertEqual(tagWritten.contentRating, .clean)
         XCTAssertEqual(tagWritten.copyright, "2020 Copyright")
         XCTAssertEqual(tagWritten.copyrightWebpage, "http://copyright.url")
         XCTAssertEqual(tagWritten.discNumber?.disc, 3)
@@ -170,8 +137,6 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.encodingDateTime?.minute, 0)
 
         XCTAssertEqual(tagWritten.encodingSettings, "Encoding Settings")
-        XCTAssertEqual(tagWritten.episodeName, "Episode Name")
-        XCTAssertEqual(tagWritten.episodeNumber, 7)
         XCTAssertEqual(tagWritten.fileOwner, "File Owner")
         XCTAssertNil(tagWritten.fileType?.fileType)
         XCTAssertNil(tagWritten.fileType?.fileTypeRefinement)
@@ -181,10 +146,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.grouping, "Grouping")
         XCTAssertEqual(tagWritten.initialKey, .aFlatMinor)
         XCTAssertEqual(tagWritten.interpretedBy, "Arranger")
-        XCTAssertEqual(tagWritten.involvedPeopleList?[.actor], ["Actor Name"])
-        XCTAssertEqual(tagWritten.involvedPeopleList?[.actress], ["Actress Name"])
         XCTAssertEqual(tagWritten.isrc, 987654321098)
-        XCTAssertEqual(tagWritten.keywords, ["Key","Words"])
         XCTAssertEqual(tagWritten.label, "Publisher")
         XCTAssertEqual(tagWritten.languages, [.eng])
         XCTAssertEqual(tagWritten.length, 9767)
@@ -196,12 +158,8 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.movementName, "Movement Name")
         XCTAssertEqual(tagWritten.movementNumber, 5)
         XCTAssertEqual(tagWritten.totalMovements, 6)
-        XCTAssertEqual(tagWritten.musicianCreditsList?[.soprano], ["Soprano Name"])
-        XCTAssertEqual(tagWritten.musicianCreditsList?[.alto], ["Alto Name"])
         XCTAssertEqual(tagWritten.narrator, "Composer")
         XCTAssertEqual(tagWritten.narratorSort, "Composer Sort")
-        XCTAssertEqual(tagWritten.network, "Network")
-        XCTAssertEqual(tagWritten.onlineExtras, "http://onlineextras.url")
         XCTAssertEqual(tagWritten.originalAlbum, "Original Album")
         XCTAssertEqual(tagWritten.originalArtist, "Original Artist")
         XCTAssertEqual(tagWritten.originalFilename, "Original Filename")
@@ -236,11 +194,8 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.releaseDateTime?.hour, 11)
         XCTAssertEqual(tagWritten.releaseDateTime?.minute, 11)
         XCTAssertEqual(tagWritten.remixer, "Arranger")
-        XCTAssertEqual(tagWritten.season, 8)
         XCTAssertEqual(tagWritten.series, "Content Group")
-        XCTAssertEqual(tagWritten.seriesName, "Series Name")
         XCTAssertEqual(tagWritten.setSubtitle, "Set Subtitle")
-        XCTAssertEqual(tagWritten.sourceCredit, "Source Credit")
         XCTAssertEqual(tagWritten.studio, "Publisher")
         XCTAssertEqual(tagWritten.subtitle, "Subtitle")
         XCTAssertEqual(tagWritten.taggingDateTime?.year, 2017)
@@ -248,7 +203,6 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.taggingDateTime?.day, 07)
         XCTAssertEqual(tagWritten.taggingDateTime?.hour, 0)
         XCTAssertEqual(tagWritten.taggingDateTime?.minute, 0)
-        XCTAssertEqual(tagWritten.thanks, "Thanks")
         XCTAssertEqual(tagWritten.title, "Title")
         XCTAssertEqual(tagWritten.titleSort, "Title Sort")
         XCTAssertEqual(tagWritten.trackNumber?.track, 1)
@@ -320,36 +274,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag?.trackNumber?.totalTracks = 2
         tag?.discNumber?.disc = 3
         tag?.discNumber?.totalDiscs = 4
-        
-        // MARK: Localized Frame
-        tag?[comments: .eng, "Comment"] = "Comment Content" // reading description as part of the comment for some reason
-        tag?[lyrics: .eng, "Lyrics"] = "Lyrics Content" // same here - null term not working?
-        tag?[customComment: .eng, .description] = "Description Content"
-        tag?[customComment: .eng, .linerNotes] = "Liner Notes Content"
-        tag?[customComment: .eng, .longDescription] = "Long Description Content"
-        tag?[customComment: .eng, .seriesDescription] = "Series Description Content"
-        tag?[customComment: .eng, .songDescription] = "Song Description Content"
-        
-        tag?[userDefinedUrl: "UserURL"] = "http://userdefined.url"
-        tag?.onlineExtras = "http://onlineextras.url"
-        
-        tag?[userDefinedText: "UserText"] = "User Text Content"
-        tag?.thanks = "Thanks"
-        tag?.sourceCredit = "Source Credit"
-        tag?.season = 8
-        tag?.seriesName = "Series Name"
-        tag?.network = "Network"
-        tag?.acknowledgment = "Acknowledgment"
-        tag?.episodeName = "Episode Name"
-        tag?.episodeNumber = 7
-        tag?.keywords = ["Key","Words"]
-        tag?.contentRating = .clean
-        tag?.contentAdvisory = .usMovieUnrated
-        
-        // MARK: Credits List Frame
-        tag?.addInvolvedPersonCredit(role: .actor, person: "Actor Name")
-        tag?.addInvolvedPersonCredit(role: .actress, person: "Actress Name")
-        
+                
         // MARK: Preset Options Frame
         tag?.fileType?.fileType = nil
         tag?.fileType?.fileTypeRefinement = nil
@@ -404,17 +329,13 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.composer, "Composer")
         XCTAssertEqual(tagWritten.composerSort, "Composer Sort")
         XCTAssertEqual(tagWritten.conductor, "Conductor")
-        XCTAssertEqual(tagWritten.contentAdvisory, .usMovieUnrated)
         XCTAssertEqual(tagWritten.contentGroup, "Content Group")
-        XCTAssertEqual(tagWritten.contentRating, .clean)
         XCTAssertEqual(tagWritten.copyright, "2020 Copyright")
         XCTAssertEqual(tagWritten.copyrightWebpage, "http://copyright.url")
         XCTAssertEqual(tagWritten.discNumber?.disc, 3)
         XCTAssertEqual(tagWritten.discNumber?.totalDiscs, 4)
         XCTAssertEqual(tagWritten.encodedBy, "Encoded By")
         XCTAssertEqual(tagWritten.encodingSettings, "Encoding Settings")
-        XCTAssertEqual(tagWritten.episodeName, "Episode Name")
-        XCTAssertEqual(tagWritten.episodeNumber, 7)
         XCTAssertEqual(tagWritten.fileOwner, "File Owner")
         XCTAssertNil(tagWritten.fileType?.fileType)
         XCTAssertNil(tagWritten.fileType?.fileTypeRefinement)
@@ -424,10 +345,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.grouping, "Grouping")
         XCTAssertEqual(tagWritten.initialKey, .aFlatMinor)
         XCTAssertEqual(tagWritten.interpretedBy, "Arranger")
-        XCTAssertEqual(tagWritten.involvedPeopleList?[.actor], ["Actor Name"])
-        XCTAssertEqual(tagWritten.involvedPeopleList?[.actress], ["Actress Name"])
         XCTAssertEqual(tagWritten.isrc, 987654321098)
-        XCTAssertEqual(tagWritten.keywords, ["Key","Words"])
         XCTAssertEqual(tagWritten.label, "Publisher")
         XCTAssertEqual(tagWritten.languages, [.eng])
         XCTAssertEqual(tagWritten.length, 9767)
@@ -440,8 +358,6 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.totalMovements, 6)
         XCTAssertEqual(tagWritten.narrator, "Composer")
         XCTAssertEqual(tagWritten.narratorSort, "Composer Sort")
-        XCTAssertEqual(tagWritten.network, "Network")
-        XCTAssertEqual(tagWritten.onlineExtras, "http://onlineextras.url")
         XCTAssertEqual(tagWritten.originalAlbum, "Original Album")
         XCTAssertEqual(tagWritten.originalArtist, "Original Artist")
         XCTAssertEqual(tagWritten.originalFilename, "Original Filename")
@@ -460,13 +376,9 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.radioStationWebpage, "http://radiostation.url")
         XCTAssertEqual(tagWritten.recordCompany, "Publisher")
         XCTAssertEqual(tagWritten.remixer, "Arranger")
-        XCTAssertEqual(tagWritten.season, 8)
         XCTAssertEqual(tagWritten.series, "Content Group")
-        XCTAssertEqual(tagWritten.seriesName, "Series Name")
-        XCTAssertEqual(tagWritten.sourceCredit, "Source Credit")
         XCTAssertEqual(tagWritten.studio, "Publisher")
         XCTAssertEqual(tagWritten.subtitle, "Subtitle")
-        XCTAssertEqual(tagWritten.thanks, "Thanks")
         XCTAssertEqual(tagWritten.title, "Title")
         XCTAssertEqual(tagWritten.titleSort, "Title Sort")
         XCTAssertEqual(tagWritten.trackNumber?.track, 1)
@@ -526,35 +438,6 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag?.discNumber?.disc = 3
         tag?.discNumber?.totalDiscs = 4
         
-        // MARK: Localized Frame
-        tag?[comments: .eng, "Comment"] = "Comment Content" // reading description as part of the comment for some reason
-        tag?[lyrics: .eng, "Lyrics"] = "Lyrics Content" // same here - null term not working?
-        tag?[customComment: .eng, .description] = "Description Content"
-        tag?[customComment: .eng, .linerNotes] = "Liner Notes Content"
-        tag?[customComment: .eng, .longDescription] = "Long Description Content"
-        tag?[customComment: .eng, .seriesDescription] = "Series Description Content"
-        tag?[customComment: .eng, .songDescription] = "Song Description Content"
-        
-        tag?[userDefinedUrl: "UserURL"] = "http://userdefined.url"
-        tag?.onlineExtras = "http://onlineextras.url"
-        
-        tag?[userDefinedText: "UserText"] = "User Text Content"
-        tag?.thanks = "Thanks"
-        tag?.sourceCredit = "Source Credit"
-        tag?.season = 8
-        tag?.seriesName = "Series Name"
-        tag?.network = "Network"
-        tag?.acknowledgment = "Acknowledgment"
-        tag?.episodeName = "Episode Name"
-        tag?.episodeNumber = 7
-        tag?.keywords = ["Key","Words"]
-        tag?.contentRating = .clean
-        tag?.contentAdvisory = .usMovieUnrated
-        
-        // MARK: Credits List Frame
-        tag?.addInvolvedPersonCredit(role: .actor, person: "Actor Name")
-        tag?.addInvolvedPersonCredit(role: .actress, person: "Actress Name")
-        
         // MARK: Preset Options Frame
         tag?.fileType?.fileType = nil
         tag?.fileType?.fileTypeRefinement = nil
@@ -610,17 +493,13 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.composer, "Composer")
         XCTAssertEqual(tagWritten.composerSort, "Composer Sort")
         XCTAssertEqual(tagWritten.conductor, "Conductor")
-        XCTAssertEqual(tagWritten.contentAdvisory, .usMovieUnrated)
         XCTAssertEqual(tagWritten.contentGroup, "Content Group")
-        XCTAssertEqual(tagWritten.contentRating, .clean)
         XCTAssertEqual(tagWritten.copyright, "2020 Copyright")
         XCTAssertEqual(tagWritten.copyrightWebpage, "http://copyright.url")
         XCTAssertEqual(tagWritten.discNumber?.disc, 3)
         XCTAssertEqual(tagWritten.discNumber?.totalDiscs, 4)
         XCTAssertEqual(tagWritten.encodedBy, "Encoded By")
         XCTAssertEqual(tagWritten.encodingSettings, "Encoding Settings")
-        XCTAssertEqual(tagWritten.episodeName, "Episode Name")
-        XCTAssertEqual(tagWritten.episodeNumber, 7)
         XCTAssertNil(tagWritten.fileType?.fileType)
         XCTAssertNil(tagWritten.fileType?.fileTypeRefinement)
         XCTAssertEqual(tagWritten.fileType?.additionalInformation, "File Type")
@@ -628,10 +507,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.genre?.customGenre, "Genre Type")
         XCTAssertEqual(tagWritten.initialKey, .aFlatMinor)
         XCTAssertEqual(tagWritten.interpretedBy, "Arranger")
-        XCTAssertEqual(tagWritten.involvedPeopleList?[.actor], ["Actor Name"])
-        XCTAssertEqual(tagWritten.involvedPeopleList?[.actress], ["Actress Name"])
         XCTAssertEqual(tagWritten.isrc, 987654321098)
-        XCTAssertEqual(tagWritten.keywords, ["Key","Words"])
         XCTAssertEqual(tagWritten.label, "Publisher")
         XCTAssertEqual(tagWritten.languages, [.eng])
         XCTAssertEqual(tagWritten.length, 9767)
@@ -641,8 +517,6 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.mediaType?.additionalInformation, "Media Type")
         XCTAssertEqual(tagWritten.narrator, "Composer")
         XCTAssertEqual(tagWritten.narratorSort, "Composer Sort")
-        XCTAssertEqual(tagWritten.network, "Network")
-        XCTAssertEqual(tagWritten.onlineExtras, "http://onlineextras.url")
         XCTAssertEqual(tagWritten.originalAlbum, "Original Album")
         XCTAssertEqual(tagWritten.originalArtist, "Original Artist")
         XCTAssertEqual(tagWritten.originalFilename, "Original Filename")
@@ -654,18 +528,15 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.radioStationOwner, "Radio Station Owner")
         XCTAssertEqual(tagWritten.recordCompany, "Publisher")
         XCTAssertEqual(tagWritten.remixer, "Arranger")
-        XCTAssertEqual(tagWritten.season, 8)
         XCTAssertEqual(tagWritten.series, "Content Group")
-        XCTAssertEqual(tagWritten.seriesName, "Series Name")
-        XCTAssertEqual(tagWritten.sourceCredit, "Source Credit")
         XCTAssertEqual(tagWritten.studio, "Publisher")
         XCTAssertEqual(tagWritten.subtitle, "Subtitle")
-        XCTAssertEqual(tagWritten.thanks, "Thanks")
         XCTAssertEqual(tagWritten.title, "Title")
         XCTAssertEqual(tagWritten.titleSort, "Title Sort")
         XCTAssertEqual(tagWritten.trackNumber?.track, 1)
         XCTAssertEqual(tagWritten.trackNumber?.totalTracks, 2)
         XCTAssertEqual(tagWritten.work, "Content Group")
     }
+
     
 }

@@ -94,12 +94,6 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertNil(tag?.mediaType?.mediaTypeRefinement)
         XCTAssertEqual(tag?.mediaType?.additionalInformation, "Media Type")
 
-        // CreditsListFrame
-        XCTAssertEqual(tag?.involvedPeopleList?[.actor], ["Actor Name"])
-        XCTAssertEqual(tag?.involvedPeopleList?[.actress], ["Actress Name"])
-        XCTAssertEqual(tag?.musicianCreditsList?[.soprano], ["Soprano Name"])
-        XCTAssertEqual(tag?.musicianCreditsList?[.alto], ["Alto Name"])
-
       if #available(macOS 10.12, *) {
         // DateFrame
         XCTAssertEqual(tag?.encodingDateTime?.year, 2016)
@@ -129,31 +123,6 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag?.taggingDateTime?.minute, 0)
       }
         
-        // LocalizedFrame
-        XCTAssertEqual(tag?.acknowledgment, "Acknowledgment")
-        XCTAssertEqual(tag?.keywords, ["Key","Words"])
-        XCTAssertEqual(tag?.contentAdvisory, .usMovieUnrated)
-        XCTAssertEqual(tag?.contentRating, .clean)
-        XCTAssertEqual(tag?.network, "Network")
-        XCTAssertEqual(tag?.episodeName, "Episode Name")
-        XCTAssertEqual(tag?.episodeNumber, 7)
-        XCTAssertEqual(tag?.languages, [.eng])
-        XCTAssertEqual(tag?.thanks, "Thanks")
-        XCTAssertEqual(tag?.season, 8)
-        XCTAssertEqual(tag?.series, "Content Group")
-        XCTAssertEqual(tag?.seriesName, "Series Name")
-        XCTAssertEqual(tag?.sourceCredit, "Source Credit")
-        XCTAssertEqual(tag?.studio, "Publisher")
-        XCTAssertEqual(tag?.onlineExtras, "http://onlineextras.url")
-        XCTAssertEqual(tag?[comments: .eng, "Comment"], "Comment Content")
-        XCTAssertEqual(tag?[comments: .eng, "Description"], "Description Content")
-        XCTAssertEqual(tag?[comments: .eng, "LongDescription"], "Long Description Content")
-        XCTAssertEqual(tag?[comments: .eng, "Series Description"], "Series Description Content")
-        XCTAssertEqual(tag?[comments: .eng, "Liner Notes"], "Liner Notes Content")
-        XCTAssertEqual(tag?[lyrics: .eng, "Lyrics"], "Lyrics Content")
-        XCTAssertEqual(tag?[userDefinedText: "UserText"], "User Text Content")
-        XCTAssertEqual(tag?[userDefinedUrl: "UserURL"], "http://userdefined.url")
-
         // PartOfTotalFrame
         XCTAssertEqual(tag?.discNumber?.disc, 3)
         XCTAssertEqual(tag?.discNumber?.totalDiscs, 4)
@@ -249,35 +218,6 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         
         XCTAssertEqual(tag?.languages, [.eng])
 
-        // CreditsListFrame
-        XCTAssertEqual(tag?.involvedPeopleList?[.actor], ["Actor Name"])
-        XCTAssertEqual(tag?.involvedPeopleList?[.actress], ["Actress Name"])
-        
-        // LocalizedFrame
-        XCTAssertEqual(tag?.acknowledgment, "Acknowledgment")
-        XCTAssertEqual(tag?.keywords, ["Key","Words"])
-        XCTAssertEqual(tag?.contentAdvisory, .usMovieUnrated)
-        XCTAssertEqual(tag?.contentRating, .clean)
-        XCTAssertEqual(tag?.network, "Network")
-        XCTAssertEqual(tag?.episodeName, "Episode Name")
-        XCTAssertEqual(tag?.episodeNumber, 7)
-        XCTAssertEqual(tag?.languages, [.eng])
-        XCTAssertEqual(tag?.thanks, "Thanks")
-        XCTAssertEqual(tag?.season, 8)
-        XCTAssertEqual(tag?.series, "Content Group")
-        XCTAssertEqual(tag?.seriesName, "Series Name")
-        XCTAssertEqual(tag?.sourceCredit, "Source Credit")
-        XCTAssertEqual(tag?.studio, "Publisher")
-        XCTAssertEqual(tag?.onlineExtras, "http://onlineextras.url")
-        XCTAssertEqual(tag?[comments: .eng, "Comment"], "Comment Content")
-        XCTAssertEqual(tag?[comments: .eng, "Description"], "Description Content")
-        XCTAssertEqual(tag?[comments: .eng, "LongDescription"], "Long Description Content")
-        XCTAssertEqual(tag?[comments: .eng, "Series Description"], "Series Description Content")
-        XCTAssertEqual(tag?[comments: .eng, "Liner Notes"], "Liner Notes Content")
-        XCTAssertEqual(tag?[lyrics: .eng, "Lyrics"], "Lyrics Content")
-        XCTAssertEqual(tag?[userDefinedText: "UserText"], "User Text Content")
-        XCTAssertEqual(tag?[userDefinedUrl: "UserURL"], "http://userdefined.url")
-
         // PresetOptionsFrame
         XCTAssertNil(tag?.fileType?.fileType)
         XCTAssertNil(tag?.fileType?.fileTypeRefinement)
@@ -350,31 +290,6 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag?.remixer, "Arranger")
         XCTAssertEqual(tag?.work, "Content Group")
         
-        // LocalizedFrame
-        XCTAssertEqual(tag?.acknowledgment, "Acknowledgment")
-        XCTAssertEqual(tag?.keywords, ["Key","Words"])
-        XCTAssertEqual(tag?.contentAdvisory, .usMovieUnrated)
-        XCTAssertEqual(tag?.contentRating, .clean)
-        XCTAssertEqual(tag?.network, "Network")
-        XCTAssertEqual(tag?.episodeName, "Episode Name")
-        XCTAssertEqual(tag?.episodeNumber, 7)
-        XCTAssertEqual(tag?.languages, [.eng])
-        XCTAssertEqual(tag?.thanks, "Thanks")
-        XCTAssertEqual(tag?.season, 8)
-        XCTAssertEqual(tag?.series, "Content Group")
-        XCTAssertEqual(tag?.seriesName, "Series Name")
-        XCTAssertEqual(tag?.sourceCredit, "Source Credit")
-        XCTAssertEqual(tag?.studio, "Publisher")
-        XCTAssertEqual(tag?.onlineExtras, "http://onlineextras.url")
-        XCTAssertEqual(tag?[comments: .eng, "Comment"], "Comment Content")
-        XCTAssertEqual(tag?[comments: .eng, "Description"], "Description Content")
-        XCTAssertEqual(tag?[comments: .eng, "LongDescription"], "Long Description Content")
-        XCTAssertEqual(tag?[comments: .eng, "Series Description"], "Series Description Content")
-        XCTAssertEqual(tag?[comments: .eng, "Liner Notes"], "Liner Notes Content")
-        XCTAssertEqual(tag?[lyrics: .eng, "Lyrics"], "Lyrics Content")
-        XCTAssertEqual(tag?[userDefinedText: "UserText"], "User Text Content")
-        XCTAssertEqual(tag?[userDefinedUrl: "UserURL"], "http://userdefined.url")
-
       if #available(macOS 10.12, *) {
         // DateFrame
         XCTAssertEqual(tag?.recordingDateTime?.year, 2018)
@@ -391,10 +306,6 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag?.originalReleaseTime?.hour, 0)
         XCTAssertEqual(tag?.originalReleaseTime?.minute, 0)
       }
-
-        // CreditsListFrame
-        XCTAssertEqual(tag?.involvedPeopleList?[.actor], ["Actor Name"])
-        XCTAssertEqual(tag?.involvedPeopleList?[.actress], ["Actress Name"])
 
         // PresetOptionsFrame
         XCTAssertNil(tag?.fileType?.fileType)
