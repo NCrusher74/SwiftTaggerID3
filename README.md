@@ -78,14 +78,32 @@ tag.removeUserTextFrame(withDescription: "UserText")
 
 *Involved People and Musician Credit List frames*
 
-To access information from the `InvolvedPeopleList` and `MusicianCreditsList` frames:
+Data in the `InvolvedPeopleList` and `MusicianCreditsList` frames is available as a dictionary, `[role: [person]]` where `role` is whatever part or function is being performed, and `[person]` is an array of the people performing it.
+
+To return the entire dictionary:
 ```swift
-print(tag.involvedPeopleList?[1].role) // .Producer
-print(tag.involvedPeopleList?[1].person) // "Producer Name"
-print(tag.musicianCreditsList?[0].role) // .Musician
-print(tag.musicianCreditsList?[0].person) // "Musician Name"
+print(tag.musicianCreditsList)
+print(tag.involvedPeopleList)
 ```
-(NEED REMOVAL INSTRUCTIONS)
+
+To access information for a particular role:
+```swift
+print(tag.involvedPeopleList?[.producer]) // ["Producer Name", "Coproducer Name"]
+print(tag.musicianCreditsList?[.singer]) // ["Singer Name"]
+```
+
+To clear all the values from the `InvolvedPeopleList` or `MusicianCreditsList` frames:
+```swift
+tag.clearInvolvedPeopleList()
+tag.clearMusicianCreditsList()
+```
+
+To clear the `[person]` array for a specific  `role`:
+```swift
+tag.clearInvolvedPeopleForRole(role: .director)
+tag.clearMusicianCreditsForRole(role: .guitarist)
+```
+**Note:** The `MusicianCreditsList` frame is only available for ID3 version 2.4. If you try to write this frame with version 2.2 or 2.3, the output file will not contain it.
 
 *Chapter Frames*
 
@@ -210,7 +228,7 @@ Here's a complete list of the frames handled by SwiftTaggerID3:
 
 `SwiftTaggerID3` tries to stick pretty close to the requirements of the documented specs, but there are a few places where it deviates, either because the spec is silly, or compliance would be more cumbersome to achieve can be justified by the author's needs, or compliance would make the usage of `SwiftTaggerID3` too convoluted. These deviations are:
 
-* In cases where a frame didn't exist for ID3 version 2.2, but does in version 2.3/2.4, a non-standard ID3 identifier for the frame has been created. Whenever possible, this identifier is the same one used by `TagLib` in similar instances, so that the frame will be recognized by apps built using `TagLib`. Chapter frames, however, are still not supported for version 2.2.
+* In cases where a frame doesn't exist for ID3 version 2.2, but does in version 2.3/2.4, a non-standard ID3 identifier for the frame has been created. Whenever possible, this identifier is the same one used by `TagLib` in similar instances, so that the frame will be recognized by apps built using `TagLib`. Chapter frames, however, are still not supported for version 2.2.
 * The ID3 specs for the `TCON` ("Genre"), `TMED` ("MediaType"), and `TFLT` ("File Type") frames make these frames exceptionally difficult to parse. So while the spec allows for an unlimited array of pre-determined types, pre-determined refinements, and free-form description or refinement strings, `SwiftTaggerID3` only permits one of each. This should be more than sufficient for most user's needs.
 * The ID3 specs allow for multiple `CTOC` (Table Of Contents) frames, and for the `CTOC` frames to have embedded subframes. To keep chapter implementation simple, however, `SwiftTaggerID3` only supports a single `CTOC` frame, with no embedded subframes.
 

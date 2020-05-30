@@ -12,9 +12,6 @@ import SwiftTaggerID3
 
 class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
 
-    #warning("NEEDS FIXING: Need a way to specify whether a change to a credits list frame should append the existing credits list entries, or overwrite.")
-    #warning("NEEDS FIXING: Check for duplicates in the values array.")
-
     func testCreditsListFrameReadingv24() throws {
         let tag = try TestFile.v24.tag()
 
@@ -42,15 +39,15 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
     func testCreditsListFrameWritingv24() throws {
         var tag = try TestFile.noMeta.tag()
 
-        tag?.addInvolvedPersonCredit(role: .actor, person: "Actor Name", overwritingExistingEntriesForRole: true)
-        tag?.addInvolvedPersonCredit(role: .actress, person: "Actress Name", overwritingExistingEntriesForRole: true)
-        tag?.addMusicianCredit(role: .soprano, person: "Soprano Name", overwritingExistingEntriesForRole: true)
-        tag?.addMusicianCredit(role: .alto, person: "Alto Name", overwritingExistingEntriesForRole: true)
+        tag?.addInvolvedPersonCredit(role: .actor, person: "Actor Name")
+        tag?.addInvolvedPersonCredit(role: .actress, person: "Actress Name")
+        tag?.addMusicianCredit(role: .soprano, person: "Soprano Name")
+        tag?.addMusicianCredit(role: .alto, person: "Alto Name")
 
         let outputUrl = try tempDirectory().appendingPathComponent("testV24Writing.mp3")
         XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_4, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v24.url)), writingTo: outputUrl))
         
-        // MARK: Confirm accuracy
+        
         let mp3UrlWritten = outputUrl
         let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
         let tagWritten = try Tag(readFrom: mp3FileWritten)
@@ -65,13 +62,13 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
     func testCreditsListFrameWritingv23() throws {
         var tag = try TestFile.noMeta.tag()
         
-        tag?.addInvolvedPersonCredit(role: .actor, person: "Actor Name", overwritingExistingEntriesForRole: true)
-        tag?.addInvolvedPersonCredit(role: .actress, person: "Actress Name", overwritingExistingEntriesForRole: true)
+        tag?.addInvolvedPersonCredit(role: .actor, person: "Actor Name")
+        tag?.addInvolvedPersonCredit(role: .actress, person: "Actress Name")
         
         let outputUrl = try tempDirectory().appendingPathComponent("testV23Writing.mp3")
         XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_3, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v23.url)), writingTo: outputUrl))
         
-        // MARK: Confirm accuracy
+        
         let mp3UrlWritten = outputUrl
         let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
         let tagWritten = try Tag(readFrom: mp3FileWritten)
@@ -84,13 +81,13 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
     func testCreditsListFrameWritingv22() throws {
         var tag = try TestFile.noMeta.tag()
         
-        tag?.addInvolvedPersonCredit(role: .actor, person: "Actor Name", overwritingExistingEntriesForRole: true)
-        tag?.addInvolvedPersonCredit(role: .actress, person: "Actress Name", overwritingExistingEntriesForRole: true)
+        tag?.addInvolvedPersonCredit(role: .actor, person: "Actor Name")
+        tag?.addInvolvedPersonCredit(role: .actress, person: "Actress Name")
         
         let outputUrl = try tempDirectory().appendingPathComponent("testV22Writing.mp3")
         XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_2, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v22.url)), writingTo: outputUrl))
         
-        // MARK: Confirm accuracy
+        
         let mp3UrlWritten = outputUrl
         let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
         let tagWritten = try Tag(readFrom: mp3FileWritten)
@@ -109,7 +106,7 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         let outputUrl = try tempDirectory().appendingPathComponent("testV24Writing.mp3")
         XCTAssertNoThrow(try TestFile.v24.mp3File()?.write(tagVersion: .v2_4, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v24.url)), writingTo: outputUrl))
         
-        // MARK: Confirm accuracy
+        
         let mp3UrlWritten = outputUrl
         let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
         let tagWritten = try Tag(readFrom: mp3FileWritten)
@@ -127,7 +124,7 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         let outputUrl = try tempDirectory().appendingPathComponent("testV23Writing.mp3")
         XCTAssertNoThrow(try TestFile.v23.mp3File()?.write(tagVersion: .v2_3, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v23.url)), writingTo: outputUrl))
         
-        // MARK: Confirm accuracy
+        
         let mp3UrlWritten = outputUrl
         let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
         let tagWritten = try Tag(readFrom: mp3FileWritten)
@@ -144,7 +141,7 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         let outputUrl = try tempDirectory().appendingPathComponent("testV22Writing.mp3")
         XCTAssertNoThrow(try TestFile.v22.mp3File()?.write(tagVersion: .v2_2, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v22.url)), writingTo: outputUrl))
         
-        // MARK: Confirm accuracy
+        
         let mp3UrlWritten = outputUrl
         let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
         let tagWritten = try Tag(readFrom: mp3FileWritten)
@@ -162,7 +159,7 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         let outputUrl = try tempDirectory().appendingPathComponent("testV24Writing.mp3")
         XCTAssertNoThrow(try TestFile.v24.mp3File()?.write(tagVersion: .v2_4, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v24.url)), writingTo: outputUrl))
         
-        // MARK: Confirm accuracy
+        
         let mp3UrlWritten = outputUrl
         let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
         let tagWritten = try Tag(readFrom: mp3FileWritten)
@@ -182,7 +179,7 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         let outputUrl = try tempDirectory().appendingPathComponent("testV23Writing.mp3")
         XCTAssertNoThrow(try TestFile.v23.mp3File()?.write(tagVersion: .v2_3, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v23.url)), writingTo: outputUrl))
         
-        // MARK: Confirm accuracy
+        
         let mp3UrlWritten = outputUrl
         let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
         let tagWritten = try Tag(readFrom: mp3FileWritten)
@@ -200,7 +197,7 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         let outputUrl = try tempDirectory().appendingPathComponent("testV22Writing.mp3")
         XCTAssertNoThrow(try TestFile.v22.mp3File()?.write(tagVersion: .v2_2, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v22.url)), writingTo: outputUrl))
         
-        // MARK: Confirm accuracy
+        
         let mp3UrlWritten = outputUrl
         let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
         let tagWritten = try Tag(readFrom: mp3FileWritten)
@@ -213,16 +210,16 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
     func testCreditsListDuplicateCatchingv24() throws {
         var tag = try TestFile.v24.tag()
         
-        tag?.addInvolvedPersonCredit(role: .actress, person: "Actress Name", overwritingExistingEntriesForRole: true)
-        tag?.addInvolvedPersonCredit(role: .actor, person: "New Actor Name", overwritingExistingEntriesForRole: false)
-        tag?.addMusicianCredit(role: .soprano, person: "Soprano Name", overwritingExistingEntriesForRole: true)
-        tag?.addMusicianCredit(role: .alto, person: "New Alto Name", overwritingExistingEntriesForRole: false)
+        tag?.addInvolvedPersonCredit(role: .actress, person: "Actress Name")
+        tag?.addInvolvedPersonCredit(role: .actor, person: "New Actor Name")
+        tag?.addMusicianCredit(role: .soprano, person: "Soprano Name")
+        tag?.addMusicianCredit(role: .alto, person: "New Alto Name")
         
         
         let outputUrl = try tempDirectory().appendingPathComponent("testV24Writing.mp3")
         XCTAssertNoThrow(try TestFile.v24.mp3File()?.write(tagVersion: .v2_4, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v24.url)), writingTo: outputUrl))
         
-        // MARK: Confirm accuracy
+        
         let mp3UrlWritten = outputUrl
         let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
         let tagWritten = try Tag(readFrom: mp3FileWritten)
@@ -232,25 +229,20 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.musicianCreditsList?[.soprano], ["Soprano Name"])
         XCTAssertEqual(tagWritten.musicianCreditsList?[.alto], ["Alto Name", "New Alto Name"])
     }
-
+    
     @available(OSX 10.12, *)
-    func testCreditsListOverwritingv24() throws {
-        var tag = try TestFile.v24.tag()
+    func testMusicianCreditV22() throws {
+        var tag = try TestFile.noMeta.tag()
         
-        tag?.addInvolvedPersonCredit(role: .actor, person: "New Actor Name", overwritingExistingEntriesForRole: true)
-        tag?.addMusicianCredit(role: .alto, person: "New Alto Name", overwritingExistingEntriesForRole: true)
+        tag?.addMusicianCredit(role: .soprano, person: "Soprano Name")
+        tag?.addMusicianCredit(role: .alto, person: "Alto Name")
+        
+        let outputUrl = try tempDirectory().appendingPathComponent("testV23Writing.mp3")
+        XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_3, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)), writingTo: outputUrl))
         
         
-        let outputUrl = try tempDirectory().appendingPathComponent("testV24Writing.mp3")
-        XCTAssertNoThrow(try TestFile.v24.mp3File()?.write(tagVersion: .v2_4, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v24.url)), writingTo: outputUrl))
-        
-        // MARK: Confirm accuracy
         let mp3UrlWritten = outputUrl
         let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
         let tagWritten = try Tag(readFrom: mp3FileWritten)
-        
-        XCTAssertEqual(tagWritten.involvedPeopleList?[.actor], ["New Actor Name"])
-        XCTAssertEqual(tagWritten.musicianCreditsList?[.alto], ["New Alto Name"])
     }
-
 }

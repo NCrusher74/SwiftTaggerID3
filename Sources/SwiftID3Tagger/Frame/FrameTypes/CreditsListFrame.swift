@@ -123,27 +123,23 @@ extension Tag {
     ///   - person: the person performing the role
     // TODO: if version is 2.2. or 2.3, make this an `involved person` entry instead?
     public mutating func addMusicianCredit(
-        role: MusicianAndPerformerCredits, person: String, overwritingExistingEntriesForRole: Bool) {
+        role: MusicianAndPerformerCredits, person: String) {
         // get the list of pre-existing keys in the dictionary
         if let keys = musicianCreditsList?.keys {
-            if overwritingExistingEntriesForRole == true {
-                musicianCreditsList?[role] = [person]
-            } else {
-                // check if the role is already in there
-                if keys.contains(role) {
-                    // if it is, make sure the person doesn't already exist in the array
-                    var arrayValue = musicianCreditsList?[role]
-                    // if it does, do nothing
-                    guard !(arrayValue?.contains(person) ?? false) else {
-                        return
-                    }
-                    // if it doesn't, append the person to the existing value array
-                    arrayValue?.append(person)
-                    musicianCreditsList?[role] = arrayValue
-                } else {
-                    // dictionary exists but doesn't contain role
-                    musicianCreditsList?[role] = [person]
+            // check if the role is already in there
+            if keys.contains(role) {
+                // if it is, make sure the person doesn't already exist in the array
+                var arrayValue = musicianCreditsList?[role]
+                // if it does, do nothing
+                guard !(arrayValue?.contains(person) ?? false) else {
+                    return
                 }
+                // if it doesn't, append the person to the existing value array
+                arrayValue?.append(person)
+                musicianCreditsList?[role] = arrayValue
+            } else {
+                // dictionary exists but doesn't contain role
+                musicianCreditsList?[role] = [person]
             }
         } else {
             // dictionary doesn't exist, create it
@@ -191,27 +187,23 @@ extension Tag {
     ///   - role: the role being performed
     ///   - person: the person performing the role
     public mutating func addInvolvedPersonCredit(
-        role: InvolvedPersonCredits, person: String, overwritingExistingEntriesForRole: Bool) {
+        role: InvolvedPersonCredits, person: String) {
         // get the list of pre-existing keys in the dictionary
         if let keys = involvedPeopleList?.keys {
-            if overwritingExistingEntriesForRole == true {
-                involvedPeopleList?[role] = [person]
-            } else {
-                // check if the role is already in there
-                if keys.contains(role) {
-                    // if it is, make sure the person doesn't already exist in the array
-                    var arrayValue = involvedPeopleList?[role]
-                    // if it does, do nothing
-                    guard !(arrayValue?.contains(person) ?? false) else {
-                        return
-                    }
-                    // if it doesn't, append the person to the existing value array
-                    arrayValue?.append(person)
-                    involvedPeopleList?[role] = arrayValue
-                } else {
-                    // dictionary exists but doesn't contain role
-                    involvedPeopleList?[role] = [person]
+            // check if the role is already in there
+            if keys.contains(role) {
+                // if it is, make sure the person doesn't already exist in the array
+                var arrayValue = involvedPeopleList?[role]
+                // if it does, do nothing
+                guard !(arrayValue?.contains(person) ?? false) else {
+                    return
                 }
+                // if it doesn't, append the person to the existing value array
+                arrayValue?.append(person)
+                involvedPeopleList?[role] = arrayValue
+            } else {
+                // dictionary exists but doesn't contain role
+                involvedPeopleList?[role] = [person]
             }
         } else {
             // dictionary doesn't exist, create it
@@ -253,5 +245,4 @@ extension Tag {
     public mutating func clearInvolvedPeopleForRole(role: InvolvedPersonCredits) {
         self.involvedPeopleList?[role] = nil
     }
-    
 }

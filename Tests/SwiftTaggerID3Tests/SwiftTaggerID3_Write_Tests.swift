@@ -102,7 +102,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         let outputUrl = try tempDirectory().appendingPathComponent("testV24Writing.mp3")
         XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_4, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v24.url)), writingTo: outputUrl))
         
-        // MARK: Confirm accuracy
+        
         let mp3UrlWritten = outputUrl
         let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
         let tagWritten = try Tag(readFrom: mp3FileWritten)
@@ -296,7 +296,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         let outputUrl = try tempDirectory().appendingPathComponent("testV23Writing.mp3")
         XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_3, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v23.url)), writingTo: outputUrl))
 
-        // MARK: Confirm accuracy
+        
         let mp3UrlWritten = outputUrl
         let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
         let tagWritten = try Tag(readFrom: mp3FileWritten)
@@ -459,7 +459,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         let outputUrl = try tempDirectory().appendingPathComponent("testV22Writing.mp3")
         XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_2, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)), writingTo: outputUrl))
 
-        // MARK: Confirm accuracy
+        
         let mp3UrlWritten = outputUrl
         let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
         let tagWritten = try Tag(readFrom: mp3FileWritten)
