@@ -20,20 +20,12 @@ extension Mp3File {
         case FrameNotValidForVersion
         /// Error generated when an invalid file format is passed to the ID3TagEditor.
         case InvalidFileFormat;
-        /// Error generated when there's not valid data in the tag.
-        case InvalidTagData;
         /// Error thrown when the tag version cannot be determined
         case InvalidVersionData;
         /// Error thrown when the tag is not large enough to hold at least one valid frame
         case InvalidTagSize;
-        /// Error thrown when string is not convertible
-        case InconvertibleString
-        /// Error thrown when the data requested is out of bounds
-        case DataOutOfBounds
         /// Error thrown when the image is in an unhandled format
         case UnhandledImageFormat
-        /// Error thrown when the data cannot be retrieved from a frame
-        case UnreadableFrame
         /// Error thrown when the date formatter cannot parse a correctly formatted date from the string
         case InvalidDateString
         /// Error thrown when a Table Of Contents frame does not have any child elements
@@ -61,20 +53,9 @@ extension Mp3File.Error: LocalizedError {
             case .InvalidFileFormat:
                 return NSLocalizedString(
                     "The file needs to be an MP3 file", comment: "")
-            case .InvalidTagData:
-                return NSLocalizedString(
-                    "The tag header is unrecognized", comment: "")
-            case .InconvertibleString:
-                return NSLocalizedString(
-                    "String is not representable in ISO 8859‐1", comment: "")
-            case .DataOutOfBounds:
-                return NSLocalizedString(
-                    "The requested data range is out of bounds", comment: "")
             case .UnhandledImageFormat:
                 return NSLocalizedString(
                     "This image type is not handled by SwiftTagger", comment: "")
-            case .UnreadableFrame:
-                return NSLocalizedString("The data in this frame cannot be retrieved", comment: "")
             case .InvalidVersionData:
                 return NSLocalizedString("The ID3 version for the tag cannot be determined", comment: "")
             case .InvalidTagSize:
