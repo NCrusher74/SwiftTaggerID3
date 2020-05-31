@@ -98,7 +98,6 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag?.originalReleaseTime = (year: 2014, month: 08, day: 09, hour: nil, minute: nil)
         tag?.recordingDateTime = (year: 2018, month: 10, day: 11, hour: nil, minute: nil)
 
-        try emptyDirectory()
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_4, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v24.url)), writingTo: outputUrl))
         
@@ -292,7 +291,6 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag?.year = 2015
         tag?.originalReleaseTime = (year: 2014, month: nil, day: nil, hour: nil, minute: nil)
         
-        try emptyDirectory()
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_3, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v23.url)), writingTo: outputUrl))
 
@@ -455,7 +453,6 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag?.year = 2015
         tag?.originalReleaseTime = (year: 2014, month: nil, day: nil, hour: nil, minute: nil)
 
-        try emptyDirectory()
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_2, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)), writingTo: outputUrl))
 
@@ -538,5 +535,170 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.work, "Content Group")
     }
 
-    
+    // MARK: Test alternative framekeys/identifiers
+    func testRemixer() throws {
+        var tag = Tag()
+        tag.remixer = "Remixer"
+        
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
+        XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_4, using: tag , writingTo: outputUrl))
+        
+        
+        let mp3UrlWritten = outputUrl
+        let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
+        let tagWritten = try Tag(readFrom: mp3FileWritten)
+        
+        XCTAssertEqual(tagWritten.remixer, "Remixer")
+    }
+
+    func testInterpetedBy() throws {
+        var tag = Tag()
+        tag.interpretedBy = "InterpretedBy"
+        
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
+        XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_4, using: tag, writingTo: outputUrl))
+        
+        
+        let mp3UrlWritten = outputUrl
+        let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
+        let tagWritten = try Tag(readFrom: mp3FileWritten)
+        
+        XCTAssertEqual(tagWritten.interpretedBy, "InterpretedBy")
+    }
+
+    func testWork() throws {
+        var tag = Tag()
+        tag.work = "Work"
+        
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
+        XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_4, using: tag, writingTo: outputUrl))
+        
+        
+        let mp3UrlWritten = outputUrl
+        let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
+        let tagWritten = try Tag(readFrom: mp3FileWritten)
+        
+        XCTAssertEqual(tagWritten.work, "Work")
+    }
+
+    func testSeries() throws {
+        var tag = Tag()
+        tag.series = "Series"
+        
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
+        XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_4, using: tag, writingTo: outputUrl))
+        
+        
+        let mp3UrlWritten = outputUrl
+        let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
+        let tagWritten = try Tag(readFrom: mp3FileWritten)
+        
+        XCTAssertEqual(tagWritten.series, "Series")
+    }
+
+    func testAuthor() throws {
+        var tag = Tag()
+        tag.author = "Author"
+        
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
+        XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_4, using: tag, writingTo: outputUrl))
+        
+        
+        let mp3UrlWritten = outputUrl
+        let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
+        let tagWritten = try Tag(readFrom: mp3FileWritten)
+        
+        XCTAssertEqual(tagWritten.author, "Author")
+    }
+
+    func testAuthorSort() throws {
+        var tag = Tag()
+        tag.authorSort = "SortAuthor"
+        
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
+        XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_4, using: tag, writingTo: outputUrl))
+        
+        
+        let mp3UrlWritten = outputUrl
+        let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
+        let tagWritten = try Tag(readFrom: mp3FileWritten)
+        
+        XCTAssertEqual(tagWritten.authorSort, "SortAuthor")
+    }
+
+    func testNarrator() throws {
+        var tag = Tag()
+        tag.narrator = "Narrator"
+        
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
+        XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_4, using: tag, writingTo: outputUrl))
+        
+        
+        let mp3UrlWritten = outputUrl
+        let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
+        let tagWritten = try Tag(readFrom: mp3FileWritten)
+        
+        XCTAssertEqual(tagWritten.narrator, "Narrator")
+    }
+
+    func testNarratorSort() throws {
+        var tag = Tag()
+        tag.narratorSort = "SortNarrator"
+        
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
+        XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_4, using: tag, writingTo: outputUrl))
+        
+        
+        let mp3UrlWritten = outputUrl
+        let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
+        let tagWritten = try Tag(readFrom: mp3FileWritten)
+        
+        XCTAssertEqual(tagWritten.narratorSort, "SortNarrator")
+    }
+
+    func testLabel() throws {
+        var tag = Tag()
+        tag.label = "Label"
+        
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
+        XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_4, using: tag, writingTo: outputUrl))
+        
+        
+        let mp3UrlWritten = outputUrl
+        let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
+        let tagWritten = try Tag(readFrom: mp3FileWritten)
+        
+        XCTAssertEqual(tagWritten.label, "Label")
+    }
+
+    func testStudio() throws {
+        var tag = Tag()
+        tag.studio = "Studio"
+        
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
+        XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_4, using: tag, writingTo: outputUrl))
+        
+        
+        let mp3UrlWritten = outputUrl
+        let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
+        let tagWritten = try Tag(readFrom: mp3FileWritten)
+        
+        XCTAssertEqual(tagWritten.studio, "Studio")
+    }
+
+    func testRecordCompany() throws {
+        var tag = Tag()
+        tag.recordCompany = "RecordCompany"
+        
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
+        XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_4, using: tag, writingTo: outputUrl))
+        
+        
+        let mp3UrlWritten = outputUrl
+        let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
+        let tagWritten = try Tag(readFrom: mp3FileWritten)
+        
+        XCTAssertEqual(tagWritten.recordCompany, "RecordCompany")
+    }
+
 }
