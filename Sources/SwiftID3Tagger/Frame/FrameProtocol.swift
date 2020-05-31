@@ -133,14 +133,7 @@ extension FrameProtocol {
         layout: FrameLayoutIdentifier,
         version: Version) -> Data {
 
-        var adjustedLayout = layout
-        // if there's a musician credits list frame for an incompatible version, convert it to an involved people list frame
-        if layout == .known(.musicianCreditsList) && (version == .v2_2 || version == .v2_3) {
-            adjustedLayout = .known(.involvedPeopleList)
-        } else {
-            adjustedLayout = layout
-        }
-        guard let identifier = adjustedLayout.id3Identifier(version: version)?.encodedASCII(withNullTermination: false) else {
+        guard let identifier = layout.id3Identifier(version: version)?.encodedASCII(withNullTermination: false) else {
             switch version {
                 case .v2_2: return "TXX".encodedASCII(withNullTermination: false)
                 case .v2_3, .v2_4: return "TXXX".encodedASCII(withNullTermination: false)

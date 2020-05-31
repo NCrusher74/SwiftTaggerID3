@@ -161,7 +161,6 @@ Here's a complete list of the frames handled by SwiftTaggerID3:
 * `audioFileWebpage`
 * `audioSourceWebpage`
 * `bpm`
-* `chapter`
 * `comments // query using description as subscript accessor`
 * `compilation`
 * `composer`
@@ -170,13 +169,10 @@ Here's a complete list of the frames handled by SwiftTaggerID3:
 * `contentGroup`
 * `copyright`
 * `copyrightWebpage`
-* `date`
 * `discNumber`
-* `encodingTime`
 * `encodedBy`
 * `encodingSettings`
 * `fileType`
-* `fileOwner`
 * `genre`
 * `grouping`
 * `initialKey`
@@ -186,17 +182,14 @@ Here's a complete list of the frames handled by SwiftTaggerID3:
 * `length`
 * `lyricist`
 * `mediaType`
-* `mood`
 * `movementCount`
 * `movementName`
 * `movementNumber`
-* `musicianCreditsList`
 * `originalAlbum`
 * `originalArtist`
 * `originalFilename`
 * `originalLyricist`
 * `originalReleaseTime`
-* `paymentWebpage`
 * `playlistDelay`
 * `podcastCategory`
 * `podcastDescription`
@@ -210,25 +203,38 @@ Here's a complete list of the frames handled by SwiftTaggerID3:
 * `radioStationOwner`
 * `radioStationWebpage`
 * `recordingDate`
-* `releaseTime`
-* `setSubtitle`
 * `subtitle`
-* `tableOfContents`
-* `taggingTime`
-* `time`
 * `title`
 * `titleSort`
 * `trackNumber`
 * `unsynchronizedLyrics // query using description as subscript accessor`
 * `userDefinedText // query using description as subscript accessor`
 * `userDefinedWebpage // query using description as subscript accessor`
+
+For ID3 version 2.4 only:
+* `encodingTime`
+* `mood`
+* `musicianCreditsList`
+* `releaseTime`
+* `setSubtitle`
+* `taggingTime`
+
+For ID3 versions 2.3 and 2.4 only:
+* `chapter`
+* `fileOwner`
+* `paymentWebpage`
+* `tableOfContents`
+
+For ID3 versions 2.2 and 2.3 only:
+* `date`
+* `time`
 * `year`
 
 *A note on ID3 specification compliance*
 
 `SwiftTaggerID3` tries to stick pretty close to the requirements of the documented specs, but there are a few places where it deviates, either because the spec is silly, or compliance would be more cumbersome to achieve can be justified by the author's needs, or compliance would make the usage of `SwiftTaggerID3` too convoluted. These deviations are:
 
-* In cases where a frame doesn't exist for ID3 version 2.2, but does in version 2.3/2.4, a non-standard ID3 identifier for the frame has been created. Whenever possible, this identifier is the same one used by `TagLib` in similar instances, so that the frame will be recognized by apps built using `TagLib`. Chapter frames, however, are still not supported for version 2.2.
+* In cases where an iTunes-compliant but non-standard frame doesn't exist for ID3 version 2.2, but does in version 2.3/2.4, an ID3 identifier for the frame has been created. Whenever possible, this identifier is the same one used by `TagLib` in similar instances, so that the frame will be recognized by apps built using `TagLib`. Chapter frames, however, are still not supported for version 2.2.
 * The ID3 specs for the `TCON` ("Genre"), `TMED` ("MediaType"), and `TFLT` ("File Type") frames make these frames exceptionally difficult to parse. So while the spec allows for an unlimited array of pre-determined types, pre-determined refinements, and free-form description or refinement strings, `SwiftTaggerID3` only permits one of each. This should be more than sufficient for most user's needs.
 * The ID3 specs allow for multiple `CTOC` (Table Of Contents) frames, and for the `CTOC` frames to have embedded subframes. To keep chapter implementation simple, however, `SwiftTaggerID3` only supports a single `CTOC` frame, with no embedded subframes.
 

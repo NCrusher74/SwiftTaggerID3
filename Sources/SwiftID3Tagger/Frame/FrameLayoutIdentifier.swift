@@ -283,7 +283,7 @@ enum KnownFrameLayoutIdentifier: CaseIterable {
             }
             case .fileOwner:
                 switch version {
-                    case .v2_2: return nil
+                    case .v2_2: return "TWN"
                     case .v2_3, .v2_4: return "TOWN"
             }
             case .genre:
@@ -334,8 +334,8 @@ enum KnownFrameLayoutIdentifier: CaseIterable {
             }
             case .mood:
                 switch version {
-                    case .v2_2, .v2_3: return nil
-                    case .v2_4: return "TMOO"
+                    case .v2_2: return "TMO" // non-standard
+                    case .v2_3, .v2_4: return "TMOO" // non-standard in version 2.3
             }
             case .movementCount:
                 switch version {
@@ -355,8 +355,8 @@ enum KnownFrameLayoutIdentifier: CaseIterable {
             }
             case .musicianCreditsList:
                 switch version {
-                    case .v2_2, .v2_3: return nil
-                    case .v2_4: return "TMCL"
+                    case .v2_2: return "TMC" // non-standard
+                    case .v2_3, .v2_4: return "TMCL" // non-standard for version 2.3
             }
             case .originalAlbum:
                 switch version {
@@ -386,7 +386,7 @@ enum KnownFrameLayoutIdentifier: CaseIterable {
             }
             case .paymentWebpage:
                 switch version {
-                    case .v2_2: return nil
+                    case .v2_2: return "WPY" // non-standard
                     case .v2_3, .v2_4: return "WPAY"
             }
             case .playlistDelay:
@@ -421,8 +421,8 @@ enum KnownFrameLayoutIdentifier: CaseIterable {
             }
             case .producedNotice:
                 switch version {
-                    case .v2_2, .v2_3: return nil
-                    case .v2_4: return "TPRO"
+                    case .v2_2: return "TPR" // non-standard
+                    case .v2_3, .v2_4: return "TPRO" // non-standard for version 2.3
             }
             case .publisher:
                 switch version {
@@ -462,8 +462,8 @@ enum KnownFrameLayoutIdentifier: CaseIterable {
             }
             case .setSubtitle:
                 switch version {
-                    case .v2_2, .v2_3: return nil
-                    case .v2_4: return "TSST"
+                    case .v2_2: return "TTT" // non-standard
+                    case .v2_3, .v2_4: return "TSST" // non-standard for version 2.3
             }
             case .subtitle:
                 switch version {

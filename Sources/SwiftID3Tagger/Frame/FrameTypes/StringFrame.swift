@@ -1,10 +1,10 @@
 /*
-
+ 
  StringFrame.swift
  SwiftTaggerID3
-
+ 
  Copyright ©2020 Nolaine Crusher. All rights reserved.
-
+ 
  */
 
 import Foundation
@@ -21,7 +21,7 @@ struct StringFrame: FrameProtocol, CustomStringConvertible {
         frameKey: .\(self.frameKey): \"\(self.contentString)\"
         """
     }
-
+    
     // MARK: Properties
     var flags: Data
     var layout: FrameLayoutIdentifier
@@ -31,7 +31,7 @@ struct StringFrame: FrameProtocol, CustomStringConvertible {
     /// The contents of the frame, consisting of a single, unterminated string without new lines
     /// This sting may be a URL for an external webpage
     var contentString: String
-  
+    
     // URL frames do not have an encoding byte, so they must be parsed differently
     // this just lets us know which frames to handle differently
     private let urlFrameKeys: [FrameKey] = [
@@ -42,7 +42,7 @@ struct StringFrame: FrameProtocol, CustomStringConvertible {
         .paymentWebpage,
         .publisherWebpage,
         .radioStationWebpage]
-
+    
     // MARK: Frame Parsing
     init(decodingContents contents: Data.SubSequence,
          version: Version,
@@ -60,10 +60,10 @@ struct StringFrame: FrameProtocol, CustomStringConvertible {
         let parsing = contents
         if urlFrameKeys.contains(self.frameKey) {
             self.contentString = try StringFrame.parseUrlString(data: parsing, version: version)
-        /* since the compilation frame is technically a string frame, it may contain a "boolean-esque" string, like "true" or "yes". We will attempt to catch those cases as well. */
+            /* since the compilation frame is technically a string frame, it may contain a "boolean-esque" string, like "true" or "yes". We will attempt to catch those cases as well. */
         } else if self.frameKey == .compilation {
             self.contentString = try StringFrame.parseBooleanIntFromString(version: version, data: parsing)
-        /* everything else can be handled as a simple string with an encoding byte */
+            /* everything else can be handled as a simple string with an encoding byte */
         } else {
             self.contentString = try StringFrame.parseEncodedString(data: parsing, version: version)
         }
@@ -470,7 +470,7 @@ extension Tag {
     
     /// Studio getter-setter. Writes to `Publisher` frame,
     /// ID3 Identifier: `TPB`/`TPUB`.
-    /// 
+    ///
     /// If another frame of this type already exists, this will write as a
     /// `TXX`/`TXXX` frame with a description of `Studio`
     public var studio: String? {

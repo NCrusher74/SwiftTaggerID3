@@ -231,7 +231,7 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
     }
     
     @available(OSX 10.12, *)
-    func testMusicianCreditV22() throws {
+    func testMusicianCreditV23() throws {
         var tag = try TestFile.noMeta.tag()
         
         tag?.addMusicianCredit(role: .soprano, person: "Soprano Name")
@@ -240,9 +240,11 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         let outputUrl = try tempDirectory().appendingPathComponent("testV23Writing.mp3")
         XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_3, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)), writingTo: outputUrl))
         
-        
         let mp3UrlWritten = outputUrl
         let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
         let tagWritten = try Tag(readFrom: mp3FileWritten)
+        
+        XCTAssertEqual(tagWritten.musicianCreditsList?[.soprano], ["Soprano Name"])
+        XCTAssertEqual(tagWritten.musicianCreditsList?[.alto], ["Alto Name", "New Alto Name"])
     }
 }

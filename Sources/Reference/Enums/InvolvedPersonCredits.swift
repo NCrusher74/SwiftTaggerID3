@@ -2534,5 +2534,4 @@ public enum InvolvedPersonCredits: String {
     case worshipLeader = "Worship Leader"
     case writer = "Writer"
     case writtenBy = "Written By"
-
 }

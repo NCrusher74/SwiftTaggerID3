@@ -38,10 +38,6 @@ extension Mp3File {
         case InvalidDateString
         /// Error thrown when a Table Of Contents frame does not have any child elements
         case InvalidTOCFrame
-        /// Error thrown when a Table of Contents frame has a top-level flag set and one already exists
-        case TopLevelTOCAlreadyPresent
-        /// Error thrown when a Chapter frame has the same start-time as another chapter frame
-        case ChapterAlreadyExistsAtStartTime
     }
 }
 
@@ -87,10 +83,6 @@ extension Mp3File.Error: LocalizedError {
                 return NSLocalizedString("A date cannot be parsed from the string in the required format", comment: "String needs to be in ISO8601 (yyyy-MM-dd`T`HH:mm) format, per ID3 specs")
             case .InvalidTOCFrame:
                 return NSLocalizedString("A table of contents frame requires at least one child element ID", comment: "")
-            case .TopLevelTOCAlreadyPresent:
-                return NSLocalizedString("A top-level TOC frame already exists.", comment: "Only one TOC frame may have a top-level flag set. Please delete the existing TOC frame, or set the top-level flag boolean to false.")
-            case .ChapterAlreadyExistsAtStartTime:
-                return NSLocalizedString("A chapter already exists at that start time.", comment: "Please delete the existing Chapter frame, or select a different start time.")
         }
     }
 }
