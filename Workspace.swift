@@ -70,6 +70,9 @@ let configuration: WorkspaceConfiguration = {
 
   // #workaround(Not everything is documented yet.)
   configuration.documentation.api.enforceCoverage = false
+    configuration.documentation.api.yearFirstPublished = 2020
+    configuration.documentation.localizations = ["🇬🇧EN", "🇺🇸EN", "🇨🇦EN"]
+    configuration.documentation.repositoryURL = URL(string: "https://github.com/NCrusher74/SwiftTaggerID3")
 
   return configuration
 }()

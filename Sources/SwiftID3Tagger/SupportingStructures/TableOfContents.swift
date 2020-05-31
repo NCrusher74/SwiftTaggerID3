@@ -1,9 +1,11 @@
-//
-//  TableOfContents.swift
-//  
-//
-//  Created by Nolaine Crusher on 5/24/20.
-//
+/*
+
+ TableOfContents.swift
+ SwiftTaggerID3
+
+ Copyright ©2020 Nolaine Crusher. All rights reserved.
+
+ */
 
 import Foundation
 

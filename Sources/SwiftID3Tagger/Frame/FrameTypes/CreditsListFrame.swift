@@ -1,10 +1,10 @@
 /*
- 
+
  CreditsListFrame.swift
  SwiftTaggerID3
- 
+
  Copyright ©2020 Nolaine Crusher. All rights reserved.
- 
+
  */
 
 import Foundation

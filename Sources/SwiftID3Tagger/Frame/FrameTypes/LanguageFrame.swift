@@ -79,14 +79,9 @@ struct LanguageFrame: FrameProtocol, CustomStringConvertible {
         var frameData = Data()
         // append encoding byte
         frameData.append(StringEncoding.preferred.rawValue)
-        // append language array
+        // append languages in language array
         for language in self.languages {
-            switch version {
-                case .v2_2, .v2_3:
-                    frameData.append(language.encoded(withNullTermination: false))
-                case .v2_4:
-                    frameData.append(language.encoded(withNullTermination: true))
-            }
+            frameData.append(language.encoded(withNullTermination: true))
         }
         return frameData
     }
@@ -103,8 +98,8 @@ extension Tag {
                 for language in languageFrame.languages {
                     let languageCode = ISO6392Codes(rawValue: language) ?? .und
                     languageArray.append(languageCode)
-                    return languageArray
                 }
+                return languageArray
             }; return nil
         }
         set {

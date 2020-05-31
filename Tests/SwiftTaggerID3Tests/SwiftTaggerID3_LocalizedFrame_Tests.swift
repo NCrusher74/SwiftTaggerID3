@@ -1,10 +1,10 @@
 /*
- 
+
  SwiftTaggerID3_LocalizedFrame_Tests.swift
  SwiftTaggerID3
- 
+
  Copyright ©2020 Nolaine Crusher. All rights reserved.
- 
+
  */
 
 import XCTest
@@ -804,5 +804,54 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
         Song Description
         Content
         """)
+    }
+    
+    func testLanguageFrameReading() throws {
+        let tagV24 = try TestFile.v24.tag()
+        let tagV23 = try TestFile.v23.tag()
+        let tagV22 = try TestFile.v22.tag()
+
+        XCTAssertEqual(tagV24?.languages, [.eng])
+        XCTAssertEqual(tagV23?.languages, [.eng])
+        XCTAssertEqual(tagV22?.languages, [.eng])
+    }
+    
+    func testLanguageFrameWritingV24() throws {
+        var tag = try TestFile.noMeta.tag()
+        
+        tag?.languages = ISO6392Codes.allCases
+        
+        let output = try tempDirectory().appendingPathComponent("test.mp3")
+        XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_4, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)), writingTo: output))
+
+        let fileWritten = try Mp3File(location: output)
+        let tagWritten = try Tag(readFrom: fileWritten)
+        XCTAssertEqual(tagWritten.languages, ISO6392Codes.allCases)
+    }
+
+    func testLanguageFrameWritingV23() throws {
+        var tag = try TestFile.noMeta.tag()
+        
+        tag?.languages = ISO6392Codes.allCases
+        
+        let output = try tempDirectory().appendingPathComponent("test.mp3")
+        XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_3, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)), writingTo: output))
+        
+        let fileWritten = try Mp3File(location: output)
+        let tagWritten = try Tag(readFrom: fileWritten)
+        XCTAssertEqual(tagWritten.languages, ISO6392Codes.allCases)
+    }
+
+    func testLanguageFrameWritingV22() throws {
+        var tag = try TestFile.noMeta.tag()
+        
+        tag?.languages = ISO6392Codes.allCases
+        
+        let output = try tempDirectory().appendingPathComponent("test.mp3")
+        XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_2, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)), writingTo: output))
+        
+        let fileWritten = try Mp3File(location: output)
+        let tagWritten = try Tag(readFrom: fileWritten)
+        XCTAssertEqual(tagWritten.languages, ISO6392Codes.allCases)
     }
 }
