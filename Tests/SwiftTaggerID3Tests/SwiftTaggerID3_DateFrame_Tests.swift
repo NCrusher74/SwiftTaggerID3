@@ -24,7 +24,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag?.encodingDateTime?.hour = 9
         tag?.encodingDateTime?.minute = 23
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.noMeta.mp3File()
         XCTAssertNoThrow(try outputMp3?.write(tagVersion: .v2_4,
                             using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)),
@@ -50,7 +50,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag?.encodingDateTime?.hour = 10
         tag?.encodingDateTime?.minute = 24
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.v24.mp3File()
         XCTAssertNoThrow(try outputMp3?.write(tagVersion: .v2_4,
                                              using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v24.url)),
@@ -72,7 +72,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         var tag = try TestFile.noMeta.tag()
         tag?.encodingDateTime = (year: 2004, month: 01, day: 09, hour: 11, minute: 25)
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.noMeta.mp3File()
         XCTAssertNoThrow(try outputMp3?.write(tagVersion: .v2_4,
                                              using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)),
@@ -94,7 +94,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         var tag = try TestFile.v24.tag()
         tag?.encodingDateTime = (year: 2005, month: 02, day: 10, hour: 12, minute: 26)
 
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.v24.mp3File()
         XCTAssertNoThrow(try outputMp3?.write(tagVersion: .v2_4,
                                              using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v24.url)),
@@ -120,7 +120,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag?.encodingDateTime?.hour = 9
         tag?.encodingDateTime?.minute = 23
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.v22.mp3File()
         XCTAssertThrowsError(try outputMp3?.write(tagVersion: .v2_2,
                                              using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v22.url)),
@@ -138,7 +138,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag?.encodingDateTime?.hour = 9
         tag?.encodingDateTime?.minute = 23
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.v23.mp3File()
         XCTAssertThrowsError(try outputMp3?.write(tagVersion: .v2_3,
                                                  using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v23.url)),
@@ -156,7 +156,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag?.encodingDateTime?.hour = 9
         tag?.encodingDateTime?.minute = 23
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.noMeta.mp3File()
         XCTAssertThrowsError(try outputMp3?.write(tagVersion: .v2_2,
                                                  using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)),
@@ -174,7 +174,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag?.encodingDateTime?.hour = 9
         tag?.encodingDateTime?.minute = 23
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.noMeta.mp3File()
         XCTAssertThrowsError(try outputMp3?.write(tagVersion: .v2_3,
                                                  using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)),
@@ -193,7 +193,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag?.taggingDateTime?.hour = 9
         tag?.taggingDateTime?.minute = 23
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.noMeta.mp3File()
         XCTAssertNoThrow(try outputMp3?.write(tagVersion: .v2_4,
                                              using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)),
@@ -219,7 +219,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag?.taggingDateTime?.hour = 10
         tag?.taggingDateTime?.minute = 24
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.v24.mp3File()
         XCTAssertNoThrow(try outputMp3?.write(tagVersion: .v2_4,
                                              using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v24.url)),
@@ -241,7 +241,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         var tag = try TestFile.noMeta.tag()
         tag?.taggingDateTime = (year: 2004, month: 01, day: 09, hour: 11, minute: 25)
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.noMeta.mp3File()
         XCTAssertNoThrow(try outputMp3?.write(tagVersion: .v2_4,
                                              using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)),
@@ -263,7 +263,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         var tag = try TestFile.v24.tag()
         tag?.taggingDateTime = (year: 2005, month: 02, day: 10, hour: 12, minute: 26)
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.v24.mp3File()
         XCTAssertNoThrow(try outputMp3?.write(tagVersion: .v2_4,
                                              using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v24.url)),
@@ -289,7 +289,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag?.taggingDateTime?.hour = 9
         tag?.taggingDateTime?.minute = 23
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.v22.mp3File()
         XCTAssertThrowsError(try outputMp3?.write(tagVersion: .v2_2,
                                                  using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v22.url)),
@@ -307,7 +307,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag?.taggingDateTime?.hour = 9
         tag?.taggingDateTime?.minute = 23
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.v23.mp3File()
         XCTAssertThrowsError(try outputMp3?.write(tagVersion: .v2_3,
                                                  using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v23.url)),
@@ -325,7 +325,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag?.taggingDateTime?.hour = 9
         tag?.taggingDateTime?.minute = 23
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.noMeta.mp3File()
         XCTAssertThrowsError(try outputMp3?.write(tagVersion: .v2_2,
                                                  using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)),
@@ -343,7 +343,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag?.taggingDateTime?.hour = 9
         tag?.taggingDateTime?.minute = 23
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.noMeta.mp3File()
         XCTAssertThrowsError(try outputMp3?.write(tagVersion: .v2_3,
                                                  using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)),
@@ -362,7 +362,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag?.releaseDateTime?.hour = 9
         tag?.releaseDateTime?.minute = 23
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.noMeta.mp3File()
         XCTAssertNoThrow(try outputMp3?.write(tagVersion: .v2_4,
                                              using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)),
@@ -388,7 +388,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag?.releaseDateTime?.hour = 10
         tag?.releaseDateTime?.minute = 24
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.v24.mp3File()
         XCTAssertNoThrow(try outputMp3?.write(tagVersion: .v2_4,
                                              using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v24.url)),
@@ -410,7 +410,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         var tag = try TestFile.noMeta.tag()
         tag?.releaseDateTime = (year: 2004, month: 01, day: 09, hour: 11, minute: 25)
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.noMeta.mp3File()
         XCTAssertNoThrow(try outputMp3?.write(tagVersion: .v2_4,
                                              using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)),
@@ -432,7 +432,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         var tag = try TestFile.v24.tag()
         tag?.releaseDateTime = (year: 2005, month: 02, day: 10, hour: 12, minute: 26)
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.v24.mp3File()
         XCTAssertNoThrow(try outputMp3?.write(tagVersion: .v2_4,
                                              using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v24.url)),
@@ -458,7 +458,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag?.releaseDateTime?.hour = 9
         tag?.releaseDateTime?.minute = 23
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.v22.mp3File()
         XCTAssertThrowsError(try outputMp3?.write(tagVersion: .v2_2,
                                                  using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v22.url)),
@@ -476,7 +476,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag?.releaseDateTime?.hour = 9
         tag?.releaseDateTime?.minute = 23
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.v23.mp3File()
         XCTAssertThrowsError(try outputMp3?.write(tagVersion: .v2_3,
                                                  using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v23.url)),
@@ -494,7 +494,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag?.releaseDateTime?.hour = 9
         tag?.releaseDateTime?.minute = 23
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.noMeta.mp3File()
         XCTAssertThrowsError(try outputMp3?.write(tagVersion: .v2_2,
                                                  using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)),
@@ -512,7 +512,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag?.releaseDateTime?.hour = 9
         tag?.releaseDateTime?.minute = 23
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.noMeta.mp3File()
         XCTAssertThrowsError(try outputMp3?.write(tagVersion: .v2_3,
                                                  using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)),
@@ -528,7 +528,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag?.date?.month = 11
         tag?.date?.day = 7
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try Mp3File(location: TestFile.noMeta.url)
         XCTAssertNoThrow(try outputMp3.write(tagVersion: .v2_2,
                                              using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)),
@@ -547,7 +547,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         var tag = try TestFile.noMeta.tag()
         tag?.date = (day: 7, month: 11)
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.noMeta.mp3File()
         XCTAssertNoThrow(try outputMp3?.write(tagVersion: .v2_2,
                                              using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)),
@@ -567,7 +567,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag?.date?.month = 11
         tag?.date?.day = 7
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.v22.mp3File()
         XCTAssertNoThrow(try outputMp3?.write(tagVersion: .v2_2,
                                              using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v22.url)),
@@ -586,7 +586,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         var tag = try TestFile.v22.tag()
         tag?.date = (day: 7, month: 11)
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.v22.mp3File()
         XCTAssertNoThrow(try outputMp3?.write(tagVersion: .v2_2,
                                              using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v22.url)),
@@ -606,7 +606,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag?.date?.month = 11
         tag?.date?.day = 7
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try Mp3File(location: TestFile.noMeta.url)
         XCTAssertNoThrow(try outputMp3.write(tagVersion: .v2_3,
                                              using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)),
@@ -625,7 +625,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         var tag = try TestFile.noMeta.tag()
         tag?.date = (day: 7, month: 11)
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.noMeta.mp3File()
         XCTAssertNoThrow(try outputMp3?.write(tagVersion: .v2_3,
                                              using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)),
@@ -645,7 +645,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag?.date?.month = 11
         tag?.date?.day = 7
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.v23.mp3File()
         XCTAssertNoThrow(try outputMp3?.write(tagVersion: .v2_3,
                                              using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v23.url)),
@@ -664,7 +664,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         var tag = try TestFile.v23.tag()
         tag?.date = (day: 7, month: 11)
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.v23.mp3File()
         XCTAssertNoThrow(try outputMp3?.write(tagVersion: .v2_3,
                                              using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v23.url)),
@@ -684,7 +684,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag?.date?.month = 11
         tag?.date?.day = 7
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.v24.mp3File()
         XCTAssertThrowsError(try outputMp3?.write(tagVersion: .v2_4,
                                              using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v24.url)),
@@ -700,7 +700,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag?.time?.hour = 9
         tag?.time?.minute = 23
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try Mp3File(location: TestFile.noMeta.url)
         XCTAssertNoThrow(try outputMp3.write(tagVersion: .v2_2,
                                              using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)),
@@ -719,7 +719,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         var tag = try TestFile.noMeta.tag()
         tag?.time = (hour: 9, minute: 23)
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.noMeta.mp3File()
         XCTAssertNoThrow(try outputMp3?.write(tagVersion: .v2_2,
                                              using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)),
@@ -739,7 +739,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag?.time?.hour = 9
         tag?.time?.minute = 23
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.v22.mp3File()
         XCTAssertNoThrow(try outputMp3?.write(tagVersion: .v2_2,
                                              using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v22.url)),
@@ -758,7 +758,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         var tag = try TestFile.v22.tag()
         tag?.time = (hour: 9, minute: 23)
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.v22.mp3File()
         XCTAssertNoThrow(try outputMp3?.write(tagVersion: .v2_2,
                                              using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v22.url)),
@@ -778,7 +778,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag?.time?.hour = 9
         tag?.time?.minute = 23
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try Mp3File(location: TestFile.noMeta.url)
         XCTAssertNoThrow(try outputMp3.write(tagVersion: .v2_3,
                                              using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)),
@@ -797,7 +797,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         var tag = try TestFile.noMeta.tag()
         tag?.time = (hour: 9, minute: 23)
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.noMeta.mp3File()
         XCTAssertNoThrow(try outputMp3?.write(tagVersion: .v2_3,
                                              using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)),
@@ -817,7 +817,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag?.time?.hour = 9
         tag?.time?.minute = 23
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.v23.mp3File()
         XCTAssertNoThrow(try outputMp3?.write(tagVersion: .v2_3,
                                              using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v23.url)),
@@ -836,7 +836,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         var tag = try TestFile.v23.tag()
         tag?.time = (hour: 9, minute: 23)
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.v23.mp3File()
         XCTAssertNoThrow(try outputMp3?.write(tagVersion: .v2_3,
                                              using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v23.url)),
@@ -856,7 +856,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag?.time?.hour = 11
         tag?.time?.minute = 23
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.v24.mp3File()
         XCTAssertThrowsError(try outputMp3?.write(tagVersion: .v2_4,
                                                  using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v24.url)),
@@ -871,7 +871,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         var tag = try TestFile.noMeta.tag()
         tag?.year = 2005
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.noMeta.mp3File()
         XCTAssertNoThrow(try outputMp3?.write(tagVersion: .v2_2,
                                              using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)),
@@ -889,7 +889,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         var tag = try TestFile.v22.tag()
         tag?.year = 2005
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.v22.mp3File()
         XCTAssertNoThrow(try outputMp3?.write(tagVersion: .v2_2,
                                              using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v22.url)),
@@ -907,7 +907,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         var tag = try TestFile.noMeta.tag()
         tag?.year = 2005
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.noMeta.mp3File()
         XCTAssertNoThrow(try outputMp3?.write(tagVersion: .v2_3,
                                              using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)),
@@ -925,7 +925,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         var tag = try TestFile.v23.tag()
         tag?.year = 2005
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.v23.mp3File()
         XCTAssertNoThrow(try outputMp3?.write(tagVersion: .v2_3,
                                              using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v23.url)),
@@ -943,7 +943,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         var tag = try TestFile.v24.tag()
         tag?.year = 2005
         
-        let outputUrl = try tempDirectory().appendingPathComponent("dateFrameTest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.v24.mp3File()
         XCTAssertThrowsError(try outputMp3?.write(tagVersion: .v2_4,
                                                  using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v24.url)),

@@ -32,7 +32,7 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
 
         tag?.removeAllChapters()
         
-        let outputUrl = try tempDirectory().appendingPathComponent("removaltest.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
 
         XCTAssertNoThrow(try TestFile.chapterized.mp3File()?.write(
             tagVersion: .v2_4,
@@ -54,7 +54,7 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         tag?.addChapter(at: 1680, title: "Chapter 002")
         tag?.addChapter(at: 3360, title: "Chapter 003")
         
-        let outputUrl = try tempDirectory().appendingPathComponent("testV24Writing.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(
             tagVersion: .v2_4,
             using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)),
@@ -80,7 +80,7 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         tag?.addChapter(at: 1680, title: "Chapter 002")
         tag?.addChapter(at: 3360, title: "Chapter 003")
         
-        let outputUrl = try tempDirectory().appendingPathComponent("testV24Writing.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         XCTAssertNoThrow(try TestFile.chapterized.mp3File()?.write(
             tagVersion: .v2_4,
             using: tag ?? Tag(readFrom: Mp3File(location: TestFile.chapterized.url)),
@@ -108,7 +108,7 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         tag?.addChapter(at: 2795, title: "Chapter 003")
         tag?.addChapter(at: 3360, title: "Chapter 004")
         
-        let outputUrl = try tempDirectory().appendingPathComponent("testV24Writing.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         XCTAssertNoThrow(try TestFile.chapterized.mp3File()?.write(
             tagVersion: .v2_4,
             using: tag ?? Tag(readFrom: Mp3File(location: TestFile.chapterized.url)),

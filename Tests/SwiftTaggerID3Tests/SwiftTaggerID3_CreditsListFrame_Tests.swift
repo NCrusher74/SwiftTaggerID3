@@ -44,7 +44,7 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         tag?.addMusicianCredit(role: .soprano, person: "Soprano Name")
         tag?.addMusicianCredit(role: .alto, person: "Alto Name")
 
-        let outputUrl = try tempDirectory().appendingPathComponent("testV24Writing.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_4, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v24.url)), writingTo: outputUrl))
         
         
@@ -65,7 +65,7 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         tag?.addInvolvedPersonCredit(role: .actor, person: "Actor Name")
         tag?.addInvolvedPersonCredit(role: .actress, person: "Actress Name")
         
-        let outputUrl = try tempDirectory().appendingPathComponent("testV23Writing.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_3, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v23.url)), writingTo: outputUrl))
         
         
@@ -84,7 +84,7 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         tag?.addInvolvedPersonCredit(role: .actor, person: "Actor Name")
         tag?.addInvolvedPersonCredit(role: .actress, person: "Actress Name")
         
-        let outputUrl = try tempDirectory().appendingPathComponent("testV22Writing.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_2, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v22.url)), writingTo: outputUrl))
         
         
@@ -103,7 +103,7 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         tag?.clearMusicianCreditsList()
         tag?.clearInvolvedPeopleList()
 
-        let outputUrl = try tempDirectory().appendingPathComponent("testV24Writing.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         XCTAssertNoThrow(try TestFile.v24.mp3File()?.write(tagVersion: .v2_4, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v24.url)), writingTo: outputUrl))
         
         
@@ -121,7 +121,7 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         
         tag?.clearInvolvedPeopleList()
         
-        let outputUrl = try tempDirectory().appendingPathComponent("testV23Writing.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         XCTAssertNoThrow(try TestFile.v23.mp3File()?.write(tagVersion: .v2_3, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v23.url)), writingTo: outputUrl))
         
         
@@ -138,7 +138,7 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         
         tag?.clearInvolvedPeopleList()
         
-        let outputUrl = try tempDirectory().appendingPathComponent("testV22Writing.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         XCTAssertNoThrow(try TestFile.v22.mp3File()?.write(tagVersion: .v2_2, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v22.url)), writingTo: outputUrl))
         
         
@@ -156,7 +156,7 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         tag?.clearInvolvedPeopleForRole(role: .actor)
         tag?.clearMusicianCreditsForRole(role: .soprano)
         
-        let outputUrl = try tempDirectory().appendingPathComponent("testV24Writing.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         XCTAssertNoThrow(try TestFile.v24.mp3File()?.write(tagVersion: .v2_4, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v24.url)), writingTo: outputUrl))
         
         
@@ -176,7 +176,7 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         
         tag?.clearInvolvedPeopleForRole(role: .actor)
         
-        let outputUrl = try tempDirectory().appendingPathComponent("testV23Writing.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         XCTAssertNoThrow(try TestFile.v23.mp3File()?.write(tagVersion: .v2_3, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v23.url)), writingTo: outputUrl))
         
         
@@ -194,7 +194,7 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         
         tag?.clearInvolvedPeopleForRole(role: .actor)
         
-        let outputUrl = try tempDirectory().appendingPathComponent("testV22Writing.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         XCTAssertNoThrow(try TestFile.v22.mp3File()?.write(tagVersion: .v2_2, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v22.url)), writingTo: outputUrl))
         
         
@@ -216,7 +216,7 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         tag?.addMusicianCredit(role: .alto, person: "New Alto Name")
         
         
-        let outputUrl = try tempDirectory().appendingPathComponent("testV24Writing.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         XCTAssertNoThrow(try TestFile.v24.mp3File()?.write(tagVersion: .v2_4, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v24.url)), writingTo: outputUrl))
         
         
@@ -237,7 +237,7 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         tag?.addMusicianCredit(role: .soprano, person: "Soprano Name")
         tag?.addMusicianCredit(role: .alto, person: "Alto Name")
         
-        let outputUrl = try tempDirectory().appendingPathComponent("testV23Writing.mp3")
+        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_3, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)), writingTo: outputUrl))
         
         let mp3UrlWritten = outputUrl
