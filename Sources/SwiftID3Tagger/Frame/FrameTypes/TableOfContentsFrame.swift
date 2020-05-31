@@ -168,12 +168,6 @@ extension Tag {
                 return nil
             }
         }
-        set {
-            let frame = TableOfContentsFrame(.known(.tableOfContents),
-                                             childElementIDs: newValue?.childElementIDs ?? [],
-                                             embeddedSubframesTag: newValue?.embeddedSubframesTag)
-            self.frames[.tableOfContents] = .tocFrame(frame)
-        }
     }
     
     mutating func removeTableOfContents() {

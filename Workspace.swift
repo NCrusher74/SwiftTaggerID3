@@ -66,10 +66,10 @@ let configuration: WorkspaceConfiguration = {
   configuration.proofreading.swiftFormatConfiguration = nil
 
   // #workaround(Not everything is being tested yet.)
-  configuration.testing.enforceCoverage = false
+  configuration.testing.enforceCoverage = true
 
   // #workaround(Not everything is documented yet.)
-  configuration.documentation.api.enforceCoverage = false
+  configuration.documentation.api.enforceCoverage = true
 
   return configuration
 }()

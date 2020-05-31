@@ -375,33 +375,6 @@ public enum FrameKey: Hashable {
         If another `publisher` frame is already present, the frame will be created as a `UserDefinedText` frame with the description, "Studio" */
     static var studio: FrameKey { return .publisher }
     
-    
-    
-    // MARK: Preset Frame Convenience Keys
-    /// Maps to `Comment` frame with the description, "Description"
-    static var description: FrameKey { return .comments(description: "Description") }
-    
-    /// Maps to `Comment` frame with the description, "Long Description"
-    static var longDescription: FrameKey { return .comments(description: "Long Description") }
-    
-    /// Maps to `Comment` frame with the description, "Long Description"
-    static var songDescription: FrameKey { return .comments(description: "Song Description") }
-    
-    /// Maps to `Comment` frame with the description, "Long Description"
-    static var seriesDescription: FrameKey { return .comments(description: "Series Description") }
-    
-    /// Maps to `Comment` frame with the description, "Liner Notes"
-    static var linerNotes: FrameKey { return .comments(description: "Liner Notes") }
-    
-    /// Maps to `UserText` frame with the description, "Acknowledgments"
-    static var acknowledgments: FrameKey { return .userDefinedText(description: "Acknowledgments") }
-    
-    /// Maps to `UserText` frame with the description, "Thanks"
-    static var thanks: FrameKey { return .userDefinedText(description: "Thanks") }
-    
-    /// Maps to `UserText` frame with the description, "Credit"
-    static var credit: FrameKey { return .userDefinedText(description: "Source Credit") }
-    
     /// maps to `ReleaseTime` frame
     static var releaseDate: FrameKey { return .releaseTime }
     
