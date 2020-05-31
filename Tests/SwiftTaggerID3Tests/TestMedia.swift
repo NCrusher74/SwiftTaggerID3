@@ -22,6 +22,7 @@ enum TestFile {
     case chapterized
     case nonMP3
     case sampleCover
+    case sampleIcon
     
     var url: URL {
         switch self {
@@ -46,6 +47,9 @@ enum TestFile {
             case .sampleCover:
                 return testMediaDirectory
                     .appendingPathComponent("samplecover-green.jpg")
+            case .sampleIcon:
+                return testMediaDirectory
+                    .appendingPathComponent("sampleicon-green.png")
         }
     }
     

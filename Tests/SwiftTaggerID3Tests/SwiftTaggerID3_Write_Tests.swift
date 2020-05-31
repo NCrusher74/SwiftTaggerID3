@@ -700,5 +700,33 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         
         XCTAssertEqual(tagWritten.recordCompany, "RecordCompany")
     }
+    
+    func testImageFrameWriting() throws {
+        var tag = Tag()
+        
+        try tag.setAttachedPicture(imageType: .FrontCover, imageDescription: "Sample Cover", location: TestFile.sampleCover.url)
+        try tag.setAttachedPicture(imageType: .fileIcon, imageDescription: nil, location: TestFile.sampleIcon.url)
+        try tag.setAttachedPicture(imageType: .Other, imageDescription: nil, location: TestFile.sampleCover.url)
+        try tag.setAttachedPicture(imageType: .ABrightColouredFish, imageDescription: nil, location: TestFile.sampleCover.url)
+        try tag.setAttachedPicture(imageType: .ArtistPerformer, imageDescription: nil, location: TestFile.sampleCover.url)
+        try tag.setAttachedPicture(imageType: .BackCover, imageDescription: nil, location: TestFile.sampleCover.url)
+        try tag.setAttachedPicture(imageType: .BandArtistLogotype, imageDescription: nil, location: TestFile.sampleCover.url)
+        try tag.setAttachedPicture(imageType: .BandOrchestra, imageDescription: nil, location: TestFile.sampleCover.url)
+        try tag.setAttachedPicture(imageType: .Composer, imageDescription: nil, location: TestFile.sampleCover.url)
+        try tag.setAttachedPicture(imageType: .Conductor, imageDescription: nil, location: TestFile.sampleCover.url)
+        try tag.setAttachedPicture(imageType: .DuringPerformance, imageDescription: nil, location: TestFile.sampleCover.url)
+        try tag.setAttachedPicture(imageType: .DuringRecording, imageDescription: nil, location: TestFile.sampleCover.url)
+        try tag.setAttachedPicture(imageType: .Illustration, imageDescription: nil, location: TestFile.sampleCover.url)
+        try tag.setAttachedPicture(imageType: .LeadArtistLeadPerformerSoloist, imageDescription: nil, location: TestFile.sampleCover.url)
+        try tag.setAttachedPicture(imageType: .LeafletPage, imageDescription: nil, location: TestFile.sampleCover.url)
+        try tag.setAttachedPicture(imageType: .LyricistTextWriter, imageDescription: nil, location: TestFile.sampleCover.url)
+        try tag.setAttachedPicture(imageType: .Media, imageDescription: nil, location: TestFile.sampleCover.url)
+        try tag.setAttachedPicture(imageType: .MovieVideoScreenCapture, imageDescription: nil, location: TestFile.sampleCover.url)
+        try tag.setAttachedPicture(imageType: .OtherFileIcon, imageDescription: nil, location: TestFile.sampleCover.url)
+        try tag.setAttachedPicture(imageType: .PublisherStudioLogotype, imageDescription: nil, location: TestFile.sampleCover.url)
+        try tag.setAttachedPicture(imageType: .RecordingLocation, imageDescription: nil, location: TestFile.sampleCover.url)
 
+        let output = try localDirectory(fileName: "mp3-with-image", fileExtension: "mp3")
+        XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_4, using: tag, writingTo: output))
+    }
 }
