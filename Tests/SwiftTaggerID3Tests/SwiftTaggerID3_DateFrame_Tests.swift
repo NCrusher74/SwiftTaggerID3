@@ -6,8 +6,6 @@
  Copyright ©2020 Nolaine Crusher. All rights reserved.
 
  */
-
-#warning("NEEDS FIXING: When writing to a file with a tag in an existing version that is incompatible, version-restricted frames will error out even if the outgoing version is correct")
 import XCTest
 import SwiftTaggerID3
 

@@ -245,6 +245,6 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         let tagWritten = try Tag(readFrom: mp3FileWritten)
         
         XCTAssertEqual(tagWritten.musicianCreditsList?[.soprano], ["Soprano Name"])
-        XCTAssertEqual(tagWritten.musicianCreditsList?[.alto], ["Alto Name", "New Alto Name"])
+        XCTAssertEqual(tagWritten.musicianCreditsList?[.alto], ["Alto Name"])
     }
 }

@@ -279,22 +279,530 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
         tag?.contentAdvisory = .usMovieUnrated
 
         let outputUrl = try tempDirectory().appendingPathComponent("testV24Writing.mp3")
-        XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_4, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v24.url)), writingTo: outputUrl))
+        XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_4, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)), writingTo: outputUrl))
         
         
         let mp3UrlWritten = outputUrl
         let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
         let tagWritten = try Tag(readFrom: mp3FileWritten)
+        
+        XCTAssertEqual(tagWritten[comments: .eng, "Comment"], "Comment Content")
+        XCTAssertEqual(tagWritten[customComment: .eng, .description], "Description Content")
+        XCTAssertEqual(tagWritten[customComment: .eng, .linerNotes], "Liner Notes Content")
+        XCTAssertEqual(tagWritten[customComment: .eng, .longDescription], "Long Description Content")
+        XCTAssertEqual(tagWritten[customComment: .eng, .songDescription], "Song Description Content")
+        XCTAssertEqual(tagWritten[customComment: .eng, .seriesDescription], "Series Description Content")
+        XCTAssertEqual(tagWritten[lyrics: .eng, "Lyrics"], "Lyrics Content")
+        XCTAssertEqual(tagWritten[userDefinedUrl: "UserURL"], "http://userdefined.url")
+        XCTAssertEqual(tagWritten.onlineExtras, "http://onlineextras.url")
+        XCTAssertEqual(tagWritten[userDefinedText: "UserText"], "User Text Content")
+        XCTAssertEqual(tagWritten.acknowledgment, "Acknowledgment")
+        XCTAssertEqual(tagWritten.contentRating, .clean)
+        XCTAssertEqual(tagWritten.contentAdvisory, .usMovieUnrated)
+        XCTAssertEqual(tagWritten.episodeName, "Episode Name")
+        XCTAssertEqual(tagWritten.episodeNumber, 7)
+        XCTAssertEqual(tagWritten.keywords, ["Key","Words"])
+        XCTAssertEqual(tagWritten.network, "Network")
+        XCTAssertEqual(tagWritten.season, 8)
+        XCTAssertEqual(tagWritten.seriesName, "Series Name")
+        XCTAssertEqual(tagWritten.sourceCredit, "Source Credit")
+        XCTAssertEqual(tagWritten.thanks, "Thanks")
+    }
+    
+    func testLocalizedFrameWritingv23() throws {
+        var tag = try TestFile.noMeta.tag()
+        
+        tag?[comments: .eng, "Comment"] = "Comment Content"
+        tag?[lyrics: .eng, "Lyrics"] = "Lyrics Content"
+        tag?[customComment: .eng, .description] = "Description Content"
+        tag?[customComment: .eng, .linerNotes] = "Liner Notes Content"
+        tag?[customComment: .eng, .longDescription] = "Long Description Content"
+        tag?[customComment: .eng, .seriesDescription] = "Series Description Content"
+        tag?[customComment: .eng, .songDescription] = "Song Description Content"
+        
+        tag?[userDefinedUrl: "UserURL"] = "http://userdefined.url"
+        tag?.onlineExtras = "http://onlineextras.url"
+        
+        tag?[userDefinedText: "UserText"] = "User Text Content"
+        tag?.thanks = "Thanks"
+        tag?.sourceCredit = "Source Credit"
+        tag?.season = 8
+        tag?.seriesName = "Series Name"
+        tag?.network = "Network"
+        tag?.acknowledgment = "Acknowledgment"
+        tag?.episodeName = "Episode Name"
+        tag?.episodeNumber = 7
+        tag?.keywords = ["Key","Words"]
+        tag?.contentRating = .clean
+        tag?.contentAdvisory = .usMovieUnrated
+        
+        let outputUrl = try tempDirectory().appendingPathComponent("testV23Writing.mp3")
+        XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_3, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)), writingTo: outputUrl))
+        
+        
+        let mp3UrlWritten = outputUrl
+        let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
+        let tagWritten = try Tag(readFrom: mp3FileWritten)
+        
+        XCTAssertEqual(tagWritten[comments: .eng, "Comment"], "Comment Content")
+        XCTAssertEqual(tagWritten[customComment: .eng, .description], "Description Content")
+        XCTAssertEqual(tagWritten[customComment: .eng, .linerNotes], "Liner Notes Content")
+        XCTAssertEqual(tagWritten[customComment: .eng, .longDescription], "Long Description Content")
+        XCTAssertEqual(tagWritten[customComment: .eng, .songDescription], "Song Description Content")
+        XCTAssertEqual(tagWritten[customComment: .eng, .seriesDescription], "Series Description Content")
+        XCTAssertEqual(tagWritten[lyrics: .eng, "Lyrics"], "Lyrics Content")
+        XCTAssertEqual(tagWritten[userDefinedUrl: "UserURL"], "http://userdefined.url")
+        XCTAssertEqual(tagWritten.onlineExtras, "http://onlineextras.url")
+        XCTAssertEqual(tagWritten[userDefinedText: "UserText"], "User Text Content")
+        XCTAssertEqual(tagWritten.acknowledgment, "Acknowledgment")
+        XCTAssertEqual(tagWritten.contentRating, .clean)
+        XCTAssertEqual(tagWritten.contentAdvisory, .usMovieUnrated)
+        XCTAssertEqual(tagWritten.episodeName, "Episode Name")
+        XCTAssertEqual(tagWritten.episodeNumber, 7)
+        XCTAssertEqual(tagWritten.keywords, ["Key","Words"])
+        XCTAssertEqual(tagWritten.network, "Network")
+        XCTAssertEqual(tagWritten.season, 8)
+        XCTAssertEqual(tagWritten.seriesName, "Series Name")
+        XCTAssertEqual(tagWritten.sourceCredit, "Source Credit")
+        XCTAssertEqual(tagWritten.thanks, "Thanks")
+    }
 
+    func testLocalizedFrameWritingv22() throws {
+        var tag = try TestFile.noMeta.tag()
+        
+        tag?[comments: .eng, "Comment"] = "Comment Content"
+        tag?[lyrics: .eng, "Lyrics"] = "Lyrics Content"
+        tag?[customComment: .eng, .description] = "Description Content"
+        tag?[customComment: .eng, .linerNotes] = "Liner Notes Content"
+        tag?[customComment: .eng, .longDescription] = "Long Description Content"
+        tag?[customComment: .eng, .seriesDescription] = "Series Description Content"
+        tag?[customComment: .eng, .songDescription] = "Song Description Content"
+        
+        tag?[userDefinedUrl: "UserURL"] = "http://userdefined.url"
+        tag?.onlineExtras = "http://onlineextras.url"
+        
+        tag?[userDefinedText: "UserText"] = "User Text Content"
+        tag?.thanks = "Thanks"
+        tag?.sourceCredit = "Source Credit"
+        tag?.season = 8
+        tag?.seriesName = "Series Name"
+        tag?.network = "Network"
+        tag?.acknowledgment = "Acknowledgment"
+        tag?.episodeName = "Episode Name"
+        tag?.episodeNumber = 7
+        tag?.keywords = ["Key","Words"]
+        tag?.contentRating = .clean
+        tag?.contentAdvisory = .usMovieUnrated
+        
+        let outputUrl = try tempDirectory().appendingPathComponent("testV22Writing.mp3")
+        XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_2, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)), writingTo: outputUrl))
+        
+        
+        let mp3UrlWritten = outputUrl
+        let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
+        let tagWritten = try Tag(readFrom: mp3FileWritten)
+        
+        XCTAssertEqual(tagWritten[comments: .eng, "Comment"], "Comment Content")
+        XCTAssertEqual(tagWritten[customComment: .eng, .description], "Description Content")
+        XCTAssertEqual(tagWritten[customComment: .eng, .linerNotes], "Liner Notes Content")
+        XCTAssertEqual(tagWritten[customComment: .eng, .longDescription], "Long Description Content")
+        XCTAssertEqual(tagWritten[customComment: .eng, .songDescription], "Song Description Content")
+        XCTAssertEqual(tagWritten[customComment: .eng, .seriesDescription], "Series Description Content")
+        XCTAssertEqual(tagWritten[lyrics: .eng, "Lyrics"], "Lyrics Content")
+        XCTAssertEqual(tagWritten[userDefinedUrl: "UserURL"], "http://userdefined.url")
+        XCTAssertEqual(tagWritten.onlineExtras, "http://onlineextras.url")
+        XCTAssertEqual(tagWritten[userDefinedText: "UserText"], "User Text Content")
+        XCTAssertEqual(tagWritten.acknowledgment, "Acknowledgment")
+        XCTAssertEqual(tagWritten.contentRating, .clean)
+        XCTAssertEqual(tagWritten.contentAdvisory, .usMovieUnrated)
+        XCTAssertEqual(tagWritten.episodeName, "Episode Name")
+        XCTAssertEqual(tagWritten.episodeNumber, 7)
+        XCTAssertEqual(tagWritten.keywords, ["Key","Words"])
+        XCTAssertEqual(tagWritten.network, "Network")
+        XCTAssertEqual(tagWritten.season, 8)
+        XCTAssertEqual(tagWritten.seriesName, "Series Name")
+        XCTAssertEqual(tagWritten.sourceCredit, "Source Credit")
+        XCTAssertEqual(tagWritten.thanks, "Thanks")
     }
-    //
-    func testWithOneValueWrittenOnBlankFile() throws {
+
+    func testLocalizedFrameOverwritingV24() throws {
+        var tag = try TestFile.v24.tag()
+        
+        tag?.acknowledgment = "New Acknowledgment"
+        tag?.contentAdvisory = .ustvUnrated
+        tag?.contentRating = .explicit
+        tag?.episodeName = "New Episode"
+        tag?.episodeNumber = 5
+        tag?.keywords = ["Word", "Keys"]
+        tag?.network = "New Network"
+        tag?.season = 6
+        tag?.seriesName = "New Series Name"
+        tag?.sourceCredit = "New Source Credit"
+        tag?.thanks = "New Thanks"
+        tag?.onlineExtras = "http://onlineextras.com"
+        tag?[comments: .eng, "Comment"] =
+        """
+        New
+        Comment
+        Content
+        """
+        tag?[lyrics: .eng, "Lyrics"] =
+        """
+        New
+        Lyrics
+        Content
+        """
+        tag?[userDefinedText: "UserText"] = "New User Text Content"
+        tag?[userDefinedUrl: "UserUrl"] = "http://userdefined.com"
+        tag?[customComment: .eng, .description] =
+        """
+        New
+        Description
+        Content
+        """
+        tag?[customComment: .eng, .longDescription] =
+        """
+        New
+        Long Description
+        Content
+        """
+        tag?[customComment: .eng, .seriesDescription] =
+        """
+        New
+        Series Description
+        Content
+        """
+        tag?[customComment: .eng, .linerNotes] =
+        """
+        New
+        Liner Notes
+        Content
+        """
+        tag?[customComment: .eng, .songDescription] =
+        """
+        New
+        Song Description
+        Content
+        """
+
+        let outputUrl = try tempDirectory().appendingPathComponent("testV24Writing.mp3")
+        XCTAssertNoThrow(try TestFile.v24.mp3File()?.write(tagVersion: .v2_4, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v24.url)), writingTo: outputUrl))
+        
+        
+        let mp3UrlWritten = outputUrl
+        let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
+        let tagWritten = try Tag(readFrom: mp3FileWritten)
+        
+
+        XCTAssertEqual(tagWritten.acknowledgment, "New Acknowledgment")
+        XCTAssertEqual(tagWritten.contentAdvisory, .ustvUnrated)
+        XCTAssertEqual(tagWritten.contentRating, .explicit)
+        XCTAssertEqual(tagWritten.episodeName, "New Episode")
+        XCTAssertEqual(tagWritten.episodeNumber, 5)
+        XCTAssertEqual(tagWritten.keywords, ["Word", "Keys"])
+        XCTAssertEqual(tagWritten.network, "New Network")
+        XCTAssertEqual(tagWritten.onlineExtras, "http://onlineextras.com")
+        XCTAssertEqual(tagWritten.season, 6)
+        XCTAssertEqual(tagWritten.seriesName, "New Series Name")
+        XCTAssertEqual(tagWritten.sourceCredit, "New Source Credit")
+        XCTAssertEqual(tagWritten.thanks, "New Thanks")
+        XCTAssertEqual(tagWritten[comments: .eng, "Comment"],
+        """
+        New
+        Comment
+        Content
+        """)
+        XCTAssertEqual(tagWritten[lyrics: .eng, "Lyrics"],
+        """
+        New
+        Lyrics
+        Content
+        """)
+        XCTAssertEqual(tagWritten[userDefinedText: "UserText"], "New User Text Content")
+        XCTAssertEqual(tagWritten[userDefinedUrl: "UserUrl"], "http://userdefined.com")
+        XCTAssertEqual(tagWritten[customComment: .eng, .description],
+        """
+        New
+        Description
+        Content
+        """)
+        XCTAssertEqual(tagWritten[customComment: .eng, .longDescription],
+        """
+        New
+        Long Description
+        Content
+        """)
+        XCTAssertEqual(tagWritten[customComment: .eng, .seriesDescription],
+        """
+        New
+        Series Description
+        Content
+        """)
+        XCTAssertEqual(tagWritten[customComment: .eng, .linerNotes],
+        """
+        New
+        Liner Notes
+        Content
+        """)
+        XCTAssertEqual(tagWritten[customComment: .eng, .songDescription],
+        """
+        New
+        Song Description
+        Content
+        """)
     }
-    
-    func testOverwriting() throws {
+
+    func testLocalizedFrameOverwritingV23() throws {
+        var tag = try TestFile.v23.tag()
+        
+        tag?.acknowledgment = "New Acknowledgment"
+        tag?.contentAdvisory = .ustvUnrated
+        tag?.contentRating = .explicit
+        tag?.episodeName = "New Episode"
+        tag?.episodeNumber = 5
+        tag?.keywords = ["Word", "Keys"]
+        tag?.network = "New Network"
+        tag?.season = 6
+        tag?.seriesName = "New Series Name"
+        tag?.sourceCredit = "New Source Credit"
+        tag?.thanks = "New Thanks"
+        tag?.onlineExtras = "http://onlineextras.com"
+        tag?[comments: .eng, "Comment"] =
+        """
+        New
+        Comment
+        Content
+        """
+        tag?[lyrics: .eng, "Lyrics"] =
+        """
+        New
+        Lyrics
+        Content
+        """
+        tag?[userDefinedText: "UserText"] = "New User Text Content"
+        tag?[userDefinedUrl: "UserUrl"] = "http://userdefined.com"
+        tag?[customComment: .eng, .description] =
+        """
+        New
+        Description
+        Content
+        """
+        tag?[customComment: .eng, .longDescription] =
+        """
+        New
+        Long Description
+        Content
+        """
+        tag?[customComment: .eng, .seriesDescription] =
+        """
+        New
+        Series Description
+        Content
+        """
+        tag?[customComment: .eng, .linerNotes] =
+        """
+        New
+        Liner Notes
+        Content
+        """
+        tag?[customComment: .eng, .songDescription] =
+        """
+        New
+        Song Description
+        Content
+        """
+        
+        let outputUrl = try tempDirectory().appendingPathComponent("testV23Writing.mp3")
+        XCTAssertNoThrow(try TestFile.v23.mp3File()?.write(tagVersion: .v2_3, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v23.url)), writingTo: outputUrl))
+        
+        
+        let mp3UrlWritten = outputUrl
+        let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
+        let tagWritten = try Tag(readFrom: mp3FileWritten)
+        
+        
+        XCTAssertEqual(tagWritten.acknowledgment, "New Acknowledgment")
+        XCTAssertEqual(tagWritten.contentAdvisory, .ustvUnrated)
+        XCTAssertEqual(tagWritten.contentRating, .explicit)
+        XCTAssertEqual(tagWritten.episodeName, "New Episode")
+        XCTAssertEqual(tagWritten.episodeNumber, 5)
+        XCTAssertEqual(tagWritten.keywords, ["Word", "Keys"])
+        XCTAssertEqual(tagWritten.network, "New Network")
+        XCTAssertEqual(tagWritten.onlineExtras, "http://onlineextras.com")
+        XCTAssertEqual(tagWritten.season, 6)
+        XCTAssertEqual(tagWritten.seriesName, "New Series Name")
+        XCTAssertEqual(tagWritten.sourceCredit, "New Source Credit")
+        XCTAssertEqual(tagWritten.thanks, "New Thanks")
+        XCTAssertEqual(tagWritten[comments: .eng, "Comment"],
+                       """
+        New
+        Comment
+        Content
+        """)
+        XCTAssertEqual(tagWritten[lyrics: .eng, "Lyrics"],
+                       """
+        New
+        Lyrics
+        Content
+        """)
+        XCTAssertEqual(tagWritten[userDefinedText: "UserText"], "New User Text Content")
+        XCTAssertEqual(tagWritten[userDefinedUrl: "UserUrl"], "http://userdefined.com")
+        XCTAssertEqual(tagWritten[customComment: .eng, .description],
+                       """
+        New
+        Description
+        Content
+        """)
+        XCTAssertEqual(tagWritten[customComment: .eng, .longDescription],
+                       """
+        New
+        Long Description
+        Content
+        """)
+        XCTAssertEqual(tagWritten[customComment: .eng, .seriesDescription],
+                       """
+        New
+        Series Description
+        Content
+        """)
+        XCTAssertEqual(tagWritten[customComment: .eng, .linerNotes],
+                       """
+        New
+        Liner Notes
+        Content
+        """)
+        XCTAssertEqual(tagWritten[customComment: .eng, .songDescription],
+                       """
+        New
+        Song Description
+        Content
+        """)
     }
-    
-    func testOverwritingWithOnlyPart() throws {
+
+    func testLocalizedFrameOverwritingV22() throws {
+        var tag = try TestFile.v22.tag()
+        
+        tag?.acknowledgment = "New Acknowledgment"
+        tag?.contentAdvisory = .ustvUnrated
+        tag?.contentRating = .explicit
+        tag?.episodeName = "New Episode"
+        tag?.episodeNumber = 5
+        tag?.keywords = ["Word", "Keys"]
+        tag?.network = "New Network"
+        tag?.season = 6
+        tag?.seriesName = "New Series Name"
+        tag?.sourceCredit = "New Source Credit"
+        tag?.thanks = "New Thanks"
+        tag?.onlineExtras = "http://onlineextras.com"
+        tag?[comments: .eng, "Comment"] =
+        """
+        New
+        Comment
+        Content
+        """
+        tag?[lyrics: .eng, "Lyrics"] =
+        """
+        New
+        Lyrics
+        Content
+        """
+        tag?[userDefinedText: "UserText"] = "New User Text Content"
+        tag?[userDefinedUrl: "UserUrl"] = "http://userdefined.com"
+        tag?[customComment: .eng, .description] =
+        """
+        New
+        Description
+        Content
+        """
+        tag?[customComment: .eng, .longDescription] =
+        """
+        New
+        Long Description
+        Content
+        """
+        tag?[customComment: .eng, .seriesDescription] =
+        """
+        New
+        Series Description
+        Content
+        """
+        tag?[customComment: .eng, .linerNotes] =
+        """
+        New
+        Liner Notes
+        Content
+        """
+        tag?[customComment: .eng, .songDescription] =
+        """
+        New
+        Song Description
+        Content
+        """
+        
+        let outputUrl = try tempDirectory().appendingPathComponent("testV22Writing.mp3")
+        XCTAssertNoThrow(try TestFile.v22.mp3File()?.write(tagVersion: .v2_2, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v22.url)), writingTo: outputUrl))
+        
+        
+        let mp3UrlWritten = outputUrl
+        let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
+        let tagWritten = try Tag(readFrom: mp3FileWritten)
+        
+        
+        XCTAssertEqual(tagWritten.acknowledgment, "New Acknowledgment")
+        XCTAssertEqual(tagWritten.contentAdvisory, .ustvUnrated)
+        XCTAssertEqual(tagWritten.contentRating, .explicit)
+        XCTAssertEqual(tagWritten.episodeName, "New Episode")
+        XCTAssertEqual(tagWritten.episodeNumber, 5)
+        XCTAssertEqual(tagWritten.keywords, ["Word", "Keys"])
+        XCTAssertEqual(tagWritten.network, "New Network")
+        XCTAssertEqual(tagWritten.onlineExtras, "http://onlineextras.com")
+        XCTAssertEqual(tagWritten.season, 6)
+        XCTAssertEqual(tagWritten.seriesName, "New Series Name")
+        XCTAssertEqual(tagWritten.sourceCredit, "New Source Credit")
+        XCTAssertEqual(tagWritten.thanks, "New Thanks")
+        XCTAssertEqual(tagWritten[comments: .eng, "Comment"],
+                       """
+        New
+        Comment
+        Content
+        """)
+        XCTAssertEqual(tagWritten[lyrics: .eng, "Lyrics"],
+                       """
+        New
+        Lyrics
+        Content
+        """)
+        XCTAssertEqual(tagWritten[userDefinedText: "UserText"], "New User Text Content")
+        XCTAssertEqual(tagWritten[userDefinedUrl: "UserUrl"], "http://userdefined.com")
+        XCTAssertEqual(tagWritten[customComment: .eng, .description],
+                       """
+        New
+        Description
+        Content
+        """)
+        XCTAssertEqual(tagWritten[customComment: .eng, .longDescription],
+                       """
+        New
+        Long Description
+        Content
+        """)
+        XCTAssertEqual(tagWritten[customComment: .eng, .seriesDescription],
+                       """
+        New
+        Series Description
+        Content
+        """)
+        XCTAssertEqual(tagWritten[customComment: .eng, .linerNotes],
+                       """
+        New
+        Liner Notes
+        Content
+        """)
+        XCTAssertEqual(tagWritten[customComment: .eng, .songDescription],
+                       """
+        New
+        Song Description
+        Content
+        """)
     }
-    
 }

@@ -122,12 +122,6 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag?.taggingDateTime?.hour, 0)
         XCTAssertEqual(tag?.taggingDateTime?.minute, 0)
       }
-        
-        // PartOfTotalFrame
-        XCTAssertEqual(tag?.discNumber?.disc, 3)
-        XCTAssertEqual(tag?.discNumber?.totalDiscs, 4)
-        XCTAssertEqual(tag?.trackNumber?.track, 1)
-        XCTAssertEqual(tag?.trackNumber?.totalTracks, 2)
     }
     
     // test reading of v23 tag from file
@@ -227,12 +221,6 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertNil(tag?.mediaType?.mediaType)
         XCTAssertNil(tag?.mediaType?.mediaTypeRefinement)
         XCTAssertEqual(tag?.mediaType?.additionalInformation, "Media Type")
-        
-        // PartOfTotalFrame
-        XCTAssertEqual(tag?.discNumber?.disc, 3)
-        XCTAssertEqual(tag?.discNumber?.totalDiscs, 4)
-        XCTAssertEqual(tag?.trackNumber?.track, 1)
-        XCTAssertEqual(tag?.trackNumber?.totalTracks, 2)
     }
 
     // test reading of v22 tag from file
@@ -316,12 +304,5 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertNil(tag?.mediaType?.mediaType)
         XCTAssertNil(tag?.mediaType?.mediaTypeRefinement)
         XCTAssertEqual(tag?.mediaType?.additionalInformation, "Media Type")
-
-        // PartOfTotalFrame
-        XCTAssertEqual(tag?.discNumber?.disc, 3)
-        XCTAssertEqual(tag?.discNumber?.totalDiscs, 4)
-        XCTAssertEqual(tag?.trackNumber?.track, 1)
-        XCTAssertEqual(tag?.trackNumber?.totalTracks, 2)
     }
-
 }

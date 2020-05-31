@@ -30,8 +30,8 @@ To add new frames to a file, or edit existing frames, read the tag as demonstrat
 ```swift
 tag.album = "New Album Title"
 tag.artist = "New Artist"
-tag.trackNumber.track = 3
-tag.trackNumber.totalTracks = 12
+tag.trackNumber.disc = 1
+tag.trackNumber.totalDiscs = 2
 
 let outputUrl = URL(fileURLWithPath: "/path/to/new.mp3")
 try mp3File.write(
@@ -56,7 +56,7 @@ tag.artist = nil
 tag.trackNumber = nil
 ```
 
-For some frames (such as `Comment` or `userDefinedText`), multiple versions of the frame are permitted in a tag (according to the ID3 spec.) In these cases, you can locate the specific frame using it's `descriptionString` as a subscript, or for frames that also require an ISO-639-2 language code, the language code and the `descriptionString`:
+For some frames (such as `Comment` or `userDefinedText`), multiple versions of the frame are permitted in a tag (according to the ID3 spec.) In these cases, you can locate the specific frame using it's `descriptionString` as a subscript, or (for frames that also require an ISO-639-2 language code) the language code and the `descriptionString`:
 ```swift
 print(tag[userDefinedText: "UserDefinedText"]) // "User Defined Text Content"
 print(tag[comments: .eng, "CommentDescription"]) // "Comment Content"
@@ -65,9 +65,9 @@ print(tag[lyrics: .eng, "LyricsDescription"]) // "Lyrics Content"
 ```
 Writing to these frames works the same way. **NOTE** The `Comment` and `UnsynchronizedLyrics` frames permit the use of newline characters.
 ```swift
-tag[userDefinedText: "NewDescription"] = "New User Defined Text Content"
-tag[comments .eng, "NewDescription"] = """New Comment Content"""
-tag[lyrics: .eng, "NewDescription"] = """New Lyrics Content"""
+tag[userDefinedText: "Description"] = "User Defined Text Content"
+tag[comments .eng, "Description"] = """Comment Content"""
+tag[lyrics: .eng, "Description"] = """Lyrics Content"""
 
 ```
 To overwrite an existing frame with a subscript accessor, just use the same `descriptionString` and language (if applicable). To remove an existing frame of this type, access it using its removal function:
@@ -103,7 +103,6 @@ To clear the `[person]` array for a specific  `role`:
 tag.clearInvolvedPeopleForRole(role: .director)
 tag.clearMusicianCreditsForRole(role: .guitarist)
 ```
-**Note:** The `MusicianCreditsList` frame is only available for ID3 version 2.4. If you try to write this frame with version 2.2 or 2.3, the output file will not contain it.
 
 *Chapter Frames*
 
@@ -135,7 +134,6 @@ To wipe all chapters frames from the tag:
 tag.removeAllChapters()
 ```
 
-
 *Other Frames*
 
 You can export the images from the `AttachedPicture` frames using their optional `descriptionString` as a subscript, but honestly it'd be just as easy to get them using `AVFoundation`:
@@ -162,7 +160,7 @@ Here's a complete list of the frames handled by SwiftTaggerID3:
 * `audioSourceWebpage`
 * `bpm`
 * `comments // query using description as subscript accessor`
-* `compilation`
+* `compilation // iTunes non-standard frame`
 * `composer`
 * `composerSort`
 * `conductor`
@@ -172,9 +170,10 @@ Here's a complete list of the frames handled by SwiftTaggerID3:
 * `discNumber`
 * `encodedBy`
 * `encodingSettings`
+* `fileOwner // uses non-standard identifier in version 2.2`
 * `fileType`
 * `genre`
-* `grouping`
+* `grouping // iTunes non-standard frame`
 * `initialKey`
 * `involvedPeopleList`
 * `isrc`
@@ -182,27 +181,31 @@ Here's a complete list of the frames handled by SwiftTaggerID3:
 * `length`
 * `lyricist`
 * `mediaType`
-* `movementCount`
-* `movementName`
-* `movementNumber`
+* `mood // uses non-standard identifier in versions 2.2/2.3`
+* `movementCount // iTunes non-standard frame`
+* `movementName // iTunes non-standard frame`
+* `movementNumber // iTunes non-standard frame`
+* `musicianCreditsList // uses non-standard identifier in versions 2.2/2.3`
 * `originalAlbum`
 * `originalArtist`
 * `originalFilename`
 * `originalLyricist`
 * `originalReleaseTime`
+* `paymentWebpage // uses non-standard identifier in version 2.2`
 * `playlistDelay`
-* `podcastCategory`
-* `podcastDescription`
-* `podcastID`
-* `podcastKeywords`
-* `podcastFeedLink`
-* `producedNotice`
+* `podcastCategory // iTunes non-standard frame`
+* `podcastDescription // iTunes non-standard frame`
+* `podcastID // iTunes non-standard frame`
+* `podcastKeywords // iTunes non-standard frame`
+* `podcastFeedLink // iTunes non-standard frame`
+* `producedNotice // uses non-standard identifier in versions 2.2/2.3`
 * `publisher`
 * `publisherWebpage`
 * `radioStation`
 * `radioStationOwner`
 * `radioStationWebpage`
 * `recordingDate`
+* `setSubtitle // uses non-standard identifier in versions 2.2/2.3`
 * `subtitle`
 * `title`
 * `titleSort`
@@ -213,16 +216,11 @@ Here's a complete list of the frames handled by SwiftTaggerID3:
 
 For ID3 version 2.4 only:
 * `encodingTime`
-* `mood`
-* `musicianCreditsList`
 * `releaseTime`
-* `setSubtitle`
 * `taggingTime`
 
 For ID3 versions 2.3 and 2.4 only:
 * `chapter`
-* `fileOwner`
-* `paymentWebpage`
 * `tableOfContents`
 
 For ID3 versions 2.2 and 2.3 only:
@@ -230,12 +228,14 @@ For ID3 versions 2.2 and 2.3 only:
 * `time`
 * `year`
 
-*A note on ID3 specification compliance*
-
+**A note on ID3 specification compliance**
 `SwiftTaggerID3` tries to stick pretty close to the requirements of the documented specs, but there are a few places where it deviates, either because the spec is silly, or compliance would be more cumbersome to achieve can be justified by the author's needs, or compliance would make the usage of `SwiftTaggerID3` too convoluted. These deviations are:
 
-* In cases where an iTunes-compliant but non-standard frame doesn't exist for ID3 version 2.2, but does in version 2.3/2.4, an ID3 identifier for the frame has been created. Whenever possible, this identifier is the same one used by `TagLib` in similar instances, so that the frame will be recognized by apps built using `TagLib`. Chapter frames, however, are still not supported for version 2.2.
+* In most cases where a frame doesn't exist for one ID3 version but does for another, an ID3 identifier for the frame has been created. Some apps will recognize these frames, some will not. The exceptions to this are the chapter/table of contents frames and the date frames.
 * The ID3 specs for the `TCON` ("Genre"), `TMED` ("MediaType"), and `TFLT` ("File Type") frames make these frames exceptionally difficult to parse. So while the spec allows for an unlimited array of pre-determined types, pre-determined refinements, and free-form description or refinement strings, `SwiftTaggerID3` only permits one of each. This should be more than sufficient for most user's needs.
 * The ID3 specs allow for multiple `CTOC` (Table Of Contents) frames, and for the `CTOC` frames to have embedded subframes. To keep chapter implementation simple, however, `SwiftTaggerID3` only supports a single `CTOC` frame, with no embedded subframes.
+
+**Known Issues**
+Date frames will throw a `FrameNotAvailableForVersion` error, even when outputting to a compatible version, if the tag which has been read in has an incompatible version.
 
 If you wish to add these missing features, while keeping the usage user-friendly, the author will welcome pull requests.
