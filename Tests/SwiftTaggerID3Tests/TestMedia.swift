@@ -23,6 +23,7 @@ enum TestFile {
     case nonMP3
     case sampleCover
     case sampleIcon
+    case unknown
     
     var url: URL {
         switch self {
@@ -50,19 +51,22 @@ enum TestFile {
             case .sampleIcon:
                 return testMediaDirectory
                     .appendingPathComponent("sampleicon-green.png")
+            case .unknown:
+                return testMediaDirectory
+                    .appendingPathComponent("mp3-unknownframes.mp3")
         }
     }
     
     func mp3File() throws -> Mp3File? {
         switch self {
-            case .v22, .v23, .v24, .noMeta, .chapterized: return try Mp3File(location: self.url)
+            case .v22, .v23, .v24, .noMeta, .chapterized, .unknown: return try Mp3File(location: self.url)
             default: return nil
         }
     }
     
     func tag() throws -> Tag? {
         switch self {
-            case .v22, .v23, .v24, .noMeta, .chapterized:
+            case .v22, .v23, .v24, .noMeta, .chapterized, .unknown:
                 return try Tag(readFrom: self.mp3File() ?? Mp3File(location: self.url))
             default: return nil
         }
@@ -70,7 +74,7 @@ enum TestFile {
     
     func data() throws -> Data? {
         switch self {
-            case .v22, .v23, .v24, .noMeta, .chapterized: return try Mp3File(location: self.url).data
+            case .v22, .v23, .v24, .noMeta, .chapterized, .unknown: return try Mp3File(location: self.url).data
             default: return nil
         }
     }

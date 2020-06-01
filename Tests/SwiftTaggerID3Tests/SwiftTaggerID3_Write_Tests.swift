@@ -726,7 +726,24 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         try tag.setAttachedPicture(imageType: .PublisherStudioLogotype, imageDescription: nil, location: TestFile.sampleCover.url)
         try tag.setAttachedPicture(imageType: .RecordingLocation, imageDescription: nil, location: TestFile.sampleCover.url)
 
-        let output = try localDirectory(fileName: "mp3-with-image", fileExtension: "mp3")
+        let output = try tempDirectory().appendingPathComponent("test.mp3")
         XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_4, using: tag, writingTo: output))
     }
+    
+    func testUnknownFramePassThrough() throws {
+        var tag = try TestFile.unknown.tag()
+        
+        tag?.album = "Test"
+        
+//        print(tag)
+        
+//        let output = try tempDirectory().appendingPathComponent("test.mp3")
+//        XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_4, using: tag!, writingTo: output))
+//
+//        let fileWritten = try Mp3File(location: output)
+//        let tagWritten = try Tag(readFrom: fileWritten)
+//
+//        XCTAssertEqual(tagWritten.album, "Test")
+    }
+
 }

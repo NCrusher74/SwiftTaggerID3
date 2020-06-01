@@ -57,7 +57,7 @@ public struct Tag: CustomStringConvertible {
         // this strips out the size data and passes along the rest to be parsed
         let tagSizeData = remainder.extractFirst(properties.tagSizeDeclarationLength)
         let tagSize = try properties.size(data: tagSizeData, version: version)
-        
+
         // at this point the remainder should be all the frames data, without the 10-byte tag header
         // set range of frames data using tag size as the upper bound
         let tagDataRange = remainder.startIndex ..< remainder.startIndex + tagSize
