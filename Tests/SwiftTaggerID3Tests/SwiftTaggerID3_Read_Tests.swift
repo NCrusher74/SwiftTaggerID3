@@ -10,6 +10,7 @@
 import XCTest
 import SwiftTaggerID3
 
+@available(OSX 10.12, *)
 class SwiftTaggerID3_Read_Tests: XCTestCase {
 
     // test reading of V24 tag from file
@@ -94,7 +95,6 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertNil(tag?.mediaType?.mediaTypeRefinement)
         XCTAssertEqual(tag?.mediaType?.additionalInformation, "Media Type")
 
-      if #available(macOS 10.12, *) {
         // DateFrame
         XCTAssertEqual(tag?.encodingDateTime?.year, 2016)
         XCTAssertEqual(tag?.encodingDateTime?.month, 04)
@@ -125,7 +125,8 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
     }
     
     // test reading of v23 tag from file
-    func testV23Reading() throws {
+@available(OSX 10.12, *)
+func testV23Reading() throws {
         let tag = try TestFile.v23.tag()
 
         // StringFrame
@@ -193,7 +194,6 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag?.series, "Content Group")
         XCTAssertEqual(tag?.work, "Content Group")
 
-      if #available(macOS 10.12, *) {
         // DateFrame
         XCTAssertEqual(tag?.recordingDateTime?.year, 2018)
         XCTAssertEqual(tag?.recordingDateTime?.month, 10)
@@ -208,7 +208,6 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag?.originalReleaseTime?.year, 2014)
         XCTAssertEqual(tag?.originalReleaseTime?.hour, 0)
         XCTAssertEqual(tag?.originalReleaseTime?.minute, 0)
-      }
         
         XCTAssertEqual(tag?.languages, [.eng])
 
@@ -224,7 +223,8 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
     }
 
     // test reading of v22 tag from file
-    func testV22Reading() throws {
+@available(OSX 10.12, *)
+func testV22Reading() throws {
         let tag = try TestFile.v22.tag()
         
         // StringFrame
@@ -278,7 +278,6 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag?.remixer, "Arranger")
         XCTAssertEqual(tag?.work, "Content Group")
         
-      if #available(macOS 10.12, *) {
         // DateFrame
         XCTAssertEqual(tag?.recordingDateTime?.year, 2018)
         XCTAssertEqual(tag?.recordingDateTime?.month, 10)
@@ -293,7 +292,6 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag?.originalReleaseTime?.year, 2014)
         XCTAssertEqual(tag?.originalReleaseTime?.hour, 0)
         XCTAssertEqual(tag?.originalReleaseTime?.minute, 0)
-      }
 
         // PresetOptionsFrame
         XCTAssertNil(tag?.fileType?.fileType)
@@ -304,5 +302,4 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertNil(tag?.mediaType?.mediaType)
         XCTAssertNil(tag?.mediaType?.mediaTypeRefinement)
         XCTAssertEqual(tag?.mediaType?.additionalInformation, "Media Type")
-    }
 }

@@ -10,6 +10,7 @@
 import Foundation
 
 /** Houses variables and methods for using known ID3 Tag information to derive necessary data from a specific `Tag` instance */
+@available(OSX 10.12, *)
 struct TagProperties {
     
     /** Compares bytes in the known range of the version bytes for an ID3 header to known values in order to calculate the ID3 version of a `Tag` instance */
@@ -47,6 +48,7 @@ struct TagProperties {
     }
 }
 
+@available(OSX 10.12, *)
 extension TagProperties {
     /*
      The first part of the ID3v2 tag is the 10 byte tag header, laid out

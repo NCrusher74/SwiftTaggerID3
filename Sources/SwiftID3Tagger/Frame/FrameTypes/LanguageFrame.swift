@@ -25,7 +25,6 @@ struct LanguageFrame: FrameProtocol, CustomStringConvertible {
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
-    var allowMultipleFrames: Bool = false
     
     /// ISO-639-2 languge code
     var languages: [String]
@@ -88,6 +87,7 @@ struct LanguageFrame: FrameProtocol, CustomStringConvertible {
     
 }
 
+@available(OSX 10.12, *)
 extension Tag {
     /// - Language frame getter-setter. ID3 Identifier: `TLA`/`TLAN`
     public var languages: [ISO6392Codes]? {

@@ -11,6 +11,7 @@ import XCTest
 import SwiftTaggerID3
 
 // Actually tests for chapter frame and CTOC frame
+@available(OSX 10.12, *)
 class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
 
     // MARK: Read test

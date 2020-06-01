@@ -26,7 +26,6 @@ struct StringFrame: FrameProtocol, CustomStringConvertible {
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
-    var allowMultipleFrames: Bool = false
     
     /// The contents of the frame, consisting of a single, unterminated string without new lines
     /// This sting may be a URL for an external webpage
@@ -112,6 +111,7 @@ struct StringFrame: FrameProtocol, CustomStringConvertible {
 
 // MARK: Tag extension
 /* get and set functions for `StringFrame` frame types. Each individual frame of this type will have its own get-set property that will call these functions using its `FrameKey` property and relevant data */
+@available(OSX 10.12, *)
 extension Tag {
     
     /// Instantiates parsing operation to retrieve a frame's contents from a `Tag`

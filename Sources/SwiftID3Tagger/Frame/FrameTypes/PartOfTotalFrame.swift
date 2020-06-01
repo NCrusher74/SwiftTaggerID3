@@ -24,7 +24,6 @@ struct PartOfTotalFrame: FrameProtocol, CustomStringConvertible {
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
-    var allowMultipleFrames: Bool = false
 
     // the frame's unique properties
     /// The index of the track/disc.
@@ -94,6 +93,7 @@ struct PartOfTotalFrame: FrameProtocol, CustomStringConvertible {
 
 // MARK: Internal Tag extension
 /* get and set functions for `PartOfTotalFrame` frame types. Each individual frame of this type will have its own get-set property that will call these fucntions */
+@available(OSX 10.12, *)
 extension Tag {
     
     /// Retrieve an integer tuple from the frame data

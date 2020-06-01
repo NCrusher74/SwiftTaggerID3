@@ -26,7 +26,6 @@ struct CreditsListFrame: FrameProtocol, CustomStringConvertible {
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
-    var allowMultipleFrames: Bool = false
     
     /// The dictionary of `[role : [array of people performing the role]]`
     var credits: [ String : [String] ]
@@ -91,6 +90,7 @@ struct CreditsListFrame: FrameProtocol, CustomStringConvertible {
     }
 }
 
+@available(OSX 10.12, *)
 extension Tag {
     
     /// retrieve the `[role: [person]]` dictionary from the frame

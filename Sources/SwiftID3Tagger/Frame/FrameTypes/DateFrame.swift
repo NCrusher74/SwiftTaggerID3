@@ -23,7 +23,6 @@ struct DateFrame: FrameProtocol, CustomStringConvertible {
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
-    var allowMultipleFrames: Bool = false
     
     // needs to be in ISO-8601 format
     var timeStamp: Date?
@@ -189,6 +188,7 @@ struct DateFrame: FrameProtocol, CustomStringConvertible {
 
 // MARK: Tag extension
 // These are convenience getter-setter properties
+@available(OSX 10.12, *)
 extension Tag {
     internal func date(for frameKey: FrameKey)
         -> (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {

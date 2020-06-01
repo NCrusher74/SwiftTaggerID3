@@ -24,8 +24,6 @@ protocol FrameProtocol {
      
         Provides a unique identifier to permits duplication of frame types that the ID3 spec allows to be duplicated within a tag. */
     var frameKey: FrameKey { get set }
-    /** A boolean value indicating whether or not frames of a particular type are permitted to be duplicated in a valid ID3 tag */
-    var allowMultipleFrames: Bool { get }
     
     /// Encodes the contents of a frame
     func encodeContents(version: Version) throws -> Data
@@ -133,6 +131,7 @@ extension FrameProtocol {
         layout: FrameLayoutIdentifier,
         version: Version) -> Data {
 
+//        print(layout.id3Identifier(version: version)) // nada
         guard let identifier = layout.id3Identifier(version: version)?.encodedASCII(withNullTermination: false) else {
             switch version {
                 case .v2_2: return "TXX".encodedASCII(withNullTermination: false)

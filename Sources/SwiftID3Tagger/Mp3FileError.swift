@@ -9,6 +9,7 @@
 
 import Foundation
 
+@available(OSX 10.12, *)
 extension Mp3File {
     
     public enum Error: Swift.Error {
@@ -33,6 +34,7 @@ extension Mp3File {
     }
 }
 
+@available(OSX 10.12, *)
 extension Mp3File.Error: LocalizedError {
     public var errorDescription: String? {
         switch self {

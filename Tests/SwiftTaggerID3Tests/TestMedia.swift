@@ -14,6 +14,7 @@ let testMediaDirectory = URL(fileURLWithPath: #file)
     .deletingLastPathComponent()
     .appendingPathComponent("TestMedia")
 
+@available(OSX 10.12, *)
 enum TestFile {
     case noMeta
     case v22

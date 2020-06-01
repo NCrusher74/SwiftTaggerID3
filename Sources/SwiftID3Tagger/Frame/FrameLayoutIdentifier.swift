@@ -24,6 +24,7 @@ enum FrameLayoutIdentifier: Hashable {
             self = .known(known)
         } else {
             self = .unknown(identifier)
+//            print(self) // prints correctly
         }
     }
     
@@ -35,6 +36,8 @@ enum FrameLayoutIdentifier: Hashable {
             case .known(let known):
                 return known.id3Identifier(version: version)
             case .unknown(let identifier):
+//                print(self) // nothing prints
+//                print(identifier) // nothing prints
                 return identifier
         }
     }
@@ -129,7 +132,11 @@ enum KnownFrameLayoutIdentifier: CaseIterable {
     
     
     init?(identifier: String) {
-        self = KnownFrameLayoutIdentifier.stringToLayoutMapping[identifier] ?? .userDefinedText
+        if let layout = KnownFrameLayoutIdentifier.stringToLayoutMapping[identifier] {
+            self = layout
+        } else {
+            return nil
+        }
     }
          
     // MARK: ID3Identifier
@@ -144,7 +151,6 @@ enum KnownFrameLayoutIdentifier: CaseIterable {
     /// - Returns: A string of the ID3 identifier appropriate for the version
     func id3Identifier(version: Version) -> String? {
         switch self {
-            
             case .album:
                 switch version {
                     case .v2_2: return "TAL"

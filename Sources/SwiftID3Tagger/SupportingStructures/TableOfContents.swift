@@ -30,6 +30,7 @@ struct TableOfContents {
     }
 }
 
+@available(OSX 10.12, *)
 extension Tag {
     var tableOfContents: TableOfContents {
         get {
