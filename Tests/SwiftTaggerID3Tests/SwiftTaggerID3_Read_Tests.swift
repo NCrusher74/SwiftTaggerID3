@@ -85,42 +85,6 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag?.studio, "Publisher")
         XCTAssertEqual(tag?.work, "Content Group")
 
-        // PresetOptionsFrame
-        XCTAssertNil(tag?.fileType?.fileType)
-        XCTAssertNil(tag?.fileType?.fileTypeRefinement)
-        XCTAssertEqual(tag?.fileType?.additionalInformation, "File Type")
-        XCTAssertEqual(tag?.genre?.presetGenre, .Audiobook)
-        XCTAssertEqual(tag?.genre?.customGenre, "Genre Type")
-        XCTAssertNil(tag?.mediaType?.mediaType)
-        XCTAssertNil(tag?.mediaType?.mediaTypeRefinement)
-        XCTAssertEqual(tag?.mediaType?.additionalInformation, "Media Type")
-
-        // DateFrame
-        XCTAssertEqual(tag?.encodingDateTime?.year, 2016)
-        XCTAssertEqual(tag?.encodingDateTime?.month, 04)
-        XCTAssertEqual(tag?.encodingDateTime?.day, 05)
-        XCTAssertEqual(tag?.encodingDateTime?.hour, 0)
-        XCTAssertEqual(tag?.encodingDateTime?.minute, 0)
-        XCTAssertEqual(tag?.originalReleaseTime?.year, 2014)
-        XCTAssertEqual(tag?.originalReleaseTime?.month, 08)
-        XCTAssertEqual(tag?.originalReleaseTime?.day, 09)
-        XCTAssertEqual(tag?.originalReleaseTime?.hour, 0)
-        XCTAssertEqual(tag?.originalReleaseTime?.minute, 0)
-        XCTAssertEqual(tag?.recordingDateTime?.year, 2018)
-        XCTAssertEqual(tag?.recordingDateTime?.month, 10)
-        XCTAssertEqual(tag?.recordingDateTime?.day, 11)
-        XCTAssertEqual(tag?.recordingDateTime?.hour, 0)
-        XCTAssertEqual(tag?.recordingDateTime?.minute, 0)
-        XCTAssertEqual(tag?.releaseDateTime?.year, 2015)
-        XCTAssertEqual(tag?.releaseDateTime?.month, 02)
-        XCTAssertEqual(tag?.releaseDateTime?.day, 03)
-        XCTAssertEqual(tag?.releaseDateTime?.hour, 11)
-        XCTAssertEqual(tag?.releaseDateTime?.minute, 11)
-        XCTAssertEqual(tag?.taggingDateTime?.year, 2017)
-        XCTAssertEqual(tag?.taggingDateTime?.month, 06)
-        XCTAssertEqual(tag?.taggingDateTime?.day, 07)
-        XCTAssertEqual(tag?.taggingDateTime?.hour, 0)
-        XCTAssertEqual(tag?.taggingDateTime?.minute, 0)
       }
     }
     
@@ -193,33 +157,6 @@ func testV23Reading() throws {
         XCTAssertEqual(tag?.recordCompany, "Publisher")
         XCTAssertEqual(tag?.series, "Content Group")
         XCTAssertEqual(tag?.work, "Content Group")
-
-        // DateFrame
-        XCTAssertEqual(tag?.recordingDateTime?.year, 2018)
-        XCTAssertEqual(tag?.recordingDateTime?.month, 10)
-        XCTAssertEqual(tag?.recordingDateTime?.day, 11)
-        XCTAssertEqual(tag?.recordingDateTime?.hour, 0)
-        XCTAssertEqual(tag?.recordingDateTime?.minute, 0)
-        XCTAssertEqual(tag?.date?.month, 02)
-        XCTAssertEqual(tag?.date?.day, 03)
-        XCTAssertEqual(tag?.time?.hour, 11)
-        XCTAssertEqual(tag?.time?.minute, 11)
-        XCTAssertEqual(tag?.year, 2015)
-        XCTAssertEqual(tag?.originalReleaseTime?.year, 2014)
-        XCTAssertEqual(tag?.originalReleaseTime?.hour, 0)
-        XCTAssertEqual(tag?.originalReleaseTime?.minute, 0)
-        
-        XCTAssertEqual(tag?.languages, [.eng])
-
-        // PresetOptionsFrame
-        XCTAssertNil(tag?.fileType?.fileType)
-        XCTAssertNil(tag?.fileType?.fileTypeRefinement)
-        XCTAssertEqual(tag?.fileType?.additionalInformation, "File Type")
-        XCTAssertEqual(tag?.genre?.presetGenre, .Audiobook)
-        XCTAssertEqual(tag?.genre?.customGenre, "Genre Type")
-        XCTAssertNil(tag?.mediaType?.mediaType)
-        XCTAssertNil(tag?.mediaType?.mediaTypeRefinement)
-        XCTAssertEqual(tag?.mediaType?.additionalInformation, "Media Type")
     }
 
     // test reading of v22 tag from file
@@ -277,29 +214,4 @@ func testV22Reading() throws {
         XCTAssertEqual(tag?.narratorSort, "Composer Sort")
         XCTAssertEqual(tag?.remixer, "Arranger")
         XCTAssertEqual(tag?.work, "Content Group")
-        
-        // DateFrame
-        XCTAssertEqual(tag?.recordingDateTime?.year, 2018)
-        XCTAssertEqual(tag?.recordingDateTime?.month, 10)
-        XCTAssertEqual(tag?.recordingDateTime?.day, 11)
-        XCTAssertEqual(tag?.recordingDateTime?.hour, 0)
-        XCTAssertEqual(tag?.recordingDateTime?.minute, 0)
-        XCTAssertEqual(tag?.date?.month, 02)
-        XCTAssertEqual(tag?.date?.day, 03)
-        XCTAssertEqual(tag?.time?.hour, 11)
-        XCTAssertEqual(tag?.time?.minute, 11)
-        XCTAssertEqual(tag?.year, 2015)
-        XCTAssertEqual(tag?.originalReleaseTime?.year, 2014)
-        XCTAssertEqual(tag?.originalReleaseTime?.hour, 0)
-        XCTAssertEqual(tag?.originalReleaseTime?.minute, 0)
-
-        // PresetOptionsFrame
-        XCTAssertNil(tag?.fileType?.fileType)
-        XCTAssertNil(tag?.fileType?.fileTypeRefinement)
-        XCTAssertEqual(tag?.fileType?.additionalInformation, "File Type")
-        XCTAssertEqual(tag?.genre?.presetGenre, .Audiobook)
-        XCTAssertEqual(tag?.genre?.customGenre, "Genre Type")
-        XCTAssertNil(tag?.mediaType?.mediaType)
-        XCTAssertNil(tag?.mediaType?.mediaTypeRefinement)
-        XCTAssertEqual(tag?.mediaType?.additionalInformation, "Media Type")
 }

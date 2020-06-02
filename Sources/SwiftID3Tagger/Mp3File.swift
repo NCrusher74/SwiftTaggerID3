@@ -30,11 +30,15 @@ public struct Mp3File {
         guard location.pathExtension.lowercased() == "mp3" else {
             throw Mp3File.Error.InvalidFileFormat
         }
-        // get the file as data
+        // get the file as data, retrying once in case the file isn't released yet after being accessed from another attempt
         do {
             self.data = try Data(contentsOf: location)
         } catch {
-            throw Mp3File.Error.CannotReadFile
+            do {
+                self.data = try Data(contentsOf: location)
+            } catch {
+                throw Mp3File.Error.CannotReadFile
+            }
         }
     }
     
