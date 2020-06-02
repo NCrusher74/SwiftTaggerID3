@@ -60,7 +60,7 @@ extension TagProperties {
      ID3v2 size             4 * %0xxxxxxx -- 4 bytes (Synchsafe Uint32)
      */
     
-    // MARK: Tag Properties
+    // // MARK: - Tag Properties
     /// The known length of version declaration data in a valid ID3 tag header
     var versionDeclarationLength: Int {
         return 5

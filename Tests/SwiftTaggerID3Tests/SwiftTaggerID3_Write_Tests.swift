@@ -13,7 +13,7 @@ import SwiftTaggerID3
 @available(OSX 10.12, *)
 class SwiftTaggerID3_Write_Tests: XCTestCase {
     
-    // MARK: V24 writing test
+    // // MARK: - V24 writing test
     // Test writing, and accuracy of written data, version 2.4
     func testV24Writing() throws {
         var tag = try TestFile.noMeta.tag()
@@ -72,10 +72,10 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag?.publisherWebpage = "http://publisher.url"
         tag?.radioStationWebpage = "http://radiostation.url"
         
-        // MARK: Language Frame
+        // // MARK: - Language Frame
         tag?.languages = [.eng]
         
-        // MARK: Part Of Total frame
+        // // MARK: - Part Of Total frame
         tag?.trackNumber?.track = 1
         tag?.trackNumber?.totalTracks = 2
         tag?.discNumber?.disc = 3
@@ -158,7 +158,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.work, "Content Group")        
     }
     
-    // MARK: V23 writing test
+    // // MARK: - V23 writing test
     // Test writing, and accuracy of written data, version 2.3
     func testV23Writing() throws {
         var tag = try TestFile.noMeta.tag()
@@ -214,10 +214,10 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag?.publisherWebpage = "http://publisher.url"
         tag?.radioStationWebpage = "http://radiostation.url"
         
-        // MARK: Language Frame
+        // // MARK: - Language Frame
         tag?.languages = [.eng]
         
-        // MARK: Part Of Total frame
+        // // MARK: - Part Of Total frame
         tag?.trackNumber?.track = 1
         tag?.trackNumber?.totalTracks = 2
         tag?.discNumber?.disc = 3
@@ -340,10 +340,10 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag?.copyrightWebpage = "http://copyright.url"
         tag?.publisherWebpage = "http://publisher.url"
         
-        // MARK: Language Frame
+        // // MARK: - Language Frame
         tag?.languages = [.eng]
         
-        // MARK: Part Of Total frame
+        // // MARK: - Part Of Total frame
         tag?.trackNumber?.track = 1
         tag?.trackNumber?.totalTracks = 2
         tag?.discNumber?.disc = 3
@@ -411,7 +411,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.work, "Content Group")
     }
 
-    // MARK: Test alternative framekeys/identifiers
+    // // MARK: - Test alternative framekeys/identifiers
     func testRemixer() throws {
         var tag = Tag()
         tag.remixer = "Remixer"

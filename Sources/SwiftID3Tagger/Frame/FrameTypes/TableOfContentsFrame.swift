@@ -23,7 +23,7 @@ public struct TableOfContentsFrame: FrameProtocol, CustomStringConvertible {
         """
     }
 
-    // MARK: Properties
+    // // MARK: - Properties
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
@@ -32,7 +32,7 @@ public struct TableOfContentsFrame: FrameProtocol, CustomStringConvertible {
     public var childElementIDs: [String]
     public var embeddedSubframesTag: Tag = Tag(subframes: [:])
     
-    // MARK: Frame parsing initializer
+    // // MARK: - Frame parsing initializer
     init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,
@@ -84,7 +84,7 @@ public struct TableOfContentsFrame: FrameProtocol, CustomStringConvertible {
         self.embeddedSubframesTag = Tag(subframes: subframes)
     }
 
-    // MARK: Frame building initializer
+    // // MARK: - Frame building initializer
     /// Initialize a table of contents for adding to a tag
     /// - Parameters:
     ///   - layout: the frame layout
@@ -157,7 +157,7 @@ public struct TableOfContentsFrame: FrameProtocol, CustomStringConvertible {
     }
 }
 
-// MARK: Tag Extension
+// // MARK: - Tag Extension
 @available(OSX 10.12, *)
 extension Tag {
     var toc: TableOfContentsFrame? {

@@ -19,7 +19,7 @@ struct PresetOptionsFrame: FrameProtocol, CustomStringConvertible {
     }
 
     
-    // MARK: Properties
+    // // MARK: - Properties
     // (inherited from FrameProtocol)
     var flags: Data
     var layout: FrameLayoutIdentifier
@@ -67,7 +67,7 @@ struct PresetOptionsFrame: FrameProtocol, CustomStringConvertible {
     }
 
     
-    // MARK: Frame Building
+    // // MARK: - Frame Building
     init(_ layout: FrameLayoutIdentifier,
          genreMediaOrFileInfo: [String?]) {
         self.layout = layout
@@ -284,7 +284,7 @@ struct PresetOptionsFrame: FrameProtocol, CustomStringConvertible {
     
 }
 
-// MARK: Tag extensions
+// // MARK: - Tag extensions
 // get and set functions for `PresetOptionsFrame` frame types, which retrieves or sets three strings, all of which are optional (genre only uses two of these.) Each individual frame of this type will call these functions in a get-set property of function, where appropriate.
 @available(OSX 10.12, *)
 extension Tag {

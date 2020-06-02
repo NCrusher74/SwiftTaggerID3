@@ -21,7 +21,7 @@ struct ImageFrame: FrameProtocol, CustomStringConvertible {
         """
     }
 
-    // MARK: Properties
+    // // MARK: - Properties
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
@@ -36,7 +36,7 @@ struct ImageFrame: FrameProtocol, CustomStringConvertible {
     var imageFormat: ImageFormat
     
     
-    // MARK: Frame parsing
+    // // MARK: - Frame parsing
     init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,
@@ -86,7 +86,7 @@ struct ImageFrame: FrameProtocol, CustomStringConvertible {
         self.image = parsing
     }
 
-    // MARK: Frame building
+    // // MARK: - Frame building
     /**
      Initialize an ID attached picture frame.
      - parameter type: the ID3 type of the attached picture. See `ImageType` for a complete list of the available types.

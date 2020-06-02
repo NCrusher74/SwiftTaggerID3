@@ -12,7 +12,7 @@ import SwiftTaggerID3
 
 class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
     
-    // MARK: EncodingTime frame tests
+    // // MARK: - EncodingTime frame tests
     // Test EncodingTime frame for version 2.4, with expected input, writing values as individual components to file without metadata
     func testTDENv24ExpectedInputBlankFileAsComponents() throws {
       if #available(macOS 10.12, *) {
@@ -183,7 +183,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
       }
     }
     
-    // MARK: TaggingTime frame tests
+    // // MARK: - TaggingTime frame tests
     // Test TaggingTime frame for version 2.4, with expected input, writing values as individual components to file without metadata
     func testTDTGv24ExpectedInputBlankFileAsComponents() throws {
       if #available(macOS 10.12, *) {
@@ -352,7 +352,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
       }
     }
     
-    // MARK: ReleaseTime frame tests
+    // // MARK: - ReleaseTime frame tests
     // Test ReleaseTime frame for version 2.4, with expected input, writing values as individual components to file without metadata
     func testTDRLv24ExpectedInputBlankFileAsComponents() throws {
       if #available(macOS 10.12, *) {
@@ -521,7 +521,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
       }
     }
     
-    // MARK: Date frame tests
+    // // MARK: - Date frame tests
     // test DATE frame works in version 2.2, when writing expected input to file without metadata, as individual components
     func testTDAExpectedInputv22BlankAsComponents() throws {
       if #available(macOS 10.12, *) {
@@ -693,7 +693,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
       }
     }
 
-    // MARK: Time frame tests
+    // // MARK: - Time frame tests
     // test TIME frame works in version 2.2, when writing expected input to file without metadata, as individual components
     func testTIMExpectedInputv22BlankAsComponents() throws {
       if #available(macOS 10.12, *) {
@@ -865,7 +865,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
       }
     }
     
-    // MARK: Year frame tests
+    // // MARK: - Year frame tests
     // test YEAR frame works in version 2.2, when writing expected input to file without metadata
     func testTYEExpectedInputv22Blank() throws {
       if #available(macOS 10.12, *) {

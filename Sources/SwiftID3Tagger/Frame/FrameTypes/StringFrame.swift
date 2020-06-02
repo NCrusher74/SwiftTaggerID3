@@ -22,7 +22,7 @@ struct StringFrame: FrameProtocol, CustomStringConvertible {
         """
     }
     
-    // MARK: Properties
+    // // MARK: - Properties
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
@@ -42,7 +42,7 @@ struct StringFrame: FrameProtocol, CustomStringConvertible {
         .publisherWebpage,
         .radioStationWebpage]
     
-    // MARK: Frame Parsing
+    // // MARK: - Frame Parsing
     init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,
@@ -68,7 +68,7 @@ struct StringFrame: FrameProtocol, CustomStringConvertible {
         }
     }
     
-    // MARK: Frame creation
+    // // MARK: - Frame creation
     /**
      Initialize a frame with only string content, presented as a single string WITHOUT new line characters.
      Parameters:
@@ -109,7 +109,7 @@ struct StringFrame: FrameProtocol, CustomStringConvertible {
     }
 }
 
-// MARK: Tag extension
+// // MARK: - Tag extension
 /* get and set functions for `StringFrame` frame types. Each individual frame of this type will have its own get-set property that will call these functions using its `FrameKey` property and relevant data */
 @available(OSX 10.12, *)
 extension Tag {

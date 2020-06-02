@@ -21,7 +21,7 @@ struct LanguageFrame: FrameProtocol, CustomStringConvertible {
         """
     }
 
-    // MARK: Properties
+    // // MARK: - Properties
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
@@ -30,7 +30,7 @@ struct LanguageFrame: FrameProtocol, CustomStringConvertible {
     var languages: [String]
     
     
-    // MARK: Frame parsing
+    // // MARK: - Frame parsing
     init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,
@@ -61,7 +61,7 @@ struct LanguageFrame: FrameProtocol, CustomStringConvertible {
         self.frameKey = .languages
     }
     
-    // MARK: Frame building
+    // // MARK: - Frame building
     /// Initialize a frame-building instance
     /// - Parameters:
     ///   - layout: the frame layout

@@ -14,7 +14,7 @@ import SwiftTaggerID3
 @available(OSX 10.12, *)
 class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
 
-    // MARK: Read test
+    // // MARK: - Read test
     func testReadChapterizedFile() throws {
         let tag = try TestFile.chapterized.tag()
 
@@ -25,7 +25,7 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         XCTAssertEqual(tag?.allChapters[1].title, "Chapter 02")
     }
 
-    // MARK: Frame removal test
+    // // MARK: - Frame removal test
     @available(OSX 10.12, *)
     func testFrameRemoval() throws {
         var tag = try TestFile.chapterized.tag()
@@ -45,7 +45,7 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         XCTAssertTrue(writtenTag.allChapters.isEmpty)
     }
 
-    // MARK: Writing test
+    // // MARK: - Writing test
     @available(OSX 10.12, *)
     func testFrameWriting() throws {
         var tag = try TestFile.noMeta.tag()
@@ -71,7 +71,7 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         XCTAssertEqual(writtenTag.allChapters[2].title, "Chapter 003")
     }
 
-    // MARK: Overwriting test
+    // // MARK: - Overwriting test
     @available(OSX 10.12, *)
     func testOverwriting() throws {
         var tag = try TestFile.chapterized.tag()

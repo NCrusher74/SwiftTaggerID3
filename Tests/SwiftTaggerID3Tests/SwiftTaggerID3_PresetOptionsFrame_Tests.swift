@@ -1,9 +1,11 @@
-//
-//  SwiftTaggerID3_PresetOptionsFrame_Tests.swift
-//  
-//
-//  Created by Nolaine Crusher on 6/1/20.
-//
+/*
+
+ SwiftTaggerID3_PresetOptionsFrame_Tests.swift
+ SwiftTaggerID3
+
+ Copyright ©2020 Nolaine Crusher. All rights reserved.
+
+ */
 
 import XCTest
 import SwiftTaggerID3

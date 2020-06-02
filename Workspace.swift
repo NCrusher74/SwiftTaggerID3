@@ -19,9 +19,9 @@ let configuration: WorkspaceConfiguration = {
     .windows,
     .web,
     .linux,
+    .android,
     .tvOS,
     .iOS,
-    .android,
     .watchOS
   ])
 
@@ -45,11 +45,11 @@ let configuration: WorkspaceConfiguration = {
   // These are rules provided by Workspace natively.
   configuration.proofreading.rules.subtract([
     .calloutCasing,
-    .parameterGrouping,
-    .syntaxColoring,
-    .manualWarnings,
-    .marks,
-    .unicode
+//    .parameterGrouping,
+//    .syntaxColoring,
+//    .manualWarnings,
+//    .marks,
+//    .unicode
   ])
   // These are rules provided by swift‐format, Swift’s official code formatter.
   for ruleName in [

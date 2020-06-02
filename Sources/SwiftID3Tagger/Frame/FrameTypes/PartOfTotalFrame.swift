@@ -20,7 +20,7 @@ struct PartOfTotalFrame: FrameProtocol, CustomStringConvertible {
         """
     }
 
-    // MARK: Properties
+    // // MARK: - Properties
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
@@ -31,7 +31,7 @@ struct PartOfTotalFrame: FrameProtocol, CustomStringConvertible {
     /// The total number of tracks/discs.
     var total: Int?
     
-    // MARK: Frame parsing initializer
+    // // MARK: - Frame parsing initializer
     init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,
@@ -57,7 +57,7 @@ struct PartOfTotalFrame: FrameProtocol, CustomStringConvertible {
     }
 
 
-    // MARK: Frame building
+    // // MARK: - Frame building
     /**
      Initialize a frame building instance
      - parameter part: the index of the track/disc.
@@ -91,7 +91,7 @@ struct PartOfTotalFrame: FrameProtocol, CustomStringConvertible {
     }
 }
 
-// MARK: Internal Tag extension
+// // MARK: - Internal Tag extension
 /* get and set functions for `PartOfTotalFrame` frame types. Each individual frame of this type will have its own get-set property that will call these fucntions */
 @available(OSX 10.12, *)
 extension Tag {

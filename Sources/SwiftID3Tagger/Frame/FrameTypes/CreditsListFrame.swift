@@ -21,7 +21,7 @@ struct CreditsListFrame: FrameProtocol, CustomStringConvertible {
         """
     }
     
-    // MARK: Properties
+    // // MARK: - Properties
     // inherited from FrameProtocol
     var flags: Data
     var layout: FrameLayoutIdentifier
@@ -30,7 +30,7 @@ struct CreditsListFrame: FrameProtocol, CustomStringConvertible {
     /// The dictionary of `[role : [array of people performing the role]]`
     var credits: [ String : [String] ]
     
-    // MARK: Frame parsing
+    // // MARK: - Frame parsing
     init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,
@@ -62,7 +62,7 @@ struct CreditsListFrame: FrameProtocol, CustomStringConvertible {
         return pairsDictionary
     }
     
-    // MARK: Frame building
+    // // MARK: - Frame building
     /// Initialize a frame building instance for a given layout
     /// - Parameters:
     ///   - layout: the frame layout
