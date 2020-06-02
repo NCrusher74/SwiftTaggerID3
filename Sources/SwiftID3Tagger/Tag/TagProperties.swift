@@ -10,7 +10,6 @@
 import Foundation
 
 /** Houses variables and methods for using known ID3 Tag information to derive necessary data from a specific `Tag` instance */
-@available(OSX 10.12, *)
 struct TagProperties {
     
     /** Compares bytes in the known range of the version bytes for an ID3 header to known values in order to calculate the ID3 version of a `Tag` instance */
@@ -36,6 +35,16 @@ struct TagProperties {
     func size(data: Data, version: Version) throws -> Int {
         let tagSize = (data as NSData).bytes.assumingMemoryBound(to: UInt32.self).pointee.bigEndian
         let decodedTagSize = tagSize.decodingSynchsafe()
+//        switch version {
+//            case .v2_2:
+//                guard Int(decodedTagSize) >= 6 else {
+//                    throw Mp3File.Error.InvalidTagSize
+//            }
+//            case .v2_3, .v2_4:
+//                guard Int(decodedTagSize) >= 10 else {
+//                    throw Mp3File.Error.InvalidTagSize
+//            }
+//        }
         return Int(decodedTagSize)
     }
     
@@ -48,7 +57,6 @@ struct TagProperties {
     }
 }
 
-@available(OSX 10.12, *)
 extension TagProperties {
     /*
      The first part of the ID3v2 tag is the 10 byte tag header, laid out
@@ -60,7 +68,7 @@ extension TagProperties {
      ID3v2 size             4 * %0xxxxxxx -- 4 bytes (Synchsafe Uint32)
      */
     
-    // // MARK: - Tag Properties
+    // MARK: Tag Properties
     /// The known length of version declaration data in a valid ID3 tag header
     var versionDeclarationLength: Int {
         return 5

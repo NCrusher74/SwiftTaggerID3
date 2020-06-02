@@ -10,7 +10,6 @@
 import XCTest
 import SwiftTaggerID3
 
-@available(OSX 10.12, *)
 class SwiftTaggerID3_Read_Tests: XCTestCase {
 
     // test reading of V24 tag from file
@@ -85,12 +84,85 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag?.studio, "Publisher")
         XCTAssertEqual(tag?.work, "Content Group")
 
+        // PresetOptionsFrame
+        XCTAssertNil(tag?.fileType?.fileType)
+        XCTAssertNil(tag?.fileType?.fileTypeRefinement)
+        XCTAssertEqual(tag?.fileType?.additionalInformation, "File Type")
+        XCTAssertEqual(tag?.genre?.presetGenre, .Audiobook)
+        XCTAssertEqual(tag?.genre?.customGenre, "Genre Type")
+        XCTAssertNil(tag?.mediaType?.mediaType)
+        XCTAssertNil(tag?.mediaType?.mediaTypeRefinement)
+        XCTAssertEqual(tag?.mediaType?.additionalInformation, "Media Type")
+
+        // CreditsListFrame
+        XCTAssertEqual(tag?.involvedPeopleList?[.actor], ["Actor Name"])
+        XCTAssertEqual(tag?.involvedPeopleList?[.actress], ["Actress Name"])
+        XCTAssertEqual(tag?.musicianCreditsList?[.soprano], ["Soprano Name"])
+        XCTAssertEqual(tag?.musicianCreditsList?[.alto], ["Alto Name"])
+
+      if #available(macOS 10.12, *) {
+        // DateFrame
+        XCTAssertEqual(tag?.encodingDateTime?.year, 2016)
+        XCTAssertEqual(tag?.encodingDateTime?.month, 04)
+        XCTAssertEqual(tag?.encodingDateTime?.day, 05)
+        XCTAssertEqual(tag?.encodingDateTime?.hour, 0)
+        XCTAssertEqual(tag?.encodingDateTime?.minute, 0)
+        XCTAssertEqual(tag?.originalReleaseTime?.year, 2014)
+        XCTAssertEqual(tag?.originalReleaseTime?.month, 08)
+        XCTAssertEqual(tag?.originalReleaseTime?.day, 09)
+        XCTAssertEqual(tag?.originalReleaseTime?.hour, 0)
+        XCTAssertEqual(tag?.originalReleaseTime?.minute, 0)
+        XCTAssertEqual(tag?.recordingDateTime?.year, 2018)
+        XCTAssertEqual(tag?.recordingDateTime?.month, 10)
+        XCTAssertEqual(tag?.recordingDateTime?.day, 11)
+        XCTAssertEqual(tag?.recordingDateTime?.hour, 0)
+        XCTAssertEqual(tag?.recordingDateTime?.minute, 0)
+        XCTAssertEqual(tag?.releaseDateTime?.year, 2015)
+        XCTAssertEqual(tag?.releaseDateTime?.month, 02)
+        XCTAssertEqual(tag?.releaseDateTime?.day, 03)
+        XCTAssertEqual(tag?.releaseDateTime?.hour, 11)
+        XCTAssertEqual(tag?.releaseDateTime?.minute, 11)
+        XCTAssertEqual(tag?.taggingDateTime?.year, 2017)
+        XCTAssertEqual(tag?.taggingDateTime?.month, 06)
+        XCTAssertEqual(tag?.taggingDateTime?.day, 07)
+        XCTAssertEqual(tag?.taggingDateTime?.hour, 0)
+        XCTAssertEqual(tag?.taggingDateTime?.minute, 0)
       }
+        
+        // LocalizedFrame
+        XCTAssertEqual(tag?.acknowledgment, "Acknowledgment")
+        XCTAssertEqual(tag?.keywords, ["Key","Words"])
+        XCTAssertEqual(tag?.contentAdvisory, .usMovieUnrated)
+        XCTAssertEqual(tag?.contentRating, .clean)
+        XCTAssertEqual(tag?.network, "Network")
+        XCTAssertEqual(tag?.episodeName, "Episode Name")
+        XCTAssertEqual(tag?.episodeNumber, 7)
+        XCTAssertEqual(tag?.languages, [.eng])
+        XCTAssertEqual(tag?.thanks, "Thanks")
+        XCTAssertEqual(tag?.season, 8)
+        XCTAssertEqual(tag?.series, "Content Group")
+        XCTAssertEqual(tag?.seriesName, "Series Name")
+        XCTAssertEqual(tag?.sourceCredit, "Source Credit")
+        XCTAssertEqual(tag?.studio, "Publisher")
+        XCTAssertEqual(tag?.onlineExtras, "http://onlineextras.url")
+        XCTAssertEqual(tag?[comments: .eng, "Comment"], "Comment Content")
+        XCTAssertEqual(tag?[comments: .eng, "Description"], "Description Content")
+        XCTAssertEqual(tag?[comments: .eng, "LongDescription"], "Long Description Content")
+        XCTAssertEqual(tag?[comments: .eng, "Series Description"], "Series Description Content")
+        XCTAssertEqual(tag?[comments: .eng, "Liner Notes"], "Liner Notes Content")
+        XCTAssertEqual(tag?[lyrics: .eng, "Lyrics"], "Lyrics Content")
+        XCTAssertEqual(tag?[userDefinedText: "UserText"], "User Text Content")
+        XCTAssertEqual(tag?[userDefinedUrl: "UserURL"], "http://userdefined.url")
+
+        // PartOfTotalFrame
+        XCTAssertEqual(tag?.discNumber?.disc, 3)
+        XCTAssertEqual(tag?.discNumber?.totalDiscs, 4)
+        XCTAssertEqual(tag?.trackNumber?.track, 1)
+        XCTAssertEqual(tag?.trackNumber?.totalTracks, 2)
     }
     
     // test reading of v23 tag from file
-@available(OSX 10.12, *)
-func testV23Reading() throws {
+    func testV23Reading() throws {
         let tag = try TestFile.v23.tag()
 
         // StringFrame
@@ -157,11 +229,74 @@ func testV23Reading() throws {
         XCTAssertEqual(tag?.recordCompany, "Publisher")
         XCTAssertEqual(tag?.series, "Content Group")
         XCTAssertEqual(tag?.work, "Content Group")
+
+      if #available(macOS 10.12, *) {
+        // DateFrame
+        XCTAssertEqual(tag?.recordingDateTime?.year, 2018)
+        XCTAssertEqual(tag?.recordingDateTime?.month, 10)
+        XCTAssertEqual(tag?.recordingDateTime?.day, 11)
+        XCTAssertEqual(tag?.recordingDateTime?.hour, 0)
+        XCTAssertEqual(tag?.recordingDateTime?.minute, 0)
+        XCTAssertEqual(tag?.date?.month, 02)
+        XCTAssertEqual(tag?.date?.day, 03)
+        XCTAssertEqual(tag?.time?.hour, 11)
+        XCTAssertEqual(tag?.time?.minute, 11)
+        XCTAssertEqual(tag?.year, 2015)
+        XCTAssertEqual(tag?.originalReleaseTime?.year, 2014)
+        XCTAssertEqual(tag?.originalReleaseTime?.hour, 0)
+        XCTAssertEqual(tag?.originalReleaseTime?.minute, 0)
+      }
+        
+        XCTAssertEqual(tag?.languages, [.eng])
+
+        // CreditsListFrame
+        XCTAssertEqual(tag?.involvedPeopleList?[.actor], ["Actor Name"])
+        XCTAssertEqual(tag?.involvedPeopleList?[.actress], ["Actress Name"])
+        
+        // LocalizedFrame
+        XCTAssertEqual(tag?.acknowledgment, "Acknowledgment")
+        XCTAssertEqual(tag?.keywords, ["Key","Words"])
+        XCTAssertEqual(tag?.contentAdvisory, .usMovieUnrated)
+        XCTAssertEqual(tag?.contentRating, .clean)
+        XCTAssertEqual(tag?.network, "Network")
+        XCTAssertEqual(tag?.episodeName, "Episode Name")
+        XCTAssertEqual(tag?.episodeNumber, 7)
+        XCTAssertEqual(tag?.languages, [.eng])
+        XCTAssertEqual(tag?.thanks, "Thanks")
+        XCTAssertEqual(tag?.season, 8)
+        XCTAssertEqual(tag?.series, "Content Group")
+        XCTAssertEqual(tag?.seriesName, "Series Name")
+        XCTAssertEqual(tag?.sourceCredit, "Source Credit")
+        XCTAssertEqual(tag?.studio, "Publisher")
+        XCTAssertEqual(tag?.onlineExtras, "http://onlineextras.url")
+        XCTAssertEqual(tag?[comments: .eng, "Comment"], "Comment Content")
+        XCTAssertEqual(tag?[comments: .eng, "Description"], "Description Content")
+        XCTAssertEqual(tag?[comments: .eng, "LongDescription"], "Long Description Content")
+        XCTAssertEqual(tag?[comments: .eng, "Series Description"], "Series Description Content")
+        XCTAssertEqual(tag?[comments: .eng, "Liner Notes"], "Liner Notes Content")
+        XCTAssertEqual(tag?[lyrics: .eng, "Lyrics"], "Lyrics Content")
+        XCTAssertEqual(tag?[userDefinedText: "UserText"], "User Text Content")
+        XCTAssertEqual(tag?[userDefinedUrl: "UserURL"], "http://userdefined.url")
+
+        // PresetOptionsFrame
+        XCTAssertNil(tag?.fileType?.fileType)
+        XCTAssertNil(tag?.fileType?.fileTypeRefinement)
+        XCTAssertEqual(tag?.fileType?.additionalInformation, "File Type")
+        XCTAssertEqual(tag?.genre?.presetGenre, .Audiobook)
+        XCTAssertEqual(tag?.genre?.customGenre, "Genre Type")
+        XCTAssertNil(tag?.mediaType?.mediaType)
+        XCTAssertNil(tag?.mediaType?.mediaTypeRefinement)
+        XCTAssertEqual(tag?.mediaType?.additionalInformation, "Media Type")
+        
+        // PartOfTotalFrame
+        XCTAssertEqual(tag?.discNumber?.disc, 3)
+        XCTAssertEqual(tag?.discNumber?.totalDiscs, 4)
+        XCTAssertEqual(tag?.trackNumber?.track, 1)
+        XCTAssertEqual(tag?.trackNumber?.totalTracks, 2)
     }
 
     // test reading of v22 tag from file
-@available(OSX 10.12, *)
-func testV22Reading() throws {
+    func testV22Reading() throws {
         let tag = try TestFile.v22.tag()
         
         // StringFrame
@@ -214,4 +349,68 @@ func testV22Reading() throws {
         XCTAssertEqual(tag?.narratorSort, "Composer Sort")
         XCTAssertEqual(tag?.remixer, "Arranger")
         XCTAssertEqual(tag?.work, "Content Group")
+        
+        // LocalizedFrame
+        XCTAssertEqual(tag?.acknowledgment, "Acknowledgment")
+        XCTAssertEqual(tag?.keywords, ["Key","Words"])
+        XCTAssertEqual(tag?.contentAdvisory, .usMovieUnrated)
+        XCTAssertEqual(tag?.contentRating, .clean)
+        XCTAssertEqual(tag?.network, "Network")
+        XCTAssertEqual(tag?.episodeName, "Episode Name")
+        XCTAssertEqual(tag?.episodeNumber, 7)
+        XCTAssertEqual(tag?.languages, [.eng])
+        XCTAssertEqual(tag?.thanks, "Thanks")
+        XCTAssertEqual(tag?.season, 8)
+        XCTAssertEqual(tag?.series, "Content Group")
+        XCTAssertEqual(tag?.seriesName, "Series Name")
+        XCTAssertEqual(tag?.sourceCredit, "Source Credit")
+        XCTAssertEqual(tag?.studio, "Publisher")
+        XCTAssertEqual(tag?.onlineExtras, "http://onlineextras.url")
+        XCTAssertEqual(tag?[comments: .eng, "Comment"], "Comment Content")
+        XCTAssertEqual(tag?[comments: .eng, "Description"], "Description Content")
+        XCTAssertEqual(tag?[comments: .eng, "LongDescription"], "Long Description Content")
+        XCTAssertEqual(tag?[comments: .eng, "Series Description"], "Series Description Content")
+        XCTAssertEqual(tag?[comments: .eng, "Liner Notes"], "Liner Notes Content")
+        XCTAssertEqual(tag?[lyrics: .eng, "Lyrics"], "Lyrics Content")
+        XCTAssertEqual(tag?[userDefinedText: "UserText"], "User Text Content")
+        XCTAssertEqual(tag?[userDefinedUrl: "UserURL"], "http://userdefined.url")
+
+      if #available(macOS 10.12, *) {
+        // DateFrame
+        XCTAssertEqual(tag?.recordingDateTime?.year, 2018)
+        XCTAssertEqual(tag?.recordingDateTime?.month, 10)
+        XCTAssertEqual(tag?.recordingDateTime?.day, 11)
+        XCTAssertEqual(tag?.recordingDateTime?.hour, 0)
+        XCTAssertEqual(tag?.recordingDateTime?.minute, 0)
+        XCTAssertEqual(tag?.date?.month, 02)
+        XCTAssertEqual(tag?.date?.day, 03)
+        XCTAssertEqual(tag?.time?.hour, 11)
+        XCTAssertEqual(tag?.time?.minute, 11)
+        XCTAssertEqual(tag?.year, 2015)
+        XCTAssertEqual(tag?.originalReleaseTime?.year, 2014)
+        XCTAssertEqual(tag?.originalReleaseTime?.hour, 0)
+        XCTAssertEqual(tag?.originalReleaseTime?.minute, 0)
+      }
+
+        // CreditsListFrame
+        XCTAssertEqual(tag?.involvedPeopleList?[.actor], ["Actor Name"])
+        XCTAssertEqual(tag?.involvedPeopleList?[.actress], ["Actress Name"])
+
+        // PresetOptionsFrame
+        XCTAssertNil(tag?.fileType?.fileType)
+        XCTAssertNil(tag?.fileType?.fileTypeRefinement)
+        XCTAssertEqual(tag?.fileType?.additionalInformation, "File Type")
+        XCTAssertEqual(tag?.genre?.presetGenre, .Audiobook)
+        XCTAssertEqual(tag?.genre?.customGenre, "Genre Type")
+        XCTAssertNil(tag?.mediaType?.mediaType)
+        XCTAssertNil(tag?.mediaType?.mediaTypeRefinement)
+        XCTAssertEqual(tag?.mediaType?.additionalInformation, "Media Type")
+
+        // PartOfTotalFrame
+        XCTAssertEqual(tag?.discNumber?.disc, 3)
+        XCTAssertEqual(tag?.discNumber?.totalDiscs, 4)
+        XCTAssertEqual(tag?.trackNumber?.track, 1)
+        XCTAssertEqual(tag?.trackNumber?.totalTracks, 2)
+    }
+
 }

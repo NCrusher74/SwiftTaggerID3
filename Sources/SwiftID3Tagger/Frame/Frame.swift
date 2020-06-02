@@ -10,7 +10,6 @@
 import Foundation
 
 /** An enum containing methods and variables for querying and building frames with a particular structure */
-@available(OSX 10.12, *)
 enum Frame {
     
     /** A frame type containing a single, unterminated string of content
@@ -38,6 +37,7 @@ enum Frame {
     /** A frame type containing an date value that will be encoded and stored as a timestamp string.
      
         Frames of this type MAY NOT be duplicated within a valid ID3 tag*/
+    @available(macOS 10.12, *)
     case dateFrame(DateFrame)
     /** A frame type containing an attached image pertaining to the audio media.
         
@@ -64,7 +64,6 @@ enum Frame {
     ///   - data: The slice of data containing the frame as declared in the frame header
     ///   - version: The `Version` of the ID3 tag
     /// - Throws: Caller will determine how to handle any errors
-
     init(identifier: String,
          data: inout Data.SubSequence,
          version: Version) throws {
@@ -126,10 +125,17 @@ enum Frame {
                  .known(.taggingTime),
                  .known(.time),
                  .known(.year):
+              if #available(macOS 10.12, *) {
                 self = .dateFrame(try DateFrame(
                     decodingFromStartOf: &data,
                     version: version,
                     layout: layout))
+              } else {
+                self = .unknownFrame(try UnknownFrame(
+                  decodingFromStartOf: &data,
+                  version: version,
+                  layout: layout))
+              }
             case .unknown(identifier):
                 self = .unknownFrame(try UnknownFrame(
                     decodingFromStartOf: &data,
@@ -205,7 +211,6 @@ enum Frame {
     }
 }
 
-@available(OSX 10.12, *)
 extension Frame {
     /// A property that permits a subframe to be encoded as a frame
     var asFrameProtocol: FrameProtocol {

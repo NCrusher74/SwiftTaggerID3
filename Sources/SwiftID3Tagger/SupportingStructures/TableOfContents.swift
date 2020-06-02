@@ -1,11 +1,9 @@
-/*
-
- TableOfContents.swift
- SwiftTaggerID3
-
- Copyright ©2020 Nolaine Crusher. All rights reserved.
-
- */
+//
+//  TableOfContents.swift
+//  
+//
+//  Created by Nolaine Crusher on 5/24/20.
+//
 
 import Foundation
 
@@ -30,7 +28,6 @@ struct TableOfContents {
     }
 }
 
-@available(OSX 10.12, *)
 extension Tag {
     var tableOfContents: TableOfContents {
         get {

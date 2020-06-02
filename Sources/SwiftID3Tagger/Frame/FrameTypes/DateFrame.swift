@@ -19,15 +19,16 @@ struct DateFrame: FrameProtocol, CustomStringConvertible {
         """
     }
 
-    // // MARK: - Properties
+    // MARK: Properties
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
+    var allowMultipleFrames: Bool = false
     
     // needs to be in ISO-8601 format
     var timeStamp: Date?
     
-    // // MARK: - Frame parsing
+    // MARK: Frame parsing
     // subset of ISO 8601; valid timestamps are yyyy, yyyy-MM, yyyy-MM-dd, yyyy-MM-ddTHH, yyyy-MM-ddTHH:mm and yyyy-MM-ddTHH:mm:ss.
     /// Decode the contents of a date frame being read from a file
     /// - Parameters:
@@ -131,7 +132,7 @@ struct DateFrame: FrameProtocol, CustomStringConvertible {
         }
     }
     
-    // // MARK: - Frame Building
+    // MARK: Frame Building
     /// Initialize a date frame for writing to file
     /// - Parameters:
     ///   - layout: the frame layout
@@ -186,9 +187,8 @@ struct DateFrame: FrameProtocol, CustomStringConvertible {
     }
 }
 
-// // MARK: - Tag extension
+// MARK: Tag extension
 // These are convenience getter-setter properties
-@available(OSX 10.12, *)
 extension Tag {
     internal func date(for frameKey: FrameKey)
         -> (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {

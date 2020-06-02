@@ -12,7 +12,6 @@ import AVFoundation
 
 /// An Mp3File represets an mp3-format file on the local drive
 /// This wrapper houses variables and methods for querying and modifying an Mp3File
-@available(OSX 10.12, *)
 public struct Mp3File {
     
     /// The location of an mp3-format file somewhere on the local drive
@@ -30,19 +29,14 @@ public struct Mp3File {
         guard location.pathExtension.lowercased() == "mp3" else {
             throw Mp3File.Error.InvalidFileFormat
         }
-        // get the file as data, retrying once in case the file isn't released yet after being accessed from another attempt
+        // get the file as data
         do {
             self.data = try Data(contentsOf: location)
         } catch {
-            do {
-                self.data = try Data(contentsOf: location)
-            } catch {
-                throw Mp3File.Error.CannotReadFile
-            }
+            throw Mp3File.Error.CannotReadFile
         }
     }
     
-    @available(OSX 10.12, *)
     public func read() throws -> Tag {
         return try Tag(readFrom: self)
     }

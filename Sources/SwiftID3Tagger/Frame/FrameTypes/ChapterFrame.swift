@@ -12,7 +12,6 @@ import Foundation
 /**
  A type representing an ID3 chapter frame. There may be multiple chapter frames in a tag, but the `elementID` must be unique. Therefore, the `elementID` will serve as the `FrameKey`
  */
-@available(OSX 10.12, *)
 public struct ChapterFrame: FrameProtocol, CustomStringConvertible {
     public var description: String {
         return """
@@ -24,10 +23,11 @@ public struct ChapterFrame: FrameProtocol, CustomStringConvertible {
         """
         }
     
-    // // MARK: - Properties
+    // MARK: Properties
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
+    var allowMultipleFrames: Bool = true
 
     /** The Element ID uniquely identifies the frame. It is not intended to be human readable and should not be presented to the end user. Null terminated */
     public var elementID: String
@@ -39,7 +39,7 @@ public struct ChapterFrame: FrameProtocol, CustomStringConvertible {
     /** A sequence of optional frames that are embedded within the “CHAP” frame and which describe the content of the chapter (e.g. a “TIT2” frame representing the chapter name) or provide related material such as URLs and images. These sub-frames are contained within the bounds of the “CHAP” frame as signalled by the size field in the “CHAP” frame header. If a parser does not recognise “CHAP” frames it can skip them using the size field in the frame header. When it does this it will skip any embedded sub-frames carried within the frame. */
     public var embeddedSubframesTag: Tag?
     
-    // // MARK: - Frame parsing
+    // MARK: Frame parsing
     init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,
@@ -87,7 +87,7 @@ public struct ChapterFrame: FrameProtocol, CustomStringConvertible {
         self.embeddedSubframesTag = Tag(subframes: subframes)
     }
 
-    // // MARK: - Frame building
+    // MARK: Frame building
     /**
      - parameter elementID: the elementID of the frame. Null terminated.
      - parameter startTime: integer indicating the beginning of the chapter, in milliseconds
@@ -154,8 +154,7 @@ public struct ChapterFrame: FrameProtocol, CustomStringConvertible {
     }
 }
 
-// // MARK: - Tag extension
-@available(OSX 10.12, *)
+// MARK: Tag extension
 extension Tag {
 
     mutating func removeChapterFrame(with elementID: String) {

@@ -19,8 +19,8 @@ public enum InvolvedPersonCredits: String {
     case screenwriter = "Screenwriters"
     case engineer = "Engineer"
     case DJmixer = "DJ-Mixer"
-    case AandR = "A&R"
-    case AandRAssistance = "A&R Assistance"
+    case aandR = "A&R"
+    case aandRAssistance = "A&R Assistance"
     case abridgedBy = "Abridged By"
     case accessories = "Accessories"
     case accordionArranger = "Accordion Arranger"
@@ -2534,4 +2534,5 @@ public enum InvolvedPersonCredits: String {
     case worshipLeader = "Worship Leader"
     case writer = "Writer"
     case writtenBy = "Written By"
+
 }

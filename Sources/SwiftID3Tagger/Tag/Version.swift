@@ -23,7 +23,7 @@ public enum Version: CaseIterable {
 }
 
 extension Version {
-    // // MARK: - Frame component sizes.
+    // MARK: Frame component sizes.
     /// The known version-dependent byte-count of the ID3 identifier string
     var identifierLength: Int {
         switch self {
@@ -59,7 +59,7 @@ extension Version {
         return identifierLength + sizeDeclarationLength + flagsLength
     }
     
-    // // MARK: - Frame component offsets:
+    // MARK: Frame component offsets:
     /// The known byte offset of the frame identifier from start of frame data
     var identifierOffset: Data.Index {
         return 0

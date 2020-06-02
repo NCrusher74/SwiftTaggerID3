@@ -24,6 +24,8 @@ protocol FrameProtocol {
      
         Provides a unique identifier to permits duplication of frame types that the ID3 spec allows to be duplicated within a tag. */
     var frameKey: FrameKey { get set }
+    /** A boolean value indicating whether or not frames of a particular type are permitted to be duplicated in a valid ID3 tag */
+    var allowMultipleFrames: Bool { get }
     
     /// Encodes the contents of a frame
     func encodeContents(version: Version) throws -> Data
@@ -111,7 +113,7 @@ extension FrameProtocol {
     /// - Returns:
     ///   - Version 2.2: three bytes of frame-size data.
     ///   - Versions 2.3 & 2.4: four bytes of frame-size data
-    private func calculateFrameContentSize(encodedContent: Data, version: Version) -> Data {
+    func calculateFrameContentSize(encodedContent: Data, version: Version) -> Data {
         let contentSize = encodedContent.count.truncatedUInt32
         switch version {
             case .v2_2:
@@ -127,20 +129,19 @@ extension FrameProtocol {
     ///   - layout: the FrameLayoutIdentifier
     ///   - version: The version of the ID3 tag
     /// - Returns: The encoded identifier string
-    private func identifierData(
+    func identifierData(
         layout: FrameLayoutIdentifier,
         version: Version) -> Data {
-
-//        print(layout.id3Identifier(version: version)) // nada
-        guard let identifier = layout.id3Identifier(version: version)?.encodedASCII(withNullTermination: false) else {
+                
+        guard let identifierString = layout.id3Identifier(version: version)?.encodedASCII(withNullTermination: false) else {
             switch version {
                 case .v2_2: return "TXX".encodedASCII(withNullTermination: false)
                 case .v2_3, .v2_4: return "TXXX".encodedASCII(withNullTermination: false)
             }
         }
-        return identifier
+        return identifierString
     }
-        
+    
     /// Flags are rarely used and are unhandled by SwiftTagger
     static var defaultFlags: Data {
         let flagBytes: [UInt8] = [0x00, 0x00]

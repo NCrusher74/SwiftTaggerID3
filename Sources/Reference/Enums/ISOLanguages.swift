@@ -982,7 +982,7 @@ public enum ISO6392Codes: String, CaseIterable {
     /// Zaza; Dimili; Dimli; Kirdki; Kirmanjki; Zazaki
     case zza
 
-    // // MARK: - Native Name
+    // MARK: Native Name
     public var nativeName: String {
         switch self {
             /// Afar
@@ -1683,7 +1683,7 @@ public enum ISO6392Codes: String, CaseIterable {
         }
     }
     
-    // // MARK: - Bibliographic Code
+    // MARK: Bibliographic Code
     public var isoBibliographicCode: String {
         switch self {
             /// Albanian
@@ -1730,7 +1730,7 @@ public enum ISO6392Codes: String, CaseIterable {
         }; return self.rawValue
     }
     
-    // // MARK: - ISO Names
+    // MARK: ISO Names
     var isoName: String {
         switch self {
             /// Afar

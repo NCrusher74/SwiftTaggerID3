@@ -20,17 +20,18 @@ struct CreditsListFrame: FrameProtocol, CustomStringConvertible {
         \(self.credits)
         """
     }
-    
-    // // MARK: - Properties
+
+    // MARK: Properties
     // inherited from FrameProtocol
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
+    var allowMultipleFrames: Bool = false
     
     /// The dictionary of `[role : [array of people performing the role]]`
     var credits: [ String : [String] ]
     
-    // // MARK: - Frame parsing
+    // MARK: Frame parsing
     init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,
@@ -38,7 +39,7 @@ struct CreditsListFrame: FrameProtocol, CustomStringConvertible {
         self.flags = flags
         self.layout = layout
         self.frameKey = self.layout.frameKey(additionalIdentifier: nil)
-        
+
         var parsing = contents
         let encoding = try CreditsListFrame.extractEncoding(data: &parsing, version: version)
         self.credits = CreditsListFrame.extractCreditStrings(from: &parsing, encoding: encoding)
@@ -62,7 +63,7 @@ struct CreditsListFrame: FrameProtocol, CustomStringConvertible {
         return pairsDictionary
     }
     
-    // // MARK: - Frame building
+    // MARK: Frame building
     /// Initialize a frame building instance for a given layout
     /// - Parameters:
     ///   - layout: the frame layout
@@ -90,7 +91,6 @@ struct CreditsListFrame: FrameProtocol, CustomStringConvertible {
     }
 }
 
-@available(OSX 10.12, *)
 extension Tag {
     
     /// retrieve the `[role: [person]]` dictionary from the frame
@@ -128,13 +128,8 @@ extension Tag {
         if let keys = musicianCreditsList?.keys {
             // check if the role is already in there
             if keys.contains(role) {
-                // if it is, make sure the person doesn't already exist in the array
+                // if it is, append the person to the existing value array
                 var arrayValue = musicianCreditsList?[role]
-                // if it does, do nothing
-                guard !(arrayValue?.contains(person) ?? false) else {
-                    return
-                }
-                // if it doesn't, append the person to the existing value array
                 arrayValue?.append(person)
                 musicianCreditsList?[role] = arrayValue
             } else {
@@ -174,14 +169,6 @@ extension Tag {
         }
     }
     
-    public mutating func clearMusicianCreditsList() {
-        self.frames[.musicianCreditsList] = nil
-    }
-    
-    public mutating func clearMusicianCreditsForRole(role: MusicianAndPerformerCredits) {
-        self.musicianCreditsList?[role] = nil
-    }
-    
     /// Add a new [role:[person]] key-value pair, or, if the `role` already exists in the dictionary, append the person to the existing value for the `role` key
     /// - Parameters:
     ///   - role: the role being performed
@@ -192,13 +179,8 @@ extension Tag {
         if let keys = involvedPeopleList?.keys {
             // check if the role is already in there
             if keys.contains(role) {
-                // if it is, make sure the person doesn't already exist in the array
+                // if it is, append the person to the existing value array
                 var arrayValue = involvedPeopleList?[role]
-                // if it does, do nothing
-                guard !(arrayValue?.contains(person) ?? false) else {
-                    return
-                }
-                // if it doesn't, append the person to the existing value array
                 arrayValue?.append(person)
                 involvedPeopleList?[role] = arrayValue
             } else {
@@ -236,13 +218,5 @@ extension Tag {
                 }
             }
         }
-    }
-    
-    public mutating func clearInvolvedPeopleList() {
-        self.frames[.involvedPeopleList] = nil
-    }
-    
-    public mutating func clearInvolvedPeopleForRole(role: InvolvedPersonCredits) {
-        self.involvedPeopleList?[role] = nil
-    }
+    }    
 }
