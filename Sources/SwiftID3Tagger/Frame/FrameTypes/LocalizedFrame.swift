@@ -26,12 +26,11 @@ struct LocalizedFrame: FrameProtocol, CustomStringConvertible {
         """
     }
 
-    // MARK: Properties
+    // // MARK: - Properties
     // Inherited from `FrameProtocol`
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
-    var allowMultipleFrames: Bool = true
     
     // unique properties for this frame type
     /// ISO-639-2 languge code
@@ -41,7 +40,7 @@ struct LocalizedFrame: FrameProtocol, CustomStringConvertible {
     /// the content of the frame
     var contentString: String
     
-    // MARK: Frame Parsing
+    // // MARK: - Frame Parsing
     init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,
@@ -70,7 +69,7 @@ struct LocalizedFrame: FrameProtocol, CustomStringConvertible {
         self.frameKey = layout.frameKey(additionalIdentifier: self.descriptionString) 
     }
     
-    // MARK: Frame building
+    // // MARK: - Frame building
     /**
      - parameter languageString: the ISO-639-2 language code. default is `undetermined`
      - parameter descriptionString: a terminated text string describing the frame content
@@ -111,8 +110,9 @@ struct LocalizedFrame: FrameProtocol, CustomStringConvertible {
     }
 }
 
-// MARK: Tag extension
+// // MARK: - Tag extension
 // get and set functions for `LocalizedFrame` frame types, which retrieves or sets up to three strings, one of which may be a language code, and one of which is an optional description string. Each individual frame of this type will call these functions in a get-set property or function, where appropriate.
+@available(OSX 10.12, *)
 extension Tag {
     internal func localizedGetter(for frameKey: FrameKey,
                                   language: ISO6392Codes?,

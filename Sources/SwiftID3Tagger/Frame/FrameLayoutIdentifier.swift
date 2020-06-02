@@ -24,6 +24,7 @@ enum FrameLayoutIdentifier: Hashable {
             self = .known(known)
         } else {
             self = .unknown(identifier)
+//            print(self) // prints correctly
         }
     }
     
@@ -35,6 +36,8 @@ enum FrameLayoutIdentifier: Hashable {
             case .known(let known):
                 return known.id3Identifier(version: version)
             case .unknown(let identifier):
+//                print(self) // nothing prints
+//                print(identifier) // nothing prints
                 return identifier
         }
     }
@@ -129,10 +132,14 @@ enum KnownFrameLayoutIdentifier: CaseIterable {
     
     
     init?(identifier: String) {
-        self = KnownFrameLayoutIdentifier.stringToLayoutMapping[identifier] ?? .userDefinedText
+        if let layout = KnownFrameLayoutIdentifier.stringToLayoutMapping[identifier] {
+            self = layout
+        } else {
+            return nil
+        }
     }
          
-    // MARK: ID3Identifier
+    // // MARK: - ID3Identifier
     /** The ID3 code for the frame
 
         3 bytes for ID3v2.2
@@ -144,7 +151,6 @@ enum KnownFrameLayoutIdentifier: CaseIterable {
     /// - Returns: A string of the ID3 identifier appropriate for the version
     func id3Identifier(version: Version) -> String? {
         switch self {
-            
             case .album:
                 switch version {
                     case .v2_2: return "TAL"
@@ -283,7 +289,7 @@ enum KnownFrameLayoutIdentifier: CaseIterable {
             }
             case .fileOwner:
                 switch version {
-                    case .v2_2: return nil
+                    case .v2_2: return "TWN"
                     case .v2_3, .v2_4: return "TOWN"
             }
             case .genre:
@@ -334,8 +340,8 @@ enum KnownFrameLayoutIdentifier: CaseIterable {
             }
             case .mood:
                 switch version {
-                    case .v2_2, .v2_3: return nil
-                    case .v2_4: return "TMOO"
+                    case .v2_2: return "TMO" // non-standard
+                    case .v2_3, .v2_4: return "TMOO" // non-standard in version 2.3
             }
             case .movementCount:
                 switch version {
@@ -355,8 +361,8 @@ enum KnownFrameLayoutIdentifier: CaseIterable {
             }
             case .musicianCreditsList:
                 switch version {
-                    case .v2_2, .v2_3: return nil
-                    case .v2_4: return "TMCL"
+                    case .v2_2: return "TMC" // non-standard
+                    case .v2_3, .v2_4: return "TMCL" // non-standard for version 2.3
             }
             case .originalAlbum:
                 switch version {
@@ -386,7 +392,7 @@ enum KnownFrameLayoutIdentifier: CaseIterable {
             }
             case .paymentWebpage:
                 switch version {
-                    case .v2_2: return nil
+                    case .v2_2: return "WPY" // non-standard
                     case .v2_3, .v2_4: return "WPAY"
             }
             case .playlistDelay:
@@ -421,8 +427,8 @@ enum KnownFrameLayoutIdentifier: CaseIterable {
             }
             case .producedNotice:
                 switch version {
-                    case .v2_2, .v2_3: return nil
-                    case .v2_4: return "TPRO"
+                    case .v2_2: return "TPR" // non-standard
+                    case .v2_3, .v2_4: return "TPRO" // non-standard for version 2.3
             }
             case .publisher:
                 switch version {
@@ -462,8 +468,8 @@ enum KnownFrameLayoutIdentifier: CaseIterable {
             }
             case .setSubtitle:
                 switch version {
-                    case .v2_2, .v2_3: return nil
-                    case .v2_4: return "TSST"
+                    case .v2_2: return "TTT" // non-standard
+                    case .v2_3, .v2_4: return "TSST" // non-standard for version 2.3
             }
             case .subtitle:
                 switch version {

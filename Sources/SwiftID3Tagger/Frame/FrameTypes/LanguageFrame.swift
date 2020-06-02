@@ -21,17 +21,16 @@ struct LanguageFrame: FrameProtocol, CustomStringConvertible {
         """
     }
 
-    // MARK: Properties
+    // // MARK: - Properties
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
-    var allowMultipleFrames: Bool = false
     
     /// ISO-639-2 languge code
     var languages: [String]
     
     
-    // MARK: Frame parsing
+    // // MARK: - Frame parsing
     init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,
@@ -62,7 +61,7 @@ struct LanguageFrame: FrameProtocol, CustomStringConvertible {
         self.frameKey = .languages
     }
     
-    // MARK: Frame building
+    // // MARK: - Frame building
     /// Initialize a frame-building instance
     /// - Parameters:
     ///   - layout: the frame layout
@@ -79,20 +78,16 @@ struct LanguageFrame: FrameProtocol, CustomStringConvertible {
         var frameData = Data()
         // append encoding byte
         frameData.append(StringEncoding.preferred.rawValue)
-        // append language array
+        // append languages in language array
         for language in self.languages {
-            switch version {
-                case .v2_2, .v2_3:
-                    frameData.append(language.encoded(withNullTermination: false))
-                case .v2_4:
-                    frameData.append(language.encoded(withNullTermination: true))
-            }
+            frameData.append(language.encoded(withNullTermination: true))
         }
         return frameData
     }
     
 }
 
+@available(OSX 10.12, *)
 extension Tag {
     /// - Language frame getter-setter. ID3 Identifier: `TLA`/`TLAN`
     public var languages: [ISO6392Codes]? {
@@ -103,8 +98,8 @@ extension Tag {
                 for language in languageFrame.languages {
                     let languageCode = ISO6392Codes(rawValue: language) ?? .und
                     languageArray.append(languageCode)
-                    return languageArray
                 }
+                return languageArray
             }; return nil
         }
         set {

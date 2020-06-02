@@ -329,78 +329,52 @@ public enum FrameKey: Hashable {
     case year
     /// any frame not handled by SwiftTagger
     case unknown(uuid: UUID)
+
     
-    // MARK: Alternate Frame Keys
+    // // MARK: - Alternate Frame Keys
     /** Also known as `Arranger` or `Interpreter`. Maps to the `Arranger` frame.
      
-        If another `Arranger` frame is already present, the frame will be created as a `UserDefinedText` frame with the description, "Remixer" */
+        If another `Arranger` frame is already present, it may be overwritten, or it may overwrite this version */
     static var remixer: FrameKey { return .arranger }
     
     /** Also known as `Remixer` or `Arranger`. Maps to the `Arranger` frame.
      
-        If another `Arranger` frame is already present, the frame will be created as a `UserDefinedText` frame with the description, "Interpreted By" */
+        If another `Arranger` frame is already present, it may be overwritten, or it may overwrite this version */
     static var interpretedBy: FrameKey { return .arranger }
     
     /** Also known as `contentGroup`. Maps to the `contentGroup` frame.
      
-        If another `contentGroup` frame is already present, the frame will be created as a `grouping` frame. If another `grouping` frame is present, the frame will be created as a `UserDefinedText` frame with the description, "Work" */
+        If another `contentGroup` frame is already present, it may be overwritten, or it may overwrite this version */
     static var work: FrameKey { return .contentGroup }
     /** Maps to the `contentGroup` frame.
      
-        If another `contentGroup` frame is already present, the frame will be created as a `grouping` frame. If another `grouping` frame is present, the frame will be created as a `UserDefinedText` frame with the description, "Series Name" */
+        If another `contentGroup` frame is already present, , it may be overwritten, or it may overwrite this version */
     static var series: FrameKey { return .contentGroup }
     
-    /// For audiobook use. Maps to the `artist` frame, which is usually used for authors of audiobooks. If an `artist` frame already exists, the frame will be created as a `UserDefinedText` frame with the description `Author`
+    /// For audiobook use. Maps to the `artist` frame, which is usually used for authors of audiobooks. If an `artist` frame already exists, , it may be overwritten, or it may overwrite this version
     static var author: FrameKey { return .artist }
 
-    /// For audiobook use. Maps to the `artistSort` frame, which is usually used for authors of audiobooks. If an `artistSort` frame already exists, the frame will be created as a `UserDefinedText` frame with the description `AuthorSort`
+    /// For audiobook use. Maps to the `artistSort` frame, which is usually used for authors of audiobooks. If an `artistSort` frame already exists, , it may be overwritten, or it may overwrite this version
     static var authorSort: FrameKey { return .artistSort }
     
-    /// For audiobook use. Maps to the `composer` frame, which is usually used for narrators of audiobooks. If a `composer` frame already exists, the frame will be created as a `UserDefinedText` frame with the description `Narrator`
+    /// For audiobook use. Maps to the `composer` frame, which is usually used for narrators of audiobooks. If a `composer` frame already exists, , it may be overwritten, or it may overwrite this version
     static var narrator: FrameKey { return .composer }
 
-    /// For audiobook use. Maps to the `composerSort` frame, which is usually used for narrators of audiobooks. If a `composerSort` frame already exists, the frame will be created as a `UserDefinedText` frame with the description `NarratorSort`
+    /// For audiobook use. Maps to the `composerSort` frame, which is usually used for narrators of audiobooks. If a `composerSort` frame already exists, , it may be overwritten, or it may overwrite this version
     static var narratorSort: FrameKey { return .composerSort }
     
     /** Maps to the `publisher` frame.
      
-        If another `publisher` frame is already present, the frame will be created as a `UserDefinedText` frame with the description, "Record Company" */
+        If another `publisher` frame is already present, , it may be overwritten, or it may overwrite this version */
     static var recordCompany: FrameKey { return .publisher }
     /** Maps to the `publisher` frame.
      
-        If another `publisher` frame is already present, the frame will be created as a `UserDefinedText` frame with the description, "Label" */
+        If another `publisher` frame is already present, , it may be overwritten, or it may overwrite this version */
     static var label: FrameKey { return .publisher }
     /** Maps to the `publisher` frame.
      
-        If another `publisher` frame is already present, the frame will be created as a `UserDefinedText` frame with the description, "Studio" */
+        If another `publisher` frame is already present, , it may be overwritten, or it may overwrite this version */
     static var studio: FrameKey { return .publisher }
-    
-    
-    
-    // MARK: Preset Frame Convenience Keys
-    /// Maps to `Comment` frame with the description, "Description"
-    static var description: FrameKey { return .comments(description: "Description") }
-    
-    /// Maps to `Comment` frame with the description, "Long Description"
-    static var longDescription: FrameKey { return .comments(description: "Long Description") }
-    
-    /// Maps to `Comment` frame with the description, "Long Description"
-    static var songDescription: FrameKey { return .comments(description: "Song Description") }
-    
-    /// Maps to `Comment` frame with the description, "Long Description"
-    static var seriesDescription: FrameKey { return .comments(description: "Series Description") }
-    
-    /// Maps to `Comment` frame with the description, "Liner Notes"
-    static var linerNotes: FrameKey { return .comments(description: "Liner Notes") }
-    
-    /// Maps to `UserText` frame with the description, "Acknowledgments"
-    static var acknowledgments: FrameKey { return .userDefinedText(description: "Acknowledgments") }
-    
-    /// Maps to `UserText` frame with the description, "Thanks"
-    static var thanks: FrameKey { return .userDefinedText(description: "Thanks") }
-    
-    /// Maps to `UserText` frame with the description, "Credit"
-    static var credit: FrameKey { return .userDefinedText(description: "Source Credit") }
     
     /// maps to `ReleaseTime` frame
     static var releaseDate: FrameKey { return .releaseTime }

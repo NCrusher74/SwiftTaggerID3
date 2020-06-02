@@ -15,6 +15,7 @@ import Foundation
  
  However, SwiftTaggerID only supports a single TOC frame, which is assigned a UUID as the elementID. Because of this, the top-level flag will always be true, and SwiftTaggerID3s handling of this frame will ensure the child elements are always ordered, therefore the orderedFlag is also set to true.
  */
+@available(OSX 10.12, *)
 public struct TableOfContentsFrame: FrameProtocol, CustomStringConvertible {
     public var description: String {
         return """
@@ -22,17 +23,16 @@ public struct TableOfContentsFrame: FrameProtocol, CustomStringConvertible {
         """
     }
 
-    // MARK: Properties
+    // // MARK: - Properties
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
-    var allowMultipleFrames: Bool = true
 
     /** the list of all child CTOC and/or CHAP frames, each entry is null-terminated */
     public var childElementIDs: [String]
     public var embeddedSubframesTag: Tag = Tag(subframes: [:])
     
-    // MARK: Frame parsing initializer
+    // // MARK: - Frame parsing initializer
     init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,
@@ -84,7 +84,7 @@ public struct TableOfContentsFrame: FrameProtocol, CustomStringConvertible {
         self.embeddedSubframesTag = Tag(subframes: subframes)
     }
 
-    // MARK: Frame building initializer
+    // // MARK: - Frame building initializer
     /// Initialize a table of contents for adding to a tag
     /// - Parameters:
     ///   - layout: the frame layout
@@ -157,7 +157,8 @@ public struct TableOfContentsFrame: FrameProtocol, CustomStringConvertible {
     }
 }
 
-// MARK: Tag Extension
+// // MARK: - Tag Extension
+@available(OSX 10.12, *)
 extension Tag {
     var toc: TableOfContentsFrame? {
         get {
@@ -167,12 +168,6 @@ extension Tag {
             } else {
                 return nil
             }
-        }
-        set {
-            let frame = TableOfContentsFrame(.known(.tableOfContents),
-                                             childElementIDs: newValue?.childElementIDs ?? [],
-                                             embeddedSubframesTag: newValue?.embeddedSubframesTag)
-            self.frames[.tableOfContents] = .tocFrame(frame)
         }
     }
     

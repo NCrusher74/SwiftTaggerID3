@@ -12,7 +12,8 @@ import Foundation
 /**
  A type representing an ID3 frame that contains an attached image
  */
- struct ImageFrame: FrameProtocol, CustomStringConvertible {
+@available(OSX 10.12, *)
+struct ImageFrame: FrameProtocol, CustomStringConvertible {
     public var description: String {
         return """
         frameKey: .\(self.frameKey):
@@ -20,11 +21,10 @@ import Foundation
         """
     }
 
-    // MARK: Properties
+    // // MARK: - Properties
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
-    var allowMultipleFrames: Bool = true
     
     /// The image bytes as `Data`.
     let image: Data;
@@ -36,7 +36,7 @@ import Foundation
     var imageFormat: ImageFormat
     
     
-    // MARK: Frame parsing
+    // // MARK: - Frame parsing
     init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,
@@ -86,7 +86,7 @@ import Foundation
         self.image = parsing
     }
 
-    // MARK: Frame building
+    // // MARK: - Frame building
     /**
      Initialize an ID attached picture frame.
      - parameter type: the ID3 type of the attached picture. See `ImageType` for a complete list of the available types.
@@ -145,6 +145,7 @@ import Foundation
     
 }
 
+@available(OSX 10.12, *)
 extension Tag {
     /// AttachedPicture frame getter-setter. ID3 Identifier `PIC`/`APIC`
     public subscript(attachedPicture imageDescription: String) -> Data? {
