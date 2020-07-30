@@ -42,11 +42,6 @@ public struct Mp3File {
         }
     }
     
-    @available(OSX 10.12, *)
-    public func read() throws -> Tag {
-        return try Tag(readFrom: self)
-    }
-    
     public func write(tagVersion: Version,
                       using tag: Tag,
                       writingTo url: URL) throws {

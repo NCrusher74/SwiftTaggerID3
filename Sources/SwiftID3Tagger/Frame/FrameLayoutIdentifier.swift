@@ -24,7 +24,6 @@ enum FrameLayoutIdentifier: Hashable {
             self = .known(known)
         } else {
             self = .unknown(identifier)
-//            print(self) // prints correctly
         }
     }
     
@@ -36,8 +35,6 @@ enum FrameLayoutIdentifier: Hashable {
             case .known(let known):
                 return known.id3Identifier(version: version)
             case .unknown(let identifier):
-//                print(self) // nothing prints
-//                print(identifier) // nothing prints
                 return identifier
         }
     }

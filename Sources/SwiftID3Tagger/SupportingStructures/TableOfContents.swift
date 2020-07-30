@@ -117,7 +117,7 @@ extension Tag {
     }
     
     /// Retrieves an array of chapters by start time (in milliseconds) and title.
-    public var allChapters: [(startTime: Int, title: String)] {
+    public var chapterList: [(startTime: Int, title: String)] {
         var chaptersArray: [(Int, String)] = []
         let chapters = self.tableOfContents.sortedChapters()
         for chapter in chapters {

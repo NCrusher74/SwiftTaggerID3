@@ -131,7 +131,6 @@ extension FrameProtocol {
         layout: FrameLayoutIdentifier,
         version: Version) -> Data {
 
-//        print(layout.id3Identifier(version: version)) // nada
         guard let identifier = layout.id3Identifier(version: version)?.encodedASCII(withNullTermination: false) else {
             switch version {
                 case .v2_2: return "TXX".encodedASCII(withNullTermination: false)

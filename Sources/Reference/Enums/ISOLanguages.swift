@@ -1679,7 +1679,7 @@ public enum ISO6392Codes: String, CaseIterable {
             case .zul: return "isiZulu"
             /// Zuni
             case .zun: return "Shiwi'ma"
-            default: return self.rawValue
+            default: return self.isoName
         }
     }
     

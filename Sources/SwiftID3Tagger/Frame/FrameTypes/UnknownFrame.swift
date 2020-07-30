@@ -26,7 +26,6 @@ public struct UnknownFrame: FrameProtocol {
     ) throws {
         self.flags = flags
         self.layout = layout
-//        print(self.layout.id3Identifier(version: version)) // prints as expected
         self.frameKey = .unknown(uuid: self.uuid)
         self.contents = contents
     }
@@ -34,7 +33,6 @@ public struct UnknownFrame: FrameProtocol {
     init(identifier: String, key: UUID, contents: Data){
         self.flags = UnknownFrame.defaultFlags
         self.layout = .unknown(identifier)
-//        print(self.layout)
         self.contents = contents
         self.frameKey = .unknown(uuid: uuid)
     }
