@@ -106,16 +106,16 @@ tag.clearMusicianCreditsForRole(role: .guitarist)
 
 *Chapter Frames*
 
-To retrieve a list of all the chapters in the file, use the `allChapters` property.
+To retrieve a list of all the chapters in the file, use the `chapterList` property.
 ```swift
-print(tag.allChapters)
+print(tag.chapterList)
 ```
 This will return an array of ( `startTime`,  `chapterTitle`) pairs, where the `startTime` is in milliseconds.
 
-To access the data of a specific chapter, use its index in the `allChapters` array:
+To access the data of a specific chapter, use its index in the `chapterList` array:
 ```swift
-print(tag.allChapters[0].startTime) // 0
-print(tag.allChapters[0].title) // "Chapter 01"
+print(tag.chapterList[0].startTime) // 0
+print(tag.chapterList[0].title) // "Chapter 01"
 ```
 
 To add a chapter, use the `addChapter(at startTime: Int, title: String)` function. **The `startTime` must be in milliseconds**. *If a chapter exists at the specified `startTime`, it will be overwritten.* Otherwise, new chapters will be added to any existing chapters:
@@ -131,7 +131,7 @@ tag.removeChapter(at: startTime)
 
 To wipe all chapters frames from the tag:
 ```swift
-tag.removeAllChapters()
+tag.removechapterList()
 ```
 
 *Other Frames*

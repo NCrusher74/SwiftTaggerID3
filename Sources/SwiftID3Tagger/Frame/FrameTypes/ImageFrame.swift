@@ -27,7 +27,7 @@ struct ImageFrame: FrameProtocol, CustomStringConvertible {
     var frameKey: FrameKey
     
     /// The image bytes as `Data`.
-    let image: Data;
+    let image: Data
     /// The ID3 type of the image (see `ImageType`).
     let imageType: ImageType
     /// an optional description of the image

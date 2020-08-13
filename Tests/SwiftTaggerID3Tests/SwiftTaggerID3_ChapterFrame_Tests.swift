@@ -18,11 +18,11 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
     func testReadChapterizedFile() throws {
         let tag = try TestFile.chapterized.tag()
 
-        XCTAssertEqual(tag?.allChapters.count,2)
-        XCTAssertEqual(tag?.allChapters[0].startTime, 0)
-        XCTAssertEqual(tag?.allChapters[0].title, "Chapter 01")
-        XCTAssertEqual(tag?.allChapters[1].startTime, 2795)
-        XCTAssertEqual(tag?.allChapters[1].title, "Chapter 02")
+        XCTAssertEqual(tag?.chapterList.count,2)
+        XCTAssertEqual(tag?.chapterList[0].startTime, 0)
+        XCTAssertEqual(tag?.chapterList[0].title, "Chapter 01")
+        XCTAssertEqual(tag?.chapterList[1].startTime, 2795)
+        XCTAssertEqual(tag?.chapterList[1].title, "Chapter 02")
     }
 
     // // MARK: - Frame removal test
@@ -30,7 +30,7 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
     func testFrameRemoval() throws {
         var tag = try TestFile.chapterized.tag()
 
-        tag?.removeAllChapters()
+        tag?.removechapterList()
         
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
 
@@ -42,7 +42,7 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         let writtenFile = try Mp3File(location: outputUrl)
         let writtenTag = try Tag(readFrom: writtenFile)
         
-        XCTAssertTrue(writtenTag.allChapters.isEmpty)
+        XCTAssertTrue(writtenTag.chapterList.isEmpty)
     }
 
     // // MARK: - Writing test
@@ -63,12 +63,12 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         let writtenFile = try Mp3File(location: outputUrl)
         let writtenTag = try Tag(readFrom: writtenFile)
 
-        XCTAssertEqual(writtenTag.allChapters[0].startTime, 0)
-        XCTAssertEqual(writtenTag.allChapters[0].title, "Chapter 001")
-        XCTAssertEqual(writtenTag.allChapters[1].startTime, 1680)
-        XCTAssertEqual(writtenTag.allChapters[1].title, "Chapter 002")
-        XCTAssertEqual(writtenTag.allChapters[2].startTime, 3360)
-        XCTAssertEqual(writtenTag.allChapters[2].title, "Chapter 003")
+        XCTAssertEqual(writtenTag.chapterList[0].startTime, 0)
+        XCTAssertEqual(writtenTag.chapterList[0].title, "Chapter 001")
+        XCTAssertEqual(writtenTag.chapterList[1].startTime, 1680)
+        XCTAssertEqual(writtenTag.chapterList[1].title, "Chapter 002")
+        XCTAssertEqual(writtenTag.chapterList[2].startTime, 3360)
+        XCTAssertEqual(writtenTag.chapterList[2].title, "Chapter 003")
     }
 
     // // MARK: - Overwriting test
@@ -89,14 +89,14 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         let writtenFile = try Mp3File(location: outputUrl)
         let writtenTag = try Tag(readFrom: writtenFile)
         
-        XCTAssertEqual(writtenTag.allChapters[0].startTime, 0)
-        XCTAssertEqual(writtenTag.allChapters[0].title, "Chapter 001")
-        XCTAssertEqual(writtenTag.allChapters[1].startTime, 1680)
-        XCTAssertEqual(writtenTag.allChapters[1].title, "Chapter 002")
-        XCTAssertEqual(writtenTag.allChapters[2].startTime, 2795)
-        XCTAssertEqual(writtenTag.allChapters[2].title, "Chapter 02")
-        XCTAssertEqual(writtenTag.allChapters[3].startTime, 3360)
-        XCTAssertEqual(writtenTag.allChapters[3].title, "Chapter 003")
+        XCTAssertEqual(writtenTag.chapterList[0].startTime, 0)
+        XCTAssertEqual(writtenTag.chapterList[0].title, "Chapter 001")
+        XCTAssertEqual(writtenTag.chapterList[1].startTime, 1680)
+        XCTAssertEqual(writtenTag.chapterList[1].title, "Chapter 002")
+        XCTAssertEqual(writtenTag.chapterList[2].startTime, 2795)
+        XCTAssertEqual(writtenTag.chapterList[2].title, "Chapter 02")
+        XCTAssertEqual(writtenTag.chapterList[3].startTime, 3360)
+        XCTAssertEqual(writtenTag.chapterList[3].title, "Chapter 003")
     }
     
     @available(OSX 10.12, *)
@@ -117,14 +117,14 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         let writtenFile = try Mp3File(location: outputUrl)
         let writtenTag = try Tag(readFrom: writtenFile)
         
-        XCTAssertEqual(writtenTag.allChapters[0].startTime, 0)
-        XCTAssertEqual(writtenTag.allChapters[0].title, "Chapter 001")
-        XCTAssertEqual(writtenTag.allChapters[1].startTime, 1680)
-        XCTAssertEqual(writtenTag.allChapters[1].title, "Chapter 002")
-        XCTAssertEqual(writtenTag.allChapters[2].startTime, 2795)
-        XCTAssertEqual(writtenTag.allChapters[2].title, "Chapter 003")
-        XCTAssertEqual(writtenTag.allChapters[3].startTime, 3360)
-        XCTAssertEqual(writtenTag.allChapters[3].title, "Chapter 004")
+        XCTAssertEqual(writtenTag.chapterList[0].startTime, 0)
+        XCTAssertEqual(writtenTag.chapterList[0].title, "Chapter 001")
+        XCTAssertEqual(writtenTag.chapterList[1].startTime, 1680)
+        XCTAssertEqual(writtenTag.chapterList[1].title, "Chapter 002")
+        XCTAssertEqual(writtenTag.chapterList[2].startTime, 2795)
+        XCTAssertEqual(writtenTag.chapterList[2].title, "Chapter 003")
+        XCTAssertEqual(writtenTag.chapterList[3].startTime, 3360)
+        XCTAssertEqual(writtenTag.chapterList[3].title, "Chapter 004")
     }
     
     @available(OSX 10.12, *)
