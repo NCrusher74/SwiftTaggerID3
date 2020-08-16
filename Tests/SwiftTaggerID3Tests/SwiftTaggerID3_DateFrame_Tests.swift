@@ -951,5 +951,4 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
                                                  writingTo: outputUrl))
       }
     }
-
 }

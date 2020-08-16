@@ -82,8 +82,10 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag?.trackNumber?.totalTracks = 2
         tag?.discNumber?.disc = 3
         tag?.discNumber?.totalDiscs = 4
-                        
+
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
+
+//        let outputUrl = try localDirectory(fileName: "mp3-meta", fileExtension: "mp3")
         XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_4, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v24.url)), writingTo: outputUrl))
         
         
@@ -636,6 +638,133 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
 
         // NOTE: The real test here is to output the file to a local directory and check the unknown frames out in whatever app they originated from to see if they're intact.
         XCTAssertEqual(tagWritten.album, "Test")
+    }
+
+    @available(OSX 10.12, *)
+    func testAll() throws {
+        var tag = Tag()
+        
+        tag.album = "Album"
+        tag.albumArtist = "Album Artist"
+        tag.albumSort = "Album Sort"
+        tag.albumArtistSort = "Album Artist Sort"
+        tag.arranger = "Arranger"
+        tag.artist = "Artist"
+        tag.artistSort = "Artist Sort"
+        tag.composer = "Composer"
+        tag.composerSort = "Composer Sort"
+        tag.conductor = "Conductor"
+        tag.contentGroup = "Content Group"
+        tag.copyright = "2020 Copyright"
+        tag.encodedBy = "Encoded By"
+        tag.encodingSettings = "Encoding Settings"
+        tag.fileOwner = "File Owner"
+        tag.grouping = "Grouping"
+        tag.initialKey = .aFlatMinor
+        tag.lyricist = "Lyricist"
+        tag.mood = "Mood"
+        tag.movementName = "Movement Name"
+        tag.originalAlbum = "Original Album"
+        tag.originalArtist = "Original Artist"
+        tag.originalFilename = "Original Filename"
+        tag.originalLyricist = "Original Lyricist"
+        tag.podcastID = "Podcast ID"
+        tag.podcastCategory = "Podcast Category"
+        tag.podcastFeedLink = "http://podcast.url"
+        tag.podcastDescription = "Podcast Description"
+        tag.podcastKeywords = "Podcast Keywords"
+        tag.publisher = "Publisher"
+        tag.producedNotice = "2020 Produced Notice"
+        tag.radioStation = "Radio Station"
+        tag.radioStationOwner = "Radio Station Owner"
+        tag.subtitle = "Subtitle"
+        tag.setSubtitle = "Set Subtitle"
+        tag.title = "Title"
+        tag.titleSort = "Title Sort"
+        
+        tag.compilation = true
+        tag.bpm = 99
+        tag.isrc = 987654321098
+        tag.length = 9767
+        tag.movementNumber = 5
+        tag.totalMovements = 6
+        tag.playlistDelay = 0
+        
+        tag.audioSourceWebpage = "http://audiosource.url"
+        tag.audioFileWebpage = "http://audiofile.url"
+        tag.artistWebpage = "http://artist.url"
+        tag.copyrightWebpage = "http://copyright.url"
+        tag.paymentWebpage = "http://payment.url"
+        tag.publisherWebpage = "http://publisher.url"
+        tag.radioStationWebpage = "http://radiostation.url"
+        
+        // // MARK: - Language Frame
+        tag.languages = [.eng]
+        
+        // // MARK: - Part Of Total frame
+        tag.trackNumber?.track = 1
+        tag.trackNumber?.totalTracks = 2
+        tag.discNumber?.disc = 3
+        tag.discNumber?.totalDiscs = 4
+
+        tag.addInvolvedPersonCredit(role: .actor, person: "Actor Name")
+        tag.addInvolvedPersonCredit(role: .actress, person: "Actress Name")
+        tag.addMusicianCredit(role: .soprano, person: "Soprano Name")
+        tag.addMusicianCredit(role: .alto, person: "Alto Name")
+
+        tag.encodingDateTime?.year = 2002
+        tag.encodingDateTime?.month = 11
+        tag.encodingDateTime?.day = 7
+        tag.encodingDateTime?.hour = 9
+        tag.encodingDateTime?.minute = 23
+
+        tag.taggingDateTime?.year = 2002
+        tag.taggingDateTime?.month = 11
+        tag.taggingDateTime?.day = 7
+        tag.taggingDateTime?.hour = 9
+        tag.taggingDateTime?.minute = 23
+
+        tag.releaseDateTime?.year = 2002
+        tag.releaseDateTime?.month = 11
+        tag.releaseDateTime?.day = 7
+        tag.releaseDateTime?.hour = 9
+        tag.releaseDateTime?.minute = 23
+        
+        tag.originalReleaseTime?.year = 2002
+        tag.originalReleaseTime?.month = 11
+        tag.originalReleaseTime?.day = 7
+        tag.originalReleaseTime?.hour = 9
+        tag.originalReleaseTime?.minute = 23
+
+        tag.recordingDateTime?.year = 2002
+        tag.recordingDateTime?.month = 11
+        tag.recordingDateTime?.day = 7
+        tag.recordingDateTime?.hour = 9
+        tag.recordingDateTime?.minute = 23
+
+        tag[comments: .eng, "Comment"] = "Comment Content"
+        tag[lyrics: .eng, "Lyrics"] = "Lyrics Content"
+        tag[userDefinedUrl: "UserURL"] = "http://userdefined.url"
+        tag[userDefinedText: "UserText"] = "User Text Content"
+
+        tag.discNumber?.disc = 4
+        tag.discNumber?.totalDiscs = 5
+        tag.trackNumber?.track = 6
+        tag.trackNumber?.totalTracks = 7
+
+        tag.genre?.presetGenre = .Blues
+        tag.genre?.customGenre = "Blues Refinement"
+        
+        tag.mediaType?.mediaType = .otherDigital
+        tag.mediaType?.mediaTypeRefinement = .analogTransfer
+        tag.mediaType?.additionalInformation = "Additional Information"
+        
+        tag.fileType?.fileType = .MPG
+        tag.fileType?.fileTypeRefinement = .mpegLayerIII
+        tag.fileType?.additionalInformation = "Additional Information"
+
+        let outputUrl = try localDirectory(fileName: "mp3-meta", fileExtension: "mp3")
+        XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_4, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v24.url)), writingTo: outputUrl))
     }
 
 }

@@ -264,16 +264,9 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
 
         tag?[comments: .eng, "Comment"] = "Comment Content"
         tag?[lyrics: .eng, "Lyrics"] = "Lyrics Content"
-        tag?[customComment: .eng, .description] = "Description Content"
-        tag?[customComment: .eng, .linerNotes] = "Liner Notes Content"
-        tag?[customComment: .eng, .longDescription] = "Long Description Content"
-        tag?[customComment: .eng, .seriesDescription] = "Series Description Content"
-        tag?[customComment: .eng, .songDescription] = "Song Description Content"
-        
         tag?[userDefinedUrl: "UserURL"] = "http://userdefined.url"
-//        tag?.onlineExtras = "http://onlineextras.url"
-        
         tag?[userDefinedText: "UserText"] = "User Text Content"
+//        tag?.onlineExtras = "http://onlineextras.url"        
 //        tag?.thanks = "Thanks"
 //        tag?.sourceCredit = "Source Credit"
 //        tag?.season = 8
