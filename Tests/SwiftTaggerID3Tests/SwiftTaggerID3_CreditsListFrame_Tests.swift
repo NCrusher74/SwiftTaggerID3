@@ -10,9 +10,11 @@
 import XCTest
 import SwiftTaggerID3
 
-@available(OSX 10.12, *)
+
+
 class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
 
+    @available(OSX 10.12, *)
     func testCreditsListFrameReadingv24() throws {
         let tag = try TestFile.v24.tag()
 
@@ -22,6 +24,7 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         XCTAssertEqual(tag?.musicianCreditsList?[.alto], ["Alto Name"])
     }
 
+    @available(OSX 10.12, *)
     func testCreditsListFrameReadingv23() throws {
         let tag = try TestFile.v23.tag()
         
@@ -29,12 +32,15 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         XCTAssertEqual(tag?.involvedPeopleList?[.actress], ["Actress Name"])
     }
 
+    @available(OSX 10.12, *)
     func testCreditsListFrameReadingv22() throws {
         let tag = try TestFile.v22.tag()
         
         XCTAssertEqual(tag?.involvedPeopleList?[.actor], ["Actor Name"])
         XCTAssertEqual(tag?.involvedPeopleList?[.actress], ["Actress Name"])
     }
+
+    
 
     @available(OSX 10.12, *)
     func testCreditsListFrameWritingv24() throws {
@@ -76,7 +82,7 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.involvedPeopleList?[.actor], ["Actor Name"])
         XCTAssertEqual(tagWritten.involvedPeopleList?[.actress], ["Actress Name"])
     }
-    
+
     @available(OSX 10.12, *)
     func testCreditsListFrameWritingv22() throws {
         var tag = try TestFile.noMeta.tag()
@@ -94,7 +100,7 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.involvedPeopleList?[.actor], ["Actor Name"])
         XCTAssertEqual(tagWritten.involvedPeopleList?[.actress], ["Actress Name"])
     }
-    
+
     @available(OSX 10.12, *)
     func testCreditsListFrameRemovalv24() throws {
         var tag = try TestFile.v24.tag()

@@ -66,6 +66,8 @@ struct StringFrame: FrameProtocol, CustomStringConvertible {
         } else {
             self.contentString = try StringFrame.parseEncodedString(data: parsing, version: version)
         }
+        Tag.listMetadata.removeAll(where: {$0.frameKey == self.frameKey})
+        Tag.listMetadata.append((self.frameKey, self.contentString))
     }
     
     // // MARK: - Frame creation
@@ -85,6 +87,8 @@ struct StringFrame: FrameProtocol, CustomStringConvertible {
         self.layout = layout        
         // initialize the frameKey property based on the layout
         self.frameKey = layout.frameKey(additionalIdentifier: nil)
+        Tag.listMetadata.removeAll(where: {$0.frameKey == self.frameKey})
+        Tag.listMetadata.append((self.frameKey, self.contentString))
     }
     
     /// Encodes the contents of the frame, without any header data
@@ -111,7 +115,8 @@ struct StringFrame: FrameProtocol, CustomStringConvertible {
 
 // // MARK: - Tag extension
 /* get and set functions for `StringFrame` frame types. Each individual frame of this type will have its own get-set property that will call these functions using its `FrameKey` property and relevant data */
-@available(OSX 10.12, *)
+
+
 extension Tag {
     
     /// Instantiates parsing operation to retrieve a frame's contents from a `Tag`

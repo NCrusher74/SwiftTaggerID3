@@ -12,6 +12,8 @@ import Foundation
 /**
  A type representing an ID3 chapter frame. There may be multiple chapter frames in a tag, but the `elementID` must be unique. Therefore, the `elementID` will serve as the `FrameKey`
  */
+
+
 @available(OSX 10.12, *)
 public struct ChapterFrame: FrameProtocol, CustomStringConvertible {
     public var description: String {
@@ -155,7 +157,8 @@ public struct ChapterFrame: FrameProtocol, CustomStringConvertible {
 }
 
 // // MARK: - Tag extension
-@available(OSX 10.12, *)
+
+
 extension Tag {
 
     mutating func removeChapterFrame(with elementID: String) {

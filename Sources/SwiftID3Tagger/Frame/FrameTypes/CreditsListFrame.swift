@@ -13,6 +13,8 @@ import Foundation
  A type used to represent an ID3 involved peeople list or musician credits frame.
  handled as a dictionary: `[role : [array of people performing the role]]`
  */
+
+
 struct CreditsListFrame: FrameProtocol, CustomStringConvertible {
     public var description: String {
         return """
@@ -42,6 +44,8 @@ struct CreditsListFrame: FrameProtocol, CustomStringConvertible {
         var parsing = contents
         let encoding = try CreditsListFrame.extractEncoding(data: &parsing, version: version)
         self.credits = CreditsListFrame.extractCreditStrings(from: &parsing, encoding: encoding)
+        Tag.listMetadata.removeAll(where: {$0.frameKey == self.frameKey})
+        Tag.listMetadata.append((self.frameKey, self.credits))
     }
     
     private static func extractCreditStrings(
@@ -73,6 +77,8 @@ struct CreditsListFrame: FrameProtocol, CustomStringConvertible {
         self.credits = credits
         self.flags = CreditsListFrame.defaultFlags
         self.frameKey = layout.frameKey(additionalIdentifier: nil)
+        Tag.listMetadata.removeAll(where: {$0.frameKey == self.frameKey})
+        Tag.listMetadata.append((self.frameKey, self.credits))
     }
     
     func encodeContents(version: Version) throws -> Data {
@@ -90,7 +96,8 @@ struct CreditsListFrame: FrameProtocol, CustomStringConvertible {
     }
 }
 
-@available(OSX 10.12, *)
+
+
 extension Tag {
     
     /// retrieve the `[role: [person]]` dictionary from the frame

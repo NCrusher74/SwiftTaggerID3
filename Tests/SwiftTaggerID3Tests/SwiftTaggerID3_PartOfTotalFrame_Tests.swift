@@ -10,9 +10,11 @@
 import XCTest
 import SwiftTaggerID3
 
-@available(OSX 10.12, *)
+
+
 class SwiftTaggerID3_PartOfTotalFrame_Tests: XCTestCase {
     
+    @available(OSX 10.12, *)
     func testWithBothValuesWrittenOnBlankFile() throws {
         var tag = try TestFile.noMeta.tag()
 
@@ -63,6 +65,7 @@ class SwiftTaggerID3_PartOfTotalFrame_Tests: XCTestCase {
         XCTAssertEqual(tagWrittenV24.trackNumber?.totalTracks, 7)
     }
 
+    @available(OSX 10.12, *)
     func testWithOneValueWrittenOnBlankFile() throws {
         var tag = try TestFile.noMeta.tag()
         
@@ -109,6 +112,7 @@ class SwiftTaggerID3_PartOfTotalFrame_Tests: XCTestCase {
         XCTAssertNil(tagWrittenV24.trackNumber?.totalTracks)
     }
     
+    @available(OSX 10.12, *)
     func testOverwriting() throws {
         var v22Tag = try TestFile.v22.tag()
         v22Tag?.discNumber?.disc = 4
@@ -170,6 +174,7 @@ class SwiftTaggerID3_PartOfTotalFrame_Tests: XCTestCase {
         XCTAssertEqual(tagWrittenV24.trackNumber?.totalTracks, 7)
     }
 
+    @available(OSX 10.12, *)
     func testOverwritingWithOnlyPart() throws {
         var v22Tag = try TestFile.v22.tag()
         v22Tag?.discNumber?.disc = 4

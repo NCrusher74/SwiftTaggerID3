@@ -11,9 +11,11 @@ import XCTest
 import SwiftTaggerID3
 
 
-@available(OSX 10.12, *)
+
+
 class SwiftTaggerID3_PresetOptionsFrame_Tests: XCTestCase {
     
+    @available(OSX 10.12, *)
     func testPresetOptionsReadingV24() throws {
         let tag = try TestFile.v24.tag()
         XCTAssertNil(tag?.fileType?.fileType)
@@ -26,6 +28,7 @@ class SwiftTaggerID3_PresetOptionsFrame_Tests: XCTestCase {
         XCTAssertEqual(tag?.mediaType?.additionalInformation, "Media Type")
     }
 
+    @available(OSX 10.12, *)
     func testPresetOptionsReadingV23() throws {
         let tag = try TestFile.v23.tag()
         XCTAssertNil(tag?.fileType?.fileType)
@@ -38,6 +41,7 @@ class SwiftTaggerID3_PresetOptionsFrame_Tests: XCTestCase {
         XCTAssertEqual(tag?.mediaType?.additionalInformation, "Media Type")
     }
 
+    @available(OSX 10.12, *)
     func testPresetOptionsReadingV22() throws {
         let tag = try TestFile.v22.tag()
         XCTAssertNil(tag?.fileType?.fileType)
@@ -51,6 +55,7 @@ class SwiftTaggerID3_PresetOptionsFrame_Tests: XCTestCase {
     }
 
     
+    @available(OSX 10.12, *)
     func testPresetOptionsWriting() throws {
         var tag = Tag()
         

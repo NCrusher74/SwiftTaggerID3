@@ -10,7 +10,8 @@
 import Foundation
 
 /** An enum containing methods and variables for querying and building frames with a particular structure */
-@available(OSX 10.12, *)
+
+
 enum Frame {
     
     /** A frame type containing a single, unterminated string of content
@@ -38,6 +39,7 @@ enum Frame {
     /** A frame type containing an date value that will be encoded and stored as a timestamp string.
      
         Frames of this type MAY NOT be duplicated within a valid ID3 tag*/
+    @available(OSX 10.12, *)
     case dateFrame(DateFrame)
     /** A frame type containing an attached image pertaining to the audio media.
         
@@ -50,10 +52,13 @@ enum Frame {
     /** a frame type containing a table of contents frame.
      
         Frames of this type MAY be duplicated within a valid ID3 tag, providing only one has the top-level flag set, and each has a unique `ElementID`*/
+    @available(OSX 10.12, *)
     case tocFrame(TableOfContentsFrame)
     /** a frame type containing a chapter frame.
      
-        Frames of this type MAY be duplicated within a valid ID3 tag, but each one must have a unique `ElementID`*/
+     Frames of this type MAY be duplicated within a valid ID3 tag, but each one must hav@available(OSX 10.12, *)
+     e a unique `ElementID`*/
+    @available(OSX 10.12, *)
     case chapterFrame(ChapterFrame)
     /// allows unsupported frames to pass through and be returned unparsed
     case unknownFrame(UnknownFrame)
@@ -65,6 +70,7 @@ enum Frame {
     ///   - version: The `Version` of the ID3 tag
     /// - Throws: Caller will determine how to handle any errors
 
+    @available(OSX 10.12, *)
     init(identifier: String,
          data: inout Data.SubSequence,
          version: Version) throws {
@@ -205,7 +211,8 @@ enum Frame {
     }
 }
 
-@available(OSX 10.12, *)
+
+
 extension Frame {
     /// A property that permits a subframe to be encoded as a frame
     var asFrameProtocol: FrameProtocol {

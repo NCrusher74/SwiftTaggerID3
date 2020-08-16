@@ -14,7 +14,8 @@ let testMediaDirectory = URL(fileURLWithPath: #file)
     .deletingLastPathComponent()
     .appendingPathComponent("TestMedia")
 
-@available(OSX 10.12, *)
+
+
 enum TestFile {
     case noMeta
     case v22
@@ -65,6 +66,7 @@ enum TestFile {
         }
     }
     
+    @available(OSX 10.12, *)
     func tag() throws -> Tag? {
         switch self {
             case .v22, .v23, .v24, .noMeta, .chapterized, .unknown:
@@ -82,6 +84,8 @@ enum TestFile {
 
 }
 
+
+
 @available(OSX 10.12, *)
 func tempDirectory() throws -> URL {
     let tempDirectory = FileManager.default.temporaryDirectory
@@ -93,10 +97,14 @@ func tempDirectory() throws -> URL {
     return tempDirectory
 }
 
+
+
 @available(OSX 10.12, *)
 func emptyDirectory() throws {
     try FileManager.default.removeItem(at: tempDirectory())
 }
+
+
 
 @available(OSX 10.12, *)
 func localDirectory(fileName: String, fileExtension: String) throws -> URL {

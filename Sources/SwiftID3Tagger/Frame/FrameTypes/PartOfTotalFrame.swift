@@ -32,6 +32,8 @@ struct PartOfTotalFrame: FrameProtocol, CustomStringConvertible {
     var total: Int?
     
     // // MARK: - Frame parsing initializer
+    
+
     init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,
@@ -54,6 +56,8 @@ struct PartOfTotalFrame: FrameProtocol, CustomStringConvertible {
         if contentComponents.count > 1 {
             self.total = Int(contentComponents[1])
         }
+        Tag.listMetadata.removeAll(where: {$0.frameKey == self.frameKey})
+        Tag.listMetadata.append((self.frameKey, (part: self.part, total: self.total)))
     }
 
 
@@ -71,6 +75,8 @@ struct PartOfTotalFrame: FrameProtocol, CustomStringConvertible {
         self.flags = PartOfTotalFrame.defaultFlags
         self.layout = layout
         self.frameKey = layout.frameKey(additionalIdentifier: nil)
+        Tag.listMetadata.removeAll(where: {$0.frameKey == self.frameKey})
+        Tag.listMetadata.append((self.frameKey, (part: self.part, total: self.total)))
     }
     
     // encode the contents of the frame to add to an ID3 tag
@@ -93,7 +99,8 @@ struct PartOfTotalFrame: FrameProtocol, CustomStringConvertible {
 
 // // MARK: - Internal Tag extension
 /* get and set functions for `PartOfTotalFrame` frame types. Each individual frame of this type will have its own get-set property that will call these fucntions */
-@available(OSX 10.12, *)
+
+
 extension Tag {
     
     /// Retrieve an integer tuple from the frame data

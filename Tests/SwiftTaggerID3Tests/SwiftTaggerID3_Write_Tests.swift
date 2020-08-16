@@ -10,11 +10,13 @@
 import XCTest
 import SwiftTaggerID3
 
-@available(OSX 10.12, *)
+
+
 class SwiftTaggerID3_Write_Tests: XCTestCase {
     
     // // MARK: - V24 writing test
     // Test writing, and accuracy of written data, version 2.4
+    @available(OSX 10.12, *)
     func testV24Writing() throws {
         var tag = try TestFile.noMeta.tag()
 
@@ -160,6 +162,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
     
     // // MARK: - V23 writing test
     // Test writing, and accuracy of written data, version 2.3
+    @available(OSX 10.12, *)
     func testV23Writing() throws {
         var tag = try TestFile.noMeta.tag()
 
@@ -298,6 +301,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
     }
     
     // Test writing, and accuracy of written data, version 2.2
+    @available(OSX 10.12, *)
     func testV22Writing() throws {
         var tag = try TestFile.noMeta.tag()
 
@@ -412,6 +416,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
     }
 
     // // MARK: - Test alternative framekeys/identifiers
+    @available(OSX 10.12, *)
     func testRemixer() throws {
         var tag = Tag()
         tag.remixer = "Remixer"
@@ -427,6 +432,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.remixer, "Remixer")
     }
 
+    @available(OSX 10.12, *)
     func testInterpetedBy() throws {
         var tag = Tag()
         tag.interpretedBy = "InterpretedBy"
@@ -442,6 +448,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.interpretedBy, "InterpretedBy")
     }
 
+    @available(OSX 10.12, *)
     func testWork() throws {
         var tag = Tag()
         tag.work = "Work"
@@ -457,6 +464,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.work, "Work")
     }
 
+    @available(OSX 10.12, *)
     func testSeries() throws {
         var tag = Tag()
         tag.series = "Series"
@@ -472,6 +480,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.series, "Series")
     }
 
+    @available(OSX 10.12, *)
     func testAuthor() throws {
         var tag = Tag()
         tag.author = "Author"
@@ -487,6 +496,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.author, "Author")
     }
 
+    @available(OSX 10.12, *)
     func testAuthorSort() throws {
         var tag = Tag()
         tag.authorSort = "SortAuthor"
@@ -502,6 +512,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.authorSort, "SortAuthor")
     }
 
+    @available(OSX 10.12, *)
     func testNarrator() throws {
         var tag = Tag()
         tag.narrator = "Narrator"
@@ -517,6 +528,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.narrator, "Narrator")
     }
 
+    @available(OSX 10.12, *)
     func testNarratorSort() throws {
         var tag = Tag()
         tag.narratorSort = "SortNarrator"
@@ -532,6 +544,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.narratorSort, "SortNarrator")
     }
 
+    @available(OSX 10.12, *)
     func testLabel() throws {
         var tag = Tag()
         tag.label = "Label"
@@ -547,6 +560,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.label, "Label")
     }
 
+    @available(OSX 10.12, *)
     func testStudio() throws {
         var tag = Tag()
         tag.studio = "Studio"
@@ -562,6 +576,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.studio, "Studio")
     }
 
+    @available(OSX 10.12, *)
     func testRecordCompany() throws {
         var tag = Tag()
         tag.recordCompany = "RecordCompany"
@@ -577,6 +592,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.recordCompany, "RecordCompany")
     }
     
+    @available(OSX 10.12, *)
     func testImageFrameWriting() throws {
         var tag = Tag()
         
@@ -606,6 +622,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_4, using: tag, writingTo: output))
     }
     
+    @available(OSX 10.12, *)
     func testUnknownFramePassThrough() throws {
         var tag = try TestFile.unknown.tag()
         

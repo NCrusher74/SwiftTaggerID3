@@ -1,19 +1,21 @@
 /*
-
+ 
  SwiftTaggerID3_Read_Tests.swift
  SwiftTaggerID3
-
+ 
  Copyright ©2020 Nolaine Crusher. All rights reserved.
-
+ 
  */
 
 import XCTest
 import SwiftTaggerID3
 
-@available(OSX 10.12, *)
-class SwiftTaggerID3_Read_Tests: XCTestCase {
 
+
+class SwiftTaggerID3_Read_Tests: XCTestCase {
+    
     // test reading of V24 tag from file
+    @available(OSX 10.12, *)
     func testV24Reading() throws {
         let tag = try TestFile.v24.tag()
         
@@ -57,7 +59,7 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag?.subtitle, "Subtitle")
         XCTAssertEqual(tag?.title, "Title")
         XCTAssertEqual(tag?.titleSort, "Title Sort")
-
+        
         // StringFrame: Other
         XCTAssertEqual(tag?.artistWebpage, "http://artist.url")
         XCTAssertEqual(tag?.audioFileWebpage, "http://audiofile.url")
@@ -74,7 +76,7 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag?.movementNumber, 5)
         XCTAssertEqual(tag?.totalMovements, 6)
         XCTAssertEqual(tag?.playlistDelay, 0)
-
+        
         // StringFrame: Alternatives
         XCTAssertEqual(tag?.interpretedBy, "Arranger")
         XCTAssertEqual(tag?.narrator, "Composer")
@@ -84,15 +86,15 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag?.recordCompany, "Publisher")
         XCTAssertEqual(tag?.studio, "Publisher")
         XCTAssertEqual(tag?.work, "Content Group")
-
-      }
+        
     }
-    
     // test reading of v23 tag from file
-@available(OSX 10.12, *)
-func testV23Reading() throws {
-        let tag = try TestFile.v23.tag()
+    
 
+    @available(OSX 10.12, *)
+    func testV23Reading() throws {
+        let tag = try TestFile.v23.tag()
+        
         // StringFrame
         XCTAssertEqual(tag?.album, "Album")
         XCTAssertEqual(tag?.albumArtist, "Album Artist")
@@ -130,7 +132,7 @@ func testV23Reading() throws {
         XCTAssertEqual(tag?.subtitle, "Subtitle")
         XCTAssertEqual(tag?.title, "Title")
         XCTAssertEqual(tag?.titleSort, "Title Sort")
-
+        
         // StringFrame: Other
         XCTAssertEqual(tag?.compilation, true)
         XCTAssertEqual(tag?.bpm, 99)
@@ -147,7 +149,7 @@ func testV23Reading() throws {
         XCTAssertEqual(tag?.podcastFeedLink, "http://podcast.url")
         XCTAssertEqual(tag?.publisherWebpage, "http://publisher.url")
         XCTAssertEqual(tag?.radioStationWebpage, "http://radiostation.url")
-
+        
         // StringFrame: Alternative String Frames
         XCTAssertEqual(tag?.narrator, "Composer")
         XCTAssertEqual(tag?.narratorSort, "Composer Sort")
@@ -158,10 +160,12 @@ func testV23Reading() throws {
         XCTAssertEqual(tag?.series, "Content Group")
         XCTAssertEqual(tag?.work, "Content Group")
     }
-
+    
     // test reading of v22 tag from file
-@available(OSX 10.12, *)
-func testV22Reading() throws {
+    
+
+    @available(OSX 10.12, *)
+    func testV22Reading() throws {
         let tag = try TestFile.v22.tag()
         
         // StringFrame
@@ -202,7 +206,7 @@ func testV22Reading() throws {
         XCTAssertEqual(tag?.isrc, 987654321098)
         XCTAssertEqual(tag?.length, 9767)
         XCTAssertEqual(tag?.playlistDelay, 0)
-
+        
         // StringFrame: Alternative String Names
         XCTAssertEqual(tag?.titleSort, "Title Sort")
         XCTAssertEqual(tag?.label, "Publisher")
@@ -214,4 +218,32 @@ func testV22Reading() throws {
         XCTAssertEqual(tag?.narratorSort, "Composer Sort")
         XCTAssertEqual(tag?.remixer, "Arranger")
         XCTAssertEqual(tag?.work, "Content Group")
+    }
+    
+    @available(OSX 10.12, *)
+    func testListMetdata() throws {
+        var tag = try TestFile.v24.tag()
+        tag?.albumSort = "New Album Sort"
+        tag?.discNumber?.disc = 2
+        tag?.discNumber?.totalDiscs = 4
+        tag?.genre?.presetGenre = .Abstract
+        tag?.genre?.customGenre = "Stuff"
+        tag?.bpm = 98
+        tag?.compilation = false
+
+        for item in Tag.listMetadata {
+            print(item)
+        }
+    }
 }
+
+/*
+ case .albumArtistSort:
+ if let value = self.albumArtistSort {
+ let entry = (frameKey, value)
+ metadata.append(entry)
+ }
+ 
+ } else if frameKey ==
+
+ */

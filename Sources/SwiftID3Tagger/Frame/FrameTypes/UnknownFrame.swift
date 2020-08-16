@@ -28,6 +28,8 @@ public struct UnknownFrame: FrameProtocol {
         self.layout = layout
         self.frameKey = .unknown(uuid: self.uuid)
         self.contents = contents
+        Tag.listMetadata.removeAll(where: {$0.frameKey == self.frameKey})
+        Tag.listMetadata.append((self.frameKey, self.contents))
     }
 
     init(identifier: String, key: UUID, contents: Data){
@@ -35,6 +37,8 @@ public struct UnknownFrame: FrameProtocol {
         self.layout = .unknown(identifier)
         self.contents = contents
         self.frameKey = .unknown(uuid: uuid)
+        Tag.listMetadata.removeAll(where: {$0.frameKey == self.frameKey})
+        Tag.listMetadata.append((self.frameKey, self.contents))
     }
 
     func encodeContents(version: Version) throws -> Data {

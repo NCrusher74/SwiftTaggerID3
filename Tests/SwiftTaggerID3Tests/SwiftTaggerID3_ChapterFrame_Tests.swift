@@ -11,10 +11,12 @@ import XCTest
 import SwiftTaggerID3
 
 // Actually tests for chapter frame and CTOC frame
-@available(OSX 10.12, *)
+
+
 class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
 
     // // MARK: - Read test
+    @available(OSX 10.12, *)
     func testReadChapterizedFile() throws {
         let tag = try TestFile.chapterized.tag()
 
@@ -126,7 +128,7 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         XCTAssertEqual(writtenTag.chapterList[3].startTime, 3360)
         XCTAssertEqual(writtenTag.chapterList[3].title, "Chapter 004")
     }
-    
+
     @available(OSX 10.12, *)
     func testVersionFailure() throws {
         var tag = try TestFile.noMeta.tag()

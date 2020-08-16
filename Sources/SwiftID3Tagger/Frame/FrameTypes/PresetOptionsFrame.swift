@@ -64,6 +64,8 @@ struct PresetOptionsFrame: FrameProtocol, CustomStringConvertible {
             } else {
                 self.genreMediaOrFileInfo = PresetOptionsFrame.parseFileTypeStrings(parsedArray: parsedArray)
         }
+        Tag.listMetadata.removeAll(where: {$0.frameKey == self.frameKey})
+        Tag.listMetadata.append((self.frameKey, self.genreMediaOrFileInfo))
     }
 
     
@@ -74,6 +76,8 @@ struct PresetOptionsFrame: FrameProtocol, CustomStringConvertible {
         self.genreMediaOrFileInfo = genreMediaOrFileInfo
         self.flags = PresetOptionsFrame.defaultFlags
         self.frameKey = layout.frameKey(additionalIdentifier: nil)
+        Tag.listMetadata.removeAll(where: {$0.frameKey == self.frameKey})
+        Tag.listMetadata.append((self.frameKey, self.genreMediaOrFileInfo))
     }
     
     func encodeContents(version: Version) throws -> Data {
@@ -286,7 +290,8 @@ struct PresetOptionsFrame: FrameProtocol, CustomStringConvertible {
 
 // // MARK: - Tag extensions
 // get and set functions for `PresetOptionsFrame` frame types, which retrieves or sets three strings, all of which are optional (genre only uses two of these.) Each individual frame of this type will call these functions in a get-set property of function, where appropriate.
-@available(OSX 10.12, *)
+
+
 extension Tag {
     func presetOptionArray(for frameKey: FrameKey) -> [String?]? {
         if let frame = self.frames[frameKey],

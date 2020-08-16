@@ -12,7 +12,8 @@ import Foundation
 /**
  A type representing an ID3 frame that contains an attached image
  */
-@available(OSX 10.12, *)
+
+
 struct ImageFrame: FrameProtocol, CustomStringConvertible {
     public var description: String {
         return """
@@ -145,7 +146,8 @@ struct ImageFrame: FrameProtocol, CustomStringConvertible {
     
 }
 
-@available(OSX 10.12, *)
+
+
 extension Tag {
     /// AttachedPicture frame getter-setter. ID3 Identifier `PIC`/`APIC`
     public subscript(attachedPicture imageDescription: String) -> Data? {

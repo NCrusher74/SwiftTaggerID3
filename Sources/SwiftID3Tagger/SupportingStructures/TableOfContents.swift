@@ -30,8 +30,10 @@ struct TableOfContents {
     }
 }
 
-@available(OSX 10.12, *)
+
+
 extension Tag {
+    @available(OSX 10.12, *)
     var tableOfContents: TableOfContents {
         get {
             // initialize a chapter instance by the start time
@@ -117,6 +119,7 @@ extension Tag {
     }
     
     /// Retrieves an array of chapters by start time (in milliseconds) and title.
+    @available(OSX 10.12, *)
     public var chapterList: [(startTime: Int, title: String)] {
         var chaptersArray: [(Int, String)] = []
         let chapters = self.tableOfContents.sortedChapters()
@@ -131,6 +134,7 @@ extension Tag {
     /// Adds a chapter at the specified start time (in milliseconds) with the specified title.
     /// If a chapter exists at the specified start time, it will be overwritten.
     /// To edit a chapter title, simply overwrite the existing chapter with a new one
+    @available(OSX 10.12, *)
     public mutating func addChapter(at startTime: Int, title: String) {
         var tocChapters = self.tableOfContents.chapters
         tocChapters.updateValue(TableOfContents.Chapter(title: title), forKey: startTime)
@@ -138,11 +142,13 @@ extension Tag {
     }
     
     /// Removes the chapter at the specified start time.
+    @available(OSX 10.12, *)
     public mutating func removeChapter(at startTime: Int) {
         self.tableOfContents.chapters[startTime] = nil
     }
     
     /// Removes all chapters.
+    @available(OSX 10.12, *)
     public mutating func removechapterList() {
         self.tableOfContents.chapters = [:]
         self.removeTableOfContents()
