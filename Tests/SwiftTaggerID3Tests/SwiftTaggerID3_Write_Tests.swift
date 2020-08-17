@@ -60,7 +60,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         
         tag?.compilation = true
         tag?.bpm = 99
-        tag?.isrc = 987654321098
+        tag?.isrc = "987654321098"
         tag?.length = 9767
         tag?.movementNumber = 5
         tag?.totalMovements = 6
@@ -121,7 +121,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.grouping, "Grouping")
         XCTAssertEqual(tagWritten.initialKey, .aFlatMinor)
         XCTAssertEqual(tagWritten.interpretedBy, "Arranger")
-        XCTAssertEqual(tagWritten.isrc, 987654321098)
+        XCTAssertEqual(tagWritten.isrc, "987654321098")
         XCTAssertEqual(tagWritten.label, "Publisher")
         XCTAssertEqual(tagWritten.languages, [.eng])
         XCTAssertEqual(tagWritten.length, 9767)
@@ -205,7 +205,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         
         tag?.compilation = true
         tag?.bpm = 99
-        tag?.isrc = 987654321098
+        tag?.isrc = "987654321098"
         tag?.length = 9767
         tag?.movementNumber = 5
         tag?.totalMovements = 6
@@ -264,7 +264,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.grouping, "Grouping")
         XCTAssertEqual(tagWritten.initialKey, .aFlatMinor)
         XCTAssertEqual(tagWritten.interpretedBy, "Arranger")
-        XCTAssertEqual(tagWritten.isrc, 987654321098)
+        XCTAssertEqual(tagWritten.isrc, "987654321098")
         XCTAssertEqual(tagWritten.label, "Publisher")
         XCTAssertEqual(tagWritten.languages, [.eng])
         XCTAssertEqual(tagWritten.length, 9767)
@@ -336,7 +336,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         
         tag?.compilation = true
         tag?.bpm = 99
-        tag?.isrc = 987654321098
+        tag?.isrc = "987654321098"
         tag?.length = 9767
         tag?.playlistDelay = 0
         
@@ -389,7 +389,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.encodingSettings, "Encoding Settings")
         XCTAssertEqual(tagWritten.initialKey, .aFlatMinor)
         XCTAssertEqual(tagWritten.interpretedBy, "Arranger")
-        XCTAssertEqual(tagWritten.isrc, 987654321098)
+        XCTAssertEqual(tagWritten.isrc, "987654321098")
         XCTAssertEqual(tagWritten.label, "Publisher")
         XCTAssertEqual(tagWritten.languages, [.eng])
         XCTAssertEqual(tagWritten.length, 9767)
@@ -684,7 +684,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         
         tag.compilation = true
         tag.bpm = 99
-        tag.isrc = 987654321098
+        tag.isrc = "987654321098"
         tag.length = 9767
         tag.movementNumber = 5
         tag.totalMovements = 6

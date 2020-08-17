@@ -71,7 +71,7 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag?.radioStationWebpage, "http://radiostation.url")
         XCTAssertEqual(tag?.compilation, true)
         XCTAssertEqual(tag?.bpm, 99)
-        XCTAssertEqual(tag?.isrc, 987654321098)
+        XCTAssertEqual(tag?.isrc, "987654321098")
         XCTAssertEqual(tag?.length, 9767)
         XCTAssertEqual(tag?.movementNumber, 5)
         XCTAssertEqual(tag?.totalMovements, 6)
@@ -136,7 +136,7 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         // StringFrame: Other
         XCTAssertEqual(tag?.compilation, true)
         XCTAssertEqual(tag?.bpm, 99)
-        XCTAssertEqual(tag?.isrc, 987654321098)
+        XCTAssertEqual(tag?.isrc, "987654321098")
         XCTAssertEqual(tag?.length, 9767)
         XCTAssertEqual(tag?.movementNumber, 5)
         XCTAssertEqual(tag?.totalMovements, 6)
@@ -203,7 +203,7 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag?.publisherWebpage, "http://publisher.url")
         XCTAssertEqual(tag?.compilation, true)
         XCTAssertEqual(tag?.bpm, 99)
-        XCTAssertEqual(tag?.isrc, 987654321098)
+        XCTAssertEqual(tag?.isrc, "987654321098")
         XCTAssertEqual(tag?.length, 9767)
         XCTAssertEqual(tag?.playlistDelay, 0)
         

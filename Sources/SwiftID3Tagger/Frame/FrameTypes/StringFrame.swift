@@ -538,10 +538,10 @@ extension Tag {
     }
     
     /// IRSC getter-setter. ID3 Identifier: `TRC`/`TSRC`
-    public var isrc: Int? {
-        get { get(forIntFrame: .isrc) }
+    public var isrc: String? {
+        get { get(forStringFrame: .isrc) }
         set { set(.known(.isrc), .isrc,
-                  to: String(newValue ?? 0)) }
+                  to: String(newValue ?? "")) }
     }
     
     /// Length getter-setter. ID3 Identifier: `TLE`/`TLEN`
