@@ -14,10 +14,6 @@ import Foundation
  
  Though this frame is stored in the tag as an `ISO-639-2` code, parsing will return the isoName of the language in full, for user-friendliness. It will also take an `isoName` or `nativeName` as the `languageString` and convert it to the appropriate 3-letter code.
  */
-
-
-
-
 struct LanguageFrame: FrameProtocol, CustomStringConvertible {
     public var description: String {
         return """
@@ -25,7 +21,7 @@ struct LanguageFrame: FrameProtocol, CustomStringConvertible {
         """
     }
 
-    // // MARK: - Properties
+    // MARK: - Properties
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
@@ -34,7 +30,7 @@ struct LanguageFrame: FrameProtocol, CustomStringConvertible {
     var languages: [String]
     
     
-    // // MARK: - Frame parsing
+    // MARK: - Frame parsing
     init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,
@@ -65,7 +61,7 @@ struct LanguageFrame: FrameProtocol, CustomStringConvertible {
         self.frameKey = .languages
     }
     
-    // // MARK: - Frame building
+    // MARK: - Frame building
     /// Initialize a frame-building instance
     /// - Parameters:
     ///   - layout: the frame layout
@@ -90,8 +86,6 @@ struct LanguageFrame: FrameProtocol, CustomStringConvertible {
     }
     
 }
-
-
 
 extension Tag {
     /// - Language frame getter-setter. ID3 Identifier: `TLA`/`TLAN`

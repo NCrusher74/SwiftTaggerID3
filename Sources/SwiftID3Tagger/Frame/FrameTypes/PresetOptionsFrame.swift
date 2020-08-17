@@ -18,7 +18,7 @@ struct PresetOptionsFrame: FrameProtocol, CustomStringConvertible {
     }
 
     
-    // // MARK: - Properties
+    // MARK: - Properties
     // (inherited from FrameProtocol)
     var flags: Data
     var layout: FrameLayoutIdentifier
@@ -63,20 +63,16 @@ struct PresetOptionsFrame: FrameProtocol, CustomStringConvertible {
             } else {
                 self.genreMediaOrFileInfo = PresetOptionsFrame.parseFileTypeStrings(parsedArray: parsedArray)
         }
-        Tag.listMetadata.removeAll(where: {$0.frameKey == self.frameKey})
-        Tag.listMetadata.append((self.frameKey, self.genreMediaOrFileInfo))
     }
 
     
-    // // MARK: - Frame Building
+    // MARK: - Frame Building
     init(_ layout: FrameLayoutIdentifier,
          genreMediaOrFileInfo: [String?]) {
         self.layout = layout
         self.genreMediaOrFileInfo = genreMediaOrFileInfo
         self.flags = PresetOptionsFrame.defaultFlags
         self.frameKey = layout.frameKey(additionalIdentifier: nil)
-        Tag.listMetadata.removeAll(where: {$0.frameKey == self.frameKey})
-        Tag.listMetadata.append((self.frameKey, self.genreMediaOrFileInfo))
     }
     
     func encodeContents(version: Version) throws -> Data {
@@ -287,12 +283,10 @@ struct PresetOptionsFrame: FrameProtocol, CustomStringConvertible {
     
 }
 
-// // MARK: - Tag extensions
+// MARK: - Tag extensions
 // get and set functions for `PresetOptionsFrame` frame types, which retrieves or sets three strings, all of which are optional (genre only uses two of these.) Each individual frame of this type will call these functions in a get-set property of function, where appropriate.
-
-
 extension Tag {
-    func presetOptionArray(for frameKey: FrameKey) -> [String?]? {
+    func get(forPresetOptionFrame frameKey: FrameKey) -> [String?]? {
         if let frame = self.frames[frameKey],
             case .presetOptionsFrame(let presetOptionsFrame) = frame {
             return presetOptionsFrame.genreMediaOrFileInfo
@@ -312,7 +306,7 @@ extension Tag {
             var presetType: GenreType? = nil
             var customString: String? = ""
             // if the array exists and isn't empty
-            if let frameArray = presetOptionArray(for: .genre) {
+            if let frameArray = get(forPresetOptionFrame: .genre) {
                 // for each item in the array...
                 for item in frameArray {
                     // if the item isn't an empty string
@@ -343,7 +337,7 @@ extension Tag {
             var presetRefinement: MediaTypeRefinements? = nil
             var refinementString: String? = ""
             // if the array exists and isn't empty
-            if let frameArray = presetOptionArray(for: .mediaType),
+            if let frameArray = get(forPresetOptionFrame: .mediaType),
                 !frameArray.isEmpty {
                 for element in frameArray {
                     if let elementString = element, elementString != "" {
@@ -378,7 +372,7 @@ extension Tag {
             var presetRefinement: FileTypeRefinements? = nil
             var refinementString: String? = ""
             // if the array exists and isn't empty
-            if let frameArray = presetOptionArray(for: .fileType),
+            if let frameArray = get(forPresetOptionFrame: .fileType),
                 !frameArray.isEmpty {
                 for element in frameArray {
                     if let elementString = element, elementString != "" {

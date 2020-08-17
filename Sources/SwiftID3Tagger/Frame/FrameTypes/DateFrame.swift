@@ -198,7 +198,7 @@ struct DateFrame: FrameProtocol, CustomStringConvertible {
 
 
 extension Tag {
-    internal func date(for frameKey: FrameKey)
+    internal func get(forDateFrame frameKey: FrameKey)
         -> (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
             if let frame = self.frames[frameKey],
                 case .dateFrame(let dateFrame) = frame {
@@ -231,7 +231,7 @@ extension Tag {
     public var releaseDateTime:
         (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
         get {
-            date(for: .releaseTime)
+            get(forDateFrame: .releaseTime)
         }
         set {
             let calendar = Calendar(identifier: .iso8601)
@@ -254,7 +254,7 @@ extension Tag {
     public var encodingDateTime:
         (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
         get {
-            date(for: .encodingTime)
+            get(forDateFrame: .encodingTime)
         }
         set {
             let calendar = Calendar(identifier: .iso8601)
@@ -276,7 +276,7 @@ extension Tag {
     public var taggingDateTime:
         (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
         get {
-            date(for: .taggingTime)
+            get(forDateFrame: .taggingTime)
         }
         set {
             let calendar = Calendar(identifier: .iso8601)
@@ -299,7 +299,7 @@ extension Tag {
     public var recordingDateTime:
         (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
         get {
-            date(for: .recordingDate)
+            get(forDateFrame: .recordingDate)
         }
         set {
             let calendar = Calendar(identifier: .iso8601)
@@ -322,7 +322,7 @@ extension Tag {
     public var originalReleaseTime:
         (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
         get {
-            date(for: .originalReleaseTime)
+            get(forDateFrame: .originalReleaseTime)
         }
         set {
             let calendar = Calendar(identifier: .iso8601)
@@ -343,7 +343,7 @@ extension Tag {
     @available(OSX 10.12, *)
     public var originalReleaseYear: Int? {
         get {
-            date(for: .originalReleaseTime)?.year
+            get(forDateFrame: .originalReleaseTime)?.year
         }
         set {
             let calendar = Calendar(identifier: .iso8601)
@@ -361,7 +361,7 @@ extension Tag {
     @available(OSX 10.12, *)
     public var date: (month: Int?, day: Int?)? {
         get {
-            if let date = date(for: .date) {
+            if let date = get(forDateFrame: .date) {
                 return (date.month, date.day)
             } else {
                 return nil
@@ -384,7 +384,7 @@ extension Tag {
     @available(OSX 10.12, *)
     public var time: (hour: Int?, minute: Int?)? {
         get {
-            if let date = date(for: .time) {
+            if let date = get(forDateFrame: .time) {
                 return (date.hour, date.minute)
             } else {
                 return nil
@@ -407,7 +407,7 @@ extension Tag {
     @available(OSX 10.12, *)
     public var year: Int? {
         get {
-            if let date = date(for: .year) {
+            if let date = get(forDateFrame: .year) {
                 return date.year
             } else {
                 return nil

@@ -22,7 +22,7 @@ struct StringFrame: FrameProtocol, CustomStringConvertible {
         """
     }
     
-    // // MARK: - Properties
+    // MARK: - Properties
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
@@ -42,7 +42,7 @@ struct StringFrame: FrameProtocol, CustomStringConvertible {
         .publisherWebpage,
         .radioStationWebpage]
     
-    // // MARK: - Frame Parsing
+    // MARK: - Frame Parsing
     init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,
@@ -66,11 +66,9 @@ struct StringFrame: FrameProtocol, CustomStringConvertible {
         } else {
             self.contentString = try StringFrame.parseEncodedString(data: parsing, version: version)
         }
-        Tag.listMetadata.removeAll(where: {$0.frameKey == self.frameKey})
-        Tag.listMetadata.append((self.frameKey, self.contentString))
     }
     
-    // // MARK: - Frame creation
+    // MARK: - Frame creation
     /**
      Initialize a frame with only string content, presented as a single string WITHOUT new line characters.
      Parameters:
@@ -87,8 +85,6 @@ struct StringFrame: FrameProtocol, CustomStringConvertible {
         self.layout = layout        
         // initialize the frameKey property based on the layout
         self.frameKey = layout.frameKey(additionalIdentifier: nil)
-        Tag.listMetadata.removeAll(where: {$0.frameKey == self.frameKey})
-        Tag.listMetadata.append((self.frameKey, self.contentString))
     }
     
     /// Encodes the contents of the frame, without any header data
@@ -113,7 +109,7 @@ struct StringFrame: FrameProtocol, CustomStringConvertible {
     }
 }
 
-// // MARK: - Tag extension
+// MARK: - Tag extension
 /* get and set functions for `StringFrame` frame types. Each individual frame of this type will have its own get-set property that will call these functions using its `FrameKey` property and relevant data */
 
 
@@ -122,7 +118,7 @@ extension Tag {
     /// Instantiates parsing operation to retrieve a frame's contents from a `Tag`
     /// Parameter frameKey: The unique identifier of the frame
     /// Returns: The frame's contents as a human-readable, unterminated string
-    internal func string(for frameKey: FrameKey) -> String? {
+    internal func get(forStringFrame frameKey: FrameKey) -> String? {
         // check that the frame is a String Frame
         if let frame = self.frames[frameKey],
             case .stringFrame(let stringFrame) = frame {
@@ -133,7 +129,7 @@ extension Tag {
         }
     }
     
-    internal func intString(for frameKey: FrameKey) -> Int? {
+    internal func get(forIntFrame frameKey: FrameKey) -> Int? {
         if let frame = self.frames[frameKey],
             case .stringFrame(let stringFrame) = frame {
             // get the contentString from the frame data and convert it to an Int
@@ -164,31 +160,31 @@ extension Tag {
     ///
     /// If another frame of this type already exists, only one will be written.
     public var series: String? {
-        get { string(for: .series) ?? "" }
+        get { get(forStringFrame: .series) }
         set { set(.known(.contentGroup), .series, to: newValue ?? "") }
     }
     
     /// Album frame getter-setter. ID3 Identifier: `TAL`/`TALB`
     public var album: String? {
-        get { string(for: .album) ?? "" }
+        get { get(forStringFrame: .album) }
         set { set(.known(.album), .album, to: newValue ?? "") }
     }
     
     ///  AlbumArtist frame getter-setter. ID3 Identifier: `TP2`/`TPE2`
     public var albumArtist: String? {
-        get { string(for: .albumArtist) ?? "" }
+        get { get(forStringFrame: .albumArtist) }
         set { set(.known(.albumArtist), .albumArtist, to: newValue ?? "") }
     }
     
     /// AlbumSort frame getter-setter. ID3 Identifier: `TSA`/`TSOA`
     public var albumSort: String? {
-        get { string(for: .albumSort) ?? "" }
+        get { get(forStringFrame: .albumSort) }
         set { set(.known(.albumSort), .albumSort, to: newValue ?? "") }
     }
     
     /// AlbumArtistSort frame getter-setter. ID3 Identifier: `TS2`/`TSO2`
     public var albumArtistSort: String? {
-        get { string(for: .albumArtistSort) ?? "" }
+        get { get(forStringFrame: .albumArtistSort) }
         set { set(.known(.albumArtistSort), .albumArtistSort, to: newValue ?? "") }
     }
     
@@ -196,7 +192,7 @@ extension Tag {
     ///
     /// If another frame of this type already exists, only one will be written.
     public var arranger: String? {
-        get { string(for: .arranger) ?? "" }
+        get { get(forStringFrame: .arranger) }
         set { set(.known(.arranger), .arranger, to: newValue ?? "") }
     }
     
@@ -204,7 +200,7 @@ extension Tag {
     ///
     /// If another frame of this type already exists, only one will be written.
     public var remixer: String? {
-        get { string(for: .remixer) ?? "" }
+        get { get(forStringFrame: .remixer) }
         set { set(.known(.arranger), .remixer, to: newValue ?? "") }
     }
     
@@ -212,19 +208,19 @@ extension Tag {
     ///
     /// If another frame of this type already exists, only one will be written.
     public var interpretedBy: String? {
-        get { string(for: .interpretedBy) ?? "" }
+        get { get(forStringFrame: .interpretedBy) }
         set { set(.known(.arranger), .interpretedBy, to: newValue ?? "") }
     }
     
     /// Artist getter-setter. ID3 Identifier: `TP1`/`TPE1`
     public var artist: String? {
-        get { string(for: .artist) ?? "" }
+        get { get(forStringFrame: .artist) }
         set { set(.known(.artist), .artist, to: newValue ?? "") }
     }
     
     /// ArtistSort getter-setter. ID3 Identifier: `TSP`/`TSOP`
     public var artistSort: String? {
-        get { string(for: .artistSort) ?? "" }
+        get { get(forStringFrame: .artistSort) }
         set { set(.known(.artistSort), .artistSort, to: newValue ?? "") }
     }
     
@@ -232,7 +228,7 @@ extension Tag {
     ///
     /// If another frame of this type already exists, only one will be written.
     public var author: String? {
-        get { string(for: .author) ?? "" }
+        get { get(forStringFrame: .author) }
         set { set(.known(.artist), .author, to: newValue ?? "") }
     }
     
@@ -240,19 +236,19 @@ extension Tag {
     ///
     /// If another frame of this type already exists, only one will be written.
     public var authorSort: String? {
-        get { string(for: .authorSort) ?? "" }
+        get { get(forStringFrame: .authorSort) }
         set { set(.known(.artistSort), .authorSort, to: newValue ?? "") }
     }
     
     /// Composer getter-setter. ID3 Identifier: `TCM`/`TCOM`
     public var composer: String? {
-        get { string(for: .composer) ?? "" }
+        get { get(forStringFrame: .composer) }
         set { set(.known(.composer), .composer, to: newValue ?? "") }
     }
     
     /// ComposerSort getter-setter. ID3 Identifier: `TSC`/`TSOC`
     public var composerSort: String? {
-        get { string(for: .composerSort) ?? "" }
+        get { get(forStringFrame: .composerSort) }
         set { set(.known(.composerSort), .composerSort, to: newValue ?? "") }
     }
     
@@ -260,7 +256,7 @@ extension Tag {
     ///
     /// If another frame of this type already exists, only one will be written.
     public var narrator: String? {
-        get { string(for: .narrator) ?? "" }
+        get { get(forStringFrame: .narrator) }
         set { set(.known(.composer), .narrator, to: newValue ?? "") }
     }
     
@@ -269,19 +265,19 @@ extension Tag {
     ///
     /// If another frame of this type already exists, only one will be written.
     public var narratorSort: String? {
-        get { string(for: .narratorSort) ?? "" }
+        get { get(forStringFrame: .narratorSort) }
         set { set(.known(.composerSort), .narrator, to: newValue ?? "") }
     }
     
     /// Conductor getter-setter. ID3 Identifier: `TP3`/`TPE3`
     public var conductor: String? {
-        get { string(for: .conductor) ?? "" }
+        get { get(forStringFrame: .conductor) }
         set { set(.known(.conductor), .conductor, to: newValue ?? "") }
     }
     
     /// ContentGroup getter-setter. ID3 Identifier: `TT1`/`TIT1`
     public var contentGroup: String? {
-        get { string(for: .contentGroup) ?? "" }
+        get { get(forStringFrame: .contentGroup) }
         set { set(.known(.contentGroup), .contentGroup, to: newValue ?? "") }
     }
     
@@ -290,44 +286,44 @@ extension Tag {
     ///
     /// If another frame of this type already exists, only one will be written.
     public var work: String? {
-        get { string(for: .work) ?? "" }
+        get { get(forStringFrame: .work) }
         set { set(.known(.contentGroup), .work, to: newValue ?? "") }
     }
     
     /// Copyright getter-setter. ID3 Identifier: `TCR`/`TCOP`
     public var copyright: String? {
-        get { string(for: .copyright) ?? "" }
+        get { get(forStringFrame: .copyright) }
         set { set(.known(.copyright), .copyright, to: newValue ?? "") }
     }
     
     /// EncodedBy getter-setter. ID3 Identifier: `TEN`/`TENC`
     public var encodedBy: String? {
-        get { string(for: .encodedBy) ?? "" }
+        get { get(forStringFrame: .encodedBy) }
         set { set(.known(.encodedBy), .encodedBy, to: newValue ?? "") }
     }
     
     /// EncodingSettings getter-setter. ID3 Identifier: `TSS`/`TSSE`
     public var encodingSettings: String? {
-        get { string(for: .encodingSettings) ?? "" }
+        get { get(forStringFrame: .encodingSettings) }
         set { set(.known(.encodingSettings), .encodingSettings, to: newValue ?? "") }
     }
     
     /// FileOwner getter-setter. ID3 Identifier: `TOWN`. Valid only for tag versions 2.3/2.4
     public var fileOwner: String? {
-        get { string(for: .fileOwner) ?? "" }
+        get { get(forStringFrame: .fileOwner) }
         set { set(.known(.fileOwner), .fileOwner, to: newValue ?? "") }
     }
     
     /// Grouping getter-setter. This is a non-standard, iTunes compliant frame.
     /// ID3 Identifier: `GRP1`
     public var grouping: String? {
-        get { string(for: .grouping) ?? "" }
+        get { get(forStringFrame: .grouping) }
         set { set(.known(.grouping), .grouping, to: newValue ?? "") }
     }
     
     /// InitialKey getter-setter. ID3 Identifier: `TKE`/`TKEY`
     public var initialKey: KeySignature? {
-        get { return KeySignature(rawValue: string(for: .initialKey) ?? "") ?? .unknown
+        get { return KeySignature(rawValue: get(forStringFrame: .initialKey) ?? "") ?? .unknown
         }
         set { set(.known(.initialKey), .initialKey, to: newValue?.rawValue ?? "")
         }
@@ -335,91 +331,91 @@ extension Tag {
     
     /// Lyricist getter-setter. ID3 Identifier: `TXT`/`TEXT`
     public var lyricist: String? {
-        get { string(for: .lyricist) ?? "" }
+        get { get(forStringFrame: .lyricist) }
         set { set(.known(.lyricist), .lyricist, to: newValue ?? "") }
     }
     
     /// Mood getter-setter. ID3 Identifier: `TMOO`. Valid only for tag version 2.4
     public var mood: String? {
-        get { string(for: .mood) ?? "" }
+        get { get(forStringFrame: .mood) }
         set { set(.known(.mood), .mood, to: newValue ?? "") }
     }
     
     /// MovementName getter-setter. This is a non-standard, iTunes compliant frame
     /// ID3 Identifier: `MVNM`.
     public var movementName: String? {
-        get { string(for: .movementName) ?? "" }
+        get { get(forStringFrame: .movementName) }
         set { set(.known(.movementName), .movementName, to: newValue ?? "") }
     }
     
     /// OriginalAlbum getter-setter. ID3 Identifier: `TOT`/`TOAL`.
     public var originalAlbum: String? {
-        get { string(for: .originalAlbum) ?? "" }
+        get { get(forStringFrame: .originalAlbum) }
         set { set(.known(.originalAlbum), .originalAlbum, to: newValue ?? "") }
     }
     
     /// OriginalArtist getter-setter. ID3 Identifier: `TOP`/`TOPE`.
     public var originalArtist: String? {
-        get { string(for: .originalArtist) ?? "" }
+        get { get(forStringFrame: .originalArtist) }
         set { set(.known(.originalArtist), .originalArtist, to: newValue ?? "") }
     }
     
     /// OriginalFilename getter-setter. ID3 Identifier: `TOF`/`TOFN`.
     public var originalFilename: String? {
-        get { string(for: .originalFilename) ?? "" }
+        get { get(forStringFrame: .originalFilename) }
         set { set(.known(.originalFilename), .originalFilename, to: newValue ?? "") }
     }
     
     /// OriginalLyricist getter-setter. ID3 Identifier: `TOL`/`TOLY`.
     public var originalLyricist: String? {
-        get { string(for: .originalLyricist) ?? "" }
+        get { get(forStringFrame: .originalLyricist) }
         set { set(.known(.originalLyricist), .originalLyricist, to: newValue ?? "") }
     }
     
     /// PodcastCategory getter-setter. This is a non-standard, iTunes compliant frame
     /// ID3 Identifier: `TCAT`.
     public var podcastCategory: String? {
-        get { string(for: .podcastCategory) ?? "" }
+        get { get(forStringFrame: .podcastCategory) }
         set { set(.known(.podcastCategory), .podcastCategory, to: newValue ?? "") }
     }
     
     /// PodcastDescription getter-setter. This is a non-standard, iTunes compliant frame
     /// ID3 Identifier: `TDES`.
     public var podcastDescription: String? {
-        get { string(for: .podcastDescription) ?? "" }
+        get { get(forStringFrame: .podcastDescription) }
         set { set(.known(.podcastDescription), .podcastDescription, to: newValue ?? "") }
     }
     
     /// PodcastID getter-setter. This is a non-standard, iTunes compliant frame
     /// ID3 Identifier: `TGID`.
     public var podcastID: String? {
-        get { string(for: .podcastID) ?? "" }
+        get { get(forStringFrame: .podcastID) }
         set { set(.known(.podcastID), .podcastID, to: newValue ?? "") }
     }
     
     /// PodcastKeywords getter-setter. This is a non-standard, iTunes compliant frame
     /// ID3 Identifier: `TKWD`.
     public var podcastKeywords: String? {
-        get { string(for: .podcastKeywords) ?? "" }
+        get { get(forStringFrame: .podcastKeywords) }
         set { set(.known(.podcastKeywords), .podcastKeywords, to: newValue ?? "") }
     }
     
     /// PodcastFeedLink getter-setter. This is a non-standard, iTunes compliant frame
     /// ID3 Identifier: `WFED`.
     public var podcastFeedLink: String? {
-        get { string(for: .podcastFeedLink) ?? "" }
+        get { get(forStringFrame: .podcastFeedLink) }
         set { set(.known(.podcastFeedLink), .podcastFeedLink, to: newValue ?? "") }
     }
     
     /// ProducedNotice getter-setter. ID3 Identifier: `TPRO`.
     public var producedNotice: String? {
-        get { string(for: .producedNotice) ?? "" }
+        get { get(forStringFrame: .producedNotice) }
         set { set(.known(.producedNotice), .producedNotice, to: newValue ?? "") }
     }
     
     /// Publisher getter-setter. ID3 Identifier: `TPB`/`TPUB`.
     public var publisher: String? {
-        get { string(for: .publisher) ?? "" }
+        get { get(forStringFrame: .publisher) }
         set { set(.known(.publisher), .publisher, to: newValue ?? "") }
     }
     
@@ -428,7 +424,7 @@ extension Tag {
     ///
     /// If another frame of this type already exists, only one will be written.
     public var label: String? {
-        get { string(for: .label) ?? "" }
+        get { get(forStringFrame: .label) }
         set { set(.known(.publisher), .label, to: newValue ?? "") }
     }
     
@@ -437,7 +433,7 @@ extension Tag {
     ///
     /// If another frame of this type already exists, only one will be written.
     public var recordCompany: String? {
-        get { string(for: .recordCompany) ?? "" }
+        get { get(forStringFrame: .recordCompany) }
         set { set(.known(.publisher), .recordCompany, to: newValue ?? "") }
     }
     
@@ -446,111 +442,111 @@ extension Tag {
     ///
     /// If another frame of this type already exists, only one will be written.
     public var studio: String? {
-        get { string(for: .studio) ?? "" }
+        get { get(forStringFrame: .studio) }
         set { set(.known(.publisher), .studio, to: newValue ?? "") }
     }
     
     /// (Internet)RadioStation getter-setter. ID3 Identifier: `TRS`/`TRSN`.
     public var radioStation: String? {
-        get { string(for: .radioStation) ?? "" }
+        get { get(forStringFrame: .radioStation) }
         set { set(.known(.radioStation), .radioStation, to: newValue ?? "") }
     }
     
     /// (Internet)RadioStationOwner getter-setter. ID3 Identifier: `TRO`/`TRSO`.
     public var radioStationOwner: String? {
-        get { string(for: .radioStationOwner) ?? "" }
+        get { get(forStringFrame: .radioStationOwner) }
         set { set(.known(.radioStationOwner), .radioStationOwner, to: newValue ?? "") }
     }
     
     /// SetSubtitle getter-setter. ID3 Identifier: `TSST`.
     public var setSubtitle: String? {
-        get { string(for: .setSubtitle) ?? "" }
+        get { get(forStringFrame: .setSubtitle) }
         set { set(.known(.setSubtitle), .setSubtitle, to: newValue ?? "") }
     }
     
     /// Subtitle getter-setter. ID3 Identifier: `TT3`/`TIT3`
     public var subtitle: String? {
-        get { string(for: .subtitle) ?? "" }
+        get { get(forStringFrame: .subtitle) }
         set { set(.known(.subtitle), .subtitle, to: newValue ?? "") }
     }
     
     /// Title getter-setter. ID3 Identifier: `TT2`/`TIT2`
     public var title: String? {
-        get { string(for: .title) ?? "" }
+        get { get(forStringFrame: .title) }
         set { set(.known(.title), .title, to: newValue ?? "") }
     }
     
     /// TitleSort getter-setter. ID3 Identifier: `TST`/`TSOT`
     public var titleSort: String? {
-        get { string(for: .titleSort) ?? "" }
+        get { get(forStringFrame: .titleSort) }
         set { set(.known(.titleSort), .titleSort, to: newValue ?? "") }
     }
     /// ArtistWebpage getter-setter. ID3 Identifier: `WAR`/`WOAR`
     public var artistWebpage: String? {
-        get { string(for: .artistWebpage) ?? "" }
+        get { get(forStringFrame: .artistWebpage) }
         set { set(.known(.artistWebpage), .artistWebpage,
                   to: newValue ?? "") }
     }
     
     /// (Official)AudioFileWebpage getter-setter. ID3 Identifier: `WAF`/`WOAF`
     public var audioFileWebpage: String? {
-        get { string(for: .audioFileWebpage) ?? "" }
+        get { get(forStringFrame: .audioFileWebpage) }
         set { set(.known(.audioFileWebpage), .audioFileWebpage,
                   to: newValue ?? "") }
     }
     
     /// (Official)AudioSourceWebpage getter-setter. ID3 Identifier: `WAS`/`WOAS`
     public var audioSourceWebpage: String? {
-        get { string(for: .audioSourceWebpage) ?? "" }
+        get { get(forStringFrame: .audioSourceWebpage) }
         set { set(.known(.audioSourceWebpage), .audioSourceWebpage,
                   to: newValue ?? "") }
     }
     
     /// Copyright/Legal Information Webpage getter-setter. ID3 Identifier: `WCP`/`WCOP`
     public var copyrightWebpage: String? {
-        get { string(for: .copyrightWebpage) ?? "" }
+        get { get(forStringFrame: .copyrightWebpage) }
         set { set(.known(.copyrightWebpage), .copyrightWebpage,
                   to: newValue ?? "") }
     }
     
     /// PaymentWebpage getter-setter. ID3 Identifier: `WPAY`
     public var paymentWebpage: String? {
-        get { string(for: .paymentWebpage) ?? "" }
+        get { get(forStringFrame: .paymentWebpage) }
         set { set(.known(.paymentWebpage), .paymentWebpage,
                   to: newValue ?? "") }
     }
     
     /// PublisherWebpage getter-setter. ID3 Identifier: `WPB`/`WPUB`
     public var publisherWebpage: String? {
-        get { string(for: .publisherWebpage) ?? "" }
+        get { get(forStringFrame: .publisherWebpage) }
         set { set(.known(.publisherWebpage), .publisherWebpage,
                   to: newValue ?? "") }
     }
     
     /// (Official Internet)RadioStationWebpage getter-setter. ID3 Identifier: `WRS`/`WORS`
     public var radioStationWebpage: String? {
-        get { string(for: .radioStationWebpage) ?? "" }
+        get { get(forStringFrame: .radioStationWebpage) }
         set { set(.known(.radioStationWebpage), .radioStationWebpage,
                   to: newValue ?? "") }
     }
     
     /// BeatsPerMinute getter-setter. ID3 Identifier: `TBP`/`TBPM`
     public var bpm: Int? {
-        get { intString(for: .bpm) ?? 0 }
+        get { get(forIntFrame: .bpm) }
         set { set(.known(.bpm), .bpm,
                   to: String(newValue ?? 0)) }
     }
     
     /// IRSC getter-setter. ID3 Identifier: `TRC`/`TSRC`
     public var isrc: Int? {
-        get { intString(for: .isrc) ?? 0 }
+        get { get(forIntFrame: .isrc) }
         set { set(.known(.isrc), .isrc,
                   to: String(newValue ?? 0)) }
     }
     
     /// Length getter-setter. ID3 Identifier: `TLE`/`TLEN`
     public var length: Int? {
-        get { intString(for: .length) ?? 0 }
+        get { get(forIntFrame: .length) }
         set { set(.known(.length), .length,
                   to: String(newValue ?? 0)) }
     }
@@ -558,7 +554,7 @@ extension Tag {
     /// TotalMovements getter-setter. This is a non-standard, iTunes non-standard frame
     /// ID3 Identifier: `MVCN`.
     public var totalMovements: Int? {
-        get { intString(for: .movementCount) ?? 0 }
+        get { get(forIntFrame: .movementCount) }
         set { set(.known(.movementCount), .movementCount,
                   to: String(newValue ?? 0)) }
     }
@@ -566,14 +562,14 @@ extension Tag {
     /// MovementNumber getter-setter. This is a non-standard, iTunes non-standard frame
     /// ID3 Identifier: `MVIN`.
     public var movementNumber: Int? {
-        get { intString(for: .movementNumber) ?? 0 }
+        get { get(forIntFrame: .movementNumber) }
         set { set(.known(.movementNumber), .movementNumber,
                   to: String(newValue ?? 0)) }
     }
     
     /// PlaylistDelay getter-setter. ID3 Identifier: `TDY`/`TDLY`
     public var playlistDelay: Int? {
-        get { intString(for: .playlistDelay) ?? 0 }
+        get { get(forIntFrame: .playlistDelay) }
         set { set(.known(.playlistDelay), .playlistDelay,
                   to: String(newValue ?? 0)) }
     }
@@ -581,7 +577,7 @@ extension Tag {
     /// Compilation (flag) getter-setter. ID3 identifier: `TCP`/`TCMP`. iTunes non-standard frame
     public var compilation: Bool? {
         get {
-            let intValue = intString(for: .compilation) ?? 0
+            let intValue = get(forIntFrame: .compilation)
             if intValue == 1 {
                 return true
             } else {

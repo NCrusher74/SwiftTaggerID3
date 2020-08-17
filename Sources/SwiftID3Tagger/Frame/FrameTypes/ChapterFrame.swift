@@ -12,17 +12,21 @@ import Foundation
 /**
  A type representing an ID3 chapter frame. There may be multiple chapter frames in a tag, but the `elementID` must be unique. Therefore, the `elementID` will serve as the `FrameKey`
  */
-
-
 @available(OSX 10.12, *)
 public struct ChapterFrame: FrameProtocol, CustomStringConvertible {
     public var description: String {
-        return """
-        \(self.frameKey) : (\(self.embeddedSubframesTag?.title) @ \(self.startTime))
-        """
+        if let title = self.embeddedSubframesTag?.title {
+            return """
+            \(self.frameKey) : (\(title) @ \(self.startTime))
+            """
+        } else {
+            return """
+            \(self.frameKey) : UntitledChapter @ \(self.startTime))
+            """
         }
+    }
     
-    // // MARK: - Properties
+    // MARK: - Properties
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
@@ -37,7 +41,7 @@ public struct ChapterFrame: FrameProtocol, CustomStringConvertible {
     /** A sequence of optional frames that are embedded within the “CHAP” frame and which describe the content of the chapter (e.g. a “TIT2” frame representing the chapter name) or provide related material such as URLs and images. These sub-frames are contained within the bounds of the “CHAP” frame as signalled by the size field in the “CHAP” frame header. If a parser does not recognise “CHAP” frames it can skip them using the size field in the frame header. When it does this it will skip any embedded sub-frames carried within the frame. */
     public var embeddedSubframesTag: Tag?
     
-    // // MARK: - Frame parsing
+    // MARK: - Frame parsing
     init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,
@@ -62,8 +66,8 @@ public struct ChapterFrame: FrameProtocol, CustomStringConvertible {
         let endTimeUInt32 = UInt32(parsing: endTimeData, .bigEndian)
         self.endTime = Int(endTimeUInt32)
 
-        /** The Start offset is a zero-based count of bytes from the beginning of the file to the first byte of the first audio frame in the chapter. If these bytes are all set to 0xFF then the value should be ignored and the start time value should be utilized.*/
-        /** The End offset is a zero-based count of bytes from the beginning of the file to the first byte of the audio frame following the end of the chapter. If these bytes are all set to 0xFF then the value should be ignored and the end time value should be utilized.*/
+        /* The Start offset is a zero-based count of bytes from the beginning of the file to the first byte of the first audio frame in the chapter. If these bytes are all set to 0xFF then the value should be ignored and the start time value should be utilized.*/
+        /* The End offset is a zero-based count of bytes from the beginning of the file to the first byte of the audio frame following the end of the chapter. If these bytes are all set to 0xFF then the value should be ignored and the end time value should be utilized.*/
         /// SwiftTagger uses start and end times, these will be set to 0xFF by default
         parsing = parsing.dropFirst(4) // start byte offset, unused
         parsing = parsing.dropFirst(4) // end byte offset, unused
@@ -85,7 +89,7 @@ public struct ChapterFrame: FrameProtocol, CustomStringConvertible {
         self.embeddedSubframesTag = Tag(subframes: subframes)
     }
 
-    // // MARK: - Frame building
+    // MARK: - Frame building
     /**
      - parameter elementID: the elementID of the frame. Null terminated.
      - parameter startTime: integer indicating the beginning of the chapter, in milliseconds
@@ -152,9 +156,7 @@ public struct ChapterFrame: FrameProtocol, CustomStringConvertible {
     }
 }
 
-// // MARK: - Tag extension
-
-
+// MARK: - Tag extension
 extension Tag {
 
     mutating func removeChapterFrame(with elementID: String) {

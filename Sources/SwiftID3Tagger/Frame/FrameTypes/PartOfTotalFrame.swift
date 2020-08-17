@@ -25,7 +25,7 @@ struct PartOfTotalFrame: FrameProtocol, CustomStringConvertible {
         }
     }
 
-    // // MARK: - Properties
+    // MARK: - Properties
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
@@ -36,9 +36,7 @@ struct PartOfTotalFrame: FrameProtocol, CustomStringConvertible {
     /// The total number of tracks/discs.
     var total: Int?
     
-    // // MARK: - Frame parsing initializer
-    
-
+    // MARK: - Frame parsing initializer
     init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,
@@ -64,7 +62,7 @@ struct PartOfTotalFrame: FrameProtocol, CustomStringConvertible {
     }
 
 
-    // // MARK: - Frame building
+    // MARK: - Frame building
     /**
      Initialize a frame building instance
      - parameter part: the index of the track/disc.
@@ -98,16 +96,14 @@ struct PartOfTotalFrame: FrameProtocol, CustomStringConvertible {
     }
 }
 
-// // MARK: - Internal Tag extension
+// MARK: - Internal Tag extension
 /* get and set functions for `PartOfTotalFrame` frame types. Each individual frame of this type will have its own get-set property that will call these fucntions */
-
-
 extension Tag {
     
     /// Retrieve an integer tuple from the frame data
     /// - Parameter frameKey: the unique identifier of the frame
     /// - Returns: the frame's contents as an integer tuple
-    internal func intTuple(for frameKey: FrameKey)
+    internal func get(forPartOfTotalFrame frameKey: FrameKey)
         -> (part: Int, total: Int?)? {
             // check that the frame is a PartOfTotalFrame
             if let frame = self.frames[frameKey],
@@ -140,7 +136,7 @@ extension Tag {
     /// DiscNumber(/TotalDiscs) getter-setter. ID3 Identifier: `TPA`/`TPOS`
     public var discNumber: (disc: Int, totalDiscs: Int?)? {
         get {
-            let tuple = intTuple(for: .discNumber)
+            let tuple = get(forPartOfTotalFrame: .discNumber)
             return (disc: tuple?.part ?? 0, totalDiscs: tuple?.total)
         }
         set {
@@ -152,7 +148,7 @@ extension Tag {
     /// TrackNumber(/TotalTracks) getter-setter. ID3 Identifier: `TRK`/`TRCK`
     public var trackNumber: (track: Int, totalTracks: Int?)? {
         get {
-            let tuple = intTuple(for: .trackNumber)
+            let tuple = get(forPartOfTotalFrame: .trackNumber)
             return (track: tuple?.part ?? 0, totalTracks: tuple?.total)
         }
         set {

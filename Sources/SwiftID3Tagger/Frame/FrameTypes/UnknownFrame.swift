@@ -12,8 +12,18 @@ import Foundation
 /** a type that passes through any unrecognized or unhandled frame content as-is */
 public struct UnknownFrame: FrameProtocol, CustomStringConvertible {
     public var description: String {
+        let data = self.contents
+        let components = data.hexadecimal().components(separatedBy: " ")
+        var array = [String]()
+        for component in components {
+            let newComponent = "0x\(component)"
+            array.append(newComponent)
+        }
+        let string = array.joined(separator: " ")
+
+        
         return """
-        \(self.frameKey): \(self.contents.hexadecimal())
+        \(self.frameKey): \(string)
         """
     }
 
@@ -33,8 +43,10 @@ public struct UnknownFrame: FrameProtocol, CustomStringConvertible {
         self.layout = layout
         self.frameKey = .unknown(uuid: self.uuid)
         self.contents = contents
-        Tag.listMetadata.removeAll(where: {$0.frameKey == self.frameKey})
-        Tag.listMetadata.append((self.frameKey, self.contents))
+
+        let entry = (self.frameKey, self.uuid.uuidString, self.contents.hexadecimal())
+        Tag.metadataWithDifferentiatingElement.removeAll(where: {$0.frameKey == self.frameKey})
+        Tag.metadataWithDifferentiatingElement.append(entry)
     }
 
     init(identifier: String, key: UUID, contents: Data){
@@ -42,8 +54,10 @@ public struct UnknownFrame: FrameProtocol, CustomStringConvertible {
         self.layout = .unknown(identifier)
         self.contents = contents
         self.frameKey = .unknown(uuid: uuid)
-        Tag.listMetadata.removeAll(where: {$0.frameKey == self.frameKey})
-        Tag.listMetadata.append((self.frameKey, self.contents))
+
+        let entry = (self.frameKey, self.uuid.uuidString, self.contents.hexadecimal())
+        Tag.metadataWithDifferentiatingElement.removeAll(where: {$0.frameKey == self.frameKey})
+        Tag.metadataWithDifferentiatingElement.append(entry)
     }
 
     func encodeContents(version: Version) throws -> Data {

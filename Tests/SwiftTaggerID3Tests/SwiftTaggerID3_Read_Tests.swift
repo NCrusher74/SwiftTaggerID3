@@ -223,27 +223,6 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
     @available(OSX 10.12, *)
     func testListMetdata() throws {
         var tag = try TestFile.v24.tag()
-        tag?.albumSort = "New Album Sort"
-        tag?.discNumber?.disc = 2
-        tag?.discNumber?.totalDiscs = 4
-        tag?.genre?.presetGenre = .Abstract
-        tag?.genre?.customGenre = "Stuff"
-        tag?.bpm = 98
-        tag?.compilation = false
-
-        for item in Tag.listMetadata {
-            print(item)
-        }
+        
     }
 }
-
-/*
- case .albumArtistSort:
- if let value = self.albumArtistSort {
- let entry = (frameKey, value)
- metadata.append(entry)
- }
- 
- } else if frameKey ==
-
- */

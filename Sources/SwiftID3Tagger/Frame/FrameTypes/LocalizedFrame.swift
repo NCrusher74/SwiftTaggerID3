@@ -18,8 +18,6 @@ import Foundation
  
  `Comment` and `UnsynchronizedLyrics` frames are the only frames that allow the use of new-line characters. Therefore, they are ideally suited for long remarks and convenience getter-setter properties for the most common types have been added.
  */
-
-
 struct LocalizedFrame: FrameProtocol, CustomStringConvertible {
     public var description: String {
         return """
@@ -27,7 +25,7 @@ struct LocalizedFrame: FrameProtocol, CustomStringConvertible {
         """
     }
 
-    // // MARK: - Properties
+    // MARK: - Properties
     // Inherited from `FrameProtocol`
     var flags: Data
     var layout: FrameLayoutIdentifier
@@ -41,7 +39,7 @@ struct LocalizedFrame: FrameProtocol, CustomStringConvertible {
     /// the content of the frame
     var contentString: String
     
-    // // MARK: - Frame Parsing
+    // MARK: - Frame Parsing
     init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,
@@ -68,9 +66,19 @@ struct LocalizedFrame: FrameProtocol, CustomStringConvertible {
         self.descriptionString = parsed.description ?? ""
         self.contentString = parsed.content
         self.frameKey = layout.frameKey(additionalIdentifier: self.descriptionString)
+
+        if let description = self.descriptionString {
+            let entry = (self.frameKey, description, self.contentString)
+            Tag.metadataWithDifferentiatingElement.removeAll(where: {$0.frameKey == frameKey})
+            Tag.metadataWithDifferentiatingElement.append(entry)
+        } else {
+            let entry = (self.frameKey, "", self.contentString)
+            Tag.metadataWithDifferentiatingElement.removeAll(where: {$0.frameKey == frameKey})
+            Tag.metadataWithDifferentiatingElement.append(entry)
+        }
     }
     
-    // // MARK: - Frame building
+    // MARK: - Frame building
     /**
      - parameter languageString: the ISO-639-2 language code. default is `undetermined`
      - parameter descriptionString: a terminated text string describing the frame content
@@ -87,6 +95,16 @@ struct LocalizedFrame: FrameProtocol, CustomStringConvertible {
         self.languageString = languageString
         self.descriptionString = descriptionString
         self.contentString = contentString
+
+        if let description = self.descriptionString {
+            let entry = (self.frameKey, description, self.contentString)
+            Tag.metadataWithDifferentiatingElement.removeAll(where: {$0.frameKey == frameKey})
+            Tag.metadataWithDifferentiatingElement.append(entry)
+        } else {
+            let entry = (self.frameKey, "", self.contentString)
+            Tag.metadataWithDifferentiatingElement.removeAll(where: {$0.frameKey == frameKey})
+            Tag.metadataWithDifferentiatingElement.append(entry)
+        }
     }
     
     
@@ -111,7 +129,7 @@ struct LocalizedFrame: FrameProtocol, CustomStringConvertible {
     }
 }
 
-// // MARK: - Tag extension
+// MARK: - Tag extension
 // get and set functions for `LocalizedFrame` frame types, which retrieves or sets up to three strings, one of which may be a language code, and one of which is an optional description string. Each individual frame of this type will call these functions in a get-set property or function, where appropriate.
 extension Tag {
     internal func get(for frameKey: FrameKey,
@@ -185,36 +203,18 @@ extension Tag {
     /// Comments frame getter-setter. ID3 Identifier `COM`/`COMM`
     public subscript(
         comments language: ISO6392Codes,
-        commentsDescription: String?) -> String? {
+        commentDescription: String?) -> String? {
         get {
             get(for:
-                .comments(description: commentsDescription ?? ""),
+                .comments(description: commentDescription ?? ""),
                 language: language,
-                description: commentsDescription) ?? ""
+                description: commentDescription) ?? ""
         }
         set {
             set(.known(.comments),
-                .comments(description: commentsDescription ?? ""),
+                .comments(description: commentDescription ?? ""),
                 in: language.rawValue,
-                to: commentsDescription,
-                with: newValue ?? "")
-        }
-    }
-    
-    /// Description getter-setter. This is a convenience for a custom `COM`/`COMM` frame with a description with a description that can be selected from a list of custom presets
-    public subscript(customComment language: ISO6392Codes,
-        description: CommentDescriptionPresets?) -> String? {
-        get {
-            get(for:
-                .comments(description: description?.rawValue ?? ""),
-                language: language,
-                description: description?.rawValue)
-        }
-        set {
-            set(.known(.comments),
-                .comments(description: description?.rawValue ?? ""),
-                in: language.rawValue,
-                to: description?.rawValue,
+                to: commentDescription,
                 with: newValue ?? "")
         }
     }

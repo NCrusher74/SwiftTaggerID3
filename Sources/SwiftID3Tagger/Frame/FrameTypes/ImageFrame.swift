@@ -29,7 +29,7 @@ struct ImageFrame: FrameProtocol, CustomStringConvertible {
         }
     }
 
-    // // MARK: - Properties
+    // MARK: - Properties
     var flags: Data
     var layout: FrameLayoutIdentifier
     var frameKey: FrameKey
@@ -44,7 +44,7 @@ struct ImageFrame: FrameProtocol, CustomStringConvertible {
     var imageFormat: ImageFormat
     
     
-    // // MARK: - Frame parsing
+    // MARK: - Frame parsing
     init(decodingContents contents: Data.SubSequence,
          version: Version,
          layout: FrameLayoutIdentifier,
@@ -92,9 +92,19 @@ struct ImageFrame: FrameProtocol, CustomStringConvertible {
         self.imageDescription = imageDescription
         self.frameKey = .attachedPicture(description: imageDescription)
         self.image = parsing
+
+        if let description = self.imageDescription {
+            let entry = (self.frameKey, description, self.imageType)
+            Tag.metadataWithDifferentiatingElement.removeAll(where: {$0.frameKey == self.frameKey && $0.differentiatingElement == description})
+            Tag.metadataWithDifferentiatingElement.append(entry)
+        } else {
+            let entry = (self.frameKey, "", self.imageType)
+            Tag.metadataWithDifferentiatingElement.removeAll(where: {$0.frameKey == self.frameKey && $0.differentiatingElement == ""})
+            Tag.metadataWithDifferentiatingElement.append(entry)
+        }
     }
 
-    // // MARK: - Frame building
+    // MARK: - Frame building
     /**
      Initialize an ID attached picture frame.
      - parameter type: the ID3 type of the attached picture. See `ImageType` for a complete list of the available types.
@@ -113,6 +123,16 @@ struct ImageFrame: FrameProtocol, CustomStringConvertible {
         self.flags = ImageFrame.defaultFlags
         self.layout = layout
         self.frameKey = .attachedPicture(description: imageDescription ?? imageType.pictureDescription)
+
+        if let description = self.imageDescription {
+            let entry = (self.frameKey, description, self.imageType)
+            Tag.metadataWithDifferentiatingElement.removeAll(where: {$0.frameKey == frameKey})
+            Tag.metadataWithDifferentiatingElement.append(entry)
+        } else {
+            let entry = (self.frameKey, "", self.imageType)
+            Tag.metadataWithDifferentiatingElement.removeAll(where: {$0.frameKey == frameKey})
+            Tag.metadataWithDifferentiatingElement.append(entry)
+        }
     }
     
     // encode the contents of the frame to add to an ID3 tag
@@ -165,7 +185,7 @@ extension Tag {
         }
     }
     
-    public mutating func setAttachedPicture(imageType: ImageType?, imageDescription: String?, location: URL?) throws {
+    public mutating func set(imageType: ImageType?, imageDescription: String?, location: URL?) throws {
         var imageFormat: ImageFormat
         if location?.pathExtension.lowercased() == "jpg" || location?.pathExtension.lowercased() == "jpeg" {
             imageFormat = .jpg

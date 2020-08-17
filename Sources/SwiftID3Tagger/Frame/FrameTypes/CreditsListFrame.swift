@@ -82,8 +82,6 @@ struct CreditsListFrame: FrameProtocol, CustomStringConvertible {
         self.credits = credits
         self.flags = CreditsListFrame.defaultFlags
         self.frameKey = layout.frameKey(additionalIdentifier: nil)
-        Tag.listMetadata.removeAll(where: {$0.frameKey == self.frameKey})
-        Tag.listMetadata.append((self.frameKey, self.credits))
     }
     
     func encodeContents(version: Version) throws -> Data {
@@ -108,7 +106,7 @@ extension Tag {
     /// retrieve the `[role: [person]]` dictionary from the frame
     /// - Parameter frameKey: the unique identifier for the frame
     /// - Returns: the `[String: [String]]` dictionary of `[role: [person]]` pairs
-    internal func dictionary(for frameKey: FrameKey) -> [ String: [String] ]? {
+    internal func get(forCreditListFrame frameKey: FrameKey) -> [ String: [String] ]? {
         if let frame = self.frames[frameKey],
             case .creditsListFrame(let creditsListFrame) = frame {
             return creditsListFrame.credits
@@ -165,7 +163,7 @@ extension Tag {
     public var musicianCreditsList: [MusicianAndPerformerCredits:[String]]? {
         get {
             var transformedDictionary: [MusicianAndPerformerCredits:[String]] = [:]
-            if let credits = dictionary(for: .musicianCreditsList) {
+            if let credits = get(forCreditListFrame: .musicianCreditsList) {
                 for credit in credits.keys {
                     let transformedCredit = MusicianAndPerformerCredits(rawValue: credit)
                     transformedDictionary[transformedCredit ?? .none] = credits[credit]
@@ -229,7 +227,7 @@ extension Tag {
     public var involvedPeopleList: [InvolvedPersonCredits:[String]]? {
         get {
             var transformedDictionary: [InvolvedPersonCredits:[String]] = [:]
-            if let credits = dictionary(for: .involvedPeopleList) {
+            if let credits = get(forCreditListFrame: .involvedPeopleList) {
                 for credit in credits.keys {
                     let transformedCredit = InvolvedPersonCredits(rawValue: credit)
                     transformedDictionary[transformedCredit ?? .none] = credits[credit]

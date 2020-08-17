@@ -153,404 +153,335 @@ public struct Tag: CustomStringConvertible {
         self.frames = [:]
     }
     
-    public static var listMetadata = [(frameKey: FrameKey, value: Any)]()
+    static var metadataWithDifferentiatingElement = [(frameKey: FrameKey, differentiatingElement: String, value: Any)]()
     
-//    public func listMetadata() throws -> [(frameKey: FrameKey, value: Any)] {
-//        var metadata = [(FrameKey, Any)]()
-//        var frameKeys = [FrameKey]()
-//        var localizedFrames = [Frame]()
-//
-//        for frame in self.frames {
-//            let frameKey = frame.key
-//            frameKeys.append(frameKey)
-//        }
-//
-//        for frameKey in frameKeys {
-//            if frameKey == .album {
-//                if let value = self.album {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .albumSort {
-//                if let value = self.albumSort {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .albumArtist {
-//                if let value = self.albumArtist {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .albumArtistSort {
-//                if let value = self.albumArtistSort {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .arranger {
-//                if let value = self.arranger {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//                if let value = self.remixer {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//                if let value = self.interpretedBy {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .artist {
-//                if let value = self.artist {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//                if let value = self.author {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .artistSort {
-//                if let value = self.artistSort {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//                if let value = self.authorSort {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .artistWebpage {
-//                if let value = self.artistWebpage {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .audioFileWebpage {
-//                if let value = self.audioFileWebpage {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .audioSourceWebpage {
-//                if let value = self.audioSourceWebpage {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .bpm {
-//                if let value = self.bpm {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .compilation {
-//                if let value = self.compilation {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .composer {
-//                if let value = self.composer {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//                if let value = self.narrator {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .composerSort {
-//                if let value = self.composerSort {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//                if let value = self.narratorSort {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .conductor {
-//                if let value = self.conductor {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .contentGroup {
-//                if let value = self.contentGroup {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//                if let value = self.work {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//                if let value = self.series {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .copyright {
-//                if let value = self.copyright {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .copyrightWebpage {
-//                if let value = self.copyrightWebpage {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .date {
-//                if let value = self.date {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .discNumber {
-//                if let value = self.discNumber {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .encodingTime {
-//                if let value = self.encodingDateTime {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .encodedBy {
-//                if let value = self.encodedBy {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .encodingSettings {
-//                if let value = self.encodingSettings {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .fileType {
-//                if let value = self.fileType {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .fileOwner {
-//                if let value = self.fileOwner {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .genre {
-//                if let value = self.genre {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .grouping {
-//                if let value = self.grouping {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .initialKey {
-//                if let value = self.initialKey {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .involvedPeopleList {
-//                if let value = self.involvedPeopleList {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .isrc {
-//                if let value = self.isrc {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .languages {
-//                if let value = self.languages {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .length {
-//                if let value = self.length {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .lyricist {
-//                if let value = self.lyricist {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .mediaType {
-//                if let value = self.mediaType {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .mood {
-//                if let value = self.mood {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .movementCount {
-//                if let value = self.totalMovements {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .movementName {
-//                if let value = self.movementName {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .movementNumber {
-//                if let value = self.movementNumber {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .musicianCreditsList {
-//                if let value = self.musicianCreditsList {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .originalAlbum {
-//                if let value = self.originalAlbum {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .originalArtist {
-//                if let value = self.originalArtist {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .originalFilename {
-//                if let value = self.originalFilename {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .originalLyricist {
-//                if let value = self.originalLyricist {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .originalReleaseTime {
-//                if let value = self.originalReleaseTime {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .paymentWebpage {
-//                if let value = self.paymentWebpage {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .playlistDelay {
-//                if let value = self.playlistDelay {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .podcastCategory {
-//                if let value = self.podcastCategory {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .podcastDescription {
-//                if let value = self.podcastDescription {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .podcastID {
-//                if let value = self.podcastID {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .podcastKeywords {
-//                if let value = self.podcastKeywords {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .podcastFeedLink {
-//                if let value = self.podcastFeedLink {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .producedNotice {
-//                if let value = self.producedNotice {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .publisher {
-//                if let value = self.publisher {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//                if let value = self.studio {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//                if let value = self.label {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//                if let value = self.recordCompany {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .publisherWebpage {
-//                if let value = self.publisherWebpage {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .radioStation {
-//                if let value = self.radioStation {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .radioStationOwner {
-//                if let value = self.radioStationOwner {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .radioStationWebpage {
-//                if let value = self.radioStationWebpage {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .recordingDate {
-//                if let value = self.recordingDateTime {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .releaseTime {
-//                if let value = self.releaseDateTime {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .setSubtitle {
-//                if let value = self.setSubtitle {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .subtitle {
-//                if let value = self.subtitle {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .taggingTime {
-//                if let value = self.taggingDateTime {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .time {
-//                if let value = self.time {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .title {
-//                if let value = self.title {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .titleSort {
-//                if let value = self.titleSort {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .trackNumber {
-//                if let value = self.trackNumber {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else if frameKey == .year {
-//                if let value = self.year {
-//                    let entry = (frameKey, value)
-//                    metadata.append(entry)
-//                }
-//            } else {
-//                continue
-//            }
-//        }
-//
-//        return metadata
-//    }
+    @available(OSX 10.12, *)
+    public func listMetadata() throws -> [(frameKey: FrameKey, value: Any)] {
+        var metadata = [(FrameKey, value: Any)]()
+        var frameKeys = [FrameKey]()
+
+        for frame in self.frames {
+            let frameKey = frame.key
+            frameKeys.append(frameKey)
+        }
+
+        for frameKey in frameKeys {
+            let frameKey = frameKey
+//            let differentiatingElement: String? = nil
+            var value: Any? = nil
+            if frameKey == .album {
+                if let frameValue = self.album {
+                    value = frameValue
+                }
+            } else if frameKey == .albumSort {
+                if let frameValue = self.albumSort {
+                    value = frameValue
+                }
+            } else if frameKey == .albumArtist {
+                if let frameValue = self.albumArtist {
+                    value = frameValue
+                }
+            } else if frameKey == .albumArtistSort {
+                if let frameValue = self.albumArtistSort {
+                    value = frameValue
+                }
+            } else if frameKey == .arranger {
+                if let frameValue = self.arranger {
+                    value = frameValue
+                }
+                if let frameValue = self.remixer {
+                    value = frameValue
+                }
+                if let frameValue = self.interpretedBy {
+                    value = frameValue
+                }
+            } else if frameKey == .artist {
+                if let frameValue = self.artist {
+                    value = frameValue
+                }
+                if let frameValue = self.author {
+                    value = frameValue
+                }
+            } else if frameKey == .artistSort {
+                if let frameValue = self.artistSort {
+                    value = frameValue
+                }
+                if let frameValue = self.authorSort {
+                    value = frameValue
+                }
+            } else if frameKey == .artistWebpage {
+                if let frameValue = self.artistWebpage {
+                    value = frameValue
+                }
+            } else if frameKey == .audioFileWebpage {
+                if let frameValue = self.audioFileWebpage {
+                    value = frameValue
+                }
+            } else if frameKey == .audioSourceWebpage {
+                if let frameValue = self.audioSourceWebpage {
+                    value = frameValue
+                }
+            } else if frameKey == .bpm {
+                if let frameValue = self.bpm {
+                    value = frameValue
+                }
+            } else if frameKey == .compilation {
+                if let frameValue = self.compilation {
+                    value = frameValue
+                }
+            } else if frameKey == .composer {
+                if let frameValue = self.composer {
+                    value = frameValue
+                }
+                if let frameValue = self.narrator {
+                    value = frameValue
+                }
+            } else if frameKey == .composerSort {
+                if let frameValue = self.composerSort {
+                    value = frameValue
+                }
+                if let frameValue = self.narratorSort {
+                    value = frameValue
+                }
+            } else if frameKey == .conductor {
+                if let frameValue = self.conductor {
+                    value = frameValue
+                }
+            } else if frameKey == .contentGroup {
+                if let frameValue = self.contentGroup {
+                    value = frameValue
+                }
+                if let frameValue = self.work {
+                    value = frameValue
+                }
+                if let frameValue = self.series {
+                    value = frameValue
+                }
+            } else if frameKey == .copyright {
+                if let frameValue = self.copyright {
+                    value = frameValue
+                }
+            } else if frameKey == .copyrightWebpage {
+                if let frameValue = self.copyrightWebpage {
+                    value = frameValue
+                }
+            } else if frameKey == .date {
+                if let frameValue = self.date {
+                    value = frameValue
+                }
+            } else if frameKey == .discNumber {
+                if let frameValue = self.discNumber {
+                    value = frameValue
+                }
+            } else if frameKey == .encodingTime {
+                if let frameValue = self.encodingDateTime {
+                    value = frameValue
+                }
+            } else if frameKey == .encodedBy {
+                if let frameValue = self.encodedBy {
+                    value = frameValue
+                }
+            } else if frameKey == .encodingSettings {
+                if let frameValue = self.encodingSettings {
+                    value = frameValue
+                }
+            } else if frameKey == .fileType {
+                if let frameValue = self.fileType {
+                    value = frameValue
+                }
+            } else if frameKey == .fileOwner {
+                if let frameValue = self.fileOwner {
+                    value = frameValue
+                }
+            } else if frameKey == .genre {
+                if let frameValue = self.genre {
+                    value = frameValue
+                }
+            } else if frameKey == .grouping {
+                if let frameValue = self.grouping {
+                    value = frameValue
+                }
+            } else if frameKey == .initialKey {
+                if let frameValue = self.initialKey {
+                    value = frameValue
+                }
+            } else if frameKey == .involvedPeopleList {
+                if let frameValue = self.involvedPeopleList {
+                    value = frameValue
+                }
+            } else if frameKey == .isrc {
+                if let frameValue = self.isrc {
+                    value = frameValue
+                }
+            } else if frameKey == .languages {
+                if let frameValue = self.languages {
+                    value = frameValue
+                }
+            } else if frameKey == .length {
+                if let frameValue = self.length {
+                    value = frameValue
+                }
+            } else if frameKey == .lyricist {
+                if let frameValue = self.lyricist {
+                    value = frameValue
+                }
+            } else if frameKey == .mediaType {
+                if let frameValue = self.mediaType {
+                    value = frameValue
+                }
+            } else if frameKey == .mood {
+                if let frameValue = self.mood {
+                    value = frameValue
+                }
+            } else if frameKey == .movementCount {
+                if let frameValue = self.totalMovements {
+                    value = frameValue
+                }
+            } else if frameKey == .movementName {
+                if let frameValue = self.movementName {
+                    value = frameValue
+                }
+            } else if frameKey == .movementNumber {
+                if let frameValue = self.movementNumber {
+                    value = frameValue
+                }
+            } else if frameKey == .musicianCreditsList {
+                if let frameValue = self.musicianCreditsList {
+                    value = frameValue
+                }
+            } else if frameKey == .originalAlbum {
+                if let frameValue = self.originalAlbum {
+                    value = frameValue
+                }
+            } else if frameKey == .originalArtist {
+                if let frameValue = self.originalArtist {
+                    value = frameValue
+                }
+            } else if frameKey == .originalFilename {
+                if let frameValue = self.originalFilename {
+                    value = frameValue
+                }
+            } else if frameKey == .originalLyricist {
+                if let frameValue = self.originalLyricist {
+                    value = frameValue
+                }
+            } else if frameKey == .originalReleaseTime {
+                if let frameValue = self.originalReleaseTime {
+                    value = frameValue
+                }
+            } else if frameKey == .paymentWebpage {
+                if let frameValue = self.paymentWebpage {
+                    value = frameValue
+                }
+            } else if frameKey == .playlistDelay {
+                if let frameValue = self.playlistDelay {
+                    value = frameValue
+                }
+            } else if frameKey == .podcastCategory {
+                if let frameValue = self.podcastCategory {
+                    value = frameValue
+                }
+            } else if frameKey == .podcastDescription {
+                if let frameValue = self.podcastDescription {
+                    value = frameValue
+                }
+            } else if frameKey == .podcastID {
+                if let frameValue = self.podcastID {
+                    value = frameValue
+                }
+            } else if frameKey == .podcastKeywords {
+                if let frameValue = self.podcastKeywords {
+                    value = frameValue
+                }
+            } else if frameKey == .podcastFeedLink {
+                if let frameValue = self.podcastFeedLink {
+                    value = frameValue
+                }
+            } else if frameKey == .producedNotice {
+                if let frameValue = self.producedNotice {
+                    value = frameValue
+                }
+            } else if frameKey == .publisher {
+                if let frameValue = self.publisher {
+                    value = frameValue
+                }
+                if let frameValue = self.studio {
+                    value = frameValue
+                }
+                if let frameValue = self.label {
+                    value = frameValue
+                }
+                if let frameValue = self.recordCompany {
+                    value = frameValue
+                }
+            } else if frameKey == .publisherWebpage {
+                if let frameValue = self.publisherWebpage {
+                    value = frameValue
+                }
+            } else if frameKey == .radioStation {
+                if let frameValue = self.radioStation {
+                    value = frameValue
+                }
+            } else if frameKey == .radioStationOwner {
+                if let frameValue = self.radioStationOwner {
+                    value = frameValue
+                }
+            } else if frameKey == .radioStationWebpage {
+                if let frameValue = self.radioStationWebpage {
+                    value = frameValue
+                }
+            } else if frameKey == .recordingDate {
+                if let frameValue = self.recordingDateTime {
+                    value = frameValue
+                }
+            } else if frameKey == .releaseTime {
+                if let frameValue = self.releaseDateTime {
+                    value = frameValue
+                }
+            } else if frameKey == .setSubtitle {
+                if let frameValue = self.setSubtitle {
+                    value = frameValue
+                }
+            } else if frameKey == .subtitle {
+                if let frameValue = self.subtitle {
+                    value = frameValue
+                }
+            } else if frameKey == .taggingTime {
+                if let frameValue = self.taggingDateTime {
+                    value = frameValue
+                }
+            } else if frameKey == .time {
+                if let frameValue = self.time {
+                    value = frameValue
+                }
+            } else if frameKey == .title {
+                if let frameValue = self.title {
+                    value = frameValue
+                }
+            } else if frameKey == .titleSort {
+                if let frameValue = self.titleSort {
+                    value = frameValue
+                }
+            } else if frameKey == .trackNumber {
+                if let frameValue = self.trackNumber {
+                    value = frameValue
+                }
+            } else if frameKey == .year {
+                if let frameValue = self.year {
+                    value = frameValue
+                }
+            } else {
+                continue
+            }
+            if let value = value {
+                metadata.append((frameKey, value))
+            }
+        }
+        
+        for item in Tag.metadataWithDifferentiatingElement {
+            metadata.append((item.frameKey, item.value))
+        }
+        return metadata
+    }
 }
 
