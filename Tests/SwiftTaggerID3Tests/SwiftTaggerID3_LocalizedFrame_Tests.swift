@@ -22,13 +22,13 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
         XCTAssertEqual(tag?.languages, [.eng])
         XCTAssertEqual(tag?.series, "Content Group")
         XCTAssertEqual(tag?.studio, "Publisher")
-        XCTAssertEqual(tag?[comments: .eng, "Comment"], "Comment Content")
-        XCTAssertEqual(tag?[comments: .eng, "Description"], "Description Content")
-        XCTAssertEqual(tag?[comments: .eng, "LongDescription"], "Long Description Content")
-        XCTAssertEqual(tag?[comments: .eng, "Series Description"], "Series Description Content")
-        XCTAssertEqual(tag?[comments: .eng, "Liner Notes"], "Liner Notes Content")
-        XCTAssertEqual(tag?[lyrics: .eng, "Lyrics"], "Lyrics Content")
-        XCTAssertEqual(tag?[userDefinedText: "UserText"], "User Text Content")
+        XCTAssertEqual(tag?["Comment", .eng], "Comment Content")
+        XCTAssertEqual(tag?["Description", .eng], "Description Content")
+        XCTAssertEqual(tag?["LongDescription", .eng], "Long Description Content")
+        XCTAssertEqual(tag?["Series Description", .eng], "Series Description Content")
+        XCTAssertEqual(tag?["Liner Notes", .eng], "Liner Notes Content")
+        XCTAssertEqual(tag?[lyrics: "Lyrics", .eng], "Lyrics Content")
+        XCTAssertEqual(tag?["UserText"], "User Text Content")
         XCTAssertEqual(tag?[userDefinedUrl: "UserURL"], "http://userdefined.url")
     }
     
@@ -39,13 +39,13 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
         XCTAssertEqual(tag?.languages, [.eng])
         XCTAssertEqual(tag?.series, "Content Group")
         XCTAssertEqual(tag?.studio, "Publisher")
-        XCTAssertEqual(tag?[comments: .eng, "Comment"], "Comment Content")
-        XCTAssertEqual(tag?[comments: .eng, "Description"], "Description Content")
-        XCTAssertEqual(tag?[comments: .eng, "LongDescription"], "Long Description Content")
-        XCTAssertEqual(tag?[comments: .eng, "Series Description"], "Series Description Content")
-        XCTAssertEqual(tag?[comments: .eng, "Liner Notes"], "Liner Notes Content")
-        XCTAssertEqual(tag?[lyrics: .eng, "Lyrics"], "Lyrics Content")
-        XCTAssertEqual(tag?[userDefinedText: "UserText"], "User Text Content")
+        XCTAssertEqual(tag?["Comment", .eng], "Comment Content")
+        XCTAssertEqual(tag?["Description", .eng], "Description Content")
+        XCTAssertEqual(tag?["LongDescription", .eng], "Long Description Content")
+        XCTAssertEqual(tag?["Series Description", .eng], "Series Description Content")
+        XCTAssertEqual(tag?["Liner Notes", .eng], "Liner Notes Content")
+        XCTAssertEqual(tag?[lyrics: "Lyrics", .eng], "Lyrics Content")
+        XCTAssertEqual(tag?["UserText"], "User Text Content")
         XCTAssertEqual(tag?[userDefinedUrl: "UserURL"], "http://userdefined.url")
     }
 
@@ -56,13 +56,13 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
         XCTAssertEqual(tag?.languages, [.eng])
         XCTAssertEqual(tag?.series, "Content Group")
         XCTAssertEqual(tag?.studio, "Publisher")
-        XCTAssertEqual(tag?[comments: .eng, "Comment"], "Comment Content")
-        XCTAssertEqual(tag?[comments: .eng, "Description"], "Description Content")
-        XCTAssertEqual(tag?[comments: .eng, "LongDescription"], "Long Description Content")
-        XCTAssertEqual(tag?[comments: .eng, "Series Description"], "Series Description Content")
-        XCTAssertEqual(tag?[comments: .eng, "Liner Notes"], "Liner Notes Content")
-        XCTAssertEqual(tag?[lyrics: .eng, "Lyrics"], "Lyrics Content")
-        XCTAssertEqual(tag?[userDefinedText: "UserText"], "User Text Content")
+        XCTAssertEqual(tag?["Comment", .eng], "Comment Content")
+        XCTAssertEqual(tag?["Description", .eng], "Description Content")
+        XCTAssertEqual(tag?["LongDescription", .eng], "Long Description Content")
+        XCTAssertEqual(tag?["Series Description", .eng], "Series Description Content")
+        XCTAssertEqual(tag?["Liner Notes", .eng], "Liner Notes Content")
+        XCTAssertEqual(tag?[lyrics: "Lyrics", .eng], "Lyrics Content")
+        XCTAssertEqual(tag?["UserText"], "User Text Content")
         XCTAssertEqual(tag?[userDefinedUrl: "UserURL"], "http://userdefined.url")        
     }
 
@@ -172,10 +172,10 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
     func testLocalizedFrameWritingv24() throws {
         var tag = try TestFile.noMeta.tag()
 
-        tag?[comments: .eng, "Comment"] = "Comment Content"
-        tag?[lyrics: .eng, "Lyrics"] = "Lyrics Content"
+        tag?["Comment", .eng] = "Comment Content"
+        tag?[lyrics: "Lyrics", .eng] = "Lyrics Content"
         tag?[userDefinedUrl: "UserURL"] = "http://userdefined.url"
-        tag?[userDefinedText: "UserText"] = "User Text Content"
+        tag?["UserText"] = "User Text Content"
 
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_4, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)), writingTo: outputUrl))
@@ -185,20 +185,20 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
         let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
         let tagWritten = try Tag(readFrom: mp3FileWritten)
         
-        XCTAssertEqual(tagWritten[comments: .eng, "Comment"], "Comment Content")
-        XCTAssertEqual(tagWritten[lyrics: .eng, "Lyrics"], "Lyrics Content")
+        XCTAssertEqual(tagWritten["Comment", .eng], "Comment Content")
+        XCTAssertEqual(tagWritten[lyrics: "Lyrics", .eng], "Lyrics Content")
         XCTAssertEqual(tagWritten[userDefinedUrl: "UserURL"], "http://userdefined.url")
-        XCTAssertEqual(tagWritten[userDefinedText: "UserText"], "User Text Content")
+        XCTAssertEqual(tagWritten["UserText"], "User Text Content")
     }
     
     @available(OSX 10.12, *)
     func testLocalizedFrameWritingv23() throws {
         var tag = try TestFile.noMeta.tag()
         
-        tag?[comments: .eng, "Comment"] = "Comment Content"
-        tag?[lyrics: .eng, "Lyrics"] = "Lyrics Content"
+        tag?["Comment", .eng] = "Comment Content"
+        tag?[lyrics: "Lyrics", .eng] = "Lyrics Content"
         tag?[userDefinedUrl: "UserURL"] = "http://userdefined.url"
-        tag?[userDefinedText: "UserText"] = "User Text Content"
+        tag?["UserText"] = "User Text Content"
         
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_3, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)), writingTo: outputUrl))
@@ -208,20 +208,20 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
         let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
         let tagWritten = try Tag(readFrom: mp3FileWritten)
         
-        XCTAssertEqual(tagWritten[comments: .eng, "Comment"], "Comment Content")
-        XCTAssertEqual(tagWritten[lyrics: .eng, "Lyrics"], "Lyrics Content")
+        XCTAssertEqual(tagWritten["Comment", .eng], "Comment Content")
+        XCTAssertEqual(tagWritten[lyrics: "Lyrics", .eng], "Lyrics Content")
         XCTAssertEqual(tagWritten[userDefinedUrl: "UserURL"], "http://userdefined.url")
-        XCTAssertEqual(tagWritten[userDefinedText: "UserText"], "User Text Content")
+        XCTAssertEqual(tagWritten["UserText"], "User Text Content")
     }
 
     @available(OSX 10.12, *)
     func testLocalizedFrameWritingv22() throws {
         var tag = try TestFile.noMeta.tag()
         
-        tag?[comments: .eng, "Comment"] = "Comment Content"
-        tag?[lyrics: .eng, "Lyrics"] = "Lyrics Content"
+        tag?["Comment", .eng] = "Comment Content"
+        tag?[lyrics: "Lyrics", .eng] = "Lyrics Content"
         tag?[userDefinedUrl: "UserURL"] = "http://userdefined.url"
-        tag?[userDefinedText: "UserText"] = "User Text Content"
+        tag?["UserText"] = "User Text Content"
         
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_2, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)), writingTo: outputUrl))
@@ -231,10 +231,10 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
         let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
         let tagWritten = try Tag(readFrom: mp3FileWritten)
         
-        XCTAssertEqual(tagWritten[comments: .eng, "Comment"], "Comment Content")
-        XCTAssertEqual(tagWritten[lyrics: .eng, "Lyrics"], "Lyrics Content")
+        XCTAssertEqual(tagWritten["Comment", .eng], "Comment Content")
+        XCTAssertEqual(tagWritten[lyrics: "Lyrics", .eng], "Lyrics Content")
         XCTAssertEqual(tagWritten[userDefinedUrl: "UserURL"], "http://userdefined.url")
-        XCTAssertEqual(tagWritten[userDefinedText: "UserText"], "User Text Content")
+        XCTAssertEqual(tagWritten["UserText"], "User Text Content")
     }
 
     @available(OSX 10.12, *)

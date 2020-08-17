@@ -201,9 +201,7 @@ extension Tag {
     }
 
     /// Comments frame getter-setter. ID3 Identifier `COM`/`COMM`
-    public subscript(
-        comments language: ISO6392Codes,
-        commentDescription: String?) -> String? {
+    public subscript(_ commentDescription: String?, language: ISO6392Codes) -> String? {
         get {
             get(for:
                 .comments(description: commentDescription ?? ""),
@@ -220,7 +218,7 @@ extension Tag {
     }
     
     /// (Unsynchronized) lyrics frame getter-setter. ID3 Identifier `ULT`/`USLT`
-    public subscript(lyrics language: ISO6392Codes, lyricsDescription: String?) -> String? {
+    public subscript(lyrics lyricsDescription: String?, language: ISO6392Codes) -> String? {
         get {
             get(for: .unsynchronizedLyrics(
                 description: lyricsDescription ?? ""),
@@ -233,7 +231,7 @@ extension Tag {
     }
     
     /// UserDefinedText frame getter-setter. ID3 Identifier `TXX`/`TXXX`
-    public subscript(userDefinedText userTextDescription: String?) -> String? {
+    public subscript(_ userTextDescription: String?) -> String? {
         get {
             get(for: .userDefinedText(
                 description: userTextDescription ?? ""),
