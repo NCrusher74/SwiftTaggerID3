@@ -18,7 +18,7 @@ import Foundation
 struct StringFrame: FrameProtocol, CustomStringConvertible {
     public var description: String {
         return """
-        frameKey: .\(self.frameKey): \"\(self.contentString)\"
+        \(self.frameKey): \(self.contentString)
         """
     }
     

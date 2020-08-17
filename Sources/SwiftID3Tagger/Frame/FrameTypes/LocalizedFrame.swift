@@ -23,8 +23,7 @@ import Foundation
 struct LocalizedFrame: FrameProtocol, CustomStringConvertible {
     public var description: String {
         return """
-        frameKey: .\(self.frameKey)
-        \(String(describing: self.descriptionString)): \(self.contentString)
+        \(self.frameKey): \(self.contentString)
         """
     }
 
@@ -69,8 +68,6 @@ struct LocalizedFrame: FrameProtocol, CustomStringConvertible {
         self.descriptionString = parsed.description ?? ""
         self.contentString = parsed.content
         self.frameKey = layout.frameKey(additionalIdentifier: self.descriptionString)
-        Tag.listMetadata.removeAll(where: {$0.frameKey == self.frameKey})
-        Tag.listMetadata.append((self.frameKey, self.contentString))
     }
     
     // // MARK: - Frame building
@@ -90,8 +87,6 @@ struct LocalizedFrame: FrameProtocol, CustomStringConvertible {
         self.languageString = languageString
         self.descriptionString = descriptionString
         self.contentString = contentString
-        Tag.listMetadata.removeAll(where: {$0.frameKey == self.frameKey})
-        Tag.listMetadata.append((self.frameKey, self.contentString))
     }
     
     

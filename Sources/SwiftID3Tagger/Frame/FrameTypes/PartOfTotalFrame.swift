@@ -14,10 +14,15 @@ import Foundation
  */
 struct PartOfTotalFrame: FrameProtocol, CustomStringConvertible {
     public var description: String {
-        return """
-        frameKey: .\(self.frameKey):
-        \(self.part)/\(String(describing: self.total))
-        """
+        if let total = self.total {
+            return """
+            \(self.frameKey): \(self.part) of \(total)
+            """
+        } else {
+            return """
+            \(self.frameKey): \(self.part)
+            """
+        }
     }
 
     // // MARK: - Properties
@@ -56,8 +61,6 @@ struct PartOfTotalFrame: FrameProtocol, CustomStringConvertible {
         if contentComponents.count > 1 {
             self.total = Int(contentComponents[1])
         }
-        Tag.listMetadata.removeAll(where: {$0.frameKey == self.frameKey})
-        Tag.listMetadata.append((self.frameKey, (part: self.part, total: self.total)))
     }
 
 
@@ -75,8 +78,6 @@ struct PartOfTotalFrame: FrameProtocol, CustomStringConvertible {
         self.flags = PartOfTotalFrame.defaultFlags
         self.layout = layout
         self.frameKey = layout.frameKey(additionalIdentifier: nil)
-        Tag.listMetadata.removeAll(where: {$0.frameKey == self.frameKey})
-        Tag.listMetadata.append((self.frameKey, (part: self.part, total: self.total)))
     }
     
     // encode the contents of the frame to add to an ID3 tag

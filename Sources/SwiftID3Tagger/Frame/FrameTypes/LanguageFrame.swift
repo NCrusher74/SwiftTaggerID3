@@ -21,7 +21,7 @@ import Foundation
 struct LanguageFrame: FrameProtocol, CustomStringConvertible {
     public var description: String {
         return """
-        \(self.languages)
+        \(self.frameKey): \(self.languages)
         """
     }
 
@@ -63,8 +63,6 @@ struct LanguageFrame: FrameProtocol, CustomStringConvertible {
         }
         self.languages = languagesArray
         self.frameKey = .languages
-        Tag.listMetadata.removeAll(where: {$0.frameKey == self.frameKey})
-        Tag.listMetadata.append((self.frameKey, self.languages))
     }
     
     // // MARK: - Frame building
@@ -78,8 +76,6 @@ struct LanguageFrame: FrameProtocol, CustomStringConvertible {
         self.flags = LanguageFrame.defaultFlags
         self.layout = layout
         self.frameKey = .languages
-        Tag.listMetadata.removeAll(where: {$0.frameKey == self.frameKey})
-        Tag.listMetadata.append((self.frameKey, self.languages))
     }
     
     func encodeContents(version: Version) throws -> Data {

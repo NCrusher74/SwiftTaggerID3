@@ -698,10 +698,8 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.publisherWebpage = "http://publisher.url"
         tag.radioStationWebpage = "http://radiostation.url"
         
-        // // MARK: - Language Frame
         tag.languages = [.eng]
         
-        // // MARK: - Part Of Total frame
         tag.trackNumber?.track = 1
         tag.trackNumber?.totalTracks = 2
         tag.discNumber?.disc = 3
@@ -764,7 +762,6 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.fileType?.additionalInformation = "Additional Information"
 
         let outputUrl = try localDirectory(fileName: "mp3-meta", fileExtension: "mp3")
-        XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_4, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v24.url)), writingTo: outputUrl))
+        XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_4, using: tag, writingTo: outputUrl))
     }
-
 }

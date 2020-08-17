@@ -16,10 +16,17 @@ import Foundation
 
 struct ImageFrame: FrameProtocol, CustomStringConvertible {
     public var description: String {
-        return """
-        frameKey: .\(self.frameKey):
-        \(self.imageType.rawValue): \(String(describing: self.imageDescription))
-        """
+        if let description = self.imageDescription {
+            return """
+            \(self.frameKey):
+            \(self.imageType.rawValue) - \(description)
+            """
+        } else {
+            return """
+            \(self.frameKey):
+            \(self.imageType.rawValue)
+            """
+        }
     }
 
     // // MARK: - Properties
@@ -143,10 +150,7 @@ struct ImageFrame: FrameProtocol, CustomStringConvertible {
         frameData.append(self.image)
         return frameData
     }
-    
 }
-
-
 
 extension Tag {
     /// AttachedPicture frame getter-setter. ID3 Identifier `PIC`/`APIC`

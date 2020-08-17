@@ -18,11 +18,7 @@ import Foundation
 public struct ChapterFrame: FrameProtocol, CustomStringConvertible {
     public var description: String {
         return """
-        ElementID: \(elementID),
-        StartTime: \(startTime),
-        EndTime: \(endTime),
-        EmbeddedSubframes:
-        \(String(describing: embeddedSubframesTag?.frames.keys)), \(String(describing: embeddedSubframesTag?.frames.values.description))
+        \(self.frameKey) : (\(self.embeddedSubframesTag?.title) @ \(self.startTime))
         """
         }
     

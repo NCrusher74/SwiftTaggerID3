@@ -13,8 +13,7 @@ import Foundation
 struct PresetOptionsFrame: FrameProtocol, CustomStringConvertible {
     public var description: String {
         return """
-        frameKey: .\(self.frameKey):
-        \(self.genreMediaOrFileInfo)
+        \(self.frameKey): \(self.genreMediaOrFileInfo)
         """
     }
 

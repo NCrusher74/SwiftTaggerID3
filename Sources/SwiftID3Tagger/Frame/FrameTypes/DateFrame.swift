@@ -15,9 +15,15 @@ import Foundation
 @available(OSX 10.12, *)
 struct DateFrame: FrameProtocol, CustomStringConvertible {
     public var description: String {
-        return """
-        frameKey: .\(self.frameKey): \"\(String(describing: self.timeStamp))\"
-        """
+        if let date = self.timeStamp {
+            return """
+            \(self.frameKey): \(date)
+            """
+        } else {
+            return """
+            \(self.frameKey): \(Date.distantPast)
+            """
+        }
     }
 
     // // MARK: - Properties
@@ -130,10 +136,6 @@ struct DateFrame: FrameProtocol, CustomStringConvertible {
                 self.timeStamp = date
             }
         }
-        
-        Tag.listMetadata.removeAll(where: {$0.frameKey == self.frameKey})
-        Tag.listMetadata.append((self.frameKey, self.timeStamp as Any))
-
     }
     
     // // MARK: - Frame Building
@@ -147,8 +149,6 @@ struct DateFrame: FrameProtocol, CustomStringConvertible {
         self.layout = layout
         self.frameKey = layout.frameKey(additionalIdentifier: nil)
         self.timeStamp = timeStamp
-        Tag.listMetadata.removeAll(where: {$0.frameKey == self.frameKey})
-        Tag.listMetadata.append((self.frameKey, self.timeStamp as Any))
     }
     
     /// encode contents of the frame to add to an ID3 tag

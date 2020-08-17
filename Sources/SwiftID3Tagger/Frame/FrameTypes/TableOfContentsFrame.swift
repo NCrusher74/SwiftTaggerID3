@@ -21,7 +21,7 @@ import Foundation
 public struct TableOfContentsFrame: FrameProtocol, CustomStringConvertible {
     public var description: String {
         return """
-        ChildElementIDs: \(childElementIDs),
+        \(self.frameKey): ChildElementIDs: \(self.childElementIDs),
         """
     }
 

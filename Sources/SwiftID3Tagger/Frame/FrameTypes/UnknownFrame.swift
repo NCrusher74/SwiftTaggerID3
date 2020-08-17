@@ -10,8 +10,13 @@
 import Foundation
 
 /** a type that passes through any unrecognized or unhandled frame content as-is */
-public struct UnknownFrame: FrameProtocol {
-    
+public struct UnknownFrame: FrameProtocol, CustomStringConvertible {
+    public var description: String {
+        return """
+        \(self.frameKey): \(self.contents.hexadecimal())
+        """
+    }
+
     // // MARK: - Properties
     var flags: Data
     var layout: FrameLayoutIdentifier

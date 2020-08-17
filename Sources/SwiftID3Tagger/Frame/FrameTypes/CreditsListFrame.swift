@@ -17,9 +17,16 @@ import Foundation
 
 struct CreditsListFrame: FrameProtocol, CustomStringConvertible {
     public var description: String {
+        
+        var credits = [(role: String, people: [String])]()
+        for credit in self.credits {
+            let role = credit.key
+            let people = credit.value
+            let entry = (role, people)
+            credits.append(entry)
+        }
         return """
-        frameKey: .\(self.frameKey)
-        \(self.credits)
+        \(self.frameKey): \(credits)
         """
     }
     
@@ -44,8 +51,6 @@ struct CreditsListFrame: FrameProtocol, CustomStringConvertible {
         var parsing = contents
         let encoding = try CreditsListFrame.extractEncoding(data: &parsing, version: version)
         self.credits = CreditsListFrame.extractCreditStrings(from: &parsing, encoding: encoding)
-        Tag.listMetadata.removeAll(where: {$0.frameKey == self.frameKey})
-        Tag.listMetadata.append((self.frameKey, self.credits))
     }
     
     private static func extractCreditStrings(
