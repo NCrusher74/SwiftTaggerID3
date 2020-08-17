@@ -741,9 +741,17 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.recordingDateTime?.minute = 23
 
         tag[comments: .eng, "Comment"] = "Comment Content"
+        tag[comments: .eng, "Description"] = "Description"
+        tag[comments: .eng, "Long Description"] = "Long Description"
+        tag[comments: .eng, "Series Description"] = "Series Description"
+        tag[comments: .eng, "Song Description"] = "Song Description"
+        tag[comments: .eng, "Liner Notes"] = "Liner Notes"
         tag[lyrics: .eng, "Lyrics"] = "Lyrics Content"
         tag[userDefinedUrl: "UserURL"] = "http://userdefined.url"
         tag[userDefinedText: "UserText"] = "User Text Content"
+        tag[userDefinedText: "Acknowledgment"] = "Acknowledgment"
+        tag[userDefinedText: "Thanks"] = "Thanks"
+        tag[userDefinedText: "Source Credit"] = "Source Credit"
 
         tag.discNumber?.disc = 4
         tag.discNumber?.totalDiscs = 5
@@ -762,11 +770,6 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.fileType?.additionalInformation = "Additional Information"
 
         let outputUrl = try localDirectory(fileName: "mp3-meta", fileExtension: "mp3")
-        XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_4, using: tag, writingTo: outputUrl))
-        
-        let output = try Tag(readFrom: try Mp3File(location: outputUrl))
-        for item in output.listMetadata() {
-            print(item)
-        }
+        XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_4, using: tag, writingTo: outputUrl))        
     }
 }
