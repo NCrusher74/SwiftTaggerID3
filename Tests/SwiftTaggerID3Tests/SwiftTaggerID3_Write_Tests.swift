@@ -765,7 +765,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_4, using: tag, writingTo: outputUrl))
         
         let output = try Tag(readFrom: try Mp3File(location: outputUrl))
-        for item in try output.listMetadata() {
+        for item in output.listMetadata() {
             print(item)
         }
     }

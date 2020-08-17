@@ -219,10 +219,4 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag?.remixer, "Arranger")
         XCTAssertEqual(tag?.work, "Content Group")
     }
-    
-    @available(OSX 10.12, *)
-    func testListMetdata() throws {
-        var tag = try TestFile.v24.tag()
-        
-    }
 }

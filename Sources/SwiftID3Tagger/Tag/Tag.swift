@@ -156,7 +156,7 @@ public struct Tag: CustomStringConvertible {
     static var metadataWithDifferentiatingElement = [(frameKey: FrameKey, differentiatingElement: String, value: Any)]()
     
     @available(OSX 10.12, *)
-    public func listMetadata() throws -> [(frameKey: FrameKey, value: Any)] {
+    public func listMetadata() -> [(frameKey: FrameKey, value: Any)] {
         var metadata = [(FrameKey, value: Any)]()
         var frameKeys = [FrameKey]()
 
@@ -167,7 +167,6 @@ public struct Tag: CustomStringConvertible {
 
         for frameKey in frameKeys {
             let frameKey = frameKey
-//            let differentiatingElement: String? = nil
             var value: Any? = nil
             if frameKey == .album {
                 if let frameValue = self.album {
