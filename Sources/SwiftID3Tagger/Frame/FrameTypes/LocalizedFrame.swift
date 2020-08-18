@@ -140,14 +140,20 @@ extension Tag {
                 description: description ?? "")],
                 case .localizedFrame(let localizedFrame) = frame {
                 return localizedFrame.contentString
+            } else {
+                return nil
             }
         } else if frameKey == .comments(description: description ?? "") {
             if let frame = self.frames[.comments(
                 description: description ?? "")],
                 case .localizedFrame(let localizedFrame) = frame {
                 return localizedFrame.contentString
+            } else {
+                return nil
             }
-        }; return nil
+        } else {
+            return nil
+        }
     }
     
     private func get(for frameKey: FrameKey, description: String?)
@@ -159,14 +165,18 @@ extension Tag {
                     case .localizedFrame(let localizedFrame) = frame {
                     // return the content string of a specific frame by searching using the description string
                     return localizedFrame.contentString
+                } else {
+                    return nil
                 }
             } else {
                 if let frame = self.frames[.userDefinedText(
                     description: description ?? "")],
                     case .localizedFrame(let localizedFrame) = frame {
                     return localizedFrame.contentString
+                } else {
+                    return nil
                 }
-            }; return nil
+            }
     }
     
     private mutating func set(_ layout: FrameLayoutIdentifier,
@@ -180,6 +190,8 @@ extension Tag {
                                        descriptionString: description,
                                        contentString: contentString)
             self.frames[frameKey] = .localizedFrame(frame)
+        } else {
+            self.frames[frameKey] = nil
         }
     }
     
@@ -193,6 +205,8 @@ extension Tag {
                 descriptionString: description,
                 contentString: contentString)
             self.frames[frameKey] = .localizedFrame(frame)
+        } else {
+            self.frames[frameKey] = nil
         }
     }
     
