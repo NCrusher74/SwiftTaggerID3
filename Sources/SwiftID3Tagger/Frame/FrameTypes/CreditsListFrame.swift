@@ -122,8 +122,8 @@ extension Tag {
     ///   - credits: the dictionary of `[role: [person]]` pairs
     internal mutating func set(_ layout: FrameLayoutIdentifier,
                                _ frameKey: FrameKey,
-                               to credits: [ String: [String] ]?) {
-        let frame = CreditsListFrame(layout, credits: credits ?? [:])
+                               toCredits: [ String: [String] ]?) {
+        let frame = CreditsListFrame(layout, credits: toCredits ?? [:])
         self.frames[frameKey] = .creditsListFrame(frame)
     }
     
@@ -178,7 +178,7 @@ extension Tag {
                     newDictionary[key.rawValue] = newValue?[key]
                     set(.known(.musicianCreditsList),
                         .musicianCreditsList,
-                        to: newDictionary)
+                        toCredits: newDictionary)
                 }
             }
         }
@@ -242,7 +242,7 @@ extension Tag {
                     newDictionary[key.rawValue] = newValue?[key]
                     set(.known(.involvedPeopleList),
                         .involvedPeopleList,
-                        to: newDictionary)
+                        toCredits: newDictionary)
                 }
             }
         }
