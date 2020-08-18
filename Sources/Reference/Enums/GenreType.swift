@@ -205,7 +205,7 @@ public enum GenreType: String, CaseIterable  {
     case Remix = "Remix"
     case Cover = "Cover"
     
-    var code: Int {
+    public var code: Int {
         switch self {
             case .Blues: return 0
             case .ClassicRock: return 1
