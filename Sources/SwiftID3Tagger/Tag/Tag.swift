@@ -482,5 +482,10 @@ public struct Tag: CustomStringConvertible {
         }
         return metadata
     }
+    
+    public mutating func removeAllMetadata() throws {
+        self.frames = [:]
+        Tag.metadataWithDifferentiatingElement = []
+    }
 }
 
