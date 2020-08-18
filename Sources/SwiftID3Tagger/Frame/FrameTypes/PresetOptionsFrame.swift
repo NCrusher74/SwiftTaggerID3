@@ -290,7 +290,9 @@ extension Tag {
         if let frame = self.frames[frameKey],
             case .presetOptionsFrame(let presetOptionsFrame) = frame {
             return presetOptionsFrame.genreMediaOrFileInfo
-        }; return nil
+        } else {
+            return nil
+        }
     }
     
     internal mutating func set(_ layout: FrameLayoutIdentifier,
@@ -304,7 +306,7 @@ extension Tag {
     public var genre: (presetGenre: GenreType?, customGenre: String?)? {
         get {
             var presetType: GenreType? = nil
-            var customString: String? = ""
+            var customString: String? = nil
             // if the array exists and isn't empty
             if let frameArray = get(forPresetOptionFrame: .genre) {
                 // for each item in the array...
@@ -321,13 +323,22 @@ extension Tag {
                     }
                 }
             }
-            return (presetType, customString)
+            if presetType != nil ||
+                customString != nil {
+                return (presetType, customString)
+            } else {
+                return nil
+            }
         }
         set {
-            var frameArray = [String?]()
-            frameArray.append(newValue?.presetGenre?.rawValue)
-            frameArray.append(newValue?.customGenre)
-            set(.known(.genre), .genre, infoArray: frameArray)
+            if let new = newValue, new != (nil, nil) {
+                    var frameArray = [String?]()
+                    frameArray.append(newValue?.presetGenre?.rawValue)
+                    frameArray.append(newValue?.customGenre)
+                    set(.known(.genre), .genre, infoArray: frameArray)
+            } else {
+                self.frames[.genre] = nil
+            }
         }
     }
     
@@ -335,7 +346,7 @@ extension Tag {
         get {
             var presetType: MediaType? = nil
             var presetRefinement: MediaTypeRefinements? = nil
-            var refinementString: String? = ""
+            var refinementString: String? = nil
             // if the array exists and isn't empty
             if let frameArray = get(forPresetOptionFrame: .mediaType),
                 !frameArray.isEmpty {
@@ -354,15 +365,24 @@ extension Tag {
                     }
                 }
             }
+            if presetType != nil ||
+                presetRefinement != nil ||
+                refinementString != nil {
             return (presetType, presetRefinement, refinementString)
+            } else {
+                return nil
+            }
         }
         set {
-            var frameArray = [String?]()
-            frameArray.append(newValue?.mediaType?.rawValue)
-            frameArray.append(newValue?.mediaTypeRefinement?.code)
-            frameArray.append(newValue?.additionalInformation)
-            set(.known(.mediaType), .mediaType, infoArray: frameArray)
-            
+            if let new = newValue, new != (nil, nil, nil) {
+                var frameArray = [String?]()
+                frameArray.append(new.mediaType?.rawValue)
+                frameArray.append(new.mediaTypeRefinement?.code)
+                frameArray.append(new.additionalInformation)
+                set(.known(.mediaType), .mediaType, infoArray: frameArray)
+            } else {
+                self.frames[.mediaType] = nil
+            }
         }
     }
     
@@ -370,7 +390,7 @@ extension Tag {
         get {
             var presetType: FileType? = nil
             var presetRefinement: FileTypeRefinements? = nil
-            var refinementString: String? = ""
+            var refinementString: String? = nil
             // if the array exists and isn't empty
             if let frameArray = get(forPresetOptionFrame: .fileType),
                 !frameArray.isEmpty {
@@ -389,14 +409,24 @@ extension Tag {
                     }
                 }
             }
-            return (presetType, presetRefinement, refinementString)
+            if presetType != nil ||
+                presetRefinement != nil ||
+                refinementString != nil {
+                return (presetType, presetRefinement, refinementString)
+            } else {
+                return nil
+            }
         }
         set {
-            var frameArray = [String?]()
-            frameArray.append(newValue?.fileType?.rawValue)
-            frameArray.append(newValue?.fileTypeRefinement?.rawValue)
-            frameArray.append(newValue?.additionalInformation)
-            set(.known(.fileType), .fileType, infoArray: frameArray)
+            if let new = newValue {
+                var frameArray = [String?]()
+                frameArray.append(new.fileType?.rawValue)
+                frameArray.append(new.fileTypeRefinement?.rawValue)
+                frameArray.append(new.additionalInformation)
+                set(.known(.fileType), .fileType, infoArray: frameArray)
+            } else {
+                self.frames[.fileType] = nil
+            }
         }
     }
 }
