@@ -414,7 +414,7 @@ public enum GenreType: String, CaseIterable  {
         return mapping
     }()
     
-    init?(code: Int) {
+    public init?(code: Int) {
         self = GenreType.codeMapping[code] ?? .none
     }
 }
