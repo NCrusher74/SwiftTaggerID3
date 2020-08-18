@@ -221,10 +221,14 @@ extension Tag {
     /// Comments frame getter-setter. ID3 Identifier `COM`/`COMM`
     public subscript(_ commentDescription: String?, language: ISO6392Codes) -> String? {
         get {
-            get(for:
-                .comments(description: commentDescription ?? ""),
-                language: language,
-                description: commentDescription) ?? ""
+            if let string = get(for: .comments(
+                description: commentDescription ?? ""),
+                                language: language,
+                                description: commentDescription) {
+                return string
+            } else {
+                return nil
+            }
         }
         set {
             if let new = newValue {
@@ -242,10 +246,14 @@ extension Tag {
     /// (Unsynchronized) lyrics frame getter-setter. ID3 Identifier `ULT`/`USLT`
     public subscript(lyrics lyricsDescription: String?, language: ISO6392Codes) -> String? {
         get {
-            get(for: .unsynchronizedLyrics(
+            if let string = get(for: .unsynchronizedLyrics(
                 description: lyricsDescription ?? ""),
-                language: language,
-                description: lyricsDescription)
+                                language: language,
+                                description: lyricsDescription) {
+                return string
+            } else {
+                return nil
+            }
         }
         set {
             if let new = newValue {
@@ -259,9 +267,13 @@ extension Tag {
     /// UserDefinedText frame getter-setter. ID3 Identifier `TXX`/`TXXX`
     public subscript(_ userTextDescription: String?) -> String? {
         get {
-            get(for: .userDefinedText(
+            if let string = get(for: .userDefinedText(
                 description: userTextDescription ?? ""),
-                description: userTextDescription)
+                                description: userTextDescription) {
+                return string
+            } else {
+                return nil
+            }
         }
         set {
             if let new = newValue {
@@ -286,9 +298,13 @@ extension Tag {
     /// UserDefinedWebpage frame getter-setter. ID3 Identifier `WXX`/`WXXX`
     public subscript(userDefinedUrl userDefinedUrlDescription: String?) -> String? {
         get {
-            get(for: .userDefinedWebpage(
+            if let string = get(for: .userDefinedWebpage(
                 description: userDefinedUrlDescription ?? ""),
-                description: userDefinedUrlDescription)
+                                description: userDefinedUrlDescription) {
+                return string
+            } else {
+                return nil
+            }
         }
         set {
             if let new = newValue {
