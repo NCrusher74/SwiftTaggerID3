@@ -71,27 +71,29 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
         var tag = try TestFile.v22.tag()
         
         // check comment, lyrics, and subscripted user text visually in Yate
-        tag?.removeCommentFrame(withDescription: "Comment")
-        tag?.removeCommentFrame(withDescription: "Description")
-        tag?.removeCommentFrame(withDescription: "LongDescription")
-        tag?.removeCommentFrame(withDescription: "Liner Notes")
-        tag?.removeCommentFrame(withDescription: "Song Description")
-        tag?.removeCommentFrame(withDescription: "Series Description")
-        tag?.removeLyricsFrame(withDescription: "Lyrics")
-        tag?.removeUserTextFrame(withDescription: "UserText")
-        tag?.removeUserTextFrame(withDescription: "Acknowledgment")
-        tag?.removeUserTextFrame(withDescription: "Thanks")
-        tag?.removeUserTextFrame(withDescription: "Keywords")
-        tag?.removeUserTextFrame(withDescription: "Network")
-        tag?.removeUserTextFrame(withDescription: "Source Credit")
-        tag?.removeUserTextFrame(withDescription: "Content Rating")
-        tag?.removeUserTextFrame(withDescription: "Content Advisory")
-        tag?.removeUserTextFrame(withDescription: "Season")
-        tag?.removeUserTextFrame(withDescription: "Episode Number")
-        tag?.removeUserTextFrame(withDescription: "Episode Name")
-        tag?.removeUserTextFrame(withDescription: "Series Name")
-        tag?.removeUserUrlFrame(withDescription: "Online Extras")
-        tag?.removeUserUrlFrame(withDescription: "UserURL")
+        tag?["Comment", .eng] = nil
+        tag?["Description", .eng] = nil
+        tag?["Long Description", .eng] = nil
+        tag?["Liner Notes", .eng] = nil
+        tag?["Song Description", .eng] = nil
+        tag?["Series Description", .eng] = nil
+        tag?[lyrics: "Lyrics", .eng] = nil
+
+        tag?["UserText"] = nil
+        tag?["Acknowledgment"] = nil
+        tag?["Thanks"] = nil
+        tag?["Keywords"] = nil
+        tag?["Network"] = nil
+        tag?["Source Credit"] = nil
+        tag?["Content Rating"] = nil
+        tag?["Content Advisory"] = nil
+        tag?["Season"] = nil
+        tag?["Episode Number"] = nil
+        tag?["Episode Name"] = nil
+        tag?["Series Name"] = nil
+
+        tag?[userDefinedUrl: "Online Extras"] = nil
+        tag?[userDefinedUrl: "UserURL"] = nil
         
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         XCTAssertNoThrow(try TestFile.v22.mp3File()?.write(
@@ -105,27 +107,29 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
         var tag = try TestFile.v23.tag()
         
         // check comment, lyrics, and subscripted user text visually in Yate
-        tag?.removeCommentFrame(withDescription: "Comment")
-        tag?.removeCommentFrame(withDescription: "Description")
-        tag?.removeCommentFrame(withDescription: "LongDescription")
-        tag?.removeCommentFrame(withDescription: "Liner Notes")
-        tag?.removeCommentFrame(withDescription: "Song Description")
-        tag?.removeCommentFrame(withDescription: "Series Description")
-        tag?.removeLyricsFrame(withDescription: "Lyrics")
-        tag?.removeUserTextFrame(withDescription: "UserText")
-        tag?.removeUserTextFrame(withDescription: "Acknowledgment")
-        tag?.removeUserTextFrame(withDescription: "Thanks")
-        tag?.removeUserTextFrame(withDescription: "Keywords")
-        tag?.removeUserTextFrame(withDescription: "Network")
-        tag?.removeUserTextFrame(withDescription: "Source Credit")
-        tag?.removeUserTextFrame(withDescription: "Content Rating")
-        tag?.removeUserTextFrame(withDescription: "Content Advisory")
-        tag?.removeUserTextFrame(withDescription: "Season")
-        tag?.removeUserTextFrame(withDescription: "Episode Number")
-        tag?.removeUserTextFrame(withDescription: "Episode Name")
-        tag?.removeUserTextFrame(withDescription: "Series Name")
-        tag?.removeUserUrlFrame(withDescription: "Online Extras")
-        tag?.removeUserUrlFrame(withDescription: "UserURL")
+        tag?["Comment", .eng] = nil
+        tag?["Description", .eng] = nil
+        tag?["Long Description", .eng] = nil
+        tag?["Liner Notes", .eng] = nil
+        tag?["Song Description", .eng] = nil
+        tag?["Series Description", .eng] = nil
+        tag?[lyrics: "Lyrics", .eng] = nil
+        
+        tag?["UserText"] = nil
+        tag?["Acknowledgment"] = nil
+        tag?["Thanks"] = nil
+        tag?["Keywords"] = nil
+        tag?["Network"] = nil
+        tag?["Source Credit"] = nil
+        tag?["Content Rating"] = nil
+        tag?["Content Advisory"] = nil
+        tag?["Season"] = nil
+        tag?["Episode Number"] = nil
+        tag?["Episode Name"] = nil
+        tag?["Series Name"] = nil
+        
+        tag?[userDefinedUrl: "Online Extras"] = nil
+        tag?[userDefinedUrl: "UserURL"] = nil
         
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         XCTAssertNoThrow(try TestFile.v23.mp3File()?.write(
@@ -139,28 +143,30 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
         var tag = try TestFile.v24.tag()
         
         // check comment, lyrics, and subscripted user text visually in Yate
-        tag?.removeCommentFrame(withDescription: "Comment")
-        tag?.removeCommentFrame(withDescription: "Description")
-        tag?.removeCommentFrame(withDescription: "LongDescription")
-        tag?.removeCommentFrame(withDescription: "Liner Notes")
-        tag?.removeCommentFrame(withDescription: "Song Description")
-        tag?.removeCommentFrame(withDescription: "Series Description")
-        tag?.removeLyricsFrame(withDescription: "Lyrics")
-        tag?.removeUserTextFrame(withDescription: "UserText")
-        tag?.removeUserTextFrame(withDescription: "Acknowledgment")
-        tag?.removeUserTextFrame(withDescription: "Thanks")
-        tag?.removeUserTextFrame(withDescription: "Keywords")
-        tag?.removeUserTextFrame(withDescription: "Network")
-        tag?.removeUserTextFrame(withDescription: "Source Credit")
-        tag?.removeUserTextFrame(withDescription: "Content Rating")
-        tag?.removeUserTextFrame(withDescription: "Content Advisory")
-        tag?.removeUserTextFrame(withDescription: "Season")
-        tag?.removeUserTextFrame(withDescription: "Episode Number")
-        tag?.removeUserTextFrame(withDescription: "Episode Name")
-        tag?.removeUserTextFrame(withDescription: "Series Name")
-        tag?.removeUserUrlFrame(withDescription: "Online Extras")
-        tag?.removeUserUrlFrame(withDescription: "UserURL")
+        tag?["Comment", .eng] = nil
+        tag?["Description", .eng] = nil
+        tag?["Long Description", .eng] = nil
+        tag?["Liner Notes", .eng] = nil
+        tag?["Song Description", .eng] = nil
+        tag?["Series Description", .eng] = nil
+        tag?[lyrics: "Lyrics", .eng] = nil
         
+        tag?["UserText"] = nil
+        tag?["Acknowledgment"] = nil
+        tag?["Thanks"] = nil
+        tag?["Keywords"] = nil
+        tag?["Network"] = nil
+        tag?["Source Credit"] = nil
+        tag?["Content Rating"] = nil
+        tag?["Content Advisory"] = nil
+        tag?["Season"] = nil
+        tag?["Episode Number"] = nil
+        tag?["Episode Name"] = nil
+        tag?["Series Name"] = nil
+        
+        tag?[userDefinedUrl: "Online Extras"] = nil
+        tag?[userDefinedUrl: "UserURL"] = nil
+
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         XCTAssertNoThrow(try TestFile.v24.mp3File()?.write(
             tagVersion: .v2_4,

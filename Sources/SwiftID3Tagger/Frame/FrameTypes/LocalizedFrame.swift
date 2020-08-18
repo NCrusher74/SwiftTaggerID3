@@ -132,7 +132,7 @@ struct LocalizedFrame: FrameProtocol, CustomStringConvertible {
 // MARK: - Tag extension
 // get and set functions for `LocalizedFrame` frame types, which retrieves or sets up to three strings, one of which may be a language code, and one of which is an optional description string. Each individual frame of this type will call these functions in a get-set property or function, where appropriate.
 extension Tag {
-    internal func get(for frameKey: FrameKey,
+    private func get(for frameKey: FrameKey,
                       language: ISO6392Codes?,
                       description: String?) -> String? {
         if frameKey == .unsynchronizedLyrics(description: description ?? "") {
@@ -150,7 +150,7 @@ extension Tag {
         }; return nil
     }
     
-    internal func get(for frameKey: FrameKey, description: String?)
+    private func get(for frameKey: FrameKey, description: String?)
         -> String? {
             // check that the frame is a UserDefinedWebpage frame or a UserText frame
             if frameKey == .userDefinedWebpage(description: description ?? "") {
@@ -169,34 +169,38 @@ extension Tag {
             }; return nil
     }
     
-    internal mutating func set(_ layout: FrameLayoutIdentifier,
+    private mutating func set(_ layout: FrameLayoutIdentifier,
                                _ frameKey: FrameKey,
                                in language: String?,
                                to description: String?,
-                               with content: String) {
-        let frame = LocalizedFrame(layout,
-                                   languageString: language,
-                                   descriptionString: description,
-                                   contentString: content)
-        self.frames[frameKey] = .localizedFrame(frame)        
+                               with content: String?) {
+        if let contentString = content {
+            let frame = LocalizedFrame(layout,
+                                       languageString: language,
+                                       descriptionString: description,
+                                       contentString: contentString)
+            self.frames[frameKey] = .localizedFrame(frame)
+        }
     }
     
-    internal mutating func set(_ layout: FrameLayoutIdentifier,
+    private mutating func set(_ layout: FrameLayoutIdentifier,
                                _ frameKey: FrameKey,
                                to description: String?,
-                               with content: String) {
-        let frame = LocalizedFrame(
-            layout, languageString: nil,
-            descriptionString: description,
-            contentString: content)
-        self.frames[frameKey] = .localizedFrame(frame)
+                               with content: String?) {
+        if let contentString = content {
+            let frame = LocalizedFrame(
+                layout, languageString: nil,
+                descriptionString: description,
+                contentString: contentString)
+            self.frames[frameKey] = .localizedFrame(frame)
+        }
     }
     
-    public mutating func removeCommentFrame(withDescription: String) {
+    private mutating func removeCommentFrame(withDescription: String) {
         self.frames[.comments(description: withDescription)] = nil
     }
 
-    public mutating func removeLyricsFrame(withDescription: String) {
+    private mutating func removeLyricsFrame(withDescription: String) {
         self.frames[.unsynchronizedLyrics(description: withDescription)] = nil
     }
 
@@ -209,11 +213,15 @@ extension Tag {
                 description: commentDescription) ?? ""
         }
         set {
-            set(.known(.comments),
-                .comments(description: commentDescription ?? ""),
-                in: language.rawValue,
-                to: commentDescription,
-                with: newValue ?? "")
+            if let new = newValue {
+                set(.known(.comments),
+                    .comments(description: commentDescription ?? ""),
+                    in: language.rawValue,
+                    to: commentDescription,
+                    with: new)
+            } else {
+                removeCommentFrame(withDescription: commentDescription ?? "")
+            }
         }
     }
     
@@ -226,7 +234,11 @@ extension Tag {
                 description: lyricsDescription)
         }
         set {
-            set(.known(.unsynchronizedLyrics), .unsynchronizedLyrics(description: lyricsDescription ?? ""), in: language.rawValue, to: lyricsDescription, with: newValue ?? "")
+            if let new = newValue {
+                set(.known(.unsynchronizedLyrics), .unsynchronizedLyrics(description: lyricsDescription ?? ""), in: language.rawValue, to: lyricsDescription, with: new)
+            } else {
+                removeLyricsFrame(withDescription: lyricsDescription ?? "")
+            }
         }
     }
     
@@ -238,18 +250,22 @@ extension Tag {
                 description: userTextDescription)
         }
         set {
-            set(.known(.userDefinedText), .userDefinedText(
-                description: userTextDescription ?? ""),
-                to: userTextDescription,
-                with: newValue ?? "")
+            if let new = newValue {
+                set(.known(.userDefinedText), .userDefinedText(
+                    description: userTextDescription ?? ""),
+                    to: userTextDescription,
+                    with: new)
+            } else {
+                removeUserTextFrame(withDescription: userTextDescription ?? "")
+            }
         }
     }
 
-    public mutating func removeUserTextFrame(withDescription: String) {
+    private mutating func removeUserTextFrame(withDescription: String) {
         self.frames[.userDefinedText(description: withDescription)] = nil
     }
 
-    public mutating func removeUserUrlFrame(withDescription: String) {
+    private mutating func removeUserUrlFrame(withDescription: String) {
         self.frames[.userDefinedWebpage(description: withDescription)] = nil
     }
 
@@ -261,10 +277,14 @@ extension Tag {
                 description: userDefinedUrlDescription)
         }
         set {
-            set(.known(.userDefinedWebpage), .userDefinedWebpage(
-                description: userDefinedUrlDescription ?? ""),
-                to: userDefinedUrlDescription,
-                with: newValue ?? "")
+            if let new = newValue {
+                set(.known(.userDefinedWebpage), .userDefinedWebpage(
+                    description: userDefinedUrlDescription ?? ""),
+                    to: userDefinedUrlDescription,
+                    with: new)
+            } else {
+                removeUserUrlFrame(withDescription: userDefinedUrlDescription ?? "")
+            }
         }
     }
 }
