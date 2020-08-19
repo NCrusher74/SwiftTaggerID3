@@ -284,8 +284,8 @@ public struct Tag: CustomStringConvertible {
                     value = frameValue
                 }
             } else if frameKey == .fileType {
-                if self._fileType != (nil, nil, nil) {
-                    let frameValue = self._fileType
+                if self.fileType != (nil, nil, nil) {
+                    let frameValue = self.fileType
                     value = frameValue
                 }
             } else if frameKey == .fileOwner {
@@ -293,27 +293,9 @@ public struct Tag: CustomStringConvertible {
                     value = frameValue
                 }
             } else if frameKey == .genre {
-                var preset: GenreType = .none
-                var custom: String = ""
-                if let presetGenre = self.presetGenre {
-                    preset = presetGenre
-                }
-                if let customGenre = self.genre {
-                    custom = customGenre
-                }
-                if preset != .none {
-                    if custom != "" {
-                        value = (preset, custom)
-                    } else {
-                        value = (preset)
-                    }
-                } else {
-                    if custom != "" {
-                        value = (custom)
-                    } else {
-                        let nilValue: (GenreType?, String?) = (nil, nil)
-                        value = nilValue
-                    }
+                if self.genre != (nil, nil) {
+                    let frameValue = self.genre
+                    value = frameValue
                 }
             } else if frameKey == .grouping {
                 if let frameValue = self.grouping {
@@ -344,8 +326,8 @@ public struct Tag: CustomStringConvertible {
                     value = frameValue
                 }
             } else if frameKey == .mediaType {
-                if self._mediaType != (nil, nil, nil) {
-                    let frameValue = self._mediaType
+                if self.mediaType != (nil, nil, nil) {
+                    let frameValue = self.mediaType
                     value = frameValue
                 }
             } else if frameKey == .mood {

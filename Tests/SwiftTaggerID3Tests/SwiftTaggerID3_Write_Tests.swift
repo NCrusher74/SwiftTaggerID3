@@ -758,16 +758,16 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.trackNumber.track = 6
         tag.trackNumber.totalTracks = 7
 
-        tag.presetGenre = .Blues
-        tag.genre = "Blues Refinement"
+        tag.genre.genreCategory = .Blues
+        tag.genre.genre = "Blues Refinement"
         
-        tag.mediaType = .otherDigital
-        tag.mediaTypeRefinement = .analogTransfer
-        tag.additionalMediaTypeInformation = "Additional Information"
+        tag.mediaType.mediaType = .otherDigital
+        tag.mediaType.mediaTypeRefinement = .analogTransfer
+        tag.mediaType.additionalInformation = "Additional Information"
         
-        tag.fileType = .MPG
-        tag.fileTypeRefinement = .mpegLayerIII
-        tag.additionalFileTypeInformation = "Additional Information"
+        tag.fileType.fileType = .MPG
+        tag.fileType.fileTypeRefinement = .mpegLayerIII
+        tag.fileType.additionalInformation = "Additional Information"
 
         let outputUrl = try localDirectory(fileName: "mp3-meta", fileExtension: "mp3")
         XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_4, using: tag, writingTo: outputUrl))        

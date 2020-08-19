@@ -314,44 +314,44 @@ extension Tag {
         self.frames[frameKey] = .presetOptionsFrame(frame)
     }
     
-    public var presetGenre: GenreType? {
-        get {
-            if let preset = _genre.presetGenre {
-                return preset
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue, new != .none {
-                _genre.presetGenre = new
-            } else {
-                _genre.presetGenre = nil
-            }
-        }
-    }
+//    public var presetGenre: GenreType? {
+//        get {
+//            if let preset = _genre.presetGenre {
+//                return preset
+//            } else {
+//                return nil
+//            }
+//        }
+//        set {
+//            if let new = newValue, new != .none {
+//                _genre.presetGenre = new
+//            } else {
+//                _genre.presetGenre = nil
+//            }
+//        }
+//    }
+//
+//    public var genre: String? {
+//        get {
+//            if let string = _genre.customGenre {
+//                return string
+//            } else {
+//                return nil
+//            }
+//        }
+//        set {
+//            if let new = newValue, new != "" {
+//                _genre.customGenre = new
+//            } else {
+//                _genre.customGenre = nil
+//            }
+//        }
+//    }
     
-    public var genre: String? {
-        get {
-            if let string = _genre.customGenre {
-                return string
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue, new != "" {
-                _genre.customGenre = new
-            } else {
-                _genre.customGenre = nil
-            }
-        }
-    }
-    
-    internal var _genre: (presetGenre: GenreType?, customGenre: String?) {
+    public var genre: (genreCategory: GenreType?, genre: String?) {
         get {
             // if the array exists and isn't empty
-            var tuple: (presetGenre: GenreType?, customGenre: String?) = (nil, nil)
+            var tuple: (genreCategory: GenreType?, genre: String?) = (nil, nil)
             if let frameArray = get(forPresetOptionFrame: .genre) {
                 var presetType: GenreType = .none
                 var customString: String = ""
@@ -369,10 +369,10 @@ extension Tag {
                     }
                 }
                 if presetType != .none {
-                    tuple.presetGenre = presetType
+                    tuple.genreCategory = presetType
                 }
                 if customString != "" {
-                    tuple.customGenre = customString
+                    tuple.genre = customString
                 }
             }
             return tuple
@@ -380,10 +380,10 @@ extension Tag {
         set {
             if newValue != (nil, nil) {
                 var frameArray = [String]()
-                if let genre = newValue.presetGenre, genre != .none {
+                if let genre = newValue.genreCategory, genre != .none {
                     frameArray.append(genre.rawValue)
                 }
-                if let custom = newValue.customGenre, custom != "" {
+                if let custom = newValue.genre, custom != "" {
                     frameArray.append(custom)
                 }
                 set(.known(.genre), .genre, infoArray: frameArray)
@@ -393,58 +393,58 @@ extension Tag {
         }
     }
     
-    public var mediaType: MediaType? {
-        get {
-            if let type = _mediaType.mediaType {
-                return type
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue, new != .none {
-                _mediaType.mediaType = new
-            } else {
-                _mediaType.mediaType = nil
-            }
-        }
-    }
+//    public var mediaType: MediaType? {
+//        get {
+//            if let type = _mediaType.mediaType {
+//                return type
+//            } else {
+//                return nil
+//            }
+//        }
+//        set {
+//            if let new = newValue, new != .none {
+//                _mediaType.mediaType = new
+//            } else {
+//                _mediaType.mediaType = nil
+//            }
+//        }
+//    }
+//
+//    public var mediaTypeRefinement: MediaTypeRefinements? {
+//        get {
+//            if let type = _mediaType.mediaTypeRefinement {
+//                return type
+//            } else {
+//                return nil
+//            }
+//        }
+//        set {
+//            if let new = newValue, new != .none {
+//                _mediaType.mediaTypeRefinement = new
+//            } else {
+//                _mediaType.mediaTypeRefinement = nil
+//            }
+//        }
+//    }
+//
+//    public var additionalMediaTypeInformation: String? {
+//        get {
+//            if let string = _mediaType.additionalInformation {
+//                return string
+//            } else {
+//                return nil
+//            }
+//        }
+//        set {
+//            if let new = newValue, new != "" {
+//                _mediaType.additionalInformation = new
+//            } else {
+//                _mediaType.additionalInformation = nil
+//            }
+//        }
+//    }
     
-    public var mediaTypeRefinement: MediaTypeRefinements? {
-        get {
-            if let type = _mediaType.mediaTypeRefinement {
-                return type
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue, new != .none {
-                _mediaType.mediaTypeRefinement = new
-            } else {
-                _mediaType.mediaTypeRefinement = nil
-            }
-        }
-    }
-    
-    public var additionalMediaTypeInformation: String? {
-        get {
-            if let string = _mediaType.additionalInformation {
-                return string
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue, new != "" {
-                _mediaType.additionalInformation = new
-            } else {
-                _mediaType.additionalInformation = nil
-            }
-        }
-    }
-    
-    internal var _mediaType: (mediaType: MediaType?, mediaTypeRefinement: MediaTypeRefinements?, additionalInformation: String?) {
+    public var mediaType: (mediaType: MediaType?, mediaTypeRefinement: MediaTypeRefinements?, additionalInformation: String?) {
         get {
             var tuple: (mediaType: MediaType?, mediaTypeRefinement: MediaTypeRefinements?, additionalInformation: String?) = (nil, nil, nil)
             // if the array exists and isn't empty
@@ -504,58 +504,58 @@ extension Tag {
         }
     }
 
-    public var fileType: FileType? {
-        get {
-            if let type = _fileType.fileType {
-                return type
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue, new != .none {
-                _fileType.fileType = new
-            } else {
-                _fileType.fileType = nil
-            }
-        }
-    }
-    
-    public var fileTypeRefinement: FileTypeRefinements? {
-        get {
-            if let type = _fileType.fileTypeRefinement {
-                return type
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue, new != .none {
-                _fileType.fileTypeRefinement = new
-            } else {
-                _fileType.fileTypeRefinement = nil
-            }
-        }
-    }
-    
-    public var additionalFileTypeInformation: String? {
-        get {
-            if let string = _fileType.additionalInformation {
-                return string
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue, new != "" {
-                _fileType.additionalInformation = new
-            } else {
-                _fileType.additionalInformation = nil
-            }
-        }
-    }
+//    public var fileType: FileType? {
+//        get {
+//            if let type = _fileType.fileType {
+//                return type
+//            } else {
+//                return nil
+//            }
+//        }
+//        set {
+//            if let new = newValue, new != .none {
+//                _fileType.fileType = new
+//            } else {
+//                _fileType.fileType = nil
+//            }
+//        }
+//    }
+//
+//    public var fileTypeRefinement: FileTypeRefinements? {
+//        get {
+//            if let type = _fileType.fileTypeRefinement {
+//                return type
+//            } else {
+//                return nil
+//            }
+//        }
+//        set {
+//            if let new = newValue, new != .none {
+//                _fileType.fileTypeRefinement = new
+//            } else {
+//                _fileType.fileTypeRefinement = nil
+//            }
+//        }
+//    }
+//
+//    public var additionalFileTypeInformation: String? {
+//        get {
+//            if let string = _fileType.additionalInformation {
+//                return string
+//            } else {
+//                return nil
+//            }
+//        }
+//        set {
+//            if let new = newValue, new != "" {
+//                _fileType.additionalInformation = new
+//            } else {
+//                _fileType.additionalInformation = nil
+//            }
+//        }
+//    }
 
-    internal var _fileType: (fileType: FileType?, fileTypeRefinement: FileTypeRefinements?, additionalInformation: String?) {
+    public var fileType: (fileType: FileType?, fileTypeRefinement: FileTypeRefinements?, additionalInformation: String?) {
         get {
             var tuple: (fileType: FileType?, fileTypeRefinement: FileTypeRefinements?, additionalInformation: String?) = (nil, nil, nil)
             // if the array exists and isn't empty
