@@ -293,8 +293,27 @@ public struct Tag: CustomStringConvertible {
                     value = frameValue
                 }
             } else if frameKey == .genre {
-                if let frameValue = self.genre {
-                    value = frameValue
+                var preset: GenreType = .none
+                var custom: String = ""
+                if let presetGenre = self.presetGenre {
+                    preset = presetGenre
+                }
+                if let customGenre = self.customGenre {
+                    custom = customGenre
+                }
+                if preset != .none {
+                    if custom != "" {
+                        value = (preset, custom)
+                    } else {
+                        value = (preset)
+                    }
+                } else {
+                    if custom != "" {
+                        value = (custom)
+                    } else {
+                        let nilValue: (GenreType?, String?) = (nil, nil)
+                        value = nilValue
+                    }
                 }
             } else if frameKey == .grouping {
                 if let frameValue = self.grouping {

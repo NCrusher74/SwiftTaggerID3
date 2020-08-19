@@ -297,7 +297,7 @@ struct PresetOptionsFrame: FrameProtocol, CustomStringConvertible {
 // MARK: - Tag extensions
 // get and set functions for `PresetOptionsFrame` frame types, which retrieves or sets three strings, all of which are optional (genre only uses two of these.) Each individual frame of this type will call these functions in a get-set property of function, where appropriate.
 extension Tag {
-    func get(forPresetOptionFrame frameKey: FrameKey) -> [String]? {
+    internal func get(forPresetOptionFrame frameKey: FrameKey) -> [String]? {
         if let frame = self.frames[frameKey],
             case .presetOptionsFrame(let presetOptionsFrame) = frame {
             return presetOptionsFrame.genreMediaOrFileInfo
@@ -314,12 +314,40 @@ extension Tag {
         self.frames[frameKey] = .presetOptionsFrame(frame)
     }
     
-    public var genre: (presetGenre: GenreType?, customGenre: String?)? {
+    public var customGenre: String? {
         get {
-            var presetType: GenreType? = nil
-            var customString: String? = nil
+            if let genre = genre.customGenre {
+                return genre
+            } else {
+                return nil
+            }
+        }
+        set {
+            genre.customGenre = newValue
+        }
+    }
+    
+    public var presetGenre: GenreType? {
+        get {
+            if let genre = genre.presetGenre {
+                return genre
+            } else {
+                return nil
+            }
+        }
+        set {
+            genre.presetGenre = newValue
+        }
+    }
+    
+    
+    internal var genre: (presetGenre: GenreType?, customGenre: String?) {
+        get {
             // if the array exists and isn't empty
+            var tuple: (presetGenre: GenreType?, customGenre: String?) = (nil, nil)
             if let frameArray = get(forPresetOptionFrame: .genre) {
+                var presetType: GenreType = .none
+                var customString: String = ""
                 // for each item in the array...
                 for item in frameArray {
                     // if the item isn't an empty string
@@ -333,26 +361,25 @@ extension Tag {
                         }
                     }
                 }
+                if presetType != .none {
+                    tuple.presetGenre = presetType
+                }
+                if customString != "" {
+                    tuple.customGenre = customString
+                }
             }
-            if presetType != nil ||
-                customString != nil {
-                return (presetType, customString)
-            } else {
-                return nil
-            }
+            return tuple
         }
         set {
-            if let new = newValue, new != (nil, nil) {
-                var frameArray = [String]()
-                if let genre = new.presetGenre {
-                    frameArray.append(genre.rawValue)
-                }
-                if let custom = new.customGenre {
-                    frameArray.append(custom)
-                }
-                if !frameArray.isEmpty {
-                    set(.known(.genre), .genre, infoArray: frameArray)
-                }
+            var frameArray = [String]()
+            if let genre = newValue.presetGenre, genre != .none {
+                frameArray.append(genre.rawValue)
+            }
+            if let custom = newValue.customGenre, custom != "" {
+                frameArray.append(custom)
+            }
+            if !frameArray.isEmpty {
+                set(.known(.genre), .genre, infoArray: frameArray)
             } else {
                 self.frames[.genre] = nil
             }
@@ -361,37 +388,45 @@ extension Tag {
     
     public var mediaType: (mediaType: MediaType?, mediaTypeRefinement: MediaTypeRefinements?, additionalInformation: String?)? {
         get {
-            var presetType: MediaType? = nil
-            var presetRefinement: MediaTypeRefinements? = nil
-            var refinementString: String? = nil
             // if the array exists and isn't empty
             if let frameArray = get(forPresetOptionFrame: .mediaType),
                 !frameArray.isEmpty {
+                var presetType: MediaType = .none
+                var presetRefinement: MediaTypeRefinements = .none
+                var refinementString: String = ""
+                var tuple: (mediaType: MediaType?, mediaTypeRefinement: MediaTypeRefinements?, additionalInformation: String?) = (nil, nil, nil)
                 for element in frameArray {
                     if element != "" {
                         // forward slash means it's a refinement string
                         if element.first == "/" {
-                            presetRefinement = MediaTypeRefinements(code: element)
+                            if let refinement = MediaTypeRefinements(code: element) {
+                                presetRefinement = refinement
+                            }
                             // if it's not a refinement, check to see if it's a media type
-                        } else if MediaType(rawValue: element) != nil {
-                            presetType = MediaType(rawValue: element)
+                        } else if let type = MediaType(rawValue: element) {
+                            presetType = type
                             // if it's not either of those, handle it as a freeform description
                         } else {
                             refinementString = element
                         }
                     }
                 }
-            }
-            if presetType != nil ||
-                presetRefinement != nil ||
-                refinementString != nil {
-            return (presetType, presetRefinement, refinementString)
+                if presetType != .none {
+                    tuple.mediaType = presetType
+                }
+                if presetRefinement != .none {
+                    tuple.mediaTypeRefinement = presetRefinement
+                }
+                if refinementString != "" {
+                    tuple.additionalInformation = refinementString
+                }
+                return tuple
             } else {
                 return nil
             }
         }
         set {
-            if let new = newValue, new != (nil, nil, nil) {
+            if let new = newValue {
                 var frameArray = [String]()
                 if let type = new.mediaType, type != .none {
                     let string = type.rawValue
@@ -415,31 +450,39 @@ extension Tag {
     
     public var fileType: (fileType: FileType?, fileTypeRefinement: FileTypeRefinements?, additionalInformation: String?)? {
         get {
-            var presetType: FileType? = nil
-            var presetRefinement: FileTypeRefinements? = nil
-            var refinementString: String? = nil
             // if the array exists and isn't empty
             if let frameArray = get(forPresetOptionFrame: .fileType),
                 !frameArray.isEmpty {
+                var presetType: FileType = .none
+                var presetRefinement: FileTypeRefinements = .none
+                var refinementString: String = ""
+                var tuple: (fileType: FileType?, fileTypeRefinement: FileTypeRefinements?, additionalInformation: String?) = (nil, nil, nil)
                 for element in frameArray {
                     if element != "" {
                         // forward slash means it's a refinement string
                         if element.first == "/" {
-                            presetRefinement = FileTypeRefinements(rawValue: element)
+                            if let refinement = FileTypeRefinements(rawValue: element) {
+                                presetRefinement = refinement
+                            }
                             // if it's not a refinement, check to see if it's a media type
-                        } else if FileType(rawValue: element) != nil {
-                            presetType = FileType(rawValue: element)
+                        } else if let type = FileType(rawValue: element) {
+                            presetType = type
                             // if it's not either of those, handle it as a freeform description
                         } else {
                             refinementString = element
                         }
                     }
                 }
-            }
-            if presetType != nil ||
-                presetRefinement != nil ||
-                refinementString != nil {
-                return (presetType, presetRefinement, refinementString)
+                if presetType != .none {
+                    tuple.fileType = presetType
+                }
+                if presetRefinement != .none {
+                    tuple.fileTypeRefinement = presetRefinement
+                }
+                if refinementString != "" {
+                    tuple.additionalInformation = refinementString
+                }
+                return tuple
             } else {
                 return nil
             }

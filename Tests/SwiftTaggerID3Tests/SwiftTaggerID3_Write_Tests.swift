@@ -758,8 +758,8 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.trackNumber?.track = 6
         tag.trackNumber?.totalTracks = 7
 
-        tag.genre?.presetGenre = .Blues
-        tag.genre?.customGenre = "Blues Refinement"
+        tag.presetGenre = .Blues
+        tag.customGenre = "Blues Refinement"
         
         tag.mediaType?.mediaType = .otherDigital
         tag.mediaType?.mediaTypeRefinement = .analogTransfer
