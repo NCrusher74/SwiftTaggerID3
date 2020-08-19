@@ -14,17 +14,21 @@ import Foundation
  */
 struct PartOfTotalFrame: FrameProtocol, CustomStringConvertible {
     public var description: String {
-        if let total = self.total {
-            return """
-            \(self.frameKey): \(self.part) of \(total)
-            """
+        if let part = self.part {
+            if let total = self.total {
+                return """
+                \(self.frameKey): \(part) of \(total)
+                """
+            } else {
+                return """
+                \(self.frameKey): \(part)
+                """
+            }
         } else {
-            return """
-            \(self.frameKey): \(self.part)
-            """
+            return ""
         }
     }
-
+    
     // MARK: - Properties
     var flags: Data
     var layout: FrameLayoutIdentifier
@@ -32,7 +36,7 @@ struct PartOfTotalFrame: FrameProtocol, CustomStringConvertible {
 
     // the frame's unique properties
     /// The index of the track/disc.
-    var part: Int
+    var part: Int?
     /// The total number of tracks/discs.
     var total: Int?
     
@@ -69,7 +73,7 @@ struct PartOfTotalFrame: FrameProtocol, CustomStringConvertible {
      - parameter total: the total tracks/discs of the recordings.
      */
     init(_ layout: FrameLayoutIdentifier,
-         part: Int,
+         part: Int?,
          total: Int?) {
         self.part = part
         self.total = total
@@ -84,11 +88,11 @@ struct PartOfTotalFrame: FrameProtocol, CustomStringConvertible {
         // append the encoding byte
         frameData.append(StringEncoding.preferred.rawValue)
         if self.total == nil { // string will contain only the "part" value
-            let partOfTotalString = String(self.part)
+            let partOfTotalString = String(self.part ?? 0)
             frameData.append(
                 partOfTotalString.encoded(withNullTermination: false))
         } else { // string will contain both values, separated by a forward slash
-            let partOfTotalString = "\(self.part)/\(self.total ?? 0)"
+            let partOfTotalString = "\(self.part ?? 0)/\(self.total ?? 0)"
             frameData.append(
                 partOfTotalString.encoded(withNullTermination: false))
         }
@@ -100,20 +104,20 @@ struct PartOfTotalFrame: FrameProtocol, CustomStringConvertible {
 /* get and set functions for `PartOfTotalFrame` frame types. Each individual frame of this type will have its own get-set property that will call these fucntions */
 extension Tag {
     
-    /// Retrieve an integer tuple from the frame data
-    /// - Parameter frameKey: the unique identifier of the frame
-    /// - Returns: the frame's contents as an integer tuple
-    internal func get(forPartOfTotalFrame frameKey: FrameKey)
-        -> (part: Int, total: Int?)? {
-            // check that the frame is a PartOfTotalFrame
-            if let frame = self.frames[frameKey],
-                case .partOfTotalFrame(let partOfTotalFrame) = frame {
-                // return an integer tuple
-                return (partOfTotalFrame.part, partOfTotalFrame.total)
-            } else {
-                return nil
-            }
-    }
+//    /// Retrieve an integer tuple from the frame data
+//    /// - Parameter frameKey: the unique identifier of the frame
+//    /// - Returns: the frame's contents as an integer tuple
+//    internal func get(forPartOfTotalFrame frameKey: FrameKey)
+//        -> (part: Int, total: Int?)? {
+//            // check that the frame is a PartOfTotalFrame
+//            if let frame = self.frames[frameKey],
+//                case .partOfTotalFrame(let partOfTotalFrame) = frame {
+//                // return an integer tuple
+//                return (partOfTotalFrame.part, partOfTotalFrame.total)
+//            } else {
+//                return nil
+//            }
+//    }
     
     /// add the frame contents to an ID3 `Tag`
     /// - Parameters:
@@ -123,7 +127,7 @@ extension Tag {
     ///   - total: the total number of tracks or discs in the set
     internal mutating func set(_ layout: FrameLayoutIdentifier,
                       _ frameKey: FrameKey,
-                      to part: Int,
+                      to part: Int?,
                       and total: Int?) {
         // call the frame building initializer
         let frame = PartOfTotalFrame(
@@ -132,28 +136,114 @@ extension Tag {
             total: total)
         self.frames[frameKey] = .partOfTotalFrame(frame)
     }
-
-    /// DiscNumber(/TotalDiscs) getter-setter. ID3 Identifier: `TPA`/`TPOS`
-    public var discNumber: (disc: Int, totalDiscs: Int?)? {
+    
+    public var disc: Int? {
         get {
-            let tuple = get(forPartOfTotalFrame: .discNumber)
-            return (disc: tuple?.part ?? 0, totalDiscs: tuple?.total)
+            if let disc = discNumber.disc {
+                return disc
+            } else {
+                return nil
+            }
         }
         set {
-            set(.known(.discNumber), .discNumber,
-                to: newValue?.disc ?? 0, and: newValue?.totalDiscs)
+            if let new = newValue, new != 0 {
+                discNumber.disc = new
+            } else {
+                discNumber.disc = nil
+            }
+        }
+    }
+
+    public var totalDiscs: Int? {
+        get {
+            if let discs = discNumber.totalDiscs {
+                return discs
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue, new != 0 {
+                discNumber.totalDiscs = new
+            } else {
+                discNumber.totalDiscs = nil
+            }
+        }
+    }
+    
+    /// DiscNumber(/TotalDiscs) getter-setter. ID3 Identifier: `TPA`/`TPOS`
+    internal var discNumber: (disc: Int?, totalDiscs: Int?) {
+        get {
+            var tuple: (disc: Int?, totalDiscs: Int?) = (nil, nil)
+            if let frame = self.frames[.discNumber],
+                case .partOfTotalFrame(let partOfTotalFrame) = frame {
+                tuple.disc = partOfTotalFrame.part
+                tuple.totalDiscs = partOfTotalFrame.total
+            }
+            return tuple
+        }
+        set {
+            if newValue != (nil, nil) {
+                set(.known(.discNumber), .discNumber,
+                    to: newValue.disc, and: newValue.totalDiscs)
+            } else {
+                self.frames[.discNumber] = nil
+            }
+        }
+    }
+    
+    public var track: Int? {
+        get {
+            if let track = trackNumber.track {
+                return track
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue, new != 0 {
+                trackNumber.track = new
+            } else {
+                trackNumber.track = nil
+            }
+        }
+    }
+    
+    public var totalTracks: Int? {
+        get {
+            if let tracks = trackNumber.totalTracks {
+                return tracks
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue, new != 0 {
+                trackNumber.totalTracks = new
+            } else {
+                trackNumber.totalTracks = nil
+            }
         }
     }
     
     /// TrackNumber(/TotalTracks) getter-setter. ID3 Identifier: `TRK`/`TRCK`
-    public var trackNumber: (track: Int, totalTracks: Int?)? {
+    internal var trackNumber: (track: Int?, totalTracks: Int?) {
         get {
-            let tuple = get(forPartOfTotalFrame: .trackNumber)
-            return (track: tuple?.part ?? 0, totalTracks: tuple?.total)
+            var tuple: (track: Int?, totalTracks: Int?) = (nil, nil)
+            if let frame = self.frames[.trackNumber],
+                case .partOfTotalFrame(let partOfTotalFrame) = frame {
+                tuple.track = partOfTotalFrame.part
+                tuple.totalTracks = partOfTotalFrame.total
+            }
+            return tuple
         }
         set {
-            set(.known(.trackNumber), .trackNumber,
-                to: newValue?.track ?? 0, and: newValue?.totalTracks)
+            if newValue != (nil, nil) {
+                set(.known(.trackNumber), .trackNumber,
+                    to: newValue.track, and: newValue.totalTracks)
+            } else {
+                self.frames[.trackNumber] = nil
+            }
         }
     }
 }

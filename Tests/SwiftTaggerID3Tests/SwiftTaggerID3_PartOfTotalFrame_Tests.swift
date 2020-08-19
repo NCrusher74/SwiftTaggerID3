@@ -18,10 +18,10 @@ class SwiftTaggerID3_PartOfTotalFrame_Tests: XCTestCase {
     func testWithBothValuesWrittenOnBlankFile() throws {
         var tag = try TestFile.noMeta.tag()
 
-        tag?.discNumber?.disc = 4
-        tag?.discNumber?.totalDiscs = 5
-        tag?.trackNumber?.track = 6
-        tag?.trackNumber?.totalTracks = 7
+        tag?.disc = 4
+        tag?.totalDiscs = 5
+        tag?.track = 6
+        tag?.totalTracks = 7
         
         let outputUrlv22 = try tempDirectory().appendingPathComponent("testv22.mp3")
         XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(
@@ -32,10 +32,10 @@ class SwiftTaggerID3_PartOfTotalFrame_Tests: XCTestCase {
         let mp3FileWrittenV22 = try Mp3File(location: mp3UrlWrittenV22)
         let tagWrittenV22 = try Tag(readFrom: mp3FileWrittenV22)
         
-        XCTAssertEqual(tagWrittenV22.discNumber?.disc, 4)
-        XCTAssertEqual(tagWrittenV22.discNumber?.totalDiscs, 5)
-        XCTAssertEqual(tagWrittenV22.trackNumber?.track, 6)
-        XCTAssertEqual(tagWrittenV22.trackNumber?.totalTracks, 7)
+        XCTAssertEqual(tagWrittenV22.disc, 4)
+        XCTAssertEqual(tagWrittenV22.totalDiscs, 5)
+        XCTAssertEqual(tagWrittenV22.track, 6)
+        XCTAssertEqual(tagWrittenV22.totalTracks, 7)
         
         let outputUrlv23 = try tempDirectory().appendingPathComponent("testv23.mp3")
         XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(
@@ -46,10 +46,10 @@ class SwiftTaggerID3_PartOfTotalFrame_Tests: XCTestCase {
         let mp3FileWrittenV23 = try Mp3File(location: mp3UrlWrittenV23)
         let tagWrittenV23 = try Tag(readFrom: mp3FileWrittenV23)
         
-        XCTAssertEqual(tagWrittenV23.discNumber?.disc, 4)
-        XCTAssertEqual(tagWrittenV23.discNumber?.totalDiscs, 5)
-        XCTAssertEqual(tagWrittenV23.trackNumber?.track, 6)
-        XCTAssertEqual(tagWrittenV23.trackNumber?.totalTracks, 7)
+        XCTAssertEqual(tagWrittenV23.disc, 4)
+        XCTAssertEqual(tagWrittenV23.totalDiscs, 5)
+        XCTAssertEqual(tagWrittenV23.track, 6)
+        XCTAssertEqual(tagWrittenV23.totalTracks, 7)
 
         let outputUrlv24 = try tempDirectory().appendingPathComponent("testv24.mp3")
         XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_4,
@@ -59,18 +59,18 @@ class SwiftTaggerID3_PartOfTotalFrame_Tests: XCTestCase {
         let mp3FileWrittenV24 = try Mp3File(location: mp3UrlWrittenV24)
         let tagWrittenV24 = try Tag(readFrom: mp3FileWrittenV24)
         
-        XCTAssertEqual(tagWrittenV24.discNumber?.disc, 4)
-        XCTAssertEqual(tagWrittenV24.discNumber?.totalDiscs, 5)
-        XCTAssertEqual(tagWrittenV24.trackNumber?.track, 6)
-        XCTAssertEqual(tagWrittenV24.trackNumber?.totalTracks, 7)
+        XCTAssertEqual(tagWrittenV24.disc, 4)
+        XCTAssertEqual(tagWrittenV24.totalDiscs, 5)
+        XCTAssertEqual(tagWrittenV24.track, 6)
+        XCTAssertEqual(tagWrittenV24.totalTracks, 7)
     }
 
     @available(OSX 10.12, *)
     func testWithOneValueWrittenOnBlankFile() throws {
         var tag = try TestFile.noMeta.tag()
         
-        tag?.discNumber?.disc = 4
-        tag?.trackNumber?.track = 6
+        tag?.disc = 4
+        tag?.track = 6
         
      let outputUrlv22 = try tempDirectory().appendingPathComponent("testv22.mp3")
         XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_2,
@@ -80,10 +80,10 @@ class SwiftTaggerID3_PartOfTotalFrame_Tests: XCTestCase {
         let mp3FileWrittenV22 = try Mp3File(location: mp3UrlWrittenV22)
         let tagWrittenV22 = try Tag(readFrom: mp3FileWrittenV22)
         
-        XCTAssertEqual(tagWrittenV22.discNumber?.disc, 4)
-        XCTAssertNil(tagWrittenV22.discNumber?.totalDiscs)
-        XCTAssertEqual(tagWrittenV22.trackNumber?.track, 6)
-        XCTAssertNil(tagWrittenV22.trackNumber?.totalTracks)
+        XCTAssertEqual(tagWrittenV22.disc, 4)
+        XCTAssertNil(tagWrittenV22.totalDiscs)
+        XCTAssertEqual(tagWrittenV22.track, 6)
+        XCTAssertNil(tagWrittenV22.totalTracks)
         
      let outputUrlv23 = try tempDirectory().appendingPathComponent("testv23.mp3")
         XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_3,
@@ -93,10 +93,10 @@ class SwiftTaggerID3_PartOfTotalFrame_Tests: XCTestCase {
         let mp3FileWrittenV23 = try Mp3File(location: mp3UrlWrittenV23)
         let tagWrittenV23 = try Tag(readFrom: mp3FileWrittenV23)
         
-        XCTAssertEqual(tagWrittenV23.discNumber?.disc, 4)
-        XCTAssertNil(tagWrittenV23.discNumber?.totalDiscs)
-        XCTAssertEqual(tagWrittenV23.trackNumber?.track, 6)
-        XCTAssertNil(tagWrittenV23.trackNumber?.totalTracks)
+        XCTAssertEqual(tagWrittenV23.disc, 4)
+        XCTAssertNil(tagWrittenV23.totalDiscs)
+        XCTAssertEqual(tagWrittenV23.track, 6)
+        XCTAssertNil(tagWrittenV23.totalTracks)
         
      let outputUrlv24 = try tempDirectory().appendingPathComponent("testv24.mp3")
         XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_4,
@@ -106,19 +106,19 @@ class SwiftTaggerID3_PartOfTotalFrame_Tests: XCTestCase {
         let mp3FileWrittenV24 = try Mp3File(location: mp3UrlWrittenV24)
         let tagWrittenV24 = try Tag(readFrom: mp3FileWrittenV24)
         
-        XCTAssertEqual(tagWrittenV24.discNumber?.disc, 4)
-        XCTAssertNil(tagWrittenV24.discNumber?.totalDiscs)
-        XCTAssertEqual(tagWrittenV24.trackNumber?.track, 6)
-        XCTAssertNil(tagWrittenV24.trackNumber?.totalTracks)
+        XCTAssertEqual(tagWrittenV24.disc, 4)
+        XCTAssertNil(tagWrittenV24.totalDiscs)
+        XCTAssertEqual(tagWrittenV24.track, 6)
+        XCTAssertNil(tagWrittenV24.totalTracks)
     }
     
     @available(OSX 10.12, *)
     func testOverwriting() throws {
         var v22Tag = try TestFile.v22.tag()
-        v22Tag?.discNumber?.disc = 4
-        v22Tag?.discNumber?.totalDiscs = 5
-        v22Tag?.trackNumber?.track = 6
-        v22Tag?.trackNumber?.totalTracks = 7
+        v22Tag?.disc = 4
+        v22Tag?.totalDiscs = 5
+        v22Tag?.track = 6
+        v22Tag?.totalTracks = 7
         
         let outputUrlv22 = try tempDirectory().appendingPathComponent("testv22.mp3")
         XCTAssertNoThrow(try TestFile.v22.mp3File()?.write(tagVersion: .v2_2,
@@ -128,17 +128,17 @@ class SwiftTaggerID3_PartOfTotalFrame_Tests: XCTestCase {
         let mp3FileWrittenV22 = try Mp3File(location: mp3UrlWrittenV22)
         let tagWrittenV22 = try Tag(readFrom: mp3FileWrittenV22)
         
-        XCTAssertEqual(tagWrittenV22.discNumber?.disc, 4)
-        XCTAssertEqual(tagWrittenV22.discNumber?.totalDiscs, 5)
-        XCTAssertEqual(tagWrittenV22.trackNumber?.track, 6)
-        XCTAssertEqual(tagWrittenV22.trackNumber?.totalTracks, 7)
+        XCTAssertEqual(tagWrittenV22.disc, 4)
+        XCTAssertEqual(tagWrittenV22.totalDiscs, 5)
+        XCTAssertEqual(tagWrittenV22.track, 6)
+        XCTAssertEqual(tagWrittenV22.totalTracks, 7)
         
         var v23Tag = try TestFile.v23.tag()
         
-        v23Tag?.discNumber?.disc = 4
-        v23Tag?.discNumber?.totalDiscs = 5
-        v23Tag?.trackNumber?.track = 6
-        v23Tag?.trackNumber?.totalTracks = 7
+        v23Tag?.disc = 4
+        v23Tag?.totalDiscs = 5
+        v23Tag?.track = 6
+        v23Tag?.totalTracks = 7
         
         let outputUrlv23 = try tempDirectory().appendingPathComponent("testv23.mp3")
         XCTAssertNoThrow(try TestFile.v23.mp3File()?.write(tagVersion: .v2_3,
@@ -148,17 +148,17 @@ class SwiftTaggerID3_PartOfTotalFrame_Tests: XCTestCase {
         let mp3FileWrittenV23 = try Mp3File(location: mp3UrlWrittenV23)
         let tagWrittenV23 = try Tag(readFrom: mp3FileWrittenV23)
         
-        XCTAssertEqual(tagWrittenV23.discNumber?.disc, 4)
-        XCTAssertEqual(tagWrittenV23.discNumber?.totalDiscs, 5)
-        XCTAssertEqual(tagWrittenV23.trackNumber?.track, 6)
-        XCTAssertEqual(tagWrittenV23.trackNumber?.totalTracks, 7)
+        XCTAssertEqual(tagWrittenV23.disc, 4)
+        XCTAssertEqual(tagWrittenV23.totalDiscs, 5)
+        XCTAssertEqual(tagWrittenV23.track, 6)
+        XCTAssertEqual(tagWrittenV23.totalTracks, 7)
         
         var v24Tag = try TestFile.v24.tag()
         
-        v24Tag?.discNumber?.disc = 4
-        v24Tag?.discNumber?.totalDiscs = 5
-        v24Tag?.trackNumber?.track = 6
-        v24Tag?.trackNumber?.totalTracks = 7
+        v24Tag?.disc = 4
+        v24Tag?.totalDiscs = 5
+        v24Tag?.track = 6
+        v24Tag?.totalTracks = 7
         
         let outputUrlv24 = try tempDirectory().appendingPathComponent("testv24.mp3")
         XCTAssertNoThrow(try TestFile.v24.mp3File()?.write(tagVersion: .v2_4,
@@ -168,17 +168,17 @@ class SwiftTaggerID3_PartOfTotalFrame_Tests: XCTestCase {
         let mp3FileWrittenV24 = try Mp3File(location: mp3UrlWrittenV24)
         let tagWrittenV24 = try Tag(readFrom: mp3FileWrittenV24)
         
-        XCTAssertEqual(tagWrittenV24.discNumber?.disc, 4)
-        XCTAssertEqual(tagWrittenV24.discNumber?.totalDiscs, 5)
-        XCTAssertEqual(tagWrittenV24.trackNumber?.track, 6)
-        XCTAssertEqual(tagWrittenV24.trackNumber?.totalTracks, 7)
+        XCTAssertEqual(tagWrittenV24.disc, 4)
+        XCTAssertEqual(tagWrittenV24.totalDiscs, 5)
+        XCTAssertEqual(tagWrittenV24.track, 6)
+        XCTAssertEqual(tagWrittenV24.totalTracks, 7)
     }
 
     @available(OSX 10.12, *)
     func testOverwritingWithOnlyPart() throws {
         var v22Tag = try TestFile.v22.tag()
-        v22Tag?.discNumber?.disc = 4
-        v22Tag?.trackNumber?.track = 6
+        v22Tag?.disc = 4
+        v22Tag?.track = 6
         
         let outputUrlv22 = try tempDirectory().appendingPathComponent("testv22.mp3")
         XCTAssertNoThrow(try TestFile.v22.mp3File()?.write(tagVersion: .v2_2,
@@ -188,15 +188,15 @@ class SwiftTaggerID3_PartOfTotalFrame_Tests: XCTestCase {
         let mp3FileWrittenV22 = try Mp3File(location: mp3UrlWrittenV22)
         let tagWrittenV22 = try Tag(readFrom: mp3FileWrittenV22)
         
-        XCTAssertEqual(tagWrittenV22.discNumber?.disc, 4)
-        XCTAssertEqual(tagWrittenV22.discNumber?.totalDiscs, 4)
-        XCTAssertEqual(tagWrittenV22.trackNumber?.track, 6)
-        XCTAssertEqual(tagWrittenV22.trackNumber?.totalTracks, 2)
+        XCTAssertEqual(tagWrittenV22.disc, 4)
+        XCTAssertEqual(tagWrittenV22.totalDiscs, 4)
+        XCTAssertEqual(tagWrittenV22.track, 6)
+        XCTAssertEqual(tagWrittenV22.totalTracks, 2)
         
         var v23Tag = try TestFile.v23.tag()
         
-        v23Tag?.discNumber?.disc = 4
-        v23Tag?.trackNumber?.track = 6
+        v23Tag?.disc = 4
+        v23Tag?.track = 6
         
         let outputUrlv23 = try tempDirectory().appendingPathComponent("testv23.mp3")
         XCTAssertNoThrow(try TestFile.v23.mp3File()?.write(tagVersion: .v2_3,
@@ -206,15 +206,15 @@ class SwiftTaggerID3_PartOfTotalFrame_Tests: XCTestCase {
         let mp3FileWrittenV23 = try Mp3File(location: mp3UrlWrittenV23)
         let tagWrittenV23 = try Tag(readFrom: mp3FileWrittenV23)
         
-        XCTAssertEqual(tagWrittenV23.discNumber?.disc, 4)
-        XCTAssertEqual(tagWrittenV23.discNumber?.totalDiscs, 4)
-        XCTAssertEqual(tagWrittenV23.trackNumber?.track, 6)
-        XCTAssertEqual(tagWrittenV23.trackNumber?.totalTracks, 2)
+        XCTAssertEqual(tagWrittenV23.disc, 4)
+        XCTAssertEqual(tagWrittenV23.totalDiscs, 4)
+        XCTAssertEqual(tagWrittenV23.track, 6)
+        XCTAssertEqual(tagWrittenV23.totalTracks, 2)
         
         var v24Tag = try TestFile.v24.tag()
         
-        v24Tag?.discNumber?.disc = 4
-        v24Tag?.trackNumber?.track = 6
+        v24Tag?.disc = 4
+        v24Tag?.track = 6
         
         let outputUrlv24 = try tempDirectory().appendingPathComponent("testv24.mp3")
         XCTAssertNoThrow(try TestFile.v24.mp3File()?.write(tagVersion: .v2_4,
@@ -224,9 +224,9 @@ class SwiftTaggerID3_PartOfTotalFrame_Tests: XCTestCase {
         let mp3FileWrittenV24 = try Mp3File(location: mp3UrlWrittenV24)
         let tagWrittenV24 = try Tag(readFrom: mp3FileWrittenV24)
         
-        XCTAssertEqual(tagWrittenV24.discNumber?.disc, 4)
-        XCTAssertEqual(tagWrittenV24.discNumber?.totalDiscs, 4)
-        XCTAssertEqual(tagWrittenV24.trackNumber?.track, 6)
-        XCTAssertEqual(tagWrittenV24.trackNumber?.totalTracks, 2)
+        XCTAssertEqual(tagWrittenV24.disc, 4)
+        XCTAssertEqual(tagWrittenV24.totalDiscs, 4)
+        XCTAssertEqual(tagWrittenV24.track, 6)
+        XCTAssertEqual(tagWrittenV24.totalTracks, 2)
     }
 }

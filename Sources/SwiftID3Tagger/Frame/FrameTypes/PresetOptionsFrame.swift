@@ -1,10 +1,10 @@
 /*
-
+ 
  PresetOptionsFrame.swift
  SwiftTaggerID3
-
+ 
  Copyright ©2020 Nolaine Crusher. All rights reserved.
-
+ 
  */
 
 import Foundation
@@ -16,7 +16,7 @@ struct PresetOptionsFrame: FrameProtocol, CustomStringConvertible {
         \(self.frameKey): \(self.genreMediaOrFileInfo)
         """
     }
-
+    
     
     // MARK: - Properties
     // (inherited from FrameProtocol)
@@ -56,15 +56,15 @@ struct PresetOptionsFrame: FrameProtocol, CustomStringConvertible {
                         parsedArray.append(next)
             }
         }
-            if self.frameKey == .genre {
-                self.genreMediaOrFileInfo = PresetOptionsFrame.parseGenreStrings(parsedArray: parsedArray)
-            } else if self.frameKey == .mediaType {
-                self.genreMediaOrFileInfo = PresetOptionsFrame.parseMediaTypeStrings(parsedArray: parsedArray)
-            } else {
-                self.genreMediaOrFileInfo = PresetOptionsFrame.parseFileTypeStrings(parsedArray: parsedArray)
+        if self.frameKey == .genre {
+            self.genreMediaOrFileInfo = PresetOptionsFrame.parseGenreStrings(parsedArray: parsedArray)
+        } else if self.frameKey == .mediaType {
+            self.genreMediaOrFileInfo = PresetOptionsFrame.parseMediaTypeStrings(parsedArray: parsedArray)
+        } else {
+            self.genreMediaOrFileInfo = PresetOptionsFrame.parseFileTypeStrings(parsedArray: parsedArray)
         }
     }
-
+    
     
     // MARK: - Frame Building
     init(_ layout: FrameLayoutIdentifier,
@@ -165,7 +165,7 @@ struct PresetOptionsFrame: FrameProtocol, CustomStringConvertible {
                 // check if it's a valid media type
                 if let mediaType = MediaType(rawValue: item) {
                     if genreMediaOrFileInfo.index(after: index) != genreMediaOrFileInfo.endIndex {
-
+                        
                         let nextItem = self.genreMediaOrFileInfo[genreMediaOrFileInfo.index(after: index)]
                         if nextItem.first == "/" {
                             if let refinement = MediaTypeRefinements(
@@ -265,7 +265,7 @@ struct PresetOptionsFrame: FrameProtocol, CustomStringConvertible {
         }
         return fileTypeData
     }
-
+    
     private func reassembleAndEncodeNonParentheticalFileTypeStrings() -> Data {
         var frameData = Data()
         for (index, item) in self.genreMediaOrFileInfo.enumerated() {
@@ -282,7 +282,7 @@ struct PresetOptionsFrame: FrameProtocol, CustomStringConvertible {
                         }
                     } else {
                         frameData.append(fileType.rawValue.encoded(
-                                withNullTermination: true))
+                            withNullTermination: true))
                     }
                 } else if item.first != "/" {
                     frameData.append(item.encoded(
@@ -314,34 +314,41 @@ extension Tag {
         self.frames[frameKey] = .presetOptionsFrame(frame)
     }
     
-    public var customGenre: String? {
-        get {
-            if let genre = genre.customGenre {
-                return genre
-            } else {
-                return nil
-            }
-        }
-        set {
-            genre.customGenre = newValue
-        }
-    }
-    
     public var presetGenre: GenreType? {
         get {
-            if let genre = genre.presetGenre {
-                return genre
+            if let preset = _genre.presetGenre {
+                return preset
             } else {
                 return nil
             }
         }
         set {
-            genre.presetGenre = newValue
+            if let new = newValue, new != .none {
+                _genre.presetGenre = new
+            } else {
+                _genre.presetGenre = nil
+            }
         }
     }
     
+    public var genre: String? {
+        get {
+            if let string = _genre.customGenre {
+                return string
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue, new != "" {
+                _genre.customGenre = new
+            } else {
+                _genre.customGenre = nil
+            }
+        }
+    }
     
-    internal var genre: (presetGenre: GenreType?, customGenre: String?) {
+    internal var _genre: (presetGenre: GenreType?, customGenre: String?) {
         get {
             // if the array exists and isn't empty
             var tuple: (presetGenre: GenreType?, customGenre: String?) = (nil, nil)
@@ -371,14 +378,14 @@ extension Tag {
             return tuple
         }
         set {
-            var frameArray = [String]()
-            if let genre = newValue.presetGenre, genre != .none {
-                frameArray.append(genre.rawValue)
-            }
-            if let custom = newValue.customGenre, custom != "" {
-                frameArray.append(custom)
-            }
-            if !frameArray.isEmpty {
+            if newValue != (nil, nil) {
+                var frameArray = [String]()
+                if let genre = newValue.presetGenre, genre != .none {
+                    frameArray.append(genre.rawValue)
+                }
+                if let custom = newValue.customGenre, custom != "" {
+                    frameArray.append(custom)
+                }
                 set(.known(.genre), .genre, infoArray: frameArray)
             } else {
                 self.frames[.genre] = nil
@@ -386,15 +393,66 @@ extension Tag {
         }
     }
     
-    public var mediaType: (mediaType: MediaType?, mediaTypeRefinement: MediaTypeRefinements?, additionalInformation: String?)? {
+    public var mediaType: MediaType? {
         get {
+            if let type = _mediaType.mediaType {
+                return type
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue, new != .none {
+                _mediaType.mediaType = new
+            } else {
+                _mediaType.mediaType = nil
+            }
+        }
+    }
+    
+    public var mediaTypeRefinement: MediaTypeRefinements? {
+        get {
+            if let type = _mediaType.mediaTypeRefinement {
+                return type
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue, new != .none {
+                _mediaType.mediaTypeRefinement = new
+            } else {
+                _mediaType.mediaTypeRefinement = nil
+            }
+        }
+    }
+    
+    public var additionalMediaTypeInformation: String? {
+        get {
+            if let string = _mediaType.additionalInformation {
+                return string
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue, new != "" {
+                _mediaType.additionalInformation = new
+            } else {
+                _mediaType.additionalInformation = nil
+            }
+        }
+    }
+    
+    internal var _mediaType: (mediaType: MediaType?, mediaTypeRefinement: MediaTypeRefinements?, additionalInformation: String?) {
+        get {
+            var tuple: (mediaType: MediaType?, mediaTypeRefinement: MediaTypeRefinements?, additionalInformation: String?) = (nil, nil, nil)
             // if the array exists and isn't empty
             if let frameArray = get(forPresetOptionFrame: .mediaType),
                 !frameArray.isEmpty {
                 var presetType: MediaType = .none
                 var presetRefinement: MediaTypeRefinements = .none
                 var refinementString: String = ""
-                var tuple: (mediaType: MediaType?, mediaTypeRefinement: MediaTypeRefinements?, additionalInformation: String?) = (nil, nil, nil)
                 for element in frameArray {
                     if element != "" {
                         // forward slash means it's a refinement string
@@ -420,23 +478,21 @@ extension Tag {
                 if refinementString != "" {
                     tuple.additionalInformation = refinementString
                 }
-                return tuple
-            } else {
-                return nil
             }
+            return tuple
         }
         set {
-            if let new = newValue {
+            if newValue != (nil, nil, nil) {
                 var frameArray = [String]()
-                if let type = new.mediaType, type != .none {
+                if let type = newValue.mediaType, type != .none {
                     let string = type.rawValue
                     frameArray.append(string)
                 }
-                if let refinement = new.mediaTypeRefinement, refinement != .none {
+                if let refinement = newValue.mediaTypeRefinement, refinement != .none {
                     let string = refinement.code
                     frameArray.append(string)
                 }
-                if let string = new.additionalInformation, string != "" {
+                if let string = newValue.additionalInformation, string != "" {
                     frameArray.append(string)
                 }
                 if !frameArray.isEmpty {
@@ -447,16 +503,67 @@ extension Tag {
             }
         }
     }
-    
-    public var fileType: (fileType: FileType?, fileTypeRefinement: FileTypeRefinements?, additionalInformation: String?)? {
+
+    public var fileType: FileType? {
         get {
+            if let type = _fileType.fileType {
+                return type
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue, new != .none {
+                _fileType.fileType = new
+            } else {
+                _fileType.fileType = nil
+            }
+        }
+    }
+    
+    public var fileTypeRefinement: FileTypeRefinements? {
+        get {
+            if let type = _fileType.fileTypeRefinement {
+                return type
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue, new != .none {
+                _fileType.fileTypeRefinement = new
+            } else {
+                _fileType.fileTypeRefinement = nil
+            }
+        }
+    }
+    
+    public var additionalFileTypeInformation: String? {
+        get {
+            if let string = _fileType.additionalInformation {
+                return string
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue, new != "" {
+                _fileType.additionalInformation = new
+            } else {
+                _fileType.additionalInformation = nil
+            }
+        }
+    }
+
+    internal var _fileType: (fileType: FileType?, fileTypeRefinement: FileTypeRefinements?, additionalInformation: String?) {
+        get {
+            var tuple: (fileType: FileType?, fileTypeRefinement: FileTypeRefinements?, additionalInformation: String?) = (nil, nil, nil)
             // if the array exists and isn't empty
             if let frameArray = get(forPresetOptionFrame: .fileType),
                 !frameArray.isEmpty {
                 var presetType: FileType = .none
                 var presetRefinement: FileTypeRefinements = .none
                 var refinementString: String = ""
-                var tuple: (fileType: FileType?, fileTypeRefinement: FileTypeRefinements?, additionalInformation: String?) = (nil, nil, nil)
                 for element in frameArray {
                     if element != "" {
                         // forward slash means it's a refinement string
@@ -482,23 +589,21 @@ extension Tag {
                 if refinementString != "" {
                     tuple.additionalInformation = refinementString
                 }
-                return tuple
-            } else {
-                return nil
             }
+            return tuple
         }
         set {
-            if let new = newValue {
+            if newValue != (nil, nil, nil) {
                 var frameArray = [String]()
-                if let type = new.fileType, type != .none {
+                if let type = newValue.fileType, type != .none {
                     let string = type.rawValue
                     frameArray.append(string)
                 }
-                if let refinement = new.fileTypeRefinement, refinement != .none {
+                if let refinement = newValue.fileTypeRefinement, refinement != .none {
                     let string = refinement.rawValue
                     frameArray.append(string)
                 }
-                if let string = new.additionalInformation, string !=
+                if let string = newValue.additionalInformation, string !=
                     "" {
                     frameArray.append(string)
                 }

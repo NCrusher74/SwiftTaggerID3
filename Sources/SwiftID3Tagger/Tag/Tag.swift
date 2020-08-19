@@ -269,7 +269,8 @@ public struct Tag: CustomStringConvertible {
                     value = frameValue
                 }
             } else if frameKey == .discNumber {
-                if let frameValue = self.discNumber {
+                if self.discNumber != (nil, nil) {
+                    let frameValue = self.discNumber
                     value = frameValue
                 }
             } else if frameKey == .encodingTime {
@@ -285,7 +286,8 @@ public struct Tag: CustomStringConvertible {
                     value = frameValue
                 }
             } else if frameKey == .fileType {
-                if let frameValue = self.fileType {
+                if self._fileType != (nil, nil, nil) {
+                    let frameValue = self._fileType
                     value = frameValue
                 }
             } else if frameKey == .fileOwner {
@@ -298,7 +300,7 @@ public struct Tag: CustomStringConvertible {
                 if let presetGenre = self.presetGenre {
                     preset = presetGenre
                 }
-                if let customGenre = self.customGenre {
+                if let customGenre = self.genre {
                     custom = customGenre
                 }
                 if preset != .none {
@@ -344,7 +346,8 @@ public struct Tag: CustomStringConvertible {
                     value = frameValue
                 }
             } else if frameKey == .mediaType {
-                if let frameValue = self.mediaType {
+                if self._mediaType != (nil, nil, nil) {
+                    let frameValue = self._mediaType
                     value = frameValue
                 }
             } else if frameKey == .mood {
@@ -481,7 +484,8 @@ public struct Tag: CustomStringConvertible {
                     value = frameValue
                 }
             } else if frameKey == .trackNumber {
-                if let frameValue = self.trackNumber {
+                if self.trackNumber != (nil, nil) {
+                    let frameValue = self.trackNumber
                     value = frameValue
                 }
             } else if frameKey == .year {
