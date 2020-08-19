@@ -886,8 +886,10 @@ extension Tag {
             let intValue = get(forIntFrame: .compilation)
             if intValue == 1 {
                 return true
-            } else {
+            } else if intValue == 0 {
                 return false
+            } else {
+                return nil
             }
         }
         set {
