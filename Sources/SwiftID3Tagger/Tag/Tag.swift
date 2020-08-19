@@ -23,10 +23,10 @@ public struct Tag: CustomStringConvertible {
     /// The ID3 frames contained within the `Tag`
     var frames: [FrameKey: Frame]
     var mp3Duration: Int?
-    
     /// Instantiate an ID3 Tag from an Mp3File in order to parse frames data from the file
     /// - Parameter file: the mp3 file that is the source or destination for the ID3 tag
     /// - Throws: `InvalidVersionData` If there is not enough header data to parse a valid ID3 version from
+
     @available(OSX 10.12, *)
     public init(readFrom file: Mp3File) throws {
         // A type containing known data for an ID3 tag, used to calculate properties for the current `Tag`
@@ -89,10 +89,8 @@ public struct Tag: CustomStringConvertible {
             frames[frameKey] = frame
         }
         self.frames = frames
-        
-        
     }
-    
+
     /// Construct a tag from the header data and the frames data
     /// - Parameter version: The `Version` of the ID3 tag being created
     /// - Throws: Caller will determine how to handle any errors

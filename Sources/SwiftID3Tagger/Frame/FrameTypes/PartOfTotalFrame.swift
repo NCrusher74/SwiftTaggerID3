@@ -103,22 +103,6 @@ struct PartOfTotalFrame: FrameProtocol, CustomStringConvertible {
 // MARK: - Internal Tag extension
 /* get and set functions for `PartOfTotalFrame` frame types. Each individual frame of this type will have its own get-set property that will call these fucntions */
 extension Tag {
-    
-//    /// Retrieve an integer tuple from the frame data
-//    /// - Parameter frameKey: the unique identifier of the frame
-//    /// - Returns: the frame's contents as an integer tuple
-//    internal func get(forPartOfTotalFrame frameKey: FrameKey)
-//        -> (part: Int, total: Int?)? {
-//            // check that the frame is a PartOfTotalFrame
-//            if let frame = self.frames[frameKey],
-//                case .partOfTotalFrame(let partOfTotalFrame) = frame {
-//                // return an integer tuple
-//                return (partOfTotalFrame.part, partOfTotalFrame.total)
-//            } else {
-//                return nil
-//            }
-//    }
-    
     /// add the frame contents to an ID3 `Tag`
     /// - Parameters:
     ///   - layout: the frame's layout identifer
@@ -137,42 +121,9 @@ extension Tag {
         self.frames[frameKey] = .partOfTotalFrame(frame)
     }
     
-    public var disc: Int? {
-        get {
-            if let disc = discNumber.disc {
-                return disc
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue, new != 0 {
-                discNumber.disc = new
-            } else {
-                discNumber.disc = nil
-            }
-        }
-    }
-
-    public var totalDiscs: Int? {
-        get {
-            if let discs = discNumber.totalDiscs {
-                return discs
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue, new != 0 {
-                discNumber.totalDiscs = new
-            } else {
-                discNumber.totalDiscs = nil
-            }
-        }
-    }
     
     /// DiscNumber(/TotalDiscs) getter-setter. ID3 Identifier: `TPA`/`TPOS`
-    internal var discNumber: (disc: Int?, totalDiscs: Int?) {
+    public var discNumber: (disc: Int?, totalDiscs: Int?) {
         get {
             var tuple: (disc: Int?, totalDiscs: Int?) = (nil, nil)
             if let frame = self.frames[.discNumber],
@@ -191,43 +142,9 @@ extension Tag {
             }
         }
     }
-    
-    public var track: Int? {
-        get {
-            if let track = trackNumber.track {
-                return track
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue, new != 0 {
-                trackNumber.track = new
-            } else {
-                trackNumber.track = nil
-            }
-        }
-    }
-    
-    public var totalTracks: Int? {
-        get {
-            if let tracks = trackNumber.totalTracks {
-                return tracks
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue, new != 0 {
-                trackNumber.totalTracks = new
-            } else {
-                trackNumber.totalTracks = nil
-            }
-        }
-    }
-    
+        
     /// TrackNumber(/TotalTracks) getter-setter. ID3 Identifier: `TRK`/`TRCK`
-    internal var trackNumber: (track: Int?, totalTracks: Int?) {
+    public var trackNumber: (track: Int?, totalTracks: Int?) {
         get {
             var tuple: (track: Int?, totalTracks: Int?) = (nil, nil)
             if let frame = self.frames[.trackNumber],
