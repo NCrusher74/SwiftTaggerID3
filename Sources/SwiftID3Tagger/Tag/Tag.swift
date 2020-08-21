@@ -263,18 +263,14 @@ public struct Tag: CustomStringConvertible {
                     value = frameValue
                 }
             } else if frameKey == .date {
-                if let frameValue = self.date {
-                    value = frameValue
-                }
+                value = self.date
             } else if frameKey == .discNumber {
                 if self.discNumber != (nil, nil) {
                     let frameValue = self.discNumber
                     value = frameValue
                 }
             } else if frameKey == .encodingTime {
-                if let frameValue = self.encodingDateTime {
-                    value = frameValue
-                }
+                value = self.encodingDateTime
             } else if frameKey == .encodedBy {
                 if let frameValue = self.encodedBy {
                     value = frameValue
@@ -367,9 +363,7 @@ public struct Tag: CustomStringConvertible {
                     value = frameValue
                 }
             } else if frameKey == .originalReleaseTime {
-                if let frameValue = self.originalReleaseTime {
-                    value = frameValue
-                }
+                value = self.originalReleaseTime
             } else if frameKey == .paymentWebpage {
                 if let frameValue = self.paymentWebpage {
                     value = frameValue
@@ -432,13 +426,9 @@ public struct Tag: CustomStringConvertible {
                     value = frameValue
                 }
             } else if frameKey == .recordingDate {
-                if let frameValue = self.recordingDateTime {
-                    value = frameValue
-                }
+                value = self.recordingDateTime
             } else if frameKey == .releaseTime {
-                if let frameValue = self.releaseDateTime {
-                    value = frameValue
-                }
+                value = self.releaseDateTime
             } else if frameKey == .setSubtitle {
                 if let frameValue = self.setSubtitle {
                     value = frameValue
@@ -448,13 +438,9 @@ public struct Tag: CustomStringConvertible {
                     value = frameValue
                 }
             } else if frameKey == .taggingTime {
-                if let frameValue = self.taggingDateTime {
-                    value = frameValue
-                }
+                value = self.taggingDateTime
             } else if frameKey == .time {
-                if let frameValue = self.time {
-                    value = frameValue
-                }
+                value = self.time
             } else if frameKey == .title {
                 if let frameValue = self.title {
                     value = frameValue

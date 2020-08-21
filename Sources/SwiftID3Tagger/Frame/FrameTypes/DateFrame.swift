@@ -199,7 +199,7 @@ struct DateFrame: FrameProtocol, CustomStringConvertible {
 
 extension Tag {
     internal func get(forDateFrame frameKey: FrameKey)
-        -> (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
+        -> (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?) {
             if let frame = self.frames[frameKey],
                 case .dateFrame(let dateFrame) = frame {
                 let date = dateFrame.timeStamp ?? Date.distantPast
@@ -229,22 +229,28 @@ extension Tag {
     
     @available(OSX 10.12, *)
     public var releaseDateTime:
-        (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
+        (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?) {
         get {
             get(forDateFrame: .releaseTime)
         }
         set {
-            let calendar = Calendar(identifier: .iso8601)
-            let timeZone = TimeZone(secondsFromGMT: 0)
-            let dateComponents = DateComponents(calendar: calendar,
-                                                timeZone: timeZone,
-                                                year: newValue?.year,
-                                                month: newValue?.month,
-                                                day: newValue?.day,
-                                                hour: newValue?.hour,
-                                                minute: newValue?.minute)
-            if let date = calendar.date(from: dateComponents) {
-                set(.known(.releaseTime), .releaseTime, timeStamp: date)
+            if newValue != (nil, nil, nil, nil, nil) &&
+                newValue != (0001, 01, 01, 00, 00) {
+                let calendar = Calendar(identifier: .iso8601)
+                let timeZone = TimeZone(secondsFromGMT: 0)
+                let dateComponents = DateComponents(calendar: calendar,
+                                                    timeZone: timeZone,
+                                                    year: newValue.year,
+                                                    month: newValue.month,
+                                                    day: newValue.day,
+                                                    hour: newValue.hour,
+                                                    minute: newValue.minute)
+                if let date = calendar.date(from: dateComponents) {
+                    set(.known(.releaseTime), .releaseTime, timeStamp: date)
+                }
+            } else {
+                self.frames[.releaseTime] = nil
+                self.frames[.releaseDate] = nil
             }
         }
     }
@@ -252,44 +258,55 @@ extension Tag {
     /// Version 2.4 only. Identifier `TDEN`
     @available(OSX 10.12, *)
     public var encodingDateTime:
-        (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
+        (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?) {
         get {
             get(forDateFrame: .encodingTime)
         }
         set {
-            let calendar = Calendar(identifier: .iso8601)
-            let timeZone = TimeZone(secondsFromGMT: 0)
-            let dateComponents = DateComponents(calendar: calendar,
-                                                timeZone: timeZone,
-                                                year: newValue?.year,
-                                                month: newValue?.month,
-                                                day: newValue?.day,
-                                                hour: newValue?.hour,
-                                                minute: newValue?.minute)
-            if let date = calendar.date(from: dateComponents) {
-                set(.known(.encodingTime), .encodingTime, timeStamp: date)
+            if newValue != (nil, nil, nil, nil, nil) &&
+                newValue != (0001, 01, 01, 00, 00) {
+                let calendar = Calendar(identifier: .iso8601)
+                let timeZone = TimeZone(secondsFromGMT: 0)
+                let dateComponents = DateComponents(calendar: calendar,
+                                                    timeZone: timeZone,
+                                                    year: newValue.year,
+                                                    month: newValue.month,
+                                                    day: newValue.day,
+                                                    hour: newValue.hour,
+                                                    minute: newValue.minute)
+                if let date = calendar.date(from: dateComponents) {
+                    set(.known(.encodingTime), .encodingTime, timeStamp: date)
+                }
+            } else {
+                self.frames[.encodingTime] = nil
             }
         }
     }
+    
     /// Version 2.4 only. Identifier `TDTG`
     @available(OSX 10.12, *)
     public var taggingDateTime:
-        (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
+        (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?) {
         get {
             get(forDateFrame: .taggingTime)
         }
         set {
-            let calendar = Calendar(identifier: .iso8601)
-            let timeZone = TimeZone(secondsFromGMT: 0)
-            let dateComponents = DateComponents(calendar: calendar,
-                                                timeZone: timeZone,
-                                                year: newValue?.year,
-                                                month: newValue?.month,
-                                                day: newValue?.day,
-                                                hour: newValue?.hour,
-                                                minute: newValue?.minute)
-            if let date = calendar.date(from: dateComponents) {
-                set(.known(.taggingTime), .taggingTime, timeStamp: date)
+            if newValue != (nil, nil, nil, nil, nil) &&
+                newValue != (0001, 01, 01, 00, 00) {
+                let calendar = Calendar(identifier: .iso8601)
+                let timeZone = TimeZone(secondsFromGMT: 0)
+                let dateComponents = DateComponents(calendar: calendar,
+                                                    timeZone: timeZone,
+                                                    year: newValue.year,
+                                                    month: newValue.month,
+                                                    day: newValue.day,
+                                                    hour: newValue.hour,
+                                                    minute: newValue.minute)
+                if let date = calendar.date(from: dateComponents) {
+                    set(.known(.taggingTime), .taggingTime, timeStamp: date)
+                }
+            } else {
+                self.frames[.taggingTime] = nil
             }
         }
     }
@@ -297,22 +314,27 @@ extension Tag {
     /// Identifier `TRD`/`TRDA`/`TDRC`
     @available(OSX 10.12, *)
     public var recordingDateTime:
-        (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
+        (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?) {
         get {
             get(forDateFrame: .recordingDate)
         }
         set {
-            let calendar = Calendar(identifier: .iso8601)
-            let timeZone = TimeZone(secondsFromGMT: 0)
-            let dateComponents = DateComponents(calendar: calendar,
-                                                timeZone: timeZone,
-                                                year: newValue?.year,
-                                                month: newValue?.month,
-                                                day: newValue?.day,
-                                                hour: newValue?.hour,
-                                                minute: newValue?.minute)
-            if let date = calendar.date(from: dateComponents) {
-                set(.known(.recordingDate), .recordingDate, timeStamp: date)
+            if newValue != (nil, nil, nil, nil, nil) &&
+                newValue != (0001, 01, 01, 00, 00) {
+                let calendar = Calendar(identifier: .iso8601)
+                let timeZone = TimeZone(secondsFromGMT: 0)
+                let dateComponents = DateComponents(calendar: calendar,
+                                                    timeZone: timeZone,
+                                                    year: newValue.year,
+                                                    month: newValue.month,
+                                                    day: newValue.day,
+                                                    hour: newValue.hour,
+                                                    minute: newValue.minute)
+                if let date = calendar.date(from: dateComponents) {
+                    set(.known(.recordingDate), .recordingDate, timeStamp: date)
+                }
+            } else {
+                self.frames[.recordingDate] = nil
             }
         }
     }
@@ -320,22 +342,27 @@ extension Tag {
     /// Full date/time for version 2.4. Identifer`TDOR`
     @available(OSX 10.12, *)
     public var originalReleaseTime:
-        (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?)? {
+        (year: Int?, month: Int?, day: Int?, hour: Int?, minute: Int?) {
         get {
             get(forDateFrame: .originalReleaseTime)
         }
         set {
-            let calendar = Calendar(identifier: .iso8601)
-            let timeZone = TimeZone(secondsFromGMT: 0)
-            let dateComponents = DateComponents(calendar: calendar,
-                                                timeZone: timeZone,
-                                                year: newValue?.year,
-                                                month: newValue?.month,
-                                                day: newValue?.day,
-                                                hour: newValue?.hour,
-                                                minute: newValue?.minute)
-            if let date = calendar.date(from: dateComponents) {
-                set(.known(.originalReleaseTime), .originalReleaseTime, timeStamp: date)
+            if newValue != (nil, nil, nil, nil, nil) &&
+                newValue != (0001, 01, 01, 00, 00) {
+                let calendar = Calendar(identifier: .iso8601)
+                let timeZone = TimeZone(secondsFromGMT: 0)
+                let dateComponents = DateComponents(calendar: calendar,
+                                                    timeZone: timeZone,
+                                                    year: newValue.year,
+                                                    month: newValue.month,
+                                                    day: newValue.day,
+                                                    hour: newValue.hour,
+                                                    minute: newValue.minute)
+                if let date = calendar.date(from: dateComponents) {
+                    set(.known(.originalReleaseTime), .originalReleaseTime, timeStamp: date)
+                }
+            } else {
+                self.frames[.originalReleaseTime] = nil
             }
         }
     }
@@ -343,7 +370,7 @@ extension Tag {
     @available(OSX 10.12, *)
     public var originalReleaseYear: Int? {
         get {
-            get(forDateFrame: .originalReleaseTime)?.year
+            get(forDateFrame: .originalReleaseTime).year
         }
         set {
             let calendar = Calendar(identifier: .iso8601)
@@ -359,46 +386,48 @@ extension Tag {
 
     /// version 2.2/2.3 only Identifier `TDA`/`TDAT`
     @available(OSX 10.12, *)
-    public var date: (month: Int?, day: Int?)? {
+    public var date: (month: Int?, day: Int?) {
         get {
-            if let date = get(forDateFrame: .date) {
-                return (date.month, date.day)
-            } else {
-                return nil
-            }
+            let date = get(forDateFrame: .date)
+            return (date.month, date.day)
         }
         set {
-            let calendar = Calendar(identifier: .iso8601)
-            let timeZone = TimeZone(secondsFromGMT: 0)
-            let dateComponents = DateComponents(calendar: calendar,
-                                                timeZone: timeZone,
-                                                month: newValue?.month,
-                                                day: newValue?.day)
-            if let date = calendar.date(from: dateComponents) {
-                set(.known(.date), .date, timeStamp: date)
+            if newValue != (nil, nil) {
+                let calendar = Calendar(identifier: .iso8601)
+                let timeZone = TimeZone(secondsFromGMT: 0)
+                let dateComponents = DateComponents(calendar: calendar,
+                                                    timeZone: timeZone,
+                                                    month: newValue.month,
+                                                    day: newValue.day)
+                if let date = calendar.date(from: dateComponents) {
+                    set(.known(.date), .date, timeStamp: date)
+                }
+            } else {
+                self.frames[.date] = nil
             }
         }
     }
     
     /// version 2.2/2.3. Identifier `TIM`/`TIME`
     @available(OSX 10.12, *)
-    public var time: (hour: Int?, minute: Int?)? {
+    public var time: (hour: Int?, minute: Int?) {
         get {
-            if let date = get(forDateFrame: .time) {
-                return (date.hour, date.minute)
-            } else {
-                return nil
-            }
+            let time = get(forDateFrame: .time)
+            return (time.hour, time.minute)
         }
         set {
-            let calendar = Calendar(identifier: .iso8601)
-            let timeZone = TimeZone(secondsFromGMT: 0)
-            let dateComponents = DateComponents(calendar: calendar,
-                                                timeZone: timeZone,
-                                                hour: newValue?.hour,
-                                                minute: newValue?.minute)
-            if let date = calendar.date(from: dateComponents) {
-                set(.known(.time), .time, timeStamp: date)
+            if newValue != (nil, nil) {
+                let calendar = Calendar(identifier: .iso8601)
+                let timeZone = TimeZone(secondsFromGMT: 0)
+                let dateComponents = DateComponents(calendar: calendar,
+                                                    timeZone: timeZone,
+                                                    hour: newValue.hour,
+                                                    minute: newValue.minute)
+                if let date = calendar.date(from: dateComponents) {
+                    set(.known(.time), .time, timeStamp: date)
+                }
+            } else {
+                self.frames[.time] = nil
             }
         }
     }
@@ -407,11 +436,8 @@ extension Tag {
     @available(OSX 10.12, *)
     public var year: Int? {
         get {
-            if let date = get(forDateFrame: .year) {
-                return date.year
-            } else {
-                return nil
-            }
+            let date = get(forDateFrame: .year)
+            return date.year
         }
         set {
             let calendar = Calendar(identifier: .iso8601)
@@ -421,6 +447,8 @@ extension Tag {
                                                 year: newValue)
             if let date = calendar.date(from: dateComponents) {
                 set(.known(.year), .year, timeStamp: date)
+            } else {
+                self.frames[.year] = nil
             }
         }
     }

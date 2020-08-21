@@ -19,11 +19,11 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
 
         var tag = try TestFile.noMeta.tag()
 
-        tag?.encodingDateTime?.year = 2002
-        tag?.encodingDateTime?.month = 11
-        tag?.encodingDateTime?.day = 7
-        tag?.encodingDateTime?.hour = 9
-        tag?.encodingDateTime?.minute = 23
+        tag?.encodingDateTime.year = 2002
+        tag?.encodingDateTime.month = 11
+        tag?.encodingDateTime.day = 7
+        tag?.encodingDateTime.hour = 9
+        tag?.encodingDateTime.minute = 23
         
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.noMeta.mp3File()
@@ -33,11 +33,11 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
 
         let resultMp3 = try Mp3File(location: outputUrl)
         let result = try Tag(readFrom: resultMp3)
-        XCTAssertEqual(result.encodingDateTime?.year, 2002)
-        XCTAssertEqual(result.encodingDateTime?.month, 11)
-        XCTAssertEqual(result.encodingDateTime?.day, 7)
-        XCTAssertEqual(result.encodingDateTime?.hour, 9)
-        XCTAssertEqual(result.encodingDateTime?.minute, 23)
+        XCTAssertEqual(result.encodingDateTime.year, 2002)
+        XCTAssertEqual(result.encodingDateTime.month, 11)
+        XCTAssertEqual(result.encodingDateTime.day, 7)
+        XCTAssertEqual(result.encodingDateTime.hour, 9)
+        XCTAssertEqual(result.encodingDateTime.minute, 23)
       }
     }
 
@@ -45,11 +45,11 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
     func testTDENv24ExpectedInputOverwriteFileAsComponents() throws {
       if #available(macOS 10.12, *) {
         var tag = try TestFile.v24.tag()
-        tag?.encodingDateTime?.year = 2003
-        tag?.encodingDateTime?.month = 12
-        tag?.encodingDateTime?.day = 8
-        tag?.encodingDateTime?.hour = 10
-        tag?.encodingDateTime?.minute = 24
+        tag?.encodingDateTime.year = 2003
+        tag?.encodingDateTime.month = 12
+        tag?.encodingDateTime.day = 8
+        tag?.encodingDateTime.hour = 10
+        tag?.encodingDateTime.minute = 24
         
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.v24.mp3File()
@@ -59,11 +59,11 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         
         let resultMp3 = try Mp3File(location: outputUrl)
         let result = try Tag(readFrom: resultMp3)
-        XCTAssertEqual(result.encodingDateTime?.year, 2003)
-        XCTAssertEqual(result.encodingDateTime?.month, 12)
-        XCTAssertEqual(result.encodingDateTime?.day, 8)
-        XCTAssertEqual(result.encodingDateTime?.hour, 10)
-        XCTAssertEqual(result.encodingDateTime?.minute, 24)
+        XCTAssertEqual(result.encodingDateTime.year, 2003)
+        XCTAssertEqual(result.encodingDateTime.month, 12)
+        XCTAssertEqual(result.encodingDateTime.day, 8)
+        XCTAssertEqual(result.encodingDateTime.hour, 10)
+        XCTAssertEqual(result.encodingDateTime.minute, 24)
       }
     }
 
@@ -81,11 +81,11 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         
         let resultMp3 = try Mp3File(location: outputUrl)
         let result = try Tag(readFrom: resultMp3)
-        XCTAssertEqual(result.encodingDateTime?.year, 2004)
-        XCTAssertEqual(result.encodingDateTime?.month, 01)
-        XCTAssertEqual(result.encodingDateTime?.day, 09)
-        XCTAssertEqual(result.encodingDateTime?.hour, 11)
-        XCTAssertEqual(result.encodingDateTime?.minute, 25)
+        XCTAssertEqual(result.encodingDateTime.year, 2004)
+        XCTAssertEqual(result.encodingDateTime.month, 01)
+        XCTAssertEqual(result.encodingDateTime.day, 09)
+        XCTAssertEqual(result.encodingDateTime.hour, 11)
+        XCTAssertEqual(result.encodingDateTime.minute, 25)
       }
     }
     
@@ -103,11 +103,11 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         
         let resultMp3 = try Mp3File(location: outputUrl)
         let result = try Tag(readFrom: resultMp3)
-        XCTAssertEqual(result.encodingDateTime?.year, 2005)
-        XCTAssertEqual(result.encodingDateTime?.month, 02)
-        XCTAssertEqual(result.encodingDateTime?.day, 10)
-        XCTAssertEqual(result.encodingDateTime?.hour, 12)
-        XCTAssertEqual(result.encodingDateTime?.minute, 26)
+        XCTAssertEqual(result.encodingDateTime.year, 2005)
+        XCTAssertEqual(result.encodingDateTime.month, 02)
+        XCTAssertEqual(result.encodingDateTime.day, 10)
+        XCTAssertEqual(result.encodingDateTime.hour, 12)
+        XCTAssertEqual(result.encodingDateTime.minute, 26)
       }
     }
     
@@ -115,11 +115,11 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
     func testTDENVersionErrorv22Overwrite() throws {
       if #available(macOS 10.12, *) {
         var tag = try TestFile.v22.tag()
-        tag?.encodingDateTime?.year = 2002
-        tag?.encodingDateTime?.month = 11
-        tag?.encodingDateTime?.day = 7
-        tag?.encodingDateTime?.hour = 9
-        tag?.encodingDateTime?.minute = 23
+        tag?.encodingDateTime.year = 2002
+        tag?.encodingDateTime.month = 11
+        tag?.encodingDateTime.day = 7
+        tag?.encodingDateTime.hour = 9
+        tag?.encodingDateTime.minute = 23
         
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.v22.mp3File()
@@ -133,11 +133,11 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
     func testTDENVersionErrorv23Overwrite() throws {
       if #available(macOS 10.12, *) {
         var tag = try TestFile.v23.tag()
-        tag?.encodingDateTime?.year = 2002
-        tag?.encodingDateTime?.month = 11
-        tag?.encodingDateTime?.day = 7
-        tag?.encodingDateTime?.hour = 9
-        tag?.encodingDateTime?.minute = 23
+        tag?.encodingDateTime.year = 2002
+        tag?.encodingDateTime.month = 11
+        tag?.encodingDateTime.day = 7
+        tag?.encodingDateTime.hour = 9
+        tag?.encodingDateTime.minute = 23
         
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.v23.mp3File()
@@ -151,11 +151,11 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
     func testTDENVersionErrorv22Blank() throws {
       if #available(macOS 10.12, *) {
         var tag = try TestFile.noMeta.tag()
-        tag?.encodingDateTime?.year = 2002
-        tag?.encodingDateTime?.month = 11
-        tag?.encodingDateTime?.day = 7
-        tag?.encodingDateTime?.hour = 9
-        tag?.encodingDateTime?.minute = 23
+        tag?.encodingDateTime.year = 2002
+        tag?.encodingDateTime.month = 11
+        tag?.encodingDateTime.day = 7
+        tag?.encodingDateTime.hour = 9
+        tag?.encodingDateTime.minute = 23
         
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.noMeta.mp3File()
@@ -169,11 +169,11 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
     func testTDENVersionErrorv23Blank() throws {
       if #available(macOS 10.12, *) {
         var tag = try TestFile.noMeta.tag()
-        tag?.encodingDateTime?.year = 2002
-        tag?.encodingDateTime?.month = 11
-        tag?.encodingDateTime?.day = 7
-        tag?.encodingDateTime?.hour = 9
-        tag?.encodingDateTime?.minute = 23
+        tag?.encodingDateTime.year = 2002
+        tag?.encodingDateTime.month = 11
+        tag?.encodingDateTime.day = 7
+        tag?.encodingDateTime.hour = 9
+        tag?.encodingDateTime.minute = 23
         
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.noMeta.mp3File()
@@ -188,11 +188,11 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
     func testTDTGv24ExpectedInputBlankFileAsComponents() throws {
       if #available(macOS 10.12, *) {
         var tag = try TestFile.noMeta.tag()
-        tag?.taggingDateTime?.year = 2002
-        tag?.taggingDateTime?.month = 11
-        tag?.taggingDateTime?.day = 7
-        tag?.taggingDateTime?.hour = 9
-        tag?.taggingDateTime?.minute = 23
+        tag?.taggingDateTime.year = 2002
+        tag?.taggingDateTime.month = 11
+        tag?.taggingDateTime.day = 7
+        tag?.taggingDateTime.hour = 9
+        tag?.taggingDateTime.minute = 23
         
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.noMeta.mp3File()
@@ -202,11 +202,11 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         
         let resultMp3 = try Mp3File(location: outputUrl)
         let result = try Tag(readFrom: resultMp3)
-        XCTAssertEqual(result.taggingDateTime?.year, 2002)
-        XCTAssertEqual(result.taggingDateTime?.month, 11)
-        XCTAssertEqual(result.taggingDateTime?.day, 7)
-        XCTAssertEqual(result.taggingDateTime?.hour, 9)
-        XCTAssertEqual(result.taggingDateTime?.minute, 23)
+        XCTAssertEqual(result.taggingDateTime.year, 2002)
+        XCTAssertEqual(result.taggingDateTime.month, 11)
+        XCTAssertEqual(result.taggingDateTime.day, 7)
+        XCTAssertEqual(result.taggingDateTime.hour, 9)
+        XCTAssertEqual(result.taggingDateTime.minute, 23)
       }
     }
     
@@ -214,11 +214,11 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
     func testTDTGv24ExpectedInputOverwriteFileAsComponents() throws {
       if #available(macOS 10.12, *) {
         var tag = try TestFile.v24.tag()
-        tag?.taggingDateTime?.year = 2003
-        tag?.taggingDateTime?.month = 12
-        tag?.taggingDateTime?.day = 8
-        tag?.taggingDateTime?.hour = 10
-        tag?.taggingDateTime?.minute = 24
+        tag?.taggingDateTime.year = 2003
+        tag?.taggingDateTime.month = 12
+        tag?.taggingDateTime.day = 8
+        tag?.taggingDateTime.hour = 10
+        tag?.taggingDateTime.minute = 24
         
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.v24.mp3File()
@@ -228,11 +228,11 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         
         let resultMp3 = try Mp3File(location: outputUrl)
         let result = try Tag(readFrom: resultMp3)
-        XCTAssertEqual(result.taggingDateTime?.year, 2003)
-        XCTAssertEqual(result.taggingDateTime?.month, 12)
-        XCTAssertEqual(result.taggingDateTime?.day, 8)
-        XCTAssertEqual(result.taggingDateTime?.hour, 10)
-        XCTAssertEqual(result.taggingDateTime?.minute, 24)
+        XCTAssertEqual(result.taggingDateTime.year, 2003)
+        XCTAssertEqual(result.taggingDateTime.month, 12)
+        XCTAssertEqual(result.taggingDateTime.day, 8)
+        XCTAssertEqual(result.taggingDateTime.hour, 10)
+        XCTAssertEqual(result.taggingDateTime.minute, 24)
       }
     }
     
@@ -250,11 +250,11 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         
         let resultMp3 = try Mp3File(location: outputUrl)
         let result = try Tag(readFrom: resultMp3)
-        XCTAssertEqual(result.taggingDateTime?.year, 2004)
-        XCTAssertEqual(result.taggingDateTime?.month, 01)
-        XCTAssertEqual(result.taggingDateTime?.day, 09)
-        XCTAssertEqual(result.taggingDateTime?.hour, 11)
-        XCTAssertEqual(result.taggingDateTime?.minute, 25)
+        XCTAssertEqual(result.taggingDateTime.year, 2004)
+        XCTAssertEqual(result.taggingDateTime.month, 01)
+        XCTAssertEqual(result.taggingDateTime.day, 09)
+        XCTAssertEqual(result.taggingDateTime.hour, 11)
+        XCTAssertEqual(result.taggingDateTime.minute, 25)
       }
     }
     
@@ -272,11 +272,11 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         
         let resultMp3 = try Mp3File(location: outputUrl)
         let result = try Tag(readFrom: resultMp3)
-        XCTAssertEqual(result.taggingDateTime?.year, 2005)
-        XCTAssertEqual(result.taggingDateTime?.month, 02)
-        XCTAssertEqual(result.taggingDateTime?.day, 10)
-        XCTAssertEqual(result.taggingDateTime?.hour, 12)
-        XCTAssertEqual(result.taggingDateTime?.minute, 26)
+        XCTAssertEqual(result.taggingDateTime.year, 2005)
+        XCTAssertEqual(result.taggingDateTime.month, 02)
+        XCTAssertEqual(result.taggingDateTime.day, 10)
+        XCTAssertEqual(result.taggingDateTime.hour, 12)
+        XCTAssertEqual(result.taggingDateTime.minute, 26)
       }
     }
     
@@ -284,11 +284,11 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
     func testTDTGVersionErrorv22Overwrite() throws {
       if #available(macOS 10.12, *) {
         var tag = try TestFile.v22.tag()
-        tag?.taggingDateTime?.year = 2002
-        tag?.taggingDateTime?.month = 11
-        tag?.taggingDateTime?.day = 7
-        tag?.taggingDateTime?.hour = 9
-        tag?.taggingDateTime?.minute = 23
+        tag?.taggingDateTime.year = 2002
+        tag?.taggingDateTime.month = 11
+        tag?.taggingDateTime.day = 7
+        tag?.taggingDateTime.hour = 9
+        tag?.taggingDateTime.minute = 23
         
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.v22.mp3File()
@@ -302,11 +302,11 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
     func testTDTGVersionErrorv23Overwrite() throws {
       if #available(macOS 10.12, *) {
         var tag = try TestFile.v23.tag()
-        tag?.taggingDateTime?.year = 2002
-        tag?.taggingDateTime?.month = 11
-        tag?.taggingDateTime?.day = 7
-        tag?.taggingDateTime?.hour = 9
-        tag?.taggingDateTime?.minute = 23
+        tag?.taggingDateTime.year = 2002
+        tag?.taggingDateTime.month = 11
+        tag?.taggingDateTime.day = 7
+        tag?.taggingDateTime.hour = 9
+        tag?.taggingDateTime.minute = 23
         
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.v23.mp3File()
@@ -320,11 +320,11 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
     func testTDTGVersionErrorv22Blank() throws {
       if #available(macOS 10.12, *) {
         var tag = try TestFile.noMeta.tag()
-        tag?.taggingDateTime?.year = 2002
-        tag?.taggingDateTime?.month = 11
-        tag?.taggingDateTime?.day = 7
-        tag?.taggingDateTime?.hour = 9
-        tag?.taggingDateTime?.minute = 23
+        tag?.taggingDateTime.year = 2002
+        tag?.taggingDateTime.month = 11
+        tag?.taggingDateTime.day = 7
+        tag?.taggingDateTime.hour = 9
+        tag?.taggingDateTime.minute = 23
         
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.noMeta.mp3File()
@@ -338,11 +338,11 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
     func testTDTGVersionErrorv23Blank() throws {
       if #available(macOS 10.12, *) {
         var tag = try TestFile.noMeta.tag()
-        tag?.taggingDateTime?.year = 2002
-        tag?.taggingDateTime?.month = 11
-        tag?.taggingDateTime?.day = 7
-        tag?.taggingDateTime?.hour = 9
-        tag?.taggingDateTime?.minute = 23
+        tag?.taggingDateTime.year = 2002
+        tag?.taggingDateTime.month = 11
+        tag?.taggingDateTime.day = 7
+        tag?.taggingDateTime.hour = 9
+        tag?.taggingDateTime.minute = 23
         
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.noMeta.mp3File()
@@ -357,11 +357,11 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
     func testTDRLv24ExpectedInputBlankFileAsComponents() throws {
       if #available(macOS 10.12, *) {
         var tag = try TestFile.noMeta.tag()
-        tag?.releaseDateTime?.year = 2002
-        tag?.releaseDateTime?.month = 11
-        tag?.releaseDateTime?.day = 7
-        tag?.releaseDateTime?.hour = 9
-        tag?.releaseDateTime?.minute = 23
+        tag?.releaseDateTime.year = 2002
+        tag?.releaseDateTime.month = 11
+        tag?.releaseDateTime.day = 7
+        tag?.releaseDateTime.hour = 9
+        tag?.releaseDateTime.minute = 23
         
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.noMeta.mp3File()
@@ -371,11 +371,11 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         
         let resultMp3 = try Mp3File(location: outputUrl)
         let result = try Tag(readFrom: resultMp3)
-        XCTAssertEqual(result.releaseDateTime?.year, 2002)
-        XCTAssertEqual(result.releaseDateTime?.month, 11)
-        XCTAssertEqual(result.releaseDateTime?.day, 7)
-        XCTAssertEqual(result.releaseDateTime?.hour, 9)
-        XCTAssertEqual(result.releaseDateTime?.minute, 23)
+        XCTAssertEqual(result.releaseDateTime.year, 2002)
+        XCTAssertEqual(result.releaseDateTime.month, 11)
+        XCTAssertEqual(result.releaseDateTime.day, 7)
+        XCTAssertEqual(result.releaseDateTime.hour, 9)
+        XCTAssertEqual(result.releaseDateTime.minute, 23)
       }
     }
     
@@ -383,11 +383,11 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
     func testTDRLv24ExpectedInputOverwriteFileAsComponents() throws {
       if #available(macOS 10.12, *) {
         var tag = try TestFile.v24.tag()
-        tag?.releaseDateTime?.year = 2003
-        tag?.releaseDateTime?.month = 12
-        tag?.releaseDateTime?.day = 8
-        tag?.releaseDateTime?.hour = 10
-        tag?.releaseDateTime?.minute = 24
+        tag?.releaseDateTime.year = 2003
+        tag?.releaseDateTime.month = 12
+        tag?.releaseDateTime.day = 8
+        tag?.releaseDateTime.hour = 10
+        tag?.releaseDateTime.minute = 24
         
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.v24.mp3File()
@@ -397,11 +397,11 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         
         let resultMp3 = try Mp3File(location: outputUrl)
         let result = try Tag(readFrom: resultMp3)
-        XCTAssertEqual(result.releaseDateTime?.year, 2003)
-        XCTAssertEqual(result.releaseDateTime?.month, 12)
-        XCTAssertEqual(result.releaseDateTime?.day, 8)
-        XCTAssertEqual(result.releaseDateTime?.hour, 10)
-        XCTAssertEqual(result.releaseDateTime?.minute, 24)
+        XCTAssertEqual(result.releaseDateTime.year, 2003)
+        XCTAssertEqual(result.releaseDateTime.month, 12)
+        XCTAssertEqual(result.releaseDateTime.day, 8)
+        XCTAssertEqual(result.releaseDateTime.hour, 10)
+        XCTAssertEqual(result.releaseDateTime.minute, 24)
       }
     }
     
@@ -419,11 +419,11 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         
         let resultMp3 = try Mp3File(location: outputUrl)
         let result = try Tag(readFrom: resultMp3)
-        XCTAssertEqual(result.releaseDateTime?.year, 2004)
-        XCTAssertEqual(result.releaseDateTime?.month, 01)
-        XCTAssertEqual(result.releaseDateTime?.day, 09)
-        XCTAssertEqual(result.releaseDateTime?.hour, 11)
-        XCTAssertEqual(result.releaseDateTime?.minute, 25)
+        XCTAssertEqual(result.releaseDateTime.year, 2004)
+        XCTAssertEqual(result.releaseDateTime.month, 01)
+        XCTAssertEqual(result.releaseDateTime.day, 09)
+        XCTAssertEqual(result.releaseDateTime.hour, 11)
+        XCTAssertEqual(result.releaseDateTime.minute, 25)
       }
     }
     
@@ -441,11 +441,11 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         
         let resultMp3 = try Mp3File(location: outputUrl)
         let result = try Tag(readFrom: resultMp3)
-        XCTAssertEqual(result.releaseDateTime?.year, 2005)
-        XCTAssertEqual(result.releaseDateTime?.month, 02)
-        XCTAssertEqual(result.releaseDateTime?.day, 10)
-        XCTAssertEqual(result.releaseDateTime?.hour, 12)
-        XCTAssertEqual(result.releaseDateTime?.minute, 26)
+        XCTAssertEqual(result.releaseDateTime.year, 2005)
+        XCTAssertEqual(result.releaseDateTime.month, 02)
+        XCTAssertEqual(result.releaseDateTime.day, 10)
+        XCTAssertEqual(result.releaseDateTime.hour, 12)
+        XCTAssertEqual(result.releaseDateTime.minute, 26)
       }
     }
     
@@ -453,11 +453,11 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
     func testTDRLVersionErrorv22Overwrite() throws {
       if #available(macOS 10.12, *) {
         var tag = try TestFile.v22.tag()
-        tag?.releaseDateTime?.year = 2002
-        tag?.releaseDateTime?.month = 11
-        tag?.releaseDateTime?.day = 7
-        tag?.releaseDateTime?.hour = 9
-        tag?.releaseDateTime?.minute = 23
+        tag?.releaseDateTime.year = 2002
+        tag?.releaseDateTime.month = 11
+        tag?.releaseDateTime.day = 7
+        tag?.releaseDateTime.hour = 9
+        tag?.releaseDateTime.minute = 23
         
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.v22.mp3File()
@@ -471,11 +471,11 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
     func testTDRLVersionErrorv23Overwrite() throws {
       if #available(macOS 10.12, *) {
         var tag = try TestFile.v23.tag()
-        tag?.releaseDateTime?.year = 2002
-        tag?.releaseDateTime?.month = 11
-        tag?.releaseDateTime?.day = 7
-        tag?.releaseDateTime?.hour = 9
-        tag?.releaseDateTime?.minute = 23
+        tag?.releaseDateTime.year = 2002
+        tag?.releaseDateTime.month = 11
+        tag?.releaseDateTime.day = 7
+        tag?.releaseDateTime.hour = 9
+        tag?.releaseDateTime.minute = 23
         
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.v23.mp3File()
@@ -489,11 +489,11 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
     func testTDRLVersionErrorv22Blank() throws {
       if #available(macOS 10.12, *) {
         var tag = try TestFile.noMeta.tag()
-        tag?.releaseDateTime?.year = 2002
-        tag?.releaseDateTime?.month = 11
-        tag?.releaseDateTime?.day = 7
-        tag?.releaseDateTime?.hour = 9
-        tag?.releaseDateTime?.minute = 23
+        tag?.releaseDateTime.year = 2002
+        tag?.releaseDateTime.month = 11
+        tag?.releaseDateTime.day = 7
+        tag?.releaseDateTime.hour = 9
+        tag?.releaseDateTime.minute = 23
         
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.noMeta.mp3File()
@@ -507,11 +507,11 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
     func testTDRLVersionErrorv23Blank() throws {
       if #available(macOS 10.12, *) {
         var tag = try TestFile.noMeta.tag()
-        tag?.releaseDateTime?.year = 2002
-        tag?.releaseDateTime?.month = 11
-        tag?.releaseDateTime?.day = 7
-        tag?.releaseDateTime?.hour = 9
-        tag?.releaseDateTime?.minute = 23
+        tag?.releaseDateTime.year = 2002
+        tag?.releaseDateTime.month = 11
+        tag?.releaseDateTime.day = 7
+        tag?.releaseDateTime.hour = 9
+        tag?.releaseDateTime.minute = 23
         
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.noMeta.mp3File()
@@ -526,8 +526,8 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
     func testTDAExpectedInputv22BlankAsComponents() throws {
       if #available(macOS 10.12, *) {
         var tag = try TestFile.noMeta.tag()
-        tag?.date?.month = 11
-        tag?.date?.day = 7
+        tag?.date.month = 11
+        tag?.date.day = 7
         
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try Mp3File(location: TestFile.noMeta.url)
@@ -537,8 +537,8 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         
         let resultMp3 = try Mp3File(location: outputUrl)
         let result = try Tag(readFrom: resultMp3)
-        XCTAssertEqual(result.date?.month, 11)
-        XCTAssertEqual(result.date?.day, 7)
+        XCTAssertEqual(result.date.month, 11)
+        XCTAssertEqual(result.date.day, 7)
       }
     }
 
@@ -556,8 +556,8 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         
         let resultMp3 = try Mp3File(location: outputUrl)
         let result = try Tag(readFrom: resultMp3)
-        XCTAssertEqual(result.date?.month, 11)
-        XCTAssertEqual(result.date?.day, 7)
+        XCTAssertEqual(result.date.month, 11)
+        XCTAssertEqual(result.date.day, 7)
       }
     }
 
@@ -565,8 +565,8 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
     func testTDAExpectedInputv22OverwriteAsComponents() throws {
       if #available(macOS 10.12, *) {
         var tag = try TestFile.v22.tag()
-        tag?.date?.month = 11
-        tag?.date?.day = 7
+        tag?.date.month = 11
+        tag?.date.day = 7
         
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.v22.mp3File()
@@ -576,8 +576,8 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         
         let resultMp3 = try Mp3File(location: outputUrl)
         let result = try Tag(readFrom: resultMp3)
-        XCTAssertEqual(result.date?.month, 11)
-        XCTAssertEqual(result.date?.day, 7)
+        XCTAssertEqual(result.date.month, 11)
+        XCTAssertEqual(result.date.day, 7)
       }
     }
     
@@ -595,8 +595,8 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         
         let resultMp3 = try Mp3File(location: outputUrl)
         let result = try Tag(readFrom: resultMp3)
-        XCTAssertEqual(result.date?.month, 11)
-        XCTAssertEqual(result.date?.day, 7)
+        XCTAssertEqual(result.date.month, 11)
+        XCTAssertEqual(result.date.day, 7)
       }
     }
 
@@ -604,8 +604,8 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
     func testTDATExpectedInputv23BlankAsComponents() throws {
       if #available(macOS 10.12, *) {
         var tag = try TestFile.noMeta.tag()
-        tag?.date?.month = 11
-        tag?.date?.day = 7
+        tag?.date.month = 11
+        tag?.date.day = 7
         
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try Mp3File(location: TestFile.noMeta.url)
@@ -615,8 +615,8 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         
         let resultMp3 = try Mp3File(location: outputUrl)
         let result = try Tag(readFrom: resultMp3)
-        XCTAssertEqual(result.date?.month, 11)
-        XCTAssertEqual(result.date?.day, 7)
+        XCTAssertEqual(result.date.month, 11)
+        XCTAssertEqual(result.date.day, 7)
       }
     }
     
@@ -634,8 +634,8 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         
         let resultMp3 = try Mp3File(location: outputUrl)
         let result = try Tag(readFrom: resultMp3)
-        XCTAssertEqual(result.date?.month, 11)
-        XCTAssertEqual(result.date?.day, 7)
+        XCTAssertEqual(result.date.month, 11)
+        XCTAssertEqual(result.date.day, 7)
       }
     }
     
@@ -643,8 +643,8 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
     func testTDATExpectedInputv23OverwriteAsComponents() throws {
       if #available(macOS 10.12, *) {
         var tag = try TestFile.v23.tag()
-        tag?.date?.month = 11
-        tag?.date?.day = 7
+        tag?.date.month = 11
+        tag?.date.day = 7
         
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.v23.mp3File()
@@ -654,8 +654,8 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         
         let resultMp3 = try Mp3File(location: outputUrl)
         let result = try Tag(readFrom: resultMp3)
-        XCTAssertEqual(result.date?.month, 11)
-        XCTAssertEqual(result.date?.day, 7)
+        XCTAssertEqual(result.date.month, 11)
+        XCTAssertEqual(result.date.day, 7)
       }
     }
     
@@ -673,8 +673,8 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         
         let resultMp3 = try Mp3File(location: outputUrl)
         let result = try Tag(readFrom: resultMp3)
-        XCTAssertEqual(result.date?.month, 11)
-        XCTAssertEqual(result.date?.day, 7)
+        XCTAssertEqual(result.date.month, 11)
+        XCTAssertEqual(result.date.day, 7)
       }
     }
     
@@ -682,8 +682,8 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
     func testTDRLVersionErrorv24OverwriteAsComponents() throws {
       if #available(macOS 10.12, *) {
         var tag = try TestFile.v24.tag()
-        tag?.date?.month = 11
-        tag?.date?.day = 7
+        tag?.date.month = 11
+        tag?.date.day = 7
         
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.v24.mp3File()
@@ -698,8 +698,8 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
     func testTIMExpectedInputv22BlankAsComponents() throws {
       if #available(macOS 10.12, *) {
         var tag = try TestFile.noMeta.tag()
-        tag?.time?.hour = 9
-        tag?.time?.minute = 23
+        tag?.time.hour = 9
+        tag?.time.minute = 23
         
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try Mp3File(location: TestFile.noMeta.url)
@@ -709,8 +709,8 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         
         let resultMp3 = try Mp3File(location: outputUrl)
         let result = try Tag(readFrom: resultMp3)
-        XCTAssertEqual(result.time?.hour, 9)
-        XCTAssertEqual(result.time?.minute, 23)
+        XCTAssertEqual(result.time.hour, 9)
+        XCTAssertEqual(result.time.minute, 23)
       }
     }
     
@@ -728,8 +728,8 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         
         let resultMp3 = try Mp3File(location: outputUrl)
         let result = try Tag(readFrom: resultMp3)
-        XCTAssertEqual(result.time?.hour, 9)
-        XCTAssertEqual(result.time?.minute, 23)
+        XCTAssertEqual(result.time.hour, 9)
+        XCTAssertEqual(result.time.minute, 23)
       }
     }
     
@@ -737,8 +737,8 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
     func testTIMExpectedInputv22OverwriteAsComponents() throws {
       if #available(macOS 10.12, *) {
         var tag = try TestFile.v22.tag()
-        tag?.time?.hour = 9
-        tag?.time?.minute = 23
+        tag?.time.hour = 9
+        tag?.time.minute = 23
         
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.v22.mp3File()
@@ -748,8 +748,8 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         
         let resultMp3 = try Mp3File(location: outputUrl)
         let result = try Tag(readFrom: resultMp3)
-        XCTAssertEqual(result.time?.hour, 9)
-        XCTAssertEqual(result.time?.minute, 23)
+        XCTAssertEqual(result.time.hour, 9)
+        XCTAssertEqual(result.time.minute, 23)
       }
     }
     
@@ -767,8 +767,8 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         
         let resultMp3 = try Mp3File(location: outputUrl)
         let result = try Tag(readFrom: resultMp3)
-        XCTAssertEqual(result.time?.hour, 9)
-        XCTAssertEqual(result.time?.minute, 23)
+        XCTAssertEqual(result.time.hour, 9)
+        XCTAssertEqual(result.time.minute, 23)
       }
     }
     
@@ -776,8 +776,8 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
     func testTIMEExpectedInputv23BlankAsComponents() throws {
       if #available(macOS 10.12, *) {
         var tag = try TestFile.noMeta.tag()
-        tag?.time?.hour = 9
-        tag?.time?.minute = 23
+        tag?.time.hour = 9
+        tag?.time.minute = 23
         
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try Mp3File(location: TestFile.noMeta.url)
@@ -787,8 +787,8 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         
         let resultMp3 = try Mp3File(location: outputUrl)
         let result = try Tag(readFrom: resultMp3)
-        XCTAssertEqual(result.time?.hour, 9)
-        XCTAssertEqual(result.time?.minute, 23)
+        XCTAssertEqual(result.time.hour, 9)
+        XCTAssertEqual(result.time.minute, 23)
       }
     }
     
@@ -806,8 +806,8 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         
         let resultMp3 = try Mp3File(location: outputUrl)
         let result = try Tag(readFrom: resultMp3)
-        XCTAssertEqual(result.time?.hour, 9)
-        XCTAssertEqual(result.time?.minute, 23)
+        XCTAssertEqual(result.time.hour, 9)
+        XCTAssertEqual(result.time.minute, 23)
       }
     }
     
@@ -815,8 +815,8 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
     func testTIMEExpectedInputv23OverwriteAsComponents() throws {
       if #available(macOS 10.12, *) {
         var tag = try TestFile.v23.tag()
-        tag?.time?.hour = 9
-        tag?.time?.minute = 23
+        tag?.time.hour = 9
+        tag?.time.minute = 23
         
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.v23.mp3File()
@@ -826,8 +826,8 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         
         let resultMp3 = try Mp3File(location: outputUrl)
         let result = try Tag(readFrom: resultMp3)
-        XCTAssertEqual(result.time?.hour, 9)
-        XCTAssertEqual(result.time?.minute, 23)
+        XCTAssertEqual(result.time.hour, 9)
+        XCTAssertEqual(result.time.minute, 23)
       }
     }
     
@@ -845,8 +845,8 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         
         let resultMp3 = try Mp3File(location: outputUrl)
         let result = try Tag(readFrom: resultMp3)
-        XCTAssertEqual(result.time?.hour, 9)
-        XCTAssertEqual(result.time?.minute, 23)
+        XCTAssertEqual(result.time.hour, 9)
+        XCTAssertEqual(result.time.minute, 23)
       }
     }
     
@@ -854,8 +854,8 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
     func testTIMEVersionErrorv24Overwrite() throws {
       if #available(macOS 10.12, *) {
         var tag = try TestFile.v24.tag()
-        tag?.time?.hour = 11
-        tag?.time?.minute = 23
+        tag?.time.hour = 11
+        tag?.time.minute = 23
         
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         let outputMp3 = try TestFile.v24.mp3File()

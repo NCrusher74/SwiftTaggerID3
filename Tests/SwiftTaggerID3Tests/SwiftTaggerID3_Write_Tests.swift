@@ -710,35 +710,35 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.addMusicianCredit(role: .soprano, person: "Soprano Name")
         tag.addMusicianCredit(role: .alto, person: "Alto Name")
 
-        tag.encodingDateTime?.year = 2002
-        tag.encodingDateTime?.month = 11
-        tag.encodingDateTime?.day = 7
-        tag.encodingDateTime?.hour = 9
-        tag.encodingDateTime?.minute = 23
+        tag.encodingDateTime.year = 2002
+        tag.encodingDateTime.month = 11
+        tag.encodingDateTime.day = 7
+        tag.encodingDateTime.hour = 9
+        tag.encodingDateTime.minute = 23
 
-        tag.taggingDateTime?.year = 2002
-        tag.taggingDateTime?.month = 11
-        tag.taggingDateTime?.day = 7
-        tag.taggingDateTime?.hour = 9
-        tag.taggingDateTime?.minute = 23
+        tag.taggingDateTime.year = 2002
+        tag.taggingDateTime.month = 11
+        tag.taggingDateTime.day = 7
+        tag.taggingDateTime.hour = 9
+        tag.taggingDateTime.minute = 23
 
-        tag.releaseDateTime?.year = 2002
-        tag.releaseDateTime?.month = 11
-        tag.releaseDateTime?.day = 7
-        tag.releaseDateTime?.hour = 9
-        tag.releaseDateTime?.minute = 23
+        tag.releaseDateTime.year = 2002
+        tag.releaseDateTime.month = 11
+        tag.releaseDateTime.day = 7
+        tag.releaseDateTime.hour = 9
+        tag.releaseDateTime.minute = 23
         
-        tag.originalReleaseTime?.year = 2002
-        tag.originalReleaseTime?.month = 11
-        tag.originalReleaseTime?.day = 7
-        tag.originalReleaseTime?.hour = 9
-        tag.originalReleaseTime?.minute = 23
+        tag.originalReleaseTime.year = 2002
+        tag.originalReleaseTime.month = 11
+        tag.originalReleaseTime.day = 7
+        tag.originalReleaseTime.hour = 9
+        tag.originalReleaseTime.minute = 23
 
-        tag.recordingDateTime?.year = 2002
-        tag.recordingDateTime?.month = 11
-        tag.recordingDateTime?.day = 7
-        tag.recordingDateTime?.hour = 9
-        tag.recordingDateTime?.minute = 23
+        tag.recordingDateTime.year = 2002
+        tag.recordingDateTime.month = 11
+        tag.recordingDateTime.day = 7
+        tag.recordingDateTime.hour = 9
+        tag.recordingDateTime.minute = 23
 
         tag["Comment", .eng] = "Comment Content"
         tag["Description", .eng] = "Description"
