@@ -9,7 +9,7 @@
 
 import Foundation
 
-public enum InvolvedPersonCredits: String {
+public enum InvolvedPersonCredits: String, CaseIterable {
     case none = ""
     case producer = "Producer"
     case executiveProducer = "Executive Producer"

@@ -9,7 +9,7 @@
 
 import Foundation
 
-public enum MusicianAndPerformerCredits: String {
+public enum MusicianAndPerformerCredits: String, CaseIterable {
     case none = ""
     case performer = "Performer"
     case cast = "Cast"
