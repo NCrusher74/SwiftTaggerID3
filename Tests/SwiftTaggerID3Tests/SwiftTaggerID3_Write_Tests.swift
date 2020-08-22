@@ -705,10 +705,10 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.discNumber.disc = 3
         tag.discNumber.totalDiscs = 4
 
-        tag.addInvolvedPersonCredit(role: .actor, person: "Actor Name")
-        tag.addInvolvedPersonCredit(role: .actress, person: "Actress Name")
-        tag.addMusicianCredit(role: .soprano, person: "Soprano Name")
-        tag.addMusicianCredit(role: .alto, person: "Alto Name")
+        tag.addInvolvementCredit(role: .actor, person: "Actor Name")
+        tag.addInvolvementCredit(role: .actress, person: "Actress Name")
+        tag.addPerformanceCredit(role: .soprano, person: "Soprano Name")
+        tag.addPerformanceCredit(role: .alto, person: "Alto Name")
 
         tag.encodingDateTime.year = 2002
         tag.encodingDateTime.month = 11

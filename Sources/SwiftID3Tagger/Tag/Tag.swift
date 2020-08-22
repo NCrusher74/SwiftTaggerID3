@@ -302,9 +302,7 @@ public struct Tag: CustomStringConvertible {
                     value = frameValue
                 }
             } else if frameKey == .involvedPeopleList {
-                if let frameValue = self.involvedPeopleList {
-                    value = frameValue
-                }
+                value = self.involvementCreditsList
             } else if frameKey == .isrc {
                 if let frameValue = self.isrc {
                     value = frameValue
@@ -343,9 +341,7 @@ public struct Tag: CustomStringConvertible {
                     value = frameValue
                 }
             } else if frameKey == .musicianCreditsList {
-                if let frameValue = self.musicianCreditsList {
-                    value = frameValue
-                }
+                value = self.performanceCreditsList
             } else if frameKey == .originalAlbum {
                 if let frameValue = self.originalAlbum {
                     value = frameValue

@@ -99,17 +99,15 @@ struct CreditsListFrame: FrameProtocol, CustomStringConvertible {
     }
 }
 
-
-
 extension Tag {
     
     /// retrieve the `[role: [person]]` dictionary from the frame
     /// - Parameter frameKey: the unique identifier for the frame
     /// - Returns: the `[String: [String]]` dictionary of `[role: [person]]` pairs
-    internal func get(forCreditListFrame frameKey: FrameKey) -> [ String: [String] ]? {
+    internal func get(forCreditListFrame frameKey: FrameKey) -> Credits? {
         if let frame = self.frames[frameKey],
             case .creditsListFrame(let creditsListFrame) = frame {
-            return creditsListFrame.credits
+            return Credits(frame: creditsListFrame, frameKey: frameKey)
         } else {
             return nil
         }
@@ -122,9 +120,56 @@ extension Tag {
     ///   - credits: the dictionary of `[role: [person]]` pairs
     internal mutating func set(_ layout: FrameLayoutIdentifier,
                                _ frameKey: FrameKey,
-                               toCredits: [ String: [String] ]?) {
-        let frame = CreditsListFrame(layout, credits: toCredits ?? [:])
-        self.frames[frameKey] = .creditsListFrame(frame)
+                               from credits: Credits) {
+        switch frameKey {
+            case .involvedPeopleList:
+                let stringList = credits.involvementStringList
+                let frame = CreditsListFrame(layout, credits: stringList)
+                self.frames[frameKey] = .creditsListFrame(frame)
+            case .musicianCreditsList:
+                let stringList = credits.performanceStringList
+                let frame = CreditsListFrame(layout, credits: stringList)
+                self.frames[frameKey] = .creditsListFrame(frame)
+            default: break
+        }
+    }
+    
+    /// Getter-setter property for the dictionary of `[role: [person]]` pairs
+    public var involvementCreditsList: [InvolvedPersonCredits:[String]] {
+        get {
+            if let credits = get(forCreditListFrame: .involvedPeopleList) {
+                return credits.involvementList
+            } else {
+                return [:]
+            }
+        }
+        set {
+            if !newValue.isEmpty {
+                let credits = Credits(from: newValue)
+                set(.known(.involvedPeopleList), .involvedPeopleList, from: credits)
+            } else {
+                self.frames[.involvedPeopleList] = nil
+            }
+        }
+    }
+    
+    /// Getter-setter property for the dictionary of `[role: [person]]` pairs
+    public var performanceCreditsList: [MusicianAndPerformerCredits:[String]] {
+        get {
+            if let credits = get(forCreditListFrame: .musicianCreditsList) {
+                return credits.performanceList
+            } else {
+                return [:]
+            }
+        }
+        set {
+            if !newValue.isEmpty {
+                let credits = Credits(from: newValue)
+                set(.known(.musicianCreditsList), .musicianCreditsList, from: credits)
+            } else {
+                self.frames[.musicianCreditsList] = nil
+            }
+        }
     }
     
     /// Add a new [role:[person]] key-value pair, or, if the `role` already exists in the dictionary, append the person to the existing value for the `role` key
@@ -132,113 +177,49 @@ extension Tag {
     ///   - role: the role being performed
     ///   - person: the person performing the role
     // TODO: if version is 2.2. or 2.3, make this an `involved person` entry instead?
-    public mutating func addMusicianCredit(
+    public mutating func addPerformanceCredit(
         role: MusicianAndPerformerCredits, person: String) {
-        // get the list of pre-existing keys in the dictionary
-        if let existingCredit = musicianCreditsList?.first(where: {$0.key == role }) {
+        
+        if let existingCredit = performanceCreditsList.first(
+            where: { $0.key == role && !$0.value.contains(person) }) {
             var array = existingCredit.value
-            if !array.contains(person) {
-                array.append(person)
-                musicianCreditsList?[role] = array
-            }
-        } else if musicianCreditsList != nil {
-            // dictionary exists but doesn't contain role
-            musicianCreditsList?[role] = [person]
+            array.append(person)
+            performanceCreditsList[role] = array
         } else {
-            // dictionary doesn't exist, create it
-            var dictionary: [MusicianAndPerformerCredits:[String]] = [:]
-            dictionary[role] = [person]
-            musicianCreditsList = dictionary
+            performanceCreditsList[role] = [person]
         }
-    }
-    
-    /// Getter-setter property for the dictionary of `[role: [person]]` pairs
-    public var musicianCreditsList: [MusicianAndPerformerCredits:[String]]? {
-        get {
-            var transformedDictionary: [MusicianAndPerformerCredits:[String]] = [:]
-            if let credits = get(forCreditListFrame: .musicianCreditsList) {
-                for credit in credits.keys {
-                    let transformedCredit = MusicianAndPerformerCredits(rawValue: credit)
-                    transformedDictionary[transformedCredit ?? .none] = credits[credit]
-                }
-                return transformedDictionary
-            }; return nil
-        }
-        set {
-            var newDictionary = [String : [String] ]()
-            if let newKeys = newValue?.keys {
-                for key in newKeys {
-                    newDictionary[key.rawValue] = newValue?[key]
-                    set(.known(.musicianCreditsList),
-                        .musicianCreditsList,
-                        toCredits: newDictionary)
-                }
-            }
-        }
-    }
-    
-    public mutating func clearMusicianCreditsList() {
-        self.frames[.musicianCreditsList] = nil
-    }
-    
-    public mutating func clearMusicianCreditsForRole(role: MusicianAndPerformerCredits) {
-        self.musicianCreditsList?[role] = nil
     }
     
     /// Add a new [role:[person]] key-value pair, or, if the `role` already exists in the dictionary, append the person to the existing value for the `role` key
     /// - Parameters:
     ///   - role: the role being performed
     ///   - person: the person performing the role
-    public mutating func addInvolvedPersonCredit(
+    public mutating func addInvolvementCredit(
         role: InvolvedPersonCredits, person: String) {
         // get the list of pre-existing keys in the dictionary
-        if let existingCredit = involvedPeopleList?.first(where: {$0.key == role }) {
+        if let existingCredit = involvementCreditsList.first(
+            where: { $0.key == role && !$0.value.contains(person) }) {
             var array = existingCredit.value
-            if !array.contains(person) {
-                array.append(person)
-                involvedPeopleList?[role] = array
-            }
-        } else if involvedPeopleList != nil {
-            // dictionary exists but doesn't contain role
-            involvedPeopleList?[role] = [person]
+            array.append(person)
+            involvementCreditsList[role] = array
         } else {
-            // dictionary doesn't exist, create it
-            var dictionary: [InvolvedPersonCredits:[String]] = [:]
-            dictionary[role] = [person]
-            involvedPeopleList = dictionary
+            involvementCreditsList[role] = [person]
         }
     }
     
-    /// Getter-setter property for the dictionary of `[role: [person]]` pairs
-    public var involvedPeopleList: [InvolvedPersonCredits:[String]]? {
-        get {
-            var transformedDictionary: [InvolvedPersonCredits:[String]] = [:]
-            if let credits = get(forCreditListFrame: .involvedPeopleList) {
-                for credit in credits.keys {
-                    let transformedCredit = InvolvedPersonCredits(rawValue: credit)
-                    transformedDictionary[transformedCredit ?? .none] = credits[credit]
-                }
-                return transformedDictionary
-            }; return nil
-        }
-        set {
-            var newDictionary = [String : [String] ]()
-            if let newKeys = newValue?.keys {
-                for key in newKeys {
-                    newDictionary[key.rawValue] = newValue?[key]
-                    set(.known(.involvedPeopleList),
-                        .involvedPeopleList,
-                        toCredits: newDictionary)
-                }
-            }
-        }
+    public mutating func clearPerformanceCreditList() {
+        self.frames[.musicianCreditsList] = nil
     }
     
-    public mutating func clearInvolvedPeopleList() {
+    public mutating func removePerformanceCredit(role: MusicianAndPerformerCredits) {
+        self.performanceCreditsList[role] = nil
+    }
+    
+    public mutating func clearInvolvementCreditList() {
         self.frames[.involvedPeopleList] = nil
     }
     
-    public mutating func clearInvolvedPeopleForRole(role: InvolvedPersonCredits) {
-        self.involvedPeopleList?[role] = nil
+    public mutating func removeInvolvementCredit(role: InvolvedPersonCredits) {
+        self.involvementCreditsList[role] = nil
     }
 }
