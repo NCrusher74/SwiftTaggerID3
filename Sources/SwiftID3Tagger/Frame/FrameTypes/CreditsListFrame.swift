@@ -104,49 +104,94 @@ extension Tag {
     /// retrieve the `[role: [person]]` dictionary from the frame
     /// - Parameter frameKey: the unique identifier for the frame
     /// - Returns: the `[String: [String]]` dictionary of `[role: [person]]` pairs
-    internal func get(forCreditListFrame frameKey: FrameKey) -> Credits? {
-        if let frame = self.frames[frameKey],
+    private func getInvolvementCredits() -> [InvolvedPersonCredits: [String]] {
+        var dictionary = [InvolvedPersonCredits: [String]]()
+        if let frame = self.frames[.involvedPeopleList],
             case .creditsListFrame(let creditsListFrame) = frame {
-            return Credits(frame: creditsListFrame, frameKey: frameKey)
-        } else {
-            return nil
+            // convert [String: [String]] to [Enum:[String]]
+            for (key, value) in creditsListFrame.credits {
+                if let credit = InvolvedPersonCredits(rawValue: key) {
+                    dictionary[credit] = value
+                }
+            }
         }
+        return dictionary
+    }
+
+    /// retrieve the `[role: [person]]` dictionary from the frame
+    /// - Parameter frameKey: the unique identifier for the frame
+    /// - Returns: the `[String: [String]]` dictionary of `[role: [person]]` pairs
+    private func getPerformanceCredits() -> [MusicianAndPerformerCredits: [String]] {
+        var dictionary = [MusicianAndPerformerCredits: [String]]()
+        if let frame = self.frames[.musicianCreditsList],
+            case .creditsListFrame(let creditsListFrame) = frame {
+            // convert [String: [String]] to [Enum:[String]]
+            for (key, value) in creditsListFrame.credits {
+                if let credit = MusicianAndPerformerCredits(rawValue: key) {
+                    dictionary[credit] = value
+                }
+            }
+        }
+        return dictionary
     }
     
     /// set the `[role: [person]]` dictionary for the frame
     /// - Parameters:
-    ///   - layout: the frame layout
-    ///   - frameKey: the frame's unique identifier
     ///   - credits: the dictionary of `[role: [person]]` pairs
-    internal mutating func set(_ layout: FrameLayoutIdentifier,
-                               _ frameKey: FrameKey,
-                               from credits: Credits) {
-        switch frameKey {
-            case .involvedPeopleList:
-                let stringList = credits.involvementStringList
-                let frame = CreditsListFrame(layout, credits: stringList)
-                self.frames[frameKey] = .creditsListFrame(frame)
-            case .musicianCreditsList:
-                let stringList = credits.performanceStringList
-                let frame = CreditsListFrame(layout, credits: stringList)
-                self.frames[frameKey] = .creditsListFrame(frame)
-            default: break
+    private mutating func set(involvementCredits: [InvolvedPersonCredits:[String]]) {
+        var stringDict = [String: [String]]()
+        for (key, value) in involvementCredits {
+            let stringKey = key.rawValue
+            stringDict[stringKey] = value
         }
+        let frame = CreditsListFrame(.known(.involvedPeopleList),
+                                     credits: stringDict)
+        self.frames[.involvedPeopleList] = .creditsListFrame(frame)
     }
-    
+
+    /// set the `[role: [person]]` dictionary for the frame
+    /// - Parameters:
+    ///   - credits: the dictionary of `[role: [person]]` pairs
+    private mutating func set(performanceCredits: [MusicianAndPerformerCredits:[String]]) {
+        var stringDict = [String: [String]]()
+        for (key, value) in performanceCredits {
+            let stringKey = key.rawValue
+            stringDict[stringKey] = value
+        }
+        let frame = CreditsListFrame(.known(.musicianCreditsList),
+                                     credits: stringDict)
+        self.frames[.musicianCreditsList] = .creditsListFrame(frame)
+    }
+
     /// Getter-setter property for the dictionary of `[role: [person]]` pairs
     public var involvementCreditsList: [InvolvedPersonCredits:[String]] {
         get {
-            if let credits = get(forCreditListFrame: .involvedPeopleList) {
-                return credits.involvementList
-            } else {
-                return [:]
-            }
+            return getInvolvementCredits()
         }
         set {
             if !newValue.isEmpty {
-                let credits = Credits(from: newValue)
-                set(.known(.involvedPeopleList), .involvedPeopleList, from: credits)
+                var finalDictionary = [InvolvedPersonCredits:[String]]()
+                for (key, value) in newValue {
+                    if key == .arranger {
+                        let string = value.joined(separator: "; ")
+                        self.arranger = string
+                    } else if key == .composer {
+                        let string = value.joined(separator: "; ")
+                        self.composer = string
+                    } else if key == .conductor {
+                        let string = value.joined(separator: "; ")
+                        self.conductor = string
+                    } else if key == .lyricist {
+                        let string = value.joined(separator: "; ")
+                        self.lyricist = string
+                    } else if key == .publisher {
+                        let string = value.joined(separator: "; ")
+                        self.publisher = string
+                    } else {
+                        finalDictionary[key] = value
+                    }
+                }
+                set(involvementCredits: finalDictionary)
             } else {
                 self.frames[.involvedPeopleList] = nil
             }
@@ -156,16 +201,20 @@ extension Tag {
     /// Getter-setter property for the dictionary of `[role: [person]]` pairs
     public var performanceCreditsList: [MusicianAndPerformerCredits:[String]] {
         get {
-            if let credits = get(forCreditListFrame: .musicianCreditsList) {
-                return credits.performanceList
-            } else {
-                return [:]
-            }
+            return getPerformanceCredits()
         }
         set {
             if !newValue.isEmpty {
-                let credits = Credits(from: newValue)
-                set(.known(.musicianCreditsList), .musicianCreditsList, from: credits)
+                var finalDictionary = [MusicianAndPerformerCredits:[String]]()
+                for (key, value) in newValue {
+                    if key == .artist {
+                        let string = value.joined(separator: "; ")
+                        self.artist = string
+                    } else {
+                        finalDictionary[key] = value
+                    }
+                }
+                set(performanceCredits: finalDictionary)
             } else {
                 self.frames[.musicianCreditsList] = nil
             }
@@ -179,12 +228,9 @@ extension Tag {
     // TODO: if version is 2.2. or 2.3, make this an `involved person` entry instead?
     public mutating func addPerformanceCredit(
         role: MusicianAndPerformerCredits, person: String) {
-        
-        if let existingCredit = performanceCreditsList.first(
-            where: { $0.key == role && !$0.value.contains(person) }) {
-            var array = existingCredit.value
-            array.append(person)
-            performanceCreditsList[role] = array
+        if var credit = performanceCreditsList[role], !credit.contains(person) {
+            credit.append(person)
+            performanceCreditsList[role] = credit
         } else {
             performanceCreditsList[role] = [person]
         }
@@ -197,11 +243,9 @@ extension Tag {
     public mutating func addInvolvementCredit(
         role: InvolvedPersonCredits, person: String) {
         // get the list of pre-existing keys in the dictionary
-        if let existingCredit = involvementCreditsList.first(
-            where: { $0.key == role && !$0.value.contains(person) }) {
-            var array = existingCredit.value
-            array.append(person)
-            involvementCreditsList[role] = array
+        if var credit = involvementCreditsList[role], !credit.contains(person) {
+            credit.append(person)
+            involvementCreditsList[role] = credit
         } else {
             involvementCreditsList[role] = [person]
         }
@@ -213,6 +257,10 @@ extension Tag {
     
     public mutating func removePerformanceCredit(role: MusicianAndPerformerCredits) {
         self.performanceCreditsList[role] = nil
+        switch role {
+            case .artist: self.artist = nil
+            default: break
+        }
     }
     
     public mutating func clearInvolvementCreditList() {
@@ -221,5 +269,13 @@ extension Tag {
     
     public mutating func removeInvolvementCredit(role: InvolvedPersonCredits) {
         self.involvementCreditsList[role] = nil
+        switch role {
+            case .arranger: self.arranger = nil
+            case .composer: self.composer = nil
+            case .conductor: self.conductor = nil
+            case .lyricist: self.lyricist = nil
+            case .publisher: self.publisher = nil
+            default: break
+        }
     }
 }

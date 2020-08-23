@@ -780,14 +780,11 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         if let tag = tag {
             XCTAssertTrue(tag.listMetadata().isEmpty)
         }
-//        print(tag)
         
         let outputUrl = try localDirectory(fileName: "mp3-removal", fileExtension: "mp3")
         try TestFile.v24.mp3File()?.write(tagVersion: .v2_4, using: tag!, writingTo: outputUrl)
         
         let output = try Tag(readFrom: try Mp3File(location: outputUrl))
         XCTAssertTrue(output.listMetadata().isEmpty)
-//        print(output.listMetadata())
-//        print(output)
     }
 }

@@ -225,7 +225,8 @@ extension Tag {
             if let new = newValue {
                 set(.known(.arranger), .arranger, to: new)
             } else {
-                set(.known(.arranger), .arranger, to: nil) }
+                set(.known(.arranger), .arranger, to: nil)
+            }
         }
     }
     
@@ -238,7 +239,8 @@ extension Tag {
             if let new = newValue {
                 set(.known(.arranger), .remixer, to: new)
             } else {
-                set(.known(.arranger), .remixer, to: nil) }
+                set(.known(.arranger), .remixer, to: nil)
+            }
         }
     }
     
@@ -262,7 +264,8 @@ extension Tag {
             if let new = newValue {
                 set(.known(.artist), .artist, to: new)
             } else {
-                set(.known(.artist), .artist, to: nil) }
+                set(.known(.artist), .artist, to: nil)
+            }
         }
     }
     
@@ -273,7 +276,8 @@ extension Tag {
             if let new = newValue {
                 set(.known(.artistSort), .artistSort, to: new)
             } else {
-                set(.known(.artistSort), .artistSort, to: nil) }
+                set(.known(.artistSort), .artistSort, to: nil)
+            }
         }
     }
     
@@ -286,7 +290,8 @@ extension Tag {
             if let new = newValue {
                 set(.known(.artist), .author, to: new)
             } else {
-                set(.known(.artist), .author, to: nil) }
+                set(.known(.artist), .author, to: nil)
+            }
         }
     }
     
@@ -299,7 +304,8 @@ extension Tag {
             if let new = newValue {
                 set(.known(.artistSort), .authorSort, to: new)
             } else {
-                set(.known(.artistSort), .authorSort, to: nil) }
+                set(.known(.artistSort), .authorSort, to: nil)
+            }
         }
     }
     
@@ -310,7 +316,8 @@ extension Tag {
             if let new = newValue {
                 set(.known(.composer), .composer, to: new)
             } else {
-                set(.known(.composer), .composer, to: nil) }
+                set(.known(.composer), .composer, to: nil)
+            }
         }
     }
     
@@ -334,7 +341,8 @@ extension Tag {
             if let new = newValue {
                 set(.known(.composer), .narrator, to: new)
             } else {
-                set(.known(.composer), .narrator, to: nil) }
+                set(.known(.composer), .narrator, to: nil)
+            }
         }
     }
     
@@ -359,7 +367,8 @@ extension Tag {
             if let new = newValue {
                 set(.known(.conductor), .conductor, to: new)
             } else {
-                set(.known(.conductor), .conductor, to: nil) }
+                set(.known(.conductor), .conductor, to: nil)
+            }
         }
     }
     
@@ -459,7 +468,8 @@ extension Tag {
             if let new = newValue {
                 set(.known(.lyricist), .lyricist, to: new)
             } else {
-                set(.known(.lyricist), .lyricist, to: nil) }
+                set(.known(.lyricist), .lyricist, to: nil)
+            }
         }
     }
     
@@ -608,7 +618,8 @@ extension Tag {
             if let new = newValue {
                 set(.known(.publisher), .publisher, to: new)
             } else {
-                set(.known(.publisher), .publisher, to: nil) }
+                set(.known(.publisher), .publisher, to: nil)
+            }
         }
     }
     

@@ -129,13 +129,13 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
     
     @available(OSX 10.12, *)
     func testMusicianCreditV23() throws {
-        var tag = try TestFile.noMeta.tag()
+        var tag = try TestFile.v24.tag()
         
         tag?.addPerformanceCredit(role: .soprano, person: "Soprano Name")
         tag?.addPerformanceCredit(role: .alto, person: "Alto Name")
         
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
-        XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_3, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)), writingTo: outputUrl))
+        XCTAssertNoThrow(try TestFile.v24.mp3File()?.write(tagVersion: .v2_4, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v24.url)), writingTo: outputUrl))
         
         let mp3UrlWritten = outputUrl
         let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
