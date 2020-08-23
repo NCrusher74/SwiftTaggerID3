@@ -8,25 +8,8 @@
  */
 
 import Foundation
-import SwiftTaggerID3
-import SwiftTaggerMP4
 
 public enum MusicianAndPerformerCredits: String, CaseIterable {
-    init?(id3Credit: SwiftTaggerID3.MusicianAndPerformerCredits) {
-        if let credit = MusicianAndPerformerCredits(rawValue: id3Credit.rawValue) {
-            self = credit
-        } else {
-            return nil
-        }
-    }
-    
-    init?(mp4Credit: SwiftTaggerMP4.MusicianAndPerformerCredits) {
-        if let credit = MusicianAndPerformerCredits(rawValue: mp4Credit.rawValue) {
-            self = credit
-        } else {
-            return nil
-        }
-    }
     
     case none = ""
     /// Abiti

@@ -705,8 +705,8 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.discNumber.disc = 3
         tag.discNumber.totalDiscs = 4
 
-        tag.addInvolvementCredit(role: .actor, person: "Actor Name")
-        tag.addInvolvementCredit(role: .actress, person: "Actress Name")
+        tag.addInvolvementCredit(role: .director, person: "Director Name")
+        tag.addInvolvementCredit(role: .producer, person: "Producer Name")
         tag.addPerformanceCredit(role: .soprano, person: "Soprano Name")
         tag.addPerformanceCredit(role: .alto, person: "Alto Name")
 

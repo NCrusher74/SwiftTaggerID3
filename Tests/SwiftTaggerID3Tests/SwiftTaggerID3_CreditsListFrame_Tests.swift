@@ -18,36 +18,15 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
     func testCreditsListFrameReadingv24() throws {
         let tag = try TestFile.v24.tag()
 
-        XCTAssertEqual(tag?.involvementCreditsList[.actor], ["Actor Name"])
-        XCTAssertEqual(tag?.involvementCreditsList[.actress], ["Actress Name"])
         XCTAssertEqual(tag?.performanceCreditsList[.soprano], ["Soprano Name"])
         XCTAssertEqual(tag?.performanceCreditsList[.alto], ["Alto Name"])
     }
 
-    @available(OSX 10.12, *)
-    func testCreditsListFrameReadingv23() throws {
-        let tag = try TestFile.v23.tag()
-        
-        XCTAssertEqual(tag?.involvementCreditsList[.actor], ["Actor Name"])
-        XCTAssertEqual(tag?.involvementCreditsList[.actress], ["Actress Name"])
-    }
-
-    @available(OSX 10.12, *)
-    func testCreditsListFrameReadingv22() throws {
-        let tag = try TestFile.v22.tag()
-        
-        XCTAssertEqual(tag?.involvementCreditsList[.actor], ["Actor Name"])
-        XCTAssertEqual(tag?.involvementCreditsList[.actress], ["Actress Name"])
-    }
-
-    
 
     @available(OSX 10.12, *)
     func testCreditsListFrameWritingv24() throws {
         var tag = try TestFile.noMeta.tag()
 
-        tag?.addInvolvementCredit(role: .actor, person: "Actor Name")
-        tag?.addInvolvementCredit(role: .actress, person: "Actress Name")
         tag?.addPerformanceCredit(role: .soprano, person: "Soprano Name")
         tag?.addPerformanceCredit(role: .alto, person: "Alto Name")
 
@@ -59,46 +38,8 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
         let tagWritten = try Tag(readFrom: mp3FileWritten)
 
-        XCTAssertEqual(tagWritten.involvementCreditsList[.actor], ["Actor Name"])
-        XCTAssertEqual(tagWritten.involvementCreditsList[.actress], ["Actress Name"])
         XCTAssertEqual(tagWritten.performanceCreditsList[.soprano], ["Soprano Name"])
         XCTAssertEqual(tagWritten.performanceCreditsList[.alto], ["Alto Name"])
-    }
-
-    @available(OSX 10.12, *)
-    func testCreditsListFrameWritingv23() throws {
-        var tag = try TestFile.noMeta.tag()
-        
-        tag?.addInvolvementCredit(role: .actor, person: "Actor Name")
-        tag?.addInvolvementCredit(role: .actress, person: "Actress Name")
-        
-        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
-        XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_3, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v23.url)), writingTo: outputUrl))
-        
-        let mp3UrlWritten = outputUrl
-        let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
-        let tagWritten = try Tag(readFrom: mp3FileWritten)
-        
-        XCTAssertEqual(tagWritten.involvementCreditsList[.actor], ["Actor Name"])
-        XCTAssertEqual(tagWritten.involvementCreditsList[.actress], ["Actress Name"])
-    }
-
-    @available(OSX 10.12, *)
-    func testCreditsListFrameWritingv22() throws {
-        var tag = try TestFile.noMeta.tag()
-        
-        tag?.addInvolvementCredit(role: .actor, person: "Actor Name")
-        tag?.addInvolvementCredit(role: .actress, person: "Actress Name")
-        
-        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
-        XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_2, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v22.url)), writingTo: outputUrl))
-        
-        let mp3UrlWritten = outputUrl
-        let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
-        let tagWritten = try Tag(readFrom: mp3FileWritten)
-        
-        XCTAssertEqual(tagWritten.involvementCreditsList[.actor], ["Actor Name"])
-        XCTAssertEqual(tagWritten.involvementCreditsList[.actress], ["Actress Name"])
     }
 
     @available(OSX 10.12, *)
@@ -155,7 +96,6 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
     func testCreditsListSingleItemRemovalv24() throws {
         var tag = try TestFile.v24.tag()
         
-        tag?.removeInvolvementCredit(role: .actor)
         tag?.removePerformanceCredit(role: .soprano)
         
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
@@ -165,52 +105,14 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
         let tagWritten = try Tag(readFrom: mp3FileWritten)
         
-        XCTAssertNil(tagWritten.involvementCreditsList[.actor])
-        XCTAssertEqual(tagWritten.involvementCreditsList[.actress], ["Actress Name"])
         XCTAssertNil(tagWritten.performanceCreditsList[.soprano])
         XCTAssertEqual(tagWritten.performanceCreditsList[.alto], ["Alto Name"])
     }
     
     @available(OSX 10.12, *)
-    func testCreditsListSingleItemRemovalv23() throws {
-        var tag = try TestFile.v23.tag()
-        
-        tag?.removeInvolvementCredit(role: .actor)
-        
-        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
-        XCTAssertNoThrow(try TestFile.v23.mp3File()?.write(tagVersion: .v2_3, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v23.url)), writingTo: outputUrl))
-        
-        let mp3UrlWritten = outputUrl
-        let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
-        let tagWritten = try Tag(readFrom: mp3FileWritten)
-        
-        XCTAssertNil(tagWritten.involvementCreditsList[.actor])
-        XCTAssertEqual(tagWritten.involvementCreditsList[.actress], ["Actress Name"])
-    }
-
-    @available(OSX 10.12, *)
-    func testCreditsListSingleItemRemovalv22() throws {
-        var tag = try TestFile.v22.tag()
-        
-        tag?.removeInvolvementCredit(role: .actor)
-        
-        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
-        XCTAssertNoThrow(try TestFile.v22.mp3File()?.write(tagVersion: .v2_2, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.v22.url)), writingTo: outputUrl))
-        
-        let mp3UrlWritten = outputUrl
-        let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
-        let tagWritten = try Tag(readFrom: mp3FileWritten)
-        
-        XCTAssertNil(tagWritten.involvementCreditsList[.actor])
-        XCTAssertEqual(tagWritten.involvementCreditsList[.actress], ["Actress Name"])
-    }
-
-    @available(OSX 10.12, *)
     func testCreditsListDuplicateCatchingv24() throws {
         var tag = try TestFile.v24.tag()
         
-        tag?.addInvolvementCredit(role: .actress, person: "Actress Name")
-        tag?.addInvolvementCredit(role: .actor, person: "New Actor Name")
         tag?.addPerformanceCredit(role: .soprano, person: "Soprano Name")
         tag?.addPerformanceCredit(role: .alto, person: "New Alto Name")
         
@@ -221,8 +123,6 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         let mp3FileWritten = try Mp3File(location: mp3UrlWritten)
         let tagWritten = try Tag(readFrom: mp3FileWritten)
         
-        XCTAssertEqual(tagWritten.involvementCreditsList[.actor], ["Actor Name", "New Actor Name"])
-        XCTAssertEqual(tagWritten.involvementCreditsList[.actress], ["Actress Name"])
         XCTAssertEqual(tagWritten.performanceCreditsList[.soprano], ["Soprano Name"])
         XCTAssertEqual(tagWritten.performanceCreditsList[.alto], ["Alto Name", "New Alto Name"])
     }
