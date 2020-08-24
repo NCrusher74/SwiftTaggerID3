@@ -10,7 +10,7 @@
 import Foundation
 
 public enum ContentRating: String {
-    case none = ""
+    case none = "None"
     case clean = "Clean"
     case explicit = "Explicit"
 }

@@ -317,4 +317,26 @@ extension Tag {
             }
         }
     }
+    
+    public var contentRating: ContentRating? {
+        get {
+            if let stringValue = self["Content Rating"] {
+                switch stringValue {
+                    case "Clean": return ContentRating.clean
+                    case "Explicit": return ContentRating.explicit
+                    case "None": return ContentRating.none
+                    default: return nil
+                }
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                self["Content Rating"] = new.rawValue
+            } else {
+                self["Content Rating"] = nil
+            }
+        }
+    }
 }
