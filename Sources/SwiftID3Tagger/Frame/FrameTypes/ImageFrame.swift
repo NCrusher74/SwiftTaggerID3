@@ -8,12 +8,10 @@
  */
 
 import Foundation
-
+import Cocoa
 /**
  A type representing an ID3 frame that contains an attached image
  */
-
-
 struct ImageFrame: FrameProtocol, CustomStringConvertible {
     public var description: String {
         if let description = self.imageDescription {
@@ -77,12 +75,12 @@ struct ImageFrame: FrameProtocol, CustomStringConvertible {
             }
         }; self.imageFormat = .jpg
         
-        // parse out the image description string
-        // if no image description exists, use a string describing the image type
-        var imageDescription: String = ""
         let pictureTypeByte = parsing.extractFirst(1)
         let imageType = ImageType(rawValue: pictureTypeByte.uint8) ?? .Other
         self.imageType = imageType
+        // parse out the image description string
+        // if no image description exists, use a string describing the image type
+        var imageDescription: String = imageType.pictureDescription
         switch version {
             case .v2_2:
                 imageDescription = parsing.extractPrefixAsStringUntilNullTermination(.isoLatin1) ?? imageType.pictureDescription
@@ -90,7 +88,7 @@ struct ImageFrame: FrameProtocol, CustomStringConvertible {
                 imageDescription = parsing.extractPrefixAsStringUntilNullTermination(encoding) ?? imageType.pictureDescription
         }
         self.imageDescription = imageDescription
-        self.frameKey = .attachedPicture(description: imageDescription)
+        self.frameKey = .attachedPicture(imageType: imageType)
         self.image = parsing
 
         if let description = self.imageDescription {
@@ -184,7 +182,7 @@ extension Tag {
             }
         }
     }
-    
+        
     public mutating func set(imageType: ImageType?, imageDescription: String?, location: URL?) throws {
         var imageFormat: ImageFormat
         if location?.pathExtension.lowercased() == "jpg" || location?.pathExtension.lowercased() == "jpeg" {
@@ -207,5 +205,50 @@ extension Tag {
     public mutating func removeAttachedPicture(withDescription: String?) {
         self.frames[.attachedPicture(description: withDescription ?? "")] = nil
     }
-
+    
+    public var coverArt: NSImage? {
+        get {
+            if let frame = self.frames[.attachedPicture(
+                imageType: .FrontCover)],
+                case .imageFrame(let imageFrame) = frame {
+                return NSImage(data: imageFrame.image)
+            } else if let frame = self.frames[.attachedPicture(
+                imageType: .Other)],
+                case .imageFrame(let imageFrame) = frame {
+                return NSImage(data: imageFrame.image)
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                var format = ImageFormat.png
+                var imageData = Data()
+                if let data = new.tiffRepresentation(using: .jpeg, factor: 1) {
+                    format = .jpg
+                    imageData = data
+                } else if let data =  new.tiffRepresentation {
+                    let magicBytes = data[0 ..< 4]
+                    if magicBytes.hexadecimal().lowercased() == "ff d8 ff e0" {
+                        format = .jpg
+                        imageData = data
+                    } else {
+                        imageData = data
+                        format = .png
+                    }
+                } else {
+                    return
+                }
+                self.frames[.attachedPicture(imageType: .FrontCover)] = Frame.imageFrame(.init(
+                    .known(.attachedPicture),
+                    imageType: .FrontCover,
+                    imageFormat: format,
+                    imageDescription: ImageType.FrontCover.pictureDescription,
+                    image: imageData))
+            } else {
+                self.frames[.attachedPicture(imageType: .FrontCover)] = nil
+                self.frames[.attachedPicture(imageType: .Other)] = nil
+            }
+        }
+    }
 }

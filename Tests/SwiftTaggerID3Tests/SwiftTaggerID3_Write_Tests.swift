@@ -787,4 +787,36 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         let output = try Tag(readFrom: try Mp3File(location: outputUrl))
         XCTAssertTrue(output.listMetadata().isEmpty)
     }
+    
+    @available(OSX 10.12, *)
+    func testImageFrame() throws {
+        let imageUrl = try localDirectory(fileName: "cover", fileExtension: "jpg")
+        var tag = try TestFile.chapterized.tag()
+        if let image = tag?.coverArt {
+            print(image.isValid)
+            if let imageData = image.tiffRepresentation {
+                try imageData.write(to: imageUrl)
+            }
+        }
+        XCTAssertTrue(FileManager.default.fileExists(atPath: imageUrl.path))
+        
+        let newCoverUrl = URL(fileURLWithPath: "/Users/nolainecrusher/Downloads/audiobook_tools/samples/test/samplecover.jpg")
+        if let newCover = NSImage(contentsOf: newCoverUrl) {
+            tag?.coverArt = newCover
+        }
+        
+        let outputUrl = try localDirectory(fileName: "mp3-replaceCover", fileExtension: "mp3")
+        try TestFile.chapterized.mp3File()?.write(tagVersion: .v2_4, using: tag!, writingTo: outputUrl)
+        
+        let output = try Tag(readFrom: try Mp3File(location: outputUrl))
+        XCTAssertNotNil(output.coverArt)
+        
+        let newImageUrl = try localDirectory(fileName: "replaced-coverArt", fileExtension: "jpg")
+        if let newImage = output.coverArt {
+            if let imageData = newImage.tiffRepresentation {
+                try imageData.write(to: newImageUrl)
+            }
+        }
+        XCTAssertTrue(FileManager.default.fileExists(atPath: newImageUrl.path))
+    }
 }

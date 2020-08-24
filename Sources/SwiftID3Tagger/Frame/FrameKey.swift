@@ -49,8 +49,8 @@ public enum FrameKey: Hashable {
     /// Embedded image frame
     case attachedPicture(description: String)
     /** `Official audio file webpage` frame
-     
         URL pointing at a file specific webpage. */
+    case attachedPicture(imageType: ImageType)
     case audioFileWebpage
     /** `Official audio source webpage` frame
      
