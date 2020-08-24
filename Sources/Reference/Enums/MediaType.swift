@@ -124,7 +124,7 @@ public enum MediaTypeRefinements: String, CaseIterable {
     case typeIV
     case none
     
-    var code: String {
+    public var code: String {
         switch self {
             case .analogTransfer: return "/A"
             case .waxCylinder: return "/WC"
