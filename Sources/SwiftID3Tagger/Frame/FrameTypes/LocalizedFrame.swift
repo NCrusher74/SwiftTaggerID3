@@ -318,54 +318,54 @@ extension Tag {
         }
     }
     
-    public var contentRating: ContentRating? {
-        get {
-            if let stringValue = self["Content Rating"] {
-                switch stringValue {
-                    case "Clean": return ContentRating.clean
-                    case "Explicit": return ContentRating.explicit
-                    case "None": return ContentRating.none
-                    default: return nil
-                }
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                self["Content Rating"] = new.rawValue
-            } else {
-                self["Content Rating"] = nil
-            }
-        }
-    }
-    
-    public var contentAdvisory: (rating: ContentAdvisory?, ratingNotes: String?) {
-        get {
-            if let string = self["iTunEXTC"] {
-                var ratingNotes: String? = nil
-                var contentRating: ContentAdvisory? = nil
-                let components: [String] = string.components(separatedBy: "|")
-                if components.count > 3 && components.count <= 4 {
-                    ratingNotes = components.last
-                    let ratingArray = components.dropLast()
-                    let ratingString = "\(ratingArray.joined(separator: "|"))|"
-                    if let rating = ContentAdvisory(rawValue: ratingString) {
-                        contentRating = rating
-                    }
-                }
-                return (contentRating, ratingNotes)
-            } else {
-                return (nil, nil)
-            }
-        }
-        set {
-            if newValue != (nil, nil), newValue.rating != nil {
-                let string = "\(newValue.rating?.rawValue ?? "")\(newValue.ratingNotes ?? "")"
-                self["iTunEXTC"] = string
-            } else {
-                self["iTunEXTC"] = nil
-            }
-        }
-    }
+//    public var contentRating: ContentRating? {
+//        get {
+//            if let stringValue = self["Content Rating"] {
+//                switch stringValue {
+//                    case "Clean": return ContentRating.clean
+//                    case "Explicit": return ContentRating.explicit
+//                    case "None": return ContentRating.none
+//                    default: return nil
+//                }
+//            } else {
+//                return nil
+//            }
+//        }
+//        set {
+//            if let new = newValue {
+//                self["Content Rating"] = new.rawValue
+//            } else {
+//                self["Content Rating"] = nil
+//            }
+//        }
+//    }
+//    
+//    public var contentAdvisory: (rating: ContentAdvisory?, ratingNotes: String?) {
+//        get {
+//            if let string = self["iTunEXTC"] {
+//                var ratingNotes: String? = nil
+//                var contentRating: ContentAdvisory? = nil
+//                let components: [String] = string.components(separatedBy: "|")
+//                if components.count > 3 && components.count <= 4 {
+//                    ratingNotes = components.last
+//                    let ratingArray = components.dropLast()
+//                    let ratingString = "\(ratingArray.joined(separator: "|"))|"
+//                    if let rating = ContentAdvisory(rawValue: ratingString) {
+//                        contentRating = rating
+//                    }
+//                }
+//                return (contentRating, ratingNotes)
+//            } else {
+//                return (nil, nil)
+//            }
+//        }
+//        set {
+//            if newValue != (nil, nil), newValue.rating != nil {
+//                let string = "\(newValue.rating?.rawValue ?? "")\(newValue.ratingNotes ?? "")"
+//                self["iTunEXTC"] = string
+//            } else {
+//                self["iTunEXTC"] = nil
+//            }
+//        }
+//    }
 }
