@@ -61,7 +61,6 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag?.compilation = true
         tag?.bpm = 99
         tag?.isrc = "987654321098"
-        tag?.length = 9767
         tag?.movementNumber = 5
         tag?.totalMovements = 6
         tag?.playlistDelay = 0
@@ -206,7 +205,6 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag?.compilation = true
         tag?.bpm = 99
         tag?.isrc = "987654321098"
-        tag?.length = 9767
         tag?.movementNumber = 5
         tag?.totalMovements = 6
         tag?.playlistDelay = 0
@@ -337,7 +335,6 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag?.compilation = true
         tag?.bpm = 99
         tag?.isrc = "987654321098"
-        tag?.length = 9767
         tag?.playlistDelay = 0
         
         tag?.audioSourceWebpage = "http://audiosource.url"
@@ -685,7 +682,6 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.compilation = true
         tag.bpm = 99
         tag.isrc = "987654321098"
-        tag.length = 9767
         tag.movementNumber = 5
         tag.totalMovements = 6
         tag.playlistDelay = 0

@@ -841,15 +841,8 @@ extension Tag {
     
     /// Length getter-setter. ID3 Identifier: `TLE`/`TLEN`
     public var length: Int? {
-        get { get(forIntFrame: .length) }
-        set {
-            if let new = newValue {
-                set(.known(.length), .length, to: String(new))
-            } else {
-                set(.known(.length), .length, to: nil)
-            }
-        }
-        
+        get { self.mp3Duration }
+        set { set(.known(.length), .length, to: String(self.mp3Duration ?? 0)) }
     }
     
     /// TotalMovements getter-setter. This is a non-standard, iTunes non-standard frame
