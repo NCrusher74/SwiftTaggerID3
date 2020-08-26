@@ -205,7 +205,11 @@ extension Tag {
     public mutating func removeAttachedPicture(withDescription: String?) {
         self.frames[.attachedPicture(description: withDescription ?? "")] = nil
     }
-    
+
+    public mutating func removeAttachedPictureByType(_ imageType: ImageType) {
+        self.frames[.attachedPicture(imageType: imageType)] = nil
+    }
+
     public mutating func removeCoverImage() {
         self.frames[.attachedPicture(imageType: .FrontCover)] = nil
     }
