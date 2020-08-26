@@ -204,51 +204,5 @@ extension Tag {
     
     public mutating func removeAttachedPicture(withDescription: String?) {
         self.frames[.attachedPicture(description: withDescription ?? "")] = nil
-    }
-    
-    public var coverArt: NSImage? {
-        get {
-            if let frame = self.frames[.attachedPicture(
-                imageType: .FrontCover)],
-                case .imageFrame(let imageFrame) = frame {
-                return NSImage(data: imageFrame.image)
-            } else if let frame = self.frames[.attachedPicture(
-                imageType: .Other)],
-                case .imageFrame(let imageFrame) = frame {
-                return NSImage(data: imageFrame.image)
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                var format: ImageFormat? = nil
-                var imageData = Data()
-                if let data = new.tiffRepresentation(using: .jpeg, factor: 0) {
-                    format = .jpg
-                    imageData = data
-                } else if let data =  new.tiffRepresentation {
-                    let magicBytes = data[0 ..< 4]
-                    if magicBytes.hexadecimal().lowercased() == "ff d8 ff e0" {
-                        format = .jpg
-                        imageData = data
-                    } else {
-                        imageData = data
-                        format = .png
-                    }
-                } else {
-                    return
-                }
-                self.frames[.attachedPicture(imageType: .FrontCover)] = Frame.imageFrame(.init(
-                    .known(.attachedPicture),
-                    imageType: .FrontCover,
-                    imageFormat: format ?? ImageFormat.jpg,
-                    imageDescription: ImageType.FrontCover.pictureDescription,
-                    image: imageData))
-            } else {
-                self.frames[.attachedPicture(imageType: .FrontCover)] = nil
-                self.frames[.attachedPicture(imageType: .Other)] = nil
-            }
-        }
-    }
+    }    
 }
