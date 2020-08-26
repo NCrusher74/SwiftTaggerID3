@@ -222,7 +222,7 @@ extension Tag {
         }
         set {
             if let new = newValue {
-                var format = ImageFormat.png
+                var format: ImageFormat? = nil
                 var imageData = Data()
                 if let data = new.tiffRepresentation(using: .jpeg, factor: 1) {
                     format = .jpg
@@ -242,7 +242,7 @@ extension Tag {
                 self.frames[.attachedPicture(imageType: .FrontCover)] = Frame.imageFrame(.init(
                     .known(.attachedPicture),
                     imageType: .FrontCover,
-                    imageFormat: format,
+                    imageFormat: format ?? ImageFormat.jpg,
                     imageDescription: ImageType.FrontCover.pictureDescription,
                     image: imageData))
             } else {
