@@ -224,7 +224,7 @@ extension Tag {
             if let new = newValue {
                 var format: ImageFormat? = nil
                 var imageData = Data()
-                if let data = new.tiffRepresentation(using: .jpeg, factor: 1) {
+                if let data = new.tiffRepresentation(using: .jpeg, factor: 0) {
                     format = .jpg
                     imageData = data
                 } else if let data =  new.tiffRepresentation {
