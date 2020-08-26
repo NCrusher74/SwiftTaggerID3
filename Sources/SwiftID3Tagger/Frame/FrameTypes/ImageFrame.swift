@@ -212,26 +212,35 @@ extension Tag {
     
     /// This will only return an image if it has an `imageType` of `FrontCover`. Often a front cover has an image type of `Other`
     public var coverArt: NSImage? {
-        get {
-            if let frame = self.frames[.attachedPicture(imageType: .FrontCover)],
-                case .imageFrame(let imageFrame) = frame {
-                let imageData = imageFrame.image
-                return NSImage(data: imageData)
-            } else {
-                return nil
-            }
+        if let frame = self.frames[.attachedPicture(imageType: .FrontCover)],
+            case .imageFrame(let imageFrame) = frame {
+            let imageData = imageFrame.image
+            return NSImage(data: imageData)
+        } else {
+            return nil
         }
     }
     
-    public var otherImage: NSImage? {
-        get {
-            if let frame = self.frames[.attachedPicture(imageType: .Other)],
+    public var otherImages: [NSImage] {
+        var images = [NSImage]()
+        for type in ImageType.allCases {
+            if let frame = self.frames[.attachedPicture(imageType: type)],
                 case .imageFrame(let imageFrame) = frame {
-                let imageData = imageFrame.image
-                return NSImage(data: imageData)
-            } else {
-                return nil
+                if imageFrame.imageType == .Other {
+                    let imageData = imageFrame.image
+                    if let image = NSImage(data: imageData) {
+                        images.append(image)
+                    }
+                } else {
+                    if imageFrame.imageType != .FrontCover {
+                        let imageData = imageFrame.image
+                        if let image = NSImage(data: imageData) {
+                            images.append(image)
+                        }
+                    }
+                }
             }
         }
+        return images
     }
 }
