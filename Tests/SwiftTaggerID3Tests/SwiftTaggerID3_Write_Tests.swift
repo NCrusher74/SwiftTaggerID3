@@ -797,9 +797,8 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertTrue(FileManager.default.fileExists(atPath: imageUrl.path))
         
         let newCoverUrl = URL(fileURLWithPath: "/Users/nolainecrusher/Downloads/audiobook_tools/samples/test/samplecover.jpg")
-        if let newCover = NSImage(contentsOf: newCoverUrl) {
-            tag?.coverArt = newCover
-        }
+        
+        try tag?.set(imageType: .FrontCover, imageDescription: "Front Cover", location: newCoverUrl)
         
         let outputUrl = try localDirectory(fileName: "mp3-replaceCover", fileExtension: "mp3")
         try TestFile.chapterized.mp3File()?.write(tagVersion: .v2_4, using: tag!, writingTo: outputUrl)

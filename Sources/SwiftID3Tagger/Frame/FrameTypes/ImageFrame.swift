@@ -204,5 +204,34 @@ extension Tag {
     
     public mutating func removeAttachedPicture(withDescription: String?) {
         self.frames[.attachedPicture(description: withDescription ?? "")] = nil
-    }    
+    }
+    
+    public mutating func removeCoverImage() {
+        self.frames[.attachedPicture(imageType: .FrontCover)] = nil
+    }
+    
+    /// This will only return an image if it has an `imageType` of `FrontCover`. Often a front cover has an image type of `Other`
+    public var coverArt: NSImage? {
+        get {
+            if let frame = self.frames[.attachedPicture(imageType: .FrontCover)],
+                case .imageFrame(let imageFrame) = frame {
+                let imageData = imageFrame.image
+                return NSImage(data: imageData)
+            } else {
+                return nil
+            }
+        }
+    }
+    
+    public var otherImage: NSImage? {
+        get {
+            if let frame = self.frames[.attachedPicture(imageType: .Other)],
+                case .imageFrame(let imageFrame) = frame {
+                let imageData = imageFrame.image
+                return NSImage(data: imageData)
+            } else {
+                return nil
+            }
+        }
+    }
 }
