@@ -149,7 +149,7 @@ extension Tag {
     
     /// Removes all chapters.
     @available(OSX 10.12, *)
-    public mutating func removechapterList() {
+    public mutating func removeAllChapters() {
         self.tableOfContents.chapters = [:]
         self.removeTableOfContents()
     }
