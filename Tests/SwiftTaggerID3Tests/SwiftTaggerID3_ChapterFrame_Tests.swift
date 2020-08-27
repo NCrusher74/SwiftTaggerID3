@@ -27,12 +27,36 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         XCTAssertEqual(tag?.chapterList[1].title, "Chapter 02")
     }
 
+    @available(OSX 10.12, *)
+    func testAddChapterToChapteredFile() throws {
+        var tag = try TestFile.chapterized.tag()
+        tag?.addChapter(at: 3800, title: "Chapter 03")
+        
+        let outputUrl = try localDirectory(fileName: "STID3_chaptertest", fileExtension: "mp3")
+        //        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
+        XCTAssertNoThrow(try TestFile.chapterized.mp3File()?.write(
+            tagVersion: .v2_4,
+            using: tag ?? Tag(readFrom: Mp3File(location: TestFile.chapterized.url)),
+            writingTo: outputUrl))
+        
+        let outputFile = try Mp3File(location: outputUrl)
+        let output = try Tag(readFrom: outputFile)
+        
+        XCTAssertEqual(output.chapterList.count,3)
+        XCTAssertEqual(output.chapterList[0].startTime, 0)
+        XCTAssertEqual(output.chapterList[0].title, "Chapter 01")
+        XCTAssertEqual(output.chapterList[1].startTime, 2795)
+        XCTAssertEqual(output.chapterList[1].title, "Chapter 02")
+        XCTAssertEqual(output.chapterList[2].startTime, 3800)
+        XCTAssertEqual(output.chapterList[2].title, "Chapter 03")
+    }
+    
     // // MARK: - Frame removal test
     @available(OSX 10.12, *)
     func testFrameRemoval() throws {
         var tag = try TestFile.chapterized.tag()
 
-        tag?.removechapterList()
+        tag?.removeAllChapters()
         
         let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
 
@@ -82,7 +106,8 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         tag?.addChapter(at: 1680, title: "Chapter 002")
         tag?.addChapter(at: 3360, title: "Chapter 003")
         
-        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
+        let outputUrl = try localDirectory(fileName: "STID3_chaptertest", fileExtension: "mp3")
+        //        let outputUrl = try tempDirectory().appendingPathComponent("test.mp3")
         XCTAssertNoThrow(try TestFile.chapterized.mp3File()?.write(
             tagVersion: .v2_4,
             using: tag ?? Tag(readFrom: Mp3File(location: TestFile.chapterized.url)),
