@@ -8,7 +8,7 @@
  */
 
 import Foundation
-
+import SwiftLanguageAndLocaleCodes
 /**
  A type representing an ID3 frame that holds a single string field, `Language`, which contains the 3-charcter string for the ISO-639-2 language code. There may be multiple language frames in a tag, but only one per language. Therefore, the `languageString` will serve as the `FrameKey`
  
@@ -48,7 +48,7 @@ struct LanguageFrame: FrameProtocol, CustomStringConvertible {
         while !parsing.isEmpty {
             let languageCodes = [parsing.extractPrefixAsStringUntilNullTermination(encoding)]
             for code in languageCodes {
-                if ISO6392Codes.allCases.contains(where:
+                if ISO6392Code.allCases.contains(where:
                     { $0.rawValue == code }) {
                     languagesArray.append(code ?? "und")
                 }
@@ -89,13 +89,13 @@ struct LanguageFrame: FrameProtocol, CustomStringConvertible {
 
 extension Tag {
     /// - Language frame getter-setter. ID3 Identifier: `TLA`/`TLAN`
-    public var languages: [ISO6392Codes]? {
+    public var languages: [ISO6392Code]? {
         get {
             if let frame = self.frames[.languages],
                 case .languageFrame(let languageFrame) = frame {
-                var languageArray: [ISO6392Codes] = []
+                var languageArray: [ISO6392Code] = []
                 for language in languageFrame.languages {
-                    let languageCode = ISO6392Codes(rawValue: language) ?? .und
+                    let languageCode = ISO6392Code(rawValue: language) ?? .und
                     languageArray.append(languageCode)
                 }
                 return languageArray

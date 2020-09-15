@@ -8,7 +8,7 @@
  */
 
 import Foundation
-
+import SwiftLanguageAndLocaleCodes
 /**
  A type representing an ID3 frame that holds a three string fields: `Language` contains the 3-charcter string for the ISO-639-2 language code, `Description` contains a null-terminated string describing the frame content, and `Content`.
  
@@ -56,7 +56,7 @@ struct LocalizedFrame: FrameProtocol, CustomStringConvertible {
             /// parse out a language string only for these frame types
             
             let codeString = try String(ascii: parsing.extractFirst(3))
-            if let languageCode = ISO6392Codes(rawValue: codeString) {
+            if let languageCode = ISO6392Code(rawValue: codeString) {
                 self.languageString = languageCode.rawValue
             } else {
                 self.languageString = "und"
@@ -133,7 +133,7 @@ struct LocalizedFrame: FrameProtocol, CustomStringConvertible {
 // get and set functions for `LocalizedFrame` frame types, which retrieves or sets up to three strings, one of which may be a language code, and one of which is an optional description string. Each individual frame of this type will call these functions in a get-set property or function, where appropriate.
 extension Tag {
     private func get(for frameKey: FrameKey,
-                      language: ISO6392Codes?,
+                      language: ISO6392Code?,
                       description: String?) -> String? {
         if frameKey == .unsynchronizedLyrics(description: description ?? "") {
             if let frame = self.frames[.unsynchronizedLyrics(
@@ -219,7 +219,7 @@ extension Tag {
     }
 
     /// Comments frame getter-setter. ID3 Identifier `COM`/`COMM`
-    public subscript(_ commentDescription: String?, language: ISO6392Codes) -> String? {
+    public subscript(_ commentDescription: String?, language: ISO6392Code) -> String? {
         get {
             if let string = get(for: .comments(
                 description: commentDescription ?? ""),
@@ -244,7 +244,7 @@ extension Tag {
     }
     
     /// (Unsynchronized) lyrics frame getter-setter. ID3 Identifier `ULT`/`USLT`
-    public subscript(lyrics lyricsDescription: String?, language: ISO6392Codes) -> String? {
+    public subscript(lyrics lyricsDescription: String?, language: ISO6392Code) -> String? {
         get {
             if let string = get(for: .unsynchronizedLyrics(
                 description: lyricsDescription ?? ""),

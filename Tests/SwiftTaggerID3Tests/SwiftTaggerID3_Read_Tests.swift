@@ -72,7 +72,7 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag?.compilation, true)
         XCTAssertEqual(tag?.bpm, 99)
         XCTAssertEqual(tag?.isrc, "987654321098")
-        XCTAssertEqual(tag?.length, 9767)
+        XCTAssertEqual(tag?.length, 5041)
         XCTAssertEqual(tag?.movementNumber, 5)
         XCTAssertEqual(tag?.totalMovements, 6)
         XCTAssertEqual(tag?.playlistDelay, 0)
@@ -137,7 +137,7 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag?.compilation, true)
         XCTAssertEqual(tag?.bpm, 99)
         XCTAssertEqual(tag?.isrc, "987654321098")
-        XCTAssertEqual(tag?.length, 9767)
+        XCTAssertEqual(tag?.length, 5041)
         XCTAssertEqual(tag?.movementNumber, 5)
         XCTAssertEqual(tag?.totalMovements, 6)
         XCTAssertEqual(tag?.playlistDelay, 0)
@@ -204,7 +204,7 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag?.compilation, true)
         XCTAssertEqual(tag?.bpm, 99)
         XCTAssertEqual(tag?.isrc, "987654321098")
-        XCTAssertEqual(tag?.length, 9767)
+        XCTAssertEqual(tag?.length, 5041)
         XCTAssertEqual(tag?.playlistDelay, 0)
         
         // StringFrame: Alternative String Names

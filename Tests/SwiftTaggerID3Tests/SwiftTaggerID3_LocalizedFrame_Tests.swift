@@ -9,8 +9,7 @@
 
 import XCTest
 import SwiftTaggerID3
-
-
+import SwiftLanguageAndLocaleCodes
 
 class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
     
@@ -258,41 +257,41 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
     func testLanguageFrameWritingV24() throws {
         var tag = try TestFile.noMeta.tag()
         
-        tag?.languages = ISO6392Codes.allCases
+        tag?.languages = ISO6392Code.allCases
         
         let output = try tempDirectory().appendingPathComponent("test.mp3")
         XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_4, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)), writingTo: output))
 
         let fileWritten = try Mp3File(location: output)
         let tagWritten = try Tag(readFrom: fileWritten)
-        XCTAssertEqual(tagWritten.languages, ISO6392Codes.allCases)
+        XCTAssertEqual(tagWritten.languages, ISO6392Code.allCases)
     }
 
     @available(OSX 10.12, *)
     func testLanguageFrameWritingV23() throws {
         var tag = try TestFile.noMeta.tag()
         
-        tag?.languages = ISO6392Codes.allCases
+        tag?.languages = ISO6392Code.allCases
         
         let output = try tempDirectory().appendingPathComponent("test.mp3")
         XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_3, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)), writingTo: output))
         
         let fileWritten = try Mp3File(location: output)
         let tagWritten = try Tag(readFrom: fileWritten)
-        XCTAssertEqual(tagWritten.languages, ISO6392Codes.allCases)
+        XCTAssertEqual(tagWritten.languages, ISO6392Code.allCases)
     }
 
     @available(OSX 10.12, *)
     func testLanguageFrameWritingV22() throws {
         var tag = try TestFile.noMeta.tag()
         
-        tag?.languages = ISO6392Codes.allCases
+        tag?.languages = ISO6392Code.allCases
         
         let output = try tempDirectory().appendingPathComponent("test.mp3")
         XCTAssertNoThrow(try TestFile.noMeta.mp3File()?.write(tagVersion: .v2_2, using: tag ?? Tag(readFrom: Mp3File(location: TestFile.noMeta.url)), writingTo: output))
         
         let fileWritten = try Mp3File(location: output)
         let tagWritten = try Tag(readFrom: fileWritten)
-        XCTAssertEqual(tagWritten.languages, ISO6392Codes.allCases)
+        XCTAssertEqual(tagWritten.languages, ISO6392Code.allCases)
     }
 }

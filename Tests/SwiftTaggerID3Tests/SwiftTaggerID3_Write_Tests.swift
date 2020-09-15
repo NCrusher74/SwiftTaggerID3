@@ -9,7 +9,7 @@
 
 import XCTest
 import SwiftTaggerID3
-
+import SwiftConvenienceExtensions
 
 
 class SwiftTaggerID3_Write_Tests: XCTestCase {
@@ -123,7 +123,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.isrc, "987654321098")
         XCTAssertEqual(tagWritten.label, "Publisher")
         XCTAssertEqual(tagWritten.languages, [.eng])
-        XCTAssertEqual(tagWritten.length, 9767)
+        XCTAssertEqual(tagWritten.length, 5041)
         XCTAssertEqual(tagWritten.lyricist, "Lyricist")
         XCTAssertEqual(tagWritten.mood, "Mood")
         XCTAssertEqual(tagWritten.movementName, "Movement Name")
@@ -265,7 +265,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.isrc, "987654321098")
         XCTAssertEqual(tagWritten.label, "Publisher")
         XCTAssertEqual(tagWritten.languages, [.eng])
-        XCTAssertEqual(tagWritten.length, 9767)
+        XCTAssertEqual(tagWritten.length, 5041)
         XCTAssertEqual(tagWritten.lyricist, "Lyricist")
         XCTAssertEqual(tagWritten.movementName, "Movement Name")
         XCTAssertEqual(tagWritten.movementNumber, 5)
@@ -389,7 +389,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(tagWritten.isrc, "987654321098")
         XCTAssertEqual(tagWritten.label, "Publisher")
         XCTAssertEqual(tagWritten.languages, [.eng])
-        XCTAssertEqual(tagWritten.length, 9767)
+        XCTAssertEqual(tagWritten.length, 5041)
         XCTAssertEqual(tagWritten.lyricist, "Lyricist")
         XCTAssertEqual(tagWritten.narrator, "Composer")
         XCTAssertEqual(tagWritten.narratorSort, "Composer Sort")
@@ -789,10 +789,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         let imageUrl = try localDirectory(fileName: "cover", fileExtension: "jpg")
         var tag = try TestFile.chapterized.tag()
         if let image = tag?.coverArt {
-            print(image.isValid)
-            if let imageData = image.tiffRepresentation {
-                try imageData.write(to: imageUrl)
-            }
+            try image.jpgData.write(to: imageUrl)
         }
         XCTAssertTrue(FileManager.default.fileExists(atPath: imageUrl.path))
         
@@ -808,9 +805,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         
         let newImageUrl = try localDirectory(fileName: "replaced-coverArt", fileExtension: "jpg")
         if let newImage = output.coverArt {
-            if let imageData = newImage.tiffRepresentation {
-                try imageData.write(to: newImageUrl)
-            }
+            try newImage.jpgData.write(to: newImageUrl)
         }
         XCTAssertTrue(FileManager.default.fileExists(atPath: newImageUrl.path))
     }

@@ -220,6 +220,10 @@ extension Tag {
             case .imageFrame(let imageFrame) = frame {
             let imageData = imageFrame.image
             return NSImage(data: imageData)
+        } else if let frame = self.frames[.attachedPicture(imageType: .Other)],
+            case .imageFrame(let imageFrame) = frame {
+            let imageData = imageFrame.image
+            return NSImage(data: imageData)
         } else {
             return nil
         }
