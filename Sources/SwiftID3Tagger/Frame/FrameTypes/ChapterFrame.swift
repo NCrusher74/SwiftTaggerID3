@@ -55,16 +55,11 @@ public struct ChapterFrame: FrameProtocol, CustomStringConvertible {
         let elementID = parsing.extractPrefixAsStringUntilNullTermination(.isoLatin1)
         // initialize the elementID property from the string
         self.elementID = elementID ?? UUID().uuidString
-
-        // extract and convert integer properties to integers
-        let startTimeData = parsing.extractFirst(4)
-        let startTimeUInt32 = UInt32(parsing: startTimeData, .bigEndian)
-        self.startTime = Int(startTimeUInt32)
         self.frameKey = .chapter(byElementID: self.elementID)
 
-        let endTimeData = parsing.extractFirst(4)
-        let endTimeUInt32 = UInt32(parsing: endTimeData, .bigEndian)
-        self.endTime = Int(endTimeUInt32)
+        // extract and convert integer properties to integers
+        self.startTime = parsing.extractToInt(4)
+        self.endTime = parsing.extractToInt(4)
 
         /* The Start offset is a zero-based count of bytes from the beginning of the file to the first byte of the first audio frame in the chapter. If these bytes are all set to 0xFF then the value should be ignored and the start time value should be utilized.*/
         /* The End offset is a zero-based count of bytes from the beginning of the file to the first byte of the audio frame following the end of the chapter. If these bytes are all set to 0xFF then the value should be ignored and the end time value should be utilized.*/

@@ -57,5 +57,4 @@ extension Data.SubSequence {
         }
         return String(data: Data(stringBytes), encoding: encoding.standardLibraryEncoding)
     }
-    
 }

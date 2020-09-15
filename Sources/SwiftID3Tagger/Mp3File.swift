@@ -12,8 +12,6 @@ import AVFoundation
 
 /// An Mp3File represets an mp3-format file on the local drive
 /// This wrapper houses variables and methods for querying and modifying an Mp3File
-
-
 public struct Mp3File {
     
     /// The location of an mp3-format file somewhere on the local drive

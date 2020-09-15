@@ -9,8 +9,6 @@
 
 import Foundation
 
-
-
 extension Mp3File {
     
     public enum Error: Swift.Error {
@@ -34,8 +32,6 @@ extension Mp3File {
         case InvalidTOCFrame
     }
 }
-
-
 
 extension Mp3File.Error: LocalizedError {
     public var errorDescription: String? {

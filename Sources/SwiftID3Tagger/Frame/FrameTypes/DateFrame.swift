@@ -11,7 +11,6 @@ import Foundation
 /**
  A type used to represent an ID3-formatted timestamp tag. The information delivered from this type will vary depending on the tag version and formatting.
  */
-
 @available(OSX 10.12, *)
 struct DateFrame: FrameProtocol, CustomStringConvertible {
     public var description: String {

@@ -15,8 +15,6 @@ import Foundation
  
  However, SwiftTaggerID only supports a single TOC frame, which is assigned a UUID as the elementID. Because of this, the top-level flag will always be true, and SwiftTaggerID3s handling of this frame will ensure the child elements are always ordered, therefore the orderedFlag is also set to true.
  */
-
-
 @available(OSX 10.12, *)
 public struct TableOfContentsFrame: FrameProtocol, CustomStringConvertible {
     public var description: String {
@@ -57,10 +55,7 @@ public struct TableOfContentsFrame: FrameProtocol, CustomStringConvertible {
         _ = parsing.extractFirst(1) // unused
         
         // parse the entry-count byte to derive integer value
-        let childIDByte = parsing.extractFirst(1)
-        let entryCountUInt32 = UInt32(parsing: childIDByte, .bigEndian)
-        var childIDCount = Int(entryCountUInt32)
-        
+        var childIDCount = parsing.extractToInt(1)
         var childIDArray: [String] = []
         while childIDCount > 0 {
             childIDArray.append(parsing.extractPrefixAsStringUntilNullTermination(.isoLatin1) ?? "")
@@ -160,8 +155,6 @@ public struct TableOfContentsFrame: FrameProtocol, CustomStringConvertible {
 }
 
 // // MARK: - Tag Extension
-
-
 extension Tag {
     @available(OSX 10.12, *)
     var toc: TableOfContentsFrame? {
