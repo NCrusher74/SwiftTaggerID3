@@ -13,8 +13,6 @@ import Cocoa
 
 /// A type representing an ID3 tag contained in, or to be written to, an `Mp3File`
 /// This wrapper houses methods and properties for parsing and constructing an ID3 tag
-
-
 public struct Tag: CustomStringConvertible {
     public var description: String {
         return "\(frames.values.description)"

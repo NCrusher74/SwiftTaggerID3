@@ -66,7 +66,6 @@ extension FrameProtocol {
         return frameData
     }
     
-    
     /// Parses the frame data
     /// - Parameters:
     ///   - data: the remaining data in the `Tag`
@@ -209,7 +208,6 @@ extension FrameProtocol {
         }
     }
     
-
     // parse the parentheses out of version 2.2 and 2.3 strings (Genre and MediaType frames)
     // for PresetOptionsFrame
     static func parseParentheticalString(unparsedString: String) -> [String] {
@@ -350,8 +348,4 @@ extension FrameProtocol {
         }
         return infoArray
     }
-    
-    
-    
-
 }
