@@ -10,8 +10,6 @@
 import XCTest
 import SwiftTaggerID3
 
-
-
 class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
 
     @available(OSX 10.12, *)

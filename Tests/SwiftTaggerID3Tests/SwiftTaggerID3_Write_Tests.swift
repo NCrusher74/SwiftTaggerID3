@@ -11,7 +11,6 @@ import XCTest
 import SwiftTaggerID3
 import SwiftConvenienceExtensions
 
-
 class SwiftTaggerID3_Write_Tests: XCTestCase {
     
     // // MARK: - V24 writing test

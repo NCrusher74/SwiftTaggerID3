@@ -8,6 +8,7 @@
  */
 
 import Foundation
+import SwiftConvenienceExtensions
 
 extension UnsignedInteger {
     private init<D>(parsingLittleEndian data: D)
@@ -45,15 +46,7 @@ extension UnsignedInteger {
                     self.init(parsingLittleEndian: data)
             }
     }
-    func encoding(endianness: Endianness) -> Data {
-        switch endianness {
-            case .littleEndian:
-                return encodingLittleEndian()
-            case .bigEndian:
-                return Data(encodingLittleEndian().reversed())
-        }
-    }
-    
+
     func encodingSynchsafe() -> Self {
         let byteMask: Self = 0b0111_1111
         var encoded: Self = 0

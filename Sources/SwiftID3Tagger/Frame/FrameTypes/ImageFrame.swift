@@ -76,7 +76,7 @@ struct ImageFrame: FrameProtocol, CustomStringConvertible {
         }; self.imageFormat = .jpg
         
         let pictureTypeByte = parsing.extractFirst(1)
-        let imageType = ImageType(rawValue: pictureTypeByte.uint8) ?? .Other
+        let imageType = ImageType(rawValue: pictureTypeByte.uInt8BE) ?? .Other
         self.imageType = imageType
         // parse out the image description string
         // if no image description exists, use a string describing the image type
@@ -158,8 +158,7 @@ struct ImageFrame: FrameProtocol, CustomStringConvertible {
                 frameData.append(formatString.encoded(withNullTermination: true))
         }
         // append image type byte
-        frameData.append(self.imageType.rawValue.encoding(
-            endianness: .bigEndian))
+        frameData.append(self.imageType.rawValue.beData)
         // encode and append image Description
         frameData.append(self.imageDescription?.encoded(
             withNullTermination: true) ?? self.imageType.pictureDescription.encoded(

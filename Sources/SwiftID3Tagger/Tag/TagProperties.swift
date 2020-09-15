@@ -10,8 +10,6 @@
 import Foundation
 
 /** Houses variables and methods for using known ID3 Tag information to derive necessary data from a specific `Tag` instance */
-
-
 struct TagProperties {
     
     /** Compares bytes in the known range of the version bytes for an ID3 header to known values in order to calculate the ID3 version of a `Tag` instance */
@@ -45,11 +43,9 @@ struct TagProperties {
     /// - Throws: Caller will determine how to handle any errors
     /// - Returns: a four-byte synchsafe integer as a data slice containing the `Tag` size
     func calculateNewTagSize(data: Data) throws -> Data {
-        return data.count.truncatedUInt32.encodingSynchsafe().bigEndianData
+        return data.count.uInt32.encodingSynchsafe().beData
     }
 }
-
-
 
 extension TagProperties {
     /*

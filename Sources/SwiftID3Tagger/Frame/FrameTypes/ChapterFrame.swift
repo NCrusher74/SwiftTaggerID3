@@ -123,8 +123,8 @@ public struct ChapterFrame: FrameProtocol, CustomStringConvertible {
         frameData.append(self.elementID.encoded(withNullTermination: true))
 
         // convert integers to UInt32 and then to Data and append
-        frameData.append(self.startTime.truncatedUInt32.bigEndianData)
-        frameData.append(self.endTime.truncatedUInt32.bigEndianData)
+        frameData.append(self.startTime.uInt32.beData)
+        frameData.append(self.endTime.uInt32.beData)
         
         // add in start and end offset bytes to satisfy spec
         // since SwiftTagger uses start and end times, these are unused by default

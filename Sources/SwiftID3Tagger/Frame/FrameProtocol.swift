@@ -8,6 +8,7 @@
  */
 
 import Foundation
+import SwiftConvenienceExtensions
 /**
  A type representing the properties and methods used by all frames
  */
@@ -112,13 +113,13 @@ extension FrameProtocol {
     ///   - Version 2.2: three bytes of frame-size data.
     ///   - Versions 2.3 & 2.4: four bytes of frame-size data
     private func calculateFrameContentSize(encodedContent: Data, version: Version) -> Data {
-        let contentSize = encodedContent.count.truncatedUInt32
+        let contentSize = encodedContent.count.uInt32
         switch version {
             case .v2_2:
-                let contentUInt8Array = [UInt8](contentSize.bigEndianData)
+                let contentUInt8Array = [UInt8](contentSize.beData)
                 return Data(contentUInt8Array.dropFirst())
-            case .v2_3: return contentSize.bigEndianData
-            case .v2_4: return contentSize.encodingSynchsafe().bigEndianData
+            case .v2_3: return contentSize.beData
+            case .v2_4: return contentSize.encodingSynchsafe().beData
         }
     }
     
