@@ -231,9 +231,9 @@ class SwiftTaggerID3_PartOfTotalFrame_Tests: XCTestCase {
     
     func testSetToNil() throws {
         var tag = try TestFile.v24.tag()
-        tag?.discNumber.disc = nil
+        tag?.discNumber.disc = 0
         tag?.discNumber.totalDiscs = nil
-        tag?.trackNumber.track = nil
+        tag?.trackNumber.track = 0
         tag?.trackNumber.totalTracks = nil
         XCTAssertNil(tag?.discNumber.disc)
         XCTAssertNil(tag?.trackNumber.track)
