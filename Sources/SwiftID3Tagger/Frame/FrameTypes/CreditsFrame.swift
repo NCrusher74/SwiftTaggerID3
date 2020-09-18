@@ -56,15 +56,13 @@ class CreditsListFrame: Frame {
         self.credits = credits
         let flags = version.defaultFlags
         
-        var payload = Data()
+        var size = 1 // +1 for encoding byte
         let encoding = String.Encoding.isoLatin1
-        payload.append(encoding.encodingByte)
         for key in credits.keys {
-            payload.append(key.encodeNullTerminatedString(encoding))
+            size += key.encodeNullTerminatedString(encoding).count
             let valueString = credits[key]?.joined(separator: ",") ?? ""
-            payload.append(valueString.encodeNullTerminatedString(encoding))
+            size += valueString.encodeNullTerminatedString(encoding).count
         }
-        let size = payload.count + 1 // encoding byte is the +1
         super.init(identifier: identifier,
                    version: version,
                    size: size,

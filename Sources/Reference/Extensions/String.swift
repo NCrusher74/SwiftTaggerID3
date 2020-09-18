@@ -98,7 +98,7 @@ extension String {
         return dateComponents.date
     }
     
-    /// parse the parentheses out of version 2.2 and 2.3 strings (Genre MediaType frames)
+    /// parse the parentheses out of version 2.2 and 2.3 strings (Genre and MediaType frames)
     /// for PresetOptionsFrame
     func parseParentheticalString() -> [String] {
         // separate the components into an array using the open paren as a separator

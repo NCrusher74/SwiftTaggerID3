@@ -71,14 +71,16 @@ class StringFrame: Frame {
          stringValue: String) {
         // initialize the contentString property
         self.stringValue = stringValue
-        // use the default flags
-        let flags = version.defaultFlags
-        var size = Int()
+
+        let size: Int
         if identifier.parseAs == .url {
             size = stringValue.encodedASCII.count
         } else {
             size = stringValue.encodedISOLatin1.count + 1 // encoding byte
         }
+
+        // use the default flags
+        let flags = version.defaultFlags
         super.init(identifier: identifier,
                    version: version,
                    size: size,

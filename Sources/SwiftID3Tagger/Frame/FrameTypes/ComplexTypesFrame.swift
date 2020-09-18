@@ -62,34 +62,30 @@ class ComplexTypesFrame: Frame {
         self.contentArray = contentArray
         let flags = version.defaultFlags
         
-        var payload = Data()
-        // append encoding byte
-        let encoding = String.Encoding.isoLatin1
-        payload.append(encoding.encodingByte)
+        var size = 1 // +1 for encoding byte
         switch version {
             case .v2_2, .v2_3: // null termination will be false
                 if identifier == .known(.genre) {
-                    payload.append(
-                        contentArray.encodedGenreParentheticalStrings)
+                    size += contentArray
+                        .encodedGenreParentheticalStrings.count
                 } else if identifier == .known(.mediaType) {
-                    payload.append(
-                        contentArray.encodedMediaTypeParentheticalStrings)
+                    size += contentArray
+                        .encodedMediaTypeParentheticalStrings.count
                 } else if identifier == .known(.fileType) {
-                    payload.append(contentArray.encodedFileTypeStrings)
+                    size += contentArray.encodedFileTypeStrings.count
                 }
             case .v2_4: // null termination will be true
                 if identifier == .known(.genre) {
-                    payload.append(
-                        contentArray.encodedNonParentheticalGenreStrings)
+                    size += contentArray
+                        .encodedNonParentheticalGenreStrings.count
                 } else if identifier == .known(.mediaType) {
-                    payload.append(
-                        contentArray.encodedNonParentheticalMediaTypeStrings)
+                    size += contentArray
+                        .encodedNonParentheticalMediaTypeStrings.count
                 } else if identifier == .known(.fileType) {
-                    payload.append(
-                        contentArray.encodedNonParentheticalFileTypeStrings)
+                    size += contentArray
+                        .encodedNonParentheticalFileTypeStrings.count
                 }
         }
-        let size = payload.count
         super.init(identifier: identifier,
                    version: version,
                    size: size,

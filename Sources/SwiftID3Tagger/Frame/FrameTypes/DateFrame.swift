@@ -105,23 +105,22 @@ class DateFrame: Frame {
         self.timeStamp = timeStamp
         let flags = version.defaultFlags
         
-        var encodedString = Data()
+        var size = 1 // +1 for encoding byte
         if identifier == .known(.date) {
-            encodedString = timeStamp.encodeDDMMTimestamp
+            size += timeStamp.encodeDDMMTimestamp.count
         } else if identifier == .known(.time) {
-            encodedString = timeStamp.encodeHHMMTimestamp
+            size += timeStamp.encodeHHMMTimestamp.count
         } else if identifier == .known(.year) ||
                     (identifier == .known(.originalReleaseTime) &&
                         (self.version == .v2_2 || self.version == .v2_3)) {
-            encodedString = timeStamp.encodeYYYYTimestamp
+            size += timeStamp.encodeYYYYTimestamp.count
         } else {
             let formatter = ISO8601DateFormatter()
             formatter.formatOptions = [.withInternetDateTime]
             formatter.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
             let dateString = formatter.string(from: timeStamp)
-            encodedString = dateString.encodedISOLatin1
+            size += dateString.encodedISOLatin1.count
         }
-        let size = encodedString.count + 1 // encoding byte is the +1
         super.init(identifier: identifier,
                    version: version,
                    size: size,

@@ -19,9 +19,9 @@ class PartAndTotalFrame: Frame {
          flags: Data,
          payload: Data) throws {
         var data = payload
-        // extract and interpret encoding byte
-        let encoding = try data.extractEncoding()
         
+        // extract and interpret encoding byte
+        let encoding = try data.extractEncoding()        
         // extract and decode content as a string
         let string = data.extractNullTerminatedString(encoding) ?? ""
         // parse the string into an array
@@ -49,19 +49,15 @@ class PartAndTotalFrame: Frame {
          total: Int?) {
         self.part = part
         self.total = total
-        let flags = version.defaultFlags
-        var contentString = String()
+        
+        var size = 1 // +1 for encoding byte
         if let total = total {
-            contentString = "\(part)/\(total)"
+            size += "\(part)/\(total)".encodedISOLatin1.count
         } else {
-            contentString = String(part)
+            size += String(part).encodedISOLatin1.count
         }
-        let encoding = String.Encoding.isoLatin1
 
-        var payload = Data()
-        payload.append(encoding.encodingByte)
-        payload.append(contentString.encodedISOLatin1)
-        let size = payload.count
+        let flags = version.defaultFlags
         super.init(identifier: identifier,
                    version: version,
                    size: size,

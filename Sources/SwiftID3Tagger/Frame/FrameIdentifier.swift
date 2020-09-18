@@ -116,12 +116,16 @@ enum FrameIdentifier: Hashable {
                                      payload: payload)
             case .localized, .userDefined:
                 return try LocalizedFrame(identifier: self,
-                                            version: version,
-                                            size: size,
-                                            flags: flags,
-                                            payload: payload)
+                                          version: version,
+                                          size: size,
+                                          flags: flags,
+                                          payload: payload)
             case .complex:
-                <#code#>
+                return try ComplexTypesFrame(identifier: self,
+                                             version: version,
+                                             size: size,
+                                             flags: flags,
+                                             payload: payload)
             case .credits:
                 return try CreditsListFrame(identifier: self,
                                             version: version,
@@ -130,12 +134,16 @@ enum FrameIdentifier: Hashable {
                                             payload: payload)
             case .tuple:
                 return try PartAndTotalFrame(identifier: self,
-                                            version: version,
-                                            size: size,
-                                            flags: flags,
-                                            payload: payload)
+                                             version: version,
+                                             size: size,
+                                             flags: flags,
+                                             payload: payload)
             case .chapter:
-                <#code#>
+                return try ChapterFrame(identifier: self,
+                                        version: version,
+                                        size: size,
+                                        flags: flags,
+                                        payload: payload)
             case .tableOfContents:
                 <#code#>
             case .image:
@@ -271,121 +279,121 @@ enum KnownIdentifier: CaseIterable {
     
     func frameKey(additionalID: Any?) throws -> String {
         switch self {
-            case .album: return "Album"
-            case .albumSort: return "Album Sort"
-            case .albumArtist: return "Album Artist"
-            case .albumArtistSort: return "Album Artist Sort"
-            case .arranger: return "Arranger"
-            case .artist: return "Artist"
-            case .artistSort: return "Artist Sort"
-            case .artistWebpage: return "Artist Webpage"
+            case .album: return "album"
+            case .albumSort: return "albumSort"
+            case .albumArtist: return "albumArtist"
+            case .albumArtistSort: return "albumArtistSort"
+            case .arranger: return "arranger"
+            case .artist: return "artist"
+            case .artistSort: return "artistSort"
+            case .artistWebpage: return "artistWebpage"
             case .attachedPicture:
                 if let uInt8 = additionalID as? UInt8 {
                     if let type = ImageType(rawValue: uInt8) {
-                        return "Attached Picture: \(type.pictureDescription)"
+                        return "attachedPicture: \(type.pictureDescription)"
                     } else {
                         throw Mp3FileError.UnableToDetermineUniqueFrameID("\(self)")
                     }
                 } else if let string = additionalID as? String {
-                    return "Attached Picture: \(string)"
+                    return "attachedPicture: \(string)"
                 } else {
-                    return "Attached Picture"
+                    return "attachedPicture"
                 }
-            case .audioFileWebpage: return "Audio File Webpage"
-            case .audioSourceWebpage: return "Audio Source Webpage"
-            case .bpm: return "BPM"
+            case .audioFileWebpage: return "audioFileWebpage"
+            case .audioSourceWebpage: return "audioSourceWebpage"
+            case .bpm: return "bpm"
             case .chapter:
                 if let elementID = additionalID as? String {
-                    return "Chapter: \(elementID)"
+                    return "chapter: \(elementID)"
                 } else {
-                    return "Chapter"
+                    return "chapter"
                 }
             case .comments:
                 if let description = additionalID as? String {
-                    return "Comments: \(description)"
+                    return "comments: \(description)"
                 } else {
-                    return "Comments"
+                    return "comments"
                 }
-            case .compilation: return "Compilation"
-            case .composer: return "Composer"
-            case .composerSort: return "Composer Sort"
-            case .conductor: return "Conductor"
-            case .contentGroup: return "Content Group"
-            case .copyright: return "Copyright"
-            case .copyrightWebpage: return "Copyright Webpage"
-            case .date: return "Date"
-            case .discNumber: return "Disc Number"
-            case .encodingTime: return "Encoding Time"
-            case .encodedBy: return "Encoded By"
-            case .encodingSettings: return "Encoding Settings"
-            case .fileType: return "File Type"
-            case .fileOwner: return "File Owner"
-            case .genre: return "Genre"
-            case .grouping: return "Grouping"
-            case .initialKey: return "Initial Key"
-            case .involvedPeopleList: return "Involvement Credits"
-            case .isrc: return "ISRC"
-            case .languages: return "Languages"
-            case .length: return "Length"
-            case .lyricist: return "Lyricist"
-            case .mediaType: return "Media Type"
-            case .mood: return "Mood"
-            case .movementCount: return "Movement Count"
-            case .movement: return "Movement"
-            case .movementNumber: return "Movement Number"
-            case .musicianCreditsList: return "Performer Credits"
-            case .originalAlbum: return "Original Album"
-            case .originalArtist: return "Original Artist"
-            case .originalFilename: return "Original Filename"
-            case .originalLyricist: return "Original Lyricist"
-            case .originalReleaseTime: return "Original Release Time"
-            case .paymentWebpage: return "Payment Webpage"
-            case .playlistDelay: return "Playlist Delay"
-            case .podcastCategory: return "Podcast Category"
-            case .podcastDescription: return "Podcast Description"
-            case .podcastID: return "PodcastID"
-            case .podcastKeywords: return "Podcast Keywords"
-            case .podcastFeed: return "Podcast Feed"
-            case .producedNotice: return "Produced Notice"
-            case .publisher: return "Publisher"
-            case .publisherWebpage: return "Publisher Webpage"
-            case .radioStation: return "Radio Station"
-            case .radioStationOwner: return "Radio Station Owner"
-            case .radioStationWebpage: return "Radio Station Webpage"
-            case .recordingDate: return "Recording Date"
-            case .releaseTime: return "Release Time"
-            case .setSubtitle: return "Set Subtitle"
-            case .subtitle: return "Subtitle"
+            case .compilation: return "compilation"
+            case .composer: return "composer"
+            case .composerSort: return "composerSort"
+            case .conductor: return "conductor"
+            case .contentGroup: return "contentGroup"
+            case .copyright: return "copyright"
+            case .copyrightWebpage: return "copyrightWebpage"
+            case .date: return "date"
+            case .discNumber: return "discNumber"
+            case .encodingTime: return "encodingTime"
+            case .encodedBy: return "encodedBy"
+            case .encodingSettings: return "encodingSettings"
+            case .fileType: return "fileType"
+            case .fileOwner: return "fileOwner"
+            case .genre: return "genre"
+            case .grouping: return "grouping"
+            case .initialKey: return "initialKey"
+            case .involvedPeopleList: return "involvedPeopleList"
+            case .isrc: return "isrc"
+            case .languages: return "languages"
+            case .length: return "length"
+            case .lyricist: return "lyricist"
+            case .mediaType: return "mediaType"
+            case .mood: return "mood"
+            case .movementCount: return "movementCount"
+            case .movement: return "movement"
+            case .movementNumber: return "movementNumber"
+            case .musicianCreditsList: return "musicianCreditsList"
+            case .originalAlbum: return "originalAlbum"
+            case .originalArtist: return "originalArtist"
+            case .originalFilename: return "originalFilename"
+            case .originalLyricist: return "originalLyricist"
+            case .originalReleaseTime: return "originalReleaseTime"
+            case .paymentWebpage: return "paymentWebpage"
+            case .playlistDelay: return "playlistDelay"
+            case .podcastCategory: return "podcastCategory"
+            case .podcastDescription: return "podcastDescription"
+            case .podcastID: return "podcastID"
+            case .podcastKeywords: return "podcastKeywords"
+            case .podcastFeed: return "podcastFeed"
+            case .producedNotice: return "producedNotice"
+            case .publisher: return "publisher"
+            case .publisherWebpage: return "publisherWebpage"
+            case .radioStation: return "radioStation"
+            case .radioStationOwner: return "radioStationOwner"
+            case .radioStationWebpage: return "radioStationWebpage"
+            case .recordingDate: return "recordingDate"
+            case .releaseTime: return "releaseTime"
+            case .setSubtitle: return "setSubtitle"
+            case .subtitle: return "subtitle"
             case .tableOfContents:
                 if let elementID = additionalID as? String {
-                    return "Table Of Contents: \(elementID)"
+                    return "tableOfContents: \(elementID)"
                 } else {
-                    return "TOC"
+                    return "tableOfContents"
                 }
-            case .taggingTime: return "Tagging Time"
-            case .time: return "Time"
-            case .title: return "Title"
-            case .titleSort: return "Title Sort"
-            case .trackNumber: return "Track Number"
+            case .taggingTime: return "taggingTime"
+            case .time: return "time"
+            case .title: return "title"
+            case .titleSort: return "titleSort"
+            case .trackNumber: return "trackNumber"
             case .unsynchronizedLyrics:
                 if let description = additionalID as? String {
-                    return "Lyrics: \(description)"
+                    return "unsynchronizedLyrics: \(description)"
                 } else {
-                    return "Lyrics"
+                    return "unsynchronizedLyrics"
                 }
             case .userDefinedText:
                 if let description = additionalID as? String {
-                    return "User-Defined Text: \(description)"
+                    return "userDefinedText: \(description)"
                 } else {
-                    return "User-Defined Text"
+                    return "userDefinedText"
                 }
             case .userDefinedWebpage:
                 if let description = additionalID as? String {
-                    return "User-Defined Webpage: \(description)"
+                    return "userDefinedWebpage: \(description)"
                 } else {
-                    return "User-Defined Webpage"
+                    return "userDefinedWebpage"
                 }
-            case .year: return "Year"
+            case .year: return "year"
         }
     }
     

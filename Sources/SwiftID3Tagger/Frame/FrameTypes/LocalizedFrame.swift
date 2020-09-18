@@ -31,7 +31,6 @@ class LocalizedFrame: Frame {
         var data = payload
                 
         let encoding = try data.extractEncoding()
-        
         if identifier == .known(.comments) ||
             identifier == .known(.unsynchronizedLyrics) {
             /// parse out a language string only for these frame types
@@ -61,29 +60,27 @@ class LocalizedFrame: Frame {
          language: ISO6392Code?,
          description: String?,
          stringValue: String) {
-        let flags = version.defaultFlags
         self.language = language
         self.description = description
         self.stringValue = stringValue
         
-        var payload = Data()
+        var size = 1 // +1 for encoding byte
         let encoding = String.Encoding.isoLatin1
-        payload.append(encoding.encodingByte)
         if let languageString = language?.rawValue {
-            payload.append(languageString.encodedASCII)
+            size += languageString.encodedASCII.count
         }
         if let description = description {
-            payload.append(description.encodeNullTerminatedString(encoding))
+            size += description.encodeNullTerminatedString(encoding).count
         }
-        payload.append(stringValue.encodedISOLatin1)
-        let size = payload.count
+        size += stringValue.encodedISOLatin1.count
+        let flags = version.defaultFlags
         super.init(identifier: identifier,
                    version: version,
                    size: size,
                    flags: flags)
     }
     
-    override func frameKey(version: Version) throws -> String {
+    override func frameKey() throws -> String {
         return try self.identifier.frameKey(additionalID: self.description)
     }
     
