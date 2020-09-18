@@ -10,7 +10,7 @@
 import Foundation
 
 /** `FrameLayoutIdentifier` describes how SwiftTagger refers to the frame type internally.
- All information for handling a frame are determined by its `FrameLayoutIdentifier` */
+ All information for handling a frame are determined by its `FrameIdentifier` */
 enum FrameIdentifier: Hashable {
     /// a frame with an identifier recognized and handled by SwiftTagger
     case known(KnownIdentifier)
@@ -114,10 +114,12 @@ enum FrameIdentifier: Hashable {
                                      size: size,
                                      flags: flags,
                                      payload: payload)
-            case .localized:
-                <#code#>
-            case .userDefined:
-                <#code#>
+            case .localized, .userDefined:
+                return try LocalizedFrame(identifier: self,
+                                            version: version,
+                                            size: size,
+                                            flags: flags,
+                                            payload: payload)
             case .complex:
                 <#code#>
             case .credits:
@@ -127,7 +129,11 @@ enum FrameIdentifier: Hashable {
                                             flags: flags,
                                             payload: payload)
             case .tuple:
-                <#code#>
+                return try PartAndTotalFrame(identifier: self,
+                                            version: version,
+                                            size: size,
+                                            flags: flags,
+                                            payload: payload)
             case .chapter:
                 <#code#>
             case .tableOfContents:

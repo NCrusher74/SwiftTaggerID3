@@ -16,7 +16,8 @@ extension String {
         self = String(scalars)
     }
     
-    func nullTerminatedData(encoding: String.Encoding) -> Data {
+    /// Convert a string to data and append a null termination byte (or pair of null bytes)
+    func encodeNullTerminatedString(_ encoding: String.Encoding) -> Data {
         guard var result = data(using: encoding) else {
             // This will never happen unless “preferred” is changed to something besides Unicode.
             fatalError("\(encoding) cannot encode “\(self)”.")
@@ -37,6 +38,7 @@ extension String {
         }
     }
     
+    /// Convert 4-character numeric string representing a day/month value to a ISO-8601 compliant date
     func dateFromDDMMString() throws -> Date? {
         let calendar = Calendar(identifier: .iso8601)
         let timeZone = TimeZone(secondsFromGMT: 0) ?? .current
@@ -60,6 +62,7 @@ extension String {
         return dateComponents.date
     }
     
+    /// Convert 4-character numeric string representing a hour/minute value to a ISO-8601 compliant date
     func timefromHHMMString() throws -> Date? {
         let calendar = Calendar(identifier: .iso8601)
         let timeZone = TimeZone(secondsFromGMT: 0) ?? .current
@@ -82,6 +85,7 @@ extension String {
         return dateComponents.date
     }
     
+    /// Convert 4-character numeric string representing a year value to a ISO-8601 compliant date
     func yearFromYYYYString() throws -> Date? {
         let calendar = Calendar(identifier: .iso8601)
         let timeZone = TimeZone(secondsFromGMT: 0) ?? .current
@@ -93,4 +97,59 @@ extension String {
                                             year: year)
         return dateComponents.date
     }
+    
+    /// parse the parentheses out of version 2.2 and 2.3 strings (Genre MediaType frames)
+    /// for PresetOptionsFrame
+    func parseParentheticalString() -> [String] {
+        // separate the components into an array using the open paren as a separator
+        // this will remove the open parens from parenthetical comments as well as the codes
+        // so we'll have to replace those when we spot a double-paren that denotes a parenthetical freeform comment
+        var stringComponents = self.components(separatedBy: "(")
+        // take it one component at a time
+        for (index, value) in stringComponents.enumerated() {
+            // for any component except the first one, if it's empty, it means we removed a double-paren
+            if index != 0 && value == "" {
+                // find the previous and next components and make a range of them
+                let previousIndex = index - 1
+                let nextIndex = index + 1
+                let rangeToReplace = previousIndex...nextIndex
+                // replace the open paren because it's a double-paren situation
+                stringComponents[nextIndex].insert("(", at: stringComponents[nextIndex].startIndex)
+                // join the previous and next components
+                let componentsToJoin = [stringComponents[previousIndex], stringComponents[nextIndex]]
+                let joinedComponents = [componentsToJoin.joined()]
+                // replace the separate components with the joined components
+                stringComponents.replaceSubrange(rangeToReplace, with: joinedComponents)
+                // remove all the empty components
+                stringComponents.removeAll(where: {$0 == ""})
+            }
+        }
+        var refinedComponents: [String] = []
+        for component in stringComponents {
+            if !component.contains(")") {
+                refinedComponents.append(component)
+                // find the close parens and parse them out
+            } else if component.contains(")") {
+                var separatedComponents = component.components(separatedBy: ")")
+                // remove the empty elements
+                separatedComponents.removeAll(where: {$0 == ""})
+                // find the elements where there is an unterminated open paren now
+                for (index, value) in separatedComponents.enumerated() {
+                    if value.contains("(") {
+                        // append a close paren to the string containing the open paren
+                        var valueToChange = value
+                        valueToChange.append(")")
+                        // replace the string containing the unterminated open paren with the new string
+                        separatedComponents.remove(at: index)
+                        separatedComponents.insert(valueToChange, at: index)
+                    }
+                }
+                // append the fixed components to the array
+                refinedComponents.append(contentsOf: separatedComponents)
+            }
+        }
+        // return the array
+        return refinedComponents
+    }
+
 }

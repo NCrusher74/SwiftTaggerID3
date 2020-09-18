@@ -14,7 +14,17 @@ class Frame {
     var flags: Data
     
     func frameKey(version: Version) throws -> String {
-        fatalError("Must be overridden from frame subclass")
+        if self.identifier == .known(.attachedPicture) ||
+            self.identifier == .known(.chapter) ||
+            self.identifier == .known(.comments) ||
+            self.identifier == .known(.tableOfContents) ||
+            self.identifier == .known(.unsynchronizedLyrics) ||
+            self.identifier == .known(.userDefinedText) ||
+            self.identifier == .known(.userDefinedWebpage) {
+            fatalError("Override from frame subclass is required")
+        } else {
+            return try self.identifier.frameKey(additionalID: nil)
+        }
     }
 
     @available(OSX 10.12, *)

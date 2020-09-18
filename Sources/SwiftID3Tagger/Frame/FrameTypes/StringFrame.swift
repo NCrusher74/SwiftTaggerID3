@@ -30,12 +30,15 @@ class StringFrame: Frame {
         // Since url frames do not use an encoding byte, we will parse without one for those
         if identifier.parseAs == .url {
             self.stringValue = try String(ascii: payload)
-        } else if identifier.parseAs == .boolean {
-            // since the compilation frame is technically a string frame, it may contain a "boolean-esque" string, like "true" or "yes". We will attempt to catch those cases as well.
-            self.stringValue = try data.extractAndDecodeStringFromBoolean()
         } else {
-            // everything else is handled as a string (or numeric string)
-            self.stringValue = try data.extractAndDecodeString()
+            let encoding = try data.extractEncoding()
+            if identifier.parseAs == .boolean {
+                // since the compilation frame is technically a string frame, it may contain a "boolean-esque" string, like "true" or "yes". We will attempt to catch those cases as well.
+                self.stringValue = try data.extractAndDecodeStringFromBoolean(encoding: encoding)
+            } else {
+                // everything else is handled as a string (or numeric string)
+                self.stringValue = try data.extractAndDecodeString(encoding: encoding)
+            }
         }
         super.init(identifier: identifier,
                    version: version,
@@ -55,11 +58,6 @@ class StringFrame: Frame {
             data.append(stringValue.encodedISOLatin1)
         }
         return data
-    }
-    
-    /// Returns the frame's unique identifier
-    override func frameKey(version: Version) throws -> String {
-        return try self.identifier.frameKey(additionalID: nil)
     }
     
     // MARK: - Frame creation

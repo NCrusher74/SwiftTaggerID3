@@ -22,15 +22,12 @@ class CreditsListFrame: Frame {
          payload: Data
     ) throws {
         var data = payload
-        self.credits = try data.extractAndDecodeCreditString()
+        let encoding = try data.extractEncoding()
+        self.credits = try data.extractAndDecodeCreditString(encoding: encoding)
         super.init(identifier: identifier,
                   version: version,
                   size: size,
                   flags: flags)
-    }
-    
-    override func frameKey(version: Version) throws -> String {
-        return try self.identifier.frameKey(additionalID: nil)
     }
     
     override var contentData: Data {
@@ -41,9 +38,9 @@ class CreditsListFrame: Frame {
 
         // encode and append each credit
         for key in credits.keys {
-            data.append(key.nullTerminatedData(encoding: encoding))
+            data.append(key.encodeNullTerminatedString(encoding))
             let valueString = credits[key]?.joined(separator: ",") ?? ""
-            data.append(valueString.nullTerminatedData(encoding: encoding))
+            data.append(valueString.encodeNullTerminatedString(encoding))
         }
         return data
     }
@@ -60,10 +57,12 @@ class CreditsListFrame: Frame {
         let flags = version.defaultFlags
         
         var payload = Data()
+        let encoding = String.Encoding.isoLatin1
+        payload.append(encoding.encodingByte)
         for key in credits.keys {
-            payload.append(key.nullTerminatedData(encoding: .isoLatin1))
+            payload.append(key.encodeNullTerminatedString(encoding))
             let valueString = credits[key]?.joined(separator: ",") ?? ""
-            payload.append(valueString.nullTerminatedData(encoding: .isoLatin1))
+            payload.append(valueString.encodeNullTerminatedString(encoding))
         }
         let size = payload.count + 1 // encoding byte is the +1
         super.init(identifier: identifier,

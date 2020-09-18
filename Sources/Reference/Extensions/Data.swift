@@ -15,8 +15,7 @@ extension Data {
     /// Interpret the most common "quasi-boolean" strings as boolean values
     /// - Parameter boolString: The string parsed from the frame's contents
     /// - Returns: 1 or 0, if a value can be determined
-    mutating func extractAndDecodeStringFromBoolean() throws -> String {
-        let encoding = try self.extractEncoding()
+    mutating func extractAndDecodeStringFromBoolean(encoding: String.Encoding) throws -> String {
         if let string = self.extractNullTerminatedString(encoding) {
             switch string.lowercased() {
                 case "true", "t", "yes", "y", "1":
@@ -31,8 +30,7 @@ extension Data {
         }
     }
     
-    mutating func extractAndDecodeString() throws -> String {
-        let encoding = try self.extractEncoding()
+    mutating func extractAndDecodeString(encoding: String.Encoding) throws -> String {
         if let string = self.extractNullTerminatedString(encoding) {
             return string
         } else {
@@ -40,8 +38,7 @@ extension Data {
         }
     }
     
-    mutating func extractAndDecodeCreditString() throws -> [String: [String]] {
-        let encoding = try self.extractEncoding()
+    mutating func extractAndDecodeCreditString(encoding: String.Encoding) throws -> [String: [String]] {
         var strings = [String]()
         while !self.isEmpty {
             if let next = self.extractNullTerminatedString(encoding) {
@@ -55,5 +52,17 @@ extension Data {
             pairsDictionary[pair.0] = personArray
         }
         return pairsDictionary
+    }
+    
+    /// Extracts and decodes description and content strings for frame types that use them.
+    /// - Parameters:
+    ///   - frameData: The frame's data beginning at the description string
+    ///   - encoding: The `StringEncoding` instance parsed out of the frame content previously
+    /// - Returns: The frame's description and content strings
+    /// this is used for frames with a terminated description string followed by a content string
+    mutating func extractDescriptionAndContent(encoding: String.Encoding) -> (description: String?, content: String) {
+        let description = self.extractNullTerminatedString(encoding)
+        let content = self.extractNullTerminatedString(encoding) ?? ""
+        return (description: description, content: content)
     }
 }

@@ -30,7 +30,8 @@ class DateFrame: Frame {
          payload: Data
     ) throws {
         var data = payload
-        let dateString = try data.extractAndDecodeString()
+        let encoding = try data.extractEncoding()
+        let dateString = try data.extractAndDecodeString(encoding: encoding)
         
         // assumes frame contents are spec-compliant, 4-characters, DDMM string
         if identifier == .known(.date) {
@@ -54,10 +55,6 @@ class DateFrame: Frame {
                    version: version,
                    size: size,
                    flags: flags)
-    }
-    
-    override func frameKey(version: Version) throws -> String {
-        return try self.identifier.frameKey(additionalID: nil)
     }
     
     /// encode contents of the frame to add to an ID3 tag

@@ -65,7 +65,7 @@ struct Tag {
 
         while !remainder.isEmpty {
             // pass the frames data over to `Data.Subsequence` exension for parsing
-            if let frame = try remainder.extractAndParseToFrame(version: version) {
+            if let frame = try remainder.extractAndParseToFrame(version) {
                 // get the frame key
                 let frameKey = try frame.frameKey(version: version)
                 // add frame to dictionary
