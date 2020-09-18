@@ -1,14 +1,11 @@
-/*
-
- Mp3File.swift
- SwiftTaggerID3
-
- Copyright ©2020 Nolaine Crusher. All rights reserved.
-
- */
+//
+//  Mp3File.swift
+//  
+//
+//  Created by Nolaine Crusher on 9/17/20.
+//
 
 import Foundation
-import AVFoundation
 
 /// An Mp3File represets an mp3-format file on the local drive
 /// This wrapper houses variables and methods for querying and modifying an Mp3File
@@ -27,7 +24,7 @@ public struct Mp3File {
         self.location = location
         // validate that the file is an mp3 file
         guard location.pathExtension.lowercased() == "mp3" else {
-            throw Mp3File.Error.InvalidFileFormat
+            throw Mp3FileError.InvalidFileFormat
         }
         // get the file as data, retrying once in case the file isn't released yet after being accessed from another attempt
         do {
@@ -36,35 +33,12 @@ public struct Mp3File {
             do {
                 self.data = try Data(contentsOf: location)
             } catch {
-                throw Mp3File.Error.CannotReadFile
+                throw Mp3FileError.UnableToReadFileData
             }
         }
     }
     
-    public func write(tagVersion: Version,
-                      using tag: Tag,
-                      writingTo url: URL) throws {
-        let fileData = try buildNewFile(using: tag, version: tagVersion)
-        try FileManager.default.createDirectory(
-            at: url.parentDirectory,
-            withIntermediateDirectories: true)
-        try fileData.write(to: url)
-    }
-    
-    private func buildNewFile(using tag: Tag, version: Version) throws -> Data {
-        var fileData = self.data
-        let properties = TagProperties()
-        let tagSizeDataRange = properties.tagSizeDeclarationOffset ..<
-            properties.tagSizeDeclarationOffset +
-            properties.tagSizeDeclarationLength
-        
-        let tagSizeData = fileData.subdata(in: tagSizeDataRange)
-        let tagDataCount = try properties.size(data: tagSizeData, version: version)
-        let tagDataRange = fileData.startIndex ..<
-            properties.tagHeaderLength + tagDataCount
-        
-        let tagData = try tag.buildTag(version: version)
-        fileData.replaceSubrange(tagDataRange, with: tagData)
-        return fileData
-    }
+//    public var tag: Tag {
+//        
+//    }
 }

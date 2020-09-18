@@ -16,30 +16,15 @@ extension String {
         self = String(scalars)
     }
     
-    func encoded(withNullTermination: Bool) -> Data {
-        let encoding = StringEncoding.preferred
-        guard var result = data(using: encoding.standardLibraryEncoding) else {
+    func nullTerminatedData(encoding: String.Encoding) -> Data {
+        guard var result = data(using: encoding) else {
             // This will never happen unless “preferred” is changed to something besides Unicode.
             fatalError("\(encoding) cannot encode “\(self)”.")
         }
-        if withNullTermination == true {
-            let null = Data(repeating: 0x00, count: encoding.sizeOfTermination)
-            result.append(contentsOf: null)
-        }
+        result.append(encoding.nullTerminator)
         return result
     }
-    
-    func encodedASCII(withNullTermination: Bool) -> Data {
-        var data = Data()
-        data.append(contentsOf: self.utf8)
-        if withNullTermination == true {
-            let null = Data(repeating: 0x00, count: StringEncoding.utf8.sizeOfTermination)
-            data.append(contentsOf: null)
-        }
-        // UTF‐8 is a superset of ASCII.
-        return data
-    }
-    
+
     init(withInt int: Int, leadingZeros: Int = 2) {
         self.init(format: "%0\(leadingZeros)d", int)
     }

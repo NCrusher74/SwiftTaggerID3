@@ -12,9 +12,9 @@ import Foundation
 public enum InvolvedPersonCredits: String, CaseIterable {
     case none = ""
     /// A&R
-    case AandR = "A&R"
+    case ar = "A&R"
     /// A&R Assistance
-    case AandRAssistance = "A&R Assistance"
+    case arAssistance = "A&R Assistance"
     /// Abridged By
     case abridgedBy = "Abridged By"
     /// Accessories
