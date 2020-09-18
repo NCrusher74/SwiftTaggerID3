@@ -23,6 +23,7 @@ struct Tag {
     var duration: Int?
     
     /// Instantiate a tag by parsing from MP3 file data
+    @available(OSX 10.12, *)
     init(mp3File: Mp3File) throws {
         // initialize the duration of the MP3 file for use in length and chapter frames
         let asset = AVAsset(url: mp3File.location)

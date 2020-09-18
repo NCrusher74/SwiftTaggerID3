@@ -72,51 +72,29 @@ class DateFrame: Frame {
         data.append(encoding.encodingByte)
         
         if let date = timeStamp {
-            let calendar = Calendar(identifier: .iso8601)
-            let timeZone = TimeZone(secondsFromGMT: 0) ?? .current
-            let components = calendar.dateComponents(in: timeZone, from: date)
             var encodedString = Data()
             if self.identifier == .known(.date) {
-                if let day = components.day {
-                    if let month = components.month {
-                        let dateString = "\(day)\(month)"
-                        encodedString = dateString.encodedISOLatin1
-                    } else {
-                        data = Data()
-                    }
-                } else {
-                    data = Data()
-                }
+                encodedString = date.encodeDDMMTimestamp
             } else if self.identifier == .known(.time) {
-                if let hour = components.hour {
-                    if let minute = components.minute {
-                        let dateString = "\(hour)\(minute)"
-                        encodedString = dateString.encodedISOLatin1
-                    } else {
-                        data = Data()
-                    }
-                } else {
-                    data = Data()
-                }
+                encodedString = date.encodeHHMMTimestamp
             } else if self.identifier == .known(.year) ||
                         (self.identifier == .known(.originalReleaseTime) &&
                             (self.version == .v2_2 || self.version == .v2_3)) {
-                if let year = components.year {
-                    let dateString = String(year)
-                    encodedString = dateString.encodedISOLatin1
-                } else {
-                    data = Data()
-                }
+                encodedString = date.encodeYYYYTimestamp
             } else {
                 let formatter = ISO8601DateFormatter()
                 formatter.formatOptions = [.withInternetDateTime]
-                formatter.timeZone = timeZone
+                formatter.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
                 let dateString = formatter.string(from: date)
                 encodedString = dateString.encodedISOLatin1
             }
             data.append(encodedString)
         }
-        return data
+        if data != encoding.encodingByte {
+            return data
+        } else {
+            return Data()
+        }
     }
     
     // // MARK: - Frame Building
@@ -131,45 +109,19 @@ class DateFrame: Frame {
         self.timeStamp = timeStamp
         let flags = version.defaultFlags
         
-        let calendar = Calendar(identifier: .iso8601)
-        let timeZone = TimeZone(secondsFromGMT: 0) ?? .current
-        let components = calendar.dateComponents(in: timeZone, from: timeStamp)
         var encodedString = Data()
         if identifier == .known(.date) {
-            if let day = components.day {
-                if let month = components.month {
-                    let dateString = "\(day)\(month)"
-                    encodedString = dateString.encodedISOLatin1
-                } else {
-                    encodedString = Data()
-                }
-            } else {
-                encodedString = Data()
-            }
+            encodedString = timeStamp.encodeDDMMTimestamp
         } else if identifier == .known(.time) {
-            if let hour = components.hour {
-                if let minute = components.minute {
-                    let dateString = "\(hour)\(minute)"
-                    encodedString = dateString.encodedISOLatin1
-                } else {
-                    encodedString = Data()
-                }
-            } else {
-                encodedString = Data()
-            }
+            encodedString = timeStamp.encodeHHMMTimestamp
         } else if identifier == .known(.year) ||
                     (identifier == .known(.originalReleaseTime) &&
                         (self.version == .v2_2 || self.version == .v2_3)) {
-            if let year = components.year {
-                let dateString = String(year)
-                encodedString = dateString.encodedISOLatin1
-            } else {
-                encodedString = Data()
-            }
+            encodedString = timeStamp.encodeYYYYTimestamp
         } else {
             let formatter = ISO8601DateFormatter()
             formatter.formatOptions = [.withInternetDateTime]
-            formatter.timeZone = timeZone
+            formatter.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
             let dateString = formatter.string(from: timeStamp)
             encodedString = dateString.encodedISOLatin1
         }

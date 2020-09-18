@@ -96,7 +96,8 @@ enum FrameIdentifier: Hashable {
         }
     }
     
-    func parse(size: Int, flags: Data, payload: Data) throws -> Frame {
+    @available(OSX 10.12, *)
+    func parse(version: Version, size: Int, flags: Data, payload: Data) throws -> Frame {
         switch self.parseAs {
             case .string, .boolean, .integer, .url:
                 return try StringFrame(identifier: self,
@@ -104,7 +105,11 @@ enum FrameIdentifier: Hashable {
                                        flags: flags,
                                        payload: payload)
             case .date:
-                <#code#>
+                return try DateFrame(identifier: self,
+                                     version: version,
+                                     size: size,
+                                     flags: flags,
+                                     payload: payload)
             case .localized:
                 <#code#>
             case .userDefined:

@@ -75,12 +75,16 @@ extension Data.SubSequence {
     }
 
     
+    @available(OSX 10.12, *)
     internal mutating func extractAndParseToFrame(version: Version) throws -> Frame? {
         // extract the identifier data
         let identifier = try self.extractAndDecodeFrameID(version: version)
         let size = self.extractAndCalculateFrameSize(version: version)
         let flags = self.extractFlags(version: version)
         let payload = self.extractFirst(size)
-        return try identifier.parse(size: size, flags: flags, payload: payload)
+        return try identifier.parse(version: version,
+                                    size: size,
+                                    flags: flags,
+                                    payload: payload)
     }
 }
