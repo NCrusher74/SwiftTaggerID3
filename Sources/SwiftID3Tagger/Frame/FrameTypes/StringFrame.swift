@@ -21,6 +21,7 @@ class StringFrame: Frame {
     
     // MARK: - Frame Parsing
     init(identifier: FrameIdentifier,
+         version: Version,
          size: Int,
          flags: Data,
          payload: Data
@@ -37,6 +38,7 @@ class StringFrame: Frame {
             self.stringValue = try data.extractAndDecodeString()
         }
         super.init(identifier: identifier,
+                   version: version,
                    size: size,
                    flags: flags)
     }
@@ -80,6 +82,7 @@ class StringFrame: Frame {
             size = stringValue.encodedISOLatin1.count + 1 // encoding byte
         }
         super.init(identifier: identifier,
+                   version: version,
                    size: size,
                    flags: flags)
     }

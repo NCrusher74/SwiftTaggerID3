@@ -39,4 +39,21 @@ extension Data {
             return ""
         }
     }
+    
+    mutating func extractAndDecodeCreditString() throws -> [String: [String]] {
+        let encoding = try self.extractEncoding()
+        var strings = [String]()
+        while !self.isEmpty {
+            if let next = self.extractNullTerminatedString(encoding) {
+                strings.append(next)
+            }
+        }
+        var pairsDictionary = [ String: [String] ]()
+        let rolePersonPairs = strings.pairs()
+        for pair in rolePersonPairs {
+            let personArray = pair.1?.components(separatedBy: ",")
+            pairsDictionary[pair.0] = personArray
+        }
+        return pairsDictionary
+    }
 }

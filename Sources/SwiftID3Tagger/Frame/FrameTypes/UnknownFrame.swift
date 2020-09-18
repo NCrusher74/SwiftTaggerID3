@@ -14,6 +14,7 @@ class UnknownFrame: Frame {
     var payload: Data
     
     init(identifier: FrameIdentifier,
+         version: Version,
          size: Int,
          flags: Data,
          payload: Data
@@ -21,8 +22,9 @@ class UnknownFrame: Frame {
         self.uuid = UUID()
         self.payload = payload
         super.init(identifier: identifier,
-                       size: size,
-                       flags: flags)
+                   version: version,
+                   size: size,
+                   flags: flags)
     }
     
     override func frameKey(version: Version) throws -> String {

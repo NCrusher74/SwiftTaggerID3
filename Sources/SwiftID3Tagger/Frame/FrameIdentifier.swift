@@ -97,10 +97,14 @@ enum FrameIdentifier: Hashable {
     }
     
     @available(OSX 10.12, *)
-    func parse(version: Version, size: Int, flags: Data, payload: Data) throws -> Frame {
+    func parse(version: Version,
+               size: Int,
+               flags: Data,
+               payload: Data) throws -> Frame {
         switch self.parseAs {
             case .string, .boolean, .integer, .url:
                 return try StringFrame(identifier: self,
+                                       version: version,
                                        size: size,
                                        flags: flags,
                                        payload: payload)
@@ -117,7 +121,11 @@ enum FrameIdentifier: Hashable {
             case .complex:
                 <#code#>
             case .credits:
-                <#code#>
+                return try CreditsListFrame(identifier: self,
+                                            version: version,
+                                            size: size,
+                                            flags: flags,
+                                            payload: payload)
             case .tuple:
                 <#code#>
             case .chapter:
@@ -128,6 +136,7 @@ enum FrameIdentifier: Hashable {
                 <#code#>
             case .unknown:
                 return UnknownFrame(identifier: self,
+                                    version: version,
                                     size: size,
                                     flags: flags,
                                     payload: payload)

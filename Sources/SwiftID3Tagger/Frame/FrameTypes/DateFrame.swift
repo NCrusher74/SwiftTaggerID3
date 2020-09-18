@@ -13,7 +13,6 @@ class DateFrame: Frame {
     // MARK: Frame parsing
     // needs to be in ISO-8601 format
     var timeStamp: Date?
-    var version: Version
     
     // subset of ISO 8601; valid timestamps are yyyy, yyyy-MM, yyyy-MM-dd, yyyy-MM-ddTHH, yyyy-MM-ddTHH:mm and yyyy-MM-ddTHH:mm:ss.
     /// Decode the contents of a date frame being read from a file
@@ -30,7 +29,6 @@ class DateFrame: Frame {
          flags: Data,
          payload: Data
     ) throws {
-        self.version = version
         var data = payload
         let dateString = try data.extractAndDecodeString()
         
@@ -53,6 +51,7 @@ class DateFrame: Frame {
         }
         
         super.init(identifier: identifier,
+                   version: version,
                    size: size,
                    flags: flags)
     }
@@ -125,8 +124,9 @@ class DateFrame: Frame {
             let dateString = formatter.string(from: timeStamp)
             encodedString = dateString.encodedISOLatin1
         }
-        let size = encodedString.count + 1
+        let size = encodedString.count + 1 // encoding byte is the +1
         super.init(identifier: identifier,
+                   version: version,
                    size: size,
                    flags: flags)
     }

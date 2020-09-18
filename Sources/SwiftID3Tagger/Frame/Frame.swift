@@ -9,6 +9,7 @@ import Foundation
 
 class Frame {
     var identifier: FrameIdentifier
+    var version: Version
     var size: Int
     var flags: Data
     
@@ -22,9 +23,11 @@ class Frame {
     }
         
     init(identifier: FrameIdentifier,
+         version: Version,
          size: Int,
          flags: Data) {
         self.identifier = identifier
+        self.version = version
         self.size = size
         self.flags = flags
     }
