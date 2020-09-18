@@ -25,6 +25,16 @@ extension String.Encoding {
         }
     }
     
+    var encodingByte: Data {
+        switch self {
+            case .isoLatin1: return 0.uInt8.beData
+            case .utf16: return 1.uInt8.beData
+            case .utf16BigEndian: return 2.uInt8.beData
+            case .utf8: return 3.uInt8.beData
+            default: return Data()
+        }
+    }
+    
     var nullTerminator: Data {
         switch self {
             case .ascii, .utf8, .isoLatin1: return Data([0x00])

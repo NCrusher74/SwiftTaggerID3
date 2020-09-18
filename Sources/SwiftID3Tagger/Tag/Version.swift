@@ -20,12 +20,23 @@ public enum Version: CaseIterable {
     /// ID3 v2.4
     case v2_4
     
+    init(data: Data) throws {
+        if data == Data([0x49, 0x44, 0x33, 0x02, 0x00]) {
+            self = .v2_2
+        } else if data == Data([0x49, 0x44, 0x33, 0x03, 0x00]) {
+            self = .v2_3
+        } else if data == Data([0x49, 0x44, 0x33, 0x04, 0x00]) {
+            self = .v2_4
+        } else {
+            throw Mp3FileError.UnableToDetermineID3Version
+        }
+    }    
 }
 
 extension Version {
     // MARK: - Frame component sizes.
     /// The known version-dependent byte-count of the ID3 identifier string
-    var identifierLength: Int {
+    var idLength: Int {
         switch self {
             case .v2_2:
                 return 3
@@ -35,7 +46,7 @@ extension Version {
     }
     
     /// The known version-dependent byte-count of the frame size declaration
-    var sizeDeclarationLength: Int {
+    var sizeLength: Int {
         switch self {
             case .v2_2:
                 return 3
@@ -55,29 +66,29 @@ extension Version {
     }
     
     /// The version-dependent size of the frame header, in bytes
-    var frameHeaderLength: Int {
-        return identifierLength + sizeDeclarationLength + flagsLength
+    var headerLength: Int {
+        return idLength + sizeLength + flagsLength
     }
     
     // MARK: - Frame component offsets:
     /// The known byte offset of the frame identifier from start of frame data
-    var identifierOffset: Data.Index {
+    var idOffset: Data.Index {
         return 0
     }
     
     /// The byte offset of the frame size declaration
-    var sizeDeclarationOffset: Data.Index {
-        return identifierOffset  + identifierLength
+    var sizeOffset: Data.Index {
+        return idOffset  + idLength
     }
     
     /// The byte offset of the frame flags
     var flagsOffset: Data.Index {
-        return sizeDeclarationOffset + sizeDeclarationLength
+        return sizeOffset + sizeLength
     }
     
     /// The version-dependent position of the encoding byte
     var encodingByteOffset: Data.Index {
-        return frameHeaderLength
+        return headerLength
     }
     
     // MARK: - Other properties
@@ -85,13 +96,6 @@ extension Version {
         switch self {
             case .v2_2: return Data()
             case .v2_3, .v2_4: return Data([0x00, 0x00])
-        }
-    }
-    
-    func extractFlags(_ data: inout Data.SubSequence) -> Data {
-        switch self {
-            case .v2_2: return Data()
-            case .v2_3, .v2_4: return data.extractFirst(2)
         }
     }
     

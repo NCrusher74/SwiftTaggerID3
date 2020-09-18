@@ -38,6 +38,114 @@ enum FrameIdentifier: Hashable {
                 return identifier
         }
     }
+    
+    func frameKey(additionalID: Any?) throws -> String {
+        switch self {
+            case .known(let known):
+                return try known.frameKey(additionalID: additionalID)
+            case .unknown(let identifier):
+                if let uuid = additionalID as? UUID {
+                    return "\(identifier): \(uuid.uuidString)"
+                } else if let string = additionalID as? String {
+                    return "\(identifier): \(string)"
+                } else {
+                    throw Mp3FileError.UnableToDetermineUniqueFrameID("\(self)")
+                }
+        }
+    }
+    
+    var parseAs: FrameParser {
+        switch self {
+            case .unknown(_): return .unknown
+            case .known(.compilation): return .boolean
+            case .known(.attachedPicture): return .image
+            case .known(.chapter): return .chapter
+            case .known(.tableOfContents): return .tableOfContents
+            case .known(.discNumber),
+                 .known(.trackNumber): return .tuple
+            case .known(.involvedPeopleList),
+                 .known(.musicianCreditsList): return .credits
+            case .known(.comments),
+                 .known(.unsynchronizedLyrics): return .localized
+            case .known(.userDefinedText),
+                 .known(.userDefinedWebpage): return .userDefined
+            case .known(.genre),
+                 .known(.mediaType),
+                 .known(.fileType): return .complex
+            case .known(.bpm),
+                 .known(.length),
+                 .known(.movementCount),
+                 .known(.movementNumber),
+                 .known(.playlistDelay): return .integer
+            case .known(.artistWebpage),
+                 .known(.audioFileWebpage),
+                 .known(.audioSourceWebpage),
+                 .known(.copyrightWebpage),
+                 .known(.paymentWebpage),
+                 .known(.publisherWebpage),
+                 .known(.radioStationWebpage): return .url
+            case .known(.date),
+                 .known(.encodingTime),
+                 .known(.originalReleaseTime),
+                 .known(.recordingDate),
+                 .known(.releaseTime),
+                 .known(.taggingTime),
+                 .known(.time),
+                 .known(.year): return .date
+            default: return .string
+        }
+    }
+    
+    func parse(size: Int, flags: Data, payload: Data) throws -> Frame {
+        switch self.parseAs {
+            case .string, .boolean, .integer, .url:
+                return try StringFrame(identifier: self,
+                                       size: size,
+                                       flags: flags,
+                                       payload: payload)
+            case .date:
+                <#code#>
+            case .localized:
+                <#code#>
+            case .userDefined:
+                <#code#>
+            case .complex:
+                <#code#>
+            case .credits:
+                <#code#>
+            case .tuple:
+                <#code#>
+            case .chapter:
+                <#code#>
+            case .tableOfContents:
+                <#code#>
+            case .image:
+                <#code#>
+            case .unknown:
+                return UnknownFrame(identifier: self,
+                                    size: size,
+                                    flags: flags,
+                                    payload: payload)
+        }
+    }
+}
+
+enum FrameParser {
+    /// A parser type that handles frames with string data. This includes frames with integer and boolean data, as those are stored as numeric strings
+    case string
+    case url
+    case boolean
+    case integer
+    case date
+    case localized
+    case userDefined
+    case complex
+    case credits
+    case tuple
+    case chapter
+    case tableOfContents
+    case image
+    case unknown
 }
 
 /** An enumeration of ID3 standard--or iTunes compliant but non-standard--frames*/
@@ -141,7 +249,7 @@ enum KnownIdentifier: CaseIterable {
         return version.idString(self)
     }
     
-    func frameKey(additionalID: Any?) throws -> String? {
+    func frameKey(additionalID: Any?) throws -> String {
         switch self {
             case .album: return "Album"
             case .albumSort: return "Album Sort"

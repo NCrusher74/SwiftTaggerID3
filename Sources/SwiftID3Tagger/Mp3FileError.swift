@@ -10,6 +10,8 @@ import Foundation
 enum Mp3FileError: Error {
     case InvalidFileFormat
     case UnableToReadFileData
+    case InvalidVersionData
+    case UnableToDetermineID3Version
     case InvalidStringEncodingByte
     case UnableToDetermineUniqueFrameID(String)
 }
