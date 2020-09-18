@@ -145,7 +145,11 @@ enum FrameIdentifier: Hashable {
                                         flags: flags,
                                         payload: payload)
             case .tableOfContents:
-                <#code#>
+                return try TableOfContentsFrame(identifier: self,
+                                                version: version,
+                                                size: size,
+                                                flags: flags,
+                                                payload: payload)
             case .image:
                 <#code#>
             case .unknown:
@@ -277,7 +281,7 @@ enum KnownIdentifier: CaseIterable {
         return version.idString(self)
     }
     
-    func frameKey(additionalID: Any?) throws -> String {
+    var rawValue: String {
         switch self {
             case .album: return "album"
             case .albumSort: return "albumSort"
@@ -287,33 +291,12 @@ enum KnownIdentifier: CaseIterable {
             case .artist: return "artist"
             case .artistSort: return "artistSort"
             case .artistWebpage: return "artistWebpage"
-            case .attachedPicture:
-                if let uInt8 = additionalID as? UInt8 {
-                    if let type = ImageType(rawValue: uInt8) {
-                        return "attachedPicture: \(type.pictureDescription)"
-                    } else {
-                        throw Mp3FileError.UnableToDetermineUniqueFrameID("\(self)")
-                    }
-                } else if let string = additionalID as? String {
-                    return "attachedPicture: \(string)"
-                } else {
-                    return "attachedPicture"
-                }
+            case .attachedPicture: return "attachedPicture"
             case .audioFileWebpage: return "audioFileWebpage"
             case .audioSourceWebpage: return "audioSourceWebpage"
             case .bpm: return "bpm"
-            case .chapter:
-                if let elementID = additionalID as? String {
-                    return "chapter: \(elementID)"
-                } else {
-                    return "chapter"
-                }
-            case .comments:
-                if let description = additionalID as? String {
-                    return "comments: \(description)"
-                } else {
-                    return "comments"
-                }
+            case .chapter: return "chapter"
+            case .comments: return "comments"
             case .compilation: return "compilation"
             case .composer: return "composer"
             case .composerSort: return "composerSort"
@@ -364,36 +347,64 @@ enum KnownIdentifier: CaseIterable {
             case .releaseTime: return "releaseTime"
             case .setSubtitle: return "setSubtitle"
             case .subtitle: return "subtitle"
-            case .tableOfContents:
-                if let elementID = additionalID as? String {
-                    return "tableOfContents: \(elementID)"
-                } else {
-                    return "tableOfContents"
-                }
+            case .tableOfContents: return "tableOfContents"
             case .taggingTime: return "taggingTime"
             case .time: return "time"
             case .title: return "title"
             case .titleSort: return "titleSort"
             case .trackNumber: return "trackNumber"
-            case .unsynchronizedLyrics:
-                if let description = additionalID as? String {
-                    return "unsynchronizedLyrics: \(description)"
+            case .unsynchronizedLyrics: return "unsynchronizedLyrics"
+            case .userDefinedText: return "userDefinedText"
+            case .userDefinedWebpage: return "userDefinedWebpage"
+            case .year: return "year"
+        }
+    }
+
+    func frameKey(additionalID: Any?) throws -> String {
+        switch self {
+            case .attachedPicture:
+                if let uInt8 = additionalID as? UInt8 {
+                    if let type = ImageType(rawValue: uInt8) {
+                        return "attachedPicture: \(type.pictureDescription)"
+                    } else {
+                        throw Mp3FileError.UnableToDetermineUniqueFrameID("\(self)")
+                    }
+                } else if let description = additionalID as? String {
+                    return "attachedPicture: \(description)"
                 } else {
-                    return "unsynchronizedLyrics"
+                    return "attachedPicture"
                 }
+            case .chapter:
+                if let elementID = additionalID as? String {
+                    return self.rawValue + "\(elementID)"
+                } else {
+                    return self.rawValue
+                }
+            case .comments:
+                if let description = additionalID as? String {
+                    return self.rawValue + "\(description)"
+                } else {
+                    return self.rawValue
+                }
+            case .unsynchronizedLyrics:
+                    if let description = additionalID as? String {
+                        return self.rawValue + "\(description)"
+                    } else {
+                        return self.rawValue
+                    }
             case .userDefinedText:
                 if let description = additionalID as? String {
-                    return "userDefinedText: \(description)"
+                    return self.rawValue + "\(description)"
                 } else {
-                    return "userDefinedText"
+                    return self.rawValue
                 }
             case .userDefinedWebpage:
                 if let description = additionalID as? String {
-                    return "userDefinedWebpage: \(description)"
+                    return self.rawValue + "\(description)"
                 } else {
-                    return "userDefinedWebpage"
+                    return self.rawValue
                 }
-            case .year: return "year"
+            default: return self.rawValue
         }
     }
     

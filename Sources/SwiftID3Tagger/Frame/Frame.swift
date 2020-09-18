@@ -37,7 +37,6 @@ class Frame {
         if self.identifier == .known(.attachedPicture) ||
             self.identifier == .known(.chapter) ||
             self.identifier == .known(.comments) ||
-            self.identifier == .known(.tableOfContents) ||
             self.identifier == .known(.unsynchronizedLyrics) ||
             self.identifier == .known(.userDefinedText) ||
             self.identifier == .known(.userDefinedWebpage) {
