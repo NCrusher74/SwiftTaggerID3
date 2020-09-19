@@ -5,6 +5,33 @@
 //  Created by Nolaine Crusher on 9/18/20.
 //
 
+/*
+/////  v2.2 and 2.3 /////
+ Since there might be a lot of people contributing to an audio file in
+ various ways, such as musicians and technicians, the 'Text
+ information frames' are often insufficient to list everyone involved
+ in a project. The 'Involved people list' is a frame containing the
+ names of those involved, and how they were involved. The body simply
+ contains a terminated string with the involvement directly followed by
+ a terminated string with the involvee followed by a new involvement
+ and so on. There may only be one "IPL" frame in each tag.
+ 
+ Involved people list   "IPL"
+ Frame size             $xx xx xx
+ Text encoding          $xx
+ People list strings    <textstrings>
+
+ v2.4:
+ TMCL
+ The 'Musician credits list' is intended as a mapping between
+ instruments and the musician that played it. Every odd field is an
+ instrument and every even is an artist or a comma delimited list of
+ artists.
+ 
+ TIPL
+ The 'Involved people list' is very similar to the musician credits
+ list, but maps between functions, like producer, and names.
+ */
 import Foundation
 
 /**

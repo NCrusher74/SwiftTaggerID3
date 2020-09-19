@@ -100,4 +100,6 @@ enum FrameError: Error {
     case UnableToDecodeStringData
     case InvalidDateString
     case InvalidIdentifierString(String)
+    case UnhandledImageFormat
+    case InvalidImageData
 }

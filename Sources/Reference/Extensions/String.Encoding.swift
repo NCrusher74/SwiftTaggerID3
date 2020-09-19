@@ -36,9 +36,9 @@ extension String.Encoding {
     }
     
     var nullTerminator: Data {
-        switch self {
-            case .ascii, .utf8, .isoLatin1: return Data([0x00])
-            case .utf16, .utf16BigEndian: return Data(repeating: 0x00, count: 2)
+        switch self.terminationCount {
+            case 1: return Data([0x00])
+            case 2: return Data(repeating: 0x00, count: 2)
             default: fatalError("Null terminator not set for string type")
         }
     }

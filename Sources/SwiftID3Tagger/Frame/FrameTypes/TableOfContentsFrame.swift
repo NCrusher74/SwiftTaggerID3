@@ -59,6 +59,10 @@ class TableOfContentsFrame: Frame {
             }
             self.embeddedSubframesTag = try Tag(subframes: subframes)
         }
+        super.init(identifier: identifier,
+                   version: version,
+                   size: size,
+                   flags: flags)
     }
     
     @available(OSX 10.12, *)

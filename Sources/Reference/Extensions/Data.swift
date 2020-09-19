@@ -13,7 +13,7 @@ extension Data {
     }
     
     /// Interpret the most common "quasi-boolean" strings as boolean values
-    /// - Parameter boolString: The string parsed from the frame's contents
+    /// - Parameter encoding: The `String.Encoding` type parsed out of the frame content previously
     /// - Returns: 1 or 0, if a value can be determined
     mutating func extractAndDecodeStringFromBoolean(encoding: String.Encoding) throws -> String {
         if let string = self.extractNullTerminatedString(encoding) {
@@ -57,9 +57,9 @@ extension Data {
     /// Extracts and decodes description and content strings for frame types that use them.
     /// - Parameters:
     ///   - frameData: The frame's data beginning at the description string
-    ///   - encoding: The `StringEncoding` instance parsed out of the frame content previously
+    ///   - encoding: The `String.Encoding` type parsed out of the frame content previously
     /// - Returns: The frame's description and content strings
-    /// this is used for frames with a terminated description string followed by a content string
+    /// this is used for ID3 frames with a terminated description string followed by a content string
     mutating func extractDescriptionAndContent(encoding: String.Encoding) -> (description: String?, content: String) {
         let description = self.extractNullTerminatedString(encoding)
         let content = self.extractNullTerminatedString(encoding) ?? ""

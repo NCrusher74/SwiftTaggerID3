@@ -151,7 +151,11 @@ enum FrameIdentifier: Hashable {
                                                 flags: flags,
                                                 payload: payload)
             case .image:
-                <#code#>
+                return try ImageFrame(identifier: self,
+                                      version: version,
+                                      size: size,
+                                      flags: flags,
+                                      payload: payload)
             case .unknown:
                 return UnknownFrame(identifier: self,
                                     version: version,
