@@ -40,8 +40,8 @@ class ChapterFrame: Frame {
     
     var embeddedSubframesTag: Tag?
     
-    override func frameKey() throws -> String {
-        return try self.identifier.frameKey(additionalID: self.elementID)
+    override var frameKey: String {
+        return self.identifier.frameKey(self.startTime)
     }
     
     // MARK: - Frame Parsing
@@ -69,10 +69,10 @@ class ChapterFrame: Frame {
             let subframeIdData = data.extractFirst(version.idLength)
             guard subframeIdData.first != 0x00  else { break }
             if let subframe = try data.extractAndParseToFrame(version) {
-                let subframeKey = try subframe.frameKey()
+                let subframeKey = subframe.frameKey
                 subframes[subframeKey] = subframe
             }
-            self.embeddedSubframesTag = try Tag(subframes: subframes)
+            self.embeddedSubframesTag = try Tag(version: version, subframes: subframes)
         }
         super.init(identifier: identifier,
                    version: version,

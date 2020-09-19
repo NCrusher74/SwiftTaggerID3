@@ -14,6 +14,19 @@ let testMediaDirectory = URL(fileURLWithPath: #file)
     .deletingLastPathComponent()
     .appendingPathComponent("TestMedia")
 
+let sample24Url = testMediaDirectory
+    .appendingPathComponent("mp3-v24-with-meta")
+    .appendingPathExtension("mp3")
+
+let sample23Url = testMediaDirectory
+    .appendingPathComponent("mp3-v23-with-meta")
+    .appendingPathExtension("mp3")
+
+let sample22Url = testMediaDirectory
+    .appendingPathComponent("mp3-v22-with-meta")
+    .appendingPathExtension("mp3")
+
+
 func tempDirectory() throws -> URL {
     let tempDirectory = FileManager.default.temporaryDirectory
         .appendingPathComponent("SwiftTaggerTemp",

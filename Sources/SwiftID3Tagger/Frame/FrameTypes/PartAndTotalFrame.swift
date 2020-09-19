@@ -5,6 +5,22 @@
 //  Created by Nolaine Crusher on 9/18/20.
 //
 
+/*
+ TRCK
+ The 'Track number/Position in set' frame is a numeric string
+ containing the order number of the audio-file on its original
+ recording. This MAY be extended with a "/" character and a numeric
+ string containing the total number of tracks/elements on the original
+ recording. E.g. "4/9".
+ 
+ TPOS
+ The 'Part of a set' frame is a numeric string that describes which
+ part of a set the audio came from. This frame is used if the source
+ described in the "TALB" frame is divided into several mediums, e.g. a
+ double CD. The value MAY be extended with a "/" character and a
+ numeric string containing the total number of parts in the set. E.g.
+ "1/2".
+ */
 import Foundation
 class PartAndTotalFrame: Frame {
     /// The index of the track or disc in the set

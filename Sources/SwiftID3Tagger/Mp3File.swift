@@ -6,13 +6,14 @@
 //
 
 import Foundation
-
+import AVFoundation
 /// An Mp3File represets an mp3-format file on the local drive
 /// This wrapper houses variables and methods for querying and modifying an Mp3File
 public struct Mp3File {
     
     /// The location of an mp3-format file somewhere on the local drive
     let location: URL
+    let duration: Int
     /// The Mp3File as data
     public var data: Data
     
@@ -36,9 +37,16 @@ public struct Mp3File {
                 throw Mp3FileError.UnableToReadFileData
             }
         }
+        // initialize the duration of the MP3 file for use in length and chapter frames
+        let asset = AVAsset(url: location)
+        let seconds = asset.duration.seconds
+        self.duration = Int(seconds * 1000)
     }
     
-//    public var tag: Tag {
-//        
-//    }
+    @available(OSX 10.12, *)
+    public func tag() throws -> Tag {
+        return try Tag(mp3File: self)
+    }
+    
+    
 }

@@ -6,10 +6,9 @@
 //
 
 import Foundation
-import AVFoundation
 import Cocoa
 
-struct Tag {
+public struct Tag {
     /*
      The first part of the ID3v2 tag is the 10 byte tag header, laid out
      as follows:
@@ -19,17 +18,14 @@ struct Tag {
      ID3v2 flags                %abcd0000 -- 1 byte (Uint32) (for our purposes, this is always `0x00`)
      ID3v2 size             4 * %0xxxxxxx -- 4 bytes (Synchsafe Uint32)
      */
-    var frames: [String: Frame]
-    var duration: Int?
+    public var frames: [String: Frame]
+    var version: Version
+    static var duration: Int = 0
     
     /// Instantiate a tag by parsing from MP3 file data
     @available(OSX 10.12, *)
-    init(mp3File: Mp3File) throws {
-        // initialize the duration of the MP3 file for use in length and chapter frames
-        let asset = AVAsset(url: mp3File.location)
-        let seconds = asset.duration.seconds
-        self.duration = Int(seconds * 1000)
-
+    public init(mp3File: Mp3File) throws {
+        Tag.duration = mp3File.duration
         // get the file data as a subsequence. As the data is parsed when reading a tag, it will be extracted from the subsequence, leaving the remainder instact to continue parsing
         var remainder: Data.SubSequence = mp3File.data[
             mp3File.data.startIndex ..< mp3File.data.endIndex]
@@ -41,7 +37,7 @@ struct Tag {
         guard versionData.count == 5 else {
             throw Mp3FileError.InvalidVersionData
         }
-        let version = try Version(data: versionData)
+        self.version = try Version(data: versionData)
         
         // parse the flag byte from the tag header
         // this data is not generally used, and SwiftTagger does not support modifying it
@@ -67,7 +63,7 @@ struct Tag {
             // pass the frames data over to `Data.Subsequence` exension for parsing
             if let frame = try remainder.extractAndParseToFrame(version) {
                 // get the frame key
-                let frameKey = try frame.frameKey()
+                let frameKey = frame.frameKey
                 // add frame to dictionary
                 frames[frameKey] = frame
             }
@@ -76,12 +72,14 @@ struct Tag {
     }
 
     /// Instantiate a "pseudo-tag" for use with chapter and table-of-contents embedded frame sub-frames
-    init(subframes: [String: Frame]) throws {
+    init(version: Version, subframes: [String: Frame]) throws {
+        self.version = version
         self.frames = subframes
     }
     
     /// Instantiate an empty tag
-    public init() {
+    public init(version: Version) {
+        self.version = version
         self.frames = [:]
     }
     

@@ -17,7 +17,7 @@ import Foundation
  Size       $xx xx xx xx
  Flags      $xx xx
  */
-class Frame {
+public class Frame {
     var identifier: FrameIdentifier
     var version: Version
     var size: Int
@@ -33,7 +33,7 @@ class Frame {
         self.flags = flags
     }
 
-    func frameKey() throws -> String {
+    var frameKey: String {
         if self.identifier == .known(.attachedPicture) ||
             self.identifier == .known(.chapter) ||
             self.identifier == .known(.comments) ||
@@ -42,7 +42,7 @@ class Frame {
             self.identifier == .known(.userDefinedWebpage) {
             fatalError("Override from frame subclass is required")
         } else {
-            return try self.identifier.frameKey(additionalID: nil)
+            return self.identifier.frameKey(nil)
         }
     }
 

@@ -39,17 +39,17 @@ enum FrameIdentifier: Hashable {
         }
     }
     
-    func frameKey(additionalID: Any?) throws -> String {
+    func frameKey(_ additionalID: Any?) -> String {
         switch self {
             case .known(let known):
-                return try known.frameKey(additionalID: additionalID)
+                return known.frameKey(additionalID)
             case .unknown(let identifier):
                 if let uuid = additionalID as? UUID {
                     return "\(identifier): \(uuid.uuidString)"
                 } else if let string = additionalID as? String {
                     return "\(identifier): \(string)"
                 } else {
-                    throw Mp3FileError.UnableToDetermineUniqueFrameID("\(self)")
+                    fatalError("Unable to determine unique ID for unhandled frame type")
                 }
         }
     }
@@ -285,7 +285,7 @@ enum KnownIdentifier: CaseIterable {
         return version.idString(self)
     }
     
-    var rawValue: String {
+    private var rawValue: String {
         switch self {
             case .album: return "album"
             case .albumSort: return "albumSort"
@@ -364,47 +364,46 @@ enum KnownIdentifier: CaseIterable {
         }
     }
 
-    func frameKey(additionalID: Any?) throws -> String {
+    func frameKey(_ additionalID: Any?) -> String {
         switch self {
             case .attachedPicture:
                 if let uInt8 = additionalID as? UInt8 {
                     if let type = ImageType(rawValue: uInt8) {
-                        return "attachedPicture: \(type.pictureDescription)"
+                        return self.rawValue + ": \(type.pictureDescription)"
                     } else {
-                        throw Mp3FileError.UnableToDetermineUniqueFrameID("\(self)")
-                    }
+                        fatalError("Unable to determine unique frame ID for image frame")                    }
                 } else if let description = additionalID as? String {
-                    return "attachedPicture: \(description)"
+                    return self.rawValue + ": \(description)"
                 } else {
-                    return "attachedPicture"
+                    return self.rawValue
                 }
             case .chapter:
-                if let elementID = additionalID as? String {
-                    return self.rawValue + "\(elementID)"
+                if let startTime = additionalID as? Int {
+                    return self.rawValue + ": @ \(startTime)"
                 } else {
                     return self.rawValue
                 }
             case .comments:
                 if let description = additionalID as? String {
-                    return self.rawValue + "\(description)"
+                    return self.rawValue + ": \(description)"
                 } else {
                     return self.rawValue
                 }
             case .unsynchronizedLyrics:
                     if let description = additionalID as? String {
-                        return self.rawValue + "\(description)"
+                        return self.rawValue + ": \(description)"
                     } else {
                         return self.rawValue
                     }
             case .userDefinedText:
                 if let description = additionalID as? String {
-                    return self.rawValue + "\(description)"
+                    return self.rawValue + ": \(description)"
                 } else {
                     return self.rawValue
                 }
             case .userDefinedWebpage:
                 if let description = additionalID as? String {
-                    return self.rawValue + "\(description)"
+                    return self.rawValue + ": \(description)"
                 } else {
                     return self.rawValue
                 }

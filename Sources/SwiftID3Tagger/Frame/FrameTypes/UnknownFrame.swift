@@ -27,8 +27,8 @@ class UnknownFrame: Frame {
                    flags: flags)
     }
     
-    override func frameKey() throws -> String {
-        return try self.identifier.frameKey(additionalID: self.uuid)
+    override var frameKey: String {
+        return self.identifier.frameKey(self.uuid)
     }
     
     override var contentData: Data {
