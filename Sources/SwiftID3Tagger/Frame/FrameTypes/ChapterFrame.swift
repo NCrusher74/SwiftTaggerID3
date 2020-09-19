@@ -149,7 +149,45 @@ class ChapterFrame: Frame {
                    size: size,
                    flags: flags)
     }
+    
     init?() {
         return nil
+    }
+}
+
+extension Tag {
+    var chapters: [ChapterFrame] {
+        var array = [ChapterFrame]()
+        for item in self.frames {
+            if item.key.contains("chapter") {
+                if let frame = item.value as? ChapterFrame {
+                    array.append(frame)
+                }
+            }
+        }
+        let sortedArray = array.sorted(by: {$0.startTime < $1.startTime})
+        return sortedArray
+    }
+    
+    mutating func removeChapterFrame(startTime: Int) {
+        let identifier = FrameIdentifier.known(.chapter)
+        let frameKey = identifier.frameKey(startTime)
+        self.frames[frameKey] = nil
+    }
+
+    mutating func addChapterFrame(startTime: Int, title: String) throws {
+        let identifier = FrameIdentifier.known(.chapter)
+        let frameKey = identifier.frameKey(startTime)
+        removeChapterFrame(startTime: startTime)
+        
+        let titleSubframe = StringFrame(.known(.title),
+                                        version: self.version,
+                                        stringValue: title)
+        let subframes = try Tag(version: self.version,
+                                subframes: ["title" : titleSubframe])
+        
+        if self.chapters.contains(where: {$0.startTime > startTime}) {
+            
+        }
     }
 }
