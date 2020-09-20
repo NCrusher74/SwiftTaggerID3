@@ -42,10 +42,8 @@ import Cocoa
 ///  A type representing an ID3 frame that contains an attached image
 class ImageFrame: Frame {
     
-    /// The frame's image contents as data.
-    ///
-    /// Keeping it as data instead of converting it to NSImage enables us to preserve the format data and so forth, and makes it more portable. It can be exported as an NSImage instance when and if appropriate, or simply written to file as-is.
-    var imageData: Data
+    /// The frame's image contents
+    var image: NSImage?
     var imageType: ImageType
     var imageFormat: ImageFormat
     var description: String?
@@ -112,8 +110,8 @@ class ImageFrame: Frame {
                 throw FrameError.UnhandledImageFormat
             }
         }
-        if NSImage(data: data) != nil {
-            self.imageData = data
+        if let image = NSImage(data: data) {
+            self.image = image
         } else {
             throw FrameError.InvalidImageData
         }
@@ -166,7 +164,15 @@ class ImageFrame: Frame {
             data.append(self.imageType.pictureDescription.encodeNullTerminatedString(.isoLatin1))
         }
         // append image data
-        data.append(self.imageData)
+        if self.imageFormat == .jpg {
+            if let image = self.image {
+                data.append(image.jpgData)
+            }
+        } else {
+            if let image = self.image {
+                data.append(image.pngData)
+            }
+        }
         return data
     }
     
@@ -178,42 +184,30 @@ class ImageFrame: Frame {
     init(_ identifier: FrameIdentifier,
          version: Version,
          imageType: ImageType,
+         imageFormat: ImageFormat,
          description: String?,
          imageData: Data) throws {
         self.imageType = imageType
+        self.imageFormat = imageFormat
         self.description = description
-        self.imageData = imageData
+        self.image = NSImage(data: imageData)
 
-        var format: ImageFormat = .jpg
-        let range = imageData.startIndex ..< imageData.index(imageData.startIndex, offsetBy: 4)
-        let firstFourBytes = imageData.subdata(in: range)
-        let jpegMagicNumber: Data = Data([0xff, 0xd8, 0xff, 0xe0])
-        let pngMagicNumber: Data = Data([0x89, 0x50, 0x4e, 0x47])
-        if firstFourBytes == jpegMagicNumber {
-            format = .jpg
-        } else if firstFourBytes == pngMagicNumber {
-            format = .png
-        } else {
-            throw FrameError.UnhandledImageFormat
-        }
-        self.imageFormat = format
-        
         var size = 2 // +1 for encoding byte, +1 for pictureTypeByte
         var formatString = String()
         let encoding = String.Encoding.isoLatin1
         switch version {
             case .v2_2:
-                if format == .jpg {
+                if imageFormat == .jpg {
                     formatString = "jpg"
-                } else if format == .png {
+                } else if imageFormat == .png {
                     formatString = "png"
                 }
                 size += formatString.encodedISOLatin1.count
             case .v2_3, .v2_4:
                 /// These versions require a MIME-type string
-                if format == .jpg {
+                if imageFormat == .jpg {
                     formatString = "image/jpeg"
-                } else if format == .png {
+                } else if imageFormat == .png {
                     formatString = "image/png"
                 }
                 size += formatString.encodeNullTerminatedString(encoding).count
@@ -233,5 +227,73 @@ class ImageFrame: Frame {
                    version: version,
                    size: size,
                    flags: flags)
+    }
+}
+
+extension Tag {
+    public subscript(attachedPicture type: ImageType) -> NSImage? {
+        let identifier = FrameIdentifier.known(.attachedPicture)
+        let frameKey = identifier.frameKey(type.rawValue)
+        if let frame = self.frames[frameKey] as? ImageFrame {
+            if let image = frame.image {
+                return image
+            } else {
+                return nil
+            }
+        } else {
+            return nil
+        }
+    }
+
+    public subscript(attachedPicture description: String) -> NSImage? {
+        let identifier = FrameIdentifier.known(.attachedPicture)
+        let frameKey = identifier.frameKey(description)
+        if let frame = self.frames[frameKey] as? ImageFrame {
+            if let image = frame.image {
+                return image
+            } else {
+                return nil
+            }
+        } else {
+            return nil
+        }
+    }
+
+    mutating public func set(attachedPicture type: ImageType,
+                             imageLocation: URL,
+                             description: String?) throws {
+        let identifier = FrameIdentifier.known(.attachedPicture)
+        let frameKey = identifier.frameKey(type.rawValue)
+        let data = try Data(contentsOf: imageLocation)
+        
+        var format: ImageFormat = .jpg
+        let range = data.startIndex ..< data.index(data.startIndex, offsetBy: 4)
+        // magic numbers are more reliable than extension
+        let firstFourBytes = data.subdata(in: range)
+        let jpegMagicNumber: Data = Data([0xff, 0xd8, 0xff, 0xe0])
+        let pngMagicNumber: Data = Data([0x89, 0x50, 0x4e, 0x47])
+        if firstFourBytes == jpegMagicNumber {
+            format = .jpg
+        } else if firstFourBytes == pngMagicNumber {
+            format = .png
+        } else {
+            throw FrameError.UnhandledImageFormat
+        }
+
+        let description = description ?? type.pictureDescription
+        
+        let frame = try ImageFrame(identifier,
+                                   version: self.version,
+                                   imageType: type,
+                                   imageFormat: format,
+                                   description: description,
+                                   imageData: data)
+        self.frames[frameKey] = frame
+    }
+    
+    mutating public func removeImage(type: ImageType) {
+        let identifier = FrameIdentifier.known(.attachedPicture)
+        let frameKey = identifier.frameKey(type.rawValue)
+        self.frames[frameKey] = nil
     }
 }
