@@ -95,3 +95,76 @@ class PartAndTotalFrame: Frame {
         return data
     }
 }
+
+// MARK: - Internal Tag extension
+/* get and set functions for `PartOfTotalFrame` frame types. Each individual frame of this type will have its own get-set property that will call these fucntions */
+extension Tag {
+    /// add the frame contents to an ID3 `Tag`
+    /// - Parameters:
+    ///   - layout: the frame's layout identifer
+    ///   - frameKey: the frame's unique identifier, used to ensure frame uniqueness
+    ///   - part: the position of a track or disc within a set
+    ///   - total: the total number of tracks or discs in the set
+    internal mutating func set(partTotalFrame identifier: FrameIdentifier,
+                               part: Int,
+                               total: Int?) {
+        let frameKey = identifier.frameKey(nil)
+        // call the frame building initializer
+        let frame = PartAndTotalFrame(identifier,
+                                      version: self.version,
+                                      part: part,
+                                      total: total)
+        self.frames[frameKey] = frame
+    }
+    
+    
+    /// DiscNumber(/TotalDiscs) getter-setter. ID3 Identifier: `TPA`/`TPOS`
+    public var discNumber: (disc: Int, totalDiscs: Int?) {
+        get {
+            let identifier = FrameIdentifier.known(.discNumber)
+            let frameKey = identifier.frameKey(nil)
+            var tuple: (disc: Int, totalDiscs: Int?) = (0, nil)
+            if let frame = self.frames[frameKey] as? PartAndTotalFrame {
+                tuple.disc = frame.part
+                tuple.totalDiscs = frame.total
+            }
+            return tuple
+        }
+        set {
+            let identifier = FrameIdentifier.known(.discNumber)
+            let frameKey = identifier.frameKey(nil)
+            if newValue != (0, nil) {
+                set(partTotalFrame: identifier,
+                    part: newValue.disc,
+                    total: newValue.totalDiscs)
+            } else {
+                self.frames[frameKey] = nil
+            }
+        }
+    }
+    
+    /// TrackNumber(/TotalTracks) getter-setter. ID3 Identifier: `TRK`/`TRCK`
+    public var trackNumber: (track: Int, totalTracks: Int?) {
+        get {
+            let identifier = FrameIdentifier.known(.trackNumber)
+            let frameKey = identifier.frameKey(nil)
+            var tuple: (track: Int, totalTracks: Int?) = (0, nil)
+            if let frame = self.frames[frameKey] as? PartAndTotalFrame {
+                tuple.track = frame.part
+                tuple.totalTracks = frame.total
+            }
+            return tuple
+        }
+        set {
+            let identifier = FrameIdentifier.known(.trackNumber)
+            let frameKey = identifier.frameKey(nil)
+            if newValue != (0, nil) {
+                set(partTotalFrame: identifier,
+                    part: newValue.track,
+                    total: newValue.totalTracks)
+            } else {
+                self.frames[frameKey] = nil
+            }
+        }
+    }
+}

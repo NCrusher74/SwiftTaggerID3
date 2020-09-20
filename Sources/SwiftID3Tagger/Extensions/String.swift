@@ -110,13 +110,13 @@ extension String {
             // for any component except the first one, if it's empty, it means we removed a double-paren
             if index != 0 && value == "" {
                 // find the previous and next components and make a range of them
-                let previousIndex = index - 1
-                let nextIndex = index + 1
-                let rangeToReplace = previousIndex...nextIndex
+                let previous = stringComponents.index(before: index)
+                let next = stringComponents.index(after: index)
+                let rangeToReplace = previous...next
                 // replace the open paren because it's a double-paren situation
-                stringComponents[nextIndex].insert("(", at: stringComponents[nextIndex].startIndex)
+                stringComponents[next].insert("(", at: stringComponents[next].startIndex)
                 // join the previous and next components
-                let componentsToJoin = [stringComponents[previousIndex], stringComponents[nextIndex]]
+                let componentsToJoin = [stringComponents[previous], stringComponents[next]]
                 let joinedComponents = [componentsToJoin.joined()]
                 // replace the separate components with the joined components
                 stringComponents.replaceSubrange(rangeToReplace, with: joinedComponents)

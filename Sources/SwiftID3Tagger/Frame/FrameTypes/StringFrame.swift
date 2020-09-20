@@ -112,7 +112,7 @@ extension Tag {
     /// Instantiates parsing operation to retrieve a frame's contents from a `Tag`
     /// Parameter frameKey: The unique identifier of the frame
     /// Returns: The frame's contents as a human-readable, unterminated string
-    internal func get(_ identifier: FrameIdentifier) -> String? {
+    func get(_ identifier: FrameIdentifier) -> String? {
         // check that the frame is a String Frame
         if let frame = self.frames[identifier.frameKey(nil)] as? StringFrame {
             // get the contentString from the frame data
@@ -127,7 +127,7 @@ extension Tag {
     ///   layout: The frame's layout identifier, necessary to initialize the frame
     ///   frameKey: The frame's unique identifier
     ///   string: The string content input by the user
-    internal mutating func set(_ identifier: FrameIdentifier,
+    mutating func set(_ identifier: FrameIdentifier,
                                stringValue: String?) {
         let frameKey = identifier.frameKey(nil)
         if let stringValue = stringValue {

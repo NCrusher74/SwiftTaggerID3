@@ -108,7 +108,7 @@ extension Array where Element == String {
                     } else if genreType == .Cover {
                         newArray.append("(CR)")
                     } else {
-                        newArray.append("(\(genreType.code))")
+                        newArray.append(String(genreType.code))
                     }
                 } else {
                     // otherwise just append the string to the array

@@ -167,3 +167,191 @@ class LocalizedFrame: Frame {
         return data
     }
 }
+
+// MARK: - Tag extension
+// get and set functions for `LocalizedFrame` frame types, which retrieves or sets up to three strings, one of which may be a language code, and one of which is an optional description string. Each individual frame of this type will call these functions in a get-set property or function, where appropriate.
+extension Tag {
+    private func get(localizedFrame identifier: FrameIdentifier,
+                     language: ISO6392Code?,
+                     description: String?) -> String? {
+        let frameKey = identifier.frameKey(description)
+        if frameKey == FrameIdentifier.known(.unsynchronizedLyrics).frameKey(description) {
+            if let frame = self.frames[frameKey] as? LocalizedFrame {
+                return frame.stringValue
+            } else {
+                return nil
+            }
+        } else if frameKey == FrameIdentifier.known(.comments).frameKey(description) {
+            if let frame = self.frames[frameKey] as? LocalizedFrame {
+                return frame.stringValue
+            } else {
+                return nil
+            }
+        } else {
+            return nil
+        }
+    }
+    
+    private func get(userDefinedFrame identifier: FrameIdentifier,
+                     description: String?) -> String? {
+        let frameKey = identifier.frameKey(description)
+        // check that the frame is a UserDefinedWebpage frame or a UserText frame
+        if frameKey == FrameIdentifier.known(.userDefinedWebpage).frameKey(description) {
+            if let frame = self.frames[frameKey] as? LocalizedFrame {
+                // return the content string of a specific frame by searching using the description string
+                return frame.stringValue
+            } else {
+                return nil
+            }
+        } else if frameKey == FrameIdentifier.known(.userDefinedText).frameKey(description) {
+            if let frame = self.frames[frameKey] as? LocalizedFrame {
+                return frame.stringValue
+            } else {
+                return nil
+            }
+        } else {
+            return nil
+        }
+    }
+    
+    private mutating func set(localizedFrame identifier: FrameIdentifier,
+                              language: ISO6392Code?,
+                              description: String?,
+                              stringValue: String?) {
+        let frameKey = identifier.frameKey(description)
+        if let stringValue = stringValue {
+            let frame = LocalizedFrame(identifier,
+                                       version: self.version,
+                                       language: language,
+                                       description: description,
+                                       stringValue: stringValue)
+            self.frames[frameKey] = frame
+        } else {
+            self.frames[frameKey] = nil
+        }
+    }
+    
+    private mutating func set(userDefinedFrame identifier: FrameIdentifier,
+                              description: String?,
+                              stringValue: String?) {
+        let frameKey = identifier.frameKey(description)
+        if let stringValue = stringValue {
+            let frame = LocalizedFrame(identifier,
+                                       version: self.version,
+                                       language: nil,
+                                       description: description,
+                                       stringValue: stringValue)
+            self.frames[frameKey] = frame
+        } else {
+            self.frames[frameKey] = nil
+        }
+    }
+    
+    private mutating func removeCommentFrame(description: String) {
+        let frameKey = FrameIdentifier.known(.comments).frameKey(description)
+        self.frames[frameKey] = nil
+    }
+    
+    private mutating func removeLyricsFrame(description: String) {
+        let frameKey = FrameIdentifier.known(.unsynchronizedLyrics).frameKey(description)
+        self.frames[frameKey] = nil
+    }
+    
+    private mutating func removeUserTextFrame(description: String) {
+        let frameKey = FrameIdentifier.known(.userDefinedText).frameKey(description)
+        self.frames[frameKey] = nil
+    }
+    
+    private mutating func removeUserUrlFrame(description: String) {
+        let frameKey = FrameIdentifier.known(.userDefinedWebpage).frameKey(description)
+        self.frames[frameKey] = nil
+    }
+    
+    /// Comments frame getter-setter. ID3 Identifier `COM`/`COMM`
+    public subscript(comment description: String?, language: ISO6392Code) -> String? {
+        get {
+            if let string = get(localizedFrame: .known(.comments),
+                                language: language,
+                                description: description) {
+                return string
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                set(localizedFrame: .known(.comments),
+                    language: language,
+                    description: description,
+                    stringValue: new)
+            } else {
+                removeCommentFrame(description: description ?? "")
+            }
+        }
+    }
+    
+    /// (Unsynchronized) lyrics frame getter-setter. ID3 Identifier `ULT`/`USLT`
+    public subscript(lyrics description: String?, language: ISO6392Code) -> String? {
+        get {
+            if let string = get(localizedFrame: .known(.unsynchronizedLyrics),
+                                language: language,
+                                description: description) {
+                return string
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                set(localizedFrame: .known(.unsynchronizedLyrics),
+                    language: language,
+                    description: description,
+                    stringValue: new)
+            } else {
+                removeCommentFrame(description: description ?? "")
+            }
+        }
+    }
+    
+    /// UserDefinedText frame getter-setter. ID3 Identifier `TXX`/`TXXX`
+    public subscript(_ description: String?) -> String? {
+        get {
+            if let string = get(userDefinedFrame: .known(.userDefinedText),
+                                description: description) {
+                return string
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                set(userDefinedFrame: .known(.userDefinedText),
+                    description: description,
+                    stringValue: new)
+            } else {
+                removeUserTextFrame(description: description ?? "")
+            }
+        }
+    }
+    
+    /// UserDefinedWebpage frame getter-setter. ID3 Identifier `WXX`/`WXXX`
+    public subscript(userDefinedUrl description: String?) -> String? {
+        get {
+            if let string = get(userDefinedFrame: .known(.userDefinedWebpage),
+                                description: description) {
+                return string
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                set(userDefinedFrame: .known(.userDefinedWebpage),
+                    description: description,
+                    stringValue: new)
+            } else {
+                removeUserUrlFrame(description: description ?? "")
+            }
+        }
+    }
+}

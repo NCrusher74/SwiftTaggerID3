@@ -175,3 +175,206 @@ class ComplexTypesFrame: Frame {
         return data
     }
 }
+
+// MARK: - Tag extensions
+// get and set functions for `PresetOptionsFrame` frame types, which retrieves or sets three strings, all of which are optional (genre only uses two of these.) Each individual frame of this type will call these functions in a get-set property of function, where appropriate.
+extension Tag {
+    func get(complexTypesFrame identifier: FrameIdentifier) -> [String]? {
+        let frameKey = identifier.frameKey(nil)
+        if let frame = self.frames[frameKey] as? ComplexTypesFrame {
+            return frame.contentArray
+        } else {
+            return nil
+        }
+    }
+    
+    mutating func set(complexTypesFrame identifier: FrameIdentifier,
+                      contentArray: [String]) {
+        let frameKey = identifier.frameKey(nil)
+        if contentArray.isEmpty {
+            self.frames[frameKey] = nil
+        } else {
+            let frame = ComplexTypesFrame(identifier,
+                                          version: self.version,
+                                          contentArray: contentArray)
+            self.frames[frameKey] = frame
+        }
+    }
+    
+    public var genre: [(genreCategory: GenreType?, genre: String?)] {
+        get {
+            // if the array exists and isn't empty
+            var array: [(genreCategory: GenreType?, genre: String?)] = []
+            if let frameArray = get(complexTypesFrame: .known(.genre)) {
+                var tuple: (genreCategory: GenreType?, genre: String?) = (nil, nil)
+                var presetType: GenreType = .none
+                var customString: String = ""
+                // for each item in the array...
+                for item in frameArray {
+                    // if the item isn't an empty string
+                    if item != "" {
+                        // see if the string is a GenreType rawValue
+                        if let genreType = GenreType(rawValue: item) {
+                            presetType = genreType
+                            customString = ""
+                            // if not return it as a custom genre
+                        } else {
+                            presetType = .none
+                            customString = item
+                        }
+                    }
+                }
+                if presetType != .none {
+                    tuple.genreCategory = presetType
+                }
+                if customString != "" {
+                    tuple.genre = customString
+                }
+                array.append(tuple)
+            }
+            return array
+        }
+        set {
+            var stringArray = [String]()
+            for item in newValue {
+                if let type = item.genreCategory {
+                    let string = type.rawValue
+                    stringArray.append(string)
+                } else {
+                    if let string = item.genre {
+                        stringArray.append(string)
+                    }
+                }
+            }
+            set(complexTypesFrame: .known(.genre),
+                contentArray: stringArray)
+        }
+    }
+    
+    public var mediaType: (mediaType: MediaType?, mediaTypeRefinement: MediaTypeRefinements?, additionalInformation: String?) {
+        get {
+            var tuple: (mediaType: MediaType?, mediaTypeRefinement: MediaTypeRefinements?, additionalInformation: String?) = (nil, nil, nil)
+            // if the array exists and isn't empty
+            if let frameArray = get(complexTypesFrame: .known(.mediaType)),
+               !frameArray.isEmpty {
+                var presetType: MediaType = .none
+                var presetRefinement: MediaTypeRefinements = .none
+                var refinementString: String = ""
+                for element in frameArray {
+                    if element != "" {
+                        // forward slash means it's a refinement string
+                        if element.first == "/" {
+                            if let refinement = MediaTypeRefinements(code: element) {
+                                presetRefinement = refinement
+                            }
+                            // if it's not a refinement, check to see if it's a media type
+                        } else if let type = MediaType(rawValue: element) {
+                            presetType = type
+                            // if it's not either of those, handle it as a freeform description
+                        } else {
+                            refinementString = element
+                        }
+                    }
+                }
+                if presetType != .none {
+                    tuple.mediaType = presetType
+                }
+                if presetRefinement != .none {
+                    tuple.mediaTypeRefinement = presetRefinement
+                }
+                if refinementString != "" {
+                    tuple.additionalInformation = refinementString
+                }
+            }
+            return tuple
+        }
+        set {
+            let identifier = FrameIdentifier.known(.mediaType)
+            let frameKey = identifier.frameKey(nil)
+            if newValue != (nil, nil, nil) {
+                var frameArray = [String]()
+                if let type = newValue.mediaType, type != .none {
+                    let string = type.rawValue
+                    frameArray.append(string)
+                }
+                if let refinement = newValue.mediaTypeRefinement, refinement != .none {
+                    let string = refinement.code
+                    frameArray.append(string)
+                }
+                if let string = newValue.additionalInformation, string != "" {
+                    frameArray.append(string)
+                }
+                if !frameArray.isEmpty {
+                    set(complexTypesFrame: .known(.mediaType),
+                        contentArray: frameArray)
+                }
+            } else {
+                self.frames[frameKey] = nil
+            }
+        }
+    }
+    
+    public var fileType: (fileType: FileType?, fileTypeRefinement: FileTypeRefinements?, additionalInformation: String?) {
+        get {
+            var tuple: (fileType: FileType?, fileTypeRefinement: FileTypeRefinements?, additionalInformation: String?) = (nil, nil, nil)
+            // if the array exists and isn't empty
+            if let frameArray = get(complexTypesFrame: .known(.fileType)),
+               !frameArray.isEmpty {
+                var presetType: FileType = .none
+                var presetRefinement: FileTypeRefinements = .none
+                var refinementString: String = ""
+                for element in frameArray {
+                    if element != "" {
+                        // forward slash means it's a refinement string
+                        if element.first == "/" {
+                            if let refinement = FileTypeRefinements(rawValue: element) {
+                                presetRefinement = refinement
+                            }
+                            // if it's not a refinement, check to see if it's a media type
+                        } else if let type = FileType(rawValue: element) {
+                            presetType = type
+                            // if it's not either of those, handle it as a freeform description
+                        } else {
+                            refinementString = element
+                        }
+                    }
+                }
+                if presetType != .none {
+                    tuple.fileType = presetType
+                }
+                if presetRefinement != .none {
+                    tuple.fileTypeRefinement = presetRefinement
+                }
+                if refinementString != "" {
+                    tuple.additionalInformation = refinementString
+                }
+            }
+            return tuple
+        }
+        set {
+            let identifier = FrameIdentifier.known(.fileType)
+            let frameKey = identifier.frameKey(nil)
+            if newValue != (nil, nil, nil) {
+                var frameArray = [String]()
+                if let type = newValue.fileType, type != .none {
+                    let string = type.rawValue
+                    frameArray.append(string)
+                }
+                if let refinement = newValue.fileTypeRefinement, refinement != .none {
+                    let string = refinement.rawValue
+                    frameArray.append(string)
+                }
+                if let string = newValue.additionalInformation, string !=
+                    "" {
+                    frameArray.append(string)
+                }
+                if !frameArray.isEmpty {
+                    set(complexTypesFrame: identifier,
+                        contentArray: frameArray)
+                }
+            } else {
+                self.frames[frameKey] = nil
+            }
+        }
+    }
+}

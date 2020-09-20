@@ -95,6 +95,200 @@ class CreditsListFrame: Frame {
                    size: size,
                    flags: flags)
     }
-    
 }
 
+extension Tag {
+    /// Retrieves the `involvedPeopleList` (`IPL/IPLS/TIPL`) frame  as a `[role: [person]]` dictionary
+    /// - Returns: the `[String: [String]]` dictionary of `[role: [person]]` pairs
+    private var involvementCredits: [InvolvedPersonCredits: [String]] {
+        let identifier = FrameIdentifier.known(.involvedPeopleList)
+        let frameKey = identifier.frameKey(nil)
+
+        var dictionary = [InvolvedPersonCredits: [String]]()
+        if let frame = self.frames[frameKey] as? CreditsListFrame {
+            // convert [String: [String]] to [Enum:[String]]
+            for (key, value) in frame.credits {
+                if let credit = InvolvedPersonCredits(rawValue: key) {
+                    dictionary[credit] = value
+                }
+            }
+        }
+        return dictionary
+    }
+    
+    /// Retrieves the `musicianCreditsList` (`TMCL`) frame  as a `[role: [person]]` dictionary
+    /// - Returns: the `[String: [String]]` dictionary of `[role: [person]]` pairs
+    private var musicianCredits: [MusicianAndPerformerCredits: [String]] {
+        let identifier = FrameIdentifier.known(.musicianCreditsList)
+        let frameKey = identifier.frameKey(nil)
+
+        var dictionary = [MusicianAndPerformerCredits: [String]]()
+        if let frame = self.frames[frameKey] as? CreditsListFrame {
+            // convert [String: [String]] to [Enum:[String]]
+            for (key, value) in frame.credits {
+                if let credit = MusicianAndPerformerCredits(rawValue: key) {
+                    dictionary[credit] = value
+                }
+            }
+        }
+        return dictionary
+    }
+    
+    /// set the `[role: [person]]` dictionary for the `involvedPeopleList` frame
+    /// - Parameter credits: the dictionary of `[role: [person]]` pairs
+    private mutating func set(involvementCredits: [InvolvedPersonCredits:[String]]) {
+        let identifier = FrameIdentifier.known(.involvedPeopleList)
+        let frameKey = identifier.frameKey(nil)
+
+        var stringDict = [String: [String]]()
+        for (key, value) in involvementCredits {
+            let stringKey = key.rawValue
+            stringDict[stringKey] = value
+        }
+        let frame = CreditsListFrame(identifier,
+                                     version: self.version,
+                                     credits: stringDict)
+        self.frames[frameKey] = frame
+    }
+    
+    /// set the `[role: [person]]` dictionary for the `musicianCreditsList` frame
+    /// - Parameter credits: the dictionary of `[role: [person]]` pairs
+    private mutating func set(musicianCredits: [MusicianAndPerformerCredits:[String]]) {
+        let identifier = FrameIdentifier.known(.musicianCreditsList)
+        let frameKey = identifier.frameKey(nil)
+
+        var stringDict = [String: [String]]()
+        for (key, value) in musicianCredits {
+            let stringKey = key.rawValue
+            stringDict[stringKey] = value
+        }
+        let frame = CreditsListFrame(identifier,
+                                     version: self.version,
+                                     credits: stringDict)
+        self.frames[frameKey] =  frame
+    }
+    
+    /// Getter-setter property for the dictionary of `[role: [person]]` pairs for the `involvedPeopleList` (`IPL/IPLS/TIPL`) frame
+    public var involvementCreditsList: [InvolvedPersonCredits:[String]] {
+        get {
+            return involvementCredits
+        }
+        set {
+            let identifier = FrameIdentifier.known(.involvedPeopleList)
+            let frameKey = identifier.frameKey(nil)
+
+            if !newValue.isEmpty {
+                var finalDictionary = [InvolvedPersonCredits:[String]]()
+                for (key, value) in newValue {
+                    if key == .arranger {
+                        let string = value.joined(separator: "; ")
+                        self.arranger = string
+                    } else if key == .composer {
+                        let string = value.joined(separator: "; ")
+                        self.composer = string
+                    } else if key == .conductor {
+                        let string = value.joined(separator: "; ")
+                        self.conductor = string
+                    } else if key == .lyricist {
+                        let string = value.joined(separator: "; ")
+                        self.lyricist = string
+                    } else if key == .publisher {
+                        let string = value.joined(separator: "; ")
+                        self.publisher = string
+                    } else {
+                        finalDictionary[key] = value
+                    }
+                }
+                set(involvementCredits: finalDictionary)
+            } else {
+                self.frames[frameKey] = nil
+            }
+        }
+    }
+    
+    /// Getter-setter property for the dictionary of `[role: [person]]` pairs for the `musicianCreditsList` (`TMCL`) frame
+    public var musicianCreditsList: [MusicianAndPerformerCredits:[String]] {
+        get {
+            return musicianCredits
+        }
+        set {
+            let identifier = FrameIdentifier.known(.musicianCreditsList)
+            let frameKey = identifier.frameKey(nil)
+
+            if !newValue.isEmpty {
+                var finalDictionary = [MusicianAndPerformerCredits:[String]]()
+                for (key, value) in newValue {
+                    if key == .artist {
+                        let string = value.joined(separator: "; ")
+                        self.artist = string
+                    } else {
+                        finalDictionary[key] = value
+                    }
+                }
+                set(musicianCredits: finalDictionary)
+            } else {
+                self.frames[frameKey] = nil
+            }
+        }
+    }
+    
+    /// Add a new [role:[person]] key-value pair to the `musicianCreditsList` (`TMCL`) dictionary, or, if the `role` already exists, append the person to the existing value for the `role` key
+    /// - Parameters:
+    ///   - role: the role being performed
+    ///   - person: the person performing the role
+    // TODO: if version is 2.2. or 2.3, make this an `involved person` entry instead?
+    public mutating func addMusicianCredit(
+        role: MusicianAndPerformerCredits, person: String) {
+        if var credit = musicianCreditsList[role], !credit.contains(person) {
+            credit.append(person)
+            musicianCreditsList[role] = credit
+        } else {
+            musicianCreditsList[role] = [person]
+        }
+    }
+    
+    /// Add a new [role:[person]] key-value pair `involvedPeopleList` (`IPL/IPLS/TIPL`) dictionary, or, if the `role` already exists, append the person to the existing value for the `role` key
+    /// - Parameters:
+    ///   - role: the role being performed
+    ///   - person: the person performing the role
+    public mutating func addInvolvementCredit(
+        role: InvolvedPersonCredits, person: String) {
+        // get the list of pre-existing keys in the dictionary
+        if var credit = involvementCreditsList[role], !credit.contains(person) {
+            credit.append(person)
+            involvementCreditsList[role] = credit
+        } else {
+            involvementCreditsList[role] = [person]
+        }
+    }
+    
+    public mutating func clearMusicianCreditList() {
+        let frameKey = FrameIdentifier.known(.musicianCreditsList).frameKey(nil)
+        self.frames[frameKey] = nil
+    }
+    
+    public mutating func removeMusicianCredit(role: MusicianAndPerformerCredits) {
+        self.musicianCreditsList[role] = nil
+        switch role {
+            case .artist: self.artist = nil
+            default: break
+        }
+    }
+    
+    public mutating func clearInvolvementCreditList() {
+        let frameKey = FrameIdentifier.known(.involvedPeopleList).frameKey(nil)
+        self.frames[frameKey] = nil
+    }
+    
+    public mutating func removeInvolvementCredit(role: InvolvedPersonCredits) {
+        self.involvementCreditsList[role] = nil
+        switch role {
+            case .arranger: self.arranger = nil
+            case .composer: self.composer = nil
+            case .conductor: self.conductor = nil
+            case .lyricist: self.lyricist = nil
+            case .publisher: self.publisher = nil
+            default: break
+        }
+    }
+}

@@ -14,7 +14,7 @@ extension Data.SubSequence {
     /// Removes and returns a null‐terminated string from the beginning of the subsequence (which only mutates the subsequence’s bounds, not the underlying `Data` instance).
     ///
     /// If there is no null‐termination, the string will be constructed from the entire subsequence.
-    internal mutating func extractNullTerminatedString(_ encoding: String.Encoding) -> String? {
+    mutating func extractNullTerminatedString(_ encoding: String.Encoding) -> String? {
         var remainder = self
         search: while let null = remainder.firstIndex(of: 0) {
             remainder = self[null...].dropFirst()
@@ -76,7 +76,7 @@ extension Data.SubSequence {
 
     
     @available(OSX 10.12, *)
-    internal mutating func extractAndParseToFrame(_ version: Version) throws -> Frame? {
+    mutating func extractAndParseToFrame(_ version: Version) throws -> Frame? {
         // extract the identifier data
         let identifier = try self.extractAndDecodeFrameID(version)
         let size = self.extractAndCalculateFrameSize(version)
