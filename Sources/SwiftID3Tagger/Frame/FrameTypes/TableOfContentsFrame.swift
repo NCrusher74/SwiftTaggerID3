@@ -12,7 +12,7 @@
  
  Each "CTOC" frame represents one level or element of a table of contents by providing a list of Child Element IDs. These match the Element IDs of other "CHAP" and "CTOC" frames in the tag. {{{<ID3v2.3 or ID3v2.4 frame header, ID: "CTOC"> (10 bytes) Element ID <text string> $00 Flags %000000ab Entry count $xx (8-bit unsigned int) <Child Element ID list> <Optional embedded sub-frames> }}}
  
- The Element ID uniquely identifies the frame. It is not intended to be human readable and should not be presented to the end-user.
+ The Element ID uniquely identifies the frame. It is not intended to be human readable and should not be presented to the end-user. (NOTE: SwiftTaggerID3 uses `TOC` for the one and only TOC frame.)
  
  Flag a - Top-level bit
  This is set to 1 to identify the top-level "CTOC" frame. This frame is the root of the Table of Contents tree and is not a child of any other "CTOC" frame. Only one "CTOC" frame in an ID3v2 tag can have this bit set to 1. In all other "CTOC" frames this bit shall be set to 0.
@@ -161,9 +161,44 @@ class TableOfContentsFrame: Frame {
                    size: size,
                    flags: flags)
     }
-    
-    init?() {
-        return nil
-    }
+}
 
+// // MARK: - Tag Extension
+extension Tag {
+    var toc: TableOfContentsFrame? {
+        get {
+            if let frame = self.frames["tableOfContents"] as? TableOfContentsFrame {
+                return frame
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                self.frames["tableOfContents"] = new
+            } else {
+                removeAllChapters()
+            }
+        }
+    }
+    
+    @available(OSX 10.12, *)
+    mutating func setTOC(chapterFrames: [ChapterFrame]) {
+        var elementIDs = [String]()
+        for chapter in chapterFrames {
+            elementIDs.append(chapter.elementID)
+        }
+        if let current = self.toc {
+            current.childElementIDs = elementIDs
+            self.toc = current
+        } else {
+            var subframes = Tag(version: self.version)
+            subframes.title = "Table Of Contents"
+            let toc = TableOfContentsFrame(.known(.tableOfContents),
+                                           version: self.version,
+                                           childElementIDs: elementIDs,
+                                           embeddedSubframesTag: subframes)
+            self.toc = toc
+        }
+    }
 }

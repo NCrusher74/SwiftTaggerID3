@@ -26,6 +26,9 @@ let sample22Url = testMediaDirectory
     .appendingPathComponent("mp3-v22-with-meta")
     .appendingPathExtension("mp3")
 
+let sampleChapterUrl = testMediaDirectory
+    .appendingPathComponent("mp3-chapterized")
+    .appendingPathExtension("mp3")
 
 func tempDirectory() throws -> URL {
     let tempDirectory = FileManager.default.temporaryDirectory

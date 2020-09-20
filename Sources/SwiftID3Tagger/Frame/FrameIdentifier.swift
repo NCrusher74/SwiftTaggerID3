@@ -379,7 +379,7 @@ enum KnownIdentifier: CaseIterable {
                 }
             case .chapter:
                 if let startTime = additionalID as? Int {
-                    return self.rawValue + ": @ \(startTime)"
+                    return self.rawValue + ": \(startTime)"
                 } else {
                     return self.rawValue
                 }

@@ -16,7 +16,7 @@
  End offset      $xx xx xx xx
  <Optional embedded sub-frames>
  
- The Element ID uniquely identifies the frame. It is not intended to be human readable and should not be presented to the end user.
+ The Element ID uniquely identifies the frame. It is not intended to be human readable and should not be presented to the end user. (NOTE: SwiftTaggerID3 uses the startTime for this purpose, so elementID will be "ch\(startTime)", and no two chapters will be allowed to have the same startTime)
  
  The Start and End times are a count in milliseconds from the beginning of the file to the start and end of the chapter respectively.
  
@@ -53,21 +53,20 @@ class ChapterFrame: Frame {
          payload: Data) throws {
         var data = payload
         
-        // initialize the elementID property from the data
-        self.elementID = data.extractNullTerminatedString(.isoLatin1) ?? UUID().uuidString
-        
-        self.startTime = data.extractToInt(4)
-        self.endTime = data.extractToInt(4)
-
+        // SwiftTaggerID3 creates a new elementID for the frame
+        _ = data.extractNullTerminatedString(.isoLatin1)
+        self.startTime = data.extractFirst(4).uInt32BE.toInt
+        self.endTime = data.extractFirst(4).uInt32BE.toInt
+                
+        self.elementID = "ch\(startTime)"
         // SwiftTagger uses start and end times, these will be set to 0xFF by default
-        data = data.dropFirst(4) // start byte offset, unused
-        data = data.dropFirst(4) // end byte offset, unused
-
+        _ = data.extractFirst(4) // start byte offset, unused
+        _ = data.extractFirst(4) // end byte offset, unused
+        
         // parse the subframes and add them to the embedded subframes tag
         var subframes: [String : Frame] = [:]
         while !data.isEmpty {
-            let subframeIdData = data.extractFirst(version.idLength)
-            guard subframeIdData.first != 0x00  else { break }
+            guard data.first != 0x00  else { break }
             if let subframe = try data.extractAndParseToFrame(version) {
                 let subframeKey = subframe.frameKey
                 subframes[subframeKey] = subframe
@@ -80,7 +79,7 @@ class ChapterFrame: Frame {
                    flags: flags)
     }
     
-     @available(OSX 10.12, *)
+    @available(OSX 10.12, *)
     override var contentData: Data {
         guard version != .v2_2 else {
             fatalError("Chapter frame is not available for ID3 v2.2")
@@ -109,7 +108,7 @@ class ChapterFrame: Frame {
         data.append(encodedSubframes)
         return data
     }
-
+    
     // MARK: - Frame building
     /// Builds a Chapter frame from content data
     /// - parameter elementID: the elementID of the frame. Null terminated.
@@ -119,16 +118,15 @@ class ChapterFrame: Frame {
     @available(OSX 10.12, *)
     init(_ identifier: FrameIdentifier,
          version: Version,
-         elementID: String,
          startTime: Int,
          endTime: Int,
          embeddedSubframesTag: Tag?) {
-        self.elementID = elementID
+        self.elementID = "ch\(startTime)"
         self.startTime = startTime
         self.endTime = endTime
         self.embeddedSubframesTag = embeddedSubframesTag
         let flags = version.defaultFlags
-
+        
         guard version != .v2_2 else {
             fatalError("Chapter frame is not available for ID3 v2.2")
         }
@@ -156,10 +154,77 @@ class ChapterFrame: Frame {
 }
 
 extension Tag {
-    var chapters: [ChapterFrame] {
+    @available(OSX 10.12, *)
+    /// `Get`: Retrieves chapter frames array from `chapterFrames` and presents the chapters as an array of `(startTime: title)` tuples for easier access.
+    /// `Set` creates a `ChapterFrame` instance for every item in `newValue`
+    public var chapterList: [(startTime: Int, title: String)] {
+        get {
+            var chapters = [(startTime: Int, title: String)]()
+            for chapter in self.chapterFrames {
+                let startTime = chapter.startTime
+                let chapterTitle: String
+                if let title = chapter.embeddedSubframesTag?.title {
+                    chapterTitle = title
+                } else {
+                    chapterTitle = "Chapter @\(startTime)ms"
+                }
+                let entry = (startTime, chapterTitle)
+                chapters.append(entry)
+            }
+            return chapters
+        }
+        set {
+            do {
+                let chapters = newValue.sorted(by: {$0.startTime < $1.startTime})
+                // handle all except last
+                for (index, chapter) in chapters.dropLast().enumerated() {
+                    let next = chapters[chapters.index(after: index)]
+                    let endTime = next.startTime
+                    try self.setChapterFrame(
+                        startTime: chapter.startTime,
+                        endTime: endTime,
+                        title: chapter.title)
+                }
+                // handle last
+                if let chapter = chapters.last {
+                    let endTime = Tag.duration
+                    try self.setChapterFrame(
+                        startTime: chapter.startTime,
+                        endTime: endTime,
+                        title: chapter.title)
+                }
+                setTOC(chapterFrames: self.chapterFrames)
+            } catch {
+                fatalError("Operation to set chapters failed")
+            }
+        }
+    }
+    
+    @available(OSX 10.12, *)
+    public mutating func addChapter(startTime: Int, title: String) {
+        var list = self.chapterList
+        if !list.contains(where: {$0.startTime == startTime}) {
+            let entry = (startTime, title)
+            list.append(entry)
+            self.chapterList = list
+        }
+    }
+    
+    public mutating func removeAllChapters() {
+        self.frames = self.frames.filter({!$0.key.contains("chapter:") && $0.key != "tableOfContents"})
+    }
+
+    public mutating func removeChapter(startTime: Int) {
+        let identifier = FrameIdentifier.known(.chapter)
+        let frameKey = identifier.frameKey(startTime)
+        self.frames[frameKey] = nil
+    }
+    
+    /// Retrieves and isolates the chapter frames into an array and sorts them in asending order.
+    private var chapterFrames: [ChapterFrame] {
         var array = [ChapterFrame]()
         for item in self.frames {
-            if item.key.contains("chapter") {
+            if item.key.contains("chapter:") {
                 if let frame = item.value as? ChapterFrame {
                     array.append(frame)
                 }
@@ -168,26 +233,56 @@ extension Tag {
         let sortedArray = array.sorted(by: {$0.startTime < $1.startTime})
         return sortedArray
     }
+
+    @available(OSX 10.12, *)
+    var chapterTitles: [String] {
+        var titles = [String]()
+        for chapter in chapterList {
+            titles.append(chapter.title)
+        }
+        return titles
+    }
     
-    mutating func removeChapterFrame(startTime: Int) {
-        let identifier = FrameIdentifier.known(.chapter)
-        let frameKey = identifier.frameKey(startTime)
-        self.frames[frameKey] = nil
+    @available(OSX 10.12, *)
+    var chapterStartTimes: [Int] {
+        var starts = [Int]()
+        for chapter in chapterList {
+            starts.append(chapter.startTime)
+        }
+        return starts
     }
 
-    mutating func addChapterFrame(startTime: Int, title: String) throws {
+//    @available(OSX 10.12, *)
+//    private var chapters: [Int: String] {
+//        get {
+//            var dictionary = [Int: String]()
+//            for chapter in chapterList {
+//                dictionary[chapter.startTime] = chapter.title
+//            }
+//            return dictionary
+//        }
+//        set {
+//            self.chapterList = newValue.keys.sorted().map { ($0, chapters[$0]!) }
+//        }
+//    }
+
+    
+    @available(OSX 10.12, *)
+    private mutating func setChapterFrame(startTime: Int,
+                                  endTime: Int,
+                                  title: String) throws {
         let identifier = FrameIdentifier.known(.chapter)
         let frameKey = identifier.frameKey(startTime)
-        removeChapterFrame(startTime: startTime)
+        // remove existing frame at startTime, if it exists
+        removeChapter(startTime: startTime)
         
-        let titleSubframe = StringFrame(.known(.title),
-                                        version: self.version,
-                                        stringValue: title)
-        let subframes = try Tag(version: self.version,
-                                subframes: ["title" : titleSubframe])
-        
-        if self.chapters.contains(where: {$0.startTime > startTime}) {
-            
-        }
+        var subframes = Tag(version: self.version)
+        subframes.title = title
+        let frame = ChapterFrame(.known(.chapter),
+                                 version: self.version,
+                                 startTime: startTime,
+                                 endTime: endTime,
+                                 embeddedSubframesTag: subframes)
+        self.frames[frameKey] = frame
     }
 }

@@ -9,8 +9,7 @@ import Foundation
 /*
  v2.2 frame header structure - 6 characters
  Frame ID   $xx xx xx  (three characters)
- Size       $xx xx xx xx
- Flags      $xx xx
+ Size       $(FF) xx xx xx (three bytes)
 
  v2.3 and 2.4 frame header structure - 10 characters
  Frame ID   $xx xx xx xx  (four characters)
