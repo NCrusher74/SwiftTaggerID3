@@ -9,7 +9,8 @@
 //
 //import XCTest
 //import SwiftTaggerID3
-//
+//@testable import SwiftTaggerID3
+
 //class SwiftTaggerID3_PresetOptionsFrame_Tests: XCTestCase {
 //    
 //    @available(OSX 10.12, *)

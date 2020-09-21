@@ -9,7 +9,8 @@
 //
 //import XCTest
 //import SwiftTaggerID3
-//
+//@testable import SwiftTaggerID3
+
 //class SwiftTaggerID3_Read_Tests: XCTestCase {
 //    
 //    // test reading of V24 tag from file

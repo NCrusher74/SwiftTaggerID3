@@ -9,7 +9,8 @@
 //
 //import XCTest
 //import SwiftTaggerID3
-//
+//@testable import SwiftTaggerID3
+
 //class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
 //    
 //    // // MARK: - EncodingTime frame tests

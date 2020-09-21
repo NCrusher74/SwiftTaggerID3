@@ -10,7 +10,8 @@
 //import XCTest
 //import SwiftTaggerID3
 //import SwiftLanguageAndLocaleCodes
-//
+//@testable import SwiftTaggerID3
+
 //class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
 //    
 //    // Localized Frame tests
