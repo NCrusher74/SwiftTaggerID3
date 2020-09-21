@@ -69,8 +69,8 @@ class Frame {
     ///   - Versions 2.3 & 2.4: four bytes of frame-size data
     @available(OSX 10.12, *)
     private var encodedFrameContentSize: Data {
-        let contentSize = contentData.count.uInt32
-        switch version {
+        let contentSize = self.contentData.count.uInt32
+        switch self.version {
             case .v2_2:
                 let contentUInt8Array = [UInt8](contentSize.beData)
                 return Data(contentUInt8Array.dropFirst())

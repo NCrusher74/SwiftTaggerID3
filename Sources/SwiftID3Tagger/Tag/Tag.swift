@@ -37,7 +37,7 @@ public struct Tag {
         guard versionData.count == 5 else {
             throw Mp3FileError.InvalidVersionData
         }
-        self.version = try Version(data: versionData)
+        self.version = Version(data: versionData)
         
         // parse the flag byte from the tag header
         // this data is not generally used, and SwiftTagger does not support modifying it
@@ -78,20 +78,32 @@ public struct Tag {
     }
     
     /// Instantiate an empty tag
+    /// - Parameter version: The desired version of the tag to be output
+    ///
+    /// Version refers to the tag that will be output, not the tag of the source file
     public init(version: Version) {
         self.version = version
         self.frames = [:]
     }
     
     // MARK: - Tag Building Calculations
-    /// Calculates the size of a `Tag` instance being created, which is the count of all the data of a tag, minus the header data, converted to UInt32 and returned as data
-    /// - Parameter data: the data of the `Tag` being created
-    /// - Throws: Caller will determine how to handle any errors
-    /// - Returns: a four-byte synchsafe integer as a data slice containing the `Tag` size
-    func calculateNewTagSize(data: Data) throws -> Data {
-        return data.count.uInt32.encodingSynchsafe().beData
+    /// Concatenates header and frame data into tag data
+    /// - Returns: the entire encoded tag complete with header data
+    @available(OSX 10.12, *)
+    mutating func buildTagWithHeader(version: Version) -> Data {
+        self.version = version
+        var framesData = Data()
+        for (_, frame) in self.frames {
+            frame.version = version
+            framesData.append(frame.encode)
+        }
+        var tagData = version.versionBytes
+        tagData.append(self.defaultFlag)
+        tagData.append(framesData.count.uInt32.encodingSynchsafe().beData)
+        tagData.append(framesData)
+        return tagData
     }
-
+    
     // MARK: - Known Tag Properties
     /// The known length of version declaration data in a valid ID3 tag header
     let versionBytesLength: Int = 5

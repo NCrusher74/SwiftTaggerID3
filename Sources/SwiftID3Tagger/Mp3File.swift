@@ -51,4 +51,12 @@ public struct Mp3File {
             fatalError("Unable to initialize tag instance")
         }
     }
+    
+    @available(OSX 10.12, *)
+    public func write(tag: inout Tag,
+                      version: Version,
+                      outputLocation: URL) throws {
+        let data = tag.buildTagWithHeader(version: version)
+        try data.write(to: outputLocation)
+    }
 }

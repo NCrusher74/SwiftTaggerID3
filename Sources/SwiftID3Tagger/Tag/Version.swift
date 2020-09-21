@@ -9,28 +9,37 @@
 
 import Foundation
 
-/**
- An enum determining ID3 version and housing variables and methods are that dependent upon ID3 version
- */
-public enum Version: CaseIterable {
+/// An enum determining ID3 version and housing variables and methods are that dependent upon ID3 version
+public enum Version: UInt8, CaseIterable {
     /// ID3 v2.2
-    case v2_2
+    case v2_2 = 0x02
     /// ID3 v2.3
-    case v2_3
+    case v2_3 = 0x03
     /// ID3 v2.4
-    case v2_4
+    case v2_4 = 0x04
     
-    init(data: Data) throws {
-        if data == Data([0x49, 0x44, 0x33, 0x02, 0x00]) {
-            self = .v2_2
-        } else if data == Data([0x49, 0x44, 0x33, 0x03, 0x00]) {
-            self = .v2_3
-        } else if data == Data([0x49, 0x44, 0x33, 0x04, 0x00]) {
-            self = .v2_4
-        } else {
-            throw Mp3FileError.UnableToDetermineID3Version
+    /// Initialize ID3 version from the data representatoin of the version bytes
+    init(data: Data) {
+        guard data.count == 5 else {
+            fatalError(Mp3FileError.InvalidVersionData.localizedDescription)
         }
-    }    
+        let fourthByte = UInt8(data[4])
+        guard fourthByte == 0x02 ||
+                fourthByte == 0x03 ||
+                fourthByte == 0x04 else {
+            fatalError(Mp3FileError.InvalidVersionData.localizedDescription)
+        }
+        self.init(rawValue: fourthByte)!
+    }
+    
+    var versionBytes: Data {
+        var bytes: [UInt8] = [0x49, 0x44, 0x33]
+        for version in Version.allCases {
+            bytes.append(version.rawValue)
+        }
+        bytes.append(0x00)
+        return Data(bytes)
+    }
 }
 
 extension Version {
