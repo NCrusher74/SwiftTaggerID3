@@ -13,37 +13,45 @@ extension Date {
         let timeZone = TimeZone(secondsFromGMT: 0) ?? .current
         let components = calendar.dateComponents(in: timeZone, from: self)
         var encodedString = Data()
-
-        if let day = components.day {
-            if let month = components.month {
-                let dateString = String(day) + String(month)
-                encodedString = dateString.encodedISOLatin1
+        
+        do {
+            if let day = components.day {
+                if let month = components.month {
+                    let dateString = try String(day).leadingZeros(2) + String(month).leadingZeros(2)
+                    encodedString = dateString.encodedISOLatin1
+                } else {
+                    encodedString = Data()
+                }
             } else {
                 encodedString = Data()
             }
-        } else {
-            encodedString = Data()
+            return encodedString
+        } catch {
+            fatalError("Failed to convert date to string or string to data")
         }
-        return encodedString
     }
-
+    
     var encodeHHMMTimestamp: Data {
         let calendar = Calendar(identifier: .iso8601)
         let timeZone = TimeZone(secondsFromGMT: 0) ?? .current
         let components = calendar.dateComponents(in: timeZone, from: self)
         var encodedString = Data()
         
-        if let hour = components.hour {
-            if let minute = components.minute {
-                let dateString = String(hour) + String(minute)
-                encodedString = dateString.encodedISOLatin1
+        do {
+            if let hour = components.hour {
+                if let minute = components.minute {
+                    let dateString = try String(hour).leadingZeros(2) + String(minute).leadingZeros(2)
+                    encodedString = dateString.encodedISOLatin1
+                } else {
+                    encodedString = Data()
+                }
             } else {
                 encodedString = Data()
             }
-        } else {
-            encodedString = Data()
+            return encodedString
+        } catch {
+            fatalError("Failed to convert date to string or string to data")
         }
-        return encodedString
     }
 
     var encodeYYYYTimestamp: Data {

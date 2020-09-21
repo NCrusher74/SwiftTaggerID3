@@ -15,8 +15,10 @@ import SwiftTaggerID3
 class SwiftTaggerID3_Parsing_Tests: XCTestCase {
     
     func testPrint() throws {
-        let data = try Data(contentsOf: sampleChapterUrl)
-        let range = 00001579 ..< 00001630
+        let path = "/Users/nolainecrusher/Desktop/TestOutput/credits-test.mp3"
+        let url = URL(fileURLWithPath: path)
+        let data = try Data(contentsOf: url)
+        let range = 0 ..< 5
         let subdata = data.subdata(in: range)
         print(subdata.hexadecimal())
     }

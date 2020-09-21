@@ -93,20 +93,20 @@ class DateFrame: Frame {
     ) throws {
         var data = payload
         let encoding = try data.extractEncoding()
-        let dateString = try data.extractAndDecodeString(encoding: encoding)
         
-        // assumes frame contents are spec-compliant, 4-characters, DDMM string
         if identifier == .known(.date) {
-            // assumes frame contents are spec-compliant, 4-characters, HHmm string
-            self.timeStamp = try dateString.dateFromDDMMString()
+            self.timeStamp = try data.extractAndDecodeDDMM(encoding)
         } else if identifier == .known(.time) {
-            self.timeStamp = try dateString.timefromHHMMString()
+            // assumes frame contents are spec-compliant, 4-characters, HHmm string
+            self.timeStamp = try data.extractAndDecodeHHMM(encoding)
         } else if identifier == .known(.year) ||
                     // versions 2.2 and 2.3 should only have a year for this frame
                     (identifier == .known(.originalReleaseTime) &&
                         (version == .v2_2 || version == .v2_3)) {
-            self.timeStamp = try dateString.yearFromYYYYString()
+            self.timeStamp = try data.extractAndDecodeYYYY(encoding)
         } else {
+            let dateString = try data.extractAndDecodeString(encoding: encoding)
+            
             let formatter = ISO8601DateFormatter()
             formatter.formatOptions = [.withInternetDateTime]
             formatter.timeZone = TimeZone(secondsFromGMT: 0) ?? .current

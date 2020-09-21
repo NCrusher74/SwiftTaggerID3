@@ -44,16 +44,12 @@ public struct Mp3File {
     }
     
     @available(OSX 10.12, *)
-    public var tag: Tag {
-        do {
-            return try Tag(mp3File: self)
-        } catch {
-            fatalError("Unable to initialize tag instance")
-        }
+    public func tag() throws -> Tag {
+        return try Tag(mp3File: self)
     }
     
     @available(OSX 10.12, *)
-    public func write(tag: inout Tag,
+    public func write(tag: Tag,
                       version: Version,
                       outputLocation: URL) throws {
         let data = tag.buildTagWithHeader(version: version)
