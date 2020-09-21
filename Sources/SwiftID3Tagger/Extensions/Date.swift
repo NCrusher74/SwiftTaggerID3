@@ -68,5 +68,4 @@ extension Date {
         }
         return encodedString
     }
-    
 }
