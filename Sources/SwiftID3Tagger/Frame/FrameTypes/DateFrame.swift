@@ -194,7 +194,7 @@ class DateFrame: Frame {
 // MARK: - Tag extension
 // These are convenience getter-setter properties
 extension Tag {
-    func get(forDateFrame identifier: FrameIdentifier) -> Date? {
+    private func get(forDateFrame identifier: FrameIdentifier) -> Date? {
         if let frame = self.frames[identifier.frameKey(nil)] as? DateFrame {
             let date = frame.timeStamp ?? Date.distantPast
             return date
@@ -204,7 +204,7 @@ extension Tag {
     }
     
     @available(OSX 10.12, *)
-    mutating func set(_ identifier: FrameIdentifier,
+    private mutating func set(_ identifier: FrameIdentifier,
                                _ frameKey: String,
                                timeStamp: Date) {
         let frame = DateFrame(identifier,

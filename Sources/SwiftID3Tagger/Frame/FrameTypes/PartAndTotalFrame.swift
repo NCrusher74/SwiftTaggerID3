@@ -96,7 +96,7 @@ class PartAndTotalFrame: Frame {
     }
 }
 
-// MARK: - Internal Tag extension
+// MARK: - Tag extension
 /* get and set functions for `PartOfTotalFrame` frame types. Each individual frame of this type will have its own get-set property that will call these fucntions */
 extension Tag {
     /// add the frame contents to an ID3 `Tag`
@@ -105,7 +105,7 @@ extension Tag {
     ///   - frameKey: the frame's unique identifier, used to ensure frame uniqueness
     ///   - part: the position of a track or disc within a set
     ///   - total: the total number of tracks or discs in the set
-    internal mutating func set(partTotalFrame identifier: FrameIdentifier,
+    mutating func set(partTotalFrame identifier: FrameIdentifier,
                                part: Int,
                                total: Int?) {
         let frameKey = identifier.frameKey(nil)

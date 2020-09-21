@@ -220,20 +220,7 @@ extension Tag {
         self.frames[frameKey] = nil
     }
     
-    /// Retrieves and isolates the chapter frames into an array and sorts them in asending order.
-    private var chapterFrames: [ChapterFrame] {
-        var array = [ChapterFrame]()
-        for item in self.frames {
-            if item.key.contains("chapter:") {
-                if let frame = item.value as? ChapterFrame {
-                    array.append(frame)
-                }
-            }
-        }
-        let sortedArray = array.sorted(by: {$0.startTime < $1.startTime})
-        return sortedArray
-    }
-
+    // MARK: Private and Internal
     @available(OSX 10.12, *)
     var chapterTitles: [String] {
         var titles = [String]()
@@ -251,21 +238,6 @@ extension Tag {
         }
         return starts
     }
-
-//    @available(OSX 10.12, *)
-//    private var chapters: [Int: String] {
-//        get {
-//            var dictionary = [Int: String]()
-//            for chapter in chapterList {
-//                dictionary[chapter.startTime] = chapter.title
-//            }
-//            return dictionary
-//        }
-//        set {
-//            self.chapterList = newValue.keys.sorted().map { ($0, chapters[$0]!) }
-//        }
-//    }
-
     
     @available(OSX 10.12, *)
     private mutating func setChapterFrame(startTime: Int,
@@ -284,5 +256,19 @@ extension Tag {
                                  endTime: endTime,
                                  embeddedSubframesTag: subframes)
         self.frames[frameKey] = frame
+    }
+    
+    /// Retrieves and isolates the chapter frames into an array and sorts them in asending order.
+    private var chapterFrames: [ChapterFrame] {
+        var array = [ChapterFrame]()
+        for item in self.frames {
+            if item.key.contains("chapter:") {
+                if let frame = item.value as? ChapterFrame {
+                    array.append(frame)
+                }
+            }
+        }
+        let sortedArray = array.sorted(by: {$0.startTime < $1.startTime})
+        return sortedArray
     }
 }

@@ -114,6 +114,30 @@ class LocalizedFrame: Frame {
                    flags: flags)
     }
     
+    override var frameKey: String {
+        return self.identifier.frameKey(self.description)
+    }
+    
+    override var contentData: Data {
+        var data = Data()
+        let encoding = String.Encoding.isoLatin1
+        data.append(encoding.encodingByte)
+        if self.identifier == .known(.comments) || self.identifier == .known(.unsynchronizedLyrics) {
+            // encode and append language string
+            if let language = self.language {
+                let languageString = language.rawValue
+                data.append(languageString.encodedASCII)
+            } else {
+                data.append("und".encodedASCII)
+            }
+            if let description = self.description {
+                data.append(description.encodeNullTerminatedString(encoding))
+            }
+            data.append(self.stringValue.encodedISOLatin1)
+        }
+        return data
+    }
+
     // MARK: - Frame building
     /// - parameter languageString: the ISO-639-2 language code. default is `undetermined`
     /// - parameter descriptionString: a terminated text string describing the frame content
@@ -142,35 +166,100 @@ class LocalizedFrame: Frame {
                    size: size,
                    flags: flags)
     }
-    
-    override var frameKey: String {
-        return self.identifier.frameKey(self.description)
-    }
-    
-    override var contentData: Data {
-        var data = Data()
-        let encoding = String.Encoding.isoLatin1
-        data.append(encoding.encodingByte)
-        if self.identifier == .known(.comments) || self.identifier == .known(.unsynchronizedLyrics) {
-            // encode and append language string
-            if let language = self.language {
-                let languageString = language.rawValue
-                data.append(languageString.encodedASCII)
-            } else {
-                data.append("und".encodedASCII)
-            }
-            if let description = self.description {
-                data.append(description.encodeNullTerminatedString(encoding))
-            }
-            data.append(self.stringValue.encodedISOLatin1)
-        }
-        return data
-    }
 }
 
 // MARK: - Tag extension
 // get and set functions for `LocalizedFrame` frame types, which retrieves or sets up to three strings, one of which may be a language code, and one of which is an optional description string. Each individual frame of this type will call these functions in a get-set property or function, where appropriate.
 extension Tag {
+    /// `comments` frame getter-setter. ID3 Identifier `COM`/`COMM`
+    public subscript(comment description: String?, language: ISO6392Code) -> String? {
+        get {
+            if let string = get(localizedFrame: .known(.comments),
+                                language: language,
+                                description: description) {
+                return string
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                set(localizedFrame: .known(.comments),
+                    language: language,
+                    description: description,
+                    stringValue: new)
+            } else {
+                removeCommentFrame(description: description ?? "")
+            }
+        }
+    }
+    
+    /// `unsynchronizedLyrics` frame getter-setter. ID3 Identifier `ULT`/`USLT`
+    public subscript(lyrics description: String?, language: ISO6392Code) -> String? {
+        get {
+            if let string = get(localizedFrame: .known(.unsynchronizedLyrics),
+                                language: language,
+                                description: description) {
+                return string
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                set(localizedFrame: .known(.unsynchronizedLyrics),
+                    language: language,
+                    description: description,
+                    stringValue: new)
+            } else {
+                removeCommentFrame(description: description ?? "")
+            }
+        }
+    }
+    
+    /// `userDefinedText` frame getter-setter. ID3 Identifier `TXX`/`TXXX`
+    public subscript(_ description: String?) -> String? {
+        get {
+            if let string = get(userDefinedFrame: .known(.userDefinedText),
+                                description: description) {
+                return string
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                set(userDefinedFrame: .known(.userDefinedText),
+                    description: description,
+                    stringValue: new)
+            } else {
+                removeUserTextFrame(description: description ?? "")
+            }
+        }
+    }
+    
+    /// `userDefinedWebpage` frame getter-setter. ID3 Identifier `WXX`/`WXXX`
+    public subscript(userDefinedUrl description: String?) -> String? {
+        get {
+            if let string = get(userDefinedFrame: .known(.userDefinedWebpage),
+                                description: description) {
+                return string
+            } else {
+                return nil
+            }
+        }
+        set {
+            if let new = newValue {
+                set(userDefinedFrame: .known(.userDefinedWebpage),
+                    description: description,
+                    stringValue: new)
+            } else {
+                removeUserUrlFrame(description: description ?? "")
+            }
+        }
+    }
+    
+    // MARK: - Private and Internal
     private func get(localizedFrame identifier: FrameIdentifier,
                      language: ISO6392Code?,
                      description: String?) -> String? {
@@ -265,93 +354,5 @@ extension Tag {
     private mutating func removeUserUrlFrame(description: String) {
         let frameKey = FrameIdentifier.known(.userDefinedWebpage).frameKey(description)
         self.frames[frameKey] = nil
-    }
-    
-    /// Comments frame getter-setter. ID3 Identifier `COM`/`COMM`
-    public subscript(comment description: String?, language: ISO6392Code) -> String? {
-        get {
-            if let string = get(localizedFrame: .known(.comments),
-                                language: language,
-                                description: description) {
-                return string
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                set(localizedFrame: .known(.comments),
-                    language: language,
-                    description: description,
-                    stringValue: new)
-            } else {
-                removeCommentFrame(description: description ?? "")
-            }
-        }
-    }
-    
-    /// (Unsynchronized) lyrics frame getter-setter. ID3 Identifier `ULT`/`USLT`
-    public subscript(lyrics description: String?, language: ISO6392Code) -> String? {
-        get {
-            if let string = get(localizedFrame: .known(.unsynchronizedLyrics),
-                                language: language,
-                                description: description) {
-                return string
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                set(localizedFrame: .known(.unsynchronizedLyrics),
-                    language: language,
-                    description: description,
-                    stringValue: new)
-            } else {
-                removeCommentFrame(description: description ?? "")
-            }
-        }
-    }
-    
-    /// UserDefinedText frame getter-setter. ID3 Identifier `TXX`/`TXXX`
-    public subscript(_ description: String?) -> String? {
-        get {
-            if let string = get(userDefinedFrame: .known(.userDefinedText),
-                                description: description) {
-                return string
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                set(userDefinedFrame: .known(.userDefinedText),
-                    description: description,
-                    stringValue: new)
-            } else {
-                removeUserTextFrame(description: description ?? "")
-            }
-        }
-    }
-    
-    /// UserDefinedWebpage frame getter-setter. ID3 Identifier `WXX`/`WXXX`
-    public subscript(userDefinedUrl description: String?) -> String? {
-        get {
-            if let string = get(userDefinedFrame: .known(.userDefinedWebpage),
-                                description: description) {
-                return string
-            } else {
-                return nil
-            }
-        }
-        set {
-            if let new = newValue {
-                set(userDefinedFrame: .known(.userDefinedWebpage),
-                    description: description,
-                    stringValue: new)
-            } else {
-                removeUserUrlFrame(description: description ?? "")
-            }
-        }
     }
 }

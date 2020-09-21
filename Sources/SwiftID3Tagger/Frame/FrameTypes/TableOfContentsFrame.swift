@@ -36,8 +36,8 @@ import Foundation
 /// However, SwiftTaggerID only supports a single TOC frame, which is assigned a UUID as the elementID. Because of this, the top-level flag will always be true, and SwiftTaggerID3s handling of this frame will ensure the child elements are always ordered, therefore the orderedFlag is also set to true.
 class TableOfContentsFrame: Frame {
     /// the list of all child CTOC and/or CHAP frames, each entry is null-terminated
-    public var childElementIDs: [String]
-    public var embeddedSubframesTag: Tag?
+    var childElementIDs: [String]
+    var embeddedSubframesTag: Tag?
     
     // MARK: - Frame parsing initializer
     @available(OSX 10.12, *)

@@ -16,7 +16,7 @@ import Foundation
  Size       $xx xx xx xx
  Flags      $xx xx
  */
-public class Frame {
+class Frame {
     var identifier: FrameIdentifier
     var version: Version
     var size: Int

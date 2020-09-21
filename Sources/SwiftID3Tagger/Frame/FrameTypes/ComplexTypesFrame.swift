@@ -179,7 +179,7 @@ class ComplexTypesFrame: Frame {
 // MARK: - Tag extensions
 // get and set functions for `PresetOptionsFrame` frame types, which retrieves or sets three strings, all of which are optional (genre only uses two of these.) Each individual frame of this type will call these functions in a get-set property of function, where appropriate.
 extension Tag {
-    func get(complexTypesFrame identifier: FrameIdentifier) -> [String]? {
+    private func get(complexTypesFrame identifier: FrameIdentifier) -> [String]? {
         let frameKey = identifier.frameKey(nil)
         if let frame = self.frames[frameKey] as? ComplexTypesFrame {
             return frame.contentArray
@@ -188,7 +188,7 @@ extension Tag {
         }
     }
     
-    mutating func set(complexTypesFrame identifier: FrameIdentifier,
+    private mutating func set(complexTypesFrame identifier: FrameIdentifier,
                       contentArray: [String]) {
         let frameKey = identifier.frameKey(nil)
         if contentArray.isEmpty {

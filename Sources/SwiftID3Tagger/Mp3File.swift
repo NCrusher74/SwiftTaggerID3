@@ -44,9 +44,11 @@ public struct Mp3File {
     }
     
     @available(OSX 10.12, *)
-    public func tag() throws -> Tag {
-        return try Tag(mp3File: self)
+    public var tag: Tag {
+        do {
+            return try Tag(mp3File: self)
+        } catch {
+            fatalError("Unable to initialize tag instance")
+        }
     }
-    
-    
 }

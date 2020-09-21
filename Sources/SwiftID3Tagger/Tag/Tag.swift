@@ -18,13 +18,13 @@ public struct Tag {
      ID3v2 flags                %abcd0000 -- 1 byte (Uint32) (for our purposes, this is always `0x00`)
      ID3v2 size             4 * %0xxxxxxx -- 4 bytes (Synchsafe Uint32)
      */
-    public var frames: [String: Frame]
+    var frames: [String: Frame]
     var version: Version
     static var duration: Int = 0
     
     /// Instantiate a tag by parsing from MP3 file data
     @available(OSX 10.12, *)
-    public init(mp3File: Mp3File) throws {
+    init(mp3File: Mp3File) throws {
         Tag.duration = mp3File.duration
         // get the file data as a subsequence. As the data is parsed when reading a tag, it will be extracted from the subsequence, leaving the remainder instact to continue parsing
         var remainder: Data.SubSequence = mp3File.data[
@@ -118,6 +118,4 @@ public struct Tag {
     /// The known byte-offset of an ID3 tag's data after a valid tag header
     /// This value may be used to validate ID3 tag header data, or to locate the tag's frame data
     let frameDataOffset: Data.Index = 10
-    
-
 }
