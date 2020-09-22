@@ -52,23 +52,7 @@ public struct Mp3File {
     public func write(tag: Tag,
                       version: Version,
                       outputLocation: URL) throws {
-        let data = buildNewFile(tag: tag, version: version)
+        let data = tag.buildTagWithHeader(version: version)
         try data.write(to: outputLocation)
-    }
-    
-    @available(OSX 10.12, *)
-    private func buildNewFile(tag: Tag, version: Version) -> Data {
-        var data = self.data
-        let tagSizeData = data.subdata(in: tag.tagSizeDataRange)
-        
-        let size = (tagSizeData as NSData)
-            .bytes.assumingMemoryBound(to: UInt32.self).pointee.bigEndian
-        let tagSize = size.decodingSynchsafe().toInt
-
-        let tagDataRange = data.startIndex ..< tag.tagHeaderLength + tagSize
-        
-        let tagData = tag.buildTagWithHeader(version: version)
-        data.replaceSubrange(tagDataRange, with: tagData)
-        return data
     }
 }
