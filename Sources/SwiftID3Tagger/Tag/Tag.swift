@@ -130,9 +130,4 @@ public struct Tag {
     /// The known byte-offset of an ID3 tag's data after a valid tag header
     /// This value may be used to validate ID3 tag header data, or to locate the tag's frame data
     let frameDataOffset: Data.Index = 10
-    
-    var tagSizeDataRange: Range<Int> {
-        return
-            tagSizeOffset ..< tagSizeOffset + tagSizeLength
-    }
 }
