@@ -8,10 +8,10 @@
 import Foundation
 // KNOWN value of dates for files
 // MARK: - Credits List Frames
-let musicianCredits1 = ["Soprano Name"]
-let musicianCredits2 = ["Alto Name"]
-let involvementCredits1 = ["Actor Name"]
-let involvementCredits2 = ["Actress Name"]
+let sopranoCredit = ["Soprano Name"]
+let altoCredit = ["Alto Name"]
+let actorCredit = ["Actor Name"]
+let actressCredit = ["Actress Name"]
 
 // MARK: = Date Frames
 let calendar = Calendar(identifier: .iso8601)

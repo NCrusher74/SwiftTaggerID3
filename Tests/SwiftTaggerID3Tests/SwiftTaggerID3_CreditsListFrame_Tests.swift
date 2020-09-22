@@ -18,8 +18,8 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         let mp3 = try Mp3File(location: sample24Url)
         let tag = try mp3.tag()
 
-        XCTAssertEqual(tag.musicianCreditsList[.soprano], ["Soprano Name"])
-        XCTAssertEqual(tag.musicianCreditsList[.alto], ["Alto Name"])
+        XCTAssertEqual(tag.musicianCreditsList[.soprano], sopranoCredit)
+        XCTAssertEqual(tag.musicianCreditsList[.alto], altoCredit)
     }
 
 
@@ -37,8 +37,8 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         let outputMp3 = try Mp3File(location: outputUrl)
         let output = try outputMp3.tag()
 
-        XCTAssertEqual(output.musicianCreditsList[.soprano], ["Soprano Name"])
-        XCTAssertEqual(output.musicianCreditsList[.alto], ["Alto Name"])
+        XCTAssertEqual(output.musicianCreditsList[.soprano], sopranoCredit)
+        XCTAssertEqual(output.musicianCreditsList[.alto], altoCredit)
     }
 
     @available(OSX 10.12, *)
@@ -109,7 +109,7 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         let output = try outputMp3.tag()
         
         XCTAssertNil(output.musicianCreditsList[.soprano])
-        XCTAssertEqual(output.musicianCreditsList[.alto], ["Alto Name"])
+        XCTAssertEqual(output.musicianCreditsList[.alto], altoCredit)
     }
     
     @available(OSX 10.12, *)
@@ -127,7 +127,7 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         let outputMp3 = try Mp3File(location: outputUrl)
         let output = try outputMp3.tag()
         
-        XCTAssertEqual(output.musicianCreditsList[.soprano], ["Soprano Name"])
+        XCTAssertEqual(output.musicianCreditsList[.soprano], sopranoCredit)
         XCTAssertEqual(output.musicianCreditsList[.alto], ["Alto Name", "New Alto Name"])
     }
     
@@ -146,7 +146,7 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         let outputMp3 = try Mp3File(location: outputUrl)
         let output = try outputMp3.tag()
         
-        XCTAssertEqual(output.musicianCreditsList[.soprano], ["Soprano Name"])
-        XCTAssertEqual(output.musicianCreditsList[.alto], ["Alto Name"])
+        XCTAssertEqual(output.musicianCreditsList[.soprano], sopranoCredit)
+        XCTAssertEqual(output.musicianCreditsList[.alto], altoCredit)
     }
 }

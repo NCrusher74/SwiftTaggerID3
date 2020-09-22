@@ -52,12 +52,12 @@ public struct Mp3File {
     public func write(tag: inout Tag,
                       version: Version,
                       outputLocation: URL) throws {
-        let data = buildNewFile(tag: tag, version: version)
+        let data = buildNewFile(tag: &tag, version: version)
         try data.write(to: outputLocation)
     }
     
     @available(OSX 10.12, *)
-    private func buildNewFile(tag: Tag, version: Version) -> Data {
+    private func buildNewFile(tag: inout Tag, version: Version) -> Data {
         var data = self.data
         let tagSizeData = data.subdata(in: tag.tagSizeDataRange)
         
