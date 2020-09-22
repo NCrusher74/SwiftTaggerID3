@@ -97,9 +97,8 @@ class Frame {
 
 enum FrameError: Error {
     case UnableToDecodeStringData
-    case InvalidDateData(String)
+    case InvalidDateString
     case InvalidIdentifierString(String)
     case UnhandledImageFormat
     case InvalidImageData
-    case UnableToConvertIntegerToString
 }

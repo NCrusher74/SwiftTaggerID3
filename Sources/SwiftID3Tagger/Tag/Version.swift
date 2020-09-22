@@ -23,7 +23,7 @@ public enum Version: UInt8, CaseIterable {
         guard data.count == 5 else {
             fatalError(Mp3FileError.InvalidVersionData.localizedDescription)
         }
-        let fourthByte = UInt8(data[data.index(data.startIndex, offsetBy: 3)])
+        let fourthByte = UInt8(data[4])
         guard fourthByte == 0x02 ||
                 fourthByte == 0x03 ||
                 fourthByte == 0x04 else {
@@ -34,7 +34,9 @@ public enum Version: UInt8, CaseIterable {
     
     var versionBytes: Data {
         var bytes: [UInt8] = [0x49, 0x44, 0x33]
-        bytes.append(self.rawValue)
+        for version in Version.allCases {
+            bytes.append(version.rawValue)
+        }
         bytes.append(0x00)
         return Data(bytes)
     }

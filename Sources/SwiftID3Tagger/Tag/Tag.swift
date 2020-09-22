@@ -90,9 +90,11 @@ public struct Tag {
     /// Concatenates header and frame data into tag data
     /// - Returns: the entire encoded tag complete with header data
     @available(OSX 10.12, *)
-    func buildTagWithHeader(version: Version) -> Data {
+    mutating func buildTagWithHeader(version: Version) -> Data {
+        self.version = version
         var framesData = Data()
         for (_, frame) in self.frames {
+            frame.version = version
             framesData.append(frame.encode)
         }
         var tagData = version.versionBytes
