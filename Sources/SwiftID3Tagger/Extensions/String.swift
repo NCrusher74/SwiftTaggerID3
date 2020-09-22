@@ -30,6 +30,14 @@ extension String {
         self.init(format: "%0\(leadingZeros)d", int)
     }
     
+    func leadingZeros(_ zeros: Int) -> String {
+        if let int = Int(self) {
+            return String(withInt: int, leadingZeros: zeros)
+        }
+        print("Warning: \(self) is not an Int")
+        return ""
+    }
+    
     func components(withLength length: Int) -> [String] {
         return stride(from: 0, to: self.count, by: length).map {
             let start = self.index(self.startIndex, offsetBy: $0)

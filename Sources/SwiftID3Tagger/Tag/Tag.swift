@@ -90,8 +90,7 @@ public struct Tag {
     /// Concatenates header and frame data into tag data
     /// - Returns: the entire encoded tag complete with header data
     @available(OSX 10.12, *)
-    mutating func buildTagWithHeader(version: Version) -> Data {
-        self.version = version
+    func buildTagWithHeader(version: Version) -> Data {
         var framesData = Data()
         for (_, frame) in self.frames {
             frame.version = version
@@ -130,4 +129,7 @@ public struct Tag {
     /// The known byte-offset of an ID3 tag's data after a valid tag header
     /// This value may be used to validate ID3 tag header data, or to locate the tag's frame data
     let frameDataOffset: Data.Index = 10
+    var tagSizeDataRange: Range<Int> {
+        return tagSizeOffset ..< tagSizeOffset + tagSizeLength
+    }
 }

@@ -44,19 +44,31 @@ public struct Mp3File {
     }
     
     @available(OSX 10.12, *)
-    public var tag: Tag {
-        do {
+    public func tag() throws -> Tag {
             return try Tag(mp3File: self)
-        } catch {
-            fatalError("Unable to initialize tag instance")
-        }
     }
     
     @available(OSX 10.12, *)
     public func write(tag: inout Tag,
                       version: Version,
                       outputLocation: URL) throws {
-        let data = tag.buildTagWithHeader(version: version)
+        let data = buildNewFile(tag: tag, version: version)
         try data.write(to: outputLocation)
+    }
+    
+    @available(OSX 10.12, *)
+    private func buildNewFile(tag: Tag, version: Version) -> Data {
+        var data = self.data
+        let tagSizeData = data.subdata(in: tag.tagSizeDataRange)
+        
+        let size = (tagSizeData as NSData)
+            .bytes.assumingMemoryBound(to: UInt32.self).pointee.bigEndian
+        let tagSize = size.decodingSynchsafe().toInt
+
+        let tagDataRange = data.startIndex ..< tag.tagHeaderLength + tagSize
+        
+        let tagData = tag.buildTagWithHeader(version: version)
+        data.replaceSubrange(tagDataRange, with: tagData)
+        return data
     }
 }

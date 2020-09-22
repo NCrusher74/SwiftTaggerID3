@@ -16,7 +16,7 @@ extension Date {
 
         if let day = components.day {
             if let month = components.month {
-                let dateString = String(day) + String(month)
+                let dateString = String(day).leadingZeros(2) + String(month).leadingZeros(2)
                 encodedString = dateString.encodedISOLatin1
             } else {
                 encodedString = Data()
@@ -35,7 +35,7 @@ extension Date {
         
         if let hour = components.hour {
             if let minute = components.minute {
-                let dateString = String(hour) + String(minute)
+                let dateString = String(hour).leadingZeros(2) + String(minute).leadingZeros(2)
                 encodedString = dateString.encodedISOLatin1
             } else {
                 encodedString = Data()
