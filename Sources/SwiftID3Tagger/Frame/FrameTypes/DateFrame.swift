@@ -155,7 +155,7 @@ class DateFrame: Frame {
         }
     }
     
-    // // MARK: - Frame Building
+    // MARK: - Frame Building
     /// Initialize a date frame for writing to file
     /// - Parameters:
     ///   - layout: the frame layout
@@ -194,7 +194,7 @@ class DateFrame: Frame {
 // MARK: - Tag extension
 // These are convenience getter-setter properties
 extension Tag {
-    private func get(forDateFrame identifier: FrameIdentifier) -> Date? {
+    private func get(dateFrame identifier: FrameIdentifier) -> Date? {
         if let frame = self.frames[identifier.frameKey(nil)] as? DateFrame {
             let date = frame.timeStamp ?? Date.distantPast
             return date
@@ -204,35 +204,96 @@ extension Tag {
     }
     
     @available(OSX 10.12, *)
-    private mutating func set(_ identifier: FrameIdentifier,
-                               _ frameKey: String,
-                               timeStamp: Date) {
-        let frame = DateFrame(identifier,
-                              version: self.version,
-                              timeStamp: timeStamp)
-        self.frames[frameKey] = frame
+    private mutating func set(dateFrame identifier: FrameIdentifier,
+                               timeStamp: Date?) {
+        if let timeStamp = timeStamp {
+            let frame = DateFrame(identifier,
+                                  version: self.version,
+                                  timeStamp: timeStamp)
+            self.frames[identifier.frameKey(nil)] = frame
+        } else {
+            self.frames[identifier.frameKey(nil)] = nil
+        }
     }
     
-    /// Version 2.4 only. Identifier: `TDRL`
+    /// v2.4: releaseDate (`TDRL`) frame.
+    /// v2.2, v2.3: date (`TDA/TDAT`) frame for DDMM values, time (`TIM/TIME`) frame for HHMM values, and year (`TYE/TYER`) frame for YYYY value
     @available(OSX 10.12, *)
     public var releaseDateTime: Date? {
         get {
-            get(forDateFrame: .known(.releaseTime))
+            switch self.version {
+                case .v2_2, .v2_3:
+                    let calendar = Calendar(identifier: .iso8601)
+                    let timeZone = TimeZone(secondsFromGMT: 0) ?? .current
+                    
+                    let year: Int?
+                    let month: Int?
+                    let day: Int?
+                    let hour: Int?
+                    let minute: Int?
+                    
+                    if let yearFrameDate = get(dateFrame: .known(.year)) {
+                        let yearFrameComps = calendar.dateComponents(in: timeZone, from: yearFrameDate)
+                        year = yearFrameComps.year
+                    } else {
+                        year = nil
+                    }
+                    
+                    if let dateFrameDate = get(dateFrame: .known(.date)) {
+                        let dateFrameComps = calendar.dateComponents(
+                            in: timeZone, from: dateFrameDate)
+                        day = dateFrameComps.day
+                        month = dateFrameComps.month
+                    } else {
+                        day = nil
+                        month = nil
+                    }
+                    
+                    if let timeFrameDate = get(dateFrame: .known(.time)) {
+                        let timeFrameComps = calendar.dateComponents(
+                            in: timeZone, from: timeFrameDate)
+                        hour = timeFrameComps.hour
+                        minute = timeFrameComps.minute
+                    } else {
+                        hour = nil
+                        minute = nil
+                    }
+                    
+                    let date = calendar.date(from: DateComponents(calendar: calendar, timeZone: timeZone, year: year, month: month, day: day, hour: hour, minute: minute))
+                    return date
+                case .v2_4:
+                    return get(dateFrame: .known(.releaseTime))
+            }
         }
         set {
-            let identifier = FrameIdentifier.known(.releaseTime)
-            let frameKey = identifier.frameKey(nil)
-            guard self.version == .v2_4 else {
-                print("WARNING: '\(frameKey)' frame is only available for ID3 v2.4. Writing value to 'date' frame instead.")
-                self.date = newValue
-                return
-            }
             if let new = newValue {
-                set(identifier,
-                    frameKey,
-                    timeStamp: new)
+                switch self.version {
+                    case .v2_2, .v2_3:
+                        let dateID = FrameIdentifier.known(.date)
+                        let timeID = FrameIdentifier.known(.time)
+                        let yearID = FrameIdentifier.known(.year)
+                        
+                        set(dateFrame: dateID, timeStamp: new)
+                        set(dateFrame: timeID, timeStamp: new)
+                        set(dateFrame: yearID, timeStamp: new)
+                    case .v2_4:
+                        let frameID = FrameIdentifier.known(.releaseTime)
+                        set(dateFrame: frameID, timeStamp: new)
+                }
             } else {
-                self.frames[frameKey] = nil
+                switch self.version {
+                    case .v2_2, .v2_3:
+                        let dateID = FrameIdentifier.known(.date)
+                        let timeID = FrameIdentifier.known(.time)
+                        let yearID = FrameIdentifier.known(.year)
+                        
+                        set(dateFrame: dateID, timeStamp: nil)
+                        set(dateFrame: timeID, timeStamp: nil)
+                        set(dateFrame: yearID, timeStamp: nil)
+                    case .v2_4:
+                        let frameID = FrameIdentifier.known(.releaseTime)
+                        set(dateFrame: frameID, timeStamp: nil)
+                }
             }
         }
     }
@@ -241,22 +302,13 @@ extension Tag {
     @available(OSX 10.12, *)
     public var encodingDateTime: Date? {
         get {
-            get(forDateFrame: .known(.encodingTime))
+            get(dateFrame: .known(.encodingTime))
         }
         set {
             let identifier = FrameIdentifier.known(.encodingTime)
             let frameKey = identifier.frameKey(nil)
-            guard self.version == .v2_4 else {
-                print("WARNING: '\(frameKey)' frame is only available for ID3 v2.4. Writing value to a 'userDefinedText' frame instead, with description \(frameKey).")
-                let formatter = ISO8601DateFormatter()
-                formatter.formatOptions = .withInternetDateTime
-                formatter.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
-                self[frameKey] = formatter.string(from: newValue ?? Date.distantPast)
-                return
-            }
             if let new = newValue {
-                set(identifier,
-                    frameKey,
+                set(dateFrame: identifier,
                     timeStamp: new)
             } else {
                 self.frames[frameKey] = nil
@@ -268,22 +320,13 @@ extension Tag {
     @available(OSX 10.12, *)
     public var taggingDateTime: Date? {
         get {
-            get(forDateFrame: .known(.taggingTime))
+            get(dateFrame: .known(.taggingTime))
         }
         set {
             let identifier = FrameIdentifier.known(.taggingTime)
             let frameKey = identifier.frameKey(nil)
-            guard self.version == .v2_4 else {
-                print("WARNING: '\(frameKey)' frame is only available for ID3 v2.4. Writing value to a 'userDefinedText' frame instead, with description \(frameKey).")
-                let formatter = ISO8601DateFormatter()
-                formatter.formatOptions = .withInternetDateTime
-                formatter.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
-                self[frameKey] = formatter.string(from: newValue ?? Date.distantPast)
-                return
-            }
             if let new = newValue {
-                set(identifier,
-                    frameKey,
+                set(dateFrame: identifier,
                     timeStamp: new)
             } else {
                 self.frames[frameKey] = nil
@@ -295,14 +338,13 @@ extension Tag {
     @available(OSX 10.12, *)
     public var recordingDateTime: Date? {
         get {
-            get(forDateFrame: .known(.recordingDate))
+            get(dateFrame: .known(.recordingDate))
         }
         set {
             let identifier = FrameIdentifier.known(.recordingDate)
             let frameKey = identifier.frameKey(nil)
             if let new = newValue {
-                set(identifier,
-                    frameKey,
+                set(dateFrame: identifier,
                     timeStamp: new)
             } else {
                 self.frames[frameKey] = nil
@@ -315,101 +357,13 @@ extension Tag {
     @available(OSX 10.12, *)
     public var originalRelease: Date? {
         get {
-            get(forDateFrame: .known(.originalReleaseTime))
+            get(dateFrame: .known(.originalReleaseTime))
         }
         set {
             let identifier = FrameIdentifier.known(.originalReleaseTime)
             let frameKey = identifier.frameKey(nil)
             if let new = newValue {
-                set(identifier,
-                    frameKey,
-                    timeStamp: new)
-            } else {
-                self.frames[frameKey] = nil
-            }
-        }
-    }
-    
-    /// version 2.2/2.3 only Identifier `TDA`/`TDAT`
-    ///
-    /// Only uses `Day` and `Month` values of date. What is written to file will be a four byte string representation of the `DDMM` values.
-    @available(OSX 10.12, *)
-    public var date: Date? {
-        get {
-            let date = get(forDateFrame: .known(.date))
-            return date
-        }
-        set {
-            let identifier = FrameIdentifier.known(.date)
-            let frameKey = identifier.frameKey(nil)
-            guard self.version == .v2_2 || self.version == .v2_3 else {
-                let formatter = ISO8601DateFormatter()
-                formatter.formatOptions = .withInternetDateTime
-                formatter.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
-                self[frameKey] = formatter.string(from: newValue ?? Date.distantPast)
-                return
-            }
-            if let new = newValue {
-                set(identifier,
-                    frameKey,
-                    timeStamp: new)
-            } else {
-                self.frames[frameKey] = nil
-            }
-        }
-    }
-    
-    /// version 2.2/2.3. Identifier `TIM`/`TIME`
-    ///
-    /// Only uses `Hour` and `Minute` values of date. What is written to file will be a four byte string representation of the `HHMM` values.
-    @available(OSX 10.12, *)
-    public var time: Date? {
-        get {
-            let date = get(forDateFrame: .known(.time))
-            return date
-        }
-        set {
-            let identifier = FrameIdentifier.known(.time)
-            let frameKey = identifier.frameKey(nil)
-            guard self.version == .v2_2 || self.version == .v2_3 else {
-                let formatter = ISO8601DateFormatter()
-                formatter.formatOptions = .withInternetDateTime
-                formatter.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
-                self[frameKey] = formatter.string(from: newValue ?? Date.distantPast)
-                return
-            }
-            if let new = newValue {
-                set(identifier,
-                    frameKey,
-                    timeStamp: new)
-            } else {
-                self.frames[frameKey] = nil
-            }
-        }
-    }
-    
-    /// Version 2.2/2.3 Identifier `TYE`/`TYER`
-    ///
-    /// Only uses `Year` valeu of date. What is written to file will be a four byte string representation of the `YYYY` value.
-    @available(OSX 10.12, *)
-    public var year: Date? {
-        get {
-            let date = get(forDateFrame: .known(.year))
-            return date
-        }
-        set {
-            let identifier = FrameIdentifier.known(.year)
-            let frameKey = identifier.frameKey(nil)
-            guard self.version == .v2_2 || self.version == .v2_3 else {
-                let formatter = ISO8601DateFormatter()
-                formatter.formatOptions = .withInternetDateTime
-                formatter.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
-                self[frameKey] = formatter.string(from: newValue ?? Date.distantPast)
-                return
-            }
-            if let new = newValue {
-                set(identifier,
-                    frameKey,
+                set(dateFrame: identifier,
                     timeStamp: new)
             } else {
                 self.frames[frameKey] = nil

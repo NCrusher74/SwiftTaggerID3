@@ -226,8 +226,8 @@ extension Version {
                 }
             case .encodingTime:
                 switch self {
-                    case .v2_2, .v2_3: return nil
-                    case .v2_4: return "TDEN"
+                    case .v2_2: return "TDN"
+                    case .v2_3, .v2_4: return "TDEN"
                 }
             case .encodedBy:
                 switch self {
@@ -305,7 +305,6 @@ extension Version {
                     case .v2_2: return "MVC"
                     case .v2_3, .v2_4: return "MVCN"
                 }
-                
             case .movement:
                 switch self {
                     case .v2_2: return "MVN"
@@ -440,8 +439,8 @@ extension Version {
                 }
             case .taggingTime:
                 switch self {
-                    case .v2_2, .v2_3: return nil
-                    case .v2_4: return "TDTG"
+                    case .v2_2: return "TTG"
+                    case .v2_3, .v2_4: return "TDTG"
                 }
             case .time:
                 switch self {
