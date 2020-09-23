@@ -215,7 +215,7 @@ extension Tag {
     }
 
     public mutating func removeChapter(startTime: Int) {
-        let identifier = FrameIdentifier.known(.chapter)
+        let identifier = FrameIdentifier.chapter
         let frameKey = identifier.frameKey(startTime)
         self.frames[frameKey] = nil
     }
@@ -243,14 +243,14 @@ extension Tag {
     private mutating func setChapterFrame(startTime: Int,
                                   endTime: Int,
                                   title: String) throws {
-        let identifier = FrameIdentifier.known(.chapter)
+        let identifier = FrameIdentifier.chapter
         let frameKey = identifier.frameKey(startTime)
         // remove existing frame at startTime, if it exists
         removeChapter(startTime: startTime)
         
         var subframes = Tag(version: self.version)
         subframes.title = title
-        let frame = ChapterFrame(.known(.chapter),
+        let frame = ChapterFrame(.chapter,
                                  version: self.version,
                                  startTime: startTime,
                                  endTime: endTime,

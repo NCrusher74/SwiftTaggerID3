@@ -105,7 +105,7 @@ extension Tag {
             return involvementCredits
         }
         set {
-            let identifier = FrameIdentifier.known(.involvedPeopleList)
+            let identifier = FrameIdentifier.involvedPeopleList
             let frameKey = identifier.frameKey(nil)
 
             if !newValue.isEmpty {
@@ -143,7 +143,7 @@ extension Tag {
             return musicianCredits
         }
         set {
-            let identifier = FrameIdentifier.known(.musicianCreditsList)
+            let identifier = FrameIdentifier.musicianCreditsList
             let frameKey = identifier.frameKey(nil)
 
             if !newValue.isEmpty {
@@ -195,7 +195,7 @@ extension Tag {
     
     /// Removes ALL values from the `musicianCreditList` atom.
     public mutating func clearMusicianCreditList() {
-        let frameKey = FrameIdentifier.known(.musicianCreditsList).frameKey(nil)
+        let frameKey = FrameIdentifier.musicianCreditsList.frameKey(nil)
         self.frames[frameKey] = nil
     }
     
@@ -210,7 +210,7 @@ extension Tag {
     
     /// Removes ALL values from the `involvedPeopleList` atom
     public mutating func clearInvolvementCreditList() {
-        let frameKey = FrameIdentifier.known(.involvedPeopleList).frameKey(nil)
+        let frameKey = FrameIdentifier.involvedPeopleList.frameKey(nil)
         self.frames[frameKey] = nil
     }
     
@@ -231,7 +231,7 @@ extension Tag {
     /// Retrieves the `involvedPeopleList` (`IPL/IPLS/TIPL`) frame  as a `[role: [person]]` dictionary
     /// - Returns: the `[String: [String]]` dictionary of `[role: [person]]` pairs
     private var involvementCredits: [InvolvedPersonCredits: [String]] {
-        let identifier = FrameIdentifier.known(.involvedPeopleList)
+        let identifier = FrameIdentifier.involvedPeopleList
         let frameKey = identifier.frameKey(nil)
         
         var dictionary = [InvolvedPersonCredits: [String]]()
@@ -249,7 +249,7 @@ extension Tag {
     /// Retrieves the `musicianCreditsList` (`TMCL`) frame  as a `[role: [person]]` dictionary
     /// - Returns: the `[String: [String]]` dictionary of `[role: [person]]` pairs
     private var musicianCredits: [MusicianAndPerformerCredits: [String]] {
-        let identifier = FrameIdentifier.known(.musicianCreditsList)
+        let identifier = FrameIdentifier.musicianCreditsList
         let frameKey = identifier.frameKey(nil)
         
         var dictionary = [MusicianAndPerformerCredits: [String]]()
@@ -267,7 +267,7 @@ extension Tag {
     /// set the `[role: [person]]` dictionary for the `involvedPeopleList` frame
     /// - Parameter credits: the dictionary of `[role: [person]]` pairs
     private mutating func set(involvementCredits: [InvolvedPersonCredits:[String]]) {
-        let identifier = FrameIdentifier.known(.involvedPeopleList)
+        let identifier = FrameIdentifier.involvedPeopleList
         let frameKey = identifier.frameKey(nil)
         
         var stringDict = [String: [String]]()
@@ -284,7 +284,7 @@ extension Tag {
     /// set the `[role: [person]]` dictionary for the `musicianCreditsList` frame
     /// - Parameter credits: the dictionary of `[role: [person]]` pairs
     private mutating func set(musicianCredits: [MusicianAndPerformerCredits:[String]]) {
-        let identifier = FrameIdentifier.known(.musicianCreditsList)
+        let identifier = FrameIdentifier.musicianCreditsList
         let frameKey = identifier.frameKey(nil)
         
         var stringDict = [String: [String]]()

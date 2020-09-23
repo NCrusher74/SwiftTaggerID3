@@ -121,7 +121,7 @@ extension Tag {
     /// DiscNumber(/TotalDiscs) getter-setter. ID3 Identifier: `TPA`/`TPOS`
     public var discNumber: (disc: Int, totalDiscs: Int?) {
         get {
-            let identifier = FrameIdentifier.known(.discNumber)
+            let identifier = FrameIdentifier.discNumber
             let frameKey = identifier.frameKey(nil)
             var tuple: (disc: Int, totalDiscs: Int?) = (0, nil)
             if let frame = self.frames[frameKey] as? PartAndTotalFrame {
@@ -131,7 +131,7 @@ extension Tag {
             return tuple
         }
         set {
-            let identifier = FrameIdentifier.known(.discNumber)
+            let identifier = FrameIdentifier.discNumber
             let frameKey = identifier.frameKey(nil)
             if newValue != (0, nil) {
                 set(partTotalFrame: identifier,
@@ -146,7 +146,7 @@ extension Tag {
     /// TrackNumber(/TotalTracks) getter-setter. ID3 Identifier: `TRK`/`TRCK`
     public var trackNumber: (track: Int, totalTracks: Int?) {
         get {
-            let identifier = FrameIdentifier.known(.trackNumber)
+            let identifier = FrameIdentifier.trackNumber
             let frameKey = identifier.frameKey(nil)
             var tuple: (track: Int, totalTracks: Int?) = (0, nil)
             if let frame = self.frames[frameKey] as? PartAndTotalFrame {
@@ -156,7 +156,7 @@ extension Tag {
             return tuple
         }
         set {
-            let identifier = FrameIdentifier.known(.trackNumber)
+            let identifier = FrameIdentifier.trackNumber
             let frameKey = identifier.frameKey(nil)
             if newValue != (0, nil) {
                 set(partTotalFrame: identifier,

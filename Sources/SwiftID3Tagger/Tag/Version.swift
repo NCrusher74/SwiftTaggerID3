@@ -106,7 +106,7 @@ extension Version {
         }
     }
     
-    func idString(_ id: KnownIdentifier) -> String? {
+    func idString(_ id: FrameIdentifier) -> String? {
         switch id {
             case .album:
                 switch self {
@@ -484,6 +484,7 @@ extension Version {
                     case .v2_3: return "TYER"
                     case .v2_4: return nil
                 }
+            case .passThrough: return nil
         }
     }
 }

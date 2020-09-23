@@ -9,203 +9,8 @@
 
 import Foundation
 
-/** `FrameLayoutIdentifier` describes how SwiftTagger refers to the frame type internally.
- All information for handling a frame are determined by its `FrameIdentifier` */
-enum FrameIdentifier: Hashable {
-    /// a frame with an identifier recognized and handled by SwiftTagger
-    case known(KnownIdentifier)
-    /// a frame with an unknown or unhandled identifier
-    case unknown(String)
-    
-    /// Initialize the `FrameLayoutIdentifier`
-    /// - Parameter identifier: the unique ID3 identifier string
-    init(identifier: String) {
-        if let known = KnownIdentifier(identifier: identifier) {
-            self = .known(known)
-        } else {
-            self = .unknown(identifier)
-        }
-    }
-    
-    /// Retrieve a frame's ID3 identifier string
-    /// - Parameter version: The tag's ID3 `Version`. Different versions may have different identifiers
-    /// - Returns: The ID3 identifier string appropriate for the version
-    func idString(version: Version) -> String? {
-        switch self {
-            case .known(let known):
-                return known.idString(version: version)
-            case .unknown(let identifier):
-                return identifier
-        }
-    }
-    
-    func frameKey(_ additionalID: Any?) -> String {
-        switch self {
-            case .known(let known):
-                return known.frameKey(additionalID)
-            case .unknown(let identifier):
-                if let uuid = additionalID as? UUID {
-                    return "\(identifier): \(uuid.uuidString)"
-                } else if let string = additionalID as? String {
-                    return "\(identifier): \(string)"
-                } else {
-                    fatalError("Unable to determine unique ID for unhandled frame type")
-                }
-        }
-    }
-    
-    var parseAs: FrameParser {
-        switch self {
-            case .unknown(_): return .unknown
-            case .known(.compilation): return .boolean
-            case .known(.attachedPicture): return .image
-            case .known(.chapter): return .chapter
-            case .known(.tableOfContents): return .tableOfContents
-            case .known(.discNumber),
-                 .known(.trackNumber): return .tuple
-            case .known(.involvedPeopleList),
-                 .known(.musicianCreditsList): return .credits
-            case .known(.comments),
-                 .known(.unsynchronizedLyrics): return .localized
-            case .known(.userDefinedText),
-                 .known(.userDefinedWebpage): return .userDefined
-            case .known(.genre),
-                 .known(.mediaType),
-                 .known(.fileType): return .complex
-            case .known(.bpm),
-                 .known(.length),
-                 .known(.movementCount),
-                 .known(.movementNumber),
-                 .known(.playlistDelay): return .integer
-            case .known(.artistWebpage),
-                 .known(.audioFileWebpage),
-                 .known(.audioSourceWebpage),
-                 .known(.copyrightWebpage),
-                 .known(.paymentWebpage),
-                 .known(.publisherWebpage),
-                 .known(.radioStationWebpage): return .url
-            case .known(.date),
-                 .known(.encodingTime),
-                 .known(.originalReleaseTime),
-                 .known(.recordingDate),
-                 .known(.releaseTime),
-                 .known(.taggingTime),
-                 .known(.time),
-                 .known(.year): return .date
-            default: return .string
-        }
-    }
-    
-    @available(OSX 10.12, *)
-    func parse(version: Version,
-               size: Int,
-               flags: Data,
-               payload: Data) throws -> Frame {
-        switch self.parseAs {
-            case .string, .boolean, .integer, .url:
-                return try StringFrame(identifier: self,
-                                       version: version,
-                                       size: size,
-                                       flags: flags,
-                                       payload: payload)
-            case .date:
-                return try DateFrame(identifier: self,
-                                     version: version,
-                                     size: size,
-                                     flags: flags,
-                                     payload: payload)
-            case .localized, .userDefined:
-                return try LocalizedFrame(identifier: self,
-                                          version: version,
-                                          size: size,
-                                          flags: flags,
-                                          payload: payload)
-            case .complex:
-                return try ComplexTypesFrame(identifier: self,
-                                             version: version,
-                                             size: size,
-                                             flags: flags,
-                                             payload: payload)
-            case .credits:
-                return try CreditsListFrame(identifier: self,
-                                            version: version,
-                                            size: size,
-                                            flags: flags,
-                                            payload: payload)
-            case .tuple:
-                return try PartAndTotalFrame(identifier: self,
-                                             version: version,
-                                             size: size,
-                                             flags: flags,
-                                             payload: payload)
-            case .chapter:
-                return try ChapterFrame(identifier: self,
-                                        version: version,
-                                        size: size,
-                                        flags: flags,
-                                        payload: payload)
-            case .tableOfContents:
-                return try TableOfContentsFrame(identifier: self,
-                                                version: version,
-                                                size: size,
-                                                flags: flags,
-                                                payload: payload)
-            case .image:
-                return try ImageFrame(identifier: self,
-                                      version: version,
-                                      size: size,
-                                      flags: flags,
-                                      payload: payload)
-            case .unknown:
-                return UnknownFrame(identifier: self,
-                                    version: version,
-                                    size: size,
-                                    flags: flags,
-                                    payload: payload)
-        }
-    }
-    
-    func warnings(version: Version) -> String? {
-        switch self {
-            case .known(.albumSort), .known(.artistSort), .known(.titleSort), .known(.encodingTime), .known(.taggingTime), .known(.musicianCreditsList), .known(.producedNotice), .known(.setSubtitle), .known(.mood):
-                switch version {
-                    case .v2_2, .v2_3:
-                        return "WARNING: The '\(self)' frame is not supported by ID3 \(version). SwiftTaggerID3 is creating this frame with the identifier '\(idString(version: version)!)' but this is a non-standard frame and may not be recognized by other apps."
-                    default: return nil
-                }
-            case .known(.fileOwner), .known(.radioStation), .known(.radioStationOwner), .known(.radioStationWebpage), .known(.paymentWebpage):
-                switch version {
-                    case .v2_2: return "WARNING: The '\(self)' frame is not supported by ID3 \(version). SwiftTaggerID3 is creating this frame with the identifier '\(idString(version: version)!)' but this is a non-standard frame and may not be recognized by other apps."
-                    default: return nil
-                }
-            case .known(.composerSort), .known(.albumArtistSort), .known(.grouping), .known(.movementCount), .known(.movementNumber), .known(.movement), .known(.compilation), .known(.podcastID), .known(.podcastFeed), .known(.podcastCategory), .known(.podcastKeywords), .known(.podcastDescription):
-                return "WARNING: The '\(self)' frame is an iTunes non-standard frame. SwiftTaggerID3 is creating this frame with the identifier '\(idString(version: version)!)' but it may not be recognized by other apps, particularly in ID3 version 2.2."
-            default: return nil
-        }
-    }
-
-}
-
-enum FrameParser {
-    /// A parser type that handles frames with string data. This includes frames with integer and boolean data, as those are stored as numeric strings
-    case string
-    case url
-    case boolean
-    case integer
-    case date
-    case localized
-    case userDefined
-    case complex
-    case credits
-    case tuple
-    case chapter
-    case tableOfContents
-    case image
-    case unknown
-}
-
 /** An enumeration of ID3 standard--or iTunes compliant but non-standard--frames*/
-enum KnownIdentifier: String, CaseIterable {
+enum FrameIdentifier: String, CaseIterable {
     
     case album
     case albumSort
@@ -281,12 +86,13 @@ enum KnownIdentifier: String, CaseIterable {
     case userDefinedText
     case userDefinedWebpage
     case year
+    case passThrough
     
-    init?(identifier: String) {
-        if let layout = KnownIdentifier.stringToLayoutMapping[identifier] {
-            self = layout
+    init(idString: String) {
+        if let identifier = FrameIdentifier.stringToIDMapping[idString] {
+            self = identifier
         } else {
-            return nil
+            self = .passThrough
         }
     }
          
@@ -351,16 +157,167 @@ enum KnownIdentifier: String, CaseIterable {
             default: return self.rawValue
         }
     }
-        
-    private static let stringToLayoutMapping: [String: KnownIdentifier] = {
-        var mapping: [String: KnownIdentifier] = [:]
-        for layout in KnownIdentifier.allCases {
+    
+    var parseAs: FrameParser {
+        switch self {
+            case .passThrough: return .passThrough
+            case .compilation: return .boolean
+            case .attachedPicture: return .image
+            case .chapter: return .chapter
+            case .tableOfContents: return .tableOfContents
+            case .discNumber,
+                 .trackNumber: return .tuple
+            case .involvedPeopleList,
+                 .musicianCreditsList: return .credits
+            case .comments,
+                 .unsynchronizedLyrics: return .localized
+            case .userDefinedText,
+                 .userDefinedWebpage: return .userDefined
+            case .genre,
+                 .mediaType,
+                 .fileType: return .complex
+            case .bpm,
+                 .length,
+                 .movementCount,
+                 .movementNumber,
+                 .playlistDelay: return .integer
+            case .artistWebpage,
+                 .audioFileWebpage,
+                 .audioSourceWebpage,
+                 .copyrightWebpage,
+                 .paymentWebpage,
+                 .publisherWebpage,
+                 .radioStationWebpage: return .url
+            case .date,
+                 .encodingTime,
+                 .originalReleaseTime,
+                 .recordingDate,
+                 .releaseTime,
+                 .taggingTime,
+                 .time,
+                 .year: return .date
+            default: return .string
+        }
+    }
+    
+    @available(OSX 10.12, *)
+    func parse(version: Version,
+               size: Int,
+               flags: Data,
+               payload: Data,
+               idString: String) throws -> Frame {
+        switch self.parseAs {
+            case .string, .boolean, .integer, .url:
+                return try StringFrame(identifier: self,
+                                       version: version,
+                                       size: size,
+                                       flags: flags,
+                                       payload: payload)
+            case .date:
+                return try DateFrame(identifier: self,
+                                     version: version,
+                                     size: size,
+                                     flags: flags,
+                                     payload: payload)
+            case .localized, .userDefined:
+                return try LocalizedFrame(identifier: self,
+                                          version: version,
+                                          size: size,
+                                          flags: flags,
+                                          payload: payload)
+            case .complex:
+                return try ComplexTypesFrame(identifier: self,
+                                             version: version,
+                                             size: size,
+                                             flags: flags,
+                                             payload: payload)
+            case .credits:
+                return try CreditsListFrame(identifier: self,
+                                            version: version,
+                                            size: size,
+                                            flags: flags,
+                                            payload: payload)
+            case .tuple:
+                return try PartAndTotalFrame(identifier: self,
+                                             version: version,
+                                             size: size,
+                                             flags: flags,
+                                             payload: payload)
+            case .chapter:
+                return try ChapterFrame(identifier: self,
+                                        version: version,
+                                        size: size,
+                                        flags: flags,
+                                        payload: payload)
+            case .tableOfContents:
+                return try TableOfContentsFrame(identifier: self,
+                                                version: version,
+                                                size: size,
+                                                flags: flags,
+                                                payload: payload)
+            case .image:
+                return try ImageFrame(identifier: self,
+                                      version: version,
+                                      size: size,
+                                      flags: flags,
+                                      payload: payload)
+            case .passThrough:
+                return PassThroughFrame(identifier: self,
+                                    version: version,
+                                    size: size,
+                                    flags: flags,
+                                    payload: payload,
+                                    idString: idString)
+        }
+    }
+    
+    func warnings(version: Version) -> String? {
+        switch self {
+            case .albumSort, .artistSort, .titleSort, .encodingTime, .taggingTime, .musicianCreditsList, .producedNotice, .setSubtitle, .mood:
+                switch version {
+                    case .v2_2, .v2_3:
+                        return "WARNING: The '\(self)' frame is not supported by ID3 \(version). SwiftTaggerID3 is creating this frame with the identifier '\(idString(version: version)!)' but this is a non-standard frame and may not be recognized by other apps."
+                    default: return nil
+                }
+            case .fileOwner, .radioStation, .radioStationOwner, .radioStationWebpage, .paymentWebpage:
+                switch version {
+                    case .v2_2: return "WARNING: The '\(self)' frame is not supported by ID3 \(version). SwiftTaggerID3 is creating this frame with the identifier '\(idString(version: version)!)' but this is a non-standard frame and may not be recognized by other apps."
+                    default: return nil
+                }
+            case .composerSort, .albumArtistSort, .grouping, .movementCount, .movementNumber, .movement, .compilation, .podcastID, .podcastFeed, .podcastCategory, .podcastKeywords, .podcastDescription:
+                return "WARNING: The '\(self)' frame is an iTunes non-standard frame. SwiftTaggerID3 is creating this frame with the identifier '\(idString(version: version)!)' but it may not be recognized by other apps, particularly in ID3 version 2.2."
+            default: return nil
+        }
+    }
+
+    private static let stringToIDMapping: [String: FrameIdentifier] = {
+        var mapping: [String: FrameIdentifier] = [:]
+        for id in FrameIdentifier.allCases {
             for version in Version.allCases {
-                if let idString = layout.idString(version: version) {
-                    mapping[idString] = layout
+                if let idString = id.idString(version: version) {
+                    mapping[idString] = id
                 }
             }
         }
         return mapping
     }()
 }
+
+enum FrameParser {
+    /// A parser type that handles frames with string data. This includes frames with integer and boolean data, as those are stored as numeric strings
+    case string
+    case url
+    case boolean
+    case integer
+    case date
+    case localized
+    case userDefined
+    case complex
+    case credits
+    case tuple
+    case chapter
+    case tableOfContents
+    case image
+    case passThrough
+}
+

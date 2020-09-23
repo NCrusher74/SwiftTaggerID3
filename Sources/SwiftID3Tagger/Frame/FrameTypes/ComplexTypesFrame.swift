@@ -93,9 +93,9 @@ class ComplexTypesFrame: Frame {
                 }
         }
 
-        if identifier == .known(.genre) {
+        if identifier == .genre {
             self.contentArray = parsedArray.parsedGenreStrings
-        } else if identifier == .known(.mediaType) {
+        } else if identifier == .mediaType {
             self.contentArray = parsedArray.parsedMediaTypeStrings
         } else {
             self.contentArray = parsedArray.parsedFileTypeStrings
@@ -117,23 +117,23 @@ class ComplexTypesFrame: Frame {
         var size = 1 // +1 for encoding byte
         switch version {
             case .v2_2, .v2_3: // null termination will be false
-                if identifier == .known(.genre) {
+                if identifier == .genre {
                     size += contentArray
                         .encodedGenreParentheticalStrings.count
-                } else if identifier == .known(.mediaType) {
+                } else if identifier == .mediaType {
                     size += contentArray
                         .encodedMediaTypeParentheticalStrings.count
-                } else if identifier == .known(.fileType) {
+                } else if identifier == .fileType {
                     size += contentArray.encodedFileTypeStrings.count
                 }
             case .v2_4: // null termination will be true
-                if identifier == .known(.genre) {
+                if identifier == .genre {
                     size += contentArray
                         .encodedNonParentheticalGenreStrings.count
-                } else if identifier == .known(.mediaType) {
+                } else if identifier == .mediaType {
                     size += contentArray
                         .encodedNonParentheticalMediaTypeStrings.count
-                } else if identifier == .known(.fileType) {
+                } else if identifier == .fileType {
                     size += contentArray
                         .encodedNonParentheticalFileTypeStrings.count
                 }
@@ -151,23 +151,23 @@ class ComplexTypesFrame: Frame {
         data.append(encoding.encodingByte)
         switch self.version {
             case .v2_2, .v2_3: // null termination will be false
-                if self.identifier == .known(.genre) {
+                if self.identifier == .genre {
                     data.append(
                         contentArray.encodedGenreParentheticalStrings)
-                } else if self.identifier == .known(.mediaType) {
+                } else if self.identifier == .mediaType {
                     data.append(
                         contentArray.encodedMediaTypeParentheticalStrings)
-                } else if self.identifier == .known(.fileType) {
+                } else if self.identifier == .fileType {
                     data.append(contentArray.encodedFileTypeStrings)
                 }
             case .v2_4: // null termination will be true
-                if self.identifier == .known(.genre) {
+                if self.identifier == .genre {
                     data.append(
                         contentArray.encodedNonParentheticalGenreStrings)
-                } else if self.identifier == .known(.mediaType) {
+                } else if self.identifier == .mediaType {
                     data.append(
                         contentArray.encodedNonParentheticalMediaTypeStrings)
-                } else if self.identifier == .known(.fileType) {
+                } else if self.identifier == .fileType {
                     data.append(
                         contentArray.encodedNonParentheticalFileTypeStrings)
                 }
@@ -205,7 +205,7 @@ extension Tag {
         get {
             // if the array exists and isn't empty
             var array: [(genreCategory: GenreType?, genre: String?)] = []
-            if let frameArray = get(complexTypesFrame: .known(.genre)) {
+            if let frameArray = get(complexTypesFrame: .genre) {
                 var tuple: (genreCategory: GenreType?, genre: String?) = (nil, nil)
                 var presetType: GenreType = .none
                 var customString: String = ""
@@ -246,7 +246,7 @@ extension Tag {
                     }
                 }
             }
-            set(complexTypesFrame: .known(.genre),
+            set(complexTypesFrame: .genre,
                 contentArray: stringArray)
         }
     }
@@ -255,7 +255,7 @@ extension Tag {
         get {
             var tuple: (mediaType: MediaType?, mediaTypeRefinement: MediaTypeRefinements?, additionalInformation: String?) = (nil, nil, nil)
             // if the array exists and isn't empty
-            if let frameArray = get(complexTypesFrame: .known(.mediaType)),
+            if let frameArray = get(complexTypesFrame: .mediaType),
                !frameArray.isEmpty {
                 var presetType: MediaType = .none
                 var presetRefinement: MediaTypeRefinements = .none
@@ -289,7 +289,7 @@ extension Tag {
             return tuple
         }
         set {
-            let identifier = FrameIdentifier.known(.mediaType)
+            let identifier = FrameIdentifier.mediaType
             let frameKey = identifier.frameKey(nil)
             if newValue != (nil, nil, nil) {
                 var frameArray = [String]()
@@ -305,7 +305,7 @@ extension Tag {
                     frameArray.append(string)
                 }
                 if !frameArray.isEmpty {
-                    set(complexTypesFrame: .known(.mediaType),
+                    set(complexTypesFrame: .mediaType,
                         contentArray: frameArray)
                 }
             } else {
@@ -318,7 +318,7 @@ extension Tag {
         get {
             var tuple: (fileType: FileType?, fileTypeRefinement: FileTypeRefinements?, additionalInformation: String?) = (nil, nil, nil)
             // if the array exists and isn't empty
-            if let frameArray = get(complexTypesFrame: .known(.fileType)),
+            if let frameArray = get(complexTypesFrame: .fileType),
                !frameArray.isEmpty {
                 var presetType: FileType = .none
                 var presetRefinement: FileTypeRefinements = .none
@@ -352,7 +352,7 @@ extension Tag {
             return tuple
         }
         set {
-            let identifier = FrameIdentifier.known(.fileType)
+            let identifier = FrameIdentifier.fileType
             let frameKey = identifier.frameKey(nil)
             if newValue != (nil, nil, nil) {
                 var frameArray = [String]()

@@ -51,10 +51,10 @@ extension Data.SubSequence {
         return String(data: Data(stringBytes), encoding: encoding)
     }
     
-    mutating func extractAndDecodeFrameID(_ version: Version) throws -> FrameIdentifier {
+    mutating func extractAndDecodeFrameID(_ version: Version) throws -> (identifier: FrameIdentifier, idString: String) {
         let idData = self.extractFirst(version.idLength)
         let idString = try String(ascii: idData)
-        return FrameIdentifier(identifier: idString)
+        return (FrameIdentifier(idString: idString), idString)
     }
     
     mutating func extractAndCalculateFrameSize(_ version: Version) -> Int {
@@ -78,13 +78,16 @@ extension Data.SubSequence {
     @available(OSX 10.12, *)
     mutating func extractAndParseToFrame(_ version: Version) throws -> Frame? {
         // extract the identifier data
-        let identifier = try self.extractAndDecodeFrameID(version)
+        let frameID = try self.extractAndDecodeFrameID(version)
+        let identifier = frameID.identifier
+        let idString = frameID.idString
         let size = self.extractAndCalculateFrameSize(version)
         let flags = self.extractFlags(version)
         let payload = self.extractFirst(size)
         return try identifier.parse(version: version,
                                     size: size,
                                     flags: flags,
-                                    payload: payload)
+                                    payload: payload,
+                                    idString: idString)
     }
 }

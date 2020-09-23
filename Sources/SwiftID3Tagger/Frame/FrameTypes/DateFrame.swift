@@ -96,14 +96,14 @@ class DateFrame: Frame {
         let dateString = try data.extractAndDecodeString(encoding: encoding)
         
         // assumes frame contents are spec-compliant, 4-characters, DDMM string
-        if identifier == .known(.date) {
+        if identifier == .date {
             // assumes frame contents are spec-compliant, 4-characters, HHmm string
             self.timeStamp = try dateString.dateFromDDMMString()
-        } else if identifier == .known(.time) {
+        } else if identifier == .time {
             self.timeStamp = try dateString.timefromHHMMString()
-        } else if identifier == .known(.year) ||
+        } else if identifier == .year ||
                     // versions 2.2 and 2.3 should only have a year for this frame
-                    (identifier == .known(.originalReleaseTime) &&
+                    (identifier == .originalReleaseTime &&
                         (version == .v2_2 || version == .v2_3)) {
             self.timeStamp = try dateString.yearFromYYYYString()
         } else {
@@ -131,12 +131,12 @@ class DateFrame: Frame {
         
         if let date = timeStamp {
             var encodedString = Data()
-            if self.identifier == .known(.date) {
+            if self.identifier == .date {
                 encodedString = date.encodeDDMMTimestamp
-            } else if self.identifier == .known(.time) {
+            } else if self.identifier == .time {
                 encodedString = date.encodeHHMMTimestamp
-            } else if self.identifier == .known(.year) ||
-                        (self.identifier == .known(.originalReleaseTime) &&
+            } else if self.identifier == .year ||
+                        (self.identifier == .originalReleaseTime &&
                             (self.version == .v2_2 || self.version == .v2_3)) {
                 encodedString = date.encodeYYYYTimestamp
             } else {
@@ -168,12 +168,12 @@ class DateFrame: Frame {
         let flags = version.defaultFlags
         
         var size = 1 // +1 for encoding byte
-        if identifier == .known(.date) {
+        if identifier == .date {
             size += timeStamp.encodeDDMMTimestamp.count
-        } else if identifier == .known(.time) {
+        } else if identifier == .time {
             size += timeStamp.encodeHHMMTimestamp.count
-        } else if identifier == .known(.year) ||
-                    (identifier == .known(.originalReleaseTime) &&
+        } else if identifier == .year ||
+                    (identifier == .originalReleaseTime &&
                         (version == .v2_2 || version == .v2_3)) {
             size += timeStamp.encodeYYYYTimestamp.count
         } else {
@@ -232,14 +232,14 @@ extension Tag {
                     let hour: Int?
                     let minute: Int?
                     
-                    if let yearFrameDate = get(dateFrame: .known(.year)) {
+                    if let yearFrameDate = get(dateFrame: .year) {
                         let yearFrameComps = calendar.dateComponents(in: timeZone, from: yearFrameDate)
                         year = yearFrameComps.year
                     } else {
                         year = nil
                     }
                     
-                    if let dateFrameDate = get(dateFrame: .known(.date)) {
+                    if let dateFrameDate = get(dateFrame: .date) {
                         let dateFrameComps = calendar.dateComponents(
                             in: timeZone, from: dateFrameDate)
                         day = dateFrameComps.day
@@ -249,7 +249,7 @@ extension Tag {
                         month = nil
                     }
                     
-                    if let timeFrameDate = get(dateFrame: .known(.time)) {
+                    if let timeFrameDate = get(dateFrame: .time) {
                         let timeFrameComps = calendar.dateComponents(
                             in: timeZone, from: timeFrameDate)
                         hour = timeFrameComps.hour
@@ -262,36 +262,36 @@ extension Tag {
                     let date = calendar.date(from: DateComponents(calendar: calendar, timeZone: timeZone, year: year, month: month, day: day, hour: hour, minute: minute))
                     return date
                 case .v2_4:
-                    return get(dateFrame: .known(.releaseTime))
+                    return get(dateFrame: .releaseTime)
             }
         }
         set {
             if let new = newValue {
                 switch self.version {
                     case .v2_2, .v2_3:
-                        let dateID = FrameIdentifier.known(.date)
-                        let timeID = FrameIdentifier.known(.time)
-                        let yearID = FrameIdentifier.known(.year)
+                        let dateID = FrameIdentifier.date
+                        let timeID = FrameIdentifier.time
+                        let yearID = FrameIdentifier.year
                         
                         set(dateFrame: dateID, timeStamp: new)
                         set(dateFrame: timeID, timeStamp: new)
                         set(dateFrame: yearID, timeStamp: new)
                     case .v2_4:
-                        let frameID = FrameIdentifier.known(.releaseTime)
+                        let frameID = FrameIdentifier.releaseTime
                         set(dateFrame: frameID, timeStamp: new)
                 }
             } else {
                 switch self.version {
                     case .v2_2, .v2_3:
-                        let dateID = FrameIdentifier.known(.date)
-                        let timeID = FrameIdentifier.known(.time)
-                        let yearID = FrameIdentifier.known(.year)
+                        let dateID = FrameIdentifier.date
+                        let timeID = FrameIdentifier.time
+                        let yearID = FrameIdentifier.year
                         
                         set(dateFrame: dateID, timeStamp: nil)
                         set(dateFrame: timeID, timeStamp: nil)
                         set(dateFrame: yearID, timeStamp: nil)
                     case .v2_4:
-                        let frameID = FrameIdentifier.known(.releaseTime)
+                        let frameID = FrameIdentifier.releaseTime
                         set(dateFrame: frameID, timeStamp: nil)
                 }
             }
@@ -302,10 +302,10 @@ extension Tag {
     @available(OSX 10.12, *)
     public var encodingDateTime: Date? {
         get {
-            get(dateFrame: .known(.encodingTime))
+            get(dateFrame: .encodingTime)
         }
         set {
-            let identifier = FrameIdentifier.known(.encodingTime)
+            let identifier = FrameIdentifier.encodingTime
             let frameKey = identifier.frameKey(nil)
             if let new = newValue {
                 set(dateFrame: identifier,
@@ -320,10 +320,10 @@ extension Tag {
     @available(OSX 10.12, *)
     public var taggingDateTime: Date? {
         get {
-            get(dateFrame: .known(.taggingTime))
+            get(dateFrame: .taggingTime)
         }
         set {
-            let identifier = FrameIdentifier.known(.taggingTime)
+            let identifier = FrameIdentifier.taggingTime
             let frameKey = identifier.frameKey(nil)
             if let new = newValue {
                 set(dateFrame: identifier,
@@ -338,10 +338,10 @@ extension Tag {
     @available(OSX 10.12, *)
     public var recordingDateTime: Date? {
         get {
-            get(dateFrame: .known(.recordingDate))
+            get(dateFrame: .recordingDate)
         }
         set {
-            let identifier = FrameIdentifier.known(.recordingDate)
+            let identifier = FrameIdentifier.recordingDate
             let frameKey = identifier.frameKey(nil)
             if let new = newValue {
                 set(dateFrame: identifier,
@@ -357,10 +357,10 @@ extension Tag {
     @available(OSX 10.12, *)
     public var originalRelease: Date? {
         get {
-            get(dateFrame: .known(.originalReleaseTime))
+            get(dateFrame: .originalReleaseTime)
         }
         set {
-            let identifier = FrameIdentifier.known(.originalReleaseTime)
+            let identifier = FrameIdentifier.originalReleaseTime
             let frameKey = identifier.frameKey(nil)
             if let new = newValue {
                 set(dateFrame: identifier,

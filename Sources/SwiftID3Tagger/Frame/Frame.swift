@@ -34,7 +34,7 @@ class Frame {
 
     var frameKey: String {
         switch self.identifier {
-            case .known(.attachedPicture), .known(.chapter), .known(.comments), .known(.unsynchronizedLyrics), .known(.userDefinedText), .known(.userDefinedWebpage):
+            case .attachedPicture, .chapter, .comments, .unsynchronizedLyrics, .userDefinedText, .userDefinedWebpage:
                 fatalError("Override from frame subclass is required")
             default: return self.identifier.frameKey(nil)
         }

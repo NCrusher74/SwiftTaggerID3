@@ -194,7 +194,7 @@ extension Tag {
         } else {
             var subframes = Tag(version: self.version)
             subframes.title = "Table Of Contents"
-            let toc = TableOfContentsFrame(.known(.tableOfContents),
+            let toc = TableOfContentsFrame(.tableOfContents,
                                            version: self.version,
                                            childElementIDs: elementIDs,
                                            embeddedSubframesTag: subframes)

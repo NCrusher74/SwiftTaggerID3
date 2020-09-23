@@ -94,8 +94,8 @@ class LocalizedFrame: Frame {
         var data = payload
                 
         let encoding = try data.extractEncoding()
-        if identifier == .known(.comments) ||
-            identifier == .known(.unsynchronizedLyrics) {
+        if identifier == .comments ||
+            identifier == .unsynchronizedLyrics {
             /// parse out a language string only for these frame types
             let codeString = try String(ascii: data.extractFirst(3))
             if let languageCode = ISO6392Code(rawValue: codeString) {
@@ -133,7 +133,7 @@ class LocalizedFrame: Frame {
         var data = Data()
         let encoding = String.Encoding.isoLatin1
         data.append(encoding.encodingByte)
-        if self.identifier == .known(.comments) || self.identifier == .known(.unsynchronizedLyrics) {
+        if self.identifier == .comments || self.identifier == .unsynchronizedLyrics {
             // encode and append language string
 
             if let language = self.language {
@@ -191,7 +191,7 @@ extension Tag {
     /// `comments` frame getter-setter. ID3 Identifier `COM`/`COMM`
     public subscript(comment description: String?, language: ISO6392Code) -> String? {
         get {
-            if let string = get(localizedFrame: .known(.comments),
+            if let string = get(localizedFrame: .comments,
                                 language: language,
                                 description: description) {
                 return string
@@ -201,7 +201,7 @@ extension Tag {
         }
         set {
             if let new = newValue {
-                set(localizedFrame: .known(.comments),
+                set(localizedFrame: .comments,
                     language: language,
                     description: description,
                     stringValue: new)
@@ -214,7 +214,7 @@ extension Tag {
     /// `unsynchronizedLyrics` frame getter-setter. ID3 Identifier `ULT`/`USLT`
     public subscript(lyrics description: String?, language: ISO6392Code) -> String? {
         get {
-            if let string = get(localizedFrame: .known(.unsynchronizedLyrics),
+            if let string = get(localizedFrame: .unsynchronizedLyrics,
                                 language: language,
                                 description: description) {
                 return string
@@ -224,7 +224,7 @@ extension Tag {
         }
         set {
             if let new = newValue {
-                set(localizedFrame: .known(.unsynchronizedLyrics),
+                set(localizedFrame: .unsynchronizedLyrics,
                     language: language,
                     description: description,
                     stringValue: new)
@@ -237,7 +237,7 @@ extension Tag {
     /// `userDefinedText` frame getter-setter. ID3 Identifier `TXX`/`TXXX`
     public subscript(_ description: String?) -> String? {
         get {
-            if let string = get(userDefinedFrame: .known(.userDefinedText),
+            if let string = get(userDefinedFrame: .userDefinedText,
                                 description: description) {
                 return string
             } else {
@@ -246,7 +246,7 @@ extension Tag {
         }
         set {
             if let new = newValue {
-                set(userDefinedFrame: .known(.userDefinedText),
+                set(userDefinedFrame: .userDefinedText,
                     description: description,
                     stringValue: new)
             } else {
@@ -258,7 +258,7 @@ extension Tag {
     /// `userDefinedWebpage` frame getter-setter. ID3 Identifier `WXX`/`WXXX`
     public subscript(userDefinedUrl description: String?) -> String? {
         get {
-            if let string = get(userDefinedFrame: .known(.userDefinedWebpage),
+            if let string = get(userDefinedFrame: .userDefinedWebpage,
                                 description: description) {
                 return string
             } else {
@@ -267,7 +267,7 @@ extension Tag {
         }
         set {
             if let new = newValue {
-                set(userDefinedFrame: .known(.userDefinedWebpage),
+                set(userDefinedFrame: .userDefinedWebpage,
                     description: description,
                     stringValue: new)
             } else {
@@ -281,13 +281,13 @@ extension Tag {
                      language: ISO6392Code?,
                      description: String?) -> String? {
         let frameKey = identifier.frameKey(description)
-        if frameKey == FrameIdentifier.known(.unsynchronizedLyrics).frameKey(description) {
+        if frameKey == FrameIdentifier.unsynchronizedLyrics.frameKey(description) {
             if let frame = self.frames[frameKey] as? LocalizedFrame {
                 return frame.stringValue
             } else {
                 return nil
             }
-        } else if frameKey == FrameIdentifier.known(.comments).frameKey(description) {
+        } else if frameKey == FrameIdentifier.comments.frameKey(description) {
             if let frame = self.frames[frameKey] as? LocalizedFrame {
                 return frame.stringValue
             } else {
@@ -302,14 +302,14 @@ extension Tag {
                      description: String?) -> String? {
         let frameKey = identifier.frameKey(description)
         // check that the frame is a UserDefinedWebpage frame or a UserText frame
-        if frameKey == FrameIdentifier.known(.userDefinedWebpage).frameKey(description) {
+        if frameKey == FrameIdentifier.userDefinedWebpage.frameKey(description) {
             if let frame = self.frames[frameKey] as? LocalizedFrame {
                 // return the content string of a specific frame by searching using the description string
                 return frame.stringValue
             } else {
                 return nil
             }
-        } else if frameKey == FrameIdentifier.known(.userDefinedText).frameKey(description) {
+        } else if frameKey == FrameIdentifier.userDefinedText.frameKey(description) {
             if let frame = self.frames[frameKey] as? LocalizedFrame {
                 return frame.stringValue
             } else {
@@ -354,22 +354,22 @@ extension Tag {
     }
     
     private mutating func removeCommentFrame(description: String) {
-        let frameKey = FrameIdentifier.known(.comments).frameKey(description)
+        let frameKey = FrameIdentifier.comments.frameKey(description)
         self.frames[frameKey] = nil
     }
     
     private mutating func removeLyricsFrame(description: String) {
-        let frameKey = FrameIdentifier.known(.unsynchronizedLyrics).frameKey(description)
+        let frameKey = FrameIdentifier.unsynchronizedLyrics.frameKey(description)
         self.frames[frameKey] = nil
     }
     
     private mutating func removeUserTextFrame(description: String) {
-        let frameKey = FrameIdentifier.known(.userDefinedText).frameKey(description)
+        let frameKey = FrameIdentifier.userDefinedText.frameKey(description)
         self.frames[frameKey] = nil
     }
     
     private mutating func removeUserUrlFrame(description: String) {
-        let frameKey = FrameIdentifier.known(.userDefinedWebpage).frameKey(description)
+        let frameKey = FrameIdentifier.userDefinedWebpage.frameKey(description)
         self.frames[frameKey] = nil
     }
 }
