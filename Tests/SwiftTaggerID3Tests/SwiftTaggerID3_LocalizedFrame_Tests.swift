@@ -96,7 +96,7 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
         
         let outputUrl = try localOutputDirectory("localizedtest")
 //        let outputUrl = tempOutputDirectory
-        XCTAssertNoThrow(try mp3V22.write(tag: tag, outputLocation: outputUrl))
+        XCTAssertNoThrow(try mp3V22.write(tag: tag, version: .v2_2, outputLocation: outputUrl))
         XCTAssertNil(tag[comment: "Comment", .eng])
         XCTAssertNil(tag[comment: "Description", .eng])
         XCTAssertNil(tag[comment: "LongDescription", .eng])
@@ -152,7 +152,7 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
         tag[userDefinedUrl: "UserURL"] = nil
         
         let outputUrl = tempOutputDirectory
-        XCTAssertNoThrow(try mp3V23.write(tag: tag, outputLocation: outputUrl))
+        XCTAssertNoThrow(try mp3V23.write(tag: tag, version: .v2_3, outputLocation: outputUrl))
     }
 
     @available(OSX 10.12, *)
@@ -185,7 +185,7 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
         tag[userDefinedUrl: "UserURL"] = nil
 
         let outputUrl = tempOutputDirectory
-        XCTAssertNoThrow(try mp3V24.write(tag: tag, outputLocation: outputUrl))
+        XCTAssertNoThrow(try mp3V24.write(tag: tag, version: .v2_4, outputLocation: outputUrl))
     }
 
     @available(OSX 10.12, *)
@@ -199,7 +199,7 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
 
         let outputUrl = try localOutputDirectory("localizedtestV24")
 //        let outputUrl = tempOutputDirectory
-        XCTAssertNoThrow(try mp3NoMeta.write(tag: tag, outputLocation: outputUrl))
+        XCTAssertNoThrow(try mp3NoMeta.write(tag: tag, version: .v2_4, outputLocation: outputUrl))
         
         let outputMp3 = try Mp3File(location: outputUrl)
         let output = try Tag(mp3File: outputMp3)
@@ -221,7 +221,7 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
         
         let outputUrl = try localOutputDirectory("localizedtestV23")
 //        let outputUrl = tempOutputDirectory
-        XCTAssertNoThrow(try mp3NoMeta.write(tag: tag, outputLocation: outputUrl))
+        XCTAssertNoThrow(try mp3NoMeta.write(tag: tag, version: .v2_3, outputLocation: outputUrl))
         
         let outputMp3 = try Mp3File(location: outputUrl)
         let output = try Tag(mp3File: outputMp3)
@@ -235,6 +235,7 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
     @available(OSX 10.12, *)
     func testLocalizedFrameWritingv22() throws {
         var tag = tagNoMeta
+        tag.version = .v2_2
         
         tag[comment: "Comment", .eng] = "Comment Content"
         tag[lyrics: "Lyrics", .eng] = "Lyrics Content"
@@ -243,7 +244,7 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
 
         let outputUrl = try localOutputDirectory("localizedtestV22")
 //        let outputUrl = tempOutputDirectory
-        XCTAssertNoThrow(try mp3NoMeta.write(tag: tag, outputLocation: outputUrl))
+        XCTAssertNoThrow(try mp3NoMeta.write(tag: tag, version: .v2_2, outputLocation: outputUrl))
 
         let outputMp3 = try Mp3File(location: outputUrl)
         let output = try Tag(mp3File: outputMp3)
@@ -253,4 +254,29 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
         XCTAssertEqual(output[userDefinedUrl: "UserURL"], "http://userdefined.url")
         XCTAssertEqual(output["UserText"], "User Text Content")
     }
+    
+    func testLocalizedVersionSwitch() throws {
+        var tag = tagV24
+        tag.version = .v2_2
+        
+        let outputUrl = try localOutputDirectory("localizedtestV22")
+        //        let outputUrl = tempOutputDirectory
+        XCTAssertNoThrow(try mp3V24.write(tag: tag, version: .v2_2, outputLocation: outputUrl))
+        
+        let outputMp3 = try Mp3File(location: outputUrl)
+        let output = try Tag(mp3File: outputMp3)
+
+        XCTAssertEqual(output.languages, [.eng])
+        XCTAssertEqual(output.series, "Content Group")
+        XCTAssertEqual(output.studio, "Publisher")
+        XCTAssertEqual(output[comment: "Comment", .eng], "Comment Content")
+        XCTAssertEqual(output[comment: "Description", .eng], "Description Content")
+        XCTAssertEqual(output[comment: "LongDescription", .eng], "Long Description Content")
+        XCTAssertEqual(output[comment: "Series Description", .eng], "Series Description Content")
+        XCTAssertEqual(output[comment: "Liner Notes", .eng], "Liner Notes Content")
+        XCTAssertEqual(output[lyrics: "Lyrics", .eng], "Lyrics Content")
+        XCTAssertEqual(output["UserText"], "User Text Content")
+        XCTAssertEqual(output[userDefinedUrl: "UserURL"], "http://userdefined.url")
+    }
+
 }

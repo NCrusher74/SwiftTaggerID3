@@ -33,21 +33,16 @@ class Frame {
     }
 
     var frameKey: String {
-        if self.identifier == .known(.attachedPicture) ||
-            self.identifier == .known(.chapter) ||
-            self.identifier == .known(.comments) ||
-            self.identifier == .known(.unsynchronizedLyrics) ||
-            self.identifier == .known(.userDefinedText) ||
-            self.identifier == .known(.userDefinedWebpage) {
-            fatalError("Override from frame subclass is required")
-        } else {
-            return self.identifier.frameKey(nil)
+        switch self.identifier {
+            case .known(.attachedPicture), .known(.chapter), .known(.comments), .known(.unsynchronizedLyrics), .known(.userDefinedText), .known(.userDefinedWebpage):
+                fatalError("Override from frame subclass is required")
+            default: return self.identifier.frameKey(nil)
         }
     }
 
     @available(OSX 10.12, *)
     var contentData: Data {
-        fatalError("Must be overridden from frame subclass")
+        fatalError("Override from frame subclass is required")
     }
     
     @available(OSX 10.12, *)
@@ -88,8 +83,8 @@ class Frame {
     ///   - version: The version of the ID3 tag
     /// - Returns: The encoded identifier string
     private var identifierData: Data {
-        guard let identifier = self.identifier.idString(version: self.version)?.encodedASCII else {
-            switch version {
+        guard let identifier = self.identifier.idString(version: version)?.encodedASCII else {
+            switch self.version {
                 case .v2_2: return "TXX".encodedASCII
                 case .v2_3, .v2_4: return "TXXX".encodedASCII
             }

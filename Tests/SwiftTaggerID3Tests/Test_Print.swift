@@ -15,12 +15,12 @@ import SwiftTaggerID3
 class SwiftTaggerID3_Parsing_Tests: XCTestCase {
     
     func testPrintLocalDirectory() throws {
-        let data = try Data(contentsOf: try localOutputDirectory("localizedtest"))
-        let range = 10 ..< 21
+        let data = try Data(contentsOf: try localOutputDirectory("localizedtestV22"))
+        let range = 00000083 ..< 00000133
         let subdata = data.subdata(in: range)
         print(subdata.hexadecimal())
     }
-    
+        
     func testPrintTestFiles() throws {
         let data = try Data(contentsOf: sample24Url)
         let range = 00000400 ..< 00000435

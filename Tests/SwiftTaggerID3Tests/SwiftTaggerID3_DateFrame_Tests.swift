@@ -18,7 +18,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag.releaseDateTime = newDate
 //        let outputUrl = try localDirectory(fileName: "datetestv24", fileExtension: "mp3")
         let outputUrl = tempOutputDirectory
-        XCTAssertNoThrow(try mp3V24.write(tag: tag, outputLocation: outputUrl))
+        XCTAssertNoThrow(try mp3V24.write(tag: tag, version: .v2_4, outputLocation: outputUrl))
         let outputMp3 = try Mp3File(location: outputUrl)
         let output = try outputMp3.tag()
         XCTAssertEqual(output.releaseDateTime, newDate)
@@ -51,7 +51,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
 
 //        let outputUrl = try localDirectory(fileName: "datetestv23", fileExtension: "mp3")
         let outputUrl = tempOutputDirectory
-        XCTAssertNoThrow(try mp3V23.write(tag: tag, outputLocation: outputUrl))
+        XCTAssertNoThrow(try mp3V23.write(tag: tag, version: .v2_3, outputLocation: outputUrl))
         let outputMp3 = try Mp3File(location: outputUrl)
         let output = try outputMp3.tag()
         XCTAssertEqual(output.releaseDateTime, newDate)
@@ -85,7 +85,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         
 //        let outputUrl = try localDirectory(fileName: "datetestv22", fileExtension: "mp3")
         let outputUrl = tempOutputDirectory
-        XCTAssertNoThrow(try mp3V22.write(tag: tag, outputLocation: outputUrl))
+        XCTAssertNoThrow(try mp3V22.write(tag: tag, version: .v2_2, outputLocation: outputUrl))
         let outputMp3 = try Mp3File(location: outputUrl)
         let output = try outputMp3.tag()
         XCTAssertEqual(output.releaseDateTime, newDate)
@@ -101,7 +101,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag.recordingDateTime = newDate
 //        let outputUrl = try localOutputDirectory("recordingDateV24")
         let outputUrl = tempOutputDirectory
-        XCTAssertNoThrow(try mp3V24.write(tag: tag, outputLocation: outputUrl))
+        XCTAssertNoThrow(try mp3V24.write(tag: tag, version: .v2_4, outputLocation: outputUrl))
         let outputMp3 = try Mp3File(location: outputUrl)
         let output = try outputMp3.tag()
         XCTAssertEqual(output.recordingDateTime, newDate)
@@ -113,7 +113,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag.recordingDateTime = newDate
         let outputUrl = try localOutputDirectory("recordingDateV23")
 //        let outputUrl = tempOutputDirectory
-        XCTAssertNoThrow(try mp3V23.write(tag: tag, outputLocation: outputUrl))
+        XCTAssertNoThrow(try mp3V23.write(tag: tag, version: .v2_3, outputLocation: outputUrl))
         let outputMp3 = try Mp3File(location: outputUrl)
         let output = try outputMp3.tag()
         XCTAssertEqual(output.recordingDateTime, newDate)
@@ -125,7 +125,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag.recordingDateTime = newDate
 //        let outputUrl = try localOutputDirectory("recordingDateV22")
         let outputUrl = tempOutputDirectory
-        XCTAssertNoThrow(try mp3V22.write(tag: tag, outputLocation: outputUrl))
+        XCTAssertNoThrow(try mp3V22.write(tag: tag, version: .v2_2, outputLocation: outputUrl))
         let outputMp3 = try Mp3File(location: outputUrl)
         let output = try outputMp3.tag()
         XCTAssertEqual(output.recordingDateTime, newDate)
@@ -137,7 +137,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag.encodingDateTime = newDate
 //        let outputUrl = try localOutputDirectory("encodingDateV24")
         let outputUrl = tempOutputDirectory
-        XCTAssertNoThrow(try mp3V24.write(tag: tag, outputLocation: outputUrl))
+        XCTAssertNoThrow(try mp3V24.write(tag: tag, version: .v2_4, outputLocation: outputUrl))
         let outputMp3 = try Mp3File(location: outputUrl)
         let output = try outputMp3.tag()
         XCTAssertEqual(output.encodingDateTime, newDate)
@@ -149,7 +149,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag.encodingDateTime = newDate
 //        let outputUrl = try localOutputDirectory("encodingDateV23")
         let outputUrl = tempOutputDirectory
-        XCTAssertNoThrow(try mp3V23.write(tag: tag, outputLocation: outputUrl))
+        XCTAssertNoThrow(try mp3V23.write(tag: tag, version: .v2_3, outputLocation: outputUrl))
         let outputMp3 = try Mp3File(location: outputUrl)
         let output = try outputMp3.tag()
         XCTAssertNotNil(output.encodingDateTime)
@@ -162,7 +162,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag.encodingDateTime = newDate
 //        let outputUrl = try localOutputDirectory("encodingDateV22")
         let outputUrl = tempOutputDirectory
-        XCTAssertNoThrow(try mp3V22.write(tag: tag, outputLocation: outputUrl))
+        XCTAssertNoThrow(try mp3V22.write(tag: tag, version: .v2_2, outputLocation: outputUrl))
         let outputMp3 = try Mp3File(location: outputUrl)
         let output = try outputMp3.tag()
         XCTAssertNotNil(output.encodingDateTime)
@@ -175,7 +175,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag.taggingDateTime = newDate
 //        let outputUrl = try localOutputDirectory("taggingDateV24")
         let outputUrl = tempOutputDirectory
-        XCTAssertNoThrow(try mp3V24.write(tag: tag, outputLocation: outputUrl))
+        XCTAssertNoThrow(try mp3V24.write(tag: tag, version: .v2_4, outputLocation: outputUrl))
         let outputMp3 = try Mp3File(location: outputUrl)
         let output = try outputMp3.tag()
         XCTAssertEqual(output.taggingDateTime, newDate)
@@ -187,7 +187,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag.taggingDateTime = newDate
 //        let outputUrl = try localOutputDirectory("taggingDateV23")
         let outputUrl = tempOutputDirectory
-        XCTAssertNoThrow(try mp3V23.write(tag: tag, outputLocation: outputUrl))
+        XCTAssertNoThrow(try mp3V23.write(tag: tag, version: .v2_3, outputLocation: outputUrl))
         let outputMp3 = try Mp3File(location: outputUrl)
         let output = try outputMp3.tag()
         XCTAssertNotNil(output.taggingDateTime)
@@ -200,7 +200,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag.taggingDateTime = newDate
 //        let outputUrl = try localOutputDirectory("taggingDateV22")
         let outputUrl = tempOutputDirectory
-        XCTAssertNoThrow(try mp3V22.write(tag: tag, outputLocation: outputUrl))
+        XCTAssertNoThrow(try mp3V22.write(tag: tag, version: .v2_2, outputLocation: outputUrl))
         let outputMp3 = try Mp3File(location: outputUrl)
         let output = try outputMp3.tag()
         XCTAssertNotNil(output.taggingDateTime)
@@ -213,7 +213,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag.originalRelease = newDate
 //        let outputUrl = try localOutputDirectory("originalReleaseDateV24")
         let outputUrl = tempOutputDirectory
-        XCTAssertNoThrow(try mp3V24.write(tag: tag, outputLocation: outputUrl))
+        XCTAssertNoThrow(try mp3V24.write(tag: tag, version: .v2_4, outputLocation: outputUrl))
         let outputMp3 = try Mp3File(location: outputUrl)
         let output = try outputMp3.tag()
         XCTAssertEqual(output.originalRelease, newDate)
@@ -225,7 +225,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag.originalRelease = newDate
 //        let outputUrl = try localOutputDirectory("originalReleaseDateV23")
         let outputUrl = tempOutputDirectory
-        XCTAssertNoThrow(try mp3V23.write(tag: tag, outputLocation: outputUrl))
+        XCTAssertNoThrow(try mp3V23.write(tag: tag, version: .v2_3, outputLocation: outputUrl))
         let outputMp3 = try Mp3File(location: outputUrl)
         let output = try outputMp3.tag()
         XCTAssertNotNil(output.originalRelease)
@@ -238,7 +238,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         tag.originalRelease = newDate
 //        let outputUrl = try localOutputDirectory("originalReleaseDateV22")
         let outputUrl = tempOutputDirectory
-        XCTAssertNoThrow(try mp3V22.write(tag: tag, outputLocation: outputUrl))
+        XCTAssertNoThrow(try mp3V22.write(tag: tag, version: .v2_2, outputLocation: outputUrl))
         let outputMp3 = try Mp3File(location: outputUrl)
         let output = try outputMp3.tag()
         XCTAssertNotNil(output.originalRelease)

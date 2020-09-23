@@ -28,7 +28,7 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         tag.addMusicianCredit(role: .alto, person: "Alto Name")
 
         let outputUrl = tempOutputDirectory
-        XCTAssertNoThrow(try mp3V24.write(tag: tag, outputLocation: outputUrl))
+        XCTAssertNoThrow(try mp3V24.write(tag: tag, version: .v2_4, outputLocation: outputUrl))
         
         let outputMp3 = try Mp3File(location: outputUrl)
         let output = try outputMp3.tag()
@@ -45,7 +45,7 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         tag.clearInvolvementCreditList()
 
         let outputUrl = tempOutputDirectory
-        XCTAssertNoThrow(try mp3V24.write(tag: tag, outputLocation: outputUrl))
+        XCTAssertNoThrow(try mp3V24.write(tag: tag, version: .v2_4, outputLocation: outputUrl))
 
         let outputMp3 = try Mp3File(location: outputUrl)
         let output = try outputMp3.tag()
@@ -61,7 +61,7 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         tag.clearInvolvementCreditList()
         
         let outputUrl = tempOutputDirectory
-        XCTAssertNoThrow(try mp3V23.write(tag: tag, outputLocation: outputUrl))
+        XCTAssertNoThrow(try mp3V23.write(tag: tag, version: .v2_3, outputLocation: outputUrl))
 
         let outputMp3 = try Mp3File(location: outputUrl)
         let output = try outputMp3.tag()
@@ -76,7 +76,7 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         tag.clearInvolvementCreditList()
         
         let outputUrl = tempOutputDirectory
-        XCTAssertNoThrow(try mp3V22.write(tag: tag, outputLocation: outputUrl))
+        XCTAssertNoThrow(try mp3V22.write(tag: tag, version: .v2_2, outputLocation: outputUrl))
 
         let outputMp3 = try Mp3File(location: outputUrl)
         let output = try outputMp3.tag()
@@ -91,7 +91,7 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         tag.removeMusicianCredit(role: .soprano)
         
         let outputUrl = tempOutputDirectory
-        XCTAssertNoThrow(try mp3V24.write(tag: tag, outputLocation: outputUrl))
+        XCTAssertNoThrow(try mp3V24.write(tag: tag, version: .v2_4, outputLocation: outputUrl))
 
         let outputMp3 = try Mp3File(location: outputUrl)
         let output = try outputMp3.tag()
@@ -108,7 +108,7 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         tag.addMusicianCredit(role: .alto, person: "New Alto Name")
         
         let outputUrl = tempOutputDirectory
-        XCTAssertNoThrow(try mp3V24.write(tag: tag, outputLocation: outputUrl))
+        XCTAssertNoThrow(try mp3V24.write(tag: tag, version: .v2_4, outputLocation: outputUrl))
 
         let outputMp3 = try Mp3File(location: outputUrl)
         let output = try outputMp3.tag()
@@ -125,7 +125,7 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         tag.addMusicianCredit(role: .alto, person: "Alto Name")
         
         let outputUrl = tempOutputDirectory
-        XCTAssertNoThrow(try mp3V24.write(tag: tag, outputLocation: outputUrl))
+        XCTAssertNoThrow(try mp3V24.write(tag: tag, version: .v2_4, outputLocation: outputUrl))
 
         let outputMp3 = try Mp3File(location: outputUrl)
         let output = try outputMp3.tag()

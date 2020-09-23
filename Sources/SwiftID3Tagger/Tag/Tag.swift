@@ -20,6 +20,7 @@ public struct Tag {
      */
     var frames: [String: Frame]
     var version: Version
+    var size: Int
     static var duration: Int = 0
     
     /// Instantiate a tag by parsing from MP3 file data
@@ -49,11 +50,11 @@ public struct Tag {
         let tagSizeData = remainder.extractFirst(tagSizeLength)        
         let encodedSize = (tagSizeData as NSData)
             .bytes.assumingMemoryBound(to: UInt32.self).pointee.bigEndian
-        let tagSize = encodedSize.decodingSynchsafe().toInt
+        self.size = encodedSize.decodingSynchsafe().toInt
 
         // at this point the remainder should be all the frames data, without the 10-byte tag header
         // set range of frames data using tag size as the upper bound
-        let tagDataRange = remainder.startIndex ..< remainder.startIndex + tagSize
+        let tagDataRange = remainder.startIndex ..< remainder.startIndex + size
         remainder = remainder.subdata(in: tagDataRange)
 
         // parse frames from the remaining tag data
@@ -72,9 +73,15 @@ public struct Tag {
     }
 
     /// Instantiate a "pseudo-tag" for use with chapter and table-of-contents embedded frame sub-frames
+    @available(OSX 10.12, *)
     init(version: Version, subframes: [String: Frame]) throws {
         self.version = version
         self.frames = subframes
+        var size = Int()
+        for (_, frame) in subframes {
+            size += frame.encode.count
+        }
+        self.size = size
     }
     
     /// Instantiate an empty tag
@@ -84,15 +91,17 @@ public struct Tag {
     public init(version: Version) {
         self.version = version
         self.frames = [:]
+        self.size = 0
     }
     
     // MARK: - Tag Building Calculations
     /// Concatenates header and frame data into tag data
     /// - Returns: the entire encoded tag complete with header data
     @available(OSX 10.12, *)
-    var tagWithHeader: Data {
+    func tagWithHeader(version: Version) throws -> Data {
         var framesData = Data()
         for (_, frame) in self.frames {
+            frame.version = version
             framesData.append(frame.encode)
         }
         var tagData = self.version.versionBytes
