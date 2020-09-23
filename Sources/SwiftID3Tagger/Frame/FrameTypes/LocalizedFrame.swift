@@ -118,20 +118,35 @@ class LocalizedFrame: Frame {
         return self.identifier.frameKey(self.description)
     }
     
+    /*
+     Text encoding     $xx
+     Description       <textstring> $00 (00)
+     URL               <textstring>
+
+     Text encoding          $xx
+     Language               $xx xx xx
+     Short content descrip. <text string according to encoding> $00 (00)
+     The actual text        <full text string according to encoding>
+     */
+
     override var contentData: Data {
         var data = Data()
         let encoding = String.Encoding.isoLatin1
         data.append(encoding.encodingByte)
         if self.identifier == .known(.comments) || self.identifier == .known(.unsynchronizedLyrics) {
             // encode and append language string
+
             if let language = self.language {
                 let languageString = language.rawValue
                 data.append(languageString.encodedASCII)
             } else {
                 data.append("und".encodedASCII)
             }
+
             if let description = self.description {
                 data.append(description.encodeNullTerminatedString(encoding))
+            } else {
+                data.append(encoding.nullTerminator)
             }
             data.append(self.stringValue.encodedISOLatin1)
         }
@@ -158,6 +173,8 @@ class LocalizedFrame: Frame {
         }
         if let description = description {
             size += description.encodeNullTerminatedString(encoding).count
+        } else {
+            
         }
         size += stringValue.encodedISOLatin1.count
         let flags = version.defaultFlags

@@ -8,7 +8,6 @@
 // */
 //
 //import XCTest
-//import SwiftTaggerID3
 //@testable import SwiftTaggerID3
 
 //// Tests for chapter frame and CTOC frame

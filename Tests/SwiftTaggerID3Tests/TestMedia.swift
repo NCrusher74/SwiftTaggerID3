@@ -124,24 +124,29 @@ let tagChaptered: Tag = {
     }
 }()
 
-func tempDirectory() throws -> URL {
+/// Creates the test file in the temporaryDirectory `SwiftTaggerTemp`
+let tempOutputDirectory: URL = {
     let tempDirectory = FileManager.default.temporaryDirectory
-        .appendingPathComponent("SwiftTaggerTemp",
-                                isDirectory: true)
-    try FileManager.default.createDirectory(
-        at: tempDirectory,
-        withIntermediateDirectories: true)
-    return tempDirectory
-}
+        .appendingPathComponent("SwiftTaggerTemp", isDirectory: true)
+    do {
+        try FileManager.default.createDirectory(
+            at: tempDirectory,
+            withIntermediateDirectories: true)
+        return tempDirectory.appendingPathComponent("test.mp3")
+    } catch {
+        fatalError("Unable to create temporary directory")
+    }
+}()
 
 func emptyDirectory() throws {
-    try FileManager.default.removeItem(at: tempDirectory())
+    try FileManager.default.removeItem(at: tempOutputDirectory)
 }
 
-func localDirectory(fileName: String, fileExtension: String) throws -> URL {
+/// Creates the test file on the desktop in the directory `TestOutput`
+func localOutputDirectory(_ fileName: String) throws -> URL {
     let home = FileManager.default.homeDirectoryForCurrentUser
     let desktopPath = "Desktop/TestOutput"
     let directory = home.appendingPathComponent(
         desktopPath, isDirectory: true)
-    return directory.appendingPathComponent(fileName).appendingPathExtension(fileExtension)
+    return directory.appendingPathComponent(fileName).appendingPathExtension("mp3")
 }

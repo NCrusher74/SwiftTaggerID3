@@ -232,10 +232,11 @@ For ID3 versions 2.2 and 2.3 only:
 `SwiftTaggerID3` tries to stick pretty close to the requirements of the documented specs, but there are a few places where it deviates, either because the spec is silly, or compliance would be more cumbersome to achieve can be justified by the author's needs, or compliance would make the usage of `SwiftTaggerID3` too convoluted. These deviations are:
 
 * In most cases where a frame doesn't exist for one ID3 version but does for another, an ID3 identifier for the frame has been created. Some apps will recognize these frames, some will not. The exceptions to this are the chapter/table of contents frames and the date frames.
+* `SwiftTaggerID3` bundles the v22/v23 frames `date`, `time`, and `year` into the `releaseDate` getter/setter. The underlying atoms are still present but the data contained in them is presented as a single date. 
 * The ID3 specs for the `TCON` ("Genre"), `TMED` ("MediaType"), and `TFLT` ("File Type") frames make these frames exceptionally difficult to parse. So while the spec allows for an unlimited array of pre-determined types, pre-determined refinements, and free-form description or refinement strings, `SwiftTaggerID3` only permits one of each. This should be more than sufficient for most user's needs.
-* The ID3 specs allow for multiple `CTOC` (Table Of Contents) frames, and for the `CTOC` frames to have embedded subframes. To keep chapter implementation simple, however, `SwiftTaggerID3` only supports a single `CTOC` frame, with no embedded subframes.
+* The ID3 specs allow for multiple `CTOC` (Table Of Contents) frames. To keep chapter implementation simple, however, `SwiftTaggerID3` only supports a single `CTOC` frame.
 
 **Known Issues**
-Date frames will throw a `FrameNotAvailableForVersion` error, even when outputting to a compatible version, if the tag which has been read in has an incompatible version.
+SwiftTaggerID3 will not convert one version tag to another version. When altering tags on a file that already has a tag, the output tag will be generated in the same version as the input tag. 
 
-If you wish to add these missing features, while keeping the usage user-friendly, the author will welcome pull requests.
+If you wish to add these missing features or tags, while keeping the usage user-friendly, the author will welcome pull requests.

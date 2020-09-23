@@ -49,15 +49,14 @@ public struct Mp3File {
     }
     
     @available(OSX 10.12, *)
-    public func write(tag: inout Tag,
-                      version: Version,
+    public func write(tag: Tag,
                       outputLocation: URL) throws {
-        let data = buildNewFile(tag: &tag, version: version)
+        let data = buildNewFile(tag: tag)
         try data.write(to: outputLocation)
     }
     
     @available(OSX 10.12, *)
-    private func buildNewFile(tag: inout Tag, version: Version) -> Data {
+    private func buildNewFile(tag: Tag) -> Data {
         var data = self.data
         let tagSizeData = data.subdata(in: tag.tagSizeDataRange)
         
@@ -67,7 +66,7 @@ public struct Mp3File {
 
         let tagDataRange = data.startIndex ..< tag.tagHeaderLength + tagSize
         
-        let tagData = tag.buildTagWithHeader(version: version)
+        let tagData = tag.tagWithHeader
         data.replaceSubrange(tagDataRange, with: tagData)
         return data
     }

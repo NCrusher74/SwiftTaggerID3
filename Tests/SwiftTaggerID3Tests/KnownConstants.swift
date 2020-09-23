@@ -30,6 +30,13 @@ let newDate: Date = {
     return date
 }()
 
+let newDateYearOnly: Date = {
+    guard let date = formatter.date(from: "2012-01-01T00:00:00Z") else {
+        fatalError()
+    }
+    return date
+}()
+
 let v22Date: Date = {
     guard let date = formatter.date(from: "0001-02-03T00:00:00Z") else {
         fatalError()
@@ -135,4 +142,9 @@ let v24OriginalReleaseDateComponents: DateComponents = {
     return components
 }()
 
-
+let v23OriginalReleaseYear: Date = {
+    guard let date = formatter.date(from: "2014-01-01T00:00:00Z") else {
+        fatalError()
+    }
+    return date
+}()
