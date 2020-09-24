@@ -38,7 +38,7 @@ import Foundation
  A type used to represent an ID3 involved peeople list or musician credits frame.
  handled as a dictionary: `[role : [array of people performing the role]]`
  */
-class CreditsListFrame: Frame {
+class CreditsFrame: Frame {
     /// The dictionary of `[role : [array of people performing the role]]`
     var credits: [ String : [String] ]
     
@@ -235,7 +235,7 @@ extension Tag {
         let frameKey = identifier.frameKey(nil)
         
         var dictionary = [InvolvedPersonCredits: [String]]()
-        if let frame = self.frames[frameKey] as? CreditsListFrame {
+        if let frame = self.frames[frameKey] as? CreditsFrame {
             // convert [String: [String]] to [Enum:[String]]
             for (key, value) in frame.credits {
                 if let credit = InvolvedPersonCredits(rawValue: key) {
@@ -253,7 +253,7 @@ extension Tag {
         let frameKey = identifier.frameKey(nil)
         
         var dictionary = [MusicianAndPerformerCredits: [String]]()
-        if let frame = self.frames[frameKey] as? CreditsListFrame {
+        if let frame = self.frames[frameKey] as? CreditsFrame {
             // convert [String: [String]] to [Enum:[String]]
             for (key, value) in frame.credits {
                 if let credit = MusicianAndPerformerCredits(rawValue: key) {
@@ -275,7 +275,7 @@ extension Tag {
             let stringKey = key.rawValue
             stringDict[stringKey] = value
         }
-        let frame = CreditsListFrame(identifier,
+        let frame = CreditsFrame(identifier,
                                      version: self.version,
                                      credits: stringDict)
         self.frames[frameKey] = frame
@@ -292,7 +292,7 @@ extension Tag {
             let stringKey = key.rawValue
             stringDict[stringKey] = value
         }
-        let frame = CreditsListFrame(identifier,
+        let frame = CreditsFrame(identifier,
                                      version: self.version,
                                      credits: stringDict)
         self.frames[frameKey] =  frame

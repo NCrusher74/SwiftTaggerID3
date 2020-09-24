@@ -160,13 +160,16 @@ extension Tag {
     public var chapterList: [(startTime: Int, title: String)] {
         get {
             var chapters = [(startTime: Int, title: String)]()
+            var chapterCount = 1
             for chapter in self.chapterFrames {
                 let startTime = chapter.startTime
                 let chapterTitle: String
                 if let title = chapter.embeddedSubframesTag?.title {
                     chapterTitle = title
+                    chapterCount += 1
                 } else {
-                    chapterTitle = "Chapter @\(startTime)ms"
+                    chapterTitle = "Chapter \(chapterCount)"
+                    chapterCount += 1
                 }
                 let entry = (startTime, chapterTitle)
                 chapters.append(entry)
@@ -203,15 +206,28 @@ extension Tag {
     @available(OSX 10.12, *)
     public mutating func addChapter(startTime: Int, title: String) {
         var list = self.chapterList
-        if !list.contains(where: {$0.startTime == startTime}) {
-            let entry = (startTime, title)
-            list.append(entry)
-            self.chapterList = list
+        for (index, item) in list.enumerated() {
+            // if the start time already exists, we want to edit the title and replace the entry
+            if item.startTime == startTime {
+                list.remove(at: index)
+                let newEntry = (startTime, title)
+                list.insert(newEntry, at: index)
+            } else {
+                // if the start time doesn't already exist, we want to see if there are other chapters which should come after the one we're working on when they're in sequence, and insert the new chapter in the proper place
+                let entry = (startTime, title)
+                if let targetIndex = list.firstIndex(where: {$0.startTime > startTime}) {
+                    list.insert(entry, at: targetIndex)
+                } else {
+                    // otherwise, add the chapter to the end of the list
+                    list.append(entry)
+                }
+            }
         }
+        self.chapterList = list
     }
     
     public mutating func removeAllChapters() {
-        self.frames = self.frames.filter({!$0.key.contains("chapter:") && $0.key != "tableOfContents"})
+        self.frames = self.frames.filter({$0.value.identifier != .chapter && $0.value.identifier != .tableOfContents})
     }
 
     public mutating func removeChapter(startTime: Int) {
@@ -241,8 +257,8 @@ extension Tag {
     
     @available(OSX 10.12, *)
     private mutating func setChapterFrame(startTime: Int,
-                                  endTime: Int,
-                                  title: String) throws {
+                                          endTime: Int,
+                                          title: String) throws {
         let identifier = FrameIdentifier.chapter
         let frameKey = identifier.frameKey(startTime)
         // remove existing frame at startTime, if it exists
@@ -261,10 +277,10 @@ extension Tag {
     /// Retrieves and isolates the chapter frames into an array and sorts them in asending order.
     private var chapterFrames: [ChapterFrame] {
         var array = [ChapterFrame]()
-        for item in self.frames {
-            if item.key.contains("chapter:") {
-                if let frame = item.value as? ChapterFrame {
-                    array.append(frame)
+        for (_, frame) in self.frames {
+            if frame.identifier == .chapter {
+                if let chapterFrame = frame as? ChapterFrame {
+                    array.append(chapterFrame)
                 }
             }
         }

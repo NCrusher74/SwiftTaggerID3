@@ -160,42 +160,32 @@ enum FrameIdentifier: String, CaseIterable {
     
     var parseAs: FrameParser {
         switch self {
-            case .passThrough: return .passThrough
-            case .compilation: return .boolean
-            case .attachedPicture: return .image
-            case .chapter: return .chapter
-            case .tableOfContents: return .tableOfContents
-            case .discNumber,
-                 .trackNumber: return .tuple
-            case .involvedPeopleList,
-                 .musicianCreditsList: return .credits
-            case .comments,
-                 .unsynchronizedLyrics: return .localized
-            case .userDefinedText,
-                 .userDefinedWebpage: return .userDefined
-            case .genre,
-                 .mediaType,
-                 .fileType: return .complex
-            case .bpm,
-                 .length,
-                 .movementCount,
-                 .movementNumber,
-                 .playlistDelay: return .integer
-            case .artistWebpage,
-                 .audioFileWebpage,
-                 .audioSourceWebpage,
-                 .copyrightWebpage,
-                 .paymentWebpage,
-                 .publisherWebpage,
-                 .radioStationWebpage: return .url
-            case .date,
-                 .encodingTime,
-                 .originalReleaseTime,
-                 .recordingDate,
-                 .releaseTime,
-                 .taggingTime,
-                 .time,
-                 .year: return .date
+            case .passThrough:
+                return .passThrough
+            case .compilation:
+                return .boolean
+            case .attachedPicture:
+                return .image
+            case .chapter:
+                return .chapter
+            case .tableOfContents:
+                return .tableOfContents
+            case .discNumber, .trackNumber:
+                return .tuple
+            case .involvedPeopleList, .musicianCreditsList:
+                return .credits
+            case .comments, .unsynchronizedLyrics:
+                return .localized
+            case .userDefinedText, .userDefinedWebpage:
+                return .userDefined
+            case .genre, .mediaType, .fileType:
+                return .complex
+            case .bpm, .length, .movementCount, .movementNumber, .playlistDelay:
+                return .integer
+            case .artistWebpage, .audioFileWebpage, .audioSourceWebpage, .copyrightWebpage, .paymentWebpage, .publisherWebpage, .radioStationWebpage:
+                return .url
+            case .date, .encodingTime, .originalReleaseTime, .recordingDate, .releaseTime, .taggingTime, .time, .year:
+                return .date
             default: return .string
         }
     }
@@ -232,7 +222,7 @@ enum FrameIdentifier: String, CaseIterable {
                                              flags: flags,
                                              payload: payload)
             case .credits:
-                return try CreditsListFrame(identifier: self,
+                return try CreditsFrame(identifier: self,
                                             version: version,
                                             size: size,
                                             flags: flags,
