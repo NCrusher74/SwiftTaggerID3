@@ -114,8 +114,12 @@ class LocalizedFrame: Frame {
                    flags: flags)
     }
     
-    override var frameKey: String {
-        return self.identifier.frameKey(self.description)
+    override var frameKey: FrameKey {
+        switch self.identifier {
+            case .comments, .unsynchronizedLyrics: return self.identifier.frameKey(language: self.language, description: self.descriptionString)
+            case .userDefinedText, .userDefinedWebpage: return self.identifier.frameKey(description: self.description)
+            default: fatalError("Invalid frame key initializer for localized frame type")
+        }
     }
     
     /*
@@ -280,14 +284,14 @@ extension Tag {
     private func get(localizedFrame identifier: FrameIdentifier,
                      language: ISO6392Code?,
                      description: String?) -> String? {
-        let frameKey = identifier.frameKey(description)
-        if frameKey == FrameIdentifier.unsynchronizedLyrics.frameKey(description) {
+        let frameKey = identifier.frameKey(language: language, description: description)
+        if identifier == .unsynchronizedLyrics {
             if let frame = self.frames[frameKey] as? LocalizedFrame {
                 return frame.stringValue
             } else {
                 return nil
             }
-        } else if frameKey == FrameIdentifier.comments.frameKey(description) {
+        } else if identifier == .comments {
             if let frame = self.frames[frameKey] as? LocalizedFrame {
                 return frame.stringValue
             } else {
@@ -300,16 +304,16 @@ extension Tag {
     
     private func get(userDefinedFrame identifier: FrameIdentifier,
                      description: String?) -> String? {
-        let frameKey = identifier.frameKey(description)
+        let frameKey = identifier.frameKey(description: description)
         // check that the frame is a UserDefinedWebpage frame or a UserText frame
-        if frameKey == FrameIdentifier.userDefinedWebpage.frameKey(description) {
+        if identifier == .userDefinedWebpage {
             if let frame = self.frames[frameKey] as? LocalizedFrame {
                 // return the content string of a specific frame by searching using the description string
                 return frame.stringValue
             } else {
                 return nil
             }
-        } else if frameKey == FrameIdentifier.userDefinedText.frameKey(description) {
+        } else if identifier == .userDefinedText {
             if let frame = self.frames[frameKey] as? LocalizedFrame {
                 return frame.stringValue
             } else {
@@ -324,7 +328,7 @@ extension Tag {
                               language: ISO6392Code?,
                               description: String?,
                               stringValue: String?) {
-        let frameKey = identifier.frameKey(description)
+        let frameKey = identifier.frameKey(description: description)
         if let stringValue = stringValue {
             let frame = LocalizedFrame(identifier,
                                        version: self.version,
@@ -340,7 +344,7 @@ extension Tag {
     private mutating func set(userDefinedFrame identifier: FrameIdentifier,
                               description: String?,
                               stringValue: String?) {
-        let frameKey = identifier.frameKey(description)
+        let frameKey = identifier.frameKey(description: description)
         if let stringValue = stringValue {
             let frame = LocalizedFrame(identifier,
                                        version: self.version,
@@ -354,22 +358,22 @@ extension Tag {
     }
     
     private mutating func removeCommentFrame(description: String) {
-        let frameKey = FrameIdentifier.comments.frameKey(description)
+        let frameKey = FrameIdentifier.comments.frameKey(description: description)
         self.frames[frameKey] = nil
     }
     
     private mutating func removeLyricsFrame(description: String) {
-        let frameKey = FrameIdentifier.unsynchronizedLyrics.frameKey(description)
+        let frameKey = FrameIdentifier.unsynchronizedLyrics.frameKey(description: description)
         self.frames[frameKey] = nil
     }
     
     private mutating func removeUserTextFrame(description: String) {
-        let frameKey = FrameIdentifier.userDefinedText.frameKey(description)
+        let frameKey = FrameIdentifier.userDefinedText.frameKey(description: description)
         self.frames[frameKey] = nil
     }
     
     private mutating func removeUserUrlFrame(description: String) {
-        let frameKey = FrameIdentifier.userDefinedWebpage.frameKey(description)
+        let frameKey = FrameIdentifier.userDefinedWebpage.frameKey(description: description)
         self.frames[frameKey] = nil
     }
 }

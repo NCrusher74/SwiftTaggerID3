@@ -40,8 +40,8 @@ class ChapterFrame: Frame {
     
     var embeddedSubframesTag: Tag?
     
-    override var frameKey: String {
-        return self.identifier.frameKey(self.startTime)
+    override var frameKey: FrameKey {
+        return self.identifier.frameKey(startTime: self.startTime)
     }
     
     // MARK: - Frame Parsing
@@ -64,7 +64,7 @@ class ChapterFrame: Frame {
         _ = data.extractFirst(4) // end byte offset, unused
         
         // parse the subframes and add them to the embedded subframes tag
-        var subframes: [String : Frame] = [:]
+        var subframes: [FrameKey : Frame] = [:]
         while !data.isEmpty {
             guard data.first != 0x00  else { break }
             if let subframe = try data.extractAndParseToFrame(version) {
@@ -232,7 +232,7 @@ extension Tag {
 
     public mutating func removeChapter(startTime: Int) {
         let identifier = FrameIdentifier.chapter
-        let frameKey = identifier.frameKey(startTime)
+        let frameKey = identifier.frameKey(startTime: startTime)
         self.frames[frameKey] = nil
     }
     
@@ -260,7 +260,7 @@ extension Tag {
                                           endTime: Int,
                                           title: String) throws {
         let identifier = FrameIdentifier.chapter
-        let frameKey = identifier.frameKey(startTime)
+        let frameKey = identifier.frameKey(startTime: startTime)
         // remove existing frame at startTime, if it exists
         removeChapter(startTime: startTime)
         

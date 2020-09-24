@@ -72,32 +72,6 @@ extension Version {
         }
     }
     
-    /// The version-dependent size of the frame header, in bytes
-    var headerLength: Int {
-        return idLength + sizeLength + flagsLength
-    }
-    
-    // MARK: - Frame component offsets:
-    /// The known byte offset of the frame identifier from start of frame data
-    var idOffset: Data.Index {
-        return 0
-    }
-    
-    /// The byte offset of the frame size declaration
-    var sizeOffset: Data.Index {
-        return idOffset  + idLength
-    }
-    
-    /// The byte offset of the frame flags
-    var flagsOffset: Data.Index {
-        return sizeOffset + sizeLength
-    }
-    
-    /// The version-dependent position of the encoding byte
-    var encodingByteOffset: Data.Index {
-        return headerLength
-    }
-    
     // MARK: - Other properties
     var defaultFlags: Data {
         switch self {
@@ -115,8 +89,8 @@ extension Version {
                 }
             case .albumSort:
                 switch self {
-                    case .v2_2: return "TSA"
-                    case .v2_3, .v2_4: return "TSOA"
+                    case .v2_2: return "TSA" // non-standard for version
+                    case .v2_3, .v2_4: return "TSOA" // non-standard for version2.3
                 }
             case .albumArtist:
                 switch self {
@@ -125,8 +99,8 @@ extension Version {
                 }
             case .albumArtistSort:
                 switch self {
-                    case .v2_2: return "TS2"
-                    case .v2_3, .v2_4: return "TSO2"
+                    case .v2_2: return "TS2" // iTunes frame, non-standard for version
+                    case .v2_3, .v2_4: return "TSO2" // iTunes frame, non-standard for version2.3
                 }
             case .arranger:
                 switch self {
@@ -140,8 +114,8 @@ extension Version {
                 }
             case .artistSort:
                 switch self {
-                    case .v2_2: return "TSP"
-                    case .v2_3, .v2_4: return "TSOP"
+                    case .v2_2: return "TSP" // non-standard for version
+                    case .v2_3, .v2_4: return "TSOP" // non-standard for version2.3
                 }
             case .artistWebpage:
                 switch self {
@@ -180,8 +154,8 @@ extension Version {
                 }
             case .compilation:
                 switch self {
-                    case .v2_2: return "TCP"
-                    case .v2_3, .v2_4: return "TCMP"
+                    case .v2_2: return "TCP" // non-standard iTunes frame
+                    case .v2_3, .v2_4: return "TCMP" // non-standard iTunes frame
                 }
             case .composer:
                 switch self {
@@ -190,8 +164,8 @@ extension Version {
                 }
             case .composerSort:
                 switch self {
-                    case .v2_2: return "TSC"
-                    case .v2_3, .v2_4: return "TSOC"
+                    case .v2_2: return "TSC" // iTunes frame non-standard for version
+                    case .v2_3, .v2_4: return "TSOC" // iTunes frame, non-standard for version2.3
                 }
             case .conductor:
                 switch self {
@@ -226,8 +200,8 @@ extension Version {
                 }
             case .encodingTime:
                 switch self {
-                    case .v2_2: return "TDN"
-                    case .v2_3, .v2_4: return "TDEN"
+                    case .v2_2: return "TDN" // non-standard for version
+                    case .v2_3, .v2_4: return "TDEN" // non-standard for version2.3
                 }
             case .encodedBy:
                 switch self {
@@ -246,8 +220,8 @@ extension Version {
                 }
             case .fileOwner:
                 switch self {
-                    case .v2_2: return "TWN"
-                    case .v2_3, .v2_4: return "TOWN"
+                    case .v2_2: return "TWN" // non-standard for version
+                    case .v2_3, .v2_4: return "TOWN" // non-standard for version2.3
                 }
             case .genre:
                 switch self {
@@ -256,8 +230,8 @@ extension Version {
                 }
             case .grouping:
                 switch self {
-                    case .v2_2: return "GP1"
-                    case .v2_3, .v2_4: return "GRP1"
+                    case .v2_2: return "GP1" // iTunes frame, non-standard for version
+                    case .v2_3, .v2_4: return "GRP1" // non-standard for version 2.3
                 }
             case .initialKey:
                 switch self {
@@ -302,17 +276,17 @@ extension Version {
                 }
             case .movementCount:
                 switch self {
-                    case .v2_2: return "MVC"
+                    case .v2_2: return "MVC" // iTunes frame, non-standard for version
                     case .v2_3, .v2_4: return "MVCN"
                 }
             case .movement:
                 switch self {
-                    case .v2_2: return "MVN"
+                    case .v2_2: return "MVN" // iTunes frame, non-standard for version
                     case .v2_3, .v2_4: return "MVNM"
                 }
             case .movementNumber:
                 switch self {
-                    case .v2_2: return "MVI"
+                    case .v2_2: return "MVI" // iTunes frame, non-standard for version
                     case .v2_3, .v2_4: return "MVIN"
                 }
             case .musicianCreditsList:
@@ -358,27 +332,27 @@ extension Version {
                 }
             case .podcastCategory:
                 switch self {
-                    case .v2_2: return "TCT"
+                    case .v2_2: return "TCT" // non-standard for version
                     case .v2_3, .v2_4: return "TCAT"
                 }
             case .podcastDescription:
                 switch self {
-                    case .v2_2: return "TDS"
+                    case .v2_2: return "TDS" // non-standard for version
                     case .v2_3, .v2_4: return "TDES"
                 }
             case .podcastID:
                 switch self {
-                    case .v2_2: return "TID"
+                    case .v2_2: return "TID" // non-standard for version
                     case .v2_3, .v2_4: return "TGID"
                 }
             case .podcastKeywords:
                 switch self {
-                    case .v2_2: return "TKW"
+                    case .v2_2: return "TKW" // non-standard for version
                     case .v2_3, .v2_4: return "TKWD"
                 }
             case .podcastFeed:
                 switch self {
-                    case .v2_2: return "WFD"
+                    case .v2_2: return "WFD" // non-standard for version
                     case .v2_3, .v2_4: return "WFED"
                 }
             case .producedNotice:
@@ -439,8 +413,8 @@ extension Version {
                 }
             case .taggingTime:
                 switch self {
-                    case .v2_2: return "TTG"
-                    case .v2_3, .v2_4: return "TDTG"
+                    case .v2_2: return "TTG" // non-standard for version
+                    case .v2_3, .v2_4: return "TDTG" // non-standard for version2.3
                 }
             case .time:
                 switch self {
@@ -455,8 +429,8 @@ extension Version {
                 }
             case .titleSort:
                 switch self {
-                    case .v2_2: return "TST"
-                    case .v2_3, .v2_4: return "TSOT"
+                    case .v2_2: return "TST" // non-standard for version
+                    case .v2_3, .v2_4: return "TSOT" // non-standard for version2.3
                 }
             case .trackNumber:
                 switch self {

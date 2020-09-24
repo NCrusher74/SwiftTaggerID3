@@ -18,7 +18,7 @@ public struct Tag {
      ID3v2 flags                %abcd0000 -- 1 byte (Uint32) (for our purposes, this is always `0x00`)
      ID3v2 size             4 * %0xxxxxxx -- 4 bytes (Synchsafe Uint32)
      */
-    var frames: [String: Frame]
+    var frames: [FrameKey: Frame]
     var version: Version
     var size: Int
     static var duration: Int = 0
@@ -58,7 +58,7 @@ public struct Tag {
         remainder = remainder.subdata(in: tagDataRange)
 
         // parse frames from the remaining tag data
-        var frames: [String : Frame] = [:]
+        var frames: [FrameKey : Frame] = [:]
 
         while !remainder.isEmpty {
             // pass the frames data over to `Data.Subsequence` exension for parsing
@@ -74,7 +74,7 @@ public struct Tag {
 
     /// Instantiate a "pseudo-tag" for use with chapter and table-of-contents embedded frame sub-frames
     @available(OSX 10.12, *)
-    init(version: Version, subframes: [String: Frame]) throws {
+    init(version: Version, subframes: [FrameKey: Frame]) throws {
         self.version = version
         self.frames = subframes
         var size = Int()
@@ -125,19 +125,4 @@ public struct Tag {
     }()
     /// The known byte-count of a valid ID3 tag's UInt32 size declaration
     let tagSizeLength: Int = 4
-    /// The known byte-count of a valid ID3 tag header
-    /// This value may be used to validate ID3 tag header data, or to locate the tag's frame data
-    let tagHeaderLength: Int = 10
-    /// The known byte-offset of a valid ID3 tag's flag bytes
-    /// This value may be used to validate ID3 tag header data, or to locate the known tag flag data
-    let tagFlagsOffset: Data.Index = 5
-    /// The known byte-offset of a valid ID3 tag's size declaration
-    /// This value may be used to validate ID3 tag header data, or to locate the known tag size declaration data
-    let tagSizeOffset: Data.Index = 6
-    /// The known byte-offset of an ID3 tag's data after a valid tag header
-    /// This value may be used to validate ID3 tag header data, or to locate the tag's frame data
-    let frameDataOffset: Data.Index = 10
-    var tagSizeDataRange: Range<Int> {
-        return tagSizeOffset ..< tagSizeOffset + tagSizeLength
-    }
 }

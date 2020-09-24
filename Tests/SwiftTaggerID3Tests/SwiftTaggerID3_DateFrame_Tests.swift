@@ -22,9 +22,9 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         let outputMp3 = try Mp3File(location: outputUrl)
         let output = try outputMp3.tag()
         XCTAssertEqual(output.releaseDateTime, newDate)
-        XCTAssertNil(output.frames["date"])
-        XCTAssertNil(output.frames["time"])
-        XCTAssertNil(output.frames["year"])
+        XCTAssertNil(output.frames[FrameKey.date])
+        XCTAssertNil(output.frames[FrameKey.time])
+        XCTAssertNil(output.frames[FrameKey.year])
     }
 
     func testReleaseDateV23() throws {
@@ -46,7 +46,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
             XCTAssertEqual(timeFrameDate, v23Time)
             XCTAssertEqual(yearFrameDate, v23Year)
         }
-        XCTAssertNil(tag.frames["releaseTime"])
+        XCTAssertNil(tag.frames[FrameKey.releaseTime])
         tag.releaseDateTime = newDate
 
 //        let outputUrl = try localDirectory(fileName: "datetestv23", fileExtension: "mp3")
@@ -55,10 +55,10 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         let outputMp3 = try Mp3File(location: outputUrl)
         let output = try outputMp3.tag()
         XCTAssertEqual(output.releaseDateTime, newDate)
-        XCTAssertNil(output.frames["releaseTime"])
-        XCTAssertNotNil(output.frames["date"])
-        XCTAssertNotNil(output.frames["time"])
-        XCTAssertNotNil(output.frames["year"])
+        XCTAssertNil(output.frames[FrameKey.releaseTime])
+        XCTAssertNotNil(output.frames[FrameKey.date])
+        XCTAssertNotNil(output.frames[FrameKey.time])
+        XCTAssertNotNil(output.frames[FrameKey.year])
     }
 
     func testReleaseDateV22() throws {
@@ -80,7 +80,7 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
             XCTAssertEqual(timeFrameDate, v22Time)
             XCTAssertEqual(yearFrameDate, v22Year)
         }
-        XCTAssertNil(tag.frames["releaseTime"])
+        XCTAssertNil(tag.frames[FrameKey.releaseTime])
         tag.releaseDateTime = newDate
         
 //        let outputUrl = try localDirectory(fileName: "datetestv22", fileExtension: "mp3")
@@ -89,10 +89,10 @@ class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
         let outputMp3 = try Mp3File(location: outputUrl)
         let output = try outputMp3.tag()
         XCTAssertEqual(output.releaseDateTime, newDate)
-        XCTAssertNil(output.frames["releaseTime"])
-        XCTAssertNotNil(output.frames["date"])
-        XCTAssertNotNil(output.frames["time"])
-        XCTAssertNotNil(output.frames["year"])
+        XCTAssertNil(output.frames[FrameKey.releaseTime])
+        XCTAssertNotNil(output.frames[FrameKey.date])
+        XCTAssertNotNil(output.frames[FrameKey.time])
+        XCTAssertNotNil(output.frames[FrameKey.year])
     }
     
     func testRecordingDateV24() throws {

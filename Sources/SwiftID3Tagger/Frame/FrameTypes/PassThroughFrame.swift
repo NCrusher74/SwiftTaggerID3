@@ -30,8 +30,8 @@ class PassThroughFrame: Frame {
                    flags: flags)
     }
     
-    override var frameKey: String {
-        return self.identifier.frameKey(self.uuid)
+    override var frameKey: FrameKey {
+        return self.identifier.frameKey(idString: self.idString, uuid: self.uuid)
     }
     
     override var contentData: Data {

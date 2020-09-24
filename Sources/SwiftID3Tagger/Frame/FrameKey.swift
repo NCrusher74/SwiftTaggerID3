@@ -186,7 +186,7 @@ public enum FrameKey: Hashable {
     /// `Movement Name` Frame
     ///
     /// Used by iTunes to name the movements of a multi-part work
-    case movementName
+    case movement
     /// `Movement Number` Frame
     ///
     /// Used by iTunes to denote the total number of movements in a work
@@ -242,7 +242,7 @@ public enum FrameKey: Hashable {
     /// `Podcast Feedlink `Frame
     ///
     /// Used by iTunes to list the web feed of a podcast (despite the identifier beginning with W, this is a string frame
-    case podcastFeedLink
+    case podcastFeed
     /// `Produced notice` frame,
     ///
     /// NEW IN VERSION 2.4. The string must begin with a year and a space character (making five characters). Intended for the production copyright holder of the original sound, not the audio file itself.
@@ -332,5 +332,5 @@ public enum FrameKey: Hashable {
     /// (versions 2.2 and 2.3 only) A numeric string with a year of the recording. This frames is always four characters long (until the year 10000). FOR VERSION 2.4: This frame is replaced by the TDRC frame, 'Recording time'
     case year
     /// any frame not handled by SwiftTagger
-    case unknown(uuid: UUID)
+    case passThrough(idString: String, uuid: UUID)
 }

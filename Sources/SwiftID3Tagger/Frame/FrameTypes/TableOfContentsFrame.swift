@@ -71,7 +71,7 @@ class TableOfContentsFrame: Frame {
         // parse the subframes and add them to the embedded subframes tag
         // A sequence of optional frames that are embedded within the “CTOC” frame and which describe this element of the table of contents (e.g. a “TIT2” frame representing the name of the element) or provide related material such as URLs and images. These sub-frames are contained within the bounds of the “CTOC” frame as signalled by the size field in the “CTOC” frame header.*/
         // parse the subframes and add them to the embedded subframes tag
-        var subframes: [String : Frame] = [:]
+        var subframes: [FrameKey : Frame] = [:]
         while !data.isEmpty {
             let subframeIdData = data.extractFirst(version.idLength)
             guard subframeIdData.first != 0x00  else { break }
@@ -167,7 +167,7 @@ class TableOfContentsFrame: Frame {
 extension Tag {
     var toc: TableOfContentsFrame? {
         get {
-            if let frame = self.frames["tableOfContents"] as? TableOfContentsFrame {
+            if let frame = self.frames[.tableOfContents] as? TableOfContentsFrame {
                 return frame
             } else {
                 return nil
@@ -175,7 +175,7 @@ extension Tag {
         }
         set {
             if let new = newValue {
-                self.frames["tableOfContents"] = new
+                self.frames[.tableOfContents] = new
             } else {
                 removeAllChapters()
             }

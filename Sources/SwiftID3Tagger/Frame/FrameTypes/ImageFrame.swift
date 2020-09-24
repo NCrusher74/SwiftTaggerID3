@@ -121,11 +121,11 @@ class ImageFrame: Frame {
                    flags: flags)
     }
     
-    override var frameKey: String {
+    override var frameKey: FrameKey {
         if self.imageType == .other || self.imageType == .fileIcon {
-            return self.identifier.frameKey(self.imageType)
+            return self.identifier.frameKey(imageType: self.imageType)
         } else {
-            return self.identifier.frameKey(self.descriptionString ?? "\(self.imageType.pictureDescription)")
+            return self.identifier.frameKey(description: self.descriptionString ?? self.imageType.pictureDescription)
         }
     }
 
@@ -233,7 +233,7 @@ class ImageFrame: Frame {
 extension Tag {
     public subscript(attachedPicture type: ImageType) -> NSImage? {
         let identifier = FrameIdentifier.attachedPicture
-        let frameKey = identifier.frameKey(type.rawValue)
+        let frameKey = identifier.frameKey(imageType: type)
         if let frame = self.frames[frameKey] as? ImageFrame {
             if let image = frame.image {
                 return image
@@ -247,7 +247,7 @@ extension Tag {
 
     public subscript(attachedPicture description: String) -> NSImage? {
         let identifier = FrameIdentifier.attachedPicture
-        let frameKey = identifier.frameKey(description)
+        let frameKey = identifier.frameKey(description: description)
         if let frame = self.frames[frameKey] as? ImageFrame {
             if let image = frame.image {
                 return image
@@ -263,7 +263,7 @@ extension Tag {
                              imageLocation: URL,
                              description: String?) throws {
         let identifier = FrameIdentifier.attachedPicture
-        let frameKey = identifier.frameKey(type.rawValue)
+        let frameKey = identifier.frameKey(imageType: type)
         let data = try Data(contentsOf: imageLocation)
         
         var format: ImageFormat = .jpg
@@ -293,7 +293,7 @@ extension Tag {
     
     mutating public func removeImage(type: ImageType) {
         let identifier = FrameIdentifier.attachedPicture
-        let frameKey = identifier.frameKey(type.rawValue)
+        let frameKey = identifier.frameKey(imageType: type)
         self.frames[frameKey] = nil
     }
 }

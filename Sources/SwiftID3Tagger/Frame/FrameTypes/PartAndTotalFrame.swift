@@ -108,7 +108,7 @@ extension Tag {
     mutating func set(partTotalFrame identifier: FrameIdentifier,
                                part: Int,
                                total: Int?) {
-        let frameKey = identifier.frameKey(nil)
+        let frameKey = identifier.frameKey()
         // call the frame building initializer
         let frame = PartAndTotalFrame(identifier,
                                       version: self.version,
@@ -122,7 +122,7 @@ extension Tag {
     public var discNumber: (disc: Int, totalDiscs: Int?) {
         get {
             let identifier = FrameIdentifier.discNumber
-            let frameKey = identifier.frameKey(nil)
+            let frameKey = identifier.frameKey()
             var tuple: (disc: Int, totalDiscs: Int?) = (0, nil)
             if let frame = self.frames[frameKey] as? PartAndTotalFrame {
                 tuple.disc = frame.part
@@ -132,7 +132,7 @@ extension Tag {
         }
         set {
             let identifier = FrameIdentifier.discNumber
-            let frameKey = identifier.frameKey(nil)
+            let frameKey = identifier.frameKey()
             if newValue != (0, nil) {
                 set(partTotalFrame: identifier,
                     part: newValue.disc,
@@ -147,7 +147,7 @@ extension Tag {
     public var trackNumber: (track: Int, totalTracks: Int?) {
         get {
             let identifier = FrameIdentifier.trackNumber
-            let frameKey = identifier.frameKey(nil)
+            let frameKey = identifier.frameKey()
             var tuple: (track: Int, totalTracks: Int?) = (0, nil)
             if let frame = self.frames[frameKey] as? PartAndTotalFrame {
                 tuple.track = frame.part
@@ -157,7 +157,7 @@ extension Tag {
         }
         set {
             let identifier = FrameIdentifier.trackNumber
-            let frameKey = identifier.frameKey(nil)
+            let frameKey = identifier.frameKey()
             if newValue != (0, nil) {
                 set(partTotalFrame: identifier,
                     part: newValue.track,

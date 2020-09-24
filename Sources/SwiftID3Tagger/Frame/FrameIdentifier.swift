@@ -8,6 +8,7 @@
  */
 
 import Foundation
+import SwiftLanguageAndLocaleCodes
 
 /** An enumeration of ID3 standard--or iTunes compliant but non-standard--frames*/
 enum FrameIdentifier: String, CaseIterable {
@@ -110,54 +111,119 @@ enum FrameIdentifier: String, CaseIterable {
     func idString(version: Version) -> String? {
         return version.idString(self)
     }
-    
-    func frameKey(_ additionalID: Any?) -> String {
+
+    // MARK: FrameKey functions
+    // these functions provide a way to access a frame's frameKey if its identifier and key information is known.
+    func frameKey(startTime: Int) -> FrameKey {
         switch self {
-            case .attachedPicture:
-                if let uInt8 = additionalID as? UInt8 {
-                    if let type = ImageType(rawValue: uInt8) {
-                        return self.rawValue + ": \(type.pictureDescription)"
-                    } else {
-                        fatalError("Unable to determine unique frame ID for image frame")                    }
-                } else if let description = additionalID as? String {
-                    return self.rawValue + ": \(description)"
-                } else {
-                    return self.rawValue
-                }
-            case .chapter:
-                if let startTime = additionalID as? Int {
-                    return self.rawValue + ": \(startTime)"
-                } else {
-                    return self.rawValue
-                }
-            case .comments:
-                if let description = additionalID as? String {
-                    return self.rawValue + ": \(description)"
-                } else {
-                    return self.rawValue
-                }
-            case .unsynchronizedLyrics:
-                    if let description = additionalID as? String {
-                        return self.rawValue + ": \(description)"
-                    } else {
-                        return self.rawValue
-                    }
-            case .userDefinedText:
-                if let description = additionalID as? String {
-                    return self.rawValue + ": \(description)"
-                } else {
-                    return self.rawValue
-                }
-            case .userDefinedWebpage:
-                if let description = additionalID as? String {
-                    return self.rawValue + ": \(description)"
-                } else {
-                    return self.rawValue
-                }
-            default: return self.rawValue
+            case .chapter: return .chapter(startTime: startTime)
+            default: fatalError("Wrong frame key function for identifier")
         }
     }
-    
+    func frameKey(idString: String, uuid: UUID) -> FrameKey {
+        switch self {
+            case .passThrough: return .passThrough(idString: idString, uuid: uuid)
+            default: fatalError("Wrong frame key function for identifier")
+        }
+    }
+    func frameKey(imageType: ImageType) -> FrameKey {
+        switch self {
+            case .attachedPicture: return .attachedPicture(imageType: imageType)
+            default: fatalError("Wrong frame key function for identifier")
+        }
+    }
+    func frameKey(language: ISO6392Code?, description: String?) -> FrameKey {
+        let language = language ?? .und
+        let description = description ?? ""
+        switch self {
+            case .comments: return .comments(language: language, description: description)
+            case .unsynchronizedLyrics: return .unsynchronizedLyrics(language: language, description: description)
+            default: fatalError("Wrong frame key function for identifier")
+        }
+    }
+    func frameKey(description: String?) -> FrameKey {
+        let description = description ?? ""
+        switch self {
+            case .attachedPicture: return .attachedPicture(description: description)
+            case .userDefinedText: return .userDefinedText(description: description)
+            case .userDefinedWebpage: return .userDefinedWebpage(description: description)
+            default: fatalError("Wrong frame key function for identifier")
+        }
+    }
+    func frameKey() -> FrameKey {
+        switch self {
+            case .album: return .album
+            case .albumSort: return .albumSort
+            case .albumArtist: return .albumArtist
+            case .albumArtistSort: return .albumArtistSort
+            case .arranger: return .arranger
+            case .artist: return .artist
+            case .artistSort: return .artistSort
+            case .artistWebpage: return .artistWebpage
+            case .audioFileWebpage: return .audioFileWebpage
+            case .audioSourceWebpage: return .audioSourceWebpage
+            case .bpm: return .bpm
+            case .compilation: return .compilation
+            case .composer: return .composer
+            case .composerSort: return .composerSort
+            case .conductor: return .conductor
+            case .contentGroup: return .contentGroup
+            case .copyright: return .copyright
+            case .copyrightWebpage: return .copyrightWebpage
+            case .date: return .date
+            case .discNumber: return .discNumber
+            case .encodingTime: return .encodingTime
+            case .encodedBy: return .encodedBy
+            case .encodingSettings: return .encodingSettings
+            case .fileType: return .fileType
+            case .fileOwner: return .fileOwner
+            case .genre: return .genre
+            case .grouping: return .grouping
+            case .initialKey: return .initialKey
+            case .involvedPeopleList: return .involvedPeopleList
+            case .isrc: return .isrc
+            case .languages: return .languages
+            case .length: return .length
+            case .lyricist: return .lyricist
+            case .mediaType: return .mediaType
+            case .mood: return .mood
+            case .movementCount: return .movementCount
+            case .movement: return .movement
+            case .movementNumber: return .movementNumber
+            case .musicianCreditsList: return .musicianCreditsList
+            case .originalAlbum: return .originalAlbum
+            case .originalArtist: return .originalArtist
+            case .originalFilename: return .originalFilename
+            case .originalLyricist: return .originalLyricist
+            case .originalReleaseTime: return .originalReleaseTime
+            case .paymentWebpage: return .paymentWebpage
+            case .playlistDelay: return .playlistDelay
+            case .podcastCategory: return .podcastCategory
+            case .podcastDescription: return .podcastDescription
+            case .podcastID: return .podcastID
+            case .podcastKeywords: return .podcastKeywords
+            case .podcastFeed: return .podcastFeed
+            case .producedNotice: return .producedNotice
+            case .publisher: return .publisher
+            case .publisherWebpage: return .publisherWebpage
+            case .radioStation: return .radioStation
+            case .radioStationOwner: return .radioStationOwner
+            case .radioStationWebpage: return .radioStationWebpage
+            case .recordingDate: return .recordingDate
+            case .releaseTime: return .releaseTime
+            case .setSubtitle: return .setSubtitle
+            case .subtitle: return .subtitle
+            case .tableOfContents: return .tableOfContents
+            case .taggingTime: return .taggingTime
+            case .time: return .time
+            case .title: return .title
+            case .titleSort: return .titleSort
+            case .trackNumber: return .trackNumber
+            case .year: return .year
+            default: fatalError("Wrong frame key function for identifier")
+        }
+    }
+
     var parseAs: FrameParser {
         switch self {
             case .passThrough:
