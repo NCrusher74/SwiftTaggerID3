@@ -81,7 +81,7 @@ class LocalizedFrame: Frame {
     /// ISO-639-2 languge code
     var language: ISO6392Code?
     /// A short description of the frame content.
-    var description: String?
+    var descriptionString: String?
     /// the content of the frame
     var stringValue: String
     
@@ -106,7 +106,7 @@ class LocalizedFrame: Frame {
         }
         
         let parsed = data.extractDescriptionAndContent(encoding: encoding)
-        self.description = parsed.description
+        self.descriptionString = parsed.description
         self.stringValue = parsed.content
         super.init(identifier: identifier,
                    version: version,
@@ -143,7 +143,7 @@ class LocalizedFrame: Frame {
                 data.append("und".encodedASCII)
             }
 
-            if let description = self.description {
+            if let description = self.descriptionString {
                 data.append(description.encodeNullTerminatedString(encoding))
             } else {
                 data.append(encoding.nullTerminator)
@@ -163,7 +163,7 @@ class LocalizedFrame: Frame {
          description: String?,
          stringValue: String) {
         self.language = language
-        self.description = description
+        self.descriptionString = description
         self.stringValue = stringValue
         
         var size = 1 // +1 for encoding byte

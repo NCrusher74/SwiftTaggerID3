@@ -46,7 +46,7 @@ class ImageFrame: Frame {
     var image: NSImage?
     var imageType: ImageType
     var imageFormat: ImageFormat
-    var description: String?
+    var descriptionString: String?
     
     // MARK: - Frame Parsing
     init(identifier: FrameIdentifier,
@@ -90,9 +90,9 @@ class ImageFrame: Frame {
         // if no image description exists, use a string describing the image type
         switch version {
             case .v2_2:
-                self.description = data.extractNullTerminatedString(encoding)
+                self.descriptionString = data.extractNullTerminatedString(encoding)
             case .v2_3, .v2_4:
-                self.description = data.extractNullTerminatedString(encoding)
+                self.descriptionString = data.extractNullTerminatedString(encoding)
         }
         
         if let format = imageFormat {
@@ -125,7 +125,7 @@ class ImageFrame: Frame {
         if self.imageType == .other || self.imageType == .fileIcon {
             return self.identifier.frameKey(self.imageType)
         } else {
-            return self.identifier.frameKey(self.description ?? "\(self.imageType.pictureDescription)")
+            return self.identifier.frameKey(self.descriptionString ?? "\(self.imageType.pictureDescription)")
         }
     }
 
@@ -158,7 +158,7 @@ class ImageFrame: Frame {
         // append image type byte
         data.append(self.imageType.rawValue.beData)
         // encode and append image Description
-        if let description = self.description {
+        if let description = self.descriptionString {
             data.append(description.encodeNullTerminatedString(.isoLatin1))
         } else {
             data.append(self.imageType.pictureDescription.encodeNullTerminatedString(.isoLatin1))
@@ -189,7 +189,7 @@ class ImageFrame: Frame {
          imageData: Data) throws {
         self.imageType = imageType
         self.imageFormat = imageFormat
-        self.description = description
+        self.descriptionString = description
         self.image = NSImage(data: imageData)
 
         var size = 2 // +1 for encoding byte, +1 for pictureTypeByte
