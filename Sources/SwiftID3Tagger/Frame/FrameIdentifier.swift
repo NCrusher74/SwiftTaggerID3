@@ -1,10 +1,10 @@
 /*
-
+ 
  FrameLayoutIdentifier.swift
  SwiftTaggerID3
-
+ 
  Copyright ©2020 Nolaine Crusher. All rights reserved.
-
+ 
  */
 
 import Foundation
@@ -96,7 +96,7 @@ enum FrameIdentifier: String, CaseIterable {
             self = .passThrough
         }
     }
-         
+    
     // MARK: - ID3Identifier
     /// The ID3 4-character code for the frame
     ///
@@ -111,25 +111,25 @@ enum FrameIdentifier: String, CaseIterable {
     func idString(version: Version) -> String? {
         return version.idString(self)
     }
-
+    
     // MARK: FrameKey functions
     // these functions provide a way to access a frame's frameKey if its identifier and key information is known.
     func frameKey(startTime: Int) -> FrameKey {
         switch self {
             case .chapter: return .chapter(startTime: startTime)
-            default: fatalError("Wrong frame key function for identifier")
+            default: fatalError("Wrong frame key for identifier \(self.rawValue)")
         }
     }
     func frameKey(idString: String, uuid: UUID) -> FrameKey {
         switch self {
             case .passThrough: return .passThrough(idString: idString, uuid: uuid)
-            default: fatalError("Wrong frame key function for identifier")
+            default: fatalError("Wrong frame key for identifier \(self.rawValue)")
         }
     }
     func frameKey(imageType: ImageType) -> FrameKey {
         switch self {
             case .attachedPicture: return .attachedPicture(imageType: imageType)
-            default: fatalError("Wrong frame key function for identifier")
+            default: fatalError("Wrong frame key for identifier \(self.rawValue)")
         }
     }
     func frameKey(language: ISO6392Code?, description: String?) -> FrameKey {
@@ -138,16 +138,16 @@ enum FrameIdentifier: String, CaseIterable {
         switch self {
             case .comments: return .comments(language: language, description: description)
             case .unsynchronizedLyrics: return .unsynchronizedLyrics(language: language, description: description)
-            default: fatalError("Wrong frame key function for identifier")
+            default: fatalError("Wrong frame key for identifier \(self.rawValue)")
         }
     }
-    func frameKey(description: String?) -> FrameKey {
+    func frameKey(_ description: String?) -> FrameKey {
         let description = description ?? ""
         switch self {
             case .attachedPicture: return .attachedPicture(description: description)
-            case .userDefinedText: return .userDefinedText(description: description)
-            case .userDefinedWebpage: return .userDefinedWebpage(description: description)
-            default: fatalError("Wrong frame key function for identifier")
+            case .userDefinedText: return .userDefinedText(description)
+            case .userDefinedWebpage: return .userDefinedWebpage(description)
+            default: fatalError("Wrong frame key for identifier \(self.rawValue)")
         }
     }
     func frameKey() -> FrameKey {
@@ -220,10 +220,10 @@ enum FrameIdentifier: String, CaseIterable {
             case .titleSort: return .titleSort
             case .trackNumber: return .trackNumber
             case .year: return .year
-            default: fatalError("Wrong frame key function for identifier")
+            default: fatalError("Wrong frame key for identifier \(self.rawValue)")
         }
     }
-
+    
     var parseAs: FrameParser {
         switch self {
             case .passThrough:
@@ -289,10 +289,10 @@ enum FrameIdentifier: String, CaseIterable {
                                              payload: payload)
             case .credits:
                 return try CreditsFrame(identifier: self,
-                                            version: version,
-                                            size: size,
-                                            flags: flags,
-                                            payload: payload)
+                                        version: version,
+                                        size: size,
+                                        flags: flags,
+                                        payload: payload)
             case .tuple:
                 return try PartAndTotalFrame(identifier: self,
                                              version: version,
@@ -319,11 +319,11 @@ enum FrameIdentifier: String, CaseIterable {
                                       payload: payload)
             case .passThrough:
                 return PassThroughFrame(identifier: self,
-                                    version: version,
-                                    size: size,
-                                    flags: flags,
-                                    payload: payload,
-                                    idString: idString)
+                                        version: version,
+                                        size: size,
+                                        flags: flags,
+                                        payload: payload,
+                                        idString: idString)
         }
     }
     
@@ -345,7 +345,7 @@ enum FrameIdentifier: String, CaseIterable {
             default: return nil
         }
     }
-
+    
     private static let stringToIDMapping: [String: FrameIdentifier] = {
         var mapping: [String: FrameIdentifier] = [:]
         for id in FrameIdentifier.allCases {

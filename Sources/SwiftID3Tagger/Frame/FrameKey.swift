@@ -322,11 +322,11 @@ public enum FrameKey: Hashable {
     /// `UserText` frame
     ///
     /// This frame is intended for one-string text information concerning the audio file in a similar way to the other "T"-frames. DOES NOT ALLOW `(/n)` new line characters
-    case userDefinedText(description: String)
+    case userDefinedText(String)
     /// `UserDefinedWebpage` frame
     ///
     /// This frame is intended for URL [URL] links concerning the audio file in a similar way to the other "W"-frames.
-    case userDefinedWebpage(description: String)
+    case userDefinedWebpage(String)
     /// `Year` frame
     ///
     /// (versions 2.2 and 2.3 only) A numeric string with a year of the recording. This frames is always four characters long (until the year 10000). FOR VERSION 2.4: This frame is replaced by the TDRC frame, 'Recording time'

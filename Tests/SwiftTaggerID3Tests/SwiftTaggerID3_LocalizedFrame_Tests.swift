@@ -119,7 +119,6 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
         
         XCTAssertNil(tag[userDefinedUrl: "Online Extras"])
         XCTAssertNil(tag[userDefinedUrl: "UserURL"])
-
     }
     
     @available(OSX 10.12, *)
@@ -129,7 +128,7 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
         // check comment, lyrics, and subscripted user text visually in Yate
         tag[comment: "Comment", .eng] = nil
         tag[comment: "Description", .eng] = nil
-        tag[comment: "Long Description", .eng] = nil
+        tag[comment: "LongDescription", .eng] = nil
         tag[comment: "Liner Notes", .eng] = nil
         tag[comment: "Song Description", .eng] = nil
         tag[comment: "Series Description", .eng] = nil
@@ -153,6 +152,29 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
         
         let outputUrl = tempOutputDirectory
         XCTAssertNoThrow(try mp3V23.write(tag: tag, version: .v2_3, outputLocation: outputUrl))
+
+        XCTAssertNil(tag[comment: "Comment", .eng])
+        XCTAssertNil(tag[comment: "Description", .eng])
+        XCTAssertNil(tag[comment: "LongDescription", .eng])
+        XCTAssertNil(tag[comment: "Liner Notes", .eng])
+        XCTAssertNil(tag[comment: "Song Description", .eng])
+        XCTAssertNil(tag[comment: "Series Description", .eng])
+        XCTAssertNil(tag[lyrics: "Lyrics", .eng])
+        XCTAssertNil(tag["UserText"])
+        XCTAssertNil(tag["Acknowledgment"])
+        XCTAssertNil(tag["Thanks"])
+        XCTAssertNil(tag["Keywords"])
+        XCTAssertNil(tag["Network"])
+        XCTAssertNil(tag["Source Credit"])
+        XCTAssertNil(tag["Content Rating"])
+        XCTAssertNil(tag["Content Advisory"])
+        XCTAssertNil(tag["Season"])
+        XCTAssertNil(tag["Episode Number"])
+        XCTAssertNil(tag["Episode Name"])
+        XCTAssertNil(tag["Series Name"])
+        
+        XCTAssertNil(tag[userDefinedUrl: "Online Extras"])
+        XCTAssertNil(tag[userDefinedUrl: "UserURL"])
     }
 
     @available(OSX 10.12, *)
@@ -162,7 +184,7 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
         // check comment, lyrics, and subscripted user text visually in Yate
         tag[comment: "Comment", .eng] = nil
         tag[comment: "Description", .eng] = nil
-        tag[comment: "Long Description", .eng] = nil
+        tag[comment: "LongDescription", .eng] = nil
         tag[comment: "Liner Notes", .eng] = nil
         tag[comment: "Song Description", .eng] = nil
         tag[comment: "Series Description", .eng] = nil
@@ -186,6 +208,29 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
 
         let outputUrl = tempOutputDirectory
         XCTAssertNoThrow(try mp3V24.write(tag: tag, version: .v2_4, outputLocation: outputUrl))
+
+        XCTAssertNil(tag[comment: "Comment", .eng])
+        XCTAssertNil(tag[comment: "Description", .eng])
+        XCTAssertNil(tag[comment: "LongDescription", .eng])
+        XCTAssertNil(tag[comment: "Liner Notes", .eng])
+        XCTAssertNil(tag[comment: "Song Description", .eng])
+        XCTAssertNil(tag[comment: "Series Description", .eng])
+        XCTAssertNil(tag[lyrics: "Lyrics", .eng])
+        XCTAssertNil(tag["UserText"])
+        XCTAssertNil(tag["Acknowledgment"])
+        XCTAssertNil(tag["Thanks"])
+        XCTAssertNil(tag["Keywords"])
+        XCTAssertNil(tag["Network"])
+        XCTAssertNil(tag["Source Credit"])
+        XCTAssertNil(tag["Content Rating"])
+        XCTAssertNil(tag["Content Advisory"])
+        XCTAssertNil(tag["Season"])
+        XCTAssertNil(tag["Episode Number"])
+        XCTAssertNil(tag["Episode Name"])
+        XCTAssertNil(tag["Series Name"])
+        
+        XCTAssertNil(tag[userDefinedUrl: "Online Extras"])
+        XCTAssertNil(tag[userDefinedUrl: "UserURL"])
     }
 
     @available(OSX 10.12, *)
@@ -265,7 +310,7 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
         
         let outputMp3 = try Mp3File(location: outputUrl)
         let output = try Tag(mp3File: outputMp3)
-
+        XCTAssertEqual(output.version, .v2_2)
         XCTAssertEqual(output.languages, [.eng])
         XCTAssertEqual(output.series, "Content Group")
         XCTAssertEqual(output.studio, "Publisher")
@@ -277,6 +322,24 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
         XCTAssertEqual(output[lyrics: "Lyrics", .eng], "Lyrics Content")
         XCTAssertEqual(output["UserText"], "User Text Content")
         XCTAssertEqual(output[userDefinedUrl: "UserURL"], "http://userdefined.url")
+        
+        for (_, frame) in output.frames {
+            if frame.identifier == .unsynchronizedLyrics {
+                let idString = frame.identifier.idString(version: tag.version)
+                XCTAssertEqual(idString, "ULT")
+            }
+            if frame.identifier == .userDefinedWebpage {
+                let idString = frame.identifier.idString(version: tag.version)
+                XCTAssertEqual(idString, "WXX")
+            }
+            if frame.identifier == .userDefinedText {
+                let idString = frame.identifier.idString(version: tag.version)
+                XCTAssertEqual(idString, "TXX")
+            }
+            if frame.identifier == .comments {
+                let idString = frame.identifier.idString(version: tag.version)
+                XCTAssertEqual(idString, "COM")
+            }
+        }
     }
-
 }
