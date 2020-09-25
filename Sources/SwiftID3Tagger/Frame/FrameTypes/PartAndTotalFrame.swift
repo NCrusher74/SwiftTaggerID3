@@ -23,6 +23,9 @@
  */
 import Foundation
 class PartAndTotalFrame: Frame {
+    override var description: String {
+        return "\(self.identifier.rawValue): \(self.part) of \(self.total)"
+    }
     /// The index of the track or disc in the set
     var part: Int
     /// The total number of tracks/discs in the set
@@ -35,14 +38,12 @@ class PartAndTotalFrame: Frame {
          flags: Data,
          payload: Data) throws {
         var data = payload
-        
         // extract and interpret encoding byte
         let encoding = try data.extractEncoding()        
         // extract and decode content as a string
         let string = data.extractNullTerminatedString(encoding) ?? ""
         // parse the string into an array
         let components = string.components(separatedBy: "/")
-        
         // parse the integer values out of the array
         self.part = Int(components[0]) ?? 0
         if components.count > 1 {
@@ -65,14 +66,13 @@ class PartAndTotalFrame: Frame {
          total: Int?) {
         self.part = part
         self.total = total
-        
         var size = 1 // +1 for encoding byte
         if let total = total {
-            size += "\(part)/\(total)".encodedISOLatin1.count
+            let string = "\(part)/\(total)"
+            size += string.encodedISOLatin1.count
         } else {
             size += String(part).encodedISOLatin1.count
         }
-
         let flags = version.defaultFlags
         super.init(identifier: identifier,
                    version: version,
@@ -108,7 +108,7 @@ extension Tag {
     mutating func set(partTotalFrame identifier: FrameIdentifier,
                                part: Int,
                                total: Int?) {
-        let frameKey = identifier.frameKey()
+        let frameKey = identifier.frameKey
         // call the frame building initializer
         let frame = PartAndTotalFrame(identifier,
                                       version: self.version,
@@ -122,7 +122,7 @@ extension Tag {
     public var discNumber: (disc: Int, totalDiscs: Int?) {
         get {
             let identifier = FrameIdentifier.discNumber
-            let frameKey = identifier.frameKey()
+            let frameKey = identifier.frameKey
             var tuple: (disc: Int, totalDiscs: Int?) = (0, nil)
             if let frame = self.frames[frameKey] as? PartAndTotalFrame {
                 tuple.disc = frame.part
@@ -132,7 +132,7 @@ extension Tag {
         }
         set {
             let identifier = FrameIdentifier.discNumber
-            let frameKey = identifier.frameKey()
+            let frameKey = identifier.frameKey
             if newValue != (0, nil) {
                 set(partTotalFrame: identifier,
                     part: newValue.disc,
@@ -147,7 +147,7 @@ extension Tag {
     public var trackNumber: (track: Int, totalTracks: Int?) {
         get {
             let identifier = FrameIdentifier.trackNumber
-            let frameKey = identifier.frameKey()
+            let frameKey = identifier.frameKey
             var tuple: (track: Int, totalTracks: Int?) = (0, nil)
             if let frame = self.frames[frameKey] as? PartAndTotalFrame {
                 tuple.track = frame.part
@@ -157,7 +157,7 @@ extension Tag {
         }
         set {
             let identifier = FrameIdentifier.trackNumber
-            let frameKey = identifier.frameKey()
+            let frameKey = identifier.frameKey
             if newValue != (0, nil) {
                 set(partTotalFrame: identifier,
                     part: newValue.track,

@@ -195,7 +195,7 @@ class DateFrame: Frame {
 // These are convenience getter-setter properties
 extension Tag {
     private func get(dateFrame identifier: FrameIdentifier) -> Date? {
-        if let frame = self.frames[identifier.frameKey()] as? DateFrame {
+        if let frame = self.frames[identifier.frameKey] as? DateFrame {
             let date = frame.timeStamp ?? Date.distantPast
             return date
         } else {
@@ -210,9 +210,9 @@ extension Tag {
             let frame = DateFrame(identifier,
                                   version: self.version,
                                   timeStamp: timeStamp)
-            self.frames[identifier.frameKey()] = frame
+            self.frames[identifier.frameKey] = frame
         } else {
-            self.frames[identifier.frameKey()] = nil
+            self.frames[identifier.frameKey] = nil
         }
     }
     
@@ -306,7 +306,7 @@ extension Tag {
         }
         set {
             let identifier = FrameIdentifier.encodingTime
-            let frameKey = identifier.frameKey()
+            let frameKey = identifier.frameKey
             if let new = newValue {
                 set(dateFrame: identifier,
                     timeStamp: new)
@@ -324,7 +324,7 @@ extension Tag {
         }
         set {
             let identifier = FrameIdentifier.taggingTime
-            let frameKey = identifier.frameKey()
+            let frameKey = identifier.frameKey
             if let new = newValue {
                 set(dateFrame: identifier,
                     timeStamp: new)
@@ -342,7 +342,7 @@ extension Tag {
         }
         set {
             let identifier = FrameIdentifier.recordingDate
-            let frameKey = identifier.frameKey()
+            let frameKey = identifier.frameKey
             if let new = newValue {
                 set(dateFrame: identifier,
                     timeStamp: new)
@@ -361,7 +361,7 @@ extension Tag {
         }
         set {
             let identifier = FrameIdentifier.originalReleaseTime
-            let frameKey = identifier.frameKey()
+            let frameKey = identifier.frameKey
             if let new = newValue {
                 set(dateFrame: identifier,
                     timeStamp: new)

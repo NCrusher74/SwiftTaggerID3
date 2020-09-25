@@ -70,6 +70,16 @@ public struct Tag {
             }
         }
         self.frames = frames
+//        for (_, frame) in self.frames {
+//            if frame.identifier == .discNumber || frame.identifier == .trackNumber {
+//                print(frame)
+//                print(frame.description)
+//                if let potFrame = frame as? PartAndTotalFrame {
+//                    print(potFrame.part)
+//                    print(potFrame.total)
+//                }
+//            }
+//        }
     }
 
     /// Instantiate a "pseudo-tag" for use with chapter and table-of-contents embedded frame sub-frames
@@ -104,7 +114,7 @@ public struct Tag {
             frame.version = version
             framesData.append(frame.encode)
         }
-        var tagData = self.version.versionBytes
+        var tagData = version.versionBytes
         tagData.append(self.defaultFlag)
         tagData.append(framesData.count.uInt32.encodingSynchsafe().beData)
         tagData.append(framesData)

@@ -150,7 +150,7 @@ enum FrameIdentifier: String, CaseIterable {
             default: fatalError("Wrong frame key for identifier \(self.rawValue)")
         }
     }
-    func frameKey() -> FrameKey {
+    var frameKey: FrameKey {
         switch self {
             case .album: return .album
             case .albumSort: return .albumSort

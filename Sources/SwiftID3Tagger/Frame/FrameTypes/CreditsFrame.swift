@@ -106,7 +106,7 @@ extension Tag {
         }
         set {
             let identifier = FrameIdentifier.involvedPeopleList
-            let frameKey = identifier.frameKey()
+            let frameKey = identifier.frameKey
 
             if !newValue.isEmpty {
                 var finalDictionary = [InvolvedPersonCredits:[String]]()
@@ -144,7 +144,7 @@ extension Tag {
         }
         set {
             let identifier = FrameIdentifier.musicianCreditsList
-            let frameKey = identifier.frameKey()
+            let frameKey = identifier.frameKey
 
             if !newValue.isEmpty {
                 var finalDictionary = [MusicianAndPerformerCredits:[String]]()
@@ -195,7 +195,7 @@ extension Tag {
     
     /// Removes ALL values from the `musicianCreditList` atom.
     public mutating func clearMusicianCreditList() {
-        let frameKey = FrameIdentifier.musicianCreditsList.frameKey()
+        let frameKey = FrameIdentifier.musicianCreditsList.frameKey
         self.frames[frameKey] = nil
     }
     
@@ -210,7 +210,7 @@ extension Tag {
     
     /// Removes ALL values from the `involvedPeopleList` atom
     public mutating func clearInvolvementCreditList() {
-        let frameKey = FrameIdentifier.involvedPeopleList.frameKey()
+        let frameKey = FrameIdentifier.involvedPeopleList.frameKey
         self.frames[frameKey] = nil
     }
     
@@ -232,7 +232,7 @@ extension Tag {
     /// - Returns: the `[String: [String]]` dictionary of `[role: [person]]` pairs
     private var involvementCredits: [InvolvedPersonCredits: [String]] {
         let identifier = FrameIdentifier.involvedPeopleList
-        let frameKey = identifier.frameKey()
+        let frameKey = identifier.frameKey
         
         var dictionary = [InvolvedPersonCredits: [String]]()
         if let frame = self.frames[frameKey] as? CreditsFrame {
@@ -250,7 +250,7 @@ extension Tag {
     /// - Returns: the `[String: [String]]` dictionary of `[role: [person]]` pairs
     private var musicianCredits: [MusicianAndPerformerCredits: [String]] {
         let identifier = FrameIdentifier.musicianCreditsList
-        let frameKey = identifier.frameKey()
+        let frameKey = identifier.frameKey
         
         var dictionary = [MusicianAndPerformerCredits: [String]]()
         if let frame = self.frames[frameKey] as? CreditsFrame {
@@ -268,7 +268,7 @@ extension Tag {
     /// - Parameter credits: the dictionary of `[role: [person]]` pairs
     private mutating func set(involvementCredits: [InvolvedPersonCredits:[String]]) {
         let identifier = FrameIdentifier.involvedPeopleList
-        let frameKey = identifier.frameKey()
+        let frameKey = identifier.frameKey
         
         var stringDict = [String: [String]]()
         for (key, value) in involvementCredits {
@@ -285,7 +285,7 @@ extension Tag {
     /// - Parameter credits: the dictionary of `[role: [person]]` pairs
     private mutating func set(musicianCredits: [MusicianAndPerformerCredits:[String]]) {
         let identifier = FrameIdentifier.musicianCreditsList
-        let frameKey = identifier.frameKey()
+        let frameKey = identifier.frameKey
         
         var stringDict = [String: [String]]()
         for (key, value) in musicianCredits {

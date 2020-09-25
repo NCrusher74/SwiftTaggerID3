@@ -114,7 +114,7 @@ extension Tag {
     /// Returns: The frame's contents as a human-readable, unterminated string
     func get(_ identifier: FrameIdentifier) -> String? {
         // check that the frame is a String Frame
-        if let frame = self.frames[identifier.frameKey()] as? StringFrame {
+        if let frame = self.frames[identifier.frameKey] as? StringFrame {
             // get the contentString from the frame data
             return frame.stringValue
         } else {
@@ -129,7 +129,7 @@ extension Tag {
     ///   string: The string content input by the user
     mutating func set(_ identifier: FrameIdentifier,
                                stringValue: String?) {
-        let frameKey = identifier.frameKey()
+        let frameKey = identifier.frameKey
         if let stringValue = stringValue {
             let frame = StringFrame(identifier,
                                     version: self.version,

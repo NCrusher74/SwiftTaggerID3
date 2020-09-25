@@ -40,7 +40,7 @@ class Frame: CustomStringConvertible {
         switch self.identifier {
             case .attachedPicture, .chapter, .comments, .unsynchronizedLyrics, .userDefinedText, .userDefinedWebpage, .passThrough:
                 fatalError("Override from frame subclass is required")
-            default: return self.identifier.frameKey()
+            default: return self.identifier.frameKey
         }
     }
 

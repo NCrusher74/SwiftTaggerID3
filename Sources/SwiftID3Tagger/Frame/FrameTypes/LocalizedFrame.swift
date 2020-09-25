@@ -315,11 +315,9 @@ extension Tag {
     private func get(userDefinedFrame identifier: FrameIdentifier,
                      description: String?) -> String? {
         let frameKey = identifier.frameKey(description)
-        // print(frameKey) // prints correctly
         // check that the frame is a UserDefinedWebpage frame or a UserText frame
         if identifier == .userDefinedWebpage {
             if let frame = self.frames[frameKey] as? LocalizedFrame {
-                // print(frame.identifier) - doesn't print
                 // return the content string of a specific frame by searching using the description string
                 return frame.stringValue
             } else {
@@ -327,7 +325,6 @@ extension Tag {
             }
         } else if identifier == .userDefinedText {
             if let frame = self.frames[frameKey] as? LocalizedFrame {
-                // print(frame.identifier) - doesn't print
                 return frame.stringValue
             } else {
                 return nil

@@ -242,8 +242,8 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
         tag[userDefinedUrl: "UserURL"] = "http://userdefined.url"
         tag["UserText"] = "User Text Content"
 
-        let outputUrl = try localOutputDirectory("localizedtestV24")
-//        let outputUrl = tempOutputDirectory
+//        let outputUrl = try localOutputDirectory("localizedtestV24")
+        let outputUrl = tempOutputDirectory
         XCTAssertNoThrow(try mp3NoMeta.write(tag: tag, version: .v2_4, outputLocation: outputUrl))
         
         let outputMp3 = try Mp3File(location: outputUrl)
@@ -264,8 +264,8 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
         tag[userDefinedUrl: "UserURL"] = "http://userdefined.url"
         tag["UserText"] = "User Text Content"
         
-        let outputUrl = try localOutputDirectory("localizedtestV23")
-//        let outputUrl = tempOutputDirectory
+//        let outputUrl = try localOutputDirectory("localizedtestV23")
+        let outputUrl = tempOutputDirectory
         XCTAssertNoThrow(try mp3NoMeta.write(tag: tag, version: .v2_3, outputLocation: outputUrl))
         
         let outputMp3 = try Mp3File(location: outputUrl)
@@ -287,8 +287,8 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
         tag[userDefinedUrl: "UserURL"] = "http://userdefined.url"
         tag["UserText"] = "User Text Content"
 
-        let outputUrl = try localOutputDirectory("localizedtestV22")
-//        let outputUrl = tempOutputDirectory
+//        let outputUrl = try localOutputDirectory("localizedtestV22")
+        let outputUrl = tempOutputDirectory
         XCTAssertNoThrow(try mp3NoMeta.write(tag: tag, version: .v2_2, outputLocation: outputUrl))
 
         let outputMp3 = try Mp3File(location: outputUrl)
@@ -304,8 +304,8 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
         var tag = tagV24
         tag.version = .v2_2
         
-        let outputUrl = try localOutputDirectory("localizedtestV22")
-        //        let outputUrl = tempOutputDirectory
+//        let outputUrl = try localOutputDirectory("localizedtestV22")
+        let outputUrl = tempOutputDirectory
         XCTAssertNoThrow(try mp3V24.write(tag: tag, version: .v2_2, outputLocation: outputUrl))
         
         let outputMp3 = try Mp3File(location: outputUrl)
