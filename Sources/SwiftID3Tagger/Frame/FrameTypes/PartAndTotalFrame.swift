@@ -24,7 +24,7 @@
 import Foundation
 class PartAndTotalFrame: Frame {
     override var description: String {
-        return "\(self.identifier.rawValue): \(self.part) of \(self.total)"
+        return "\(self.identifier.rawValue): \(self.part) of \(self.total ?? 0)"
     }
     /// The index of the track or disc in the set
     var part: Int

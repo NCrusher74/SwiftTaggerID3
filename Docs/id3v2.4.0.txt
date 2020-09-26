@@ -1,13 +1,9 @@
-$Id$
+| Informal standard | M. Nilsson |
+| Document: id3v2.4.0-frames.txt | 1st November 2000 |
 
-Informal standard                                             M. Nilsson
-Document: id3v2.4.0-frames.txt                         1st November 2000
+# ID3 tag version 2.4.0 - Native Frames
 
-
-                  ID3 tag version 2.4.0 - Native Frames
-
-Status of this document
-
+## Status of this document
    This document is an informal standard and replaces the ID3v2.3.0
    standard [ID3v2]. A formal standard will use another revision number
    even if the content is identical to document. The contents in this
@@ -16,8 +12,7 @@ Status of this document
 
    Distribution of this document is unlimited.
 
-
-Abstract
+## Abstract
 
    This document describes the frames natively supported by ID3v2.4.0,
    which is a revised version of the ID3v2 informal standard [ID3v2.3.0]
@@ -29,59 +24,55 @@ Abstract
    ID3v2.4.0 is meant to be as close as possible to ID3v2.3.0 in order
    to allow for implementations to be revised as easily as possible.
 
-
 1.   Table of contents
-
-   2.   Conventions in this document
-   3.   Default flags
-   4.   Declared ID3v2 frames
-     4.1.   Unique file identifier
-     4.2.   Text information frames
+2.   Conventions in this document
+3.   Default flags
+4.   Declared ID3v2 frames
+    4.1.   Unique file identifier
+    4.2.   Text information frames
        4.2.1.   Identification frames
        4.2.2.   Involved persons frames
        4.2.3.   Derived and subjective properties frames
        4.2.4.   Rights and license frames
        4.2.5.   Other text frames
        4.2.6.   User defined text information frame
-     4.3.   URL link frames
+    4.3.   URL link frames
        4.3.1.   URL link frames - details
        4.3.2.   User defined URL link frame
-     4.4.   Music CD Identifier
-     4.5.   Event timing codes
-     4.6.   MPEG location lookup table
-     4.7.   Synced tempo codes
-     4.8.   Unsynchronised lyrics/text transcription
-     4.9.  Synchronised lyrics/text
-     4.10.  Comments
-     4.11.  Relative volume adjustment (2)
-     4.12.  Equalisation (2)
-     4.13.  Reverb
-     4.14.  Attached picture
-     4.15.  General encapsulated object
-     4.16.  Play counter
-     4.17.  Popularimeter
-     4.18.  Recommended buffer size
-     4.19.  Audio encryption
-     4.20.  Linked information
-     4.21.  Position synchronisation frame
-     4.22.  Terms of use
-     4.23.  Ownership frame
-     4.24.  Commercial frame
-     4.25.  Encryption method registration
-     4.26.  Group identification registration
-     4.27.  Private frame
-     4.28.  Signature frame
-     4.29.  Seek frame
-     4.30.  Audio seek point index
-   5.   Copyright
-   6.   References
-   7.   Appendix
-     A.   Appendix A - Genre List from ID3v1
-   8.   Author's Address
-
+    4.4.   Music CD Identifier
+    4.5.   Event timing codes
+    4.6.   MPEG location lookup table
+    4.7.   Synced tempo codes
+    4.8.   Unsynchronised lyrics/text transcription
+    4.9.  Synchronised lyrics/text
+    4.10.  Comments
+    4.11.  Relative volume adjustment (2)
+    4.12.  Equalisation (2)
+    4.13.  Reverb
+    4.14.  Attached picture
+    4.15.  General encapsulated object
+    4.16.  Play counter
+    4.17.  Popularimeter
+    4.18.  Recommended buffer size
+    4.19.  Audio encryption
+    4.20.  Linked information
+    4.21.  Position synchronisation frame
+    4.22.  Terms of use
+    4.23.  Ownership frame
+    4.24.  Commercial frame
+    4.25.  Encryption method registration
+    4.26.  Group identification registration
+    4.27.  Private frame
+    4.28.  Signature frame
+    4.29.  Seek frame
+    4.30.  Audio seek point index
+5.   Copyright
+6.   References
+7.   Appendix
+    A.   Appendix A - Genre List from ID3v1
+8.   Author's Address
 
 2.   Conventions in this document
-
    Text within "" is a text string exactly as it appears in a tag.
    Numbers preceded with $ are hexadecimal and numbers preceded with %
    are binary. $xx is used to indicate a byte with unknown content. %x
