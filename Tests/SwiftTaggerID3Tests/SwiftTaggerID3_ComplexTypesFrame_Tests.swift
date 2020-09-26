@@ -8,7 +8,6 @@
  */
 
 import XCTest
-import SwiftTaggerID3
 @testable import SwiftTaggerID3
 
 class SwiftTaggerID3_ComplexTypesFrame_Tests: XCTestCase {
@@ -19,50 +18,46 @@ class SwiftTaggerID3_ComplexTypesFrame_Tests: XCTestCase {
         XCTAssertNil(tag.fileType.fileType)
         XCTAssertNil(tag.fileType.fileTypeRefinement)
         XCTAssertEqual(tag.fileType.additionalInformation, "File Type")
-        let genre = tag.genre.first!
-        XCTAssertEqual(genre.genreCategory, .Audiobook)
-        XCTAssertEqual(genre.genre, "Genre Type")
+        XCTAssertEqual(tag.genre.genreCategory, .Audiobook)
+        XCTAssertEqual(tag.genre.genre, "Genre Type")
         XCTAssertNil(tag.mediaType.mediaType)
         XCTAssertNil(tag.mediaType.mediaTypeRefinement)
         XCTAssertEqual(tag.mediaType.additionalInformation, "Media Type")
     }
-
+    
     @available(OSX 10.12, *)
     func testPresetOptionsReadingV23() throws {
         let tag = tagV23
         XCTAssertNil(tag.fileType.fileType)
         XCTAssertNil(tag.fileType.fileTypeRefinement)
         XCTAssertEqual(tag.fileType.additionalInformation, "File Type")
-        for item in tag.genre {
-            XCTAssertEqual(item.genreCategory, .Audiobook)
-            XCTAssertEqual(item.genre, "Genre Type")
-        }
+        XCTAssertEqual(tag.genre.genreCategory, .Audiobook)
+        XCTAssertEqual(tag.genre.genre, "Genre Type")
         XCTAssertNil(tag.mediaType.mediaType)
         XCTAssertNil(tag.mediaType.mediaTypeRefinement)
         XCTAssertEqual(tag.mediaType.additionalInformation, "Media Type")
     }
-
+    
     @available(OSX 10.12, *)
     func testPresetOptionsReadingV22() throws {
         let tag = tagV22
         XCTAssertNil(tag.fileType.fileType)
         XCTAssertNil(tag.fileType.fileTypeRefinement)
         XCTAssertEqual(tag.fileType.additionalInformation, "File Type")
-        for item in tag.genre {
-            XCTAssertEqual(item.genreCategory, .Audiobook)
-            XCTAssertEqual(item.genre, "Genre Type")
-        }
+        XCTAssertEqual(tag.genre.genreCategory, .Audiobook)
+        XCTAssertEqual(tag.genre.genre, "Genre Type")
         XCTAssertNil(tag.mediaType.mediaType)
         XCTAssertNil(tag.mediaType.mediaTypeRefinement)
         XCTAssertEqual(tag.mediaType.additionalInformation, "Media Type")
     }
-
+    
     
     @available(OSX 10.12, *)
     func testPresetOptionsWriting() throws {
-        var tag = Tag(version: .v2_4)
+        var tag = tagNoMeta
         
-        tag.genre = [(.Blues, "Blues Refinement")]
+        tag.genre.genreCategory = .Blues
+        tag.genre.genre = "Blues Refinement"
         
         tag.mediaType.mediaType = .otherDigital
         tag.mediaType.mediaTypeRefinement = .analogTransfer
@@ -71,20 +66,16 @@ class SwiftTaggerID3_ComplexTypesFrame_Tests: XCTestCase {
         tag.fileType.fileType = .MPG
         tag.fileType.fileTypeRefinement = .mpegLayerIII
         tag.fileType.additionalInformation = "Additional Information"
-
+        
         let outputUrl = tempOutputDirectory
-        XCTAssertNoThrow(try mp3NoMeta.write(tag: tag,
-                                             version: .v2_4,
-                                             outputLocation: outputUrl))
+        XCTAssertNoThrow(try mp3NoMeta.write(tag: tag, version: .v2_4, outputLocation: outputUrl))
         
         let outputMp3 = try Mp3File(location: outputUrl)
-        let output = try outputMp3.tag()
-
-        for item in output.genre {
-            XCTAssertEqual(item.genreCategory, .Blues)
-            XCTAssertEqual(item.genre, "Blues Refinement")
-        }
-
+        let output = try Tag(mp3File: outputMp3)
+        
+        XCTAssertEqual(output.genre.genreCategory, .Blues)
+        XCTAssertEqual(output.genre.genre, "Blues Refinement")
+        
         XCTAssertEqual(output.mediaType.mediaType, .otherDigital)
         XCTAssertEqual(output.mediaType.mediaTypeRefinement, .analogTransfer)
         XCTAssertEqual(output.mediaType.additionalInformation, "Additional Information")
@@ -98,11 +89,9 @@ class SwiftTaggerID3_ComplexTypesFrame_Tests: XCTestCase {
     func testPresetOptionsOverWriting() throws {
         var tag = tagV24
         
-        for item in tag.genre {
-            XCTAssertEqual(item.genreCategory, .Blues)
-            XCTAssertEqual(item.genre, "Blues Refinement")
-        }
-
+        tag.genre.genreCategory = .Blues
+        tag.genre.genre = "Blues Refinement"
+        
         tag.mediaType.mediaType = .otherDigital
         tag.mediaType.mediaTypeRefinement = .analogTransfer
         tag.mediaType.additionalInformation = "Additional Information"
@@ -112,17 +101,14 @@ class SwiftTaggerID3_ComplexTypesFrame_Tests: XCTestCase {
         tag.fileType.additionalInformation = "Additional Information"
         
         let outputUrl = tempOutputDirectory
-
         XCTAssertNoThrow(try mp3NoMeta.write(tag: tag, version: .v2_4, outputLocation: outputUrl))
         
         let outputMp3 = try Mp3File(location: outputUrl)
         let output = try Tag(mp3File: outputMp3)
         
-        for item in output.genre {
-            XCTAssertEqual(item.genreCategory, .Blues)
-            XCTAssertEqual(item.genre, "Blues Refinement")
-        }
-
+        XCTAssertEqual(output.genre.genreCategory, .Blues)
+        XCTAssertEqual(output.genre.genre, "Blues Refinement")
+        
         XCTAssertEqual(output.mediaType.mediaType, .otherDigital)
         XCTAssertEqual(output.mediaType.mediaTypeRefinement, .analogTransfer)
         XCTAssertEqual(output.mediaType.additionalInformation, "Additional Information")
@@ -131,16 +117,14 @@ class SwiftTaggerID3_ComplexTypesFrame_Tests: XCTestCase {
         XCTAssertEqual(output.fileType.fileTypeRefinement, .mpegLayerIII)
         XCTAssertEqual(output.fileType.additionalInformation, "Additional Information")
     }
-
+    
     @available(OSX 10.12, *)
     func testSetToNil() throws {
         var tag = tagV24
         
-        for item in tag.genre {
-            XCTAssertNil(item.genreCategory)
-            XCTAssertNil(item.genre)
-        }
-
+        tag.genre.genreCategory = nil
+        tag.genre.genre = nil
+        
         tag.mediaType.mediaType = nil
         tag.mediaType.mediaTypeRefinement = nil
         tag.mediaType.additionalInformation = nil
@@ -152,18 +136,16 @@ class SwiftTaggerID3_ComplexTypesFrame_Tests: XCTestCase {
         XCTAssertNil(tag.frames.first(where: {$0.key == .genre}))
         XCTAssertNil(tag.frames.first(where: {$0.key == .mediaType}))
         XCTAssertNil(tag.frames.first(where: {$0.key == .fileType}))
-
+        
         let outputUrl = tempOutputDirectory
         XCTAssertNoThrow(try mp3NoMeta.write(tag: tag, version: .v2_4, outputLocation: outputUrl))
         
         let outputMp3 = try Mp3File(location: outputUrl)
         let output = try Tag(mp3File: outputMp3)
         
-        for item in tag.genre {
-            XCTAssertNil(item.genreCategory)
-            XCTAssertNil(item.genre)
-        }
-
+        XCTAssertNil(output.genre.genreCategory)
+        XCTAssertNil(output.genre.genre)
+        
         XCTAssertNil(output.mediaType.mediaType)
         XCTAssertNil(output.mediaType.mediaTypeRefinement)
         XCTAssertNil(output.mediaType.additionalInformation)
@@ -171,9 +153,9 @@ class SwiftTaggerID3_ComplexTypesFrame_Tests: XCTestCase {
         XCTAssertNil(output.fileType.fileType)
         XCTAssertNil(output.fileType.fileTypeRefinement)
         XCTAssertNil(output.fileType.additionalInformation)
-
-        XCTAssertNil(tag.frames.first(where: {$0.key == .genre}))
-        XCTAssertNil(tag.frames.first(where: {$0.key == .mediaType}))
-        XCTAssertNil(tag.frames.first(where: {$0.key == .fileType}))
+        
+        XCTAssertNil(output.frames.first(where: {$0.key == .genre}))
+        XCTAssertNil(output.frames.first(where: {$0.key == .mediaType}))
+        XCTAssertNil(output.frames.first(where: {$0.key == .fileType}))
     }
 }

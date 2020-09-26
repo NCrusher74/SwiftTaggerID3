@@ -201,12 +201,11 @@ extension Tag {
         }
     }
     
-    public var genre: [(genreCategory: GenreType?, genre: String?)] {
+    public var genre: (genreCategory: GenreType?, genre: String?) {
         get {
             // if the array exists and isn't empty
-            var array: [(genreCategory: GenreType?, genre: String?)] = []
+            var tuple: (genreCategory: GenreType?, genre: String?) = (nil, nil)
             if let frameArray = get(complexTypesFrame: .genre) {
-                var tuple: (genreCategory: GenreType?, genre: String?) = (nil, nil)
                 var presetType: GenreType = .none
                 var customString: String = ""
                 // for each item in the array...
@@ -216,10 +215,8 @@ extension Tag {
                         // see if the string is a GenreType rawValue
                         if let genreType = GenreType(rawValue: item) {
                             presetType = genreType
-                            customString = ""
                             // if not return it as a custom genre
                         } else {
-                            presetType = .none
                             customString = item
                         }
                     }
@@ -230,27 +227,25 @@ extension Tag {
                 if customString != "" {
                     tuple.genre = customString
                 }
-                array.append(tuple)
             }
-            return array
+            return tuple
         }
         set {
-            var stringArray = [String]()
-            for item in newValue {
-                if let type = item.genreCategory {
-                    let string = type.rawValue
-                    stringArray.append(string)
-                } else {
-                    if let string = item.genre {
-                        stringArray.append(string)
-                    }
+            if newValue != (nil, nil) {
+                var frameArray = [String]()
+                if let genre = newValue.genreCategory, genre != .none {
+                    frameArray.append(genre.rawValue)
                 }
+                if let custom = newValue.genre, custom != "" {
+                    frameArray.append(custom)
+                }
+                set(complexTypesFrame: .genre, contentArray: frameArray)
+            } else {
+                self.frames[.genre] = nil
             }
-            set(complexTypesFrame: .genre,
-                contentArray: stringArray)
         }
     }
-    
+
     public var mediaType: (mediaType: MediaType?, mediaTypeRefinement: MediaTypeRefinements?, additionalInformation: String?) {
         get {
             var tuple: (mediaType: MediaType?, mediaTypeRefinement: MediaTypeRefinements?, additionalInformation: String?) = (nil, nil, nil)
