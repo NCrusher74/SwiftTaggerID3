@@ -154,137 +154,21 @@ class ChapterFrame: Frame {
 }
 
 extension Tag {
-    @available(OSX 10.12, *)
-    /// `Get`: Retrieves chapter frames array from `chapterFrames` and presents the chapters as an array of `(startTime: title)` tuples for easier access.
-    /// `Set` creates a `ChapterFrame` instance for every item in `newValue`
     public var chapterList: [(startTime: Int, title: String)] {
         get {
-            var chapters = [(startTime: Int, title: String)]()
-            var chapterCount = 1
-            for chapter in self.chapterFrames {
-                let startTime = chapter.startTime
-                let chapterTitle: String
-                if let title = chapter.embeddedSubframesTag?.title {
-                    chapterTitle = title
-                    chapterCount += 1
-                } else {
-                    chapterTitle = "Chapter \(chapterCount)"
-                    chapterCount += 1
-                }
-                let entry = (startTime, chapterTitle)
-                chapters.append(entry)
+            var list = [(startTime: Int, title: String)]()
+            var chapterFrames = self.frames.values.filter({$0.identifier == .chapter}) as? [ChapterFrame]
+            chapterFrames?.sort(by: {$0.startTime < $1.startTime})
+            for frame in chapterFrames ?? [] {
+                let startTime = frame.startTime
+                let title = frame.embeddedSubframesTag?.title ?? "Untitled Chapter @ \(startTime)"
+                let entry = (startTime, title)
+                list.append(entry)
             }
-            return chapters
+            return list
         }
         set {
-            do {
-                let chapters = newValue.sorted(by: {$0.startTime < $1.startTime})
-                // handle all except last
-                for (index, chapter) in chapters.dropLast().enumerated() {
-                    let next = chapters[chapters.index(after: index)]
-                    let endTime = next.startTime
-                    try self.setChapterFrame(
-                        startTime: chapter.startTime,
-                        endTime: endTime,
-                        title: chapter.title)
-                }
-                // handle last
-                if let chapter = chapters.last {
-                    let endTime = Tag.duration
-                    try self.setChapterFrame(
-                        startTime: chapter.startTime,
-                        endTime: endTime,
-                        title: chapter.title)
-                }
-                setTOC(chapterFrames: self.chapterFrames)
-            } catch {
-                fatalError("Operation to set chapters failed")
-            }
+            
         }
-    }
-    
-    @available(OSX 10.12, *)
-    public mutating func addChapter(startTime: Int, title: String) {
-        var list = self.chapterList
-        for (index, item) in list.enumerated() {
-            // if the start time already exists, we want to edit the title and replace the entry
-            if item.startTime == startTime {
-                list.remove(at: index)
-                let newEntry = (startTime, title)
-                list.insert(newEntry, at: index)
-            } else {
-                // if the start time doesn't already exist, we want to see if there are other chapters which should come after the one we're working on when they're in sequence, and insert the new chapter in the proper place
-                let entry = (startTime, title)
-                if let targetIndex = list.firstIndex(where: {$0.startTime > startTime}) {
-                    list.insert(entry, at: targetIndex)
-                } else {
-                    // otherwise, add the chapter to the end of the list
-                    list.append(entry)
-                }
-            }
-        }
-        self.chapterList = list
-    }
-    
-    public mutating func removeAllChapters() {
-        self.frames = self.frames.filter({$0.value.identifier != .chapter && $0.value.identifier != .tableOfContents})
-    }
-
-    public mutating func removeChapter(startTime: Int) {
-        let identifier = FrameIdentifier.chapter
-        let frameKey = identifier.frameKey(startTime: startTime)
-        self.frames[frameKey] = nil
-    }
-    
-    // MARK: Private and Internal
-    @available(OSX 10.12, *)
-    var chapterTitles: [String] {
-        var titles = [String]()
-        for chapter in chapterList {
-            titles.append(chapter.title)
-        }
-        return titles
-    }
-    
-    @available(OSX 10.12, *)
-    var chapterStartTimes: [Int] {
-        var starts = [Int]()
-        for chapter in chapterList {
-            starts.append(chapter.startTime)
-        }
-        return starts
-    }
-    
-    @available(OSX 10.12, *)
-    private mutating func setChapterFrame(startTime: Int,
-                                          endTime: Int,
-                                          title: String) throws {
-        let identifier = FrameIdentifier.chapter
-        let frameKey = identifier.frameKey(startTime: startTime)
-        // remove existing frame at startTime, if it exists
-        removeChapter(startTime: startTime)
-        
-        var subframes = Tag(version: self.version)
-        subframes.title = title
-        let frame = ChapterFrame(.chapter,
-                                 version: self.version,
-                                 startTime: startTime,
-                                 endTime: endTime,
-                                 embeddedSubframesTag: subframes)
-        self.frames[frameKey] = frame
-    }
-    
-    /// Retrieves and isolates the chapter frames into an array and sorts them in asending order.
-    private var chapterFrames: [ChapterFrame] {
-        var array = [ChapterFrame]()
-        for (_, frame) in self.frames {
-            if frame.identifier == .chapter {
-                if let chapterFrame = frame as? ChapterFrame {
-                    array.append(chapterFrame)
-                }
-            }
-        }
-        let sortedArray = array.sorted(by: {$0.startTime < $1.startTime})
-        return sortedArray
     }
 }
