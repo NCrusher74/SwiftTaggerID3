@@ -154,6 +154,7 @@ class ChapterFrame: Frame {
 }
 
 extension Tag {
+    @available(OSX 10.12, *)
     public var chapterList: [(startTime: Int, title: String)] {
         get {
             var list = [(startTime: Int, title: String)]()
@@ -168,7 +169,75 @@ extension Tag {
             return list
         }
         set {
-            
+            self.frames = self.frames.filter({$0.value.identifier != .tableOfContents && $0.value.identifier != .chapter})
+            if !newValue.isEmpty {
+                var elementIDs = [String]()
+                // handle all but the last
+                for (index, chapter) in newValue.sorted(by: {$0.startTime < $1.startTime}).enumerated().dropLast() {
+                    let nextChapter = newValue[newValue.index(after: index)]
+                    let currentEndTime = nextChapter.startTime
+                    let elementID = "ch\(chapter.startTime)"
+                    elementIDs.append(elementID)
+                    var embeddedSubFramesTag = Tag(version: self.version)
+                    embeddedSubFramesTag.title = chapter.title
+                    let chapterFrame = ChapterFrame(
+                        .chapter,
+                        version: self.version,
+                        startTime: chapter.startTime,
+                        endTime: currentEndTime,
+                        embeddedSubframesTag: embeddedSubFramesTag)
+                    let frameKey = FrameKey.chapter(startTime: chapter.startTime)
+                    self.frames[frameKey] = chapterFrame
+                }
+                // handle last
+                if let lastChapter = newValue.sorted(by: {$0.startTime < $1.startTime}).last {
+                    let endTime = Tag.duration
+                    let elementID = "ch\(lastChapter.startTime)"
+                    elementIDs.append(elementID)
+                    var embeddedSubFramesTag = Tag(version: self.version)
+                    embeddedSubFramesTag.title = lastChapter.title
+                    let chapterFrame = ChapterFrame(
+                        .chapter,
+                        version: self.version,
+                        startTime: lastChapter.startTime,
+                        endTime: endTime,
+                        embeddedSubframesTag: embeddedSubFramesTag)
+                    let frameKey = FrameKey.chapter(startTime: lastChapter.startTime)
+                    self.frames[frameKey] = chapterFrame
+
+                }
+                var tocSubframesTag = Tag(version: self.version)
+                tocSubframesTag.title = "Table Of Contents"
+                let tocFrame = TableOfContentsFrame(
+                    .tableOfContents,
+                    version: self.version,
+                    childElementIDs: elementIDs,
+                    embeddedSubframesTag: tocSubframesTag)
+                self.frames[.tableOfContents] = tocFrame
+            } else {
+                self.frames = self.frames.filter({$0.value.identifier != .tableOfContents && $0.value.identifier != .chapter})
+            }
         }
+    }
+    
+    @available(OSX 10.12, *)
+    public mutating func addChapter(startTime: Int, title: String) {
+        let enumeratedChapters = self.chapterList.enumerated()
+        if let nextChapter = enumeratedChapters.first(where: {$0.element.startTime > startTime}) {
+            let targetIndex = nextChapter.offset
+            self.chapterList.insert((startTime, title), at: targetIndex)
+        } else {
+            self.chapterList.append((startTime, title))
+        }
+    }
+    
+    @available(OSX 10.12, *)
+    public mutating func removeAllChapters() {
+        self.chapterList = []
+    }
+    
+    @available(OSX 10.12, *)
+    public mutating func removeChapter(startTime: Int) {
+        self.chapterList = self.chapterList.filter({$0.startTime != startTime})
     }
 }

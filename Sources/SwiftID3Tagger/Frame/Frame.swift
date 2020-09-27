@@ -51,9 +51,9 @@ class Frame: CustomStringConvertible {
     
     @available(OSX 10.12, *)
     var encode: Data {
-        if let warning = identifier.warnings(version: self.version) {
-            print(warning)
-        }
+//        if let warning = identifier.warnings(version: self.version) {
+//            print(warning)
+//        }
         var data = Data()
         data.append(self.identifierData)
         data.append(self.encodedFrameContentSize)

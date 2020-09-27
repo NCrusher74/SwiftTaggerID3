@@ -71,13 +71,9 @@ public struct Tag {
         }
         self.frames = frames
 //        for (_, frame) in self.frames {
-//            if frame.identifier == .discNumber || frame.identifier == .trackNumber {
-//                print(frame)
-//                print(frame.description)
-//                if let potFrame = frame as? PartAndTotalFrame {
-//                    print(potFrame.part)
-//                    print(potFrame.total)
-//                }
+//            if frame.identifier == .userDefinedText {
+//                print(frame.contentData.hexadecimal())
+//                // print(frame.description)
 //            }
 //        }
     }

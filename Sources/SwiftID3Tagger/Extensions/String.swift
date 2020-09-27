@@ -106,6 +106,56 @@ extension String {
         return dateComponents.date
     }
     
+    @available(OSX 10.12, *)
+    func attemptDateFromString() -> Date? {
+        let isoFormatter = ISO8601DateFormatter()
+        isoFormatter.formatOptions = [.withInternetDateTime]
+        isoFormatter.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
+        
+        let formatter1 = DateFormatter()
+        formatter1.locale = Locale(identifier: "en_US_POSIX")
+        formatter1.dateFormat = "yyyy-MM-ddTHH:mm"
+
+        let formatter2 = DateFormatter()
+        formatter2.locale = Locale(identifier: "en_US_POSIX")
+        formatter2.dateFormat = "yyyy-MM-ddTHH"
+
+        let formatter3 = DateFormatter()
+        formatter3.locale = Locale(identifier: "en_US_POSIX")
+        formatter3.dateFormat = "yyyy-MM-dd"
+
+        let formatter4 = DateFormatter()
+        formatter4.locale = Locale(identifier: "en_US_POSIX")
+        formatter4.dateFormat = "MM-dd-yyyy"
+        
+        let formatter5 = DateFormatter()
+        formatter5.locale = Locale(identifier: "en_US_POSIX")
+        formatter5.dateFormat = "yyyy-MM"
+
+        let formatter6 = DateFormatter()
+        formatter6.locale = Locale(identifier: "en_US_POSIX")
+        formatter6.dateFormat = "yyyy"
+
+        
+        if let date = isoFormatter.date(from: self) {
+            return date
+        } else if let date = formatter1.date(from: self) {
+            return date
+        } else if let date = formatter2.date(from: self) {
+            return date
+        } else if let date = formatter3.date(from: self) {
+            return date
+        } else if let date = formatter4.date(from: self) {
+            return date
+        } else if let date = formatter5.date(from: self) {
+            return date
+        } else if let date = formatter6.date(from: self) {
+            return date
+        } else {
+            return nil
+        }
+    }
+    
     /// parse the parentheses out of version 2.2 and 2.3 strings (Genre and MediaType frames)
     /// for PresetOptionsFrame
     func parseParentheticalString() -> [String] {

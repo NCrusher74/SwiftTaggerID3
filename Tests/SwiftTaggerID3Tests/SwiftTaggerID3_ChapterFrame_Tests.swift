@@ -24,136 +24,172 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
             XCTAssertEqual(lastChapter.title, "Chapter 02")
         }
     }
-}
-/*
-// // MARK: - Read test
-@available(OSX 10.12, *)
-func testReadChapterizedFile() throws {
-    let tag = tagChaptered
     
-    XCTAssertEqual(tag.chapterList.count,2)
-    XCTAssertEqual(tag.chapterList[0].startTime, 0)
-    XCTAssertEqual(tag.chapterList[0].title, "Chapter 01")
-    XCTAssertEqual(tag.chapterList[1].startTime, 2795)
-    XCTAssertEqual(tag.chapterList[1].title, "Chapter 02")
-}
+    func testSetChapterListV24() throws {
+        let chapterList = [
+            (startTime: 0, title: "Chapter One"),
+            (startTime: 1500, title: "Chapter Two"),
+            (startTime: 3000, title: "Chapter Three")
+        ]
+        var tag = tagNoMeta
+        tag.chapterList = chapterList
+        
+        let outputUrl = tempOutputDirectory
+//        let outputUrl = try localOutputDirectory("chapterTest")
+        XCTAssertNoThrow(try mp3NoMeta.write(tag: tag,
+                                             version: .v2_4,
+                                             outputLocation: outputUrl))
+        
+        let outputMp3 = try Mp3File(location: outputUrl)
+        let output = try Tag(mp3File: outputMp3)
+        
+        let chapter1 = output.chapterList[0]
+        let chapter2 = output.chapterList[1]
+        let chapter3 = output.chapterList[2]
+        
+        XCTAssertEqual(chapter1.startTime, 0)
+        XCTAssertEqual(chapter2.startTime, 1500)
+        XCTAssertEqual(chapter3.startTime, 3000)
+        XCTAssertEqual(chapter1.title, "Chapter One")
+        XCTAssertEqual(chapter2.title, "Chapter Two")
+        XCTAssertEqual(chapter3.title, "Chapter Three")
+    }
 
-@available(OSX 10.12, *)
-func testAddChapterToChapteredFile() throws {
-    var tag = tagChaptered
-    tag.addChapter(startTime: 3800, title: "Chapter 03")
-    
-    let outputUrl = tempOutputDirectory
-    XCTAssertNoThrow(try mp3Chaptered.write(tag: tag, version: .v2_4, outputLocation: outputUrl))
-    
-    let outputFile = try Mp3File(location: outputUrl)
-    let output = try Tag(mp3File: outputFile)
-    
-    XCTAssertEqual(output.chapterList.count,3)
-    XCTAssertEqual(output.chapterList[0].startTime, 0)
-    XCTAssertEqual(output.chapterList[0].title, "Chapter 01")
-    XCTAssertEqual(output.chapterList[1].startTime, 2795)
-    XCTAssertEqual(output.chapterList[1].title, "Chapter 02")
-    XCTAssertEqual(output.chapterList[2].startTime, 3800)
-    XCTAssertEqual(output.chapterList[2].title, "Chapter 03")
-}
+    func testSetChapterListV23() throws {
+        let chapterList = [
+            (startTime: 0, title: "Chapter One"),
+            (startTime: 1500, title: "Chapter Two"),
+            (startTime: 3000, title: "Chapter Three")
+        ]
+        var tag = tagNoMeta
+        tag.chapterList = chapterList
+        
+        let outputUrl = tempOutputDirectory
+//        let outputUrl = try localOutputDirectory("chapterTest")
+        XCTAssertNoThrow(try mp3NoMeta.write(tag: tag,
+                                             version: .v2_3,
+                                             outputLocation: outputUrl))
+        
+        let outputMp3 = try Mp3File(location: outputUrl)
+        let output = try Tag(mp3File: outputMp3)
+        
+        let chapter1 = output.chapterList[0]
+        let chapter2 = output.chapterList[1]
+        let chapter3 = output.chapterList[2]
+        
+        XCTAssertEqual(chapter1.startTime, 0)
+        XCTAssertEqual(chapter2.startTime, 1500)
+        XCTAssertEqual(chapter3.startTime, 3000)
+        XCTAssertEqual(chapter1.title, "Chapter One")
+        XCTAssertEqual(chapter2.title, "Chapter Two")
+        XCTAssertEqual(chapter3.title, "Chapter Three")
+    }
 
-// // MARK: - Frame removal test
-@available(OSX 10.12, *)
-func testFrameRemoval() throws {
-    var tag = tagChaptered
-    tag.removeAllChapters()
-    let outputUrl = tempOutputDirectory
-    XCTAssertNoThrow(try mp3Chaptered.write(tag: tag, version: .v2_4, outputLocation: outputUrl))
-    let outputMp3 = try Mp3File(location: outputUrl)
-    let output = try Tag(mp3File: outputMp3)
-    
-    XCTAssertTrue(output.chapterList.isEmpty)
-}
+    func testAddChapterToUnchapteredFileV24() throws {
+        var tag = tagNoMeta
+        tag.addChapter(startTime: 0, title: "Chapter 01")
+        tag.addChapter(startTime: 3000, title: "Chapter 02")
+        
+        //        let outputUrl = tempOutputDirectory
+        let outputUrl = try localOutputDirectory("chapterTest")
+        XCTAssertNoThrow(try mp3NoMeta.write(tag: tag,
+                                                version: .v2_4,
+                                                outputLocation: outputUrl))
+        
+        let outputMp3 = try Mp3File(location: outputUrl)
+        let output = try Tag(mp3File: outputMp3)
+        
+        let chapter1 = output.chapterList[0]
+        let chapter2 = output.chapterList[1]
+        XCTAssertEqual(chapter1.startTime, 0)
+        XCTAssertEqual(chapter2.startTime, 3000)
+        XCTAssertEqual(chapter1.title, "Chapter 01")
+        XCTAssertEqual(chapter2.title, "Chapter 02")
+    }
 
-// // MARK: - Writing test
-@available(OSX 10.12, *)
-func testFrameWriting() throws {
-    var tag = tagNoMeta
-    
-    tag.addChapter(startTime: 0, title: "Chapter 001")
-    tag.addChapter(startTime: 1680, title: "Chapter 002")
-    tag.addChapter(startTime: 3360, title: "Chapter 003")
-    
-    let outputUrl = tempOutputDirectory
-    XCTAssertNoThrow(try mp3NoMeta.write(tag: tag, version: .v2_4, outputLocation: outputUrl))
-    
-    let outputMp3 = try Mp3File(location: outputUrl)
-    let output = try Tag(mp3File: outputMp3)
-    
-    XCTAssertEqual(output.chapterList[0].startTime, 0)
-    XCTAssertEqual(output.chapterList[0].title, "Chapter 001")
-    XCTAssertEqual(output.chapterList[1].startTime, 1680)
-    XCTAssertEqual(output.chapterList[1].title, "Chapter 002")
-    XCTAssertEqual(output.chapterList[2].startTime, 3360)
-    XCTAssertEqual(output.chapterList[2].title, "Chapter 003")
-}
+    func testAddChapterToUnchapteredFileV23() throws {
+        var tag = tagNoMeta
+        tag.addChapter(startTime: 0, title: "Chapter 01")
+        tag.addChapter(startTime: 3000, title: "Chapter 02")
+        
+        //        let outputUrl = tempOutputDirectory
+        let outputUrl = try localOutputDirectory("chapterTest")
+        XCTAssertNoThrow(try mp3NoMeta.write(tag: tag,
+                                             version: .v2_3,
+                                             outputLocation: outputUrl))
+        
+        let outputMp3 = try Mp3File(location: outputUrl)
+        let output = try Tag(mp3File: outputMp3)
+        
+        let chapter1 = output.chapterList[0]
+        let chapter2 = output.chapterList[1]
+        XCTAssertEqual(chapter1.startTime, 0)
+        XCTAssertEqual(chapter2.startTime, 3000)
+        XCTAssertEqual(chapter1.title, "Chapter 01")
+        XCTAssertEqual(chapter2.title, "Chapter 02")
+    }
 
-// // MARK: - Overwriting test
-@available(OSX 10.12, *)
-func testOverwriting() throws {
-    var tag = tagChaptered
-    
-    tag.addChapter(startTime: 0, title: "Chapter 001")
-    tag.addChapter(startTime: 1680, title: "Chapter 002")
-    tag.addChapter(startTime: 3360, title: "Chapter 003")
-    
-    let outputUrl = tempOutputDirectory
-    //        let outputUrl = try tempOutputDirectory
-    XCTAssertNoThrow(try mp3Chaptered.write(tag: tag, version: .v2_4, outputLocation: outputUrl))
-    
-    let outputMp3 = try Mp3File(location: outputUrl)
-    let output = try Tag(mp3File: outputMp3)
-    
-    XCTAssertEqual(output.chapterList[0].startTime, 0)
-    XCTAssertEqual(output.chapterList[0].title, "Chapter 001")
-    XCTAssertEqual(output.chapterList[1].startTime, 1680)
-    XCTAssertEqual(output.chapterList[1].title, "Chapter 002")
-    XCTAssertEqual(output.chapterList[2].startTime, 2795)
-    XCTAssertEqual(output.chapterList[2].title, "Chapter 02")
-    XCTAssertEqual(output.chapterList[3].startTime, 3360)
-    XCTAssertEqual(output.chapterList[3].title, "Chapter 003")
-}
+    func testAddChapterToChapteredFile24() throws {
+        var tag = tagChaptered
+        tag.addChapter(startTime: 1000, title: "Chapter 1.5")
+        tag.addChapter(startTime: 4000, title: "Chapter 2.5")
+//        let outputUrl = tempOutputDirectory
+        let outputUrl = try localOutputDirectory("chapterTest")
+        XCTAssertNoThrow(try mp3Chaptered.write(tag: tag,
+                                                 version: .v2_4,
+                                                 outputLocation: outputUrl))
+        
+        let outputMp3 = try Mp3File(location: outputUrl)
+        let output = try Tag(mp3File: outputMp3)
+        let chapter1 = output.chapterList[0]
+        let chapter2 = output.chapterList[1]
+        let chapter3 = output.chapterList[2]
+        let chapter4 = output.chapterList[3]
+        XCTAssertEqual(chapter1.startTime, 0)
+        XCTAssertEqual(chapter2.startTime, 1000)
+        XCTAssertEqual(chapter3.startTime, 2795)
+        XCTAssertEqual(chapter4.startTime, 4000)
+        XCTAssertEqual(chapter1.title, "Chapter 01")
+        XCTAssertEqual(chapter2.title, "Chapter 1.5")
+        XCTAssertEqual(chapter3.title, "Chapter 02")
+        XCTAssertEqual(chapter4.title, "Chapter 2.5")
+    }
 
-@available(OSX 10.12, *)
-func testOverwritingWithRenaming() throws {
-    var tag = tagChaptered
-    
-    tag.addChapter(startTime: 0, title: "Chapter 001")
-    tag.addChapter(startTime: 1680, title: "Chapter 002")
-    tag.addChapter(startTime: 2795, title: "Chapter 003")
-    tag.addChapter(startTime: 3360, title: "Chapter 004")
-    
-    let outputUrl = tempOutputDirectory
-    XCTAssertNoThrow(try mp3Chaptered.write(tag: tag, version: .v2_4, outputLocation: outputUrl))
-    
-    let outputMp3 = try Mp3File(location: outputUrl)
-    let output = try Tag(mp3File: outputMp3)
-    
-    XCTAssertEqual(output.chapterList[0].startTime, 0)
-    XCTAssertEqual(output.chapterList[0].title, "Chapter 001")
-    XCTAssertEqual(output.chapterList[1].startTime, 1680)
-    XCTAssertEqual(output.chapterList[1].title, "Chapter 002")
-    XCTAssertEqual(output.chapterList[2].startTime, 2795)
-    XCTAssertEqual(output.chapterList[2].title, "Chapter 003")
-    XCTAssertEqual(output.chapterList[3].startTime, 3360)
-    XCTAssertEqual(output.chapterList[3].title, "Chapter 004")
-}
+    func testRemoveAllChapters() throws {
+        var tag = tagChaptered
+        tag.removeAllChapters()
+        
+        let outputUrl = tempOutputDirectory
+//        let outputUrl = try localOutputDirectory("chapterTest")
+        XCTAssertNoThrow(try mp3Chaptered.write(tag: tag,
+                                             version: .v2_4,
+                                             outputLocation: outputUrl))
+        
+        let outputMp3 = try Mp3File(location: outputUrl)
+        let output = try Tag(mp3File: outputMp3)
+        
+        XCTAssertNil(output.frames[.tableOfContents])
+        XCTAssertNil(output.frames[.chapter(startTime: 0)])
+        XCTAssertNil(output.frames[.chapter(startTime: 2795)])
+    }
 
-@available(OSX 10.12, *)
-func testVersionFailure() throws {
-    var tag = tagNoMeta
-    
-    tag.addChapter(startTime: 0, title: "Chapter 001")
-    tag.addChapter(startTime: 1680, title: "Chapter 002")
-    tag.addChapter(startTime: 3360, title: "Chapter 003")
-    
-    let outputUrl = tempOutputDirectory
-    XCTAssertThrowsError(try mp3NoMeta.write(tag: tag, version: .v2_4, outputLocation: outputUrl))
+    func testRemoveSingleChapter() throws {
+        var tag = tagChaptered
+        tag.removeChapter(startTime: 2795)
+        
+//        let outputUrl = tempOutputDirectory
+                let outputUrl = try localOutputDirectory("chapterTest")
+        XCTAssertNoThrow(try mp3Chaptered.write(tag: tag,
+                                                version: .v2_4,
+                                                outputLocation: outputUrl))
+        
+        let outputMp3 = try Mp3File(location: outputUrl)
+        let output = try Tag(mp3File: outputMp3)
+        
+        XCTAssertEqual(output.chapterList.count, 1)
+        let chapter1 = output.chapterList[0]
+        XCTAssertEqual(chapter1.startTime, 0)
+        XCTAssertEqual(chapter1.title, "Chapter 01")
+        XCTAssertNil(output.chapterList.first(where: {$0.startTime == 2795}))
+    }
 }
-*/

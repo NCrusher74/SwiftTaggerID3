@@ -78,6 +78,15 @@ import SwiftLanguageAndLocaleCodes
 ///
 /// `Comment` and `UnsynchronizedLyrics` frames are the only frames that allow the use of new-line characters. Therefore, they are ideally suited for long remarks and convenience getter-setter properties for the most common types have been added.
 class LocalizedFrame: Frame {
+    override var description: String {
+        return """
+                Identifier: \(self.identifier.rawValue):
+                Language: \(self.language?.rawValue ?? "und")
+                Description: \(self.descriptionString ?? "")
+                Content: \(self.stringValue)
+                """
+    }
+
     /// ISO-639-2 languge code
     var language: ISO6392Code?
     /// A short description of the frame content.

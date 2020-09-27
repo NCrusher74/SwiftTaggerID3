@@ -71,12 +71,24 @@
  */
 import Foundation
 /// A type used to represent an ID3-formatted timestamp tag. The information delivered from this type will vary depending on the tag version and formatting.
+@available(OSX 10.12, *)
 class DateFrame: Frame {
+    override var description: String {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime]
+        formatter.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
+        if let date = self.timeStamp {
+            let string = formatter.string(from: date)
+            return "\(self.identifier.rawValue): \(string)"
+        } else {
+            return "\(self.identifier.rawValue): Invalid Date from data \(self.contentData)"
+        }
+    }
+
     // MARK: Frame parsing
     // needs to be in ISO-8601 format
     var timeStamp: Date?
-    
-    // subset of ISO 8601; valid timestamps are yyyy, yyyy-MM, yyyy-MM-dd, yyyy-MM-ddTHH, yyyy-MM-ddTHH:mm and yyyy-MM-ddTHH:mm:ss.
+
     /// Decode the contents of a date frame being read from a file
     /// - Parameters:
     ///   - contents: the frame `Data` being decoded
@@ -107,10 +119,8 @@ class DateFrame: Frame {
                         (version == .v2_2 || version == .v2_3)) {
             self.timeStamp = try dateString.yearFromYYYYString()
         } else {
-            let formatter = ISO8601DateFormatter()
-            formatter.formatOptions = [.withInternetDateTime]
-            formatter.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
-            self.timeStamp = formatter.date(from: dateString)
+            let date = dateString.attemptDateFromString()
+            self.timeStamp = date
         }
         
         super.init(identifier: identifier,
@@ -194,6 +204,7 @@ class DateFrame: Frame {
 // MARK: - Tag extension
 // These are convenience getter-setter properties
 extension Tag {
+    @available(OSX 10.12, *)
     private func get(dateFrame identifier: FrameIdentifier) -> Date? {
         if let frame = self.frames[identifier.frameKey] as? DateFrame {
             let date = frame.timeStamp ?? Date.distantPast
