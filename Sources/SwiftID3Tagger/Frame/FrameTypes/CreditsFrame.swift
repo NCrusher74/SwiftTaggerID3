@@ -99,7 +99,7 @@ class CreditsFrame: Frame {
 // MARK: - Tag extension
 extension Tag {
     /// Getter-setter property for the dictionary of `[role: [person]]` pairs for the `involvedPeopleList` (`IPL/IPLS/TIPL`) frame
-    public var involvementCreditsList: [InvolvedPersonCredits:[String]] {
+    var involvementCreditsList: [InvolvedPersonCredits:[String]] {
         get {
             return involvementCredits
         }
@@ -137,7 +137,7 @@ extension Tag {
     }
     
     /// Getter-setter property for the dictionary of `[role: [person]]` pairs for the `musicianCreditsList` (`TMCL`) frame
-    public var musicianCreditsList: [MusicianAndPerformerCredits:[String]] {
+    var musicianCreditsList: [MusicianAndPerformerCredits:[String]] {
         get {
             return musicianCredits
         }
@@ -167,7 +167,7 @@ extension Tag {
     ///   - role: the role being performed
     ///   - person: the person performing the role
     // TODO: if version is 2.2. or 2.3, make this an `involved person` entry instead?
-    public mutating func addMusicianCredit(
+    mutating func addMusicianCredit(
         role: MusicianAndPerformerCredits, person: String) {
         if var credit = musicianCreditsList[role], !credit.contains(person) {
             credit.append(person)
@@ -181,7 +181,7 @@ extension Tag {
     /// - Parameters:
     ///   - role: the role being performed
     ///   - person: the person performing the role
-    public mutating func addInvolvementCredit(
+    mutating func addInvolvementCredit(
         role: InvolvedPersonCredits, person: String) {
         // get the list of pre-existing keys in the dictionary
         if var credit = involvementCreditsList[role], !credit.contains(person) {
@@ -193,13 +193,13 @@ extension Tag {
     }
     
     /// Removes ALL values from the `musicianCreditList` atom.
-    public mutating func clearMusicianCreditList() {
+    mutating func clearMusicianCreditList() {
         let frameKey = FrameIdentifier.musicianCreditsList.frameKey
         self.frames[frameKey] = nil
     }
     
     /// Removes the value for a specific role from the `musicianCreditList` frame
-    public mutating func removeMusicianCredit(role: MusicianAndPerformerCredits) {
+    mutating func removeMusicianCredit(role: MusicianAndPerformerCredits) {
         self.musicianCreditsList[role] = nil
         switch role {
             case .artist: self.artist = nil
@@ -208,13 +208,13 @@ extension Tag {
     }
     
     /// Removes ALL values from the `involvedPeopleList` atom
-    public mutating func clearInvolvementCreditList() {
+    mutating func clearInvolvementCreditList() {
         let frameKey = FrameIdentifier.involvedPeopleList.frameKey
         self.frames[frameKey] = nil
     }
     
     /// Removes the value for a specific role from the `involvedPeopleList` frame
-    public mutating func removeInvolvementCredit(role: InvolvedPersonCredits) {
+    mutating func removeInvolvementCredit(role: InvolvedPersonCredits) {
         self.involvementCreditsList[role] = nil
         switch role {
             case .arranger: self.arranger = nil

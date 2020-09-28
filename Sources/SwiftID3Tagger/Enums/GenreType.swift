@@ -7,7 +7,7 @@
 
  */
 
-public enum GenreType: String, CaseIterable  {
+enum GenreType: String, CaseIterable  {
     
     case Blues = "Blues"
     case ClassicRock = "Classic Rock"
@@ -205,7 +205,7 @@ public enum GenreType: String, CaseIterable  {
     case Remix = "Remix"
     case Cover = "Cover"
     
-    public var code: Int {
+    var code: Int {
         switch self {
             case .Blues: return 0
             case .ClassicRock: return 1
@@ -414,7 +414,7 @@ public enum GenreType: String, CaseIterable  {
         return mapping
     }()
     
-    public init?(code: Int) {
+    init?(code: Int) {
         self = GenreType.codeMapping[code] ?? .none
     }
 }

@@ -119,7 +119,7 @@ extension Tag {
     
     
     /// DiscNumber(/TotalDiscs) getter-setter. ID3 Identifier: `TPA`/`TPOS`
-    public var discNumber: (disc: Int, totalDiscs: Int?) {
+    var discNumber: (disc: Int, totalDiscs: Int?) {
         get {
             let identifier = FrameIdentifier.discNumber
             let frameKey = identifier.frameKey
@@ -144,7 +144,7 @@ extension Tag {
     }
     
     /// TrackNumber(/TotalTracks) getter-setter. ID3 Identifier: `TRK`/`TRCK`
-    public var trackNumber: (track: Int, totalTracks: Int?) {
+    var trackNumber: (track: Int, totalTracks: Int?) {
         get {
             let identifier = FrameIdentifier.trackNumber
             let frameKey = identifier.frameKey

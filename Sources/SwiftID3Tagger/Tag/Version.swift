@@ -10,7 +10,7 @@
 import Foundation
 
 /// An enum determining ID3 version and housing variables and methods are that dependent upon ID3 version
-public enum Version: UInt8, CaseIterable {
+enum Version: UInt8, CaseIterable {
     /// ID3 v2.2
     case v2_2 = 0x02
     /// ID3 v2.3

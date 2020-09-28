@@ -9,7 +9,7 @@
 
 import Foundation
 
-public enum FileType: String, CaseIterable {
+enum FileType: String, CaseIterable {
     case MIME
     case MPG
     case VQF
@@ -18,7 +18,7 @@ public enum FileType: String, CaseIterable {
     
 }
 
-public enum FileTypeRefinements: String, CaseIterable {
+enum FileTypeRefinements: String, CaseIterable {
     /// MPEG 1/2 layer I
     case mpegLayerI = "/1"
     /// MPEG 1/2 layer II

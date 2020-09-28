@@ -232,7 +232,7 @@ extension Tag {
     /// v2.4: releaseDate (`TDRL`) frame.
     /// v2.2, v2.3: date (`TDA/TDAT`) frame for DDMM values, time (`TIM/TIME`) frame for HHMM values, and year (`TYE/TYER`) frame for YYYY value
     @available(OSX 10.12, *)
-    public var releaseDateTime: Date? {
+    var releaseDateTime: Date? {
         get {
             switch self.version {
                 case .v2_2, .v2_3:
@@ -313,7 +313,7 @@ extension Tag {
     
     /// Version 2.4 only. Identifier `TDEN`
     @available(OSX 10.12, *)
-    public var encodingDateTime: Date? {
+    var encodingDateTime: Date? {
         get {
             get(dateFrame: .encodingTime)
         }
@@ -331,7 +331,7 @@ extension Tag {
     
     /// Version 2.4 only. Identifier `TDTG`
     @available(OSX 10.12, *)
-    public var taggingDateTime: Date? {
+    var taggingDateTime: Date? {
         get {
             get(dateFrame: .taggingTime)
         }
@@ -349,7 +349,7 @@ extension Tag {
     
     /// Identifier `TRD`/`TRDA`/`TDRC`
     @available(OSX 10.12, *)
-    public var recordingDateTime: Date? {
+    var recordingDateTime: Date? {
         get {
             get(dateFrame: .recordingDate)
         }
@@ -368,7 +368,7 @@ extension Tag {
     /// Full date/time for version 2.4. Identifer`TDOR`
     /// Year only for version 2.2/2.3. Identifer `TOY`/`TORY`
     @available(OSX 10.12, *)
-    public var originalRelease: Date? {
+    var originalRelease: Date? {
         get {
             get(dateFrame: .originalReleaseTime)
         }

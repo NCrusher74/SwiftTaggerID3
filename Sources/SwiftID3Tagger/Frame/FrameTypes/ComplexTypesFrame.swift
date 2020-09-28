@@ -201,7 +201,7 @@ extension Tag {
         }
     }
     
-    public var genre: (genreCategory: GenreType?, genre: String?) {
+    var genre: (genreCategory: GenreType?, genre: String?) {
         get {
             // if the array exists and isn't empty
             var tuple: (genreCategory: GenreType?, genre: String?) = (nil, nil)
@@ -246,7 +246,7 @@ extension Tag {
         }
     }
 
-    public var mediaType: (mediaType: MediaType?, mediaTypeRefinement: MediaTypeRefinements?, additionalInformation: String?) {
+    var mediaType: (mediaType: MediaType?, mediaTypeRefinement: MediaTypeRefinements?, additionalInformation: String?) {
         get {
             var tuple: (mediaType: MediaType?, mediaTypeRefinement: MediaTypeRefinements?, additionalInformation: String?) = (nil, nil, nil)
             // if the array exists and isn't empty
@@ -309,7 +309,7 @@ extension Tag {
         }
     }
     
-    public var fileType: (fileType: FileType?, fileTypeRefinement: FileTypeRefinements?, additionalInformation: String?) {
+    var fileType: (fileType: FileType?, fileTypeRefinement: FileTypeRefinements?, additionalInformation: String?) {
         get {
             var tuple: (fileType: FileType?, fileTypeRefinement: FileTypeRefinements?, additionalInformation: String?) = (nil, nil, nil)
             // if the array exists and isn't empty

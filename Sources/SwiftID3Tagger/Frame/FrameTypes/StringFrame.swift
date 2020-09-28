@@ -141,7 +141,7 @@ extension Tag {
     }
 
     /// Album frame getter-setter. ID3 Identifier: `TAL`/`TALB`
-    public var album: String? {
+    var album: String? {
         get { get(.album) }
         set {
             if let new = newValue {
@@ -153,7 +153,7 @@ extension Tag {
     }
 
     ///  AlbumArtist frame getter-setter. ID3 Identifier: `TP2`/`TPE2`
-    public var albumArtist: String? {
+    var albumArtist: String? {
         get { get(.albumArtist) }
         set {
             if let new = newValue {
@@ -165,7 +165,7 @@ extension Tag {
     }
 
     /// AlbumSort frame getter-setter. ID3 Identifier: `TSA`/`TSOA`
-    public var albumSort: String? {
+    var albumSort: String? {
         get { get(.albumSort) }
         set {
             if let new = newValue {
@@ -177,7 +177,7 @@ extension Tag {
     }
 
     /// AlbumArtistSort frame getter-setter. ID3 Identifier: `TS2`/`TSO2`
-    public var albumArtistSort: String? {
+    var albumArtistSort: String? {
         get { get(.albumArtistSort) }
         set {
             if let new = newValue {
@@ -191,7 +191,7 @@ extension Tag {
     /// Arranger/Remixer/InterpretedBy getter-setter. ID3 Identifier: `TP4`/`TPE4`.
     ///
     /// If another frame of this type already exists, only one will be written.
-    public var arranger: String? {
+    var arranger: String? {
         get { get(.arranger) }
         set {
             if let new = newValue {
@@ -203,7 +203,7 @@ extension Tag {
     }
 
     /// Artist getter-setter. ID3 Identifier: `TP1`/`TPE1`
-    public var artist: String? {
+    var artist: String? {
         get { get(.artist) }
         set {
             if let new = newValue {
@@ -215,7 +215,7 @@ extension Tag {
     }
 
     /// ArtistSort getter-setter. ID3 Identifier: `TSP`/`TSOP`
-    public var artistSort: String? {
+    var artistSort: String? {
         get { get(.artistSort) }
         set {
             if let new = newValue {
@@ -227,7 +227,7 @@ extension Tag {
     }
 
     /// Composer getter-setter. ID3 Identifier: `TCM`/`TCOM`
-    public var composer: String? {
+    var composer: String? {
         get { get(.composer) }
         set {
             if let new = newValue {
@@ -239,7 +239,7 @@ extension Tag {
     }
 
     /// ComposerSort getter-setter. ID3 Identifier: `TSC`/`TSOC`
-    public var composerSort: String? {
+    var composerSort: String? {
         get { get(.composerSort) }
         set {
             if let new = newValue {
@@ -251,7 +251,7 @@ extension Tag {
     }
 
     /// Conductor getter-setter. ID3 Identifier: `TP3`/`TPE3`
-    public var conductor: String? {
+    var conductor: String? {
         get { get(.conductor) }
         set {
             if let new = newValue {
@@ -263,7 +263,7 @@ extension Tag {
     }
 
     /// ContentGroup getter-setter. ID3 Identifier: `TT1`/`TIT1`
-    public var contentGroup: String? {
+    var contentGroup: String? {
         get { get(.contentGroup) }
         set {
             if let new = newValue {
@@ -279,7 +279,7 @@ extension Tag {
     /// Writes to `ContentGroup` frame, ID3 Identifier: `TT1`/`TIT1`.
     ///
     /// If another frame of this type already exists, only one will be written.
-    public var work: String? {
+    var work: String? {
         get { get(.contentGroup) }
         set {
             if let new = newValue {
@@ -291,7 +291,7 @@ extension Tag {
     }
 
     /// Copyright getter-setter. ID3 Identifier: `TCR`/`TCOP`
-    public var copyright: String? {
+    var copyright: String? {
         get { get(.copyright) }
         set {
             if let new = newValue {
@@ -303,7 +303,7 @@ extension Tag {
     }
 
     /// EncodedBy getter-setter. ID3 Identifier: `TEN`/`TENC`
-    public var encodedBy: String? {
+    var encodedBy: String? {
         get { get(.encodedBy) }
         set {
             if let new = newValue {
@@ -315,7 +315,7 @@ extension Tag {
     }
 
     /// EncodingSettings getter-setter. ID3 Identifier: `TSS`/`TSSE`
-    public var encodingSettings: String? {
+    var encodingSettings: String? {
         get { get(.encodingSettings) }
         set {
             if let new = newValue {
@@ -327,7 +327,7 @@ extension Tag {
     }
 
     /// FileOwner getter-setter. ID3 Identifier: `TOWN`. Valid only for tag versions 2.3/2.4
-    public var fileOwner: String? {
+    var fileOwner: String? {
         get { get(.fileOwner) }
         set {
             if let new = newValue {
@@ -340,7 +340,7 @@ extension Tag {
 
     /// Grouping getter-setter. This is a non-standard, iTunes compliant frame.
     /// ID3 Identifier: `GRP1`
-    public var grouping: String? {
+    var grouping: String? {
         get { get(.grouping) }
         set {
             if let new = newValue {
@@ -352,7 +352,7 @@ extension Tag {
     }
 
     /// InitialKey getter-setter. ID3 Identifier: `TKE`/`TKEY`
-    public var initialKey: KeySignature? {
+    var initialKey: KeySignature? {
         get {
             if let string = get(.initialKey) {
                 if let key = KeySignature(rawValue: string) {
@@ -375,7 +375,7 @@ extension Tag {
     }
 
     /// Lyricist getter-setter. ID3 Identifier: `TXT`/`TEXT`
-    public var lyricist: String? {
+    var lyricist: String? {
         get { get(.lyricist) }
         set {
             if let new = newValue {
@@ -387,7 +387,7 @@ extension Tag {
     }
 
     /// Mood getter-setter. ID3 Identifier: `TMOO`. Valid only for tag version 2.4
-    public var mood: String? {
+    var mood: String? {
         get { get(.mood) }
         set {
             if let new = newValue {
@@ -400,7 +400,7 @@ extension Tag {
 
     /// MovementName getter-setter. This is a non-standard, iTunes compliant frame
     /// ID3 Identifier: `MVNM`.
-    public var movement: String? {
+    var movement: String? {
         get { get(.movement) }
         set {
             if let new = newValue {
@@ -412,7 +412,7 @@ extension Tag {
     }
 
     /// OriginalAlbum getter-setter. ID3 Identifier: `TOT`/`TOAL`.
-    public var originalAlbum: String? {
+    var originalAlbum: String? {
         get { get(.originalAlbum) }
         set {
             if let new = newValue {
@@ -424,7 +424,7 @@ extension Tag {
     }
 
     /// OriginalArtist getter-setter. ID3 Identifier: `TOP`/`TOPE`.
-    public var originalArtist: String? {
+    var originalArtist: String? {
         get { get(.originalArtist) }
         set {
             if let new = newValue {
@@ -436,7 +436,7 @@ extension Tag {
     }
 
     /// OriginalFilename getter-setter. ID3 Identifier: `TOF`/`TOFN`.
-    public var originalFilename: String? {
+    var originalFilename: String? {
         get { get(.originalFilename) }
         set {
             if let new = newValue {
@@ -448,7 +448,7 @@ extension Tag {
     }
 
     /// OriginalLyricist getter-setter. ID3 Identifier: `TOL`/`TOLY`.
-    public var originalLyricist: String? {
+    var originalLyricist: String? {
         get { get(.originalLyricist) }
         set {
             if let new = newValue {
@@ -461,7 +461,7 @@ extension Tag {
 
     /// PodcastCategory getter-setter. This is a non-standard, iTunes compliant frame
     /// ID3 Identifier: `TCAT`.
-    public var podcastCategory: String? {
+    var podcastCategory: String? {
         get { get(.podcastCategory) }
         set {
             if let new = newValue {
@@ -474,7 +474,7 @@ extension Tag {
 
     /// PodcastDescription getter-setter. This is a non-standard, iTunes compliant frame
     /// ID3 Identifier: `TDES`.
-    public var podcastDescription: String? {
+    var podcastDescription: String? {
         get { get(.podcastDescription) }
         set {
             if let new = newValue {
@@ -487,7 +487,7 @@ extension Tag {
 
     /// PodcastID getter-setter. This is a non-standard, iTunes compliant frame
     /// ID3 Identifier: `TGID`.
-    public var podcastID: String? {
+    var podcastID: String? {
         get { get(.podcastID) }
         set {
             if let new = newValue {
@@ -500,7 +500,7 @@ extension Tag {
 
     /// PodcastKeywords getter-setter. This is a non-standard, iTunes compliant frame
     /// ID3 Identifier: `TKWD`.
-    public var podcastKeywords: [String] {
+    var podcastKeywords: [String] {
         get {
             if let string = get(.podcastKeywords) {
                 return string.toArray
@@ -517,7 +517,7 @@ extension Tag {
         }
     }
 
-    public var languages: [ISO6392Code] {
+    var languages: [ISO6392Code] {
         get {
             if let string = get(.languages) {
                 let array = string.toArray
@@ -549,7 +549,7 @@ extension Tag {
     
     /// PodcastFeedLink getter-setter. This is a non-standard, iTunes compliant frame
     /// ID3 Identifier: `WFED`.
-    public var podcastFeed: String? {
+    var podcastFeed: String? {
         get { get(.podcastFeed) }
         set {
             if let new = newValue {
@@ -561,7 +561,7 @@ extension Tag {
     }
 
     /// ProducedNotice getter-setter. ID3 Identifier: `TPRO`.
-    public var producedNotice: String? {
+    var producedNotice: String? {
         get { get(.producedNotice) }
         set {
             if let new = newValue {
@@ -573,7 +573,7 @@ extension Tag {
     }
 
     /// Publisher getter-setter. ID3 Identifier: `TPB`/`TPUB`.
-    public var publisher: String? {
+    var publisher: String? {
         get { get(.publisher) }
         set {
             if let new = newValue {
@@ -585,7 +585,7 @@ extension Tag {
     }
 
     /// (Internet)RadioStation getter-setter. ID3 Identifier: `TRS`/`TRSN`.
-    public var radioStation: String? {
+    var radioStation: String? {
         get { get(.radioStation) }
         set {
             if let new = newValue {
@@ -597,7 +597,7 @@ extension Tag {
     }
 
     /// (Internet)RadioStationOwner getter-setter. ID3 Identifier: `TRO`/`TRSO`.
-    public var radioStationOwner: String? {
+    var radioStationOwner: String? {
         get { get(.radioStationOwner) }
         set {
             if let new = newValue {
@@ -609,7 +609,7 @@ extension Tag {
    }
 
     /// SetSubtitle getter-setter. ID3 Identifier: `TSST`.
-    public var setSubtitle: String? {
+    var setSubtitle: String? {
         get { get(.setSubtitle) }
         set {
             if let new = newValue {
@@ -621,7 +621,7 @@ extension Tag {
     }
 
     /// Subtitle getter-setter. ID3 Identifier: `TT3`/`TIT3`
-    public var subtitle: String? {
+    var subtitle: String? {
         get { get(.subtitle) }
         set {
             if let new = newValue {
@@ -633,7 +633,7 @@ extension Tag {
     }
 
     /// Title getter-setter. ID3 Identifier: `TT2`/`TIT2`
-    public var title: String? {
+    var title: String? {
         get { get(.title) }
         set {
             if let new = newValue {
@@ -645,7 +645,7 @@ extension Tag {
     }
 
     /// TitleSort getter-setter. ID3 Identifier: `TST`/`TSOT`
-    public var titleSort: String? {
+    var titleSort: String? {
         get { get(.titleSort) }
         set {
             if let new = newValue {
@@ -657,7 +657,7 @@ extension Tag {
     }
     
     /// ArtistWebpage getter-setter. ID3 Identifier: `WAR`/`WOAR`
-    public var artistWebpage: String? {
+    var artistWebpage: String? {
         get { get(.artistWebpage) }
         set {
             if let new = newValue {
@@ -669,7 +669,7 @@ extension Tag {
     }
 
     /// (Official)AudioFileWebpage getter-setter. ID3 Identifier: `WAF`/`WOAF`
-    public var audioFileWebpage: String? {
+    var audioFileWebpage: String? {
         get { get(.audioFileWebpage) }
         set {
             if let new = newValue {
@@ -681,7 +681,7 @@ extension Tag {
     }
 
     /// (Official)AudioSourceWebpage getter-setter. ID3 Identifier: `WAS`/`WOAS`
-    public var audioSourceWebpage: String? {
+    var audioSourceWebpage: String? {
         get { get(.audioSourceWebpage) }
         set {
             if let new = newValue {
@@ -693,7 +693,7 @@ extension Tag {
     }
 
     /// Copyright/Legal Information Webpage getter-setter. ID3 Identifier: `WCP`/`WCOP`
-    public var copyrightWebpage: String? {
+    var copyrightWebpage: String? {
         get { get(.copyrightWebpage) }
         set {
             if let new = newValue {
@@ -705,7 +705,7 @@ extension Tag {
     }
 
     /// PaymentWebpage getter-setter. ID3 Identifier: `WPAY`
-    public var paymentWebpage: String? {
+    var paymentWebpage: String? {
         get { get(.paymentWebpage) }
         set {
             if let new = newValue {
@@ -717,7 +717,7 @@ extension Tag {
     }
 
     /// PublisherWebpage getter-setter. ID3 Identifier: `WPB`/`WPUB`
-    public var publisherWebpage: String? {
+    var publisherWebpage: String? {
         get { get(.publisherWebpage) }
         set {
             if let new = newValue {
@@ -729,7 +729,7 @@ extension Tag {
    }
 
     /// (Official Internet)RadioStationWebpage getter-setter. ID3 Identifier: `WRS`/`WORS`
-    public var radioStationWebpage: String? {
+    var radioStationWebpage: String? {
         get { get(.radioStationWebpage) }
         set {
             if let new = newValue {
@@ -741,7 +741,7 @@ extension Tag {
    }
 
     /// BeatsPerMinute getter-setter. ID3 Identifier: `TBP`/`TBPM`
-    public var bpm: Int? {
+    var bpm: Int? {
         get {
             if let string = get(.bpm) {
                 if let int = Int(string) {
@@ -764,7 +764,7 @@ extension Tag {
     }
 
     /// IRSC getter-setter. ID3 Identifier: `TRC`/`TSRC`
-    public var isrc: String? {
+    var isrc: String? {
         get { get(.isrc) }
         set {
             if let new = newValue {
@@ -778,13 +778,13 @@ extension Tag {
     /// READ ONLY FRAME. ID3 Identifier: `TLE`/`TLEN`
     ///
     /// This value is derived from the file data, and since SwiftTagger doesn't support editing anything other than metadata, it cannot be set to another value.
-    public var length: Int {
+    var length: Int {
         return Tag.duration
     }
 
     /// TotalMovements getter-setter. This is a non-standard, iTunes non-standard frame
     /// ID3 Identifier: `MVCN`.
-    public var movementCount: Int? {
+    var movementCount: Int? {
         get {
             if let string = get(.movementCount) {
                 if let int = Int(string) {
@@ -808,7 +808,7 @@ extension Tag {
 
     /// MovementNumber getter-setter. This is a non-standard, iTunes non-standard frame
     /// ID3 Identifier: `MVIN`.
-    public var movementNumber: Int? {
+    var movementNumber: Int? {
         get {
             if let string = get(.movementNumber) {
                 if let int = Int(string) {
@@ -833,7 +833,7 @@ extension Tag {
     /// Gapless Playback getter-setter. If true, sets `playlistDelay` to zero.
     ///
     /// ID3 Identifier: `TDY`/`TDLY`
-    public var gaplessPlayback: Bool? {
+    var gaplessPlayback: Bool? {
         get {
             let bool: Bool
             if let string = get(.playlistDelay) {
@@ -855,7 +855,7 @@ extension Tag {
     }
 
     /// PlaylistDelay getter-setter. ID3 Identifier: `TDY`/`TDLY`
-    public var playlistDelay: Int? {
+    var playlistDelay: Int? {
         get {
             if let string = get(.playlistDelay) {
                 if let int = Int(string) {
@@ -878,7 +878,7 @@ extension Tag {
     }
 
     /// Compilation (flag) getter-setter. ID3 identifier: `TCP`/`TCMP`. iTunes non-standard frame
-    public var compilation: Bool? {
+    var compilation: Bool? {
         get {
             let bool: Bool
             if let string = get(.compilation) {

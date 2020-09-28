@@ -8,7 +8,7 @@
 import Foundation
 import Cocoa
 
-public struct Tag {
+struct Tag {
     /*
      The first part of the ID3v2 tag is the 10 byte tag header, laid out
      as follows:
@@ -94,7 +94,7 @@ public struct Tag {
     /// - Parameter version: The desired version of the tag to be output
     ///
     /// Version refers to the tag that will be output, not the tag of the source file
-    public init(version: Version) {
+    init(version: Version) {
         self.version = version
         self.frames = [:]
         self.size = 0
@@ -132,7 +132,7 @@ public struct Tag {
     /// The known byte-count of a valid ID3 tag's UInt32 size declaration
     let tagSizeLength: Int = 4
     
-    public mutating func removeAllMetadata() {
+    mutating func removeAllMetadata() {
         self.frames = [:]
     }
 }

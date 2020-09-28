@@ -8,7 +8,7 @@
  */
 
 import Foundation
-public enum MediaType: String, CaseIterable {
+enum MediaType: String, CaseIterable {
     
     /// Other digital media
     case otherDigital = "DIG"
@@ -44,7 +44,7 @@ public enum MediaType: String, CaseIterable {
     
 }
 
-public enum MediaTypeRefinements: String, CaseIterable {
+enum MediaTypeRefinements: String, CaseIterable {
     
     /// Analog transfer from media
     case analogTransfer
@@ -124,7 +124,7 @@ public enum MediaTypeRefinements: String, CaseIterable {
     case typeIV
     case none
     
-    public var code: String {
+    var code: String {
         switch self {
             case .analogTransfer: return "/A"
             case .waxCylinder: return "/WC"
@@ -177,7 +177,7 @@ public enum MediaTypeRefinements: String, CaseIterable {
         return mapping
     }()
     
-    public init?(code: String) {
+    init?(code: String) {
         self = MediaTypeRefinements.codeMapping[code] ?? .none
     }
 }

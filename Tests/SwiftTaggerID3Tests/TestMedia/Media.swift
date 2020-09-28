@@ -8,7 +8,7 @@
  */
 
 import Foundation
-import SwiftTaggerID3
+@testable import SwiftTaggerID3
 
 let testMediaDirectory = URL(fileURLWithPath: #file)
     .deletingLastPathComponent()

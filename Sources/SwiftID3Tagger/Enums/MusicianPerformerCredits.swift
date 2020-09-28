@@ -9,7 +9,7 @@
 
 import Foundation
 
-public enum MusicianAndPerformerCredits: String, CaseIterable {
+enum MusicianAndPerformerCredits: String, CaseIterable {
     
     case none = ""
     /// Abiti

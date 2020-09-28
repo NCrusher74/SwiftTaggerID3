@@ -11,7 +11,7 @@ import SwiftLanguageAndLocaleCodes
 /// The unique key used to refer to a particular frame.
 ///
 /// Usually the `FrameKey` is the ID3 frame identifier string, but in cases where a frame may be duplicated within a valid ID3 tag, this key will derive from additional information contained in the frame, such as a description field
-public enum FrameKey: Hashable {
+enum FrameKey: Hashable {
     /// `Album/Movie/Show` title frame
     ///
     /// Intended for the title of the recording (or source of sound) from which the audio in the file is taken.
