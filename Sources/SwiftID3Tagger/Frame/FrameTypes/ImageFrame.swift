@@ -122,11 +122,7 @@ class ImageFrame: Frame {
     }
     
     override var frameKey: FrameKey {
-        if self.imageType == .other || self.imageType == .fileIcon {
-            return self.identifier.frameKey(imageType: self.imageType)
-        } else {
-            return self.identifier.frameKey(self.descriptionString ?? self.imageType.pictureDescription)
-        }
+        return self.identifier.frameKey(imageType: self.imageType)
     }
 
     // MARK: - Encode Contents
@@ -234,20 +230,6 @@ extension Tag {
     public subscript(attachedPicture type: ImageType) -> NSImage? {
         let identifier = FrameIdentifier.attachedPicture
         let frameKey = identifier.frameKey(imageType: type)
-        if let frame = self.frames[frameKey] as? ImageFrame {
-            if let image = frame.image {
-                return image
-            } else {
-                return nil
-            }
-        } else {
-            return nil
-        }
-    }
-
-    public subscript(attachedPicture description: String) -> NSImage? {
-        let identifier = FrameIdentifier.attachedPicture
-        let frameKey = identifier.frameKey(description)
         if let frame = self.frames[frameKey] as? ImageFrame {
             if let image = frame.image {
                 return image

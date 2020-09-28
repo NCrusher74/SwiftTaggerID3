@@ -250,70 +250,6 @@ extension Tag {
         }
     }
 
-    /// Author getter-setter.
-    ///
-    /// Writes to `artist` frame, ID3 Identifier: `TP1`/`TPE1`
-    ///
-    /// If another frame of this type already exists, only one will be written.
-    public var author: String? {
-        get { get(.artist) }
-        set {
-            if let new = newValue {
-                set(.artist, stringValue: new)
-            } else {
-                set(.artist, stringValue: nil)
-            }
-        }
-    }
-    
-    /// AuthorSort getter-setter.
-    ///
-    /// Writes to `artistSort` frame, ID3 Identifier: `TSP`/`TSOP`
-    ///
-    /// If another frame of this type already exists, only one will be written.
-    public var authorSort: String? {
-        get { get(.artistSort) }
-        set {
-            if let new = newValue {
-                set(.artistSort, stringValue: new)
-            } else {
-                set(.artistSort, stringValue: nil)
-            }
-        }
-    }
-    
-    /// narrator getter-setter.
-    ///
-    /// Writes to `composer` frame, ID3 Identifier: `TCM`/`TCOM`
-    ///
-    /// If another frame of this type already exists, only one will be written.
-    public var narrator: String? {
-        get { get(.composer) }
-        set {
-            if let new = newValue {
-                set(.composer, stringValue: new)
-            } else {
-                set(.composer, stringValue: nil)
-            }
-        }
-    }
-    
-    /// narratorSort getter-setter.
-    ///
-    /// Writes to `composerSort` frame, ID3 Identifier: `TSC`/`TSOC`
-    ///
-    /// If another frame of this type already exists, only one will be written.
-    public var narratorSort: String? {
-        get { get(.composerSort) }
-        set {
-            if let new = newValue {
-                set(.composerSort, stringValue: new)
-            } else {
-                set(.composerSort, stringValue: nil)
-            }
-        }
-    }
-
     /// Conductor getter-setter. ID3 Identifier: `TP3`/`TPE3`
     public var conductor: String? {
         get { get(.conductor) }
@@ -344,22 +280,6 @@ extension Tag {
     ///
     /// If another frame of this type already exists, only one will be written.
     public var work: String? {
-        get { get(.contentGroup) }
-        set {
-            if let new = newValue {
-                set(.contentGroup, stringValue: new)
-            } else {
-                set(.contentGroup, stringValue: nil)
-            }
-        }
-    }
-
-    /// Series getter-setter.
-    ///
-    /// Writes to `ContentGroup` frame, ID3 Identifier: `TT1`/`TIT1`.
-    ///
-    /// If another frame of this type already exists, only one will be written.
-    public var series: String? {
         get { get(.contentGroup) }
         set {
             if let new = newValue {
@@ -664,51 +584,6 @@ extension Tag {
         }
     }
 
-    /// Label getter-setter. Writes to `Publisher` frame,
-    /// ID3 Identifier: `TPB`/`TPUB`.
-    ///
-    /// If another frame of this type already exists, only one will be written.
-    public var label: String? {
-        get { get(.publisher) }
-        set {
-            if let new = newValue {
-                set(.publisher, stringValue: new)
-            } else {
-                set(.publisher, stringValue: nil)
-            }
-        }
-    }
-
-    /// RecordCompany getter-setter. Writes to `Publisher` frame,
-    /// ID3 Identifier: `TPB`/`TPUB`.
-    ///
-    /// If another frame of this type already exists, only one will be written.
-    public var recordCompany: String? {
-        get { get(.publisher) }
-        set {
-            if let new = newValue {
-                set(.publisher, stringValue: new)
-            } else {
-                set(.publisher, stringValue: nil)
-            }
-        }
-    }
-
-    /// Studio getter-setter. Writes to `Publisher` frame,
-    /// ID3 Identifier: `TPB`/`TPUB`.
-    ///
-    /// If another frame of this type already exists, only one will be written.
-    public var studio: String? {
-        get { get(.publisher) }
-        set {
-            if let new = newValue {
-                set(.publisher, stringValue: new)
-            } else {
-                set(.publisher, stringValue: nil)
-            }
-        }
-    }
-
     /// (Internet)RadioStation getter-setter. ID3 Identifier: `TRS`/`TRSN`.
     public var radioStation: String? {
         get { get(.radioStation) }
@@ -900,25 +775,11 @@ extension Tag {
         }
     }
 
-    /// Length getter. ID3 Identifier: `TLE`/`TLEN`
+    /// READ ONLY FRAME. ID3 Identifier: `TLE`/`TLEN`
     ///
     /// This value is derived from the file data, and since SwiftTagger doesn't support editing anything other than metadata, it cannot be set to another value.
     public var length: Int {
-        get {
-            if let string = get(.length) {
-                if let int = Int(string) {
-                    return int
-                } else {
-                    return Tag.duration
-                }
-            } else {
-                return Tag.duration
-            }
-        }
-        set {
-            let int = Tag.duration
-            set(.length, stringValue: String(int))
-        }
+        return Tag.duration
     }
 
     /// TotalMovements getter-setter. This is a non-standard, iTunes non-standard frame

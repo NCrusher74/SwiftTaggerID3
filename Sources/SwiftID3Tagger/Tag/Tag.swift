@@ -131,4 +131,8 @@ public struct Tag {
     }()
     /// The known byte-count of a valid ID3 tag's UInt32 size declaration
     let tagSizeLength: Int = 4
+    
+    public mutating func removeAllMetadata() {
+        self.frames = [:]
+    }
 }

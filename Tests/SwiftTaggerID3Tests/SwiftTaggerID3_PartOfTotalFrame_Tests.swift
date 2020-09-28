@@ -231,7 +231,8 @@ class SwiftTaggerID3_PartOfTotalFrame_Tests: XCTestCase {
         XCTAssertNil(tag.frames.first(where: {$0.value.identifier == .discNumber}))
         XCTAssertNil(tag.frames.first(where: {$0.value.identifier == .trackNumber}))
         
-        let outputUrl = try localOutputDirectory("pottest")
+        let outputUrl = tempOutputDirectory
+//        let outputUrl = try localOutputDirectory("pottest")
         XCTAssertNoThrow(try mp3NoMeta.write(tag: tag,
                                              version: .v2_4,
                                              outputLocation: outputUrl))

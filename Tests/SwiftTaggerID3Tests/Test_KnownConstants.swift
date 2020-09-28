@@ -148,3 +148,10 @@ let v23OriginalReleaseYear: Date = {
     }
     return date
 }()
+
+let testAllDate: Date = {
+    guard let date = formatter.date(from: "2002-11-07T09:23:00Z") else {
+        fatalError()
+    }
+    return date
+}()

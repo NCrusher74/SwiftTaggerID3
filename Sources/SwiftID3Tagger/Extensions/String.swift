@@ -106,53 +106,66 @@ extension String {
         return dateComponents.date
     }
     
+    
+//    private let dateFormatters: [DateFormatter] = formats.map { format in
+//        let formatter = Locale(identifier: "en_US_POSIX")
+//        formatter.dateFormat = format
+//        return formatter
+//    }
+    
+//    private var dateFormatters: [DateFormatter] {
+//        var formatters = [DateFormatter]()
+//        let formatter = DateFormatter()
+//        // attempt to find the date using the dateStyles
+//        formatter.dateStyle = .full
+//        formatters.append(formatter)
+//        formatter.dateStyle = .long
+//        formatters.append(formatter)
+//        formatter.dateStyle = .medium
+//        formatters.append(formatter)
+//        formatter.dateStyle = .short
+//        formatters.append(formatter)
+//
+//        formatter.locale = Locale(identifier: "en_US_POSIX")
+//        // if that fails, attempt to use one of the formats mentioned in the ID3 spec
+//        formatter.dateFormat = "yyyy-MM-ddTHH:mm"
+//        formatters.append(formatter)
+//        formatter.dateFormat = "yyyy-MM-ddTHH"
+//        formatters.append(formatter)
+//        formatter.dateFormat = "yyyy-MM-dd"
+//        formatters.append(formatter)
+//        formatter.dateFormat = "MM-dd-yyyy"
+//        formatters.append(formatter)
+//        formatter.dateFormat = "yyyy-MM"
+//        formatters.append(formatter)
+//        formatter.dateFormat = "yyyy"
+//        formatters.append(formatter)
+//        return formatters
+//    }
     @available(OSX 10.12, *)
     func attemptDateFromString() -> Date? {
         let isoFormatter = ISO8601DateFormatter()
         isoFormatter.formatOptions = [.withInternetDateTime]
         isoFormatter.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
         
-        let formatter1 = DateFormatter()
-        formatter1.locale = Locale(identifier: "en_US_POSIX")
-        formatter1.dateFormat = "yyyy-MM-ddTHH:mm"
+        let formats: [String] = ["d MMM yyyy HH:mm:ss", "yyyy-MM-ddTHH:mm", "MM-dd-yyyy HH:mm","yyyy-MM-ddTHH", "MMM d, yyyy", "d MMM yyyy", "yyyy-MM-dd", "MM/dd/yyyy", "dd.MM.yy", "MM-dd-yyyy", "MMMM yyyy", "yyyy-MM", "yyyy"]
+        let dateFormatters: [DateFormatter] = formats.map { format in
+            let formatter = DateFormatter()
+            formatter.locale = Locale(identifier: "en_US_POSIX")
+            formatter.dateFormat = format
+            return formatter
+        }
 
-        let formatter2 = DateFormatter()
-        formatter2.locale = Locale(identifier: "en_US_POSIX")
-        formatter2.dateFormat = "yyyy-MM-ddTHH"
-
-        let formatter3 = DateFormatter()
-        formatter3.locale = Locale(identifier: "en_US_POSIX")
-        formatter3.dateFormat = "yyyy-MM-dd"
-
-        let formatter4 = DateFormatter()
-        formatter4.locale = Locale(identifier: "en_US_POSIX")
-        formatter4.dateFormat = "MM-dd-yyyy"
-        
-        let formatter5 = DateFormatter()
-        formatter5.locale = Locale(identifier: "en_US_POSIX")
-        formatter5.dateFormat = "yyyy-MM"
-
-        let formatter6 = DateFormatter()
-        formatter6.locale = Locale(identifier: "en_US_POSIX")
-        formatter6.dateFormat = "yyyy"
-
-        
         if let date = isoFormatter.date(from: self) {
             return date
-        } else if let date = formatter1.date(from: self) {
-            return date
-        } else if let date = formatter2.date(from: self) {
-            return date
-        } else if let date = formatter3.date(from: self) {
-            return date
-        } else if let date = formatter4.date(from: self) {
-            return date
-        } else if let date = formatter5.date(from: self) {
-            return date
-        } else if let date = formatter6.date(from: self) {
-            return date
         } else {
-            return nil
+            for format in dateFormatters {
+                if let date = format.date(from: self) {
+                    return date
+                } else {
+                    return nil
+                }
+            }; return nil
         }
     }
     

@@ -144,7 +144,6 @@ enum FrameIdentifier: String, CaseIterable {
     func frameKey(_ description: String?) -> FrameKey {
         let description = description ?? ""
         switch self {
-            case .attachedPicture: return .attachedPicture(description: description)
             case .userDefinedText: return .userDefinedText(description)
             case .userDefinedWebpage: return .userDefinedWebpage(description)
             default: fatalError("Wrong frame key for identifier \(self.rawValue)")

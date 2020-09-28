@@ -19,8 +19,6 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
         let tag = tagV24
 
         XCTAssertEqual(tag.languages, [.eng])
-        XCTAssertEqual(tag.series, "Content Group")
-        XCTAssertEqual(tag.studio, "Publisher")
         XCTAssertEqual(tag[comment: "Comment", .eng], "Comment Content")
         XCTAssertEqual(tag[comment: "Description", .eng], "Description Content")
         XCTAssertEqual(tag[comment: "LongDescription", .eng], "Long Description Content")
@@ -36,8 +34,6 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
         let tag = tagV23
         
         XCTAssertEqual(tag.languages, [.eng])
-        XCTAssertEqual(tag.series, "Content Group")
-        XCTAssertEqual(tag.studio, "Publisher")
         XCTAssertEqual(tag[comment: "Comment", .eng], "Comment Content")
         XCTAssertEqual(tag[comment: "Description", .eng], "Description Content")
         XCTAssertEqual(tag[comment: "LongDescription", .eng], "Long Description Content")
@@ -53,8 +49,6 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
         let tag = tagV22
         
         XCTAssertEqual(tag.languages, [.eng])
-        XCTAssertEqual(tag.series, "Content Group")
-        XCTAssertEqual(tag.studio, "Publisher")
         XCTAssertEqual(tag[comment: "Comment", .eng], "Comment Content")
         XCTAssertEqual(tag[comment: "Description", .eng], "Description Content")
         XCTAssertEqual(tag[comment: "LongDescription", .eng], "Long Description Content")
@@ -94,8 +88,8 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
         tag[userDefinedUrl: "Online Extras"] = nil
         tag[userDefinedUrl: "UserURL"] = nil
         
-        let outputUrl = try localOutputDirectory("localizedtest")
-//        let outputUrl = tempOutputDirectory
+//        let outputUrl = try localOutputDirectory("localizedtest")
+        let outputUrl = tempOutputDirectory
         XCTAssertNoThrow(try mp3V22.write(tag: tag, version: .v2_2, outputLocation: outputUrl))
         XCTAssertNil(tag[comment: "Comment", .eng])
         XCTAssertNil(tag[comment: "Description", .eng])
@@ -312,8 +306,6 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
         let output = try Tag(mp3File: outputMp3)
         XCTAssertEqual(output.version, .v2_2)
         XCTAssertEqual(output.languages, [.eng])
-        XCTAssertEqual(output.series, "Content Group")
-        XCTAssertEqual(output.studio, "Publisher")
         XCTAssertEqual(output[comment: "Comment", .eng], "Comment Content")
         XCTAssertEqual(output[comment: "Description", .eng], "Description Content")
         XCTAssertEqual(output[comment: "LongDescription", .eng], "Long Description Content")

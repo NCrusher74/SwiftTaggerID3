@@ -34,6 +34,18 @@ let sampleNoMeta = testMediaDirectory
     .appendingPathComponent("mp3-nometa")
     .appendingPathExtension("mp3")
 
+let sampleUnknown = testMediaDirectory
+    .appendingPathComponent("mp3-unknownframes")
+    .appendingPathExtension("mp3")
+
+let sampleCover = testMediaDirectory
+    .appendingPathComponent("samplecover-green")
+    .appendingPathExtension("jpg")
+
+let sampleIcon = testMediaDirectory
+    .appendingPathComponent("sampleicon-green")
+    .appendingPathExtension("png")
+
 let mp3V24: Mp3File = {
     do {
         let mp3 = try Mp3File(location: sample24Url)
@@ -79,6 +91,15 @@ let mp3Chaptered: Mp3File = {
     }
 }()
 
+let mp3Unknown: Mp3File = {
+    do {
+        let mp3 = try Mp3File(location: sampleUnknown)
+        return mp3
+    } catch {
+        fatalError("Mp3File failed to initialize")
+    }
+}()
+
 let tagV24: Tag = {
     do {
         let tag = try mp3V24.tag()
@@ -118,6 +139,15 @@ let tagNoMeta: Tag = {
 let tagChaptered: Tag = {
     do {
         let tag = try mp3Chaptered.tag()
+        return tag
+    } catch {
+        fatalError("Mp3File failed to initialize")
+    }
+}()
+
+let tagUnknown: Tag = {
+    do {
+        let tag = try mp3Unknown.tag()
         return tag
     } catch {
         fatalError("Mp3File failed to initialize")

@@ -45,7 +45,6 @@ public enum FrameKey: Hashable {
     /// A URL pointing at the artists official webpage. There may be more than one "WOAR" frame in a tag if the audio contains more than one performer, but not with the same content.
     case artistWebpage
     /// Embedded image frame
-    case attachedPicture(description: String)
     case attachedPicture(imageType: ImageType)
     /// `Official audio file webpage` frame
     ///

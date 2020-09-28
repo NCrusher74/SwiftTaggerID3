@@ -22,8 +22,9 @@ class PassThroughFrame: Frame {
          idString: String
     ) {
         self.uuid = UUID()
-        self.payload = payload
         self.idString = idString
+        self.payload = payload
+
         super.init(identifier: identifier,
                    version: version,
                    size: size,
@@ -35,6 +36,17 @@ class PassThroughFrame: Frame {
     }
     
     override var contentData: Data {
-        return self.payload
+        var data = Data()
+        data.append(self.idString.encodedASCII)
+        switch self.version {
+            case .v2_2:
+                let uInt8Array = [UInt8](self.size.uInt32.beData)
+                data.append(Data(uInt8Array.dropFirst()))
+            case .v2_3: data.append(self.size.uInt32.beData)
+            case .v2_4: data.append(self.size.uInt32.encodingSynchsafe().beData)
+        }
+        data.append(self.version.defaultFlags)
+        data.append(self.payload)
+        return data
     }
 }

@@ -129,6 +129,8 @@ class DateFrame: Frame {
                    flags: flags)
     }
     
+    // ["yyyy-MM-ddTHH:mm", "yyyy-MM-ddTHH", "yyyy-MM-dd", "MM-dd-yyyy", "yyyy-MM", "yyyy"]
+    
     /// encode contents of the frame to add to an ID3 tag
     /// - fatalError: `DateFrameNotAvailableForVersion` if the frame has been deprecated in a later version or doesn't exist for an earlier version
     /// - Returns: the frame contents as data

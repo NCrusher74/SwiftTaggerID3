@@ -90,8 +90,8 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         tag.addChapter(startTime: 0, title: "Chapter 01")
         tag.addChapter(startTime: 3000, title: "Chapter 02")
         
-        //        let outputUrl = tempOutputDirectory
-        let outputUrl = try localOutputDirectory("chapterTest")
+        let outputUrl = tempOutputDirectory
+//        let outputUrl = try localOutputDirectory("chapterTest")
         XCTAssertNoThrow(try mp3NoMeta.write(tag: tag,
                                                 version: .v2_4,
                                                 outputLocation: outputUrl))
@@ -112,8 +112,8 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         tag.addChapter(startTime: 0, title: "Chapter 01")
         tag.addChapter(startTime: 3000, title: "Chapter 02")
         
-        //        let outputUrl = tempOutputDirectory
-        let outputUrl = try localOutputDirectory("chapterTest")
+        let outputUrl = tempOutputDirectory
+//        let outputUrl = try localOutputDirectory("chapterTest")
         XCTAssertNoThrow(try mp3NoMeta.write(tag: tag,
                                              version: .v2_3,
                                              outputLocation: outputUrl))
@@ -133,8 +133,8 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         var tag = tagChaptered
         tag.addChapter(startTime: 1000, title: "Chapter 1.5")
         tag.addChapter(startTime: 4000, title: "Chapter 2.5")
-//        let outputUrl = tempOutputDirectory
-        let outputUrl = try localOutputDirectory("chapterTest")
+        let outputUrl = tempOutputDirectory
+//        let outputUrl = try localOutputDirectory("chapterTest")
         XCTAssertNoThrow(try mp3Chaptered.write(tag: tag,
                                                  version: .v2_4,
                                                  outputLocation: outputUrl))
@@ -177,8 +177,8 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         var tag = tagChaptered
         tag.removeChapter(startTime: 2795)
         
-//        let outputUrl = tempOutputDirectory
-                let outputUrl = try localOutputDirectory("chapterTest")
+        let outputUrl = tempOutputDirectory
+//        let outputUrl = try localOutputDirectory("chapterTest")
         XCTAssertNoThrow(try mp3Chaptered.write(tag: tag,
                                                 version: .v2_4,
                                                 outputLocation: outputUrl))
@@ -192,4 +192,31 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         XCTAssertEqual(chapter1.title, "Chapter 01")
         XCTAssertNil(output.chapterList.first(where: {$0.startTime == 2795}))
     }
+    
+    func testAddChapterToFileWithMetadata() throws {
+        var tag = tagV24
+        tag.addChapter(startTime: 0, title: "Chapter 01")
+        tag.addChapter(startTime: 1500, title: "Chapter 02")
+        tag.addChapter(startTime: 3000, title: "Chapter 03")
+        
+        let outputUrl = tempOutputDirectory
+//        let outputUrl = try localOutputDirectory("chapterTest")
+        XCTAssertNoThrow(try mp3V24.write(tag: tag,
+                                             version: .v2_4,
+                                             outputLocation: outputUrl))
+        
+        let outputMp3 = try Mp3File(location: outputUrl)
+        let output = try Tag(mp3File: outputMp3)
+        
+        let chapter1 = output.chapterList[0]
+        let chapter2 = output.chapterList[1]
+        let chapter3 = output.chapterList[2]
+        XCTAssertEqual(chapter1.startTime, 0)
+        XCTAssertEqual(chapter2.startTime, 1500)
+        XCTAssertEqual(chapter3.startTime, 3000)
+        XCTAssertEqual(chapter1.title, "Chapter 01")
+        XCTAssertEqual(chapter2.title, "Chapter 02")
+        XCTAssertEqual(chapter3.title, "Chapter 03")
+    }
+
 }
