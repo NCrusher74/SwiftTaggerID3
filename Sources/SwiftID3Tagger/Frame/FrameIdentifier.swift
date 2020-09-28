@@ -1,6 +1,6 @@
 /*
  
- FrameLayoutIdentifier.swift
+ FrameIdentifier.swift
  SwiftTaggerID3
  
  Copyright ©2020 Nolaine Crusher. All rights reserved.
@@ -10,7 +10,7 @@
 import Foundation
 import SwiftLanguageAndLocaleCodes
 
-/** An enumeration of ID3 standard--or iTunes compliant but non-standard--frames*/
+/// An enumeration of ID3 standard--or iTunes compliant but non-standard--frames
 enum FrameIdentifier: String, CaseIterable {
     
     case album
@@ -325,25 +325,6 @@ enum FrameIdentifier: String, CaseIterable {
                                         idString: idString)
         }
     }
-    
-//    func warnings(version: Version) -> String? {
-//        switch self {
-//            case .albumSort, .artistSort, .titleSort, .encodingTime, .taggingTime, .musicianCreditsList, .producedNotice, .setSubtitle, .mood:
-//                switch version {
-//                    case .v2_2, .v2_3:
-//                        return "WARNING: The '\(self)' frame is not supported by ID3 \(version). SwiftTaggerID3 is creating this frame with the identifier '\(idString(version: version)!)' but this is a non-standard frame and may not be recognized by other apps."
-//                    default: return nil
-//                }
-//            case .fileOwner, .radioStation, .radioStationOwner, .radioStationWebpage, .paymentWebpage:
-//                switch version {
-//                    case .v2_2: return "WARNING: The '\(self)' frame is not supported by ID3 \(version). SwiftTaggerID3 is creating this frame with the identifier '\(idString(version: version)!)' but this is a non-standard frame and may not be recognized by other apps."
-//                    default: return nil
-//                }
-//            case .composerSort, .albumArtistSort, .grouping, .movementCount, .movementNumber, .movement, .compilation, .podcastID, .podcastFeed, .podcastCategory, .podcastKeywords, .podcastDescription:
-//                return "WARNING: The '\(self)' frame is an iTunes non-standard frame. SwiftTaggerID3 is creating this frame with the identifier '\(idString(version: version)!)' but it may not be recognized by other apps, particularly in ID3 version 2.2."
-//            default: return nil
-//        }
-//    }
     
     private static let stringToIDMapping: [String: FrameIdentifier] = {
         var mapping: [String: FrameIdentifier] = [:]

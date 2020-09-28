@@ -1,6 +1,6 @@
 //
-//  File.swift
-//  
+//  TableOfContentsFrame.swift
+//  SwiftTaggerID3
 //
 //  Created by Nolaine Crusher on 9/18/20.
 //
@@ -56,7 +56,7 @@ class TableOfContentsFrame: Frame {
         // Flag a - Top-level bit
         // This is set to 1 to identify the top-level "CTOC" frame. This frame is the root of the Table of Contents tree and is not a child of any other "CTOC" frame. Only one "CTOC" frame in an ID3v2 tag can have this bit set to 1. In all other "CTOC" frames this bit shall be set to 0.
         // Flag b - Ordered bit
-        // This should be set to 1 if the entries in the Child Element ID list are ordered or set to 0 if they not are ordered. This provides a hint as to whether the elements should be played as a continuous ordered sequence or played individually. */
+        // This should be set to 1 if the entries in the Child Element ID list are ordered or set to 0 if they not are ordered. This provides a hint as to whether the elements should be played as a continuous ordered sequence or played individually.
         _ = data.extractFirst(1) // unused
         
         // parse the entry-count byte to derive integer value
@@ -69,7 +69,7 @@ class TableOfContentsFrame: Frame {
         self.childElementIDs = childIDArray
         
         // parse the subframes and add them to the embedded subframes tag
-        // A sequence of optional frames that are embedded within the “CTOC” frame and which describe this element of the table of contents (e.g. a “TIT2” frame representing the name of the element) or provide related material such as URLs and images. These sub-frames are contained within the bounds of the “CTOC” frame as signalled by the size field in the “CTOC” frame header.*/
+        // A sequence of optional frames that are embedded within the “CTOC” frame and which describe this element of the table of contents (e.g. a “TIT2” frame representing the name of the element) or provide related material such as URLs and images. These sub-frames are contained within the bounds of the “CTOC” frame as signalled by the size field in the “CTOC” frame header.
         // parse the subframes and add them to the embedded subframes tag
         var subframes: [FrameKey : Frame] = [:]
         while !data.isEmpty {
@@ -162,183 +162,3 @@ class TableOfContentsFrame: Frame {
                    flags: flags)
     }
 }
-/*
-@available(OSX 10.12, *)
-/// `Get`: Retrieves chapter frames array from `chapterFrames` and presents the chapters as an array of `(startTime: title)` tuples for easier access.
-/// `Set` creates a `ChapterFrame` instance for every item in `newValue`
-public var chapterList: [(startTime: Int, title: String)] {
-    get {
-        var chapters = [(startTime: Int, title: String)]()
-        var chapterCount = 1
-        for chapter in self.chapterFrames {
-            let startTime = chapter.startTime
-            let chapterTitle: String
-            if let title = chapter.embeddedSubframesTag?.title {
-                chapterTitle = title
-                chapterCount += 1
-            } else {
-                chapterTitle = "Chapter \(chapterCount)"
-                chapterCount += 1
-            }
-            let entry = (startTime, chapterTitle)
-            chapters.append(entry)
-        }
-        return chapters
-    }
-    set {
-        do {
-            let chapters = newValue.sorted(by: {$0.startTime < $1.startTime})
-            // handle all except last
-            for (index, chapter) in chapters.dropLast().enumerated() {
-                let next = chapters[chapters.index(after: index)]
-                let endTime = next.startTime
-                try self.setChapterFrame(
-                    startTime: chapter.startTime,
-                    endTime: endTime,
-                    title: chapter.title)
-            }
-            // handle last
-            if let chapter = chapters.last {
-                let endTime = Tag.duration
-                try self.setChapterFrame(
-                    startTime: chapter.startTime,
-                    endTime: endTime,
-                    title: chapter.title)
-            }
-            setTOC(chapterFrames: self.chapterFrames)
-        } catch {
-            fatalError("Operation to set chapters failed")
-        }
-    }
-}
-
-@available(OSX 10.12, *)
-public mutating func addChapter(startTime: Int, title: String) {
-    var list = self.chapterList
-    for (index, item) in list.enumerated() {
-        // if the start time already exists, we want to edit the title and replace the entry
-        if item.startTime == startTime {
-            list.remove(at: index)
-            let newEntry = (startTime, title)
-            list.insert(newEntry, at: index)
-        } else {
-            // if the start time doesn't already exist, we want to see if there are other chapters which should come after the one we're working on when they're in sequence, and insert the new chapter in the proper place
-            let entry = (startTime, title)
-            if let targetIndex = list.firstIndex(where: {$0.startTime > startTime}) {
-                list.insert(entry, at: targetIndex)
-            } else {
-                // otherwise, add the chapter to the end of the list
-                list.append(entry)
-            }
-        }
-    }
-    self.chapterList = list
-}
-
-@available(OSX 10.12, *)
-public mutating func removeAllChapters() {
-    self.toc = nil
-    for chapter in self.chapterList {
-        removeChapter(startTime: chapter.startTime)
-    }
-}
-
-public mutating func removeChapter(startTime: Int) {
-    let identifier = FrameIdentifier.chapter
-    let frameKey = identifier.frameKey(startTime: startTime)
-    self.frames[frameKey] = nil
-}
-
-// MARK: Private and Internal
-@available(OSX 10.12, *)
-var chapterTitles: [String] {
-    var titles = [String]()
-    for chapter in chapterList {
-        titles.append(chapter.title)
-    }
-    return titles
-}
-
-@available(OSX 10.12, *)
-var chapterStartTimes: [Int] {
-    var starts = [Int]()
-    for chapter in chapterList {
-        starts.append(chapter.startTime)
-    }
-    return starts
-}
-
-@available(OSX 10.12, *)
-private mutating func set(chapterFrame startTime: Int,
-                          endTime: Int,
-                          title: String) throws {
-    let identifier = FrameIdentifier.chapter
-    let frameKey = identifier.frameKey(startTime: startTime)
-    // remove existing frame at startTime, if it exists
-    removeChapter(startTime: startTime)
-    
-    var subframes = Tag(version: self.version)
-    subframes.title = title
-    let frame = ChapterFrame(.chapter,
-                             version: self.version,
-                             startTime: startTime,
-                             endTime: endTime,
-                             embeddedSubframesTag: subframes)
-    self.frames[frameKey] = frame
-}
-
-/// Retrieves and isolates the chapter frames into an array and sorts them in asending order.
-private var chapterFrames: [ChapterFrame] {
-    get {
-        var array = [ChapterFrame]()
-        for (_, frame) in self.frames {
-            if frame.identifier == .chapter {
-                if let chapterFrame = frame as? ChapterFrame {
-                    array.append(chapterFrame)
-                }
-            }
-        }
-        let sortedArray = array.sorted(by: {$0.startTime < $1.startTime})
-        return sortedArray
-    }
-}
-
-@available(OSX 10.12, *)
-var toc: TableOfContentsFrame? {
-    get {
-        if let frame = self.frames[.tableOfContents] as? TableOfContentsFrame {
-            return frame
-        } else {
-            return nil
-        }
-    }
-    set {
-        if let new = newValue {
-            self.frames[.tableOfContents] = new
-        } else {
-            self.frames[.tableOfContents] = nil
-        }
-    }
-}
-
-@available(OSX 10.12, *)
-mutating func setTOC(chapterFrames: [ChapterFrame]) {
-    var elementIDs = [String]()
-    for chapter in chapterFrames {
-        elementIDs.append(chapter.elementID)
-    }
-    if let current = self.toc {
-        current.childElementIDs = elementIDs
-        self.toc?.childElementIDs = current.childElementIDs
-    } else {
-        var subframes = Tag(version: self.version)
-        subframes.title = "Table Of Contents"
-        let toc = TableOfContentsFrame(.tableOfContents,
-                                       version: self.version,
-                                       childElementIDs: elementIDs,
-                                       embeddedSubframesTag: subframes)
-        self.toc = toc
-    }
-}
-
-*/

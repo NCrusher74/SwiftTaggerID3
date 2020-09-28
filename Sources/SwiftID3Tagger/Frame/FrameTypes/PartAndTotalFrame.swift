@@ -1,6 +1,6 @@
 //
-//  File.swift
-//  
+//  PartAndTotalFrame.swift
+//  SwiftTaggerID3
 //
 //  Created by Nolaine Crusher on 9/18/20.
 //
@@ -97,7 +97,7 @@ class PartAndTotalFrame: Frame {
 }
 
 // MARK: - Tag extension
-/* get and set functions for `PartOfTotalFrame` frame types. Each individual frame of this type will have its own get-set property that will call these fucntions */
+/// get and set functions for `PartOfTotalFrame` frame types. Each individual frame of this type will have its own get-set property that will call these fucntions
 extension Tag {
     /// add the frame contents to an ID3 `Tag`
     /// - Parameters:

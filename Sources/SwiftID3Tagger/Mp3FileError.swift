@@ -1,6 +1,6 @@
 //
-//  File.swift
-//  
+//  Mp3FileError.swift
+//  SwiftTaggerID3
 //
 //  Created by Nolaine Crusher on 9/17/20.
 //

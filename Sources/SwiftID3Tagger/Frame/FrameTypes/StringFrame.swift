@@ -106,7 +106,7 @@ class StringFrame: Frame {
 }
 
 // MARK: - Tag extension
-/* get and set functions for `StringFrame` frame types. Each individual frame of this type will have its own get-set property that will call these functions using its `FrameKey` property and relevant data */
+/// get and set functions for `StringFrame` frame types. Each individual frame of this type will have its own get-set property that will call these functions using its `FrameKey` property and relevant data
 extension Tag {
 
     /// Instantiates parsing operation to retrieve a frame's contents from a `Tag`

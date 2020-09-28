@@ -9,17 +9,13 @@
 
 import Foundation
 
-/**
- An enum that describes the format of a supported attached image.
- */
+/// An enum that describes the format of a supported attached image.
 enum ImageFormat: String {
     case jpg
     case png
 }
 
-/**
- An enum that describes the ID3 picture type supported.
- */
+///  An enum that describes the ID3 picture type supported.
 public enum ImageType: UInt8, CaseIterable {
     /// Other image.
     case other = 0x00

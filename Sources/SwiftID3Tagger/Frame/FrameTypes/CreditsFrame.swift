@@ -1,6 +1,6 @@
 //
-//  File.swift
-//  
+//  CreditsFrame.swift
+//  SwiftTaggerID3
 //
 //  Created by Nolaine Crusher on 9/18/20.
 //
@@ -34,10 +34,9 @@
  */
 import Foundation
 
-/**
- A type used to represent an ID3 involved peeople list or musician credits frame.
- handled as a dictionary: `[role : [array of people performing the role]]`
- */
+/// A type used to represent an ID3 involved peeople list or musician credits frame.
+///
+/// Handled as a dictionary: `[role : [array of people performing the role]]`
 class CreditsFrame: Frame {
     /// The dictionary of `[role : [array of people performing the role]]`
     var credits: [ String : [String] ]

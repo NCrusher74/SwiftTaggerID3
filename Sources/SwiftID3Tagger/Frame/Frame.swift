@@ -1,6 +1,6 @@
 //
-//  File.swift
-//  
+//  Frame.swift
+//  SwiftTaggerID3
 //
 //  Created by Nolaine Crusher on 9/17/20.
 //
@@ -51,9 +51,6 @@ class Frame: CustomStringConvertible {
     
     @available(OSX 10.12, *)
     var encode: Data {
-        //        if let warning = identifier.warnings(version: self.version) {
-        //            print(warning)
-        //        }
         if self.identifier == .passThrough {
             return self.contentData
         } else {

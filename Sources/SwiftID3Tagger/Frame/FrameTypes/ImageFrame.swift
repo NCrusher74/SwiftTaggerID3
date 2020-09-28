@@ -1,6 +1,6 @@
 //
-//  File.swift
-//  
+//  ImageFrame.swift
+//  SwiftTaggerID3
 //
 //  Created by Nolaine Crusher on 9/18/20.
 //
