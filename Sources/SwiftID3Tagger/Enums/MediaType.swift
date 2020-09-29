@@ -8,7 +8,7 @@
  */
 
 import Foundation
-enum MediaType: String, CaseIterable {
+public enum MediaType: String, CaseIterable {
     
     /// Other digital media
     case otherDigital = "DIG"
@@ -44,7 +44,7 @@ enum MediaType: String, CaseIterable {
     
 }
 
-enum MediaTypeRefinements: String, CaseIterable {
+public enum MediaTypeRefinements: String, CaseIterable {
     
     /// Analog transfer from media
     case analogTransfer

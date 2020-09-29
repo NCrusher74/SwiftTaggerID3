@@ -155,7 +155,7 @@ class ChapterFrame: Frame {
 
 extension Tag {
     @available(OSX 10.12, *)
-    var chapterList: [(startTime: Int, title: String)] {
+    public var chapterList: [(startTime: Int, title: String)] {
         get {
             var list = [(startTime: Int, title: String)]()
             var chapterFrames = self.frames.values.filter({$0.identifier == .chapter}) as? [ChapterFrame]
@@ -221,7 +221,7 @@ extension Tag {
     }
     
     @available(OSX 10.12, *)
-    mutating func addChapter(startTime: Int, title: String) {
+    public mutating func addChapter(startTime: Int, title: String) {
         let enumeratedChapters = self.chapterList.enumerated()
         if let nextChapter = enumeratedChapters.first(where: {$0.element.startTime > startTime}) {
             let targetIndex = nextChapter.offset
@@ -232,12 +232,12 @@ extension Tag {
     }
     
     @available(OSX 10.12, *)
-    mutating func removeAllChapters() {
+    public mutating func removeAllChapters() {
         self.chapterList = []
     }
     
     @available(OSX 10.12, *)
-    mutating func removeChapter(startTime: Int) {
+    public mutating func removeChapter(startTime: Int) {
         self.chapterList = self.chapterList.filter({$0.startTime != startTime})
     }
 }

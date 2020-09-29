@@ -9,7 +9,7 @@
 
 import Foundation
 
-enum KeySignature: String {
+public enum KeySignature: String {
     
     case cMajor = "C"
     case gMajor = "G"

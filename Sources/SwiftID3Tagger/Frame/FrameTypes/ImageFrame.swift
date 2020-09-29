@@ -227,7 +227,7 @@ class ImageFrame: Frame {
 }
 
 extension Tag {
-    subscript(attachedPicture type: ImageType) -> NSImage? {
+    public subscript(attachedPicture type: ImageType) -> NSImage? {
         let identifier = FrameIdentifier.attachedPicture
         let frameKey = identifier.frameKey(imageType: type)
         if let frame = self.frames[frameKey] as? ImageFrame {
@@ -241,7 +241,7 @@ extension Tag {
         }
     }
 
-    mutating func set(attachedPicture type: ImageType,
+    public mutating func set(attachedPicture type: ImageType,
                              imageLocation: URL,
                              description: String?) throws {
         let identifier = FrameIdentifier.attachedPicture
@@ -273,7 +273,7 @@ extension Tag {
         self.frames[frameKey] = frame
     }
     
-    mutating func removeImage(type: ImageType) {
+    public mutating func removeImage(type: ImageType) {
         let identifier = FrameIdentifier.attachedPicture
         let frameKey = identifier.frameKey(imageType: type)
         self.frames[frameKey] = nil

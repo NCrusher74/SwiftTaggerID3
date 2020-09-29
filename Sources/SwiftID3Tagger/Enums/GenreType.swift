@@ -7,7 +7,7 @@
 
  */
 
-enum GenreType: String, CaseIterable  {
+public enum GenreType: String, CaseIterable  {
     
     case Blues = "Blues"
     case ClassicRock = "Classic Rock"

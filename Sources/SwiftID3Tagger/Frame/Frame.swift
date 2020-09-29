@@ -16,8 +16,8 @@ import Foundation
  Size       $xx xx xx xx
  Flags      $xx xx
  */
-class Frame: CustomStringConvertible {
-    var description: String {
+public class Frame: CustomStringConvertible {
+    public var description: String {
         return self.identifier.rawValue
     }
     

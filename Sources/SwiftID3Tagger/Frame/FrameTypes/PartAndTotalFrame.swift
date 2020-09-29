@@ -105,7 +105,7 @@ extension Tag {
     ///   - frameKey: the frame's unique identifier, used to ensure frame uniqueness
     ///   - part: the position of a track or disc within a set
     ///   - total: the total number of tracks or discs in the set
-    mutating func set(partTotalFrame identifier: FrameIdentifier,
+    private mutating func set(partTotalFrame identifier: FrameIdentifier,
                                part: Int,
                                total: Int?) {
         let frameKey = identifier.frameKey
@@ -119,7 +119,7 @@ extension Tag {
     
     
     /// DiscNumber(/TotalDiscs) getter-setter. ID3 Identifier: `TPA`/`TPOS`
-    var discNumber: (disc: Int, totalDiscs: Int?) {
+    public var discNumber: (disc: Int, totalDiscs: Int?) {
         get {
             let identifier = FrameIdentifier.discNumber
             let frameKey = identifier.frameKey
@@ -144,7 +144,7 @@ extension Tag {
     }
     
     /// TrackNumber(/TotalTracks) getter-setter. ID3 Identifier: `TRK`/`TRCK`
-    var trackNumber: (track: Int, totalTracks: Int?) {
+    public var trackNumber: (track: Int, totalTracks: Int?) {
         get {
             let identifier = FrameIdentifier.trackNumber
             let frameKey = identifier.frameKey

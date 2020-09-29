@@ -9,7 +9,7 @@ import Foundation
 import AVFoundation
 /// An Mp3File represets an mp3-format file on the local drive
 /// This wrapper houses variables and methods for querying and modifying an Mp3File
-struct Mp3File {
+public struct Mp3File {
     
     /// The location of an mp3-format file somewhere on the local drive
     let location: URL
@@ -21,7 +21,7 @@ struct Mp3File {
     /// - Parameter location: The location of an mp3-format file somewhere on the local drive
     /// - Throws: `CannotReadFile` If the file cannot be reached
     /// - Throws: `InvalidFileFormat` If the file does not have an mp3 extension
-    init(location: URL) throws {
+    public init(location: URL) throws {
         self.location = location
         // validate that the file is an mp3 file
         guard location.pathExtension.lowercased() == "mp3" else {

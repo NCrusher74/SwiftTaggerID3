@@ -202,7 +202,7 @@ class LocalizedFrame: Frame {
 // get and set functions for `LocalizedFrame` frame types, which retrieves or sets up to three strings, one of which may be a language code, and one of which is an optional description string. Each individual frame of this type will call these functions in a get-set property or function, where appropriate.
 extension Tag {
     /// `comments` frame getter-setter. ID3 Identifier `COM`/`COMM`
-    subscript(comment description: String?, language: ISO6392Code) -> String? {
+    public subscript(comment description: String?, language: ISO6392Code) -> String? {
         get {
             if let string = get(localizedFrame: .comments,
                                 language: language,
@@ -228,7 +228,7 @@ extension Tag {
     }
     
     /// `unsynchronizedLyrics` frame getter-setter. ID3 Identifier `ULT`/`USLT`
-    subscript(lyrics description: String?, language: ISO6392Code) -> String? {
+    public subscript(lyrics description: String?, language: ISO6392Code) -> String? {
         get {
             if let string = get(localizedFrame: .unsynchronizedLyrics,
                                 language: language,
@@ -254,7 +254,7 @@ extension Tag {
     }
     
     /// `userDefinedText` frame getter-setter. ID3 Identifier `TXX`/`TXXX`
-    subscript(_ description: String?) -> String? {
+    public subscript(_ description: String?) -> String? {
         get {
             if let string = get(userDefinedFrame: .userDefinedText,
                                 description: description) {
@@ -277,7 +277,7 @@ extension Tag {
     }
     
     /// `userDefinedWebpage` frame getter-setter. ID3 Identifier `WXX`/`WXXX`
-    subscript(userDefinedUrl description: String?) -> String? {
+    public subscript(userDefinedUrl description: String?) -> String? {
         get {
             if let string = get(userDefinedFrame: .userDefinedWebpage,
                                 description: description) {

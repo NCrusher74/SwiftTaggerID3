@@ -8,7 +8,7 @@
 import Foundation
 import Cocoa
 
-struct Tag {
+public struct Tag {
     /*
      The first part of the ID3v2 tag is the 10 byte tag header, laid out
      as follows:
@@ -18,14 +18,14 @@ struct Tag {
      ID3v2 flags                %abcd0000 -- 1 byte (Uint32) (for our purposes, this is always `0x00`)
      ID3v2 size             4 * %0xxxxxxx -- 4 bytes (Synchsafe Uint32)
      */
-    var frames: [FrameKey: Frame]
+    public var frames: [FrameKey: Frame]
     var version: Version
     var size: Int
     static var duration: Int = 0
     
     /// Instantiate a tag by parsing from MP3 file data
     @available(OSX 10.12, *)
-    init(mp3File: Mp3File) throws {
+    public init(mp3File: Mp3File) throws {
         Tag.duration = mp3File.duration
         // get the file data as a subsequence. As the data is parsed when reading a tag, it will be extracted from the subsequence, leaving the remainder instact to continue parsing
         var remainder: Data.SubSequence = mp3File.data[
@@ -94,7 +94,7 @@ struct Tag {
     /// - Parameter version: The desired version of the tag to be output
     ///
     /// Version refers to the tag that will be output, not the tag of the source file
-    init(version: Version) {
+    public init(version: Version) {
         self.version = version
         self.frames = [:]
         self.size = 0

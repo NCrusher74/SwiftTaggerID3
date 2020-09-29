@@ -9,7 +9,7 @@
 
 import Foundation
 
-enum InvolvedPersonCredits: String, CaseIterable {
+public enum InvolvedPersonCredits: String, CaseIterable {
     case none = ""
     /// A&R
     case ar = "A&R"
