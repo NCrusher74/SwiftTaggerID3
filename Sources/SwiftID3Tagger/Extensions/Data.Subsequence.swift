@@ -97,8 +97,8 @@ extension Data.SubSequence {
         let frameSizeData = self.extractFirst(version.sizeLength)
         let size: Int
         switch version {
-            case .v2_2, .v2_3: size = frameSizeData.uInt32BE.toInt
-            case .v2_4: size = frameSizeData.uInt32BE.decodingSynchsafe().toInt
+            case .v2_2, .v2_3: size = frameSizeData.uInt32BE.int
+            case .v2_4: size = frameSizeData.uInt32BE.decodingSynchsafe().int
         }
 //        let size = self.extractAndCalculateFrameSize(version)
 

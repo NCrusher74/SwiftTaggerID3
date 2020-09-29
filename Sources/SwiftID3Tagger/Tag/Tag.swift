@@ -50,7 +50,7 @@ public struct Tag {
         let tagSizeData = remainder.extractFirst(tagSizeLength)        
         let encodedSize = (tagSizeData as NSData)
             .bytes.assumingMemoryBound(to: UInt32.self).pointee.bigEndian
-        self.size = encodedSize.decodingSynchsafe().toInt
+        self.size = encodedSize.decodingSynchsafe().int
 
         // at this point the remainder should be all the frames data, without the 10-byte tag header
         // set range of frames data using tag size as the upper bound

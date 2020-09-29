@@ -55,8 +55,8 @@ class ChapterFrame: Frame {
         
         // SwiftTaggerID3 creates a new elementID for the frame
         _ = data.extractNullTerminatedString(.isoLatin1)
-        self.startTime = data.extractFirst(4).uInt32BE.toInt
-        self.endTime = data.extractFirst(4).uInt32BE.toInt
+        self.startTime = data.extractFirst(4).uInt32BE.int
+        self.endTime = data.extractFirst(4).uInt32BE.int
                 
         self.elementID = "ch\(startTime)"
         // SwiftTagger uses start and end times, these will be set to 0xFF by default
