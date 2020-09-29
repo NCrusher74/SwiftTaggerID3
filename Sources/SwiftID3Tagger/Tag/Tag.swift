@@ -70,12 +70,6 @@ public struct Tag {
             }
         }
         self.frames = frames
-//        for (_, frame) in self.frames {
-//            if frame.identifier == .userDefinedText {
-//                print(frame.contentData.hexadecimal())
-//                // print(frame.description)
-//            }
-//        }
     }
 
     /// Instantiate a "pseudo-tag" for use with chapter and table-of-contents embedded frame sub-frames
@@ -132,7 +126,7 @@ public struct Tag {
     /// The known byte-count of a valid ID3 tag's UInt32 size declaration
     let tagSizeLength: Int = 4
     
-    mutating func removeAllMetadata() {
+    public mutating func removeAllMetadata() {
         self.frames = [:]
     }
 }

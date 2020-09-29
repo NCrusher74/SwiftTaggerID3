@@ -124,7 +124,7 @@ public enum MediaTypeRefinements: String, CaseIterable {
     case typeIV
     case none
     
-    var code: String {
+    public var code: String {
         switch self {
             case .analogTransfer: return "/A"
             case .waxCylinder: return "/WC"
@@ -168,7 +168,7 @@ public enum MediaTypeRefinements: String, CaseIterable {
         }
     }
     
-    static let codeMapping: [String: MediaTypeRefinements] = {
+    private static let codeMapping: [String: MediaTypeRefinements] = {
         var mapping: [String: MediaTypeRefinements] = [:]
         for refinement in MediaTypeRefinements.allCases {
             let id = refinement.code
@@ -177,7 +177,7 @@ public enum MediaTypeRefinements: String, CaseIterable {
         return mapping
     }()
     
-    init?(code: String) {
+    public init?(code: String) {
         self = MediaTypeRefinements.codeMapping[code] ?? .none
     }
 }

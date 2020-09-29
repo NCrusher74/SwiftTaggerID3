@@ -44,12 +44,12 @@ public struct Mp3File {
     }
     
     @available(OSX 10.12, *)
-    func tag() throws -> Tag {
+    public func tag() throws -> Tag {
             return try Tag(mp3File: self)
     }
     
     @available(OSX 10.12, *)
-    func write(tag: Tag,
+    public func write(tag: Tag,
                       version: Version,
                       outputLocation: URL) throws {
         let data = try buildNewFile(tag: tag, version: version)

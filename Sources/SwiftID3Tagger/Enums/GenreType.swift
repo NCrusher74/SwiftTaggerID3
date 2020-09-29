@@ -205,7 +205,7 @@ public enum GenreType: String, CaseIterable  {
     case Remix = "Remix"
     case Cover = "Cover"
     
-    var code: Int {
+    public var code: Int {
         switch self {
             case .Blues: return 0
             case .ClassicRock: return 1
@@ -405,7 +405,7 @@ public enum GenreType: String, CaseIterable  {
         }
     }
     
-    static let codeMapping: [Int: GenreType] = {
+    private static let codeMapping: [Int: GenreType] = {
         var mapping: [Int: GenreType] = [:]
         for genre in GenreType.allCases {
             let id = genre.code
@@ -414,7 +414,7 @@ public enum GenreType: String, CaseIterable  {
         return mapping
     }()
     
-    init?(code: Int) {
+    public init?(code: Int) {
         self = GenreType.codeMapping[code] ?? .none
     }
 }

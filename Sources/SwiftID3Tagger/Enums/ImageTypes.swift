@@ -60,7 +60,7 @@ public enum ImageType: UInt8, CaseIterable {
     /// Publisher logo image.
     case publisherStudioLogotype = 0x14
 
-    var pictureDescription: String {
+    public var pictureDescription: String {
         switch self {
             case .other: return "Other Image"
             case .fileIcon: return "File Icon"
