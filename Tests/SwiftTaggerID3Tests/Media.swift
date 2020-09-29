@@ -12,7 +12,7 @@ import Foundation
 
 let testMediaDirectory = URL(fileURLWithPath: #file)
     .deletingLastPathComponent()
-    .appendingPathComponent("Media")
+    .appendingPathComponent("TestMedia")
 
 public let sample24Url = testMediaDirectory
     .appendingPathComponent("mp3-v24-with-meta")
