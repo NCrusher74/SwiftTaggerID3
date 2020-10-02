@@ -35,10 +35,7 @@ public struct Tag {
         // the first five bytes of a valid ID3 tag ae "ID3" plus the version number
         // this strips out the version bytes and passes along the rest
         let versionData = remainder.extractFirst(versionBytesLength)
-        guard versionData.count == 5 else {
-            throw Mp3FileError.InvalidVersionData
-        }
-        self.version = Version(data: versionData)
+        self.version = try Version(data: versionData)
         
         // parse the flag byte from the tag header
         // this data is not generally used, and SwiftTagger does not support modifying it

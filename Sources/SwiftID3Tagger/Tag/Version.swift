@@ -19,7 +19,7 @@ public enum Version: UInt8, CaseIterable {
     case v2_4 = 0x04
     
     /// Initialize ID3 version from the data representatoin of the version bytes
-    init(data: Data) {
+    init(data: Data) throws {
         guard data.count == 5 else {
             fatalError(Mp3FileError.InvalidVersionData.localizedDescription)
         }
@@ -27,7 +27,7 @@ public enum Version: UInt8, CaseIterable {
         guard fourthByte == 0x02 ||
                 fourthByte == 0x03 ||
                 fourthByte == 0x04 else {
-            fatalError(Mp3FileError.InvalidVersionData.localizedDescription)
+            throw Mp3FileError.InvalidVersionData
         }
         self.init(rawValue: fourthByte)!
     }

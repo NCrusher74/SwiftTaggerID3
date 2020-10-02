@@ -295,7 +295,7 @@ extension Tag {
         get { get(.copyright) }
         set {
             if let new = newValue {
-                set(.copyright, stringValue: new)
+                set(.copyright, stringValue: "\u{00A9} \(new)")
             } else {
                 set(.copyright, stringValue: nil)
             }
@@ -565,7 +565,7 @@ extension Tag {
         get { get(.producedNotice) }
         set {
             if let new = newValue {
-                set(.producedNotice, stringValue: new)
+                set(.producedNotice, stringValue: "\u{2117} \(new)")
             } else {
                 set(.producedNotice, stringValue: nil)
             }
