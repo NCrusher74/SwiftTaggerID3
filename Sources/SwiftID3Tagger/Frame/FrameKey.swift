@@ -111,7 +111,7 @@ public enum FrameKey: Hashable {
     /// NEW IN VERSION 2.4. Contains a timestamp describing when the audio was encoded.
     ///
     /// Timestamp format is described in the ID3v2 structure document [ID3v2-strct].
-    case encodingTime
+    case encodingDateTime
     /// `Encoded by` frame
     ///
     /// Contains the name of the person or organisation that encoded the audio file. This field may contain a copyright message, if the audio file also is copyrighted by the encoder.
@@ -213,7 +213,7 @@ public enum FrameKey: Hashable {
     /// `Original release time` frame
     ///
     /// Contains a timestamp describing when the original recording of the audio was released.
-    case originalReleaseTime
+    case originalReleaseDateTime
     /// `Payment Webpage` frame
     ///
     /// URL pointing at a webpage that will handle the process of paying for this file.
@@ -269,11 +269,11 @@ public enum FrameKey: Hashable {
     /// `Recording dates` frame
     ///
     /// (versions 2.2 and 2.3 only) Intended to be used as complement to the "TYE", "TDA" and "TIM" frames. E.g. "4th-7th June, 12th June" in combination with the "TYE" frame.
-    case recordingDate
+    case recordingDateTime
     /// `Release time` frame
     ///
     /// Contains a timestamp describing when the audio was first released. NEW IN VERSION 2.4
-    case releaseTime
+    case releaseDateTime
     /// `Set subtitle` frame
     ///
     /// Intended for the subtitle of the part of a set this track belongs to. NEW IN VERSION 2.4
@@ -293,7 +293,7 @@ public enum FrameKey: Hashable {
     /// `Tagging time` frame
     ///
     /// Contains a timestamp describing then the audio was tagged. NEW IN VERSION  2.4
-    case taggingTime
+    case taggingDateTime
     /// `Time` frame
     ///
     /// (versions 2.2 and 2.3 only) A numeric string in the HHMM format containing the time for the recording. This field is always four characters long. FOR VERSION 2.4: This frame is replaced by the TDRC frame, `Recording time`

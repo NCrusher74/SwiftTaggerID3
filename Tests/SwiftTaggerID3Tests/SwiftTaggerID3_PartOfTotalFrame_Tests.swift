@@ -24,7 +24,7 @@ class SwiftTaggerID3_PartOfTotalFrame_Tests: XCTestCase {
 
 //        let outputUrlV22 = try localOutputDirectory("pottestv22")
         let outputUrlV22 = tempOutputDirectory
-        XCTAssertNoThrow(try mp3NoMeta.write(tag: tag,
+        XCTAssertNoThrow(try mp3NoMeta.write(tag: &tag,
                                              version: .v2_2,
                                              outputLocation: outputUrlV22))
         let outputMp3V22 = try Mp3File(location: outputUrlV22)
@@ -37,7 +37,7 @@ class SwiftTaggerID3_PartOfTotalFrame_Tests: XCTestCase {
         
 //        let outputUrlV23 = try localOutputDirectory("pottestv23")
         let outputUrlV23 = tempOutputDirectory
-        XCTAssertNoThrow(try mp3NoMeta.write(tag: tag,
+        XCTAssertNoThrow(try mp3NoMeta.write(tag: &tag,
                                              version: .v2_3,
                                              outputLocation: outputUrlV23))
         let outputMp3V23 = try Mp3File(location: outputUrlV23)
@@ -50,7 +50,7 @@ class SwiftTaggerID3_PartOfTotalFrame_Tests: XCTestCase {
 
 //        let outputUrlV24 = try localOutputDirectory("pottestv24")
         let outputUrlV24 = tempOutputDirectory
-        XCTAssertNoThrow(try mp3NoMeta.write(tag: tag,
+        XCTAssertNoThrow(try mp3NoMeta.write(tag: &tag,
                                              version: .v2_4,
                                              outputLocation: outputUrlV24))
         let outputMp3V24 = try Mp3File(location: outputUrlV24)
@@ -70,7 +70,7 @@ class SwiftTaggerID3_PartOfTotalFrame_Tests: XCTestCase {
         tag.trackNumber.track = 6
         
         let outputUrlV22 = tempOutputDirectory
-        XCTAssertNoThrow(try mp3NoMeta.write(tag: tag,
+        XCTAssertNoThrow(try mp3NoMeta.write(tag: &tag,
                                              version: .v2_2,
                                              outputLocation: outputUrlV22))
         let outputMp3V22 = try Mp3File(location: outputUrlV22)
@@ -82,7 +82,7 @@ class SwiftTaggerID3_PartOfTotalFrame_Tests: XCTestCase {
         XCTAssertNil(outputV22.trackNumber.totalTracks)
         
         let outputUrlV23 = tempOutputDirectory
-        XCTAssertNoThrow(try mp3NoMeta.write(tag: tag,
+        XCTAssertNoThrow(try mp3NoMeta.write(tag: &tag,
                                              version: .v2_3,
                                              outputLocation: outputUrlV23))
         let outputMp3V23 = try Mp3File(location: outputUrlV23)
@@ -94,7 +94,7 @@ class SwiftTaggerID3_PartOfTotalFrame_Tests: XCTestCase {
         XCTAssertNil(outputV23.trackNumber.totalTracks)
         
         let outputUrlV24 = tempOutputDirectory
-        XCTAssertNoThrow(try mp3NoMeta.write(tag: tag,
+        XCTAssertNoThrow(try mp3NoMeta.write(tag: &tag,
                                              version: .v2_4,
                                              outputLocation: outputUrlV24))
         let outputMp3V24 = try Mp3File(location: outputUrlV24)
@@ -115,7 +115,7 @@ class SwiftTaggerID3_PartOfTotalFrame_Tests: XCTestCase {
         v22Tag.trackNumber.totalTracks = 7
         
         let outputUrlV22 = tempOutputDirectory
-        XCTAssertNoThrow(try mp3NoMeta.write(tag: v22Tag,
+        XCTAssertNoThrow(try mp3NoMeta.write(tag: &v22Tag,
                                              version: .v2_2,
                                              outputLocation: outputUrlV22))
         let outputmp3V22 = try Mp3File(location: outputUrlV22)
@@ -134,7 +134,7 @@ class SwiftTaggerID3_PartOfTotalFrame_Tests: XCTestCase {
         v23Tag.trackNumber.totalTracks = 7
         
         let outputUrlV23 = tempOutputDirectory
-        XCTAssertNoThrow(try mp3NoMeta.write(tag: v23Tag,
+        XCTAssertNoThrow(try mp3NoMeta.write(tag: &v23Tag,
                                              version: .v2_3,
                                              outputLocation: outputUrlV23))
         let outputmp3V23 = try Mp3File(location: outputUrlV23)
@@ -153,7 +153,7 @@ class SwiftTaggerID3_PartOfTotalFrame_Tests: XCTestCase {
         v24Tag.trackNumber.totalTracks = 7
         
         let outputUrlV24 = tempOutputDirectory
-        XCTAssertNoThrow(try mp3NoMeta.write(tag: v24Tag,
+        XCTAssertNoThrow(try mp3NoMeta.write(tag: &v24Tag,
                                              version: .v2_4,
                                              outputLocation: outputUrlV24))
         let outputmp3V24 = try Mp3File(location: outputUrlV24)
@@ -172,7 +172,7 @@ class SwiftTaggerID3_PartOfTotalFrame_Tests: XCTestCase {
         v22Tag.trackNumber.track = 6
         
         let outputUrlV22 = tempOutputDirectory
-        XCTAssertNoThrow(try mp3NoMeta.write(tag: v22Tag,
+        XCTAssertNoThrow(try mp3NoMeta.write(tag: &v22Tag,
                                              version: .v2_2,
                                              outputLocation: outputUrlV22))
         let outputmp3V22 = try Mp3File(location: outputUrlV22)
@@ -189,7 +189,7 @@ class SwiftTaggerID3_PartOfTotalFrame_Tests: XCTestCase {
         v23Tag.trackNumber.track = 6
         
         let outputUrlV23 = tempOutputDirectory
-        XCTAssertNoThrow(try mp3NoMeta.write(tag: v23Tag,
+        XCTAssertNoThrow(try mp3NoMeta.write(tag: &v23Tag,
                                              version: .v2_3,
                                              outputLocation: outputUrlV23))
         let outputmp3V23 = try Mp3File(location: outputUrlV23)
@@ -206,7 +206,7 @@ class SwiftTaggerID3_PartOfTotalFrame_Tests: XCTestCase {
         v24Tag.trackNumber.track = 6
         
         let outputUrlV24 = tempOutputDirectory
-        XCTAssertNoThrow(try mp3NoMeta.write(tag: v24Tag,
+        XCTAssertNoThrow(try mp3NoMeta.write(tag: &v24Tag,
                                              version: .v2_4,
                                              outputLocation: outputUrlV24))
         let outputmp3V24 = try Mp3File(location: outputUrlV24)
@@ -233,7 +233,7 @@ class SwiftTaggerID3_PartOfTotalFrame_Tests: XCTestCase {
         
         let outputUrl = tempOutputDirectory
 //        let outputUrl = try localOutputDirectory("pottest")
-        XCTAssertNoThrow(try mp3NoMeta.write(tag: tag,
+        XCTAssertNoThrow(try mp3NoMeta.write(tag: &tag,
                                              version: .v2_4,
                                              outputLocation: outputUrl))
         let output = try Tag(mp3File: try Mp3File(location: outputUrl))

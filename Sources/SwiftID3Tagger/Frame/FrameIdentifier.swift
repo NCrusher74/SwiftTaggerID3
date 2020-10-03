@@ -36,7 +36,7 @@ enum FrameIdentifier: String, CaseIterable {
     case copyrightWebpage
     case date
     case discNumber
-    case encodingTime
+    case encodingDateTime
     case encodedBy
     case encodingSettings
     case fileType
@@ -59,7 +59,7 @@ enum FrameIdentifier: String, CaseIterable {
     case originalArtist
     case originalFilename
     case originalLyricist
-    case originalReleaseTime
+    case originalReleaseDateTime
     case paymentWebpage
     case playlistDelay
     case podcastCategory
@@ -73,12 +73,12 @@ enum FrameIdentifier: String, CaseIterable {
     case radioStation
     case radioStationOwner
     case radioStationWebpage
-    case recordingDate
-    case releaseTime
+    case recordingDateTime
+    case releaseDateTime
     case setSubtitle
     case subtitle
     case tableOfContents
-    case taggingTime
+    case taggingDateTime
     case time
     case title
     case titleSort
@@ -171,7 +171,7 @@ enum FrameIdentifier: String, CaseIterable {
             case .copyrightWebpage: return .copyrightWebpage
             case .date: return .date
             case .discNumber: return .discNumber
-            case .encodingTime: return .encodingTime
+            case .encodingDateTime: return .encodingDateTime
             case .encodedBy: return .encodedBy
             case .encodingSettings: return .encodingSettings
             case .fileType: return .fileType
@@ -194,7 +194,7 @@ enum FrameIdentifier: String, CaseIterable {
             case .originalArtist: return .originalArtist
             case .originalFilename: return .originalFilename
             case .originalLyricist: return .originalLyricist
-            case .originalReleaseTime: return .originalReleaseTime
+            case .originalReleaseDateTime: return .originalReleaseDateTime
             case .paymentWebpage: return .paymentWebpage
             case .playlistDelay: return .playlistDelay
             case .podcastCategory: return .podcastCategory
@@ -208,12 +208,12 @@ enum FrameIdentifier: String, CaseIterable {
             case .radioStation: return .radioStation
             case .radioStationOwner: return .radioStationOwner
             case .radioStationWebpage: return .radioStationWebpage
-            case .recordingDate: return .recordingDate
-            case .releaseTime: return .releaseTime
+            case .recordingDateTime: return .recordingDateTime
+            case .releaseDateTime: return .releaseDateTime
             case .setSubtitle: return .setSubtitle
             case .subtitle: return .subtitle
             case .tableOfContents: return .tableOfContents
-            case .taggingTime: return .taggingTime
+            case .taggingDateTime: return .taggingDateTime
             case .time: return .time
             case .title: return .title
             case .titleSort: return .titleSort
@@ -249,7 +249,7 @@ enum FrameIdentifier: String, CaseIterable {
                 return .integer
             case .artistWebpage, .audioFileWebpage, .audioSourceWebpage, .copyrightWebpage, .paymentWebpage, .publisherWebpage, .radioStationWebpage:
                 return .url
-            case .date, .encodingTime, .originalReleaseTime, .recordingDate, .releaseTime, .taggingTime, .time, .year:
+            case .date, .encodingDateTime, .originalReleaseDateTime, .recordingDateTime, .releaseDateTime, .taggingDateTime, .time, .year:
                 return .date
             default: return .string
         }

@@ -198,7 +198,7 @@ extension Version {
                     case .v2_2: return "TPA"
                     case .v2_3, .v2_4: return "TPOS"
                 }
-            case .encodingTime:
+            case .encodingDateTime:
                 switch self {
                     case .v2_2: return "TDN" // non-standard for version
                     case .v2_3, .v2_4: return "TDEN" // non-standard for version2.3
@@ -314,7 +314,7 @@ extension Version {
                     case .v2_2: return "TOL"
                     case .v2_3, .v2_4: return "TOLY"
                 }
-            case .originalReleaseTime:
+            case .originalReleaseDateTime:
                 switch self {
                     case .v2_2: return "TOY"
                     case .v2_3: return "TORY"
@@ -385,13 +385,13 @@ extension Version {
                     case .v2_2: return "WRS"
                     case .v2_3, .v2_4: return "WORS"
                 }
-            case .recordingDate:
+            case .recordingDateTime:
                 switch self {
                     case .v2_2: return "TRD"
                     case .v2_3: return "TRDA"
                     case .v2_4: return "TDRC"
                 }
-            case .releaseTime:
+            case .releaseDateTime:
                 switch self {
                     case .v2_2, .v2_3: return nil
                     case .v2_4: return "TDRL"
@@ -411,7 +411,7 @@ extension Version {
                     case .v2_2: return nil
                     case .v2_3, .v2_4: return "CTOC"
                 }
-            case .taggingTime:
+            case .taggingDateTime:
                 switch self {
                     case .v2_2: return "TTG" // non-standard for version
                     case .v2_3, .v2_4: return "TDTG" // non-standard for version2.3

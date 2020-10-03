@@ -173,7 +173,7 @@ func emptyDirectory() throws {
 }
 
 /// Creates the test file on the desktop in the directory `TestOutput`
-public func localOutputDirectory(_ fileName: String) throws -> URL {
+public func localOutputDirectory(_ fileName: String) -> URL {
     let home = FileManager.default.homeDirectoryForCurrentUser
     let desktopPath = "Desktop/TestOutput"
     let directory = home.appendingPathComponent(

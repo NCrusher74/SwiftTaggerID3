@@ -95,9 +95,25 @@ public struct Tag {
     /// Concatenates header and frame data into tag data
     /// - Returns: the entire encoded tag complete with header data
     @available(OSX 10.12, *)
-    func tagWithHeader(version: Version) throws -> Data {
+    mutating func tagWithHeader(version: Version) throws -> Data {
+        switch version {
+            case .v2_2:
+                self.frames = self.frames.filter(
+                    {$0.value.identifier != .chapter &&
+                        $0.value.identifier != .releaseDateTime &&
+                        $0.value.identifier != .tableOfContents})
+            case .v2_3:
+                self.frames = self.frames.filter(
+                    {$0.value.identifier != .releaseDateTime})
+            case .v2_4:
+                self.frames = self.frames.filter(
+                    {$0.value.identifier != .date &&
+                        $0.value.identifier != .time &&
+                        $0.value.identifier != .year})
+        }
         var framesData = Data()
         for (_, frame) in self.frames {
+            
             frame.version = version
             framesData.append(frame.encode)
         }

@@ -51,6 +51,10 @@ public class Frame: CustomStringConvertible {
     
     @available(OSX 10.12, *)
     var encode: Data {
+        guard self.contentData != Data() else {
+            return Data()
+        }
+
         if self.identifier == .passThrough {
             return self.contentData
         } else {

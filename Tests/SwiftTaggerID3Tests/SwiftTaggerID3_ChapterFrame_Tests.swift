@@ -36,7 +36,7 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         
         let outputUrl = tempOutputDirectory
 //        let outputUrl = try localOutputDirectory("chapterTest")
-        XCTAssertNoThrow(try mp3NoMeta.write(tag: tag,
+        XCTAssertNoThrow(try mp3NoMeta.write(tag: &tag,
                                              version: .v2_4,
                                              outputLocation: outputUrl))
         
@@ -66,7 +66,7 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         
         let outputUrl = tempOutputDirectory
 //        let outputUrl = try localOutputDirectory("chapterTest")
-        XCTAssertNoThrow(try mp3NoMeta.write(tag: tag,
+        XCTAssertNoThrow(try mp3NoMeta.write(tag: &tag,
                                              version: .v2_3,
                                              outputLocation: outputUrl))
         
@@ -92,7 +92,7 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         
         let outputUrl = tempOutputDirectory
 //        let outputUrl = try localOutputDirectory("chapterTest")
-        XCTAssertNoThrow(try mp3NoMeta.write(tag: tag,
+        XCTAssertNoThrow(try mp3NoMeta.write(tag: &tag,
                                                 version: .v2_4,
                                                 outputLocation: outputUrl))
         
@@ -114,7 +114,7 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         
         let outputUrl = tempOutputDirectory
 //        let outputUrl = try localOutputDirectory("chapterTest")
-        XCTAssertNoThrow(try mp3NoMeta.write(tag: tag,
+        XCTAssertNoThrow(try mp3NoMeta.write(tag: &tag,
                                              version: .v2_3,
                                              outputLocation: outputUrl))
         
@@ -135,7 +135,7 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         tag.addChapter(startTime: 4000, title: "Chapter 2.5")
         let outputUrl = tempOutputDirectory
 //        let outputUrl = try localOutputDirectory("chapterTest")
-        XCTAssertNoThrow(try mp3Chaptered.write(tag: tag,
+        XCTAssertNoThrow(try mp3Chaptered.write(tag: &tag,
                                                  version: .v2_4,
                                                  outputLocation: outputUrl))
         
@@ -161,7 +161,7 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         
         let outputUrl = tempOutputDirectory
 //        let outputUrl = try localOutputDirectory("chapterTest")
-        XCTAssertNoThrow(try mp3Chaptered.write(tag: tag,
+        XCTAssertNoThrow(try mp3Chaptered.write(tag: &tag,
                                              version: .v2_4,
                                              outputLocation: outputUrl))
         
@@ -179,7 +179,7 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         
         let outputUrl = tempOutputDirectory
 //        let outputUrl = try localOutputDirectory("chapterTest")
-        XCTAssertNoThrow(try mp3Chaptered.write(tag: tag,
+        XCTAssertNoThrow(try mp3Chaptered.write(tag: &tag,
                                                 version: .v2_4,
                                                 outputLocation: outputUrl))
         
@@ -201,7 +201,7 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
         
         let outputUrl = tempOutputDirectory
 //        let outputUrl = try localOutputDirectory("chapterTest")
-        XCTAssertNoThrow(try mp3V24.write(tag: tag,
+        XCTAssertNoThrow(try mp3V24.write(tag: &tag,
                                              version: .v2_4,
                                              outputLocation: outputUrl))
         

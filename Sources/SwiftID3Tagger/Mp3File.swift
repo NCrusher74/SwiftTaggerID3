@@ -49,15 +49,15 @@ public struct Mp3File {
     }
     
     @available(OSX 10.12, *)
-    public func write(tag: Tag,
+    public func write(tag: inout Tag,
                       version: Version,
                       outputLocation: URL) throws {
-        let data = try buildNewFile(tag: tag, version: version)
+        let data = try buildNewFile(tag: &tag, version: version)
         try data.write(to: outputLocation)
     }
     
     @available(OSX 10.12, *)
-    private func buildNewFile(tag: Tag, version: Version) throws -> Data {
+    private func buildNewFile(tag: inout Tag, version: Version) throws -> Data {
         var data = self.data
         let oldTag = try self.tag()
         let oldTagSize = oldTag.size

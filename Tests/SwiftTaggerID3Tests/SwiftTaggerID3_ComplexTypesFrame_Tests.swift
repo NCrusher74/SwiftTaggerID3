@@ -68,7 +68,7 @@ class SwiftTaggerID3_ComplexTypesFrame_Tests: XCTestCase {
         tag.fileType.additionalInformation = "Additional Information"
         
         let outputUrl = tempOutputDirectory
-        XCTAssertNoThrow(try mp3NoMeta.write(tag: tag, version: .v2_4, outputLocation: outputUrl))
+        XCTAssertNoThrow(try mp3NoMeta.write(tag: &tag, version: .v2_4, outputLocation: outputUrl))
         
         let outputMp3 = try Mp3File(location: outputUrl)
         let output = try Tag(mp3File: outputMp3)
@@ -101,7 +101,7 @@ class SwiftTaggerID3_ComplexTypesFrame_Tests: XCTestCase {
         tag.fileType.additionalInformation = "Additional Information"
         
         let outputUrl = tempOutputDirectory
-        XCTAssertNoThrow(try mp3NoMeta.write(tag: tag, version: .v2_4, outputLocation: outputUrl))
+        XCTAssertNoThrow(try mp3NoMeta.write(tag: &tag, version: .v2_4, outputLocation: outputUrl))
         
         let outputMp3 = try Mp3File(location: outputUrl)
         let output = try Tag(mp3File: outputMp3)
@@ -138,7 +138,7 @@ class SwiftTaggerID3_ComplexTypesFrame_Tests: XCTestCase {
         XCTAssertNil(tag.frames.first(where: {$0.key == .fileType}))
         
         let outputUrl = tempOutputDirectory
-        XCTAssertNoThrow(try mp3NoMeta.write(tag: tag, version: .v2_4, outputLocation: outputUrl))
+        XCTAssertNoThrow(try mp3NoMeta.write(tag: &tag, version: .v2_4, outputLocation: outputUrl))
         
         let outputMp3 = try Mp3File(location: outputUrl)
         let output = try Tag(mp3File: outputMp3)

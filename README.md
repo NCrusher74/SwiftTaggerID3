@@ -190,7 +190,7 @@ Here's a complete list of the frames handled by SwiftTaggerID3:
 * `originalArtist`
 * `originalFilename`
 * `originalLyricist`
-* `originalReleaseTime`
+* `originalReleaseDateTime`
 * `paymentWebpage // uses non-standard identifier in version 2.2`
 * `playlistDelay`
 * `podcastCategory // iTunes non-standard frame`
@@ -204,7 +204,7 @@ Here's a complete list of the frames handled by SwiftTaggerID3:
 * `radioStation`
 * `radioStationOwner`
 * `radioStationWebpage`
-* `recordingDate`
+* `recordingDateTime`
 * `setSubtitle // uses non-standard identifier in versions 2.2/2.3`
 * `subtitle`
 * `title`
@@ -215,9 +215,9 @@ Here's a complete list of the frames handled by SwiftTaggerID3:
 * `userDefinedWebpage // query using description as subscript accessor`
 
 For ID3 version 2.4 only:
-* `encodingTime`
-* `releaseTime`
-* `taggingTime`
+* `encodingDateTime`
+* `releaseDateTime`
+* `taggingDateTime`
 
 For ID3 versions 2.3 and 2.4 only:
 * `chapter`
