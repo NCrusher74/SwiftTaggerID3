@@ -44,6 +44,9 @@ class StringFrame: Frame {
          payload: Data
     ) throws {
         var data = payload
+        if identifier == .producedNotice {
+            print(data.count)
+        }
         // Since url frames do not use an encoding byte, we will parse without one for those
         if identifier.parseAs == .url {
             self.stringValue = try String(ascii: payload)
@@ -70,9 +73,21 @@ class StringFrame: Frame {
         if self.identifier.parseAs == .url {
             data.append(stringValue.encodedASCII)
         } else {
-            let encoding = String.Encoding.isoLatin1
+            let encoding: String.Encoding
+            if self.identifier == .producedNotice {
+                encoding = .utf16
+            } else {
+                encoding = .isoLatin1
+            }
+            
             data.append(encoding.encodingByte)
-            data.append(stringValue.encodedISOLatin1)
+            
+            if self.identifier == .producedNotice {
+                data.append(stringValue.encoded(.utf16))
+//                print(data.count)
+            } else {
+                data.append(stringValue.encoded(.isoLatin1))
+            }
         }
         return data
     }
@@ -93,9 +108,12 @@ class StringFrame: Frame {
         if identifier.parseAs == .url {
             size = stringValue.encodedASCII.count
         } else {
-            size = stringValue.encodedISOLatin1.count + 1 // encoding byte
+            if identifier == .producedNotice {
+                size = stringValue.encoded(.utf16).count + 1
+            } else {
+                size = stringValue.encoded(.isoLatin1).count + 1 // encoding byte
+            }
         }
-
         // use the default flags
         let flags = version.defaultFlags
         super.init(identifier: identifier,

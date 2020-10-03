@@ -26,6 +26,15 @@ extension String {
         return result
     }
 
+    /// Convert a string to data without null terminator
+    func encoded(_ encoding: String.Encoding) -> Data {
+        guard let result = data(using: encoding) else {
+            // This will never happen unless “preferred” is changed to something besides Unicode.
+            fatalError("\(encoding) cannot encode “\(self)”.")
+        }
+        return result
+    }
+
     init(withInt int: Int, leadingZeros: Int = 2) {
         self.init(format: "%0\(leadingZeros)d", int)
     }
@@ -106,42 +115,6 @@ extension String {
         return dateComponents.date
     }
     
-    
-//    private let dateFormatters: [DateFormatter] = formats.map { format in
-//        let formatter = Locale(identifier: "en_US_POSIX")
-//        formatter.dateFormat = format
-//        return formatter
-//    }
-    
-//    private var dateFormatters: [DateFormatter] {
-//        var formatters = [DateFormatter]()
-//        let formatter = DateFormatter()
-//        // attempt to find the date using the dateStyles
-//        formatter.dateStyle = .full
-//        formatters.append(formatter)
-//        formatter.dateStyle = .long
-//        formatters.append(formatter)
-//        formatter.dateStyle = .medium
-//        formatters.append(formatter)
-//        formatter.dateStyle = .short
-//        formatters.append(formatter)
-//
-//        formatter.locale = Locale(identifier: "en_US_POSIX")
-//        // if that fails, attempt to use one of the formats mentioned in the ID3 spec
-//        formatter.dateFormat = "yyyy-MM-ddTHH:mm"
-//        formatters.append(formatter)
-//        formatter.dateFormat = "yyyy-MM-ddTHH"
-//        formatters.append(formatter)
-//        formatter.dateFormat = "yyyy-MM-dd"
-//        formatters.append(formatter)
-//        formatter.dateFormat = "MM-dd-yyyy"
-//        formatters.append(formatter)
-//        formatter.dateFormat = "yyyy-MM"
-//        formatters.append(formatter)
-//        formatter.dateFormat = "yyyy"
-//        formatters.append(formatter)
-//        return formatters
-//    }
     @available(OSX 10.12, *)
     func attemptDateFromString() -> Date? {
         let isoFormatter = ISO8601DateFormatter()
