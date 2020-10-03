@@ -15,8 +15,8 @@ extension Data {
     /// Interpret the most common "quasi-boolean" strings as boolean values
     /// - Parameter encoding: The `String.Encoding` type parsed out of the frame content previously
     /// - Returns: 1 or 0, if a value can be determined
-    mutating func extractAndDecodeStringFromBoolean(encoding: String.Encoding) throws -> String {
-        if let string = self.extractNullTerminatedString(encoding) {
+    mutating func decodeBooleanString(_ encoding: String.Encoding) -> String {
+        if let string = String(data: self, encoding: encoding) {
             switch string.lowercased() {
                 case "true", "t", "yes", "y", "1":
                     return "1"
@@ -30,8 +30,8 @@ extension Data {
         }
     }
     
-    mutating func extractAndDecodeString(encoding: String.Encoding) throws -> String {
-        if let string = self.extractNullTerminatedString(encoding) {
+    mutating func decodeString(_ encoding: String.Encoding) -> String {
+        if let string = String(data: self, encoding: encoding) {
             return string
         } else {
             return ""

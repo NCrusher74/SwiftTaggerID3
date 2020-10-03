@@ -54,10 +54,10 @@ class StringFrame: Frame {
             let encoding = try data.extractEncoding()
             if identifier.parseAs == .boolean {
                 // since the compilation frame is technically a string frame, it may contain a "boolean-esque" string, like "true" or "yes". We will attempt to catch those cases as well.
-                self.stringValue = try data.extractAndDecodeStringFromBoolean(encoding: encoding)
+                self.stringValue = data.decodeBooleanString(encoding)
             } else {
                 // everything else is handled as a string (or numeric string)
-                self.stringValue = try data.extractAndDecodeString(encoding: encoding)
+                self.stringValue = data.decodeString(encoding)
             }
         }
         super.init(identifier: identifier,
