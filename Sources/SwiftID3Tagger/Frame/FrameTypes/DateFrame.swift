@@ -142,7 +142,7 @@ class DateFrame: Frame {
         data.append(encoding.encodingByte)
         if let date = timeStamp {
             var encodedString = Data()
-            
+
             switch self.version {
                 case .v2_2, .v2_3:
                     switch self.identifier {
@@ -150,14 +150,24 @@ class DateFrame: Frame {
                         case .time: encodedString = date.encodeHHMMTimestamp
                         case .year, .originalReleaseDateTime:
                             encodedString = date.encodeYYYYTimestamp
-                        default: encodedString = Data()
+                        default:
+                            let formatter = ISO8601DateFormatter()
+                            formatter.formatOptions = [.withInternetDateTime]
+                            formatter.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
+                            let dateString = formatter.string(from: date)
+                            encodedString = dateString.encodedISOLatin1
                     }
                 case .v2_4:
-                    let formatter = ISO8601DateFormatter()
-                    formatter.formatOptions = [.withInternetDateTime]
-                    formatter.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
-                    let dateString = formatter.string(from: date)
-                    encodedString = dateString.encodedISOLatin1
+                    switch self.identifier {
+                        case .date, .time, .year:
+                            encodedString = Data()
+                        default:
+                            let formatter = ISO8601DateFormatter()
+                            formatter.formatOptions = [.withInternetDateTime]
+                            formatter.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
+                            let dateString = formatter.string(from: date)
+                            encodedString = dateString.encodedISOLatin1
+                    }
             }
             data.append(encodedString)
         }
@@ -178,6 +188,7 @@ class DateFrame: Frame {
          version: Version,
          timeStamp: Date) {
         self.timeStamp = timeStamp
+
         let flags = version.defaultFlags
         
         var size = 1 // +1 for encoding byte
@@ -211,11 +222,7 @@ extension Tag {
     private func get(dateFrame identifier: FrameIdentifier) -> Date? {
         if let frame = self.frames[identifier.frameKey] as? DateFrame {
             let date = frame.timeStamp
-
-            let formatter = ISO8601DateFormatter()
-            formatter.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
-            formatter.formatOptions = .withInternetDateTime
-            guard date != formatter.date(from: "0001-01-01T00:00:00Z") else {
+            guard date != Date.distantPast else {
                 return nil
             }
             return date

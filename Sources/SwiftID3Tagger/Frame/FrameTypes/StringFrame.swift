@@ -44,20 +44,22 @@ class StringFrame: Frame {
          payload: Data
     ) throws {
         var data = payload
-        if identifier == .producedNotice {
-            print(data.count)
-        }
+
         // Since url frames do not use an encoding byte, we will parse without one for those
         if identifier.parseAs == .url {
             self.stringValue = try String(ascii: payload)
         } else {
             let encoding = try data.extractEncoding()
-            if identifier.parseAs == .boolean {
-                // since the compilation frame is technically a string frame, it may contain a "boolean-esque" string, like "true" or "yes". We will attempt to catch those cases as well.
-                self.stringValue = data.decodeBooleanString(encoding)
+            if identifier == .languages {
+                self.stringValue = data.extractNullTerminatedString(encoding) ?? "und"
             } else {
-                // everything else is handled as a string (or numeric string)
-                self.stringValue = data.decodeString(encoding)
+                if identifier.parseAs == .boolean {
+                    // since the compilation frame is technically a string frame, it may contain a "boolean-esque" string, like "true" or "yes". We will attempt to catch those cases as well.
+                    self.stringValue = data.decodeBooleanString(encoding)
+                } else {
+                    // everything else is handled as a string (or numeric string)
+                    self.stringValue = data.decodeString(encoding)
+                }
             }
         }
         super.init(identifier: identifier,
