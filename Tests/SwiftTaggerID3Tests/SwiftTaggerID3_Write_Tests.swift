@@ -573,8 +573,8 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.addChapter(startTime: 3120, title: "Chapter 04")
         tag.addChapter(startTime: 4230, title: "Chapter 05")
 
-//         let outputUrl = localOutputDirectory("testAll")
-        let outputUrl = tempOutputDirectory
+        let outputUrl = localOutputDirectory("testAll")
+//        let outputUrl = tempOutputDirectory
         XCTAssertNoThrow(try mp3NoMeta.write(tag: &tag, version: .v2_4, outputLocation: outputUrl))
         
         let outputMp3 = try Mp3File(location: outputUrl)

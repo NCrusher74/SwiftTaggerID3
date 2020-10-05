@@ -75,21 +75,16 @@ class StringFrame: Frame {
         if self.identifier.parseAs == .url {
             data.append(stringValue.encodedASCII)
         } else {
-            let encoding: String.Encoding
-            if self.identifier == .producedNotice {
-                encoding = .utf16
-            } else {
-                encoding = .isoLatin1
-            }
-            
+            let encoding: String.Encoding = .utf16
             data.append(encoding.encodingByte)
-            
-            if self.identifier == .producedNotice {
-                data.append(stringValue.encoded(.utf16))
-//                print(data.count)
+            if self.identifier == .languages {
+                let array = stringValue.toArray
+                for language in array {
+                    data.append(language.encodeNullTerminatedString(encoding))
+                }
             } else {
-                data.append(stringValue.encoded(.isoLatin1))
-            }
+            data.append(stringValue.encoded(encoding))
+        }
         }
         return data
     }
