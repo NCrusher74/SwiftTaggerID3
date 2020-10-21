@@ -532,14 +532,15 @@ extension Tag {
         }
     }
 
-    public var languages: [ISO6392Code] {
+    public var languages: [Language] {
         get {
             if let string = get(.languages) {
                 let array = string.toArray
-                var languages = [ISO6392Code]()
+                var languages = [Language]()
                 for item in array {
                     if let code = ISO6392Code(rawValue: item) {
-                        languages.append(code)
+                        let language = code.language
+                        languages.append(language)
                     }
                 }
                 return languages
@@ -551,7 +552,7 @@ extension Tag {
             if !newValue.isEmpty {
                 var strings = [String]()
                 for item in newValue {
-                    let string = item.rawValue
+                    let string = item.iso6392Code.rawValue
                     strings.append(string)
                 }
                 let stringValue = strings.toString

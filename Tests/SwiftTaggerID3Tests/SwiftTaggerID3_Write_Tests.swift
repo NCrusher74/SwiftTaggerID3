@@ -72,10 +72,10 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.publisherWebpage = "http://publisher.url"
         tag.radioStationWebpage = "http://radiostation.url"
         
-        // // MARK: - Language Frame
-        tag.languages = [.eng]
+        // MARK: - Language Frame
+        tag.languages = [.english]
         
-        // // MARK: - Part Of Total frame
+        // MARK: Part Of Total frame
         tag.trackNumber.track = 1
         tag.trackNumber.totalTracks = 2
         tag.discNumber.disc = 3
@@ -118,7 +118,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(output.grouping, "Grouping")
         XCTAssertEqual(output.initialKey, .aFlatMinor)
         XCTAssertEqual(output.isrc, "987654321098")
-        XCTAssertEqual(output.languages, [.eng])
+        XCTAssertEqual(output.languages, [.english])
         XCTAssertEqual(output.length, 5041)
         XCTAssertEqual(output.lyricist, "Lyricist")
         XCTAssertEqual(output.mood, "Mood")
@@ -208,7 +208,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.radioStationWebpage = "http://radiostation.url"
         
         // // MARK: - Language Frame
-        tag.languages = [.eng]
+        tag.languages = [.english]
         
         // // MARK: - Part Of Total frame
         tag.trackNumber.track = 1
@@ -249,7 +249,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(output.grouping, "Grouping")
         XCTAssertEqual(output.initialKey, .aFlatMinor)
         XCTAssertEqual(output.isrc, "987654321098")
-        XCTAssertEqual(output.languages, [.eng])
+        XCTAssertEqual(output.languages, [.english])
         XCTAssertEqual(output.length, 5041)
         XCTAssertEqual(output.lyricist, "Lyricist")
         XCTAssertEqual(output.movement, "Movement Name")
@@ -323,7 +323,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.publisherWebpage = "http://publisher.url"
         
         // // MARK: - Language Frame
-        tag.languages = [.eng]
+        tag.languages = [.english]
         
         // // MARK: - Part Of Total frame
         tag.trackNumber.track = 1
@@ -362,7 +362,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(output.encodingSettings, "Encoding Settings")
         XCTAssertEqual(output.initialKey, .aFlatMinor)
         XCTAssertEqual(output.isrc, "987654321098")
-        XCTAssertEqual(output.languages, [.eng])
+        XCTAssertEqual(output.languages, [.english])
         XCTAssertEqual(output.length, 5041)
         XCTAssertEqual(output.lyricist, "Lyricist")
         XCTAssertEqual(output.originalAlbum, "Original Album")
@@ -528,7 +528,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.publisherWebpage = "http://publisher.url"
         tag.radioStationWebpage = "http://radiostation.url"
         
-        tag.languages = [.eng]
+        tag.languages = [.english]
         
         tag.trackNumber.track = 1
         tag.trackNumber.totalTracks = 2
@@ -633,7 +633,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(output.publisherWebpage, "http://publisher.url")
         XCTAssertEqual(output.radioStationWebpage, "http://radiostation.url")
         
-        XCTAssertEqual(output.languages, [.eng])
+        XCTAssertEqual(output.languages, [.english])
         
         XCTAssertEqual(output.trackNumber.track, 6)
         XCTAssertEqual(output.trackNumber.totalTracks, 7)

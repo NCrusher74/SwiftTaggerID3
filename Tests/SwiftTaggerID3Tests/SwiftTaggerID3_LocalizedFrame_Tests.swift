@@ -18,7 +18,7 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
     func testLocalizedFrameReadingv24() throws {
         let tag = tagV24
 
-        XCTAssertEqual(tag.languages, [.eng])
+        XCTAssertEqual(tag.languages, [.english])
         XCTAssertEqual(tag[comment: "Comment", .eng], "Comment Content")
         XCTAssertEqual(tag[comment: "Description", .eng], "Description Content")
         XCTAssertEqual(tag[comment: "LongDescription", .eng], "Long Description Content")
@@ -33,7 +33,7 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
     func testLocalizedFrameReadingv23() throws {
         let tag = tagV23
         
-        XCTAssertEqual(tag.languages, [.eng])
+        XCTAssertEqual(tag.languages, [.english])
         XCTAssertEqual(tag[comment: "Comment", .eng], "Comment Content")
         XCTAssertEqual(tag[comment: "Description", .eng], "Description Content")
         XCTAssertEqual(tag[comment: "LongDescription", .eng], "Long Description Content")
@@ -48,7 +48,7 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
     func testLocalizedFrameReadingv22() throws {
         let tag = tagV22
         
-        XCTAssertEqual(tag.languages, [.eng])
+        XCTAssertEqual(tag.languages, [.english])
         XCTAssertEqual(tag[comment: "Comment", .eng], "Comment Content")
         XCTAssertEqual(tag[comment: "Description", .eng], "Description Content")
         XCTAssertEqual(tag[comment: "LongDescription", .eng], "Long Description Content")
@@ -305,7 +305,7 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
         let outputMp3 = try Mp3File(location: outputUrl)
         let output = try Tag(mp3File: outputMp3)
         XCTAssertEqual(output.version, .v2_2)
-        XCTAssertEqual(output.languages, [.eng])
+        XCTAssertEqual(output.languages, [.english])
         XCTAssertEqual(output[comment: "Comment", .eng], "Comment Content")
         XCTAssertEqual(output[comment: "Description", .eng], "Description Content")
         XCTAssertEqual(output[comment: "LongDescription", .eng], "Long Description Content")
