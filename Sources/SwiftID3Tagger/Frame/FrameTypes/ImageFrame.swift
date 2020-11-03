@@ -6,11 +6,7 @@
 //
 
 import Foundation
-#if os(macOS)
-import Cocoa
-#elseif os(iOS)
-import UIKit
-#endif
+import SwiftConvenienceExtensions
 /*
  // 2.2
  This frame contains a picture directly related to the audio file.
