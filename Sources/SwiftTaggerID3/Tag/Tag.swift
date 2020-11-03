@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Cocoa
 
 public struct Tag {
     /*
