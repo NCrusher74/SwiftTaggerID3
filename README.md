@@ -7,6 +7,8 @@
 
  -->
 
+### If you find this library helpful, please consider [donating](https://paypal.me/NCrusher74)
+
 # SwiftTaggerID3
 
 SwiftTaggerID3 is a Swift library for reading and writing ID3 tags in MP3 audio files. 
