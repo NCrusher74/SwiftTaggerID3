@@ -15,7 +15,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
     
     // // MARK: - V24 writing test
     // Test writing, and accuracy of written data, version 2.4
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     func testV24Writing() throws {
         var tag = tagNoMeta
 
@@ -153,7 +153,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
     
     // // MARK: - V23 writing test
     // Test writing, and accuracy of written data, version 2.3
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     func testV23Writing() throws {
         var tag = tagNoMeta
 
@@ -280,7 +280,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
     }
     
     // Test writing, and accuracy of written data, version 2.2
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     func testV22Writing() throws {
         var tag = tagNoMeta
 
@@ -382,7 +382,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(output.work, "Content Group")
     }
 
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     func testWork() throws {
         var tag = Tag(version: .v2_4)
         tag.work = "Work"
@@ -397,7 +397,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(output.work, "Work")
     }
     
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     func testImageFrameWriting() throws {
         var tag = Tag(version: .v2_4)
         
@@ -452,7 +452,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertNotNil(output[attachedPicture: .recordingLocation])
     }
     
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     func testUnknownFramePassThrough() throws {
         var tag = tagUnknown
         let count = tag.frames.count
@@ -471,7 +471,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(output.frames.count, count + 1)
     }
 
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     func testAll() throws {
         var tag = Tag(version: .v2_4)
         
@@ -689,7 +689,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
 
     }
     
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     func testRemoveAllMetadata() throws {
         var tag = tagV24
         tag.removeAllMetadata()

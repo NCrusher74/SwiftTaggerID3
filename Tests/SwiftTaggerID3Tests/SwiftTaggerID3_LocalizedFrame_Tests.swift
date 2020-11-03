@@ -14,7 +14,7 @@ import SwiftLanguageAndLocaleCodes
 class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
     
     // Localized Frame tests
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     func testLocalizedFrameReadingv24() throws {
         let tag = tagV24
 
@@ -29,7 +29,7 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
         XCTAssertEqual(tag[userDefinedUrl: "UserURL"], "http://userdefined.url")
     }
     
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     func testLocalizedFrameReadingv23() throws {
         let tag = tagV23
         
@@ -44,7 +44,7 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
         XCTAssertEqual(tag[userDefinedUrl: "UserURL"], "http://userdefined.url")
     }
 
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     func testLocalizedFrameReadingv22() throws {
         let tag = tagV22
         
@@ -59,7 +59,7 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
         XCTAssertEqual(tag[userDefinedUrl: "UserURL"], "http://userdefined.url")
     }
 
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     func testFrameRemovalv22() throws {
         var tag = tagV22
         
@@ -115,7 +115,7 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
         XCTAssertNil(tag[userDefinedUrl: "UserURL"])
     }
     
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     func testFrameRemovalv23() throws {
         var tag = tagV23
         
@@ -171,7 +171,7 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
         XCTAssertNil(tag[userDefinedUrl: "UserURL"])
     }
 
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     func testFrameRemovalv24() throws {
         var tag = tagV24
         
@@ -227,7 +227,7 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
         XCTAssertNil(tag[userDefinedUrl: "UserURL"])
     }
 
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     func testLocalizedFrameWritingv24() throws {
         var tag = tagNoMeta
 
@@ -249,7 +249,7 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
         XCTAssertEqual(output["UserText"], "User Text Content")
     }
     
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     func testLocalizedFrameWritingv23() throws {
         var tag = tagNoMeta
         
@@ -271,7 +271,7 @@ class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
         XCTAssertEqual(output["UserText"], "User Text Content")
     }
 
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     func testLocalizedFrameWritingv22() throws {
         var tag = tagNoMeta
         tag.version = .v2_2

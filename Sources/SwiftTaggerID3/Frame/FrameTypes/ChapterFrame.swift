@@ -45,7 +45,7 @@ class ChapterFrame: Frame {
     }
     
     // MARK: - Frame Parsing
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     init(identifier: FrameIdentifier,
          version: Version,
          size: Int,
@@ -79,7 +79,7 @@ class ChapterFrame: Frame {
                    flags: flags)
     }
     
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     override var contentData: Data {
         guard version != .v2_2 else {
             fatalError("Chapter frame is not available for ID3 v2.2")
@@ -115,7 +115,7 @@ class ChapterFrame: Frame {
     /// - parameter startTime: integer indicating the beginning of the chapter, in milliseconds
     /// - parameter endTime: integer indicating the end of the chapter, in milliseconds
     /// - parameter embeddedSubFrames: the (optional) frames containing title and descriptor text for the CHAP frame. A title is recommended at the least.
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     init(_ identifier: FrameIdentifier,
          version: Version,
          startTime: Int,
@@ -154,7 +154,7 @@ class ChapterFrame: Frame {
 }
 
 extension Tag {
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     public var chapterList: [(startTime: Int, title: String)] {
         get {
             var list = [(startTime: Int, title: String)]()
@@ -220,7 +220,7 @@ extension Tag {
         }
     }
     
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     public mutating func addChapter(startTime: Int, title: String) {
         let enumeratedChapters = self.chapterList.enumerated()
         if let nextChapter = enumeratedChapters.first(where: {$0.element.startTime > startTime}) {
@@ -231,12 +231,12 @@ extension Tag {
         }
     }
     
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     public mutating func removeAllChapters() {
         self.chapterList = []
     }
     
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     public mutating func removeChapter(startTime: Int) {
         self.chapterList = self.chapterList.filter({$0.startTime != startTime})
     }

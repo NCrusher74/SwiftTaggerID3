@@ -43,12 +43,12 @@ public struct Mp3File {
         self.duration = Int(seconds * 1000)
     }
     
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     public func tag() throws -> Tag {
             return try Tag(mp3File: self)
     }
     
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     public func write(tag: inout Tag,
                       version: Version,
                       outputLocation: URL) throws {
@@ -56,7 +56,7 @@ public struct Mp3File {
         try data.write(to: outputLocation)
     }
     
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     private func buildNewFile(tag: inout Tag, version: Version) throws -> Data {
         var data = self.data
         let oldTag = try self.tag()

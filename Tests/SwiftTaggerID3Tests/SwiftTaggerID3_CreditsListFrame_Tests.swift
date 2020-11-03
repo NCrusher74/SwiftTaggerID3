@@ -12,7 +12,7 @@ import XCTest
 
 class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
     
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     func testCreditsListFrameReadingv24() throws {
         let tag = tagV24
 
@@ -20,7 +20,7 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         XCTAssertEqual(tag.musicianCreditsList[.alto], altoCredit)
     }
 
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     func testCreditsListFrameWritingv24() throws {
         var tag = tagV24
 
@@ -37,7 +37,7 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         XCTAssertEqual(output.musicianCreditsList[.alto], altoCredit)
     }
 
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     func testCreditsListFrameRemovalv24() throws {
         var tag = tagV24
 
@@ -54,7 +54,7 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         XCTAssertTrue(output.involvementCreditsList.isEmpty)
     }
 
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     func testCreditsListFrameRemovalv23() throws {
         var tag = tagV23
         
@@ -69,7 +69,7 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         XCTAssertTrue(output.involvementCreditsList.isEmpty)
     }
 
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     func testCreditsListFrameRemovalv22() throws {
         var tag = tagV22
 
@@ -84,7 +84,7 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         XCTAssertTrue(output.involvementCreditsList.isEmpty)
     }
 
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     func testCreditsListSingleItemRemovalv24() throws {
         var tag = tagV24
 
@@ -100,7 +100,7 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         XCTAssertEqual(output.musicianCreditsList[.alto], altoCredit)
     }
     
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     func testCreditsListDuplicateCatchingv24() throws {
         var tag = tagV24
 
@@ -117,7 +117,7 @@ class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
         XCTAssertEqual(output.musicianCreditsList[.alto], ["Alto Name", "New Alto Name"])
     }
     
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     func testMusicianCreditV23() throws {
         var tag = tagV24
 

@@ -12,7 +12,7 @@ import XCTest
 
 class SwiftTaggerID3_ComplexTypesFrame_Tests: XCTestCase {
     
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     func testPresetOptionsReadingV24() throws {
         let tag = tagV24
         XCTAssertNil(tag.fileType.fileType)
@@ -25,7 +25,7 @@ class SwiftTaggerID3_ComplexTypesFrame_Tests: XCTestCase {
         XCTAssertEqual(tag.mediaType.additionalInformation, "Media Type")
     }
     
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     func testPresetOptionsReadingV23() throws {
         let tag = tagV23
         XCTAssertNil(tag.fileType.fileType)
@@ -38,7 +38,7 @@ class SwiftTaggerID3_ComplexTypesFrame_Tests: XCTestCase {
         XCTAssertEqual(tag.mediaType.additionalInformation, "Media Type")
     }
     
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     func testPresetOptionsReadingV22() throws {
         let tag = tagV22
         XCTAssertNil(tag.fileType.fileType)
@@ -52,7 +52,7 @@ class SwiftTaggerID3_ComplexTypesFrame_Tests: XCTestCase {
     }
     
     
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     func testPresetOptionsWriting() throws {
         var tag = tagNoMeta
         
@@ -85,7 +85,7 @@ class SwiftTaggerID3_ComplexTypesFrame_Tests: XCTestCase {
         XCTAssertEqual(output.fileType.additionalInformation, "Additional Information")
     }
     
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     func testPresetOptionsOverWriting() throws {
         var tag = tagV24
         
@@ -118,7 +118,7 @@ class SwiftTaggerID3_ComplexTypesFrame_Tests: XCTestCase {
         XCTAssertEqual(output.fileType.additionalInformation, "Additional Information")
     }
     
-    @available(OSX 10.12, *)
+    @available(OSX 10.12, iOS 10.0, *)
     func testSetToNil() throws {
         var tag = tagV24
         
