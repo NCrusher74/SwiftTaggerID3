@@ -6,7 +6,11 @@
 //
 
 import Foundation
+#if os(macOS)
 import Cocoa
+#elseif os(iOS)
+import UIKit
+#endif
 /*
  // 2.2
  This frame contains a picture directly related to the audio file.
@@ -43,7 +47,7 @@ import Cocoa
 class ImageFrame: Frame {
     
     /// The frame's image contents
-    var image: NSImage?
+    var image: NativeImage?
     var imageType: ImageType
     var imageFormat: ImageFormat
     var descriptionString: String?
@@ -110,7 +114,7 @@ class ImageFrame: Frame {
                 throw FrameError.UnhandledImageFormat
             }
         }
-        if let image = NSImage(data: data) {
+        if let image = NativeImage(data: data) {
             self.image = image
         } else {
             throw FrameError.InvalidImageData
@@ -186,7 +190,7 @@ class ImageFrame: Frame {
         self.imageType = imageType
         self.imageFormat = imageFormat
         self.descriptionString = description
-        self.image = NSImage(data: imageData)
+        self.image = NativeImage(data: imageData)
 
         var size = 2 // +1 for encoding byte, +1 for pictureTypeByte
         var formatString = String()
@@ -227,7 +231,7 @@ class ImageFrame: Frame {
 }
 
 extension Tag {
-    public subscript(attachedPicture type: ImageType) -> NSImage? {
+    public subscript(attachedPicture type: ImageType) -> NativeImage? {
         let identifier = FrameIdentifier.attachedPicture
         let frameKey = identifier.frameKey(imageType: type)
         if let frame = self.frames[frameKey] as? ImageFrame {

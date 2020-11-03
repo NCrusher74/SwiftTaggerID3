@@ -1,15 +1,14 @@
 //
-//  File.swift
+//  Image.swift
 //  
 //
 //  Created by Nolaine Crusher on 11/2/20.
 //
 
-import Foundation
+#if os(macOS)
 import Cocoa
-
+public typealias NativeImage = NSImage
 extension NSImage {
-    
     /// Converts an `NSImage` to png data
     var pngData: Data {
         if let tiff = tiffRepresentation,
@@ -36,3 +35,26 @@ extension NSImage {
         }
     }
 }
+
+#elseif os(iOS)
+import UIKit
+public typealias NativeImage = UIImage
+extension UIImage {
+    
+    var pngData: Data {
+        if let data = UIImagePNGRepresentation(self) {
+            return data
+        } else {
+            return Data()
+        }
+    }
+    
+    var jpgData: Data {
+        if let data = UIImageJPEGRepresentation(self, 1.0) {
+            return data
+        } else {
+            return Data()
+        }
+    }
+}
+#endif
