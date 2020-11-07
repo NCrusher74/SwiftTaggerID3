@@ -15,7 +15,7 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
     // test reading of V24 tag from file
     @available(OSX 10.12, iOS 10.0, *)
     func testV24Reading() throws {
-        let tag = tagV24
+        var tag = tagV24
         
         // StringFrame
         XCTAssertEqual(tag.album, "Album")

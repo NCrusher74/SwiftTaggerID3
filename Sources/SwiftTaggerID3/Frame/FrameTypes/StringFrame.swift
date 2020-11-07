@@ -310,7 +310,7 @@ extension Tag {
         get { get(.copyright) }
         set {
             if let new = newValue {
-                set(.copyright, stringValue: "\u{00A9} \(new)")
+                set(.copyright, stringValue: "\u{00A9}\(new)")
             } else {
                 set(.copyright, stringValue: nil)
             }
@@ -578,10 +578,29 @@ extension Tag {
 
     /// ProducedNotice getter-setter. ID3 Identifier: `TPRO`.
     public var producedNotice: String? {
-        get { get(.producedNotice) }
+        mutating get {
+            if let string = get(.producedNotice) {
+                return string
+            } else if let copyright = self.copyright, copyright.contains("(P)") {
+                let components = copyright.components(separatedBy: "(P)")
+                if let first = components.first, first.contains("\u{00A9}") {
+                    let stripped = first.components(separatedBy: "\u{00A9}")
+                    self.copyright = stripped.last
+                } else {
+                    self.copyright = components.first
+                }
+                if let last = components.last {
+                    return "\u{21117}\(last)"
+                } else {
+                    return nil
+                }
+            } else {
+                return nil
+            }
+        }
         set {
             if let new = newValue {
-                set(.producedNotice, stringValue: "\u{2117} \(new)")
+                set(.producedNotice, stringValue: "\u{2117}\(new)")
             } else {
                 set(.producedNotice, stringValue: nil)
             }
