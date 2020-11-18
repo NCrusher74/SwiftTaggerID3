@@ -27,8 +27,10 @@
  There then follows a sequence of optional frames that are embedded within the "CHAP" frame and which describe the content of the chapter (e.g. a "TIT2" frame representing the chapter name) or provide related material such as URLs and images. These sub-frames are contained within the bounds of the "CHAP" frame as signalled by the size field in the "CHAP" frame header. If a parser does not recognise "CHAP" frames it can skip them using the size field in the frame header. When it does this it will skip any embedded sub-frames carried within the frame.
  */
 import Foundation
-
+import SwiftConvenienceExtensions
 /// A class representing an ID3 chapter frame. There may be multiple chapter frames in a tag, but the `elementID` must be unique. Therefore, the `elementID` will serve as an additional identifier for the `frameKey`
+public typealias TOC = TableOfContents
+public typealias Chapter = TableOfContents.Chapter
 class ChapterFrame: Frame {
     
     /// The Element ID uniquely identifies the frame. It is not intended to be human readable and should not be presented to the end user. Null terminated
@@ -154,19 +156,28 @@ class ChapterFrame: Frame {
 }
 
 extension Tag {
-    @available(OSX 10.12, iOS 10.0, *)
-    public var chapterList: [(startTime: Int, title: String)] {
+    @available(OSX 10.12, *)
+    var toc: TableOfContents {
         get {
-            var list = [(startTime: Int, title: String)]()
-            var chapterFrames = self.frames.values.filter({$0.identifier == .chapter}) as? [ChapterFrame]
-            chapterFrames?.sort(by: {$0.startTime < $1.startTime})
+            var chapters = [Chapter]()
+            let chapterFrames = self.frames.values.filter({$0.identifier == .chapter}) as? [ChapterFrame]
             for frame in chapterFrames ?? [] {
                 let startTime = frame.startTime
                 let title = frame.embeddedSubframesTag?.title ?? "Untitled Chapter @ \(startTime)"
-                let entry = (startTime, title)
-                list.append(entry)
+                let chapter = Chapter(startTime: startTime, title: title)
+                chapters.append(chapter)
             }
-            return list
+            return TOC(chapters)
+        }
+        set {
+            chapterList = newValue.chapters
+        }
+    }
+    
+    @available(OSX 10.12, iOS 10.0, *)
+    public var chapterList: [Chapter] {
+        get {
+            return toc.chapters
         }
         set {
             self.frames = self.frames.filter({$0.value.identifier != .tableOfContents && $0.value.identifier != .chapter})
@@ -222,13 +233,7 @@ extension Tag {
     
     @available(OSX 10.12, iOS 10.0, *)
     public mutating func addChapter(startTime: Int, title: String) {
-        let enumeratedChapters = self.chapterList.enumerated()
-        if let nextChapter = enumeratedChapters.first(where: {$0.element.startTime > startTime}) {
-            let targetIndex = nextChapter.offset
-            self.chapterList.insert((startTime, title), at: targetIndex)
-        } else {
-            self.chapterList.append((startTime, title))
-        }
+        toc.addChapter(startTime: startTime, title: title)
     }
     
     @available(OSX 10.12, iOS 10.0, *)

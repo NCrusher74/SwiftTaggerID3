@@ -32,8 +32,14 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
             (startTime: 3000, title: "Chapter Three")
         ]
         var tag = tagNoMeta
-        tag.chapterList = chapterList
         
+        var chapters = [Chapter]()
+        for chapter in chapterList {
+            let chap = Chapter(startTime: chapter.startTime, title: chapter.title)
+            chapters.append(chap)
+        }
+        
+        tag.chapterList = chapters
         let outputUrl = tempOutputDirectory
 //        let outputUrl = try localOutputDirectory("chapterTest")
         XCTAssertNoThrow(try mp3NoMeta.write(tag: &tag,
@@ -62,8 +68,13 @@ class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
             (startTime: 3000, title: "Chapter Three")
         ]
         var tag = tagNoMeta
-        tag.chapterList = chapterList
+        var chapters = [Chapter]()
+        for chapter in chapterList {
+            let chap = Chapter(startTime: chapter.startTime, title: chapter.title)
+            chapters.append(chap)
+        }
         
+        tag.chapterList = chapters
         let outputUrl = tempOutputDirectory
 //        let outputUrl = try localOutputDirectory("chapterTest")
         XCTAssertNoThrow(try mp3NoMeta.write(tag: &tag,
