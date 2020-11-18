@@ -22,6 +22,7 @@
  "1/2".
  */
 import Foundation
+import SwiftConvenienceExtensions
 class PartAndTotalFrame: Frame {
     override var description: String {
         return "\(self.identifier.rawValue): \(self.part) of \(self.total ?? 0)"
@@ -119,24 +120,24 @@ extension Tag {
     
     
     /// DiscNumber(/TotalDiscs) getter-setter. ID3 Identifier: `TPA`/`TPOS`
-    public var discNumber: (disc: Int, totalDiscs: Int?) {
+    public var discNumber: IntIndex {
         get {
             let identifier = FrameIdentifier.discNumber
             let frameKey = identifier.frameKey
-            var tuple: (disc: Int, totalDiscs: Int?) = (0, nil)
+            var index = IntIndex(index: 0, total: nil)
             if let frame = self.frames[frameKey] as? PartAndTotalFrame {
-                tuple.disc = frame.part
-                tuple.totalDiscs = frame.total
+                index.index = frame.part
+                index.total = frame.total
             }
-            return tuple
+            return index
         }
         set {
             let identifier = FrameIdentifier.discNumber
             let frameKey = identifier.frameKey
-            if newValue != (0, nil) {
+            if newValue != IntIndex(index: 0, total: nil) {
                 set(partTotalFrame: identifier,
-                    part: newValue.disc,
-                    total: newValue.totalDiscs)
+                    part: newValue.index,
+                    total: newValue.total)
             } else {
                 self.frames[frameKey] = nil
             }
@@ -144,24 +145,24 @@ extension Tag {
     }
     
     /// TrackNumber(/TotalTracks) getter-setter. ID3 Identifier: `TRK`/`TRCK`
-    public var trackNumber: (track: Int, totalTracks: Int?) {
+    public var trackNumber: IntIndex {
         get {
             let identifier = FrameIdentifier.trackNumber
             let frameKey = identifier.frameKey
-            var tuple: (track: Int, totalTracks: Int?) = (0, nil)
+            var index = IntIndex(index: 0, total: nil)
             if let frame = self.frames[frameKey] as? PartAndTotalFrame {
-                tuple.track = frame.part
-                tuple.totalTracks = frame.total
+                index.index = frame.part
+                index.total = frame.total
             }
-            return tuple
+            return index
         }
         set {
             let identifier = FrameIdentifier.trackNumber
             let frameKey = identifier.frameKey
-            if newValue != (0, nil) {
+            if newValue != IntIndex(index: 0, total: nil) {
                 set(partTotalFrame: identifier,
-                    part: newValue.track,
-                    total: newValue.totalTracks)
+                    part: newValue.index,
+                    total: newValue.total)
             } else {
                 self.frames[frameKey] = nil
             }

@@ -76,10 +76,10 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.languages = [.english]
         
         // MARK: Part Of Total frame
-        tag.trackNumber.track = 1
-        tag.trackNumber.totalTracks = 2
-        tag.discNumber.disc = 3
-        tag.discNumber.totalDiscs = 4
+        tag.trackNumber.index = 1
+        tag.trackNumber.total = 2
+        tag.discNumber.index = 3
+        tag.discNumber.total = 4
 
         let outputUrl = tempOutputDirectory
 
@@ -110,8 +110,8 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(output.contentGroup, "Content Group")
         XCTAssertEqual(output.copyright, "\u{00A9}2020 Copyright")
         XCTAssertEqual(output.copyrightWebpage, "http://copyright.url")
-        XCTAssertEqual(output.discNumber.disc, 3)
-        XCTAssertEqual(output.discNumber.totalDiscs, 4)
+        XCTAssertEqual(output.discNumber.index, 3)
+        XCTAssertEqual(output.discNumber.total, 4)
         XCTAssertEqual(output.encodedBy, "Encoded By")
         XCTAssertEqual(output.encodingSettings, "Encoding Settings")
         XCTAssertEqual(output.fileOwner, "File Owner")
@@ -146,8 +146,8 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(output.subtitle, "Subtitle")
         XCTAssertEqual(output.title, "Title")
         XCTAssertEqual(output.titleSort, "Title Sort")
-        XCTAssertEqual(output.trackNumber.track, 1)
-        XCTAssertEqual(output.trackNumber.totalTracks, 2)
+        XCTAssertEqual(output.trackNumber.index, 1)
+        XCTAssertEqual(output.trackNumber.total, 2)
         XCTAssertEqual(output.work, "Content Group")
     }
     
@@ -211,10 +211,10 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.languages = [.english]
         
         // // MARK: - Part Of Total frame
-        tag.trackNumber.track = 1
-        tag.trackNumber.totalTracks = 2
-        tag.discNumber.disc = 3
-        tag.discNumber.totalDiscs = 4
+        tag.trackNumber.index = 1
+        tag.trackNumber.total = 2
+        tag.discNumber.index = 3
+        tag.discNumber.total = 4
                 
         let outputUrl = tempOutputDirectory
         XCTAssertNoThrow(try mp3NoMeta.write(tag: &tag, version: .v2_3, outputLocation: outputUrl))
@@ -241,8 +241,8 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(output.contentGroup, "Content Group")
         XCTAssertEqual(output.copyright, "\u{00A9}2020 Copyright")
         XCTAssertEqual(output.copyrightWebpage, "http://copyright.url")
-        XCTAssertEqual(output.discNumber.disc, 3)
-        XCTAssertEqual(output.discNumber.totalDiscs, 4)
+        XCTAssertEqual(output.discNumber.index, 3)
+        XCTAssertEqual(output.discNumber.total, 4)
         XCTAssertEqual(output.encodedBy, "Encoded By")
         XCTAssertEqual(output.encodingSettings, "Encoding Settings")
         XCTAssertEqual(output.fileOwner, "File Owner")
@@ -274,8 +274,8 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(output.subtitle, "Subtitle")
         XCTAssertEqual(output.title, "Title")
         XCTAssertEqual(output.titleSort, "Title Sort")
-        XCTAssertEqual(output.trackNumber.track, 1)
-        XCTAssertEqual(output.trackNumber.totalTracks, 2)
+        XCTAssertEqual(output.trackNumber.index, 1)
+        XCTAssertEqual(output.trackNumber.total, 2)
         XCTAssertEqual(output.work, "Content Group")
     }
     
@@ -326,10 +326,10 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag.languages = [.english]
         
         // // MARK: - Part Of Total frame
-        tag.trackNumber.track = 1
-        tag.trackNumber.totalTracks = 2
-        tag.discNumber.disc = 3
-        tag.discNumber.totalDiscs = 4
+        tag.trackNumber.index = 1
+        tag.trackNumber.total = 2
+        tag.discNumber.index = 3
+        tag.discNumber.total = 4
         
         let outputUrl = tempOutputDirectory
         XCTAssertNoThrow(try mp3NoMeta.write(tag: &tag, version: .v2_2, outputLocation: outputUrl))
@@ -356,8 +356,8 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(output.contentGroup, "Content Group")
         XCTAssertEqual(output.copyright, "\u{00A9}2020 Copyright")
         XCTAssertEqual(output.copyrightWebpage, "http://copyright.url")
-        XCTAssertEqual(output.discNumber.disc, 3)
-        XCTAssertEqual(output.discNumber.totalDiscs, 4)
+        XCTAssertEqual(output.discNumber.index, 3)
+        XCTAssertEqual(output.discNumber.total, 4)
         XCTAssertEqual(output.encodedBy, "Encoded By")
         XCTAssertEqual(output.encodingSettings, "Encoding Settings")
         XCTAssertEqual(output.initialKey, .aFlatMinor)
@@ -377,8 +377,8 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(output.subtitle, "Subtitle")
         XCTAssertEqual(output.title, "Title")
         XCTAssertEqual(output.titleSort, "Title Sort")
-        XCTAssertEqual(output.trackNumber.track, 1)
-        XCTAssertEqual(output.trackNumber.totalTracks, 2)
+        XCTAssertEqual(output.trackNumber.index, 1)
+        XCTAssertEqual(output.trackNumber.total, 2)
         XCTAssertEqual(output.work, "Content Group")
     }
 
@@ -530,10 +530,10 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         
         tag.languages = [.english]
         
-        tag.trackNumber.track = 1
-        tag.trackNumber.totalTracks = 2
-        tag.discNumber.disc = 3
-        tag.discNumber.totalDiscs = 4
+        tag.trackNumber.index = 1
+        tag.trackNumber.total = 2
+        tag.discNumber.index = 3
+        tag.discNumber.total = 4
 
         tag.addInvolvementCredit(role: .director, person: "Director Name")
         tag.addInvolvementCredit(role: .producer, person: "Producer Name")
@@ -551,10 +551,10 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         tag[userDefinedUrl: "UserURL"] = "http://userdefined.url"
         tag["UserText"] = "User Text Content"
 
-        tag.discNumber.disc = 4
-        tag.discNumber.totalDiscs = 5
-        tag.trackNumber.track = 6
-        tag.trackNumber.totalTracks = 7
+        tag.discNumber.index = 4
+        tag.discNumber.total = 5
+        tag.trackNumber.index = 6
+        tag.trackNumber.total = 7
 
         tag.genre.genreCategory = .Blues
         tag.genre.genre = "Blues Refinement"
@@ -635,10 +635,10 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         
         XCTAssertEqual(output.languages, [.english])
         
-        XCTAssertEqual(output.trackNumber.track, 6)
-        XCTAssertEqual(output.trackNumber.totalTracks, 7)
-        XCTAssertEqual(output.discNumber.disc, 4)
-        XCTAssertEqual(output.discNumber.totalDiscs, 5)
+        XCTAssertEqual(output.trackNumber.index, 6)
+        XCTAssertEqual(output.trackNumber.total, 7)
+        XCTAssertEqual(output.discNumber.index, 4)
+        XCTAssertEqual(output.discNumber.total, 5)
         
         XCTAssertEqual(output.involvementCreditsList[.director], ["Director Name"])
         XCTAssertEqual(output.involvementCreditsList[.producer], ["Producer Name"])
@@ -655,10 +655,10 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertEqual(output[userDefinedUrl: "UserURL"], "http://userdefined.url")
         XCTAssertEqual(output["UserText"], "User Text Content")
         
-        XCTAssertEqual(output.discNumber.disc, 4)
-        XCTAssertEqual(output.discNumber.totalDiscs, 5)
-        XCTAssertEqual(output.trackNumber.track, 6)
-        XCTAssertEqual(output.trackNumber.totalTracks, 7)
+        XCTAssertEqual(output.discNumber.index, 4)
+        XCTAssertEqual(output.discNumber.total, 5)
+        XCTAssertEqual(output.trackNumber.index, 6)
+        XCTAssertEqual(output.trackNumber.total, 7)
         
         XCTAssertEqual(output.genre.genreCategory, .Blues)
         XCTAssertEqual(output.genre.genre, "Blues Refinement")
