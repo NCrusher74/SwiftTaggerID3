@@ -156,7 +156,7 @@ class ChapterFrame: Frame {
 }
 
 extension Tag {
-    @available(OSX 10.12, iOS 10.10, *)
+    @available(OSX 10.12, iOS 10.0, *)
     var toc: TableOfContents {
         get {
             var chapters = [Chapter]()
