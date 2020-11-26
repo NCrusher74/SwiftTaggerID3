@@ -15,7 +15,7 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
     // test reading of V24 tag from file
     @available(OSX 10.12, iOS 10.0, *)
     func testV24Reading() throws {
-        var tag = tagV24
+        let tag = tagV24
         
         // StringFrame
         XCTAssertEqual(tag.album, "Album")
@@ -29,7 +29,7 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag.composerSort, "Composer Sort")
         XCTAssertEqual(tag.conductor, "Conductor")
         XCTAssertEqual(tag.contentGroup, "Content Group")
-        XCTAssertEqual(tag.copyright, "2020 Copyright")
+        XCTAssertEqual(tag.copyright, "©2020 Copyright")
         XCTAssertEqual(tag.encodedBy, "Encoded By")
         XCTAssertEqual(tag.encodingSettings, "Encoding Settings")
         XCTAssertEqual(tag.fileOwner, "File Owner")
@@ -46,7 +46,7 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag.podcastDescription, "Podcast Description")
         XCTAssertEqual(tag.podcastID, "Podcast ID")
         XCTAssertEqual(tag.podcastKeywords, ["Podcast Keywords"])
-        XCTAssertEqual(tag.producedNotice, "2020 Produced Notice")
+        XCTAssertEqual(tag.producedNotice, "℗2020 Produced Notice")
         XCTAssertEqual(tag.publisher, "Publisher")
         XCTAssertEqual(tag.radioStation, "Radio Station")
         XCTAssertEqual(tag.radioStationOwner, "Radio Station Owner")
@@ -95,7 +95,7 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag.composerSort, "Composer Sort")
         XCTAssertEqual(tag.conductor, "Conductor")
         XCTAssertEqual(tag.contentGroup, "Content Group")
-        XCTAssertEqual(tag.copyright, "2020 Copyright")
+        XCTAssertEqual(tag.copyright, "©2020 Copyright")
         XCTAssertEqual(tag.encodedBy, "Encoded By")
         XCTAssertEqual(tag.encodingSettings, "Encoding Settings")
         XCTAssertEqual(tag.fileOwner, "File Owner")
@@ -158,7 +158,7 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
         XCTAssertEqual(tag.composerSort, "Composer Sort")
         XCTAssertEqual(tag.conductor, "Conductor")
         XCTAssertEqual(tag.contentGroup, "Content Group")
-        XCTAssertEqual(tag.copyright, "2020 Copyright")
+        XCTAssertEqual(tag.copyright, "©2020 Copyright")
         XCTAssertEqual(tag.encodedBy, "Encoded By")
         XCTAssertEqual(tag.encodingSettings, "Encoding Settings")
         XCTAssertEqual(tag.lyricist, "Lyricist")

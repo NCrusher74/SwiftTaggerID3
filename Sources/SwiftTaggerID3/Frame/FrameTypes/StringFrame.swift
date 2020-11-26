@@ -307,7 +307,22 @@ extension Tag {
 
     /// Copyright getter-setter. ID3 Identifier: `TCR`/`TCOP`
     public var copyright: String? {
-        get { get(.copyright) }
+        get {
+            if let copyright = get(.copyright), copyright.contains(" (P)") {
+                let components = copyright.components(separatedBy: " (P)")
+                if let first = components.first {
+                    return "\u{00A9}\(first)"
+                } else {
+                    return nil
+                }
+            } else if let copyright = get(.copyright), copyright.hasPrefix("\u{00A9}") {
+                return copyright
+            } else if let copyright = get(.copyright) {
+                return "\u{00A9}\(copyright)"
+            } else {
+                return nil
+            }
+        }
         set {
             if let new = newValue {
                 set(.copyright, stringValue: "\u{00A9}\(new)")
@@ -578,19 +593,15 @@ extension Tag {
 
     /// ProducedNotice getter-setter. ID3 Identifier: `TPRO`.
     public var producedNotice: String? {
-        mutating get {
-            if let string = get(.producedNotice) {
+        get {
+            if let string = get(.producedNotice), string.hasPrefix("\u{2117}") {
                 return string
-            } else if let copyright = self.copyright, copyright.contains("(P)") {
-                let components = copyright.components(separatedBy: "(P)")
-                if let first = components.first, first.contains("\u{00A9}") {
-                    let stripped = first.components(separatedBy: "\u{00A9}")
-                    self.copyright = stripped.last
-                } else {
-                    self.copyright = components.first
-                }
+            } else if let string = get(.producedNotice) {
+                return "\u{2117}\(string)"
+            } else if let copyright = get(.copyright), copyright.contains(" (P)") {
+                let components = copyright.components(separatedBy: " (P)")
                 if let last = components.last {
-                    return "\u{21117}\(last)"
+                    return "\u{2117}\(last)"
                 } else {
                     return nil
                 }

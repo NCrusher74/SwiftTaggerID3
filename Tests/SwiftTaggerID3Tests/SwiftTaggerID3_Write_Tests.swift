@@ -90,7 +90,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         
         
         let outputMp3 = try Mp3File(location: outputUrl)
-        var output = try Tag(mp3File: outputMp3)
+        let output = try Tag(mp3File: outputMp3)
         
         XCTAssertEqual(output.album, "Album")
         XCTAssertEqual(output.albumArtist, "Album Artist")
@@ -578,7 +578,7 @@ class SwiftTaggerID3_Write_Tests: XCTestCase {
         XCTAssertNoThrow(try mp3NoMeta.write(tag: &tag, version: .v2_4, outputLocation: outputUrl))
         
         let outputMp3 = try Mp3File(location: outputUrl)
-        var output = try Tag(mp3File: outputMp3)
+        let output = try Tag(mp3File: outputMp3)
         
         XCTAssertEqual(output.album, "Album")
         XCTAssertEqual(output.albumArtist, "Album Artist")
