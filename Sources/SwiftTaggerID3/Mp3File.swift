@@ -53,7 +53,7 @@ public struct Mp3File {
                       version: Version,
                       outputLocation: URL) throws {
         let data = try buildNewFile(tag: &tag, version: version)
-        try data.write(to: outputLocation)
+        try data.write(to: outputLocation, options: .atomic)
     }
     
     @available(OSX 10.12, iOS 10.0, *)
