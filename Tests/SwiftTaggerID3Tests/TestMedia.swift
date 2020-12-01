@@ -46,6 +46,7 @@ public let sampleIcon = testMediaDirectory
     .appendingPathComponent("sampleicon-green")
     .appendingPathExtension("png")
 
+@available(OSX 11.0, *)
 public let mp3V24: Mp3File = {
     do {
         let mp3 = try Mp3File(location: sample24Url)
@@ -55,6 +56,7 @@ public let mp3V24: Mp3File = {
     }
 }()
 
+@available(OSX 11.0, *)
 public let mp3V23: Mp3File = {
     do {
         let mp3 = try Mp3File(location: sample23Url)
@@ -64,6 +66,7 @@ public let mp3V23: Mp3File = {
     }
 }()
 
+@available(OSX 11.0, *)
 public let mp3V22: Mp3File = {
     do {
         let mp3 = try Mp3File(location: sample22Url)
@@ -73,6 +76,7 @@ public let mp3V22: Mp3File = {
     }
 }()
 
+@available(OSX 11.0, *)
 public let mp3NoMeta: Mp3File = {
     do {
         let mp3 = try Mp3File(location: sampleNoMeta)
@@ -82,6 +86,7 @@ public let mp3NoMeta: Mp3File = {
     }
 }()
 
+@available(OSX 11.0, *)
 public let mp3Chaptered: Mp3File = {
     do {
         let mp3 = try Mp3File(location: sampleChapterUrl)
@@ -91,6 +96,7 @@ public let mp3Chaptered: Mp3File = {
     }
 }()
 
+@available(OSX 11.0, *)
 let mp3Unknown: Mp3File = {
     do {
         let mp3 = try Mp3File(location: sampleUnknown)
@@ -100,6 +106,7 @@ let mp3Unknown: Mp3File = {
     }
 }()
 
+@available(OSX 11.0, *)
 public let tagV24: Tag = {
     do {
         let tag = try mp3V24.tag()
@@ -109,6 +116,7 @@ public let tagV24: Tag = {
     }
 }()
 
+@available(OSX 11.0, *)
 public let tagV23: Tag = {
     do {
         let tag = try mp3V23.tag()
@@ -118,6 +126,7 @@ public let tagV23: Tag = {
     }
 }()
 
+@available(OSX 11.0, *)
 public let tagV22: Tag = {
     do {
         let tag = try mp3V22.tag()
@@ -127,6 +136,7 @@ public let tagV22: Tag = {
     }
 }()
 
+@available(OSX 11.0, *)
 public let tagNoMeta: Tag = {
     do {
         let tag = try mp3NoMeta.tag()
@@ -136,6 +146,7 @@ public let tagNoMeta: Tag = {
     }
 }()
 
+@available(OSX 11.0, *)
 public let tagChaptered: Tag = {
     do {
         let tag = try mp3Chaptered.tag()
@@ -145,6 +156,7 @@ public let tagChaptered: Tag = {
     }
 }()
 
+@available(OSX 11.0, *)
 public let tagUnknown: Tag = {
     do {
         let tag = try mp3Unknown.tag()

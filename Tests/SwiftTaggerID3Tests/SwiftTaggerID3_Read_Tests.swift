@@ -10,10 +10,10 @@
 import XCTest
 @testable import SwiftTaggerID3
 
+@available(OSX 11.0, *)
 class SwiftTaggerID3_Read_Tests: XCTestCase {
     
     // test reading of V24 tag from file
-    @available(OSX 10.12, iOS 10.0, *)
     func testV24Reading() throws {
         let tag = tagV24
         
@@ -79,7 +79,6 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
     // test reading of v23 tag from file
     
 
-    @available(OSX 10.12, iOS 10.0, *)
     func testV23Reading() throws {
         let tag = tagV23
         
@@ -142,7 +141,6 @@ class SwiftTaggerID3_Read_Tests: XCTestCase {
     // test reading of v22 tag from file
     
 
-    @available(OSX 10.12, iOS 10.0, *)
     func testV22Reading() throws {
         let tag = tagV22
         

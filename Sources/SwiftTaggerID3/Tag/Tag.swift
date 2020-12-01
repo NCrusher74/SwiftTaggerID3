@@ -23,7 +23,7 @@ public struct Tag {
     static var duration: Int = 0
     
     /// Instantiate a tag by parsing from MP3 file data
-    @available(OSX 10.12, iOS 10.0, *)
+    @available(OSX 11.0, iOS 10.0, *)
     public init(mp3File: Mp3File) throws {
         Tag.duration = mp3File.duration
         // get the file data as a subsequence. As the data is parsed when reading a tag, it will be extracted from the subsequence, leaving the remainder instact to continue parsing
