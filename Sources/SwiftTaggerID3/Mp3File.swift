@@ -19,7 +19,7 @@ public struct Mp3File {
     let duration: Int
     /// The Mp3File as data
     var data: Data
-    var fileType: UTType
+    public var fileType: UTType
     
     /// Initialize an Mp3File instance and the data from the file
     /// - Parameter location: The location of an mp3-format file somewhere on the local drive
