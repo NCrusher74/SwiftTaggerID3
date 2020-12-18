@@ -71,7 +71,7 @@
  */
 import Foundation
 /// A type used to represent an ID3-formatted timestamp tag. The information delivered from this type will vary depending on the tag version and formatting.
-@available(OSX 10.12, iOS 10.0, *)
+@available(OSX 11.0, iOS 14.0, *)
 class DateFrame: Frame {
     override var description: String {
         let formatter = ISO8601DateFormatter()
@@ -96,7 +96,7 @@ class DateFrame: Frame {
     ///   - layout: the layout identifier of the frame
     ///   - flags: the frame flags
     /// - Throws: `InvalidDateString` if the string SwiftTagger is attempting to parse is not spec-compliant and thus a valid date cannot be derived
-    @available(OSX 10.12, iOS 10.0, *)
+    @available(OSX 11.0, iOS 14.0, *)
     init(identifier: FrameIdentifier,
          version: Version,
          size: Int,
@@ -134,7 +134,7 @@ class DateFrame: Frame {
     /// encode contents of the frame to add to an ID3 tag
     /// - fatalError: `DateFrameNotAvailableForVersion` if the frame has been deprecated in a later version or doesn't exist for an earlier version
     /// - Returns: the frame contents as data
-    @available(OSX 10.12, iOS 10.0, *)
+    @available(OSX 11.0, iOS 14.0, *)
     override var contentData: Data {
         var data = Data()
         // append encoding byte
@@ -183,7 +183,7 @@ class DateFrame: Frame {
     /// - Parameters:
     ///   - layout: the frame layout
     ///   - timeStamp: the date/time being encoded into the frame
-    @available(OSX 10.12, iOS 10.0, *)
+    @available(OSX 11.0, iOS 14.0, *)
     init(_ identifier: FrameIdentifier,
          version: Version,
          timeStamp: Date) {
@@ -218,7 +218,7 @@ class DateFrame: Frame {
 // MARK: - Tag extension
 // These are convenience getter-setter properties
 extension Tag {
-    @available(OSX 10.12, iOS 10.0, *)
+    @available(OSX 11.0, iOS 14.0, *)
     private func get(dateFrame identifier: FrameIdentifier) -> Date? {
         if let frame = self.frames[identifier.frameKey] as? DateFrame {
             let date = frame.timeStamp
@@ -231,7 +231,7 @@ extension Tag {
         }
     }
     
-    @available(OSX 10.12, iOS 10.0, *)
+    @available(OSX 11.0, iOS 14.0, *)
     private mutating func set(dateFrame identifier: FrameIdentifier,
                                timeStamp: Date?) {
         if let timeStamp = timeStamp {
@@ -246,7 +246,7 @@ extension Tag {
     
     /// v2.4: releaseDate (`TDRL`) frame.
     /// v2.2, v2.3: date (`TDA/TDAT`) frame for DDMM values, time (`TIM/TIME`) frame for HHMM values, and year (`TYE/TYER`) frame for YYYY value
-    @available(OSX 10.12, iOS 10.0, *)
+    @available(OSX 11.0, iOS 14.0, *)
     public var releaseDateTime: Date? {
         get {
             switch self.version {
@@ -342,7 +342,7 @@ extension Tag {
     }
     
     /// Version 2.4 only. Identifier `TDEN`
-    @available(OSX 10.12, iOS 10.0, *)
+    @available(OSX 11.0, iOS 14.0, *)
     public var encodingDateTime: Date? {
         get {
             get(dateFrame: .encodingDateTime)
@@ -360,7 +360,7 @@ extension Tag {
     }
     
     /// Version 2.4 only. Identifier `TDTG`
-    @available(OSX 10.12, iOS 10.0, *)
+    @available(OSX 11.0, iOS 14.0, *)
     public var taggingDateTime: Date? {
         get {
             get(dateFrame: .taggingDateTime)
@@ -378,7 +378,7 @@ extension Tag {
     }
     
     /// Identifier `TRD`/`TRDA`/`TDRC`
-    @available(OSX 10.12, iOS 10.0, *)
+    @available(OSX 11.0, iOS 14.0, *)
     public var recordingDateTime: Date? {
         get {
             get(dateFrame: .recordingDateTime)
@@ -397,7 +397,7 @@ extension Tag {
     
     /// Full date/time for version 2.4. Identifer`TDOR`
     /// Year only for version 2.2/2.3. Identifer `TOY`/`TORY`
-    @available(OSX 10.12, iOS 10.0, *)
+    @available(OSX 11.0, iOS 14.0, *)
     public var originalRelease: Date? {
         get {
             get(dateFrame: .originalReleaseDateTime)

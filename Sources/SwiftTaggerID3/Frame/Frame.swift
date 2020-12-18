@@ -44,12 +44,12 @@ public class Frame: CustomStringConvertible {
         }
     }
 
-    @available(OSX 10.12, iOS 10.0, *)
+    @available(OSX 11.0, iOS 14.0, *)
     var contentData: Data {
         fatalError("Override from frame subclass is required")
     }
     
-    @available(OSX 10.12, iOS 10.0, *)
+    @available(OSX 11.0, iOS 14.0, *)
     var encode: Data {
         guard self.contentData != Data() else {
             return Data()
@@ -74,7 +74,7 @@ public class Frame: CustomStringConvertible {
     /// - Returns:
     ///   - Version 2.2: three bytes of frame-size data.
     ///   - Versions 2.3 & 2.4: four bytes of frame-size data
-    @available(OSX 10.12, iOS 10.0, *)
+    @available(OSX 11.0, iOS 14.0, *)
     private var encodedFrameContentSize: Data {
         let contentSize = self.contentData.count.uInt32
         switch self.version {

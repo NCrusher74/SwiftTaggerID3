@@ -69,7 +69,7 @@ public struct Tag {
     }
 
     /// Instantiate a "pseudo-tag" for use with chapter and table-of-contents embedded frame sub-frames
-    @available(OSX 10.12, iOS 10.0, *)
+    @available(OSX 11.0, iOS 14.0, *)
     init(version: Version, subframes: [FrameKey: Frame]) throws {
         self.version = version
         self.frames = subframes
@@ -93,7 +93,7 @@ public struct Tag {
     // MARK: - Tag Building Calculations
     /// Concatenates header and frame data into tag data
     /// - Returns: the entire encoded tag complete with header data
-    @available(OSX 10.12, iOS 10.0, *)
+    @available(OSX 11.0, iOS 14.0, *)
     mutating func tagWithHeader(version: Version) throws -> Data {
         switch version {
             case .v2_2:

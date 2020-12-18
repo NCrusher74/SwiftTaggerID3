@@ -10,7 +10,7 @@
 import XCTest
 @testable import SwiftTaggerID3
 
-@available(OSX 11.0, *)
+@available(OSX 11.0, iOS 14.0, *)
 class SwiftTaggerID3_DateFrame_Tests: XCTestCase {
     
     func testReleaseDateV24() throws {

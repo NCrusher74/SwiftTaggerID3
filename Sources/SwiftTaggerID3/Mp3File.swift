@@ -11,7 +11,7 @@ import UniformTypeIdentifiers
 
 /// An Mp3File represets an mp3-format file on the local drive
 /// This wrapper houses variables and methods for querying and modifying an Mp3File
-@available(OSX 11.0, *)
+@available(OSX 11.0, iOS 14.0, *)
 public struct Mp3File {
     
     /// The location of an mp3-format file somewhere on the local drive

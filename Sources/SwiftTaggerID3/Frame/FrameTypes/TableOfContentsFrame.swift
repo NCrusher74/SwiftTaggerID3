@@ -40,7 +40,7 @@ class TableOfContentsFrame: Frame {
     var embeddedSubframesTag: Tag?
     
     // MARK: - Frame parsing initializer
-    @available(OSX 10.12, iOS 10.0, *)
+    @available(OSX 11.0, iOS 14.0, *)
     init(identifier: FrameIdentifier,
          version: Version,
          size: Int,
@@ -87,7 +87,7 @@ class TableOfContentsFrame: Frame {
                    flags: flags)
     }
     
-    @available(OSX 10.12, iOS 10.0, *)
+    @available(OSX 11.0, iOS 14.0, *)
     override var contentData: Data {
         guard version != .v2_2 else {
             fatalError("TableOfContents frame is not available for ID3 v2.2")
@@ -137,7 +137,7 @@ class TableOfContentsFrame: Frame {
     ///   - layout: the frame layout
     ///   - childElementIDs: the array of child elementIDs. Must not be empty. Each entry is null terminated.
     ///   - embeddedSubframesTag: a pseudo-tag instance holding the (optional) frames containing title and descriptor text for the CTOC frame.
-    @available(OSX 10.12, iOS 10.0, *)
+    @available(OSX 11.0, iOS 14.0, *)
     init(_ identifier: FrameIdentifier,
          version: Version,
          childElementIDs: [String],
