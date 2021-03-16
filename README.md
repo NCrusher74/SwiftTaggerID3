@@ -19,7 +19,7 @@ SwiftTaggerID3 is a Swift library for reading and writing ID3 tags in MP3 audio 
 ```swift
 let mp3Url = URL(fileURLWithPath: "/path/to/file.mp3")
 let mp3File = try Mp3File(location: mp3Url)
-var tag = try mp3File.read()
+var tag = try mp3File.tag()
 
 print(tag.album)
 print(tag.artist)
@@ -51,7 +51,7 @@ tag.album = "Completely New Album Title"
 
 To wipe the data from a particular frame, set it equal to `nil`:
 ```swift
-var tag = try mp3File.read()
+var tag = try mp3File.tag()
 
 tag.album = nil
 tag.artist = nil
