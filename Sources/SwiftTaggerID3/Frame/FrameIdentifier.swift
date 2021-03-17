@@ -255,7 +255,7 @@ enum FrameIdentifier: String, CaseIterable {
         }
     }
     
-    @available(OSX 11.0, iOS 14.0, *)
+    @available(OSX 10.12, iOS 12.0, *)
     func parse(version: Version,
                size: Int,
                flags: Data,

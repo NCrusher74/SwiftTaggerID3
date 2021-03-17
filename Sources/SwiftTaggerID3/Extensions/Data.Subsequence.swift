@@ -52,7 +52,7 @@ extension Data.SubSequence {
     }
     
     
-    @available(OSX 11.0, iOS 14.0, *)
+    @available(OSX 10.12, iOS 12.0, *)
     mutating func extractAndParseToFrame(_ version: Version) throws -> Frame? {
         // extract the identifier data
 

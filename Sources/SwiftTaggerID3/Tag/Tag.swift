@@ -23,7 +23,7 @@ public struct Tag {
     static var duration: Int = 0
     
     /// Instantiate a tag by parsing from MP3 file data
-    @available(OSX 11.0, iOS 14.0, *)
+    @available(OSX 10.12, iOS 12.0, *)
     public init(mp3File: Mp3File) throws {
         Tag.duration = mp3File.duration
         // get the file data as a subsequence. As the data is parsed when reading a tag, it will be extracted from the subsequence, leaving the remainder instact to continue parsing
@@ -69,7 +69,7 @@ public struct Tag {
     }
 
     /// Instantiate a "pseudo-tag" for use with chapter and table-of-contents embedded frame sub-frames
-    @available(OSX 11.0, iOS 14.0, *)
+    @available(OSX 10.12, iOS 12.0, *)
     init(version: Version, subframes: [FrameKey: Frame]) throws {
         self.version = version
         self.frames = subframes
@@ -93,7 +93,7 @@ public struct Tag {
     // MARK: - Tag Building Calculations
     /// Concatenates header and frame data into tag data
     /// - Returns: the entire encoded tag complete with header data
-    @available(OSX 11.0, iOS 14.0, *)
+    @available(OSX 10.12, iOS 12.0, *)
     mutating func tagWithHeader(version: Version) throws -> Data {
         switch version {
             case .v2_2:

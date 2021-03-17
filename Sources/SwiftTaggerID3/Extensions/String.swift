@@ -115,7 +115,7 @@ extension String {
         return dateComponents.date
     }
     
-    @available(OSX 11.0, iOS 14.0, *)
+    @available(OSX 10.12, iOS 12.0, *)
     func attemptDateFromString() -> Date? {
         let isoFormatter = ISO8601DateFormatter()
         isoFormatter.formatOptions = [.withInternetDateTime]

@@ -11,7 +11,7 @@ import XCTest
 @testable import SwiftTaggerID3
 
 // Tests for chapter frame and CTOC frame
-@available(OSX 11.0, iOS 14.0, *)
+@available(OSX 10.12, iOS 12.0, *)
 class SwiftTaggerID3_ChapterFrame_Tests: XCTestCase {
 
     func testGetChapterList() throws {

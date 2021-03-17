@@ -10,7 +10,7 @@
 import XCTest
 @testable import SwiftTaggerID3
 
-@available(OSX 11.0, iOS 10.0, *)
+@available(OSX 10.12, iOS 10.0, *)
 class SwiftTaggerID3_PartOfTotalFrame_Tests: XCTestCase {
     
     func testWithBothValuesWrittenOnBlankFile() throws {

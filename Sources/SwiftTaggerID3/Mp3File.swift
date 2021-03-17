@@ -7,11 +7,10 @@
 
 import Foundation
 import AVFoundation
-import UniformTypeIdentifiers
 
 /// An Mp3File represets an mp3-format file on the local drive
 /// This wrapper houses variables and methods for querying and modifying an Mp3File
-@available(OSX 11.0, iOS 14.0, *)
+@available(OSX 10.12, iOS 12.0, *)
 public struct Mp3File {
     
     /// The location of an mp3-format file somewhere on the local drive
@@ -19,7 +18,6 @@ public struct Mp3File {
     let duration: Int
     /// The Mp3File as data
     var data: Data
-    public var fileType: UTType
     
     /// Initialize an Mp3File instance and the data from the file
     /// - Parameter location: The location of an mp3-format file somewhere on the local drive
@@ -28,15 +26,6 @@ public struct Mp3File {
     public init(location: URL) throws {
         self.location = location
         // validate that the file is an mp3 file
-        
-        if let type = UTType(filenameExtension: location.pathExtension) {
-            guard type == .mp3 else {
-                throw Mp3FileError.InvalidFileFormat
-            }
-            self.fileType = type
-        } else {
-            throw Mp3FileError.InvalidFileFormat
-        }
         
         // get the file as data, retrying once in case the file isn't released yet after being accessed from another attempt
         do {
@@ -55,7 +44,7 @@ public struct Mp3File {
     }
     
     public func tag() throws -> Tag {
-            return try Tag(mp3File: self)
+        return try Tag(mp3File: self)
     }
     
     public func write(tag: inout Tag,
