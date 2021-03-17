@@ -10,7 +10,6 @@
 import Foundation
 
 extension Data.SubSequence {
-    
     /// Removes and returns a null‐terminated string from the beginning of the subsequence (which only mutates the subsequence’s bounds, not the underlying `Data` instance).
     ///
     /// If there is no null‐termination, the string will be constructed from the entire subsequence.
@@ -50,7 +49,6 @@ extension Data.SubSequence {
         }
         return String(data: Data(stringBytes), encoding: encoding)
     }
-    
     
     @available(OSX 10.12, iOS 12.0, *)
     mutating func extractAndParseToFrame(_ version: Version) throws -> Frame? {

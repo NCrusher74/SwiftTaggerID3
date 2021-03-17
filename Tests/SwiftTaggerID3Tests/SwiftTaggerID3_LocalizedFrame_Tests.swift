@@ -11,7 +11,7 @@ import XCTest
 import SwiftLanguageAndLocaleCodes
 @testable import SwiftTaggerID3
 
-@available(OSX 10.12, iOS 12.0, *)
+
 class SwiftTaggerID3_LocalizedFrame_Tests: XCTestCase {
     
     // Localized Frame tests

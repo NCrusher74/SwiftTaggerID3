@@ -10,9 +10,9 @@ import AVFoundation
 
 /// An Mp3File represets an mp3-format file on the local drive
 /// This wrapper houses variables and methods for querying and modifying an Mp3File
+
 @available(OSX 10.12, iOS 12.0, *)
-public struct Mp3File {
-    
+public struct Mp3File {    
     /// The location of an mp3-format file somewhere on the local drive
     let location: URL
     let duration: Int
@@ -43,6 +43,7 @@ public struct Mp3File {
         self.duration = Int(seconds * 1000)
     }
     
+    @available(OSX 10.12, iOS 12.0, *)
     public func tag() throws -> Tag {
         return try Tag(mp3File: self)
     }

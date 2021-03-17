@@ -10,7 +10,7 @@
 import XCTest
 @testable import SwiftTaggerID3
 
-@available(OSX 10.12, iOS 12.0, *)
+
 class SwiftTaggerID3_CreditsListFrame_Tests: XCTestCase {
     
     func testCreditsListFrameReadingv24() throws {
