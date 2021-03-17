@@ -43,7 +43,7 @@ import SwiftConvenienceExtensions
 class ImageFrame: Frame {
     
     /// The frame's image contents
-    var image: NativeImage?
+    var imageData: Data
     var imageType: ImageType
     var imageFormat: ImageFormat
     var descriptionString: String?
@@ -110,11 +110,9 @@ class ImageFrame: Frame {
                 throw FrameError.UnhandledImageFormat
             }
         }
-        if let image = NativeImage(data: data) {
-            self.image = image
-        } else {
-            throw FrameError.InvalidImageData
-        }
+        
+        self.imageData = data
+
         super.init(identifier: identifier,
                    version: version,
                    size: size,
@@ -159,16 +157,9 @@ class ImageFrame: Frame {
         } else {
             data.append(self.imageType.pictureDescription.encodeNullTerminatedString(.isoLatin1))
         }
-        // append image data
-        if self.imageFormat == .jpg {
-            if let image = self.image {
-                data.append(image.jpgData)
-            }
-        } else {
-            if let image = self.image {
-                data.append(image.pngData)
-            }
-        }
+        
+        data.append(self.imageData)
+
         return data
     }
     
@@ -186,7 +177,7 @@ class ImageFrame: Frame {
         self.imageType = imageType
         self.imageFormat = imageFormat
         self.descriptionString = description
-        self.image = NativeImage(data: imageData)
+        self.imageData = imageData
 
         var size = 2 // +1 for encoding byte, +1 for pictureTypeByte
         var formatString = String()
@@ -231,7 +222,7 @@ extension Tag {
         let identifier = FrameIdentifier.attachedPicture
         let frameKey = identifier.frameKey(imageType: type)
         if let frame = self.frames[frameKey] as? ImageFrame {
-            if let image = frame.image {
+            if let image = NativeImage(data: frame.imageData) {
                 return image
             } else {
                 return nil
