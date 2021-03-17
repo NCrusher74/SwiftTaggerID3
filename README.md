@@ -60,22 +60,26 @@ tag.trackNumber = nil
 
 For some frames (such as `Comment` or `userDefinedText`), multiple versions of the frame are permitted in a tag (according to the ID3 spec.) In these cases, you can locate the specific frame using it's `descriptionString` as a subscript, or (for frames that also require an ISO-639-2 language code) the language code and the `descriptionString`:
 ```swift
-print(tag[userDefinedText: "UserDefinedText"]) // "User Defined Text Content"
-print(tag[comments: .eng, "CommentDescription"]) // "Comment Content"
-print(tag[lyrics: .eng, "LyricsDescription"]) // "Lyrics Content"
+print(tag["UserText"]) // "User Defined Text Content"
+print(tag[userDefinedUrl: "UserURL"]) // "http://userdefined.url"
+print(tag[comment: "Comment", .eng]) // "Comment Content"
+print(tag[lyrics: "Lyrics", .eng]) // "Lyrics Content"
 
 ```
 Writing to these frames works the same way. **NOTE** The `Comment` and `UnsynchronizedLyrics` frames permit the use of newline characters.
 ```swift
-tag[userDefinedText: "Description"] = "User Defined Text Content"
-tag[comments .eng, "Description"] = """Comment Content"""
-tag[lyrics: .eng, "Description"] = """Lyrics Content"""
+tag["UserText"] = "User Defined Text Content"
+tag[userDefinedUrl: "UserURL"] = "http://userdefined.url"
+tag[comment: "Comment", .eng] = """Comment Content"""
+tag[lyrics: "Lyrics", .eng] = """Lyrics Content"""
 
 ```
 To overwrite an existing frame with a subscript accessor, just use the same `descriptionString` and language (if applicable). To remove an existing frame of this type, access it using its removal function:
 ```swift
-tag.removeCommentFrame(withDescription: "Comment")
-tag.removeUserTextFrame(withDescription: "UserText")
+tag["UserText"] = nil
+tag[userDefinedUrl: "UserURL"] = nil
+tag[comment: "Comment", .eng] = nil
+tag[lyrics: "Lyrics", .eng] = nil
 ```
 
 *Involved People and Musician Credit List frames*
