@@ -90,7 +90,7 @@ class ChapterFrame: Frame {
         var data = Data()
         // there is no encoding byte for Chapter frames
         // encode and append ElementID string, adding null terminator
-        data.append(self.elementID.encodeNullTerminatedString(.isoLatin1))
+        data.append(self.elementID.encodedNullTerminatedString)
         
         // convert integers to UInt32 and then to Data and append
         data.append(self.startTime.uInt32.beData)
@@ -136,7 +136,7 @@ class ChapterFrame: Frame {
         var size = 16 // 16 = start/end times (8) + start/end offsets (8)
         // there is no encoding byte for Chapter frames
         // encode and append ElementID string, adding null terminator
-        size += self.elementID.encodeNullTerminatedString(.isoLatin1).count
+        size += self.elementID.encodedNullTerminatedString.count
         // encode and append the subframes to data
         var encodedSubframes = Data()
         for item in self.embeddedSubframesTag?.frames ?? [:] {
