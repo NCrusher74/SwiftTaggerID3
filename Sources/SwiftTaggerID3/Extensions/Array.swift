@@ -118,7 +118,7 @@ extension Array where Element == String {
         }
         var data = Data()
         for item in newArray {
-            data.append(item.encodedISOLatin1)
+            data.append(item.encoded)
         }
         return data
     }
@@ -137,9 +137,9 @@ extension Array where Element == String {
                     } else {
                         itemCode = String(genreType.code)
                     }
-                    data.append(itemCode.encodeNullTerminatedString(.isoLatin1))
+                    data.append(itemCode.encodedNullTerminatedString)
                 } else {
-                    data.append(item.encodeNullTerminatedString(.isoLatin1))
+                    data.append(item.encodedNullTerminatedString)
                 }
             }
         }
@@ -199,16 +199,16 @@ extension Array where Element == String {
                                 // if it is, merge them into one string
                                 let mergedItems = "\(mediaType.rawValue)\(refinement.code)"
                                 // and encode them together
-                                data.append(mergedItems.encodeNullTerminatedString(.isoLatin1))
+                                data.append(mergedItems.encodedNullTerminatedString)
                             }
                             // if it isn't, encode the media type raw value by itself
                         } else {
-                            data.append(mediaType.rawValue.encodeNullTerminatedString(.isoLatin1))
+                            data.append(mediaType.rawValue.encodedNullTerminatedString)
                         }
                     }
                     // if the item isn't a media type or a refinement, encode it as is
                 } else if item.first != "/" {
-                    data.append(item.encodeNullTerminatedString(.isoLatin1))
+                    data.append(item.encodedNullTerminatedString)
                 }
             }
         }
@@ -249,7 +249,7 @@ extension Array where Element == String {
         }
         var data = Data()
         for item in newArray {
-            data.append(item.encodedISOLatin1)
+            data.append(item.encoded)
         }
         return data
     }
@@ -265,14 +265,14 @@ extension Array where Element == String {
                             if let refinement = FileTypeRefinements(rawValue: nextItem) {
                                 let mergedItems = "\(fileType.rawValue)\(refinement.rawValue)"
                                 data.append(
-                                    mergedItems.encodeNullTerminatedString(.isoLatin1))
+                                    mergedItems.encodedNullTerminatedString)
                             }
                         }
                     } else {
-                        data.append(fileType.rawValue.encodeNullTerminatedString(.isoLatin1))
+                        data.append(fileType.rawValue.encodedNullTerminatedString)
                     }
                 } else if item.first != "/" {
-                    data.append(item.encodeNullTerminatedString(.isoLatin1))
+                    data.append(item.encodedNullTerminatedString)
                 }
             }
         }
