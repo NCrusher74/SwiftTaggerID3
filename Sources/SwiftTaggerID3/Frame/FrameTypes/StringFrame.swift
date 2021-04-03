@@ -75,16 +75,17 @@ class StringFrame: Frame {
         if self.identifier.parseAs == .url {
             data.append(stringValue.encodedASCII)
         } else {
-            let encoding: String.Encoding = .utf16
-            data.append(encoding.encodingByte)
-            if self.identifier == .languages {
-                let array = stringValue.toArray
-                for language in array {
-                    data.append(language.encodeNullTerminatedString(encoding))
+            if let encoding = String.Encoding(string: stringValue) {
+                data.append(encoding.encodingByte)
+                if self.identifier == .languages {
+                    let array = stringValue.toArray
+                    for language in array {
+                        data.append(language.encodedNullTerminatedString)
+                    }
+                } else {
+                    data.append(stringValue.encoded)
                 }
-            } else {
-            data.append(stringValue.encoded(encoding))
-        }
+            }
         }
         return data
     }
@@ -105,11 +106,7 @@ class StringFrame: Frame {
         if identifier.parseAs == .url {
             size = stringValue.encodedASCII.count
         } else {
-            if identifier == .producedNotice {
-                size = stringValue.encoded(.utf16).count + 1
-            } else {
-                size = stringValue.encoded(.isoLatin1).count + 1 // encoding byte
-            }
+            size = stringValue.encoded.count + 1 // encoding byte
         }
         // use the default flags
         let flags = version.defaultFlags

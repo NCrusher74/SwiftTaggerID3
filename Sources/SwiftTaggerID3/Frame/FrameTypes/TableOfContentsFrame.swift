@@ -96,7 +96,7 @@ class TableOfContentsFrame: Frame {
         var data = Data()
         // there is no encoding byte for TOC frames
         // encode and append the elementID, adding a null terminator
-        data.append("TOC".encodeNullTerminatedString(.isoLatin1))
+        data.append("TOC".encodedNullTerminatedString)
         data.append(encodedFlagByte)
         
         // encode and append the entry count
@@ -111,7 +111,7 @@ class TableOfContentsFrame: Frame {
         // encode and append the array of child element IDs, adding null terminator
         var idArray = Data()
         for id in self.childElementIDs {
-            idArray.append(id.encodeNullTerminatedString(.isoLatin1))
+            idArray.append(id.encodedNullTerminatedString)
         }
         data.append(idArray)
         
@@ -147,9 +147,9 @@ class TableOfContentsFrame: Frame {
         self.embeddedSubframesTag = embeddedSubframesTag
 
         var size = 2 // +1 for flag byte, +1 for entry count byte
-        size += "TOC".encodeNullTerminatedString(.isoLatin1).count
+        size += "TOC".encodedNullTerminatedString.count
         for id in self.childElementIDs {
-            size += id.encodeNullTerminatedString(.isoLatin1).count
+            size += id.encodedNullTerminatedString.count
         }
         for item in self.embeddedSubframesTag?.frames ?? [:] {
             let subframe = item.value
