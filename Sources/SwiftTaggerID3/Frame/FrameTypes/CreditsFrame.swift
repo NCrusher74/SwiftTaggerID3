@@ -58,15 +58,21 @@ class CreditsFrame: Frame {
     
     override var contentData: Data {
         var data = Data()
+        var joined = ""
+        for (string, array) in credits {
+            joined.append(string)
+            joined.append(array.joined())
+        }
         // append encoding Byte
-        let encoding = String.Encoding.isoLatin1
-        data.append(encoding.encodingByte)
-
-        // encode and append each credit
-        for key in credits.keys {
-            data.append(key.encodeNullTerminatedString(encoding))
-            let valueString = credits[key]?.joined(separator: ",") ?? ""
-            data.append(valueString.encodeNullTerminatedString(encoding))
+        if let encoding = String.Encoding(string: joined) {
+            data.append(encoding.encodingByte)
+            
+            // encode and append each credit
+            for key in credits.keys {
+                data.append(key.encodedNullTerminatedString)
+                let valueString = credits[key]?.joined(separator: ",") ?? ""
+                data.append(valueString.encodedNullTerminatedString)
+            }
         }
         return data
     }
@@ -82,12 +88,21 @@ class CreditsFrame: Frame {
         self.credits = credits
         let flags = version.defaultFlags
         
-        var size = 1 // +1 for encoding byte
-        let encoding = String.Encoding.isoLatin1
-        for key in credits.keys {
-            size += key.encodeNullTerminatedString(encoding).count
-            let valueString = credits[key]?.joined(separator: ",") ?? ""
-            size += valueString.encodeNullTerminatedString(encoding).count
+        var joined = ""
+        for (string, array) in credits {
+            joined.append(string)
+            joined.append(array.joined())
+        }
+        
+        var size = 0
+        if String.Encoding(string: joined) != nil {
+            size += 1 // encoding byte
+            
+            for key in credits.keys {
+                size += key.encodedNullTerminatedString.count
+                let valueString = credits[key]?.joined(separator: ",") ?? ""
+                size += valueString.encodedNullTerminatedString.count
+            }
         }
         super.init(identifier: identifier,
                    version: version,
