@@ -83,8 +83,8 @@ class StringFrame: Frame {
                     data.append(language.encodeNullTerminatedString(encoding))
                 }
             } else {
-            data.append(stringValue.encoded(encoding))
-        }
+                data.append(stringValue.encoded(encoding) ?? Data())
+            }
         }
         return data
     }
