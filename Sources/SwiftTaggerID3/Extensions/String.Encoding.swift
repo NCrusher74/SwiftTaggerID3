@@ -25,20 +25,6 @@ extension String.Encoding {
         }
     }
     
-    init?(string: String) {
-        if string.encoded(.isoLatin1) != nil {
-            self = .isoLatin1
-        } else if string.encoded(.utf8) != nil {
-            self = .utf8
-        } else if string.encoded(.utf16) != nil {
-            self = .utf16
-        } else if string.encoded(.utf16BigEndian) != nil {
-            self = .utf16BigEndian
-        } else {
-            return nil
-        }
-    }
-    
     var encodingByte: Data {
         switch self {
             case .isoLatin1: return 0.uInt8.beData
