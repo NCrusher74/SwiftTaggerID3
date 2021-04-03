@@ -139,44 +139,39 @@ class DateFrame: Frame {
     override var contentData: Data {
         var data = Data()
         // append encoding byte
-        let encoding = String.Encoding.isoLatin1
-        data.append(encoding.encodingByte)
+        
         if let date = timeStamp {
-            var encodedString = Data()
-
-            switch self.version {
-                case .v2_2, .v2_3:
-                    switch self.identifier {
-                        case .date: encodedString = date.encodeDDMMTimestamp
-                        case .time: encodedString = date.encodeHHMMTimestamp
-                        case .year, .originalReleaseDateTime:
-                            encodedString = date.encodeYYYYTimestamp
-                        default:
-                            let formatter = ISO8601DateFormatter()
-                            formatter.formatOptions = [.withInternetDateTime]
-                            formatter.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
-                            let dateString = formatter.string(from: date)
-                            encodedString = dateString.encodedISOLatin1
-                    }
-                case .v2_4:
-                    switch self.identifier {
-                        case .date, .time, .year:
-                            encodedString = Data()
-                        default:
-                            let formatter = ISO8601DateFormatter()
-                            formatter.formatOptions = [.withInternetDateTime]
-                            formatter.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
-                            let dateString = formatter.string(from: date)
-                            encodedString = dateString.encodedISOLatin1
-                    }
+            let formatter = ISO8601DateFormatter()
+            formatter.formatOptions = [.withInternetDateTime]
+            formatter.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
+            let dateString = formatter.string(from: date)
+            
+            if let encoding = String.Encoding(string: dateString) {
+                data.append(encoding.encodingByte)
+                var encodedString = Data()
+                
+                switch self.version {
+                    case .v2_2, .v2_3:
+                        switch self.identifier {
+                            case .date: encodedString = date.encodeDDMMTimestamp
+                            case .time: encodedString = date.encodeHHMMTimestamp
+                            case .year, .originalReleaseDateTime:
+                                encodedString = date.encodeYYYYTimestamp
+                            default:
+                                encodedString = dateString.encoded
+                        }
+                    case .v2_4:
+                        switch self.identifier {
+                            case .date, .time, .year:
+                                encodedString = Data()
+                            default:
+                                encodedString = dateString.encoded
+                        }
+                }
+                data.append(encodedString)
             }
-            data.append(encodedString)
         }
-        if data != encoding.encodingByte {
-            return data
-        } else {
-            return Data()
-        }
+        return data
     }
     
     // MARK: - Frame Building
