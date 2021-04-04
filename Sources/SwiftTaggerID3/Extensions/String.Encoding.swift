@@ -46,17 +46,11 @@ extension String.Encoding {
         }
     }
     
-    init?(string: String) {
+    init(string: String) {
         if string.data(using: .isoLatin1) != nil {
             self = .isoLatin1
-        } else if string.data(using: .utf16) != nil {
-            self = .utf16
-        } else if string.data(using: .utf16BigEndian) != nil {
-            self = .utf16BigEndian
-        } else if string.data(using: .utf8) != nil {
+        } else  {
             self = .utf8
-        } else {
-            return nil
         }
     }
     

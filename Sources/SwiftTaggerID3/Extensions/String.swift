@@ -18,23 +18,23 @@ extension String {
     
     /// Convert a string to data and append a null termination byte (or pair of null bytes)
     var encodedNullTerminatedString: Data {
-        if let encoding = String.Encoding(string: self) {
-            if var encoded = self.data(using: encoding) {
-                encoded.append(encoding.encodingByte)
-                return encoded
-            }
+        let encoding = String.Encoding(string: self)
+        if var encoded = self.data(using: encoding) {
+            encoded.append(encoding.encodingByte)
+            return encoded
+        } else {
+            return Data()
         }
-        return Data()
     }
-
+    
     /// Convert a string to data without null terminator
     var encoded: Data {
-        if let encoding = String.Encoding(string: self) {
-            if let encoded = self.data(using: encoding) {
-                return encoded
-            }
+        let encoding = String.Encoding(string: self)
+        if let encoded = self.data(using: encoding) {
+            return encoded
+        } else {
+            return Data()
         }
-        return Data()
     }
 
     init(withInt int: Int, leadingZeros: Int = 2) {

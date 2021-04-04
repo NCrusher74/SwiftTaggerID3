@@ -127,39 +127,39 @@ class ImageFrame: Frame {
     override var contentData: Data {
         var data = Data()
         // append encoding byte
-        if let encoding = String.Encoding(string: descriptionString ?? imageType.pictureDescription) {
-            data.append(encoding.encodingByte)
-            // determine format based on file extension
-            // encode and append a format or MIME-type string according to version requirements
-            var formatString = String()
-            switch version {
-                case .v2_2:
-                    if self.imageFormat == .jpg {
-                        formatString = "jpg"
-                    } else if self.imageFormat == .png {
-                        formatString = "png"
-                    }
-                    data.append(formatString.encodedISOLatin1)
-                case .v2_3, .v2_4:
-                    /// These versions require a MIME-type string
-                    if self.imageFormat == .jpg {
-                        formatString = "image/jpeg"
-                    } else if self.imageFormat == .png {
-                        formatString = "image/png"
-                    }
-                    data.append(formatString.encodedNullTerminatedString)
-            }
-            // append image type byte
-            data.append(self.imageType.rawValue.beData)
-            // encode and append image Description
-            if let description = self.descriptionString {
-                data.append(description.encodedNullTerminatedString)
-            } else {
-                data.append(self.imageType.pictureDescription.encodedNullTerminatedString)
-            }
-            
-            data.append(self.imageData)
+        let encoding = String.Encoding(string: descriptionString ?? imageType.pictureDescription)
+        data.append(encoding.encodingByte)
+        // determine format based on file extension
+        // encode and append a format or MIME-type string according to version requirements
+        var formatString = String()
+        switch version {
+            case .v2_2:
+                if self.imageFormat == .jpg {
+                    formatString = "jpg"
+                } else if self.imageFormat == .png {
+                    formatString = "png"
+                }
+                data.append(formatString.encodedISOLatin1)
+            case .v2_3, .v2_4:
+                /// These versions require a MIME-type string
+                if self.imageFormat == .jpg {
+                    formatString = "image/jpeg"
+                } else if self.imageFormat == .png {
+                    formatString = "image/png"
+                }
+                data.append(formatString.encodedNullTerminatedString)
         }
+        // append image type byte
+        data.append(self.imageType.rawValue.beData)
+        // encode and append image Description
+        if let description = self.descriptionString {
+            data.append(description.encodedNullTerminatedString)
+        } else {
+            data.append(self.imageType.pictureDescription.encodedNullTerminatedString)
+        }
+        
+        data.append(self.imageData)
+        
         return data
     }
     

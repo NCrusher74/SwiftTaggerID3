@@ -144,25 +144,25 @@ class LocalizedFrame: Frame {
      */
     override var contentData: Data {
         var data = Data()
-        if let encoding = String.Encoding(string: stringValue) {
-            data.append(encoding.encodingByte)
-            if self.identifier == .comments || self.identifier == .unsynchronizedLyrics {
-                // encode and append language string
-                
-                if let language = self.language {
-                    let languageString = language.rawValue
-                    data.append(languageString.encodedASCII)
-                } else {
-                    data.append("und".encodedASCII)
-                }
-            }
-            if let description = self.descriptionString {
-                data.append(description.encodedNullTerminatedString)
+        let encoding = String.Encoding(string: stringValue)
+        data.append(encoding.encodingByte)
+        if self.identifier == .comments || self.identifier == .unsynchronizedLyrics {
+            // encode and append language string
+            
+            if let language = self.language {
+                let languageString = language.rawValue
+                data.append(languageString.encodedASCII)
             } else {
-                data.append(encoding.nullTerminator)
+                data.append("und".encodedASCII)
             }
-            data.append(self.stringValue.encoded)
         }
+
+        if let description = self.descriptionString {
+            data.append(description.encodedNullTerminatedString)
+        } else {
+            data.append(encoding.nullTerminator)
+        }
+        data.append(self.stringValue.encoded)
         return data
     }
 

@@ -186,10 +186,17 @@ func emptyDirectory() throws {
 
 /// Creates the test file on the desktop in the directory `TestOutput`
 public func localOutputDirectory(_ fileName: String) -> URL {
-    let home = FileManager.default.homeDirectoryForCurrentUser
-    let desktopPath = "Desktop/TestOutput"
-    let directory = home.appendingPathComponent(
-        desktopPath, isDirectory: true)
-    return directory.appendingPathComponent(fileName).appendingPathExtension("mp3")
+    let desktop = FileManager.default
+        .homeDirectoryForCurrentUser
+        .appendingPathComponent("Desktop/TestOutput")
+
+    do {
+        try FileManager.default.createDirectory(
+            at: desktop,
+            withIntermediateDirectories: true)
+        return desktop.appendingPathComponent("test.mp3")
+    } catch {
+        fatalError("Unable to create temporary directory")
+    }
 }
 

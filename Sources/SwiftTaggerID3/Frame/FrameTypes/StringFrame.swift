@@ -75,16 +75,15 @@ class StringFrame: Frame {
         if self.identifier.parseAs == .url {
             data.append(stringValue.encodedASCII)
         } else {
-            if let encoding = String.Encoding(string: stringValue) {
-                data.append(encoding.encodingByte)
-                if self.identifier == .languages {
-                    let array = stringValue.toArray
-                    for language in array {
-                        data.append(language.encodedNullTerminatedString)
-                    }
-                } else {
-                    data.append(stringValue.encoded)
+            let encoding = String.Encoding(string: stringValue)
+            data.append(encoding.encodingByte)
+            if self.identifier == .languages {
+                let array = stringValue.toArray
+                for language in array {
+                    data.append(language.encodedNullTerminatedString)
                 }
+            } else {
+                data.append(stringValue.encoded)
             }
         }
         return data

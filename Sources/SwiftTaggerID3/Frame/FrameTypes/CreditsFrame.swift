@@ -64,15 +64,14 @@ class CreditsFrame: Frame {
             joined.append(array.joined())
         }
         // append encoding Byte
-        if let encoding = String.Encoding(string: joined) {
-            data.append(encoding.encodingByte)
-            
-            // encode and append each credit
-            for key in credits.keys {
-                data.append(key.encodedNullTerminatedString)
-                let valueString = credits[key]?.joined(separator: ",") ?? ""
-                data.append(valueString.encodedNullTerminatedString)
-            }
+        let encoding = String.Encoding(string: joined)
+        data.append(encoding.encodingByte)
+        
+        // encode and append each credit
+        for key in credits.keys {
+            data.append(key.encodedNullTerminatedString)
+            let valueString = credits[key]?.joined(separator: ",") ?? ""
+            data.append(valueString.encodedNullTerminatedString)
         }
         return data
     }
@@ -94,16 +93,14 @@ class CreditsFrame: Frame {
             joined.append(array.joined())
         }
         
-        var size = 0
-        if String.Encoding(string: joined) != nil {
-            size += 1 // encoding byte
-            
-            for key in credits.keys {
-                size += key.encodedNullTerminatedString.count
-                let valueString = credits[key]?.joined(separator: ",") ?? ""
-                size += valueString.encodedNullTerminatedString.count
-            }
+        var size = 1 // encoding byte
+        
+        for key in credits.keys {
+            size += key.encodedNullTerminatedString.count
+            let valueString = credits[key]?.joined(separator: ",") ?? ""
+            size += valueString.encodedNullTerminatedString.count
         }
+        
         super.init(identifier: identifier,
                    version: version,
                    size: size,
