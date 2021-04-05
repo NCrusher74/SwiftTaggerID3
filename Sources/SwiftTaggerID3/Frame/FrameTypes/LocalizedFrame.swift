@@ -103,6 +103,7 @@ class LocalizedFrame: Frame {
         var data = payload
                 
         let encoding = try data.extractEncoding()
+        
         // if it's a frame with a language string, parse that out
         if identifier == .comments ||
             identifier == .unsynchronizedLyrics {
@@ -115,7 +116,7 @@ class LocalizedFrame: Frame {
             }
         }
         
-        let parsed = data.extractDescriptionAndContent(encoding: encoding)
+        let parsed = data.extractDescriptionAndContent(encoding)
         self.descriptionString = parsed.description
         self.stringValue = parsed.content
         super.init(identifier: identifier,
@@ -168,7 +169,6 @@ class LocalizedFrame: Frame {
         data.append(encoding.encodingByte)
         if self.identifier == .comments || self.identifier == .unsynchronizedLyrics {
             // encode and append language string
-            
             if let language = self.language {
                 let languageString = language.rawValue
                 data.append(languageString.encodedASCII)

@@ -67,23 +67,23 @@ class CreditsFrame: Frame {
     }
     
     override var contentData: Data {
-        var data = Data()
-        var joined = ""
-        for (string, array) in credits {
-            joined.append(string)
-            joined.append(array.joined())
+        if credits.isEmpty {
+            return Data()
+        } else {
+            var data = Data()
+            
+            // append encoding Byte
+            let encoding = CreditsFrame.encoding(credits: credits)
+            data.append(encoding.encodingByte)
+            
+            // encode and append each credit
+            for (key, value) in credits {
+                data.append(key.attemptTerminatedStringEncoding(encoding))
+                let valueString = value.joined(separator: ",")
+                data.append(valueString.attemptTerminatedStringEncoding(encoding))
+            }
+            return data
         }
-        // append encoding Byte
-        let encoding = CreditsFrame.encoding(credits: credits)
-        data.append(encoding.encodingByte)
-        
-        // encode and append each credit
-        for (key, value) in credits {
-            data.append(key.attemptTerminatedStringEncoding(encoding))
-            let valueString = value.joined(separator: ",")
-            data.append(valueString.attemptTerminatedStringEncoding(encoding))
-        }
-        return data
     }
     
     // MARK: - Frame building

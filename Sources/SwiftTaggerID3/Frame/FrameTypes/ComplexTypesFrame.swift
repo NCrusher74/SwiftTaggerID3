@@ -146,36 +146,40 @@ class ComplexTypesFrame: Frame {
     }
     
     override var contentData: Data {
-        var data = Data()
-        
-        // append encoding byte
-        let encoding = String.Encoding(string: contentArray.joined())
-        data.append(encoding.encodingByte)
-        
-        switch self.version {
-            case .v2_2, .v2_3: // null termination will be false
-                if self.identifier == .genre {
-                    data.append(
-                        contentArray.encodeGenreParentheticalStrings(encoding))
-                } else if self.identifier == .mediaType {
-                    data.append(
-                        contentArray.encodeMediaTypeParentheticalStrings(encoding))
-                } else if self.identifier == .fileType {
-                    data.append(contentArray.encodeFileTypeStrings(encoding))
-                }
-            case .v2_4: // null termination will be true
-                if self.identifier == .genre {
-                    data.append(
-                        contentArray.encodeNonParentheticalGenreStrings(encoding))
-                } else if self.identifier == .mediaType {
-                    data.append(
-                        contentArray.encodeNonParentheticalMediaTypeStrings(encoding))
-                } else if self.identifier == .fileType {
-                    data.append(
-                        contentArray.encodeNonParentheticalFileTypeStrings(encoding))
-                }
+        if contentArray.isEmpty {
+            return Data()
+        } else {
+            var data = Data()
+            
+            // append encoding byte
+            let encoding = String.Encoding(string: contentArray.joined())
+            data.append(encoding.encodingByte)
+            
+            switch self.version {
+                case .v2_2, .v2_3: // null termination will be false
+                    if self.identifier == .genre {
+                        data.append(
+                            contentArray.encodeGenreParentheticalStrings(encoding))
+                    } else if self.identifier == .mediaType {
+                        data.append(
+                            contentArray.encodeMediaTypeParentheticalStrings(encoding))
+                    } else if self.identifier == .fileType {
+                        data.append(contentArray.encodeFileTypeStrings(encoding))
+                    }
+                case .v2_4: // null termination will be true
+                    if self.identifier == .genre {
+                        data.append(
+                            contentArray.encodeNonParentheticalGenreStrings(encoding))
+                    } else if self.identifier == .mediaType {
+                        data.append(
+                            contentArray.encodeNonParentheticalMediaTypeStrings(encoding))
+                    } else if self.identifier == .fileType {
+                        data.append(
+                            contentArray.encodeNonParentheticalFileTypeStrings(encoding))
+                    }
+            }
+            return data
         }
-        return data
     }
 }
 

@@ -125,63 +125,67 @@ class ImageFrame: Frame {
     
     // MARK: - Encode Contents
     override var contentData: Data {
-        var data = Data()
-
-        // append encoding byte
-        let encoding: String.Encoding
-        if let descriptionString = descriptionString {
-            encoding = String.Encoding(string: descriptionString)
-        } else {
-            encoding = .isoLatin1
-        }
-        
-        data.append(encoding.encodingByte)
-        // determine format based on file extension
-        // encode and append a format or MIME-type string according to version requirements
-        do {
-            switch version {
-                case .v2_2:
-                    let formatString: String
-
-                    if self.imageFormat == .jpg {
-                        formatString = "jpg"
-                    } else if self.imageFormat == .png {
-                        formatString = "png"
-                    } else {
-                        throw Mp3FileError.InvalidImageFormat
-                    }
-                    data.append(formatString.encodedASCII)
-                case .v2_3, .v2_4:
-                    let formatString: String
-
-                    /// These versions require a MIME-type string
-                    if self.imageFormat == .jpg {
-                        formatString = "image/jpeg"
-                    } else if self.imageFormat == .png {
-                        formatString = "image/png"
-                    } else {
-                        throw Mp3FileError.InvalidImageFormat
-                    }
-                    data.append(formatString.attemptTerminatedStringEncoding())
-            }
-        } catch {
-            print("Image frame \(descriptionString ?? imageType.pictureDescription) contains invalid image format. Images must be jpg or png. Aborting encoding of this frame")
+        if imageData == Data() {
             return Data()
-        }
-        
-        // append image type byte
-        data.append(self.imageType.rawValue.beData)
-
-        // encode and append image Description
-        if let description = self.descriptionString {
-            data.append(description.attemptTerminatedStringEncoding(encoding))
         } else {
-            data.append(self.imageType.pictureDescription.attemptTerminatedStringEncoding())
+            var data = Data()
+            
+            // append encoding byte
+            let encoding: String.Encoding
+            if let descriptionString = descriptionString {
+                encoding = String.Encoding(string: descriptionString)
+            } else {
+                encoding = .isoLatin1
+            }
+            
+            data.append(encoding.encodingByte)
+            // determine format based on file extension
+            // encode and append a format or MIME-type string according to version requirements
+            do {
+                switch version {
+                    case .v2_2:
+                        let formatString: String
+                        
+                        if self.imageFormat == .jpg {
+                            formatString = "jpg"
+                        } else if self.imageFormat == .png {
+                            formatString = "png"
+                        } else {
+                            throw Mp3FileError.InvalidImageFormat
+                        }
+                        data.append(formatString.encodedASCII)
+                    case .v2_3, .v2_4:
+                        let formatString: String
+                        
+                        /// These versions require a MIME-type string
+                        if self.imageFormat == .jpg {
+                            formatString = "image/jpeg"
+                        } else if self.imageFormat == .png {
+                            formatString = "image/png"
+                        } else {
+                            throw Mp3FileError.InvalidImageFormat
+                        }
+                        data.append(formatString.attemptTerminatedStringEncoding())
+                }
+            } catch {
+                print("Image frame \(descriptionString ?? imageType.pictureDescription) contains invalid image format. Images must be jpg or png. Aborting encoding of this frame")
+                return Data()
+            }
+            
+            // append image type byte
+            data.append(self.imageType.rawValue.beData)
+            
+            // encode and append image Description
+            if let description = self.descriptionString {
+                data.append(description.attemptTerminatedStringEncoding(encoding))
+            } else {
+                data.append(self.imageType.pictureDescription.attemptTerminatedStringEncoding())
+            }
+            
+            data.append(self.imageData)
+            
+            return data
         }
-        
-        data.append(self.imageData)
-        
-        return data
     }
     
     // MARK: - Frame building

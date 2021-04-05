@@ -60,9 +60,11 @@ extension Data {
     ///   - encoding: The `String.Encoding` type parsed out of the frame content previously
     /// - Returns: The frame's description and content strings
     /// this is used for ID3 frames with a terminated description string followed by a content string
-    mutating func extractDescriptionAndContent(encoding: String.Encoding) -> (description: String?, content: String) {
+    mutating func extractDescriptionAndContent(_ encoding: String.Encoding) -> (description: String?, content: String) {
         let description = self.extractNullTerminatedString(encoding)
-        let content = self.extractNullTerminatedString(encoding) ?? ""
+        
+        let content = String(bytes: self, encoding: encoding) ?? ""
+        
         return (description: description, content: content)
     }
 }
