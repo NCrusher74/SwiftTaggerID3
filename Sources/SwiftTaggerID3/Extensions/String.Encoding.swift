@@ -8,27 +8,6 @@
  */
 
 import Foundation
-/*
-enum StringEncoding: UInt8 {
-    case isoLatin1 = 0x00
-    case utf16WithBOM = 0x01
-    case utf16BigEndian = 0x02
-    case utf8 = 0x03
-    
-    var standardLibraryEncoding: String.Encoding {
-        switch self {
-            case .isoLatin1:
-                return .isoLatin1
-            case .utf16WithBOM:
-                return .utf16
-            case .utf8:
-                return .utf8
-            case .utf16BigEndian:
-                return .utf16BigEndian
-        }
-    }
-}
- */
 
 extension String.Encoding {
     init(byte: Data?) throws {

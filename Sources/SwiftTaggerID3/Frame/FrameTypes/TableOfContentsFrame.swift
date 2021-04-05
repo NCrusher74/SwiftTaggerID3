@@ -53,6 +53,7 @@ class TableOfContentsFrame: Frame {
         // A null-terminated string with a unique ID. The Element ID uniquely identifies the frame. It is not intended to be human readable and should not be presented to the end-user.
         /// This is unused by SwiftTaggerID3. A TOC frame is assigned a UUID
         _ = data.extractNullTerminatedString(.isoLatin1) // unused
+
         // parse the flags byte and interpret boolean values
         // Flag a - Top-level bit
         // This is set to 1 to identify the top-level "CTOC" frame. This frame is the root of the Table of Contents tree and is not a child of any other "CTOC" frame. Only one "CTOC" frame in an ID3v2 tag can have this bit set to 1. In all other "CTOC" frames this bit shall be set to 0.
@@ -96,7 +97,7 @@ class TableOfContentsFrame: Frame {
         var data = Data()
         // there is no encoding byte for TOC frames
         // encode and append the elementID, adding a null terminator
-        data.append("TOC".encodedNullTerminatedString)
+        data.append("TOC".attemptTerminatedStringEncoding(.isoLatin1))
         data.append(encodedFlagByte)
         
         // encode and append the entry count
@@ -111,7 +112,7 @@ class TableOfContentsFrame: Frame {
         // encode and append the array of child element IDs, adding null terminator
         var idArray = Data()
         for id in self.childElementIDs {
-            idArray.append(id.encodedNullTerminatedString)
+            idArray.append(id.attemptTerminatedStringEncoding(.isoLatin1))
         }
         data.append(idArray)
         
@@ -147,9 +148,9 @@ class TableOfContentsFrame: Frame {
         self.embeddedSubframesTag = embeddedSubframesTag
 
         var size = 2 // +1 for flag byte, +1 for entry count byte
-        size += "TOC".encodedNullTerminatedString.count
+        size += "TOC".attemptTerminatedStringEncoding(.isoLatin1).count
         for id in self.childElementIDs {
-            size += id.encodedNullTerminatedString.count
+            size += id.attemptTerminatedStringEncoding(.isoLatin1).count
         }
         for item in self.embeddedSubframesTag?.frames ?? [:] {
             let subframe = item.value

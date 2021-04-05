@@ -17,23 +17,21 @@ extension String {
     }
     
     /// Convert a string to data and append a null termination byte (or pair of null bytes)
-    var encodedNullTerminatedString: Data {
-        let encoding = String.Encoding(string: self)
+    func attemptTerminatedStringEncoding(_ encoding: String.Encoding = .isoLatin1) -> Data {
         if var encoded = self.data(using: encoding) {
-            encoded.append(encoding.encodingByte)
+            encoded.append(encoding.nullTerminator)
             return encoded
         } else {
-            return Data()
+            return encoding.nullTerminator
         }
     }
     
     /// Convert a string to data without null terminator
-    var encoded: Data {
-        let encoding = String.Encoding(string: self)
+    func attemptStringEncoding(_ encoding: String.Encoding = .isoLatin1) -> Data? {
         if let encoded = self.data(using: encoding) {
             return encoded
         } else {
-            return Data()
+            return nil
         }
     }
 

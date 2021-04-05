@@ -158,14 +158,14 @@ class DateFrame: Frame {
                         case .year, .originalReleaseDateTime:
                             encodedString = date.encodeYYYYTimestamp
                         default:
-                            encodedString = dateString.encoded
+                            encodedString = dateString.attemptStringEncoding(encoding) ?? Data()
                     }
                 case .v2_4:
                     switch self.identifier {
                         case .date, .time, .year:
                             encodedString = Data()
                         default:
-                            encodedString = dateString.encoded
+                            encodedString = dateString.attemptStringEncoding(encoding) ?? Data()
                     }
             }
             data.append(encodedString)

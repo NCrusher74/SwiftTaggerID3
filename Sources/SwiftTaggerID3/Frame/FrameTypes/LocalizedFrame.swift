@@ -132,6 +132,24 @@ class LocalizedFrame: Frame {
         }
     }
     
+    private static func encoding(description: String?,
+                                 stringValue: String) -> String.Encoding {
+
+        var descriptionEncoding = String.Encoding.isoLatin1
+        if let descriptionString = description {
+            descriptionEncoding = String.Encoding(string: descriptionString)
+        }
+
+        let stringValueEncoding = String.Encoding(string: stringValue)
+        
+        if descriptionEncoding != .isoLatin1 ||
+            stringValueEncoding != .isoLatin1 {
+            return .utf16
+        } else {
+            return .isoLatin1
+        }
+    }
+
     /*
      Text encoding     $xx
      Description       <textstring> $00 (00)
@@ -144,7 +162,9 @@ class LocalizedFrame: Frame {
      */
     override var contentData: Data {
         var data = Data()
-        let encoding = String.Encoding(string: stringValue)
+        
+        let encoding = LocalizedFrame.encoding(description: descriptionString,
+                                               stringValue: stringValue)
         data.append(encoding.encodingByte)
         if self.identifier == .comments || self.identifier == .unsynchronizedLyrics {
             // encode and append language string
@@ -158,11 +178,11 @@ class LocalizedFrame: Frame {
         }
 
         if let description = self.descriptionString {
-            data.append(description.encodedNullTerminatedString)
+            data.append(description.attemptTerminatedStringEncoding(encoding))
         } else {
             data.append(encoding.nullTerminator)
         }
-        data.append(self.stringValue.encoded)
+        data.append(self.stringValue.attemptStringEncoding(encoding) ?? Data())
         return data
     }
 
@@ -179,15 +199,21 @@ class LocalizedFrame: Frame {
         self.descriptionString = description
         self.stringValue = stringValue
         
+        let encoding = LocalizedFrame.encoding(description: descriptionString,
+                                               stringValue: stringValue)
+
         var size = 1 // +1 for encoding byte
-        if let languageString = language?.rawValue {
-            size += languageString.encodedASCII.count
+        if language != nil {
+            size += 3
         }
+        
         if let description = description {
-            size += description.encodedNullTerminatedString.count
+            size += description.attemptTerminatedStringEncoding(encoding).count
         }
-        size += stringValue.encoded.count
+
+        size += stringValue.attemptStringEncoding(encoding)?.count ?? 0
         let flags = version.defaultFlags
+
         super.init(identifier: identifier,
                    version: version,
                    size: size,

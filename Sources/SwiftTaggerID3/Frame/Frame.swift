@@ -58,12 +58,16 @@ public class Frame: CustomStringConvertible {
         if self.identifier == .passThrough {
             return self.contentData
         } else {
-            var data = Data()
-            data.append(self.identifierData)
-            data.append(self.encodedFrameContentSize)
-            data.append(self.version.defaultFlags)
-            data.append(self.contentData)
-            return data
+            if self.contentData == Data() {
+                return Data()
+            } else {
+                var data = Data()
+                data.append(self.identifierData)
+                data.append(self.encodedFrameContentSize)
+                data.append(self.version.defaultFlags)
+                data.append(self.contentData)
+                return data
+            }
         }
     }
     

@@ -56,6 +56,16 @@ class CreditsFrame: Frame {
                   flags: flags)
     }
     
+    private static func encoding(credits: [ String : [String] ]) -> String.Encoding {
+        for (key, value) in credits {
+            let joined = key + value.joined()
+            if String.Encoding(string: joined) != .isoLatin1 {
+                return .utf16
+            }
+        }
+        return .isoLatin1
+    }
+    
     override var contentData: Data {
         var data = Data()
         var joined = ""
@@ -64,14 +74,14 @@ class CreditsFrame: Frame {
             joined.append(array.joined())
         }
         // append encoding Byte
-        let encoding = String.Encoding(string: joined)
+        let encoding = CreditsFrame.encoding(credits: credits)
         data.append(encoding.encodingByte)
         
         // encode and append each credit
-        for key in credits.keys {
-            data.append(key.encodedNullTerminatedString)
-            let valueString = credits[key]?.joined(separator: ",") ?? ""
-            data.append(valueString.encodedNullTerminatedString)
+        for (key, value) in credits {
+            data.append(key.attemptTerminatedStringEncoding(encoding))
+            let valueString = value.joined(separator: ",")
+            data.append(valueString.attemptTerminatedStringEncoding(encoding))
         }
         return data
     }
@@ -87,18 +97,14 @@ class CreditsFrame: Frame {
         self.credits = credits
         let flags = version.defaultFlags
         
-        var joined = ""
-        for (string, array) in credits {
-            joined.append(string)
-            joined.append(array.joined())
-        }
-        
+        let encoding = CreditsFrame.encoding(credits: credits)
+
         var size = 1 // encoding byte
         
-        for key in credits.keys {
-            size += key.encodedNullTerminatedString.count
-            let valueString = credits[key]?.joined(separator: ",") ?? ""
-            size += valueString.encodedNullTerminatedString.count
+        for (key, value) in credits {
+            size += key.attemptTerminatedStringEncoding(encoding).count
+            let valueString = value.joined(separator: ",")
+            size += valueString.attemptTerminatedStringEncoding(encoding).count
         }
         
         super.init(identifier: identifier,

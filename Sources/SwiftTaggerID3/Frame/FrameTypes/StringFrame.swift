@@ -80,10 +80,10 @@ class StringFrame: Frame {
             if self.identifier == .languages {
                 let array = stringValue.toArray
                 for language in array {
-                    data.append(language.encodedNullTerminatedString)
+                    data.append(language.attemptTerminatedStringEncoding(encoding))
                 }
             } else {
-                data.append(stringValue.encoded)
+                data.append(stringValue.attemptStringEncoding(encoding) ?? Data())
             }
         }
         return data
@@ -103,9 +103,10 @@ class StringFrame: Frame {
 
         let size: Int
         if identifier.parseAs == .url {
-            size = stringValue.encodedASCII.count
+            size = stringValue.encodedISOLatin1.count
         } else {
-            size = stringValue.encoded.count + 1 // encoding byte
+            let encoding = String.Encoding(string: stringValue)
+            size = (stringValue.attemptStringEncoding(encoding)?.count ?? 0) + 1 // encoding byte
         }
         // use the default flags
         let flags = version.defaultFlags

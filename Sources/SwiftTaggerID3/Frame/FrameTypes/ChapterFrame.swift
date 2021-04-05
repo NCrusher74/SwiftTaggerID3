@@ -90,7 +90,7 @@ class ChapterFrame: Frame {
         var data = Data()
         // there is no encoding byte for Chapter frames
         // encode and append ElementID string, adding null terminator
-        data.append(self.elementID.encodedNullTerminatedString)
+        data.append(self.elementID.attemptTerminatedStringEncoding())
         
         // convert integers to UInt32 and then to Data and append
         data.append(self.startTime.uInt32.beData)
@@ -133,10 +133,13 @@ class ChapterFrame: Frame {
         guard version != .v2_2 else {
             fatalError("Chapter frame is not available for ID3 v2.2")
         }
+
         var size = 16 // 16 = start/end times (8) + start/end offsets (8)
+
         // there is no encoding byte for Chapter frames
         // encode and append ElementID string, adding null terminator
-        size += self.elementID.encodedNullTerminatedString.count
+        size += self.elementID.attemptTerminatedStringEncoding().count
+
         // encode and append the subframes to data
         var encodedSubframes = Data()
         for item in self.embeddedSubframesTag?.frames ?? [:] {
