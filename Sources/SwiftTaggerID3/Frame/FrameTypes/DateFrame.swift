@@ -139,11 +139,17 @@ class DateFrame: Frame {
     override var contentData: Data {
         var data = Data()
         // append encoding byte
-        let encoding = String.Encoding.isoLatin1
-        data.append(encoding.encodingByte)
+        
         if let date = timeStamp {
+            let formatter = ISO8601DateFormatter()
+            formatter.formatOptions = [.withInternetDateTime]
+            formatter.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
+            let dateString = formatter.string(from: date)
+            
+            let encoding = String.Encoding(string: dateString)
+            data.append(encoding.encodingByte)
             var encodedString = Data()
-
+            
             switch self.version {
                 case .v2_2, .v2_3:
                     switch self.identifier {
@@ -152,31 +158,19 @@ class DateFrame: Frame {
                         case .year, .originalReleaseDateTime:
                             encodedString = date.encodeYYYYTimestamp
                         default:
-                            let formatter = ISO8601DateFormatter()
-                            formatter.formatOptions = [.withInternetDateTime]
-                            formatter.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
-                            let dateString = formatter.string(from: date)
-                            encodedString = dateString.encodedISOLatin1
+                            encodedString = dateString.attemptStringEncoding(encoding) ?? Data()
                     }
                 case .v2_4:
                     switch self.identifier {
                         case .date, .time, .year:
                             encodedString = Data()
                         default:
-                            let formatter = ISO8601DateFormatter()
-                            formatter.formatOptions = [.withInternetDateTime]
-                            formatter.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
-                            let dateString = formatter.string(from: date)
-                            encodedString = dateString.encodedISOLatin1
+                            encodedString = dateString.attemptStringEncoding(encoding) ?? Data()
                     }
             }
             data.append(encodedString)
         }
-        if data != encoding.encodingByte {
-            return data
-        } else {
-            return Data()
-        }
+        return data
     }
     
     // MARK: - Frame Building

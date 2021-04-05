@@ -95,7 +95,7 @@ extension Array where Element == String {
     }
     
     // NOTE: This will produce a numeric code wrapped in parentheses, which is in keeping with the spec, but a lot of metadata reading apps won't extrapolate from the numeric code to a genre type
-    var encodedGenreParentheticalStrings: Data {
+    func encodeGenreParentheticalStrings(_ encoding: String.Encoding) -> Data {
         var newArray: [String] = []
         for item in self {
             // get rid of the empty strings
@@ -118,12 +118,12 @@ extension Array where Element == String {
         }
         var data = Data()
         for item in newArray {
-            data.append(item.encodedISOLatin1)
+            data.append(item.attemptStringEncoding(encoding) ?? Data())
         }
         return data
     }
     
-    var encodedNonParentheticalGenreStrings: Data {
+    func encodeNonParentheticalGenreStrings(_ encoding: String.Encoding) -> Data {
         var data = Data()
         // convert the raw value to the numerical code, if necessary
         for item in self {
@@ -137,16 +137,16 @@ extension Array where Element == String {
                     } else {
                         itemCode = String(genreType.code)
                     }
-                    data.append(itemCode.encodeNullTerminatedString(.isoLatin1))
+                    data.append(itemCode.attemptTerminatedStringEncoding(encoding))
                 } else {
-                    data.append(item.encodeNullTerminatedString(.isoLatin1))
+                    data.append(item.attemptTerminatedStringEncoding(encoding))
                 }
             }
         }
         return data
     }
     
-    var encodedMediaTypeParentheticalStrings: Data {
+    func encodeMediaTypeParentheticalStrings(_ encoding: String.Encoding) -> Data {
         var newArray: [String] = []
         for (index, item) in self.enumerated() {
             // make sure the item isn't an empty string
@@ -179,12 +179,12 @@ extension Array where Element == String {
         }
         var data = Data()
         for item in newArray {
-            data.append(item.encodedISOLatin1)
+            data.append(item.attemptStringEncoding(encoding) ?? Data())
         }
         return data
     }
     
-    var encodedNonParentheticalMediaTypeStrings: Data {
+    func encodeNonParentheticalMediaTypeStrings(_ encoding: String.Encoding) -> Data {
         var data = Data()
         for (index, item) in self.enumerated() {
             // make sure the string isn't empty
@@ -199,16 +199,16 @@ extension Array where Element == String {
                                 // if it is, merge them into one string
                                 let mergedItems = "\(mediaType.rawValue)\(refinement.code)"
                                 // and encode them together
-                                data.append(mergedItems.encodeNullTerminatedString(.isoLatin1))
+                                data.append(mergedItems.attemptTerminatedStringEncoding(encoding))
                             }
                             // if it isn't, encode the media type raw value by itself
                         } else {
-                            data.append(mediaType.rawValue.encodeNullTerminatedString(.isoLatin1))
+                            data.append(mediaType.rawValue.attemptTerminatedStringEncoding(encoding))
                         }
                     }
                     // if the item isn't a media type or a refinement, encode it as is
                 } else if item.first != "/" {
-                    data.append(item.encodeNullTerminatedString(.isoLatin1))
+                    data.append(item.attemptTerminatedStringEncoding(encoding))
                 }
             }
         }
@@ -217,7 +217,7 @@ extension Array where Element == String {
     
     // According to the letter of the specs, fileType isn't supposed to have parentheses
     // however, it's easier to parse the codes from the freeform string this way
-    var encodedFileTypeStrings: Data {
+    func encodeFileTypeStrings(_ encoding: String.Encoding) -> Data {
         var newArray: [String] = []
         for (index, item) in self.enumerated() {
             // make sure the item isn't an empty string
@@ -249,12 +249,12 @@ extension Array where Element == String {
         }
         var data = Data()
         for item in newArray {
-            data.append(item.encodedISOLatin1)
+            data.append(item.attemptStringEncoding(encoding) ?? Data())
         }
         return data
     }
     
-    var encodedNonParentheticalFileTypeStrings: Data {
+    func encodeNonParentheticalFileTypeStrings(_ encoding: String.Encoding) -> Data {
         var data = Data()
         for (index, item) in self.enumerated() {
             if item != "" {
@@ -265,14 +265,14 @@ extension Array where Element == String {
                             if let refinement = FileTypeRefinements(rawValue: nextItem) {
                                 let mergedItems = "\(fileType.rawValue)\(refinement.rawValue)"
                                 data.append(
-                                    mergedItems.encodeNullTerminatedString(.isoLatin1))
+                                    mergedItems.attemptTerminatedStringEncoding(encoding))
                             }
                         }
                     } else {
-                        data.append(fileType.rawValue.encodeNullTerminatedString(.isoLatin1))
+                        data.append(fileType.rawValue.attemptTerminatedStringEncoding(encoding))
                     }
                 } else if item.first != "/" {
-                    data.append(item.encodeNullTerminatedString(.isoLatin1))
+                    data.append(item.attemptTerminatedStringEncoding(encoding))
                 }
             }
         }

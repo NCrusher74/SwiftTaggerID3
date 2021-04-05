@@ -75,16 +75,16 @@ class StringFrame: Frame {
         if self.identifier.parseAs == .url {
             data.append(stringValue.encodedASCII)
         } else {
-            let encoding: String.Encoding = .utf16
+            let encoding = String.Encoding(string: stringValue)
             data.append(encoding.encodingByte)
             if self.identifier == .languages {
                 let array = stringValue.toArray
                 for language in array {
-                    data.append(language.encodeNullTerminatedString(encoding))
+                    data.append(language.attemptTerminatedStringEncoding(encoding))
                 }
             } else {
-            data.append(stringValue.encoded(encoding))
-        }
+                data.append(stringValue.attemptStringEncoding(encoding) ?? Data())
+            }
         }
         return data
     }
@@ -103,13 +103,10 @@ class StringFrame: Frame {
 
         let size: Int
         if identifier.parseAs == .url {
-            size = stringValue.encodedASCII.count
+            size = stringValue.encodedISOLatin1.count
         } else {
-            if identifier == .producedNotice {
-                size = stringValue.encoded(.utf16).count + 1
-            } else {
-                size = stringValue.encoded(.isoLatin1).count + 1 // encoding byte
-            }
+            let encoding = String.Encoding(string: stringValue)
+            size = (stringValue.attemptStringEncoding(encoding)?.count ?? 0) + 1 // encoding byte
         }
         // use the default flags
         let flags = version.defaultFlags
@@ -571,6 +568,7 @@ extension Tag {
                     strings.append(string)
                 }
                 let stringValue = strings.toString
+                print(stringValue)
                 set(.languages, stringValue: stringValue)
             } else {
                 set(.languages, stringValue: nil)

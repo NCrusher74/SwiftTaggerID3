@@ -103,6 +103,7 @@ class LocalizedFrame: Frame {
         var data = payload
                 
         let encoding = try data.extractEncoding()
+        
         // if it's a frame with a language string, parse that out
         if identifier == .comments ||
             identifier == .unsynchronizedLyrics {
@@ -115,7 +116,7 @@ class LocalizedFrame: Frame {
             }
         }
         
-        let parsed = data.extractDescriptionAndContent(encoding: encoding)
+        let parsed = data.extractDescriptionAndContent(encoding)
         self.descriptionString = parsed.description
         self.stringValue = parsed.content
         super.init(identifier: identifier,
@@ -132,6 +133,24 @@ class LocalizedFrame: Frame {
         }
     }
     
+    private static func encoding(description: String?,
+                                 stringValue: String) -> String.Encoding {
+
+        var descriptionEncoding = String.Encoding.isoLatin1
+        if let descriptionString = description {
+            descriptionEncoding = String.Encoding(string: descriptionString)
+        }
+
+        let stringValueEncoding = String.Encoding(string: stringValue)
+        
+        if descriptionEncoding != .isoLatin1 ||
+            stringValueEncoding != .isoLatin1 {
+            return .utf16
+        } else {
+            return .isoLatin1
+        }
+    }
+
     /*
      Text encoding     $xx
      Description       <textstring> $00 (00)
@@ -142,14 +161,14 @@ class LocalizedFrame: Frame {
      Short content descrip. <text string according to encoding> $00 (00)
      The actual text        <full text string according to encoding>
      */
-
     override var contentData: Data {
         var data = Data()
-        let encoding = String.Encoding.isoLatin1
+        
+        let encoding = LocalizedFrame.encoding(description: descriptionString,
+                                               stringValue: stringValue)
         data.append(encoding.encodingByte)
         if self.identifier == .comments || self.identifier == .unsynchronizedLyrics {
             // encode and append language string
-            
             if let language = self.language {
                 let languageString = language.rawValue
                 data.append(languageString.encodedASCII)
@@ -157,12 +176,13 @@ class LocalizedFrame: Frame {
                 data.append("und".encodedASCII)
             }
         }
+
         if let description = self.descriptionString {
-            data.append(description.encodeNullTerminatedString(encoding))
+            data.append(description.attemptTerminatedStringEncoding(encoding))
         } else {
             data.append(encoding.nullTerminator)
         }
-        data.append(self.stringValue.encodedISOLatin1)
+        data.append(self.stringValue.attemptStringEncoding(encoding) ?? Data())
         return data
     }
 
@@ -179,18 +199,21 @@ class LocalizedFrame: Frame {
         self.descriptionString = description
         self.stringValue = stringValue
         
+        let encoding = LocalizedFrame.encoding(description: descriptionString,
+                                               stringValue: stringValue)
+
         var size = 1 // +1 for encoding byte
-        let encoding = String.Encoding.isoLatin1
-        if let languageString = language?.rawValue {
-            size += languageString.encodedASCII.count
+        if language != nil {
+            size += 3
         }
+        
         if let description = description {
-            size += description.encodeNullTerminatedString(encoding).count
-        } else {
-            
+            size += description.attemptTerminatedStringEncoding(encoding).count
         }
-        size += stringValue.encodedISOLatin1.count
+
+        size += stringValue.attemptStringEncoding(encoding)?.count ?? 0
         let flags = version.defaultFlags
+
         super.init(identifier: identifier,
                    version: version,
                    size: size,

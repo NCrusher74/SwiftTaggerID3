@@ -65,8 +65,10 @@ class PartAndTotalFrame: Frame {
          version: Version,
          part: Int,
          total: Int?) {
+
         self.part = part
         self.total = total
+
         var size = 1 // +1 for encoding byte
         if let total = total {
             let string = "\(part)/\(total)"
@@ -74,6 +76,7 @@ class PartAndTotalFrame: Frame {
         } else {
             size += String(part).encodedISOLatin1.count
         }
+        
         let flags = version.defaultFlags
         super.init(identifier: identifier,
                    version: version,
@@ -88,10 +91,9 @@ class PartAndTotalFrame: Frame {
         } else {
             contentString = String(self.part)
         }
-        let encoding = String.Encoding.isoLatin1
-        
+
         var data = Data()
-        data.append(encoding.encodingByte)
+        data.append(String.Encoding.isoLatin1.encodingByte)
         data.append(contentString.encodedISOLatin1)
         return data
     }

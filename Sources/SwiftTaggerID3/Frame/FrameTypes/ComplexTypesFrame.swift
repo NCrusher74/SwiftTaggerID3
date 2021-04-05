@@ -114,28 +114,29 @@ class ComplexTypesFrame: Frame {
         self.contentArray = contentArray
         let flags = version.defaultFlags
         
+        let encoding = String.Encoding(string: contentArray.joined())
         var size = 1 // +1 for encoding byte
         switch version {
             case .v2_2, .v2_3: // null termination will be false
                 if identifier == .genre {
                     size += contentArray
-                        .encodedGenreParentheticalStrings.count
+                        .encodeGenreParentheticalStrings(encoding).count
                 } else if identifier == .mediaType {
                     size += contentArray
-                        .encodedMediaTypeParentheticalStrings.count
+                        .encodeMediaTypeParentheticalStrings(encoding).count
                 } else if identifier == .fileType {
-                    size += contentArray.encodedFileTypeStrings.count
+                    size += contentArray.encodeFileTypeStrings(encoding).count
                 }
             case .v2_4: // null termination will be true
                 if identifier == .genre {
                     size += contentArray
-                        .encodedNonParentheticalGenreStrings.count
+                        .encodeNonParentheticalGenreStrings(encoding).count
                 } else if identifier == .mediaType {
                     size += contentArray
-                        .encodedNonParentheticalMediaTypeStrings.count
+                        .encodeNonParentheticalMediaTypeStrings(encoding).count
                 } else if identifier == .fileType {
                     size += contentArray
-                        .encodedNonParentheticalFileTypeStrings.count
+                        .encodeNonParentheticalFileTypeStrings(encoding).count
                 }
         }
         super.init(identifier: identifier,
@@ -145,34 +146,40 @@ class ComplexTypesFrame: Frame {
     }
     
     override var contentData: Data {
-        var data = Data()
-        // append encoding byte
-        let encoding = String.Encoding.isoLatin1
-        data.append(encoding.encodingByte)
-        switch self.version {
-            case .v2_2, .v2_3: // null termination will be false
-                if self.identifier == .genre {
-                    data.append(
-                        contentArray.encodedGenreParentheticalStrings)
-                } else if self.identifier == .mediaType {
-                    data.append(
-                        contentArray.encodedMediaTypeParentheticalStrings)
-                } else if self.identifier == .fileType {
-                    data.append(contentArray.encodedFileTypeStrings)
-                }
-            case .v2_4: // null termination will be true
-                if self.identifier == .genre {
-                    data.append(
-                        contentArray.encodedNonParentheticalGenreStrings)
-                } else if self.identifier == .mediaType {
-                    data.append(
-                        contentArray.encodedNonParentheticalMediaTypeStrings)
-                } else if self.identifier == .fileType {
-                    data.append(
-                        contentArray.encodedNonParentheticalFileTypeStrings)
-                }
+        if contentArray.isEmpty {
+            return Data()
+        } else {
+            var data = Data()
+            
+            // append encoding byte
+            let encoding = String.Encoding(string: contentArray.joined())
+            data.append(encoding.encodingByte)
+            
+            switch self.version {
+                case .v2_2, .v2_3: // null termination will be false
+                    if self.identifier == .genre {
+                        data.append(
+                            contentArray.encodeGenreParentheticalStrings(encoding))
+                    } else if self.identifier == .mediaType {
+                        data.append(
+                            contentArray.encodeMediaTypeParentheticalStrings(encoding))
+                    } else if self.identifier == .fileType {
+                        data.append(contentArray.encodeFileTypeStrings(encoding))
+                    }
+                case .v2_4: // null termination will be true
+                    if self.identifier == .genre {
+                        data.append(
+                            contentArray.encodeNonParentheticalGenreStrings(encoding))
+                    } else if self.identifier == .mediaType {
+                        data.append(
+                            contentArray.encodeNonParentheticalMediaTypeStrings(encoding))
+                    } else if self.identifier == .fileType {
+                        data.append(
+                            contentArray.encodeNonParentheticalFileTypeStrings(encoding))
+                    }
+            }
+            return data
         }
-        return data
     }
 }
 

@@ -9,6 +9,7 @@ import Foundation
 
 enum Mp3FileError: Error {
     case InvalidFileFormat
+    case InvalidImageFormat
     case UnableToReadFileData
     case InvalidVersionData
     case UnableToDetermineID3Version

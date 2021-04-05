@@ -17,22 +17,22 @@ extension String {
     }
     
     /// Convert a string to data and append a null termination byte (or pair of null bytes)
-    func encodeNullTerminatedString(_ encoding: String.Encoding) -> Data {
-        guard var result = data(using: encoding) else {
-            // This will never happen unless “preferred” is changed to something besides Unicode.
-            fatalError("\(encoding) cannot encode “\(self)”.")
+    func attemptTerminatedStringEncoding(_ encoding: String.Encoding = .isoLatin1) -> Data {
+        if var encoded = self.data(using: encoding) {
+            encoded.append(encoding.nullTerminator)
+            return encoded
+        } else {
+            return encoding.nullTerminator
         }
-        result.append(encoding.nullTerminator)
-        return result
     }
-
+    
     /// Convert a string to data without null terminator
-    func encoded(_ encoding: String.Encoding) -> Data {
-        guard let result = data(using: encoding) else {
-            // This will never happen unless “preferred” is changed to something besides Unicode.
-            fatalError("\(encoding) cannot encode “\(self)”.")
+    func attemptStringEncoding(_ encoding: String.Encoding = .isoLatin1) -> Data? {
+        if let encoded = self.data(using: encoding) {
+            return encoded
+        } else {
+            return nil
         }
-        return result
     }
 
     init(withInt int: Int, leadingZeros: Int = 2) {

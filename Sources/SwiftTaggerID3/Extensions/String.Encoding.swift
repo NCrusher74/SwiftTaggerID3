@@ -25,6 +25,14 @@ extension String.Encoding {
         }
     }
     
+    init(string: String) {
+        if string.data(using: .isoLatin1) != nil {
+            self = .isoLatin1
+        } else  {
+            self = .utf16
+        }
+    }
+    
     var encodingByte: Data {
         switch self {
             case .isoLatin1: return 0.uInt8.beData

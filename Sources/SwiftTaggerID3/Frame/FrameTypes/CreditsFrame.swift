@@ -56,19 +56,34 @@ class CreditsFrame: Frame {
                   flags: flags)
     }
     
-    override var contentData: Data {
-        var data = Data()
-        // append encoding Byte
-        let encoding = String.Encoding.isoLatin1
-        data.append(encoding.encodingByte)
-
-        // encode and append each credit
-        for key in credits.keys {
-            data.append(key.encodeNullTerminatedString(encoding))
-            let valueString = credits[key]?.joined(separator: ",") ?? ""
-            data.append(valueString.encodeNullTerminatedString(encoding))
+    private static func encoding(credits: [ String : [String] ]) -> String.Encoding {
+        for (key, value) in credits {
+            let joined = key + value.joined()
+            if String.Encoding(string: joined) != .isoLatin1 {
+                return .utf16
+            }
         }
-        return data
+        return .isoLatin1
+    }
+    
+    override var contentData: Data {
+        if credits.isEmpty {
+            return Data()
+        } else {
+            var data = Data()
+            
+            // append encoding Byte
+            let encoding = CreditsFrame.encoding(credits: credits)
+            data.append(encoding.encodingByte)
+            
+            // encode and append each credit
+            for (key, value) in credits {
+                data.append(key.attemptTerminatedStringEncoding(encoding))
+                let valueString = value.joined(separator: ",")
+                data.append(valueString.attemptTerminatedStringEncoding(encoding))
+            }
+            return data
+        }
     }
     
     // MARK: - Frame building
@@ -82,13 +97,16 @@ class CreditsFrame: Frame {
         self.credits = credits
         let flags = version.defaultFlags
         
-        var size = 1 // +1 for encoding byte
-        let encoding = String.Encoding.isoLatin1
-        for key in credits.keys {
-            size += key.encodeNullTerminatedString(encoding).count
-            let valueString = credits[key]?.joined(separator: ",") ?? ""
-            size += valueString.encodeNullTerminatedString(encoding).count
+        let encoding = CreditsFrame.encoding(credits: credits)
+
+        var size = 1 // encoding byte
+        
+        for (key, value) in credits {
+            size += key.attemptTerminatedStringEncoding(encoding).count
+            let valueString = value.joined(separator: ",")
+            size += valueString.attemptTerminatedStringEncoding(encoding).count
         }
+        
         super.init(identifier: identifier,
                    version: version,
                    size: size,
