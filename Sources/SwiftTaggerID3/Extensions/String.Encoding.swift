@@ -50,7 +50,7 @@ extension String.Encoding {
         if string.data(using: .isoLatin1) != nil {
             self = .isoLatin1
         } else  {
-            self = .utf8
+            self = .utf16
         }
     }
     
