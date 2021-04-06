@@ -62,7 +62,7 @@ class ImageFrame: Frame {
         switch version {
             // get MIME or format-type string to determine format
             case .v2_3, .v2_4 :
-                if let formatString = data.extractNullTerminatedString(encoding) {
+                if let formatString = data.extractNullTerminatedString(.ascii) {
                     if formatString.contains("jpeg") {
                         imageFormat = .jpg
                     } else if formatString.contains("png") {
@@ -142,31 +142,27 @@ class ImageFrame: Frame {
             // determine format based on file extension
             // encode and append a format or MIME-type string according to version requirements
             do {
+                let formatString: String
                 switch version {
                     case .v2_2:
-                        let formatString: String
-                        
                         if self.imageFormat == .jpg {
                             formatString = "jpg"
                         } else if self.imageFormat == .png {
                             formatString = "png"
                         } else {
-                            throw Mp3FileError.InvalidImageFormat
+                            throw FrameError.UnhandledImageFormat
                         }
-                        data.append(formatString.encodedASCII)
                     case .v2_3, .v2_4:
-                        let formatString: String
-                        
                         /// These versions require a MIME-type string
                         if self.imageFormat == .jpg {
                             formatString = "image/jpeg"
                         } else if self.imageFormat == .png {
                             formatString = "image/png"
                         } else {
-                            throw Mp3FileError.InvalidImageFormat
+                            throw FrameError.UnhandledImageFormat
                         }
-                        data.append(formatString.attemptTerminatedStringEncoding())
                 }
+                data.append(formatString.encodedASCII)
             } catch {
                 print("Image frame \(descriptionString ?? imageType.pictureDescription) contains invalid image format. Images must be jpg or png. Aborting encoding of this frame")
                 return Data()
@@ -179,7 +175,7 @@ class ImageFrame: Frame {
             if let description = self.descriptionString {
                 data.append(description.attemptTerminatedStringEncoding(encoding))
             } else {
-                data.append(self.imageType.pictureDescription.attemptTerminatedStringEncoding())
+                data.append(self.imageType.pictureDescription.attemptTerminatedStringEncoding(encoding))
             }
             
             data.append(self.imageData)
@@ -217,9 +213,9 @@ class ImageFrame: Frame {
                 } else if imageFormat == .png {
                     formatString = "image/png"
                 } else {
-                    throw Mp3FileError.InvalidImageFormat
+                    throw FrameError.UnhandledImageFormat
                 }
-                size += formatString.attemptTerminatedStringEncoding(encoding).count
+                size += formatString.attemptTerminatedStringEncoding(.ascii).count
         }
         
         // append image type byte
@@ -228,7 +224,7 @@ class ImageFrame: Frame {
         if let description = description {
             size += description.attemptTerminatedStringEncoding(encoding).count
         } else {
-            size += imageType.pictureDescription.attemptTerminatedStringEncoding().count
+            size += imageType.pictureDescription.attemptTerminatedStringEncoding(encoding).count
         }
         // append image data
         size += imageData.count

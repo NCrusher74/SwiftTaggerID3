@@ -182,7 +182,7 @@ class LocalizedFrame: Frame {
         } else {
             data.append(encoding.nullTerminator)
         }
-        data.append(self.stringValue.attemptStringEncoding(encoding) ?? Data())
+        data.append(self.stringValue.attemptStringEncoding(encoding))
         return data
     }
 
@@ -211,7 +211,7 @@ class LocalizedFrame: Frame {
             size += description.attemptTerminatedStringEncoding(encoding).count
         }
 
-        size += stringValue.attemptStringEncoding(encoding)?.count ?? 0
+        size += stringValue.attemptStringEncoding(encoding).count
         let flags = version.defaultFlags
 
         super.init(identifier: identifier,

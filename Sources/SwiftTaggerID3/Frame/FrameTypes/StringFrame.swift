@@ -73,7 +73,7 @@ class StringFrame: Frame {
     override var contentData: Data {
         var data = Data()
         if self.identifier.parseAs == .url {
-            data.append(stringValue.encodedASCII)
+            data.append(stringValue.encodedISOLatin1)
         } else {
             let encoding = String.Encoding(string: stringValue)
             data.append(encoding.encodingByte)
@@ -83,7 +83,7 @@ class StringFrame: Frame {
                     data.append(language.attemptTerminatedStringEncoding(encoding))
                 }
             } else {
-                data.append(stringValue.attemptStringEncoding(encoding) ?? Data())
+                data.append(stringValue.attemptStringEncoding(encoding))
             }
         }
         return data
@@ -106,7 +106,7 @@ class StringFrame: Frame {
             size = stringValue.encodedISOLatin1.count
         } else {
             let encoding = String.Encoding(string: stringValue)
-            size = (stringValue.attemptStringEncoding(encoding)?.count ?? 0) + 1 // encoding byte
+            size = (stringValue.attemptStringEncoding(encoding).count) + 1 // encoding byte
         }
         // use the default flags
         let flags = version.defaultFlags

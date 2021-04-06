@@ -118,7 +118,7 @@ extension Array where Element == String {
         }
         var data = Data()
         for item in newArray {
-            data.append(item.attemptStringEncoding(encoding) ?? Data())
+            data.append(item.attemptStringEncoding(encoding))
         }
         return data
     }
@@ -179,7 +179,7 @@ extension Array where Element == String {
         }
         var data = Data()
         for item in newArray {
-            data.append(item.attemptStringEncoding(encoding) ?? Data())
+            data.append(item.attemptStringEncoding(encoding))
         }
         return data
     }
@@ -249,7 +249,7 @@ extension Array where Element == String {
         }
         var data = Data()
         for item in newArray {
-            data.append(item.attemptStringEncoding(encoding) ?? Data())
+            data.append(item.attemptStringEncoding(encoding))
         }
         return data
     }
