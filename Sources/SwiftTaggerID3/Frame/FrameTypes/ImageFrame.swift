@@ -152,6 +152,7 @@ class ImageFrame: Frame {
                         } else {
                             throw FrameError.UnhandledImageFormat
                         }
+                        data.append(formatString.encodedASCII)
                     case .v2_3, .v2_4:
                         /// These versions require a MIME-type string
                         if self.imageFormat == .jpg {
@@ -161,8 +162,8 @@ class ImageFrame: Frame {
                         } else {
                             throw FrameError.UnhandledImageFormat
                         }
+                        data.append(formatString.attemptTerminatedStringEncoding(.ascii))
                 }
-                data.append(formatString.encodedASCII)
             } catch {
                 print("Image frame \(descriptionString ?? imageType.pictureDescription) contains invalid image format. Images must be jpg or png. Aborting encoding of this frame")
                 return Data()
