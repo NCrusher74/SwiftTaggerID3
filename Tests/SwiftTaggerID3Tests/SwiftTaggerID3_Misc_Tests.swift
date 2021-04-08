@@ -263,4 +263,19 @@ class SwiftTaggerID3_Misc_Tests: XCTestCase {
         XCTAssertEqual(output.work, testString)
     }
 
+    func testSamples() throws {
+        let sample1Path = "/Users/nolainecrusher/Downloads/NEW FOLDER/Magic System - 1er Gaou.mp3"
+        let sample2Path = "/Users/nolainecrusher/Downloads/NEW FOLDER/Travis Scott - SICKO MODE.mp3"
+        
+        let sample1Url = URL(fileURLWithPath: sample1Path)
+        let sample2Url = URL(fileURLWithPath: sample2Path)
+        
+        let sample1File = try Mp3File(location: sample1Url)
+        let sample2File = try Mp3File(location: sample2Url)
+        
+        let samplePic = URL(fileURLWithPath: "/Users/nolainecrusher/Downloads/audiobook/testfiles/covers/SampleCoverPurple.jpg")
+        var tag = try sample1File.tag()
+        try tag.set(attachedPicture: .frontCover, imageLocation: samplePic, description: "Description")
+        try sample1File.write(tag: &tag, version: .v2_4, outputLocation: URL(fileURLWithPath: "/Users/nolainecrusher/Desktop/TestOutput/sample1.mp3"))
+    }
 }

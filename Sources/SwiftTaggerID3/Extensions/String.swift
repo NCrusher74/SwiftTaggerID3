@@ -27,11 +27,11 @@ extension String {
     }
     
     /// Convert a string to data without null terminator
-    func attemptStringEncoding(_ encoding: String.Encoding = .isoLatin1) -> Data? {
+    func attemptStringEncoding(_ encoding: String.Encoding = .isoLatin1) -> Data {
         if let encoded = self.data(using: encoding) {
             return encoded
         } else {
-            return nil
+            return Data()
         }
     }
 
