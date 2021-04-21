@@ -54,33 +54,32 @@ class ImageFrame: Frame {
          size: Int,
          flags: Data,
          payload: Data) throws {
+        print("id: \(identifier)")
+        print("size: \(size)")
+
         var data = payload
         
         let encoding = try data.extractEncoding()
-        
+        print("encoding:: \(encoding)")
+
         var imageFormat: ImageFormat? = nil
         switch version {
             // get MIME or format-type string to determine format
             case .v2_3, .v2_4 :
-                if let formatString = data.extractNullTerminatedString(.ascii) {
-                    if formatString.contains("jpeg") {
-                        imageFormat = .jpg
-                    } else if formatString.contains("png") {
-                        imageFormat = .png
-                    } else {
-                        imageFormat = nil
-                    }
-                } else {
-                    imageFormat = nil
+                print("version: \(version)")
+                if let formatString = data.extractNullTerminatedString(encoding) {
+                    imageFormat = ImageFormat(nil, formatString, version: version)
                 }
             case .v2_2:
-                let formatString = try String(ascii: data.extractFirst(3))
-                if formatString.lowercased() == "jpg" {
-                    self.imageFormat = .jpg
-                } else if formatString.lowercased() == "png" {
-                    self.imageFormat = .png
-                } else {
-                    throw FrameError.UnhandledImageFormat
+                print("version: \(version)")
+                if let formatString = String(bytes: data.extractFirst(3), encoding: encoding) {
+                    print("formatString: \(formatString)")
+                    if let format = ImageFormat(nil, formatString, version: version) {
+                        imageFormat = format
+                        print("format: \(format.rawValue)")
+                    } else {
+                        throw FrameError.UnhandledImageFormat
+                    }
                 }
         }
         
@@ -99,13 +98,9 @@ class ImageFrame: Frame {
             self.imageFormat = format
         } else {
             let range = data.startIndex ..< data.index(data.startIndex, offsetBy: 4)
-            let firstFourBytes = data.subdata(in: range)
-            let jpegMagicNumber: Data = Data([0xff, 0xd8, 0xff, 0xe0])
-            let pngMagicNumber: Data = Data([0x89, 0x50, 0x4e, 0x47])
-            if firstFourBytes == jpegMagicNumber {
-                self.imageFormat = .jpg
-            } else if firstFourBytes == pngMagicNumber {
-                self.imageFormat = .png
+            let firstFourBytes = data[range]
+            if let format = ImageFormat(firstFourBytes) {
+                self.imageFormat = format
             } else {
                 throw FrameError.UnhandledImageFormat
             }
@@ -149,20 +144,32 @@ class ImageFrame: Frame {
                             formatString = "jpg"
                         } else if self.imageFormat == .png {
                             formatString = "png"
+                        } else if self.imageFormat == .bmp {
+                            formatString = "bmp"
+                        } else if self.imageFormat == .gif {
+                            formatString = "gif"
+                        } else if self.imageFormat == .tiff {
+                            formatString = "tif"
                         } else {
                             throw FrameError.UnhandledImageFormat
                         }
-                        data.append(formatString.encodedASCII)
+                        data.append(formatString.attemptStringEncoding(encoding))
                     case .v2_3, .v2_4:
                         /// These versions require a MIME-type string
                         if self.imageFormat == .jpg {
                             formatString = "image/jpeg"
                         } else if self.imageFormat == .png {
                             formatString = "image/png"
+                        } else if self.imageFormat == .bmp {
+                            formatString = "image/bmp"
+                        } else if self.imageFormat == .gif {
+                            formatString = "image/gif"
+                        } else if self.imageFormat == .tiff {
+                            formatString = "image/tiff"
                         } else {
                             throw FrameError.UnhandledImageFormat
                         }
-                        data.append(formatString.attemptTerminatedStringEncoding(.ascii))
+                        data.append(formatString.attemptTerminatedStringEncoding(encoding))
                 }
             } catch {
                 print("Image frame \(descriptionString ?? imageType.pictureDescription) contains invalid image format. Images must be jpg or png. Aborting encoding of this frame")
@@ -213,10 +220,16 @@ class ImageFrame: Frame {
                     formatString = "image/jpeg"
                 } else if imageFormat == .png {
                     formatString = "image/png"
+                } else if imageFormat == .bmp {
+                    formatString = "image/bmp"
+                } else if imageFormat == .gif {
+                    formatString = "image/gif"
+                } else if imageFormat == .tiff {
+                    formatString = "image/tiff"
                 } else {
                     throw FrameError.UnhandledImageFormat
                 }
-                size += formatString.attemptTerminatedStringEncoding(.ascii).count
+                size += formatString.attemptTerminatedStringEncoding(encoding).count
         }
         
         // append image type byte
@@ -259,16 +272,12 @@ extension Tag {
         let frameKey = identifier.frameKey(imageType: type)
         let data = try Data(contentsOf: imageLocation)
         
-        var format: ImageFormat = .jpg
+        let imageFormat: ImageFormat
         let range = data.startIndex ..< data.index(data.startIndex, offsetBy: 4)
         // magic numbers are more reliable than extension
-        let firstFourBytes = data.subdata(in: range)
-        let jpegMagicNumber: Data = Data([0xff, 0xd8, 0xff, 0xe0])
-        let pngMagicNumber: Data = Data([0x89, 0x50, 0x4e, 0x47])
-        if firstFourBytes == jpegMagicNumber {
-            format = .jpg
-        } else if firstFourBytes == pngMagicNumber {
-            format = .png
+        let firstFourBytes = data[range]
+        if let format = ImageFormat(firstFourBytes) {
+            imageFormat = format
         } else {
             throw FrameError.UnhandledImageFormat
         }
@@ -278,7 +287,7 @@ extension Tag {
         let frame = try ImageFrame(identifier,
                                    version: self.version,
                                    imageType: type,
-                                   imageFormat: format,
+                                   imageFormat: imageFormat,
                                    description: description,
                                    imageData: data)
         self.frames[frameKey] = frame

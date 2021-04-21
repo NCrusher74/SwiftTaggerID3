@@ -52,7 +52,7 @@ public struct Tag {
         // at this point the remainder should be all the frames data, without the 10-byte tag header
         // set range of frames data using tag size as the upper bound
         let tagDataRange = remainder.startIndex ..< remainder.startIndex + size
-        remainder = remainder.subdata(in: tagDataRange)
+        remainder = remainder[tagDataRange]
 
         // parse frames from the remaining tag data
         var frames: [FrameKey : Frame] = [:]
@@ -62,6 +62,7 @@ public struct Tag {
             if let frame = try remainder.extractAndParseToFrame(version) {
                 // get the frame key
                 let frameKey = frame.frameKey
+                print(frameKey)
                 // add frame to dictionary
                 frames[frameKey] = frame
             }

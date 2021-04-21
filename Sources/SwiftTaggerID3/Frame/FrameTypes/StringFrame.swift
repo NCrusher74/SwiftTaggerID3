@@ -568,7 +568,6 @@ extension Tag {
                     strings.append(string)
                 }
                 let stringValue = strings.toString
-                print(stringValue)
                 set(.languages, stringValue: stringValue)
             } else {
                 set(.languages, stringValue: nil)
