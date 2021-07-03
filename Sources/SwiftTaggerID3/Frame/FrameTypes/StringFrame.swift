@@ -310,7 +310,7 @@ extension Tag {
                     let components = copyright.components(separatedBy: " (P)")
                     if let first = components.first {
                         if first.contains("\u{00A9}") {
-                            let stripped = first.dropFirst(2)
+                            let stripped = first.dropFirst()
                             return String(stripped)
                         } else {
                             return first
