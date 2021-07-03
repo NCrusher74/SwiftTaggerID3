@@ -305,24 +305,15 @@ extension Tag {
     /// Copyright getter-setter. ID3 Identifier: `TCR`/`TCOP`
     public var copyright: String? {
         get {
-            if let copyright = get(.copyright), copyright.contains(" (P)") {
-                let components = copyright.components(separatedBy: " (P)")
-                if let first = components.first {
-                    return "\u{00A9}\(first)"
-                } else {
-                    return nil
-                }
-            } else if let copyright = get(.copyright), copyright.hasPrefix("\u{00A9}") {
+            if let copyright = get(.copyright) {
                 return copyright
-            } else if let copyright = get(.copyright) {
-                return "\u{00A9}\(copyright)"
             } else {
                 return nil
             }
         }
         set {
             if let new = newValue {
-                set(.copyright, stringValue: "\u{00A9}\(new)")
+                set(.copyright, stringValue: new)
             } else {
                 set(.copyright, stringValue: nil)
             }
@@ -591,24 +582,19 @@ extension Tag {
     /// ProducedNotice getter-setter. ID3 Identifier: `TPRO`.
     public var producedNotice: String? {
         get {
-            if let string = get(.producedNotice), string.hasPrefix("\u{2117}") {
+            if let string = get(.producedNotice) {
                 return string
-            } else if let string = get(.producedNotice) {
-                return "\u{2117}\(string)"
             } else if let copyright = get(.copyright), copyright.contains(" (P)") {
                 let components = copyright.components(separatedBy: " (P)")
                 if let last = components.last {
-                    return "\u{2117}\(last)"
-                } else {
-                    return nil
+                    return last
                 }
-            } else {
-                return nil
             }
+            return nil
         }
         set {
             if let new = newValue {
-                set(.producedNotice, stringValue: "\u{2117}\(new)")
+                set(.producedNotice, stringValue: new)
             } else {
                 set(.producedNotice, stringValue: nil)
             }

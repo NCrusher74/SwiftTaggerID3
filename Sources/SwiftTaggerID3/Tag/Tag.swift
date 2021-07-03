@@ -62,7 +62,6 @@ public struct Tag {
             if let frame = try remainder.extractAndParseToFrame(version) {
                 // get the frame key
                 let frameKey = frame.frameKey
-                print(frameKey)
                 // add frame to dictionary
                 frames[frameKey] = frame
             }
