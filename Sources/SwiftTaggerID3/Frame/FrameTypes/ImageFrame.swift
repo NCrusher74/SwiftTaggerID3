@@ -54,29 +54,22 @@ class ImageFrame: Frame {
          size: Int,
          flags: Data,
          payload: Data) throws {
-        print("id: \(identifier)")
-        print("size: \(size)")
 
         var data = payload
         
         let encoding = try data.extractEncoding()
-        print("encoding:: \(encoding)")
 
         var imageFormat: ImageFormat? = nil
         switch version {
             // get MIME or format-type string to determine format
             case .v2_3, .v2_4 :
-                print("version: \(version)")
                 if let formatString = data.extractNullTerminatedString(encoding) {
                     imageFormat = ImageFormat(nil, formatString, version: version)
                 }
             case .v2_2:
-                print("version: \(version)")
                 if let formatString = String(bytes: data.extractFirst(3), encoding: encoding) {
-                    print("formatString: \(formatString)")
                     if let format = ImageFormat(nil, formatString, version: version) {
                         imageFormat = format
-                        print("format: \(format.rawValue)")
                     } else {
                         throw FrameError.UnhandledImageFormat
                     }

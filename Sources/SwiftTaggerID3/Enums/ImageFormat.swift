@@ -42,7 +42,6 @@ public enum ImageFormat: String, CaseIterable {
                 return nil
             }
         } else if let mimeString = mimeString?.lowercased() {
-            print(mimeString)
             switch version {
                 case .v2_2:
                     if mimeString == "jpg" {
@@ -87,7 +86,6 @@ public enum ImageFormat: String, CaseIterable {
     
     
     init?(_ magicNumberData: Data) {
-        print(magicNumberData.hexadecimal())
         if magicNumberData == Data([0x89, 0x50, 0x4E, 0x47]) {
             self = .png
         } else if magicNumberData == Data([0x47, 0x49, 0x46, 0x38]) {
