@@ -304,27 +304,7 @@ extension Tag {
 
     /// Copyright getter-setter. ID3 Identifier: `TCR`/`TCOP`
     public var copyright: String? {
-        get {
-            if let copyright = get(.copyright) {
-                if copyright.contains(" (P)") {
-                    let components = copyright.components(separatedBy: " (P)")
-                    if let first = components.first {
-                        if first.contains("\u{00A9}") {
-                            let stripped = first.dropFirst()
-                            return String(stripped)
-                        } else {
-                            return first
-                        }
-                    } else {
-                        return nil
-                    }
-                } else {
-                    return copyright
-                }
-            } else {
-                return nil
-            }
-        }
+        get { get(.copyright) }
         set {
             if let new = newValue {
                 set(.copyright, stringValue: new)
@@ -595,17 +575,7 @@ extension Tag {
 
     /// ProducedNotice getter-setter. ID3 Identifier: `TPRO`.
     public var producedNotice: String? {
-        get {
-            if let string = get(.producedNotice) {
-                return string
-            } else if let copyright = get(.copyright), copyright.contains(" (P)") {
-                let components = copyright.components(separatedBy: " (P)")
-                if let last = components.last {
-                    return last
-                }
-            }
-            return nil
-        }
+        get { get(.producedNotice) }
         set {
             if let new = newValue {
                 set(.producedNotice, stringValue: new)

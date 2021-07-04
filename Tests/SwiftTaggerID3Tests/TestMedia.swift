@@ -200,3 +200,8 @@ public let localOutputDirectory: URL = {
     }
 }()
 
+public let localDirectory: URL = {
+    return FileManager.default
+        .homeDirectoryForCurrentUser
+        .appendingPathComponent("Downloads/audiobook")
+}()
