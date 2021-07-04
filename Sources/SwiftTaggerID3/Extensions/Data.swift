@@ -63,7 +63,7 @@ extension Data {
     mutating func extractDescriptionAndContent(_ encoding: String.Encoding) -> (description: String?, content: String) {
         let description = self.extractNullTerminatedString(encoding)
         
-        let content = String(bytes: self, encoding: encoding) ?? ""
+        let content = decodeString(encoding)
         
         return (description: description, content: content)
     }
