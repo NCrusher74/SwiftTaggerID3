@@ -50,6 +50,7 @@ class StringFrame: Frame {
             self.stringValue = try String(ascii: payload)
         } else {
             let encoding = try data.extractEncoding()
+
             if identifier == .languages {
                 self.stringValue = data.extractNullTerminatedString(encoding) ?? "und"
             } else {

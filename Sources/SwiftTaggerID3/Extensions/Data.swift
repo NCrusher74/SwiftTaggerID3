@@ -16,7 +16,7 @@ extension Data {
     /// - Parameter encoding: The `String.Encoding` type parsed out of the frame content previously
     /// - Returns: 1 or 0, if a value can be determined
     mutating func decodeBooleanString(_ encoding: String.Encoding) -> String {
-        if let string = String(data: self, encoding: encoding) {
+        if let string = self.extractNullTerminatedString(encoding) {
             switch string.lowercased() {
                 case "true", "t", "yes", "y", "1":
                     return "1"
@@ -31,7 +31,7 @@ extension Data {
     }
     
     mutating func decodeString(_ encoding: String.Encoding) -> String {
-        if let string = String(data: self, encoding: encoding) {
+        if let string = self.extractNullTerminatedString(encoding) {
             return string
         } else {
             return ""

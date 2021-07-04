@@ -53,7 +53,6 @@ extension Data.SubSequence {
     @available(OSX 10.12, iOS 12.0, *)
     mutating func extractAndParseToFrame(_ version: Version) throws -> Frame? {
         // extract the identifier data
-
         let idData = self.extractFirst(version.idLength)
         // if the first byte is 0, it's padding, not identifier
         guard idData.first != 0x00 else {
@@ -61,7 +60,7 @@ extension Data.SubSequence {
         }
         let idString = try String(ascii: idData)
         let identifier = FrameIdentifier(idString: idString)
-        
+                
         let frameSizeData = self.extractFirst(version.sizeLength)
         let size: Int
         switch version {
@@ -74,8 +73,9 @@ extension Data.SubSequence {
             case .v2_2: flags = Data()
             case .v2_3, .v2_4: flags = self.extractFirst(2)
         }
-
+        
         let payload = self.extractFirst(size)
+
         return try identifier.parse(version: version,
                                     size: size,
                                     flags: flags,
