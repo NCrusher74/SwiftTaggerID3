@@ -262,46 +262,4 @@ class SwiftTaggerID3_Misc_Tests: XCTestCase {
         XCTAssertEqual(output.titleSort, testString)
         XCTAssertEqual(output.work, testString)
     }
-    
-    func testAudibleParsing() throws {
-        let url = localDirectory.appendingPathComponent("test-real/basilisk.mp3")
-        let file = try XCTUnwrap(Mp3File(location: url))
-        let tag = try XCTUnwrap(Tag(mp3File: file))
-        
-        print(tag.album)
-        print(tag.artist)
-        print(tag.albumArtist)
-        print(tag.copyright)
-        print(tag.genre.genreCategory)
-        print(tag.recordingDateTime)
-        print(tag["comment"])
-    }
-    
-    func testPrint() throws {
-        let url = localDirectory.appendingPathComponent("test-real/basilisk.mp3")
-        let file = try XCTUnwrap(Mp3File(location: url))
-        let data = file.data[00000148 ..< 00000212]
-        print(data.hexadecimal())
-        
-        /*
-         54 49 54 32 // TIT2
-         0 0 0 36 // size (54)
-         0 0 // flags
-         3 // encoding byte
-         4f 6e 20 42
-         61 73 69 6c
-         69 73 6b 20
-         53 74 61 74
-         69 6f 6e 20
-         50 61 72 74
-         20 31 3a 20
-         48 6f 6e 6f
-         72 20 48 61
-         72 72 69 6e
-         67 74 6f 6e
-         2c 20 42 6f
-         6f 6b 20 31 // "On Basilisk Station Part 1: Honor Harrington, Book 1" (count: 52)
-         0 // term
-         */
-    }
 }

@@ -118,7 +118,7 @@ class DateFrame: Frame {
         } else if identifier == .year ||
                     // versions 2.2 and 2.3 should only have a year for this frame
                     (identifier == .originalReleaseDateTime &&
-                        (version == .v2_2 || version == .v2_3)) {
+                        (version == .v2_2 || version == .v2_3)) || dateString.count == 4 {
             self.timeStamp = try dateString.yearFromYYYYString()
         } else {
             let date = dateString.attemptDateFromString()
