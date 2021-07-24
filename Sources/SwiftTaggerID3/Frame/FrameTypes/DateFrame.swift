@@ -107,9 +107,12 @@ class DateFrame: Frame {
     ) throws {
         var data = payload
         let encoding = try data.extractEncoding()
-        let dateString = data.decodeString(encoding)
+        let dateString = String(data: data, encoding: encoding)
         
-        guard dateString != "" else { throw FrameError.InvalidDateString }
+        guard let dateString = dateString else {
+            throw FrameError.InvalidDateString
+        }
+        
         // assumes frame contents are spec-compliant, 4-characters, DDMM string
         if identifier == .date {
             // assumes frame contents are spec-compliant, 4-characters, HHmm string

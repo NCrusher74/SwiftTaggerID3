@@ -53,8 +53,8 @@ class SwiftTaggerID3_Misc_Tests: XCTestCase {
         tag.title = testString
         tag.titleSort = testString
         
-//        let outputUrl = tempOutputDirectory
-        let outputUrl = localOutputDirectory
+        let outputUrl = tempOutputDirectory
+//        let outputUrl = localOutputDirectory
         XCTAssertNoThrow(try mp3NoMeta.write(tag: &tag,
                                              version: .v2_4,
                                              outputLocation: outputUrl))

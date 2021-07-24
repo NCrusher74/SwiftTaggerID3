@@ -53,18 +53,19 @@ class StringFrame: Frame {
             self.stringValue = try String(ascii: payload)
         } else {
             let encoding = try data.extractEncoding()
-            print(encoding.description)
             
             if identifier == .languages {
                 self.stringValue = data.extractNullTerminatedString(encoding) ?? "und"
-                print(stringValue)
+
             } else {
                 if identifier.parseAs == .boolean {
                     // since the compilation frame is technically a string frame, it may contain a "boolean-esque" string, like "true" or "yes". We will attempt to catch those cases as well.
                     self.stringValue = data.decodeBooleanString(encoding)
+                    print(stringValue)
                 } else {
                     // everything else is handled as a string (or numeric string)
                     self.stringValue = data.decodeString(encoding)
+                    print(stringValue)
                 }
             }
         }
