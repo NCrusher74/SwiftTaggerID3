@@ -53,7 +53,8 @@ extension Tag {
             .filter({$0.value.identifier != .tableOfContents})
            
         for (key, frame) in frames {
-            let keyString = key.keyString(format: format)
+            var keyString = key.keyString(format: format)
+            cleanString(keyString: &keyString)
             let valueString = frame.description
             metadata.append((keyString, valueString))
         }
@@ -117,6 +118,12 @@ extension Tag {
             string.append(joined)
         }
         return string
+    }
+
+    private func cleanString(keyString: inout String) {
+        keyString = keyString.replacingOccurrences(of: " I D", with: " ID")
+        keyString = keyString.replacingOccurrences(of: "U R L", with: "URL")
+        keyString = keyString.replacingOccurrences(of: "  ", with: " ")
     }
 }
 

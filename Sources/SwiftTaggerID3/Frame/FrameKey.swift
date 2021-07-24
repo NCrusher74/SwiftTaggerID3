@@ -381,7 +381,7 @@ extension FrameKey {
             case .audioSourceWebpage: return "audioSourceWebpage"
             case .bpm: return "bpm"
             case .chapter(startTime: let startTime): return "chapter (\(startTime) ms)"
-            case .comments(language: let language, description: let description): return "comment (\(language.isoName), \(description))"
+            case .comments(language: _, description: let description): return description
             case .compilation: return "compilation"
             case .composer: return "composer"
             case .composerSort: return "composerSort"
@@ -438,9 +438,9 @@ extension FrameKey {
             case .title: return "title"
             case .titleSort: return "titleSort"
             case .trackNumber: return "trackNumber"
-            case .unsynchronizedLyrics(language: let language, description: let description): return "lyrics (\(language.isoName), \(description))"
+            case .unsynchronizedLyrics(language: _, description: let description): return description
             case .userDefinedText(let string): return string
-            case .userDefinedWebpage(let string): return "Web: \(string)"
+            case .userDefinedWebpage(let string): return string
             case .year: return "year"
             case .passThrough(idString: let idString, uuid: _): return idString
         }

@@ -144,6 +144,9 @@ public struct Tag {
     let tagSizeLength: Int = 4
     
     public mutating func removeAllMetadata() {
-        self.frames = [:]
+        self.frames = self.frames
+            .filter({$0.value.identifier == .chapter ||
+                        $0.value.identifier == .tableOfContents ||
+                        $0.value.identifier == .attachedPicture})
     }
 }
