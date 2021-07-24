@@ -38,6 +38,18 @@ import Foundation
 ///
 /// Handled as a dictionary: `[role : [array of people performing the role]]`
 class CreditsFrame: Frame {
+    
+    override var description: String {
+        var string = String()
+        let sorted = credits.sorted(by: {$0.key < $1.key})
+        
+        for (key, value) in sorted {
+            let joined = key + ": " + value.joined(separator: "; ")
+            string.append(joined)
+        }
+        return string
+    }
+    
     /// The dictionary of `[role : [array of people performing the role]]`
     var credits: [ String : [String] ]
     

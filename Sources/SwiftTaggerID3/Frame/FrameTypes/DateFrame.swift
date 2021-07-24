@@ -74,18 +74,19 @@ import Foundation
 
 @available(OSX 10.12, iOS 12.0, *)
 class DateFrame: Frame {
+
     override var description: String {
         let formatter = ISO8601DateFormatter()
         formatter.formatOptions = [.withInternetDateTime]
         formatter.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
         if let date = self.timeStamp {
             let string = formatter.string(from: date)
-            return "\(self.identifier.rawValue): \(string)"
+            return string
         } else {
-            return "\(self.identifier.rawValue): Invalid Date from data \(self.contentData)"
+            return "\(self.identifier.rawValue): Invalid Date"
         }
     }
-
+    
     // MARK: Frame parsing
     // needs to be in ISO-8601 format
     var timeStamp: Date?

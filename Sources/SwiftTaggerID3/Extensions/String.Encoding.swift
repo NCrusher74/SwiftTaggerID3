@@ -11,10 +11,8 @@ import Foundation
 
 extension String.Encoding {
     init(byte: Data?) throws {
-        if byte == nil {
-            self = .ascii
-        } else {
-            let uInt8 = byte?.uInt8BE
+        if let byte = byte {
+            let uInt8 = byte.uInt8BE
             switch uInt8 {
                 case 0x00: self = .isoLatin1
                 case 0x01: self = .utf16
@@ -22,6 +20,8 @@ extension String.Encoding {
                 case 0x03: self = .utf8
                 default: throw Mp3FileError.InvalidStringEncodingByte
             }
+        } else {
+            self = .ascii
         }
     }
     

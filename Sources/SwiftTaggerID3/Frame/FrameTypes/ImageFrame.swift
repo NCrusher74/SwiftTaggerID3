@@ -41,6 +41,9 @@ import SwiftConvenienceExtensions
 
 ///  A type representing an ID3 frame that contains an attached image
 class ImageFrame: Frame {
+    override var description: String {
+        descriptionString ?? imageType.pictureDescription
+    }
     
     /// The frame's image contents
     var imageData: Data

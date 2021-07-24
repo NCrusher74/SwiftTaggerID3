@@ -61,7 +61,11 @@
 import Foundation
 /// A type representing a frame with up to three optional strings as content, at least one of which is selected from a preset list of options. This type manages frames `genreType`, `mediaType`, and `fileType`
 class ComplexTypesFrame: Frame {
-
+    
+    override var description: String {
+        contentArray.joined(separator: "; ")
+    }
+    
     var contentArray: [String]
     
     init(identifier: FrameIdentifier,

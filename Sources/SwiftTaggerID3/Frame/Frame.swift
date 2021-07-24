@@ -18,9 +18,9 @@ import Foundation
  */
 public class Frame: CustomStringConvertible {
     public var description: String {
-        return self.identifier.rawValue
+        fatalError("Override from metadata atom \(identifier.rawValue)")
     }
-    
+
     var identifier: FrameIdentifier
     var version: Version
     var size: Int
@@ -39,16 +39,14 @@ public class Frame: CustomStringConvertible {
     var frameKey: FrameKey {
         switch self.identifier {
             case .attachedPicture, .chapter, .comments, .unsynchronizedLyrics, .userDefinedText, .userDefinedWebpage, .passThrough:
-                fatalError("Override from frame subclass is required")
+                fatalError("Override frameKey in subclass \(type(of: self))")
             default: return self.identifier.frameKey
         }
     }
-
     
     var contentData: Data {
-        fatalError("Override from frame subclass is required")
+        fatalError("Override contentData in subclass \(type(of: self))")
     }
-    
     
     var encode: Data {
         guard self.contentData != Data() else {
@@ -78,7 +76,6 @@ public class Frame: CustomStringConvertible {
     /// - Returns:
     ///   - Version 2.2: three bytes of frame-size data.
     ///   - Versions 2.3 & 2.4: four bytes of frame-size data
-    
     private var encodedFrameContentSize: Data {
         let contentSize = self.contentData.count.uInt32
         switch self.version {

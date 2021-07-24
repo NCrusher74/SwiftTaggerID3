@@ -32,6 +32,9 @@ import SwiftLanguageAndLocaleCodes
 ///
 /// Therefore, this frame also handles simple, single-value integer and boolean frames
 class StringFrame: Frame {
+    override var description: String {
+        stringValue
+    }
     /// The contents of the frame, consisting of a single, unterminated string without new lines
     /// This sting may be a URL for an external webpage, or a numeric string for integer and boolean values
     var stringValue: String
@@ -50,9 +53,11 @@ class StringFrame: Frame {
             self.stringValue = try String(ascii: payload)
         } else {
             let encoding = try data.extractEncoding()
-
+            print(encoding.description)
+            
             if identifier == .languages {
                 self.stringValue = data.extractNullTerminatedString(encoding) ?? "und"
+                print(stringValue)
             } else {
                 if identifier.parseAs == .boolean {
                     // since the compilation frame is technically a string frame, it may contain a "boolean-esque" string, like "true" or "yes". We will attempt to catch those cases as well.
@@ -63,6 +68,7 @@ class StringFrame: Frame {
                 }
             }
         }
+
         super.init(identifier: identifier,
                    version: version,
                    size: size,

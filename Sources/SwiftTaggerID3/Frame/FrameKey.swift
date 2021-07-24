@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftLanguageAndLocaleCodes
+import SwiftConvenienceExtensions
 
 /// The unique key used to refer to a particular frame.
 ///
@@ -332,4 +333,196 @@ public enum FrameKey: Hashable {
     case year
     /// any frame not handled by SwiftTagger
     case passThrough(idString: String, uuid: UUID)
+}
+
+extension FrameKey {
+    var upperCasedStringValue: String {
+        self.stringValue.convertCamelToUpperCase()
+            .replacingOccurrences(of: " I D", with: " ID")
+    }
+    
+    var capitalizedStringValue: String {
+        self.stringValue.convertedCamelCase()
+            .replacingOccurrences(of: " I D", with: " ID")
+    }
+    
+    func keyString(format: MetadataExportFormat) -> String {
+        let idString: String
+        let id = FrameIdentifier(frameKey: self)
+
+        if let string = Version.v2_4.idString(id) {
+            idString = string
+        } else if let string = Version.v2_3.idString(id) {
+            idString = string
+        } else if let string = Version.v2_2.idString(id) {
+            idString = string
+        } else {
+            idString = "UNKN"
+        }
+        
+        switch format {
+            case .text: return "(\(idString)) " + upperCasedStringValue
+            default: return idString
+        }
+    }
+    
+    var stringValue: String {
+        switch self {
+            case .album: return "album"
+            case .albumSort: return "albumSort"
+            case .albumArtist: return "albumArtist"
+            case .albumArtistSort: return "albumArtistSort"
+            case .arranger: return "arranger"
+            case .artist: return "artist"
+            case .artistSort: return "artistSort"
+            case .artistWebpage: return "artistWebpage"
+            case .attachedPicture(imageType: let imageType): return "artwork (\(imageType.pictureDescription))"
+            case .audioFileWebpage: return "audioFileWebpage"
+            case .audioSourceWebpage: return "audioSourceWebpage"
+            case .bpm: return "bpm"
+            case .chapter(startTime: let startTime): return "chapter (\(startTime) ms)"
+            case .comments(language: let language, description: let description): return "comment (\(language.isoName), \(description))"
+            case .compilation: return "compilation"
+            case .composer: return "composer"
+            case .composerSort: return "composerSort"
+            case .conductor: return "conductor"
+            case .contentGroup: return "contentGroup"
+            case .copyright: return "copyright"
+            case .copyrightWebpage: return "copyrightWebpage"
+            case .date: return "date"
+            case .discNumber: return "discNumber"
+            case .encodingDateTime: return "encodingDateTime"
+            case .encodedBy: return "encodedBy"
+            case .encodingSettings: return "encodingSettings"
+            case .fileType: return "fileType"
+            case .fileOwner: return "fileOwner"
+            case .genre: return "genre"
+            case .grouping: return "grouping"
+            case .initialKey: return "initialKey"
+            case .involvedPeopleList: return "involvedPeopleList"
+            case .isrc: return "isrc"
+            case .languages: return "languages"
+            case .length: return "length"
+            case .lyricist: return "lyricist"
+            case .mediaType: return "mediaType"
+            case .mood: return "mood"
+            case .movementCount: return "movementCount"
+            case .movement: return "movement"
+            case .movementNumber: return "movementNumber"
+            case .musicianCreditsList: return "musicianCreditsList"
+            case .originalAlbum: return "originalAlbum"
+            case .originalArtist: return "originalArtist"
+            case .originalFilename: return "originalFilename"
+            case .originalLyricist: return "originalLyricist"
+            case .originalReleaseDateTime: return "originalReleaseDateTime"
+            case .paymentWebpage: return "paymentWebpage"
+            case .playlistDelay: return "playlistDelay"
+            case .podcastCategory: return "podcastCategory"
+            case .podcastDescription: return "podcastDescription"
+            case .podcastID: return "podcastID"
+            case .podcastKeywords: return "podcastKeywords"
+            case .podcastFeed: return "podcastFeed"
+            case .producedNotice: return "producedNotice"
+            case .publisher: return "publisher"
+            case .publisherWebpage: return "publisherWebpage"
+            case .radioStation: return "radioStation"
+            case .radioStationOwner: return "radioStationOwner"
+            case .radioStationWebpage: return "radioStationWebpage"
+            case .recordingDateTime: return "recordingDateTime"
+            case .releaseDateTime: return "releaseDateTime"
+            case .setSubtitle: return "setSubtitle"
+            case .subtitle: return "subtitle"
+            case .tableOfContents: return "tableOfContents"
+            case .taggingDateTime: return "taggingDateTime"
+            case .time: return "time"
+            case .title: return "title"
+            case .titleSort: return "titleSort"
+            case .trackNumber: return "trackNumber"
+            case .unsynchronizedLyrics(language: let language, description: let description): return "lyrics (\(language.isoName), \(description))"
+            case .userDefinedText(let string): return string
+            case .userDefinedWebpage(let string): return "Web: \(string)"
+            case .year: return "year"
+            case .passThrough(idString: let idString, uuid: _): return idString
+        }
+    }
+    
+    var priority: Int {
+        switch self {
+            case .bpm: return 35
+            case .compilation: return 12
+            case .playlistDelay: return 34
+            case .movementCount: return 23
+            case .movementNumber: return 22
+            case .mediaType: return 36
+            case .year: return 15
+            case .album: return 1
+            case .albumArtist: return 3
+            case .albumArtistSort: return 4
+            case .albumSort: return 2
+            case .arranger: return 37
+            case .artist: return 8
+            case .artistSort: return 9
+            case .podcastCategory: return 26
+            case .comments(language: _, description: _): return 13
+            case .composer: return 10
+            case .composerSort: return 11
+            case .conductor: return 38
+            case .copyright: return 33
+            case .encodedBy: return 41
+            case .encodingSettings: return 42
+            case .fileType: return 43
+            case .grouping: return 27
+            case .isrc: return 28
+            case .podcastKeywords: return 29
+            case .unsynchronizedLyrics(language: _, description: _): return 47
+            case .lyricist: return 48
+            case .movement: return 21
+            case .originalArtist: return 29
+            case .fileOwner: return 32
+            case .musicianCreditsList: return 40
+            case .involvedPeopleList: return 41
+            case .podcastID: return 14
+            case .podcastFeed: return 25
+            case .genre: return 26
+            case .publisher: return 30
+            case .publisherWebpage: return 31
+            case .recordingDateTime: return 16
+            case .producedNotice: return 39
+            case .releaseDateTime: return 17
+            case .subtitle: return 5
+            case .title: return 6
+            case .titleSort: return 7
+            case .audioSourceWebpage: return 44
+            case .audioFileWebpage: return 45
+            case .contentGroup: return 20
+            case .trackNumber: return 19
+            case .discNumber: return 18
+            case .userDefinedText(_): return 46
+            case .artistWebpage: return 49
+            case .attachedPicture(imageType: _): return 50
+            case .chapter(startTime: _): return 72
+            case .copyrightWebpage: return 66
+            case .date: return 51
+            case .encodingDateTime: return 53
+            case .initialKey: return 54
+            case .languages: return 55
+            case .length: return 56
+            case .mood: return 57
+            case .originalAlbum: return 58
+            case .originalFilename: return 59
+            case .originalLyricist: return 60
+            case .originalReleaseDateTime: return 61
+            case .paymentWebpage: return 62
+            case .podcastDescription: return 63
+            case .radioStation: return 64
+            case .radioStationOwner: return 65
+            case .radioStationWebpage: return 65
+            case .setSubtitle: return 66
+            case .tableOfContents: return 71
+            case .taggingDateTime: return 68
+            case .time: return 52
+            case .userDefinedWebpage(_): return 69
+            case .passThrough(idString: _, uuid: _): return 70
+        }
+    }
 }

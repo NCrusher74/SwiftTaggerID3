@@ -24,9 +24,17 @@
 import Foundation
 import SwiftConvenienceExtensions
 class PartAndTotalFrame: Frame {
+    
     override var description: String {
-        return "\(self.identifier.rawValue): \(self.part) of \(self.total ?? 0)"
+        let string: String
+        if let total = self.total {
+            string = "\(part)/\(total)"
+        } else {
+            string = String(part)
+        }
+        return string
     }
+    
     /// The index of the track or disc in the set
     var part: Int
     /// The total number of tracks/discs in the set
@@ -57,7 +65,6 @@ class PartAndTotalFrame: Frame {
     }
     
     // MARK: - Frame building
-    ///
     /// Initialize a frame building instance
     /// - parameter part: the index of the track/disc.
     /// - parameter total: the total tracks/discs of the recordings.
@@ -85,12 +92,7 @@ class PartAndTotalFrame: Frame {
     }
 
     override var contentData: Data {
-        var contentString = String()
-        if let total = self.total {
-            contentString = "\(self.part)/\(total)"
-        } else {
-            contentString = String(self.part)
-        }
+        let contentString = description
 
         var data = Data()
         data.append(String.Encoding.isoLatin1.encodingByte)

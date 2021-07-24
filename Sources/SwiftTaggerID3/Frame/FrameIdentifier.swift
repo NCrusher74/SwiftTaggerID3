@@ -11,8 +11,7 @@ import Foundation
 import SwiftLanguageAndLocaleCodes
 
 /// An enumeration of ID3 standard--or iTunes compliant but non-standard--frames
-enum FrameIdentifier: String, CaseIterable {
-    
+enum FrameIdentifier: String, CaseIterable {    
     case album
     case albumSort
     case albumArtist
@@ -120,18 +119,21 @@ enum FrameIdentifier: String, CaseIterable {
             default: fatalError("Wrong frame key for identifier \(self.rawValue)")
         }
     }
+    
     func frameKey(idString: String, uuid: UUID) -> FrameKey {
         switch self {
             case .passThrough: return .passThrough(idString: idString, uuid: uuid)
             default: fatalError("Wrong frame key for identifier \(self.rawValue)")
         }
     }
+    
     func frameKey(imageType: ImageType) -> FrameKey {
         switch self {
             case .attachedPicture: return .attachedPicture(imageType: imageType)
             default: fatalError("Wrong frame key for identifier \(self.rawValue)")
         }
     }
+    
     func frameKey(language: ISO6392Code?, description: String?) -> FrameKey {
         let language = language ?? .und
         let description = description ?? ""
@@ -141,6 +143,7 @@ enum FrameIdentifier: String, CaseIterable {
             default: fatalError("Wrong frame key for identifier \(self.rawValue)")
         }
     }
+    
     func frameKey(_ description: String?) -> FrameKey {
         let description = description ?? ""
         switch self {
@@ -149,6 +152,7 @@ enum FrameIdentifier: String, CaseIterable {
             default: fatalError("Wrong frame key for identifier \(self.rawValue)")
         }
     }
+    
     var frameKey: FrameKey {
         switch self {
             case .album: return .album
@@ -220,6 +224,86 @@ enum FrameIdentifier: String, CaseIterable {
             case .trackNumber: return .trackNumber
             case .year: return .year
             default: fatalError("Wrong frame key for identifier \(self.rawValue)")
+        }
+    }
+    
+    init(frameKey: FrameKey) {
+        switch frameKey {
+            case .album: self = .album
+            case .albumArtist: self = .albumArtist
+            case .albumArtistSort: self = .albumArtistSort
+            case .albumSort: self = .albumSort
+            case .arranger: self = .arranger
+            case .artist: self = .artist
+            case .artistSort: self = .artistSort
+            case .artistWebpage: self = .artistWebpage
+            case .attachedPicture(imageType: _): self = .attachedPicture
+            case .audioFileWebpage: self = .audioFileWebpage
+            case .audioSourceWebpage: self = .audioSourceWebpage
+            case .bpm: self = .bpm
+            case .chapter(startTime: _): self = .chapter
+            case .comments(language: _, description: _): self = .comments
+            case .compilation: self = .compilation
+            case .composer: self = .composer
+            case .composerSort: self = .composerSort
+            case .conductor: self = .conductor
+            case .contentGroup: self = .contentGroup
+            case .copyright: self = .copyright
+            case .copyrightWebpage: self = .copyrightWebpage
+            case .date: self = .date
+            case .discNumber: self = .discNumber
+            case .encodingDateTime: self = .encodingDateTime
+            case .encodedBy: self = .encodedBy
+            case .encodingSettings: self = .encodingSettings
+            case .fileType: self = .fileType
+            case .fileOwner: self = .fileOwner
+            case .genre: self = .genre
+            case .grouping: self = .grouping
+            case .initialKey: self = .initialKey
+            case .involvedPeopleList: self = .involvedPeopleList
+            case .isrc: self = .isrc
+            case .languages: self = .languages
+            case .length: self = .length
+            case .lyricist: self = .lyricist
+            case .mediaType: self = .mediaType
+            case .mood: self = .mood
+            case .movementCount: self = .movementCount
+            case .movement: self = .movement
+            case .movementNumber: self = .movementNumber
+            case .musicianCreditsList: self = .musicianCreditsList
+            case .originalAlbum: self = .originalAlbum
+            case .originalArtist: self = .originalArtist
+            case .originalFilename: self = .originalFilename
+            case .originalLyricist: self = .originalLyricist
+            case .originalReleaseDateTime: self = .originalReleaseDateTime
+            case .paymentWebpage: self = .paymentWebpage
+            case .playlistDelay: self = .playlistDelay
+            case .podcastCategory: self = .podcastCategory
+            case .podcastDescription: self = .podcastDescription
+            case .podcastID: self = .podcastID
+            case .podcastKeywords: self = .podcastKeywords
+            case .podcastFeed: self = .podcastFeed
+            case .producedNotice: self = .producedNotice
+            case .publisher: self = .publisher
+            case .publisherWebpage: self = .publisherWebpage
+            case .radioStation: self = .radioStation
+            case .radioStationOwner: self = .radioStationOwner
+            case .radioStationWebpage: self = .radioStationWebpage
+            case .recordingDateTime: self = .recordingDateTime
+            case .releaseDateTime: self = .releaseDateTime
+            case .setSubtitle: self = .setSubtitle
+            case .subtitle: self = .subtitle
+            case .tableOfContents: self = .tableOfContents
+            case .taggingDateTime: self = .taggingDateTime
+            case .time: self = .time
+            case .title: self = .title
+            case .titleSort: self = .titleSort
+            case .trackNumber: self = .trackNumber
+            case .unsynchronizedLyrics(language: _, description: _): self = .unsynchronizedLyrics
+            case .userDefinedText(_): self = .userDefinedText
+            case .userDefinedWebpage(_): self = .userDefinedWebpage
+            case .passThrough(idString: _, uuid: _): self = .passThrough
+            case .year: self = .year
         }
     }
     

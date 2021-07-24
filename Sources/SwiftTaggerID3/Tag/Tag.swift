@@ -21,11 +21,13 @@ public struct Tag {
     var version: Version
     var size: Int
     static var duration: Int = 0
+    var location: URL
     
     /// Instantiate a tag by parsing from MP3 file data
     
     @available(OSX 10.12, iOS 12.0, *)
     public init(mp3File: Mp3File) throws {
+        self.location = mp3File.location
         Tag.duration = mp3File.duration
         // get the file data as a subsequence. As the data is parsed when reading a tag, it will be extracted from the subsequence, leaving the remainder instact to continue parsing
         var remainder: Data.SubSequence = mp3File.data[
@@ -74,6 +76,7 @@ public struct Tag {
     init(version: Version, subframes: [FrameKey: Frame]) throws {
         self.version = version
         self.frames = subframes
+        self.location = URL(fileURLWithPath: "")
         var size = Int()
         for (_, frame) in subframes {
             size += frame.encode.count
@@ -89,6 +92,7 @@ public struct Tag {
         self.version = version
         self.frames = [:]
         self.size = 0
+        self.location = URL(fileURLWithPath: "")
     }
     
     // MARK: - Tag Building Calculations
