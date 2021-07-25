@@ -46,7 +46,7 @@ public enum FrameKey: Hashable {
     /// A URL pointing at the artists official webpage. There may be more than one "WOAR" frame in a tag if the audio contains more than one performer, but not with the same content.
     case artistWebpage
     /// Embedded image frame
-    case attachedPicture(imageType: ImageType)
+    case attachedPicture(imageType: ImageType = .other)
     /// `Official audio file webpage` frame
     ///
     /// URL pointing at a file specific webpage.
@@ -68,7 +68,7 @@ public enum FrameKey: Hashable {
     /// This frame is intended for any kind of full text information that does not fit in any other frame. ALLOWS `(/n)` new line characters.
     ///
     /// For audiobooks, this frame is frequently used to contain the book-jacket description, or "blurb"
-    case comments(language: ISO6392Code, description: String)
+    case comments(language: ISO6392Code = .und, description: String = "")
     /// `Compilation` frame
     ///
     /// This is a simple text frame that iTunes uses to indicate if the file is part of a compilation. Contains a text string (1 or 0) representing a boolean value
@@ -318,32 +318,36 @@ public enum FrameKey: Hashable {
     /// This frame contains the lyrics of the song or a text transcription of other vocal activities.
     ///
     /// For audiobooks, this is commonly used to contain a long book-jacket description or "blurb"
-    case unsynchronizedLyrics(language: ISO6392Code, description: String)
+    case unsynchronizedLyrics(language: ISO6392Code = .und, description: String = "")
     /// `UserText` frame
     ///
     /// This frame is intended for one-string text information concerning the audio file in a similar way to the other "T"-frames. DOES NOT ALLOW `(/n)` new line characters
-    case userDefinedText(String)
+    case userDefinedText(String = "")
     /// `UserDefinedWebpage` frame
     ///
     /// This frame is intended for URL [URL] links concerning the audio file in a similar way to the other "W"-frames.
-    case userDefinedWebpage(String)
+    case userDefinedWebpage(String = "")
     /// `Year` frame
     ///
     /// (versions 2.2 and 2.3 only) A numeric string with a year of the recording. This frames is always four characters long (until the year 10000). FOR VERSION 2.4: This frame is replaced by the TDRC frame, 'Recording time'
     case year
     /// any frame not handled by SwiftTagger
-    case passThrough(idString: String, uuid: UUID)
+    case passThrough(idString: String, uuid: UUID = UUID())
 }
 
 extension FrameKey {
     var upperCasedStringValue: String {
         self.stringValue.convertCamelToUpperCase()
-            .replacingOccurrences(of: " I D", with: " ID")
+        .replacingOccurrences(of: " I D", with: " ID")
+        .replacingOccurrences(of: "U R L", with: "URL")
+        .replacingOccurrences(of: "  ", with: " ")
     }
     
     var capitalizedStringValue: String {
         self.stringValue.convertedCamelCase()
             .replacingOccurrences(of: " I D", with: " ID")
+            .replacingOccurrences(of: "U R L", with: "URL")
+            .replacingOccurrences(of: "  ", with: " ")
     }
     
     func keyString(format: MetadataExportFormat) -> String {
@@ -361,7 +365,7 @@ extension FrameKey {
         }
         
         switch format {
-            case .text: return "(\(idString)) " + upperCasedStringValue
+            case .text: return "{\(idString)} " + upperCasedStringValue
             default: return idString
         }
     }
@@ -376,12 +380,19 @@ extension FrameKey {
             case .artist: return "artist"
             case .artistSort: return "artistSort"
             case .artistWebpage: return "artistWebpage"
-            case .attachedPicture(imageType: let imageType): return "artwork (\(imageType.pictureDescription))"
             case .audioFileWebpage: return "audioFileWebpage"
             case .audioSourceWebpage: return "audioSourceWebpage"
             case .bpm: return "bpm"
-            case .chapter(startTime: let startTime): return "chapter (\(startTime) ms)"
-            case .comments(language: _, description: let description): return description
+            case .comments(language: let language, description: let description):
+                if description != "" && language != .und {
+                    return "[\(language.rawValue.uppercased())] \(description.camelCased)"
+                } else if description != "" && language == .und {
+                    return description.camelCased
+                } else if description == "" && language != .und {
+                    return "[\(language.rawValue.uppercased())]"
+                } else {
+                    return "Comment"
+                }
             case .compilation: return "compilation"
             case .composer: return "composer"
             case .composerSort: return "composerSort"
@@ -432,17 +443,115 @@ extension FrameKey {
             case .releaseDateTime: return "releaseDateTime"
             case .setSubtitle: return "setSubtitle"
             case .subtitle: return "subtitle"
-            case .tableOfContents: return "tableOfContents"
             case .taggingDateTime: return "taggingDateTime"
             case .time: return "time"
             case .title: return "title"
             case .titleSort: return "titleSort"
             case .trackNumber: return "trackNumber"
-            case .unsynchronizedLyrics(language: _, description: let description): return description
-            case .userDefinedText(let string): return string
-            case .userDefinedWebpage(let string): return string
+            case .unsynchronizedLyrics(language: let language, description: let description):
+                if description != "" && language != .und {
+                    return "[\(language.rawValue.uppercased())] \(description.camelCased)"
+                } else if description != "" && language == .und {
+                    return description.camelCased
+                } else if description == "" && language != .und {
+                    return "[\(language.rawValue.uppercased())]"
+                } else {
+                    return "Lyrics"
+                }
+            case .userDefinedText(let description):
+                if description != "" {
+                    return description.camelCased
+                } else {
+                    return "userDefinedText"
+                }
+            case .userDefinedWebpage(let description):
+                if description != "" {
+                    return description.camelCased
+                } else {
+                    return "userDefinedURL"
+                }
             case .year: return "year"
             case .passThrough(idString: let idString, uuid: _): return idString
+            default: return ""
+        }
+    }
+    
+    init(rawString: String) {
+        let open = CharacterSet(charactersIn: "{")
+        let close = CharacterSet(charactersIn: "}")
+        
+        let raw = rawString.trimmingCharacters(in: open)
+        var partsArray = raw.components(separatedBy: close)
+        
+        let trimmed = partsArray.extractFirst()
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        let id = FrameIdentifier(idString: trimmed)
+        
+        let descriptionString: String
+        if partsArray.count > 1 {
+            descriptionString = partsArray.joined(separator: "}")
+        } else {
+            descriptionString = partsArray.extractFirst()
+        }
+        
+        if id == .comments || id == .unsynchronizedLyrics {
+            self.init(localized: descriptionString, id)
+        } else if id == .userDefinedText || id == .userDefinedWebpage{
+            self.init(userDefined: descriptionString, id)
+        } else {
+            self = id.frameKey
+        }
+    }
+    
+    private init(localized content: String, _ id: FrameIdentifier) {
+        var language: ISO6392Code = .und
+        var description: String = ""
+        
+        if content.contains("[") {
+            var components = content.components(separatedBy: "[")
+            
+            if components.count >= 2 {
+                description = components.extractFirst()
+                    .trimmingCharacters(in: .whitespacesAndNewlines)
+                    .capitalized
+                
+                let languageRaw = components.extractFirst()
+                    .trimmingCharacters(in: .whitespacesAndNewlines)
+                    .trimmingCharacters(in: CharacterSet(charactersIn: "]"))
+                    .lowercased()
+                language = ISO6392Code(rawValue: languageRaw) ?? .und
+            } else {
+                let languageRaw = components.extractFirst()
+                    .trimmingCharacters(in: .whitespacesAndNewlines)
+                    .trimmingCharacters(in: CharacterSet(charactersIn: "]"))
+                    .lowercased()
+                language = ISO6392Code(rawValue: languageRaw) ?? .und
+            }
+        } else if content != "COMMENT" && content.lowercased() != "LYRICS" {
+            description = content
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+                .capitalized
+        }
+        
+        if id == .comments {
+            self = .comments(language: language , description: description)
+        } else {
+            self = .unsynchronizedLyrics(language: language, description: description)
+        }
+    }
+    
+    private init(userDefined content: String, _ id: FrameIdentifier) {
+        let trimmed = content.trimmingCharacters(in: .whitespacesAndNewlines)
+        var description = ""
+
+        if trimmed != "USER DEFINED TEXT" && trimmed != "USER DEFINED URL" {
+            description = trimmed.capitalized
+        }
+        
+        if id == .userDefinedText {
+            self = .userDefinedText(description)
+        } else {
+            self = .userDefinedWebpage(description)
         }
     }
     
@@ -524,5 +633,5 @@ extension FrameKey {
             case .userDefinedWebpage(_): return 69
             case .passThrough(idString: _, uuid: _): return 70
         }
-    }
+    }    
 }

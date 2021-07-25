@@ -130,7 +130,7 @@ extension Tag {
     /// Instantiates parsing operation to retrieve a frame's contents from a `Tag`
     /// Parameter frameKey: The unique identifier of the frame
     /// Returns: The frame's contents as a human-readable, unterminated string
-    func get(_ identifier: FrameIdentifier) -> String? {
+    private func get(_ identifier: FrameIdentifier) -> String? {
         // check that the frame is a String Frame
         if let frame = self.frames[identifier.frameKey] as? StringFrame {
             // get the contentString from the frame data
@@ -145,7 +145,7 @@ extension Tag {
     ///   layout: The frame's layout identifier, necessary to initialize the frame
     ///   frameKey: The frame's unique identifier
     ///   string: The string content input by the user
-    mutating func set(_ identifier: FrameIdentifier,
+    private mutating func set(_ identifier: FrameIdentifier,
                                stringValue: String?) {
         let frameKey = identifier.frameKey
         if let stringValue = stringValue {
@@ -156,6 +156,11 @@ extension Tag {
         } else {
             self.frames[frameKey] = nil
         }
+    }
+
+    mutating func importStringFrame(
+        id: FrameIdentifier, stringValue: String) {
+        set(id, stringValue: stringValue)
     }
 
     /// Album frame getter-setter. ID3 Identifier: `TAL`/`TALB`

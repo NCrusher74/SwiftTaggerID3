@@ -95,7 +95,7 @@ enum FrameIdentifier: String, CaseIterable {
             self = .passThrough
         }
     }
-    
+        
     // MARK: - ID3Identifier
     /// The ID3 4-character code for the frame
     ///

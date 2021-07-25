@@ -110,9 +110,7 @@ extension Tag {
     ///   - frameKey: the frame's unique identifier, used to ensure frame uniqueness
     ///   - part: the position of a track or disc within a set
     ///   - total: the total number of tracks or discs in the set
-    private mutating func set(partTotalFrame identifier: FrameIdentifier,
-                               part: Int,
-                               total: Int?) {
+    private mutating func set(partTotalFrame identifier: FrameIdentifier, part: Int, total: Int?) {
         let frameKey = identifier.frameKey
         // call the frame building initializer
         let frame = PartAndTotalFrame(identifier,
@@ -122,7 +120,31 @@ extension Tag {
         self.frames[frameKey] = frame
     }
     
-    
+    mutating func importPoTFrame(id: FrameIdentifier, stringValue: String) {
+        let brackets = CharacterSet(charactersIn: "[]")
+        let trimmed = stringValue.trimmingCharacters(in: brackets)
+        
+        let components = trimmed.components(separatedBy: "/")
+        
+        guard let first = components.first else {
+            return
+        }
+        guard let part = Int(first) else {
+            return
+        }
+        
+        var total: Int? = nil
+        if components.count > 1 {
+            if let last = components.last {
+                if let int = Int(last) {
+                    total = int
+                }
+            }
+        }
+        
+        set(partTotalFrame: id, part: part, total: total)
+    }
+
     /// DiscNumber(/TotalDiscs) getter-setter. ID3 Identifier: `TPA`/`TPOS`
     public var discNumber: IntIndex {
         get {

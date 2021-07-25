@@ -231,7 +231,6 @@ extension Tag {
         }
     }
     
-    
     private mutating func set(dateFrame identifier: FrameIdentifier,
                                timeStamp: Date?) {
         if let timeStamp = timeStamp {
@@ -244,9 +243,29 @@ extension Tag {
         }
     }
     
+    mutating func importDateFrame(id: FrameIdentifier, stringValue: String) {
+        let timeStamp: Date?
+        // assumes frame contents are spec-compliant, 4-characters, DDMM string
+        if id == .date {
+            // assumes frame contents are spec-compliant, 4-characters, HHmm string
+            timeStamp = try? stringValue.dateFromDDMMString()
+        } else if id == .time {
+            timeStamp = try? stringValue.timefromHHMMString()
+        } else if id == .year ||
+                    // versions 2.2 and 2.3 should only have a year for this frame
+                    (id == .originalReleaseDateTime &&
+                        (version == .v2_2 || version == .v2_3)) || stringValue.count == 4 {
+            timeStamp = try? stringValue.yearFromYYYYString()
+        } else {
+            let date = stringValue.attemptDateFromString()
+            timeStamp = date
+        }
+        
+        set(dateFrame: id, timeStamp: timeStamp)
+    }
+    
     /// v2.4: releaseDate (`TDRL`) frame.
     /// v2.2, v2.3: date (`TDA/TDAT`) frame for DDMM values, time (`TIM/TIME`) frame for HHMM values, and year (`TYE/TYER`) frame for YYYY value
-    
     public var releaseDateTime: Date? {
         get {
             switch self.version {
@@ -342,7 +361,6 @@ extension Tag {
     }
     
     /// Version 2.4 only. Identifier `TDEN`
-    
     public var encodingDateTime: Date? {
         get {
             get(dateFrame: .encodingDateTime)

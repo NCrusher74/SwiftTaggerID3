@@ -53,8 +53,7 @@ extension Tag {
             .filter({$0.value.identifier != .tableOfContents})
            
         for (key, frame) in frames {
-            var keyString = key.keyString(format: format)
-            cleanString(keyString: &keyString)
+            let keyString = key.keyString(format: format)
             let valueString = frame.description
             metadata.append((keyString, valueString))
         }
@@ -112,18 +111,23 @@ extension Tag {
         }
         
         for (key, value) in metadata {
+            let valueString: String
+            if key == "{TCMP} COMPILATION" || key == "{TCP} COMPILATION" {
+                if value == "1" {
+                    valueString = "True"
+                } else {
+                    valueString = "False"
+                }
+            } else {
+                valueString = value
+            }
+            
             let difference = count - key.count
             let separator = ":".padRight(difference)
-            let joined = key + separator + value + "\n"
+            let joined = key + separator + valueString + "\n"
             string.append(joined)
         }
         return string
-    }
-
-    private func cleanString(keyString: inout String) {
-        keyString = keyString.replacingOccurrences(of: " I D", with: " ID")
-        keyString = keyString.replacingOccurrences(of: "U R L", with: "URL")
-        keyString = keyString.replacingOccurrences(of: "  ", with: " ")
     }
 }
 

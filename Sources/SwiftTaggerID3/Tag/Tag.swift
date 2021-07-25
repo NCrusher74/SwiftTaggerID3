@@ -18,7 +18,7 @@ public struct Tag {
      ID3v2 size             4 * %0xxxxxxx -- 4 bytes (Synchsafe Uint32)
      */
     public var frames: [FrameKey: Frame]
-    var version: Version
+    var version: Version = .v2_4
     var size: Int
     static var duration: Int = 0
     var location: URL
