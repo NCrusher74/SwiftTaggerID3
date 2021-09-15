@@ -13,6 +13,14 @@ import XCTest
 
 class SwiftTaggerID3_Read_Tests: XCTestCase {
     
+    func testPrint() throws {
+        let path = "/Users/crystalwooley/Downloads/audiobook/testfiles/LAV1308607275.mp3"
+        let url = URL(fileURLWithPath: path)
+        let mp3 = try Mp3File(location: url)
+        let tag = try mp3.tag()
+        print(tag.frames)
+    }
+    
     // test reading of V24 tag from file
     func testV24Reading() throws {
         let tag = tagV24

@@ -86,13 +86,15 @@ public enum ImageFormat: String, CaseIterable {
     
     
     init?(_ magicNumberData: Data) {
-        if magicNumberData == Data([0x89, 0x50, 0x4E, 0x47]) {
+        let firstTwo = magicNumberData[magicNumberData.startIndex ..< magicNumberData.index(after: magicNumberData.startIndex)]
+        let firstThree = magicNumberData[magicNumberData.startIndex ..< magicNumberData.index(magicNumberData.startIndex, offsetBy: 3)]
+                if magicNumberData == Data([0x89, 0x50, 0x4E, 0x47]) {
             self = .png
         } else if magicNumberData == Data([0x47, 0x49, 0x46, 0x38]) {
             self = .gif
-        } else if magicNumberData[0..<2] == Data([0x42, 0x4D]) {
+        } else if firstTwo == Data([0x42, 0x4D]) {
             self = .bmp
-        } else if magicNumberData[0..<3] == Data([0x49, 0x20, 0x49]) {
+        } else if firstThree == Data([0x49, 0x20, 0x49]) {
             self = .tiff
         } else if ImageFormat.jpgMagicNumbers.contains(magicNumberData) {
             self = .jpg
