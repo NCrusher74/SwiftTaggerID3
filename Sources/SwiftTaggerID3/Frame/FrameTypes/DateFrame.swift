@@ -74,18 +74,19 @@ import Foundation
 
 @available(OSX 10.12, iOS 12.0, *)
 class DateFrame: Frame {
+
     override var description: String {
         let formatter = ISO8601DateFormatter()
         formatter.formatOptions = [.withInternetDateTime]
         formatter.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
         if let date = self.timeStamp {
             let string = formatter.string(from: date)
-            return "\(self.identifier.rawValue): \(string)"
+            return string
         } else {
-            return "\(self.identifier.rawValue): Invalid Date from data \(self.contentData)"
+            return "\(self.identifier.rawValue): Invalid Date"
         }
     }
-
+    
     // MARK: Frame parsing
     // needs to be in ISO-8601 format
     var timeStamp: Date?
@@ -106,9 +107,12 @@ class DateFrame: Frame {
     ) throws {
         var data = payload
         let encoding = try data.extractEncoding()
-        let dateString = data.decodeString(encoding)
+        let dateString = String(data: data, encoding: encoding)
         
-        guard dateString != "" else { throw FrameError.InvalidDateString }
+        guard let dateString = dateString else {
+            throw FrameError.InvalidDateString
+        }
+        
         // assumes frame contents are spec-compliant, 4-characters, DDMM string
         if identifier == .date {
             // assumes frame contents are spec-compliant, 4-characters, HHmm string
@@ -227,7 +231,6 @@ extension Tag {
         }
     }
     
-    
     private mutating func set(dateFrame identifier: FrameIdentifier,
                                timeStamp: Date?) {
         if let timeStamp = timeStamp {
@@ -240,9 +243,29 @@ extension Tag {
         }
     }
     
+    mutating func importDateFrame(id: FrameIdentifier, stringValue: String) {
+        let timeStamp: Date?
+        // assumes frame contents are spec-compliant, 4-characters, DDMM string
+        if id == .date {
+            // assumes frame contents are spec-compliant, 4-characters, HHmm string
+            timeStamp = try? stringValue.dateFromDDMMString()
+        } else if id == .time {
+            timeStamp = try? stringValue.timefromHHMMString()
+        } else if id == .year ||
+                    // versions 2.2 and 2.3 should only have a year for this frame
+                    (id == .originalReleaseDateTime &&
+                        (version == .v2_2 || version == .v2_3)) || stringValue.count == 4 {
+            timeStamp = try? stringValue.yearFromYYYYString()
+        } else {
+            let date = stringValue.attemptDateFromString()
+            timeStamp = date
+        }
+        
+        set(dateFrame: id, timeStamp: timeStamp)
+    }
+    
     /// v2.4: releaseDate (`TDRL`) frame.
     /// v2.2, v2.3: date (`TDA/TDAT`) frame for DDMM values, time (`TIM/TIME`) frame for HHMM values, and year (`TYE/TYER`) frame for YYYY value
-    
     public var releaseDateTime: Date? {
         get {
             switch self.version {
@@ -338,7 +361,6 @@ extension Tag {
     }
     
     /// Version 2.4 only. Identifier `TDEN`
-    
     public var encodingDateTime: Date? {
         get {
             get(dateFrame: .encodingDateTime)

@@ -79,14 +79,9 @@ import SwiftLanguageAndLocaleCodes
 /// `Comment` and `UnsynchronizedLyrics` frames are the only frames that allow the use of new-line characters. Therefore, they are ideally suited for long remarks and convenience getter-setter properties for the most common types have been added.
 class LocalizedFrame: Frame {
     override var description: String {
-        return """
-                Identifier: \(self.identifier.rawValue):
-                Language: \(self.language?.rawValue ?? "und")
-                Description: \(self.descriptionString ?? "")
-                Content: \(self.stringValue)
-                """
+        stringValue
     }
-
+    
     /// ISO-639-2 languge code
     var language: ISO6392Code?
     /// A short description of the frame content.
@@ -383,6 +378,47 @@ extension Tag {
         }
     }
     
+    mutating func importLocalizedFrame(key: FrameKey, stringValue: String) {
+        let id = FrameIdentifier(frameKey: key)
+        switch key {
+            case .userDefinedText(let description), .userDefinedWebpage(let description):
+                set(userDefinedFrame: id, description: description, stringValue: stringValue)
+            case .comments(language: let language, description: let description), .unsynchronizedLyrics(language: let language, description: let description):
+                set(localizedFrame: id, language: language, description: description, stringValue: stringValue)
+            default: return
+        }
+    }
+    
+    mutating func setCommentFromCue(_ trimmed: String) {
+        var components = trimmed.components(separatedBy: "]")
+        components = components
+            .map({$0.trimmingCharacters(in: CharacterSet(charactersIn: "["))
+                    .trimmingCharacters(in: .whitespacesAndNewlines)})
+
+        var description: String? = nil
+        var language: ISO6392Code? = ISO6392Code.und
+        var stringValue = ""
+        
+        if components.count >= 3 {
+            description = components.extractFirst()
+            let languageString = components.extractFirst()
+            language = ISO6392Code(rawValue: languageString.lowercased())
+            stringValue = components.extractFirst()
+        } else if components.count == 2 {
+            let first = components.extractFirst()
+            if let iso = ISO6392Code(rawValue: first) {
+                language = iso
+            } else {
+                description = first
+            }
+            stringValue = components.extractFirst()
+        } else if components.count == 1 {
+            stringValue = components.extractFirst()
+        }
+        
+        set(localizedFrame: .comments, language: language, description: description, stringValue: stringValue)
+    }
+
     private mutating func set(userDefinedFrame identifier: FrameIdentifier,
                               description: String?,
                               stringValue: String?) {

@@ -61,7 +61,11 @@
 import Foundation
 /// A type representing a frame with up to three optional strings as content, at least one of which is selected from a preset list of options. This type manages frames `genreType`, `mediaType`, and `fileType`
 class ComplexTypesFrame: Frame {
-
+    
+    override var description: String {
+        contentArray.joined(separator: "; ")
+    }
+    
     var contentArray: [String]
     
     init(identifier: FrameIdentifier,
@@ -195,8 +199,7 @@ extension Tag {
         }
     }
     
-    private mutating func set(complexTypesFrame identifier: FrameIdentifier,
-                      contentArray: [String]) {
+    private mutating func set(complexTypesFrame identifier: FrameIdentifier, contentArray: [String]) {
         let frameKey = identifier.frameKey
         if contentArray.isEmpty {
             self.frames[frameKey] = nil
@@ -206,6 +209,11 @@ extension Tag {
                                           contentArray: contentArray)
             self.frames[frameKey] = frame
         }
+    }
+    
+    mutating func importComplexFrame(id: FrameIdentifier, stringValue: String) {
+        let components = stringValue.components(separatedBy: "; ")
+        set(complexTypesFrame: id, contentArray: components)
     }
     
     public var genre: (genreCategory: GenreType?, genre: String?) {

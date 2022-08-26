@@ -16,7 +16,7 @@ extension Data {
     /// - Parameter encoding: The `String.Encoding` type parsed out of the frame content previously
     /// - Returns: 1 or 0, if a value can be determined
     mutating func decodeBooleanString(_ encoding: String.Encoding) -> String {
-        if let string = self.extractNullTerminatedString(encoding) {
+        if let string = String(data: self, encoding: encoding) {
             switch string.lowercased() {
                 case "true", "t", "yes", "y", "1":
                     return "1"
@@ -30,14 +30,23 @@ extension Data {
         }
     }
     
-    mutating func decodeString(_ encoding: String.Encoding) -> String {
-        if let string = self.extractNullTerminatedString(encoding) {
-            return string
-        } else {
-            return ""
+    mutating func decodeString(_ encoding: String.Encoding, usingTerminator: Bool = false) -> String {
+        switch usingTerminator {
+            case true:
+                if let string = self.extractNullTerminatedString(encoding) {
+                    return string
+                } else {
+                    return ""
+                }
+            case false:
+                if let string = String(data: self, encoding: encoding) {
+                    return string
+                } else {
+                    return ""
+                }
         }
     }
-    
+
     mutating func extractAndDecodeCreditString(encoding: String.Encoding) throws -> [String: [String]] {
         var strings = [String]()
         while !self.isEmpty {
@@ -61,7 +70,7 @@ extension Data {
     /// - Returns: The frame's description and content strings
     /// this is used for ID3 frames with a terminated description string followed by a content string
     mutating func extractDescriptionAndContent(_ encoding: String.Encoding) -> (description: String?, content: String) {
-        let description = self.extractNullTerminatedString(encoding)
+        let description = self.decodeString(encoding, usingTerminator: true)
         
         let content = decodeString(encoding)
         

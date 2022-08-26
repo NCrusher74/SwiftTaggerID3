@@ -1,0 +1,25 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "SwiftConvenienceExtensions",
+        "repositoryURL": "https://github.com/NCrusher74/SwiftConvenienceExtensions",
+        "state": {
+          "branch": null,
+          "revision": "0bb014906d44ac96ad69e1aa90e9779ffa808f78",
+          "version": "3.0.16"
+        }
+      },
+      {
+        "package": "SwiftLanguageAndLocaleCodes",
+        "repositoryURL": "https://github.com/NCrusher74/SwiftLanguageAndLocaleCodes",
+        "state": {
+          "branch": null,
+          "revision": "6f3a3fa43e96db0c2e9aecf8a4891e9ba4964b9b",
+          "version": "2.0.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

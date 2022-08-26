@@ -38,6 +38,22 @@ import Foundation
 ///
 /// Handled as a dictionary: `[role : [array of people performing the role]]`
 class CreditsFrame: Frame {
+    override var description: String {
+        var string = String()
+        let sorted = credits.sorted(by: {$0.key < $1.key})
+        
+        for (key, value) in sorted.dropLast() {
+            let joined = key + " = " + value.joined(separator: "; ") + " // "
+            string.append(joined)
+        }
+        
+        if let last = sorted.last {
+            let joined = last.key + " = " + last.value.joined(separator: "; ")
+            string.append(joined)
+        }
+        return string
+    }
+    
     /// The dictionary of `[role : [array of people performing the role]]`
     var credits: [ String : [String] ]
     
@@ -279,6 +295,42 @@ extension Tag {
             }
         }
         return dictionary
+    }
+    
+    mutating func importCreditsFrame(id: FrameIdentifier, stringValue: String) {
+        var parts = stringValue.components(separatedBy: " // ")
+        
+        if id == .involvedPeopleList {
+            var dictionary = [InvolvedPersonCredits:[String]]()
+            while !parts.isEmpty {
+                var components = parts.extractFirst().components(separatedBy: " = ")
+                guard components.count >= 2 else {
+                    continue
+                }
+                
+                let involvementString = components.extractFirst()
+                if let involvement = InvolvedPersonCredits(rawValue: involvementString) {
+                    let creditsArray = components.extractFirst().components(separatedBy: "; ")
+                    dictionary[involvement] = creditsArray
+                }
+            }
+            set(involvementCredits: dictionary)
+        } else if id == .musicianCreditsList {
+            var dictionary = [MusicianAndPerformerCredits:[String]]()
+            while !parts.isEmpty {
+                var components = parts.extractFirst().components(separatedBy: " = ")
+                guard components.count >= 2 else {
+                    continue
+                }
+                
+                let involvementString = components.extractFirst()
+                if let involvement = MusicianAndPerformerCredits(rawValue: involvementString) {
+                    let creditsArray = components.extractFirst().components(separatedBy: "; ")
+                    dictionary[involvement] = creditsArray
+                }
+            }
+            set(musicianCredits: dictionary)
+        }
     }
     
     /// set the `[role: [person]]` dictionary for the `involvedPeopleList` frame

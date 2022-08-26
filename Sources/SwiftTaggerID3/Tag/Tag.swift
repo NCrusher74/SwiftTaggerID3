@@ -18,14 +18,16 @@ public struct Tag {
      ID3v2 size             4 * %0xxxxxxx -- 4 bytes (Synchsafe Uint32)
      */
     public var frames: [FrameKey: Frame]
-    var version: Version
+    var version: Version = .v2_4
     var size: Int
     static var duration: Int = 0
+    var location: URL
     
     /// Instantiate a tag by parsing from MP3 file data
     
     @available(OSX 10.12, iOS 12.0, *)
     public init(mp3File: Mp3File) throws {
+        self.location = mp3File.location
         Tag.duration = mp3File.duration
         // get the file data as a subsequence. As the data is parsed when reading a tag, it will be extracted from the subsequence, leaving the remainder instact to continue parsing
         var remainder: Data.SubSequence = mp3File.data[
@@ -74,6 +76,7 @@ public struct Tag {
     init(version: Version, subframes: [FrameKey: Frame]) throws {
         self.version = version
         self.frames = subframes
+        self.location = URL(fileURLWithPath: "")
         var size = Int()
         for (_, frame) in subframes {
             size += frame.encode.count
@@ -89,6 +92,7 @@ public struct Tag {
         self.version = version
         self.frames = [:]
         self.size = 0
+        self.location = URL(fileURLWithPath: "")
     }
     
     // MARK: - Tag Building Calculations
@@ -140,6 +144,9 @@ public struct Tag {
     let tagSizeLength: Int = 4
     
     public mutating func removeAllMetadata() {
-        self.frames = [:]
+        self.frames = self.frames
+            .filter({$0.value.identifier == .chapter ||
+                        $0.value.identifier == .tableOfContents ||
+                        $0.value.identifier == .attachedPicture})
     }
 }

@@ -9,6 +9,10 @@ import Foundation
 
 /// a type that passes through any unrecognized or unhandled frame content as-is
 class PassThroughFrame: Frame {
+    override var description: String {
+        "Unhandled Frame (\(identifier.rawValue))"
+    }
+    
     // MARK: - Properties
     var uuid: UUID
     var payload: Data

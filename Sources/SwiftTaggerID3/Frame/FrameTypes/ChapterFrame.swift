@@ -33,6 +33,10 @@ public typealias TOC = TableOfContents
 public typealias Chapter = TableOfContents.Chapter
 class ChapterFrame: Frame {
     
+    override var description: String {
+        "Chapter \(startTime.timeStampFromMilliseconds)"
+    }
+    
     /// The Element ID uniquely identifies the frame. It is not intended to be human readable and should not be presented to the end user. Null terminated
     var elementID: String
     
@@ -153,14 +157,9 @@ class ChapterFrame: Frame {
                    size: size,
                    flags: flags)
     }
-    
-    init?() {
-        return nil
-    }
 }
 
 extension Tag {
-    
     var toc: TableOfContents {
         get {
             var chapters = [Chapter]()
@@ -177,7 +176,6 @@ extension Tag {
             chapterList = newValue.chapters
         }
     }
-    
     
     public var chapterList: [Chapter] {
         get {
@@ -235,16 +233,13 @@ extension Tag {
         }
     }
     
-    
     public mutating func addChapter(startTime: Int, title: String) {
         toc.addChapter(startTime: startTime, title: title)
     }
     
-    
     public mutating func removeAllChapters() {
         self.chapterList = []
-    }
-    
+    }    
     
     public mutating func removeChapter(startTime: Int) {
         self.chapterList = self.chapterList.filter({$0.startTime != startTime})
